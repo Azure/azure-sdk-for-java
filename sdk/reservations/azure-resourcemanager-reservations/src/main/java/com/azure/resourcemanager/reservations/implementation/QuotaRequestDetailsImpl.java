@@ -17,8 +17,7 @@ public final class QuotaRequestDetailsImpl implements QuotaRequestDetails {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    QuotaRequestDetailsImpl(
-        QuotaRequestDetailsInner innerObject,
+    QuotaRequestDetailsImpl(QuotaRequestDetailsInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

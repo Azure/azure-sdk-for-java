@@ -16,33 +16,21 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateSapVirtualInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateSapVirtualInstanceRequest model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"jakhmsbzjh\":{\"principalId\":\"9d604921-29ee-4ba8-be56-842b27d69af8\",\"clientId\":\"6e418b5f-eb54-41b3-9a83-9141b36ce003\"},\"evdphlxaol\":{\"principalId\":\"5f0b6d05-6f12-44c1-96a2-42b470fadbef\",\"clientId\":\"bd163123-e6d1-44cb-939d-44e990e51e71\"},\"trg\":{\"principalId\":\"5c599304-e05a-43d8-8a50-992a7e395cd7\",\"clientId\":\"895a0f27-8b2d-4117-86ef-445a4b08d29c\"},\"pfzfsinzgvfc\":{\"principalId\":\"538284bc-d318-4f26-ac3c-38862d9526a5\",\"clientId\":\"418dbaf5-7408-4964-a8a1-2e6b1de71ea8\"}}}}")
-                .toObject(UpdateSapVirtualInstanceRequest.class);
+        UpdateSapVirtualInstanceRequest model = BinaryData.fromString(
+            "{\"tags\":{\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"jakhmsbzjh\":{\"principalId\":\"9d604921-29ee-4ba8-be56-842b27d69af8\",\"clientId\":\"6e418b5f-eb54-41b3-9a83-9141b36ce003\"},\"evdphlxaol\":{\"principalId\":\"5f0b6d05-6f12-44c1-96a2-42b470fadbef\",\"clientId\":\"bd163123-e6d1-44cb-939d-44e990e51e71\"},\"trg\":{\"principalId\":\"5c599304-e05a-43d8-8a50-992a7e395cd7\",\"clientId\":\"895a0f27-8b2d-4117-86ef-445a4b08d29c\"},\"pfzfsinzgvfc\":{\"principalId\":\"538284bc-d318-4f26-ac3c-38862d9526a5\",\"clientId\":\"418dbaf5-7408-4964-a8a1-2e6b1de71ea8\"}}}}")
+            .toObject(UpdateSapVirtualInstanceRequest.class);
         Assertions.assertEquals("odjpslwejd", model.tags().get("vwryoqpso"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateSapVirtualInstanceRequest model =
-            new UpdateSapVirtualInstanceRequest()
-                .withTags(mapOf("vwryoqpso", "odjpslwejd", "yffdfdos", "cctazakljlahbc"))
-                .withIdentity(
-                    new UserAssignedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "jakhmsbzjh",
-                                new UserAssignedIdentity(),
-                                "evdphlxaol",
-                                new UserAssignedIdentity(),
-                                "trg",
-                                new UserAssignedIdentity(),
-                                "pfzfsinzgvfc",
-                                new UserAssignedIdentity())));
+        UpdateSapVirtualInstanceRequest model = new UpdateSapVirtualInstanceRequest()
+            .withTags(mapOf("vwryoqpso", "odjpslwejd", "yffdfdos", "cctazakljlahbc"))
+            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(
+                    mapOf("jakhmsbzjh", new UserAssignedIdentity(), "evdphlxaol", new UserAssignedIdentity(), "trg",
+                        new UserAssignedIdentity(), "pfzfsinzgvfc", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(UpdateSapVirtualInstanceRequest.class);
         Assertions.assertEquals("odjpslwejd", model.tags().get("vwryoqpso"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());

@@ -62,8 +62,8 @@ public final class DatabaseInviteFollowerRequest {
      * @param tableLevelSharingProperties the tableLevelSharingProperties value to set.
      * @return the DatabaseInviteFollowerRequest object itself.
      */
-    public DatabaseInviteFollowerRequest withTableLevelSharingProperties(
-        TableLevelSharingProperties tableLevelSharingProperties) {
+    public DatabaseInviteFollowerRequest
+        withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties) {
         this.tableLevelSharingProperties = tableLevelSharingProperties;
         return this;
     }
@@ -75,10 +75,8 @@ public final class DatabaseInviteFollowerRequest {
      */
     public void validate() {
         if (inviteeEmail() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property inviteeEmail in model DatabaseInviteFollowerRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property inviteeEmail in model DatabaseInviteFollowerRequest"));
         }
         if (tableLevelSharingProperties() != null) {
             tableLevelSharingProperties().validate();

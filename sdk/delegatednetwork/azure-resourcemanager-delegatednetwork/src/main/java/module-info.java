@@ -10,10 +10,6 @@ module com.azure.resourcemanager.delegatednetwork {
     exports com.azure.resourcemanager.delegatednetwork.fluent.models;
     exports com.azure.resourcemanager.delegatednetwork.models;
 
-    opens com.azure.resourcemanager.delegatednetwork.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.delegatednetwork.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.delegatednetwork.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.delegatednetwork.models to com.azure.core;
 }

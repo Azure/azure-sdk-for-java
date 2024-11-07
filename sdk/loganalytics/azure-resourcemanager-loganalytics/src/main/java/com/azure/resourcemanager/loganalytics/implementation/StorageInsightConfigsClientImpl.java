@@ -47,9 +47,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @param client the instance of the service client containing this operation class.
      */
     StorageInsightConfigsClientImpl(OperationalInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(StorageInsightConfigsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(StorageInsightConfigsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,74 +59,51 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
     public interface StorageInsightConfigsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageInsightInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("storageInsightName") String storageInsightName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<StorageInsightInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("storageInsightName") String storageInsightName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") StorageInsightInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") StorageInsightInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageInsightInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("storageInsightName") String storageInsightName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<StorageInsightInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("storageInsightName") String storageInsightName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("storageInsightName") String storageInsightName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("storageInsightName") String storageInsightName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageInsightListResult>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<StorageInsightListResult>> listByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageInsightListResult>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -144,13 +120,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageInsightInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String storageInsightName, StorageInsightInner parameters) {
+    private Mono<Response<StorageInsightInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String storageInsightName, StorageInsightInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -164,10 +138,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 .error(new IllegalArgumentException("Parameter storageInsightName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -177,19 +149,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            storageInsightName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                storageInsightName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -208,17 +169,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageInsightInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String storageInsightName,
-        StorageInsightInner parameters,
-        Context context) {
+    private Mono<Response<StorageInsightInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String storageInsightName, StorageInsightInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -232,10 +187,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 .error(new IllegalArgumentException("Parameter storageInsightName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -245,17 +198,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                storageInsightName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, workspaceName, storageInsightName,
+            apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -271,8 +215,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return the top level storage insight resource container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageInsightInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String storageInsightName, StorageInsightInner parameters) {
+    private Mono<StorageInsightInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String storageInsightName, StorageInsightInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, storageInsightName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -291,15 +235,10 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return the top level storage insight resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StorageInsightInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String storageInsightName,
-        StorageInsightInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, storageInsightName, parameters, context)
-            .block();
+    public Response<StorageInsightInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String storageInsightName, StorageInsightInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, storageInsightName, parameters,
+            context).block();
     }
 
     /**
@@ -315,11 +254,10 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return the top level storage insight resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageInsightInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String storageInsightName, StorageInsightInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, workspaceName, storageInsightName, parameters, Context.NONE)
-            .getValue();
+    public StorageInsightInner createOrUpdate(String resourceGroupName, String workspaceName, String storageInsightName,
+        StorageInsightInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -334,13 +272,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return a storage insight instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageInsightInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String storageInsightName) {
+    private Mono<Response<StorageInsightInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String storageInsightName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -354,26 +290,14 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 .error(new IllegalArgumentException("Parameter storageInsightName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            storageInsightName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                storageInsightName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -390,13 +314,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return a storage insight instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageInsightInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context) {
+    private Mono<Response<StorageInsightInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String storageInsightName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -410,24 +332,14 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 .error(new IllegalArgumentException("Parameter storageInsightName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                storageInsightName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, workspaceName, storageInsightName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -442,8 +354,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return a storage insight instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageInsightInner> getAsync(
-        String resourceGroupName, String workspaceName, String storageInsightName) {
+    private Mono<StorageInsightInner> getAsync(String resourceGroupName, String workspaceName,
+        String storageInsightName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, storageInsightName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -461,8 +373,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return a storage insight instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StorageInsightInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context) {
+    public Response<StorageInsightInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String storageInsightName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, storageInsightName, context).block();
     }
 
@@ -494,13 +406,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String storageInsightName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String storageInsightName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -514,24 +424,13 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 .error(new IllegalArgumentException("Parameter storageInsightName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            storageInsightName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                storageInsightName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -548,13 +447,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String storageInsightName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -568,22 +465,13 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
                 .error(new IllegalArgumentException("Parameter storageInsightName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                storageInsightName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName, storageInsightName,
+            apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
@@ -616,8 +504,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String storageInsightName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, storageInsightName, context).block();
     }
 
@@ -648,13 +536,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -664,34 +550,16 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<StorageInsightInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<StorageInsightInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -708,13 +576,11 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -724,32 +590,17 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
@@ -764,8 +615,7 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageInsightInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
@@ -781,10 +631,9 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return the list storage insights operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageInsightInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
+    private PagedFlux<StorageInsightInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
@@ -815,8 +664,8 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      * @return the list storage insights operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageInsightInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<StorageInsightInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
     }
 
@@ -837,23 +686,14 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StorageInsightInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .<PagedResponse<StorageInsightInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -870,29 +710,19 @@ public final class StorageInsightConfigsClientImpl implements StorageInsightConf
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<StorageInsightInner>> listByWorkspaceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 }

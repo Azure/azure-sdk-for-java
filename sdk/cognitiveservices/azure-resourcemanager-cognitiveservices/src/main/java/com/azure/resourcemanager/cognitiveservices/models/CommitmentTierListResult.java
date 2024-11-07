@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentTierInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of cognitive services accounts operation response. */
+/**
+ * The list of cognitive services accounts operation response.
+ */
 @Fluent
-public final class CommitmentTierListResult {
+public final class CommitmentTierListResult implements JsonSerializable<CommitmentTierListResult> {
     /*
      * The link used to get the next page of CommitmentTier.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Gets the list of Cognitive Services accounts CommitmentTier and their properties.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommitmentTierInner> value;
 
-    /** Creates an instance of CommitmentTierListResult class. */
+    /**
+     * Creates an instance of CommitmentTierListResult class.
+     */
     public CommitmentTierListResult() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of CommitmentTier.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class CommitmentTierListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of CommitmentTier.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CommitmentTierListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class CommitmentTierListResult {
 
     /**
      * Get the value property: Gets the list of Cognitive Services accounts CommitmentTier and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<CommitmentTierInner> value() {
@@ -59,12 +65,52 @@ public final class CommitmentTierListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommitmentTierListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommitmentTierListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommitmentTierListResult.
+     */
+    public static CommitmentTierListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommitmentTierListResult deserializedCommitmentTierListResult = new CommitmentTierListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedCommitmentTierListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<CommitmentTierInner> value
+                        = reader.readArray(reader1 -> CommitmentTierInner.fromJson(reader1));
+                    deserializedCommitmentTierListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommitmentTierListResult;
+        });
     }
 }

@@ -176,17 +176,10 @@ public interface BareMetalMachineKeySet {
     BareMetalMachineKeySetInner innerModel();
 
     /** The entirety of the BareMetalMachineKeySet definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithAzureGroupId,
-            DefinitionStages.WithExpiration,
-            DefinitionStages.WithJumpHostsAllowed,
-            DefinitionStages.WithPrivilegeLevel,
-            DefinitionStages.WithUserList,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithExtendedLocation, DefinitionStages.WithAzureGroupId,
+        DefinitionStages.WithExpiration, DefinitionStages.WithJumpHostsAllowed, DefinitionStages.WithPrivilegeLevel,
+        DefinitionStages.WithUserList, DefinitionStages.WithCreate {
     }
 
     /** The BareMetalMachineKeySet definition stages. */
@@ -357,11 +350,8 @@ public interface BareMetalMachineKeySet {
     BareMetalMachineKeySet.Update update();
 
     /** The template for BareMetalMachineKeySet update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithExpiration,
-            UpdateStages.WithJumpHostsAllowed,
-            UpdateStages.WithUserList {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithExpiration, UpdateStages.WithJumpHostsAllowed,
+        UpdateStages.WithUserList {
         /**
          * Executes the update request.
          *

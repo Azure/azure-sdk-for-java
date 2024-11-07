@@ -113,15 +113,12 @@ public final class IpExtendedCommunityRule {
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model IpExtendedCommunityRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model IpExtendedCommunityRule"));
         }
         if (routeTargets() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property routeTargets in model IpExtendedCommunityRule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property routeTargets in model IpExtendedCommunityRule"));
         }
     }
 

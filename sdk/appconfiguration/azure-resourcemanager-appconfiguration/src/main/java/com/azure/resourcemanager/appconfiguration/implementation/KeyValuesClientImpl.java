@@ -47,8 +47,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @param client the instance of the service client containing this operation class.
      */
     KeyValuesClientImpl(AppConfigurationManagementClientImpl client) {
-        this.service =
-            RestProxy.create(KeyValuesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(KeyValuesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,51 +59,37 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppConfigurationMana")
     public interface KeyValuesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<KeyValueInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<KeyValueInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("keyValueName") String keyValueName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<KeyValueInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
             @PathParam("keyValueName") String keyValueName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") KeyValueInner keyValueParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<KeyValueInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("keyValueName") String keyValueName,
-            @BodyParam("application/json") KeyValueInner keyValueParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("keyValueName") String keyValueName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("keyValueName") String keyValueName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -120,19 +106,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> getWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName) {
+    private Mono<Response<KeyValueInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
+        String keyValueName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -147,18 +129,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            keyValueName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), keyValueName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -177,19 +149,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> getWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    private Mono<Response<KeyValueInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -204,16 +172,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                keyValueName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, accept, context);
     }
 
     /**
@@ -248,8 +208,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the properties of the specified key-value along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyValueInner> getWithResponse(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    public Response<KeyValueInner> getWithResponse(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         return getWithResponseAsync(resourceGroupName, configStoreName, keyValueName, context).block();
     }
 
@@ -285,19 +245,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, KeyValueInner keyValueParameters) {
+    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String configStoreName, String keyValueName, KeyValueInner keyValueParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -315,19 +271,9 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            keyValueName,
-                            keyValueParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), keyValueName, keyValueParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -347,23 +293,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
-        String keyValueName,
-        KeyValueInner keyValueParameters,
-        Context context) {
+    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String configStoreName, String keyValueName, KeyValueInner keyValueParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -381,17 +319,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                keyValueName,
-                keyValueParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, keyValueParameters, accept, context);
     }
 
     /**
@@ -407,8 +336,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the key-value resource along with all resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<KeyValueInner> createOrUpdateAsync(
-        String resourceGroupName, String configStoreName, String keyValueName) {
+    private Mono<KeyValueInner> createOrUpdateAsync(String resourceGroupName, String configStoreName,
+        String keyValueName) {
         final KeyValueInner keyValueParameters = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, configStoreName, keyValueName, keyValueParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -429,15 +358,10 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the key-value resource along with all resource properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyValueInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String configStoreName,
-        String keyValueName,
-        KeyValueInner keyValueParameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, configStoreName, keyValueName, keyValueParameters, context)
-            .block();
+    public Response<KeyValueInner> createOrUpdateWithResponse(String resourceGroupName, String configStoreName,
+        String keyValueName, KeyValueInner keyValueParameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, configStoreName, keyValueName, keyValueParameters,
+            context).block();
     }
 
     /**
@@ -455,9 +379,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName) {
         final KeyValueInner keyValueParameters = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, configStoreName, keyValueName, keyValueParameters, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, configStoreName, keyValueName, keyValueParameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -473,19 +396,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+        String keyValueName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -500,18 +419,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            keyValueName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), keyValueName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -529,19 +438,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,16 +461,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                keyValueName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, accept, context);
     }
 
     /**
@@ -581,14 +478,12 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, String keyValueName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
+        String keyValueName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -605,14 +500,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -628,8 +522,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String keyValueName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String keyValueName) {
         return this.beginDeleteAsync(resourceGroupName, configStoreName, keyValueName).getSyncPoller();
     }
 
@@ -647,8 +541,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, configStoreName, keyValueName, context).getSyncPoller();
     }
 
@@ -666,8 +560,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, String keyValueName) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -685,10 +578,9 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, String keyValueName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 

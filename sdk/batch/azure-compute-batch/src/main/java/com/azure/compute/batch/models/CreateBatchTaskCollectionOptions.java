@@ -5,6 +5,6 @@ package com.azure.compute.batch.models;
 /**
  * Optional parameters for adding a collection of Tasks to a certain Job.
  */
-public class CreateBatchTaskCollectionOptions extends BatchBaseOptions{
+public class CreateBatchTaskCollectionOptions extends BatchBaseOptions {
 
 }

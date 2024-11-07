@@ -68,8 +68,8 @@ public final class UserAssignedServiceIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the UserAssignedServiceIdentity object itself.
      */
-    public UserAssignedServiceIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedIdentity> userAssignedIdentities) {
+    public UserAssignedServiceIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -81,20 +81,15 @@ public final class UserAssignedServiceIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model UserAssignedServiceIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model UserAssignedServiceIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

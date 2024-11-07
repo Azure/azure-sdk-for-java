@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.automation.fluent.models.PrivateEndpointConnectionInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * List all private endpoint connections on a Automation account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,12 +28,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName);
+    PagedIterable<PrivateEndpointConnectionInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName);
 
     /**
      * List all private endpoint connections on a Automation account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -41,27 +43,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<PrivateEndpointConnectionInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, Context context);
 
     /**
      * Gets a private endpoint connection.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName);
-
-    /**
-     * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -72,16 +59,31 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String privateEndpointConnectionName, Context context);
 
     /**
-     * Approve or reject a private endpoint connection with a given name.
-     *
+     * Gets a private endpoint connection.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner get(String resourceGroupName, String automationAccountName,
+        String privateEndpointConnectionName);
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -89,18 +91,16 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,38 +109,32 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,16 +142,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -167,12 +157,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String automationAccountName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -183,12 +173,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String automationAccountName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -201,7 +191,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection with a given name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -211,6 +201,6 @@ public interface PrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String automationAccountName, String privateEndpointConnectionName, Context context);
+    void delete(String resourceGroupName, String automationAccountName, String privateEndpointConnectionName,
+        Context context);
 }

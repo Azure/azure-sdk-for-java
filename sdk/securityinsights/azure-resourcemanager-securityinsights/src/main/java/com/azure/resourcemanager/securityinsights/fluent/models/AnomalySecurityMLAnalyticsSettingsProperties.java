@@ -5,107 +5,108 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.SecurityMLAnalyticsSettingsDataSource;
 import com.azure.resourcemanager.securityinsights.models.SettingsStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** AnomalySecurityMLAnalytics settings base property bag. */
+/**
+ * AnomalySecurityMLAnalytics settings base property bag.
+ */
 @Fluent
-public final class AnomalySecurityMLAnalyticsSettingsProperties {
+public final class AnomalySecurityMLAnalyticsSettingsProperties
+    implements JsonSerializable<AnomalySecurityMLAnalyticsSettingsProperties> {
     /*
      * The description of the SecurityMLAnalyticsSettings.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display name for settings created by this SecurityMLAnalyticsSettings.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Determines whether this settings is enabled or disabled.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * The last time that this SecurityMLAnalyticsSettings has been modified.
      */
-    @JsonProperty(value = "lastModifiedUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedUtc;
 
     /*
      * The required data sources for this SecurityMLAnalyticsSettings
      */
-    @JsonProperty(value = "requiredDataConnectors")
     private List<SecurityMLAnalyticsSettingsDataSource> requiredDataConnectors;
 
     /*
      * The tactics of the SecurityMLAnalyticsSettings
      */
-    @JsonProperty(value = "tactics")
     private List<AttackTactic> tactics;
 
     /*
      * The techniques of the SecurityMLAnalyticsSettings
      */
-    @JsonProperty(value = "techniques")
     private List<String> techniques;
 
     /*
      * The anomaly version of the AnomalySecurityMLAnalyticsSettings.
      */
-    @JsonProperty(value = "anomalyVersion", required = true)
     private String anomalyVersion;
 
     /*
      * The customizable observations of the AnomalySecurityMLAnalyticsSettings.
      */
-    @JsonProperty(value = "customizableObservations")
     private Object customizableObservations;
 
     /*
      * The frequency that this SecurityMLAnalyticsSettings will be run.
      */
-    @JsonProperty(value = "frequency", required = true)
     private Duration frequency;
 
     /*
      * The anomaly SecurityMLAnalyticsSettings status
      */
-    @JsonProperty(value = "settingsStatus", required = true)
     private SettingsStatus settingsStatus;
 
     /*
      * Determines whether this anomaly security ml analytics settings is a default settings
      */
-    @JsonProperty(value = "isDefaultSettings", required = true)
     private boolean isDefaultSettings;
 
     /*
-     * The anomaly settings version of the Anomaly security ml analytics settings that dictates whether job version
-     * gets updated or not.
+     * The anomaly settings version of the Anomaly security ml analytics settings that dictates whether job version gets
+     * updated or not.
      */
-    @JsonProperty(value = "anomalySettingsVersion")
     private Integer anomalySettingsVersion;
 
     /*
      * The anomaly settings definition Id
      */
-    @JsonProperty(value = "settingsDefinitionId")
     private UUID settingsDefinitionId;
 
     /**
+     * Creates an instance of AnomalySecurityMLAnalyticsSettingsProperties class.
+     */
+    public AnomalySecurityMLAnalyticsSettingsProperties() {
+    }
+
+    /**
      * Get the description property: The description of the SecurityMLAnalyticsSettings.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -114,7 +115,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the description property: The description of the SecurityMLAnalyticsSettings.
-     *
+     * 
      * @param description the description value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -125,7 +126,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the displayName property: The display name for settings created by this SecurityMLAnalyticsSettings.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -134,7 +135,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the displayName property: The display name for settings created by this SecurityMLAnalyticsSettings.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -145,7 +146,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the enabled property: Determines whether this settings is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -154,7 +155,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the enabled property: Determines whether this settings is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -165,7 +166,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the lastModifiedUtc property: The last time that this SecurityMLAnalyticsSettings has been modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -174,7 +175,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the requiredDataConnectors property: The required data sources for this SecurityMLAnalyticsSettings.
-     *
+     * 
      * @return the requiredDataConnectors value.
      */
     public List<SecurityMLAnalyticsSettingsDataSource> requiredDataConnectors() {
@@ -183,19 +184,19 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the requiredDataConnectors property: The required data sources for this SecurityMLAnalyticsSettings.
-     *
+     * 
      * @param requiredDataConnectors the requiredDataConnectors value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
-    public AnomalySecurityMLAnalyticsSettingsProperties withRequiredDataConnectors(
-        List<SecurityMLAnalyticsSettingsDataSource> requiredDataConnectors) {
+    public AnomalySecurityMLAnalyticsSettingsProperties
+        withRequiredDataConnectors(List<SecurityMLAnalyticsSettingsDataSource> requiredDataConnectors) {
         this.requiredDataConnectors = requiredDataConnectors;
         return this;
     }
 
     /**
      * Get the tactics property: The tactics of the SecurityMLAnalyticsSettings.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -204,7 +205,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the tactics property: The tactics of the SecurityMLAnalyticsSettings.
-     *
+     * 
      * @param tactics the tactics value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -215,7 +216,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the techniques property: The techniques of the SecurityMLAnalyticsSettings.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -224,7 +225,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the techniques property: The techniques of the SecurityMLAnalyticsSettings.
-     *
+     * 
      * @param techniques the techniques value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -235,7 +236,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the anomalyVersion property: The anomaly version of the AnomalySecurityMLAnalyticsSettings.
-     *
+     * 
      * @return the anomalyVersion value.
      */
     public String anomalyVersion() {
@@ -244,7 +245,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the anomalyVersion property: The anomaly version of the AnomalySecurityMLAnalyticsSettings.
-     *
+     * 
      * @param anomalyVersion the anomalyVersion value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -256,7 +257,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
     /**
      * Get the customizableObservations property: The customizable observations of the
      * AnomalySecurityMLAnalyticsSettings.
-     *
+     * 
      * @return the customizableObservations value.
      */
     public Object customizableObservations() {
@@ -266,7 +267,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
     /**
      * Set the customizableObservations property: The customizable observations of the
      * AnomalySecurityMLAnalyticsSettings.
-     *
+     * 
      * @param customizableObservations the customizableObservations value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -277,7 +278,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the frequency property: The frequency that this SecurityMLAnalyticsSettings will be run.
-     *
+     * 
      * @return the frequency value.
      */
     public Duration frequency() {
@@ -286,7 +287,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the frequency property: The frequency that this SecurityMLAnalyticsSettings will be run.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -297,7 +298,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the settingsStatus property: The anomaly SecurityMLAnalyticsSettings status.
-     *
+     * 
      * @return the settingsStatus value.
      */
     public SettingsStatus settingsStatus() {
@@ -306,7 +307,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the settingsStatus property: The anomaly SecurityMLAnalyticsSettings status.
-     *
+     * 
      * @param settingsStatus the settingsStatus value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -318,7 +319,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
     /**
      * Get the isDefaultSettings property: Determines whether this anomaly security ml analytics settings is a default
      * settings.
-     *
+     * 
      * @return the isDefaultSettings value.
      */
     public boolean isDefaultSettings() {
@@ -328,7 +329,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
     /**
      * Set the isDefaultSettings property: Determines whether this anomaly security ml analytics settings is a default
      * settings.
-     *
+     * 
      * @param isDefaultSettings the isDefaultSettings value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -340,7 +341,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
     /**
      * Get the anomalySettingsVersion property: The anomaly settings version of the Anomaly security ml analytics
      * settings that dictates whether job version gets updated or not.
-     *
+     * 
      * @return the anomalySettingsVersion value.
      */
     public Integer anomalySettingsVersion() {
@@ -350,7 +351,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
     /**
      * Set the anomalySettingsVersion property: The anomaly settings version of the Anomaly security ml analytics
      * settings that dictates whether job version gets updated or not.
-     *
+     * 
      * @param anomalySettingsVersion the anomalySettingsVersion value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -361,7 +362,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Get the settingsDefinitionId property: The anomaly settings definition Id.
-     *
+     * 
      * @return the settingsDefinitionId value.
      */
     public UUID settingsDefinitionId() {
@@ -370,7 +371,7 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Set the settingsDefinitionId property: The anomaly settings definition Id.
-     *
+     * 
      * @param settingsDefinitionId the settingsDefinitionId value to set.
      * @return the AnomalySecurityMLAnalyticsSettingsProperties object itself.
      */
@@ -381,40 +382,125 @@ public final class AnomalySecurityMLAnalyticsSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model AnomalySecurityMLAnalyticsSettingsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model AnomalySecurityMLAnalyticsSettingsProperties"));
         }
         if (requiredDataConnectors() != null) {
             requiredDataConnectors().forEach(e -> e.validate());
         }
         if (anomalyVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property anomalyVersion in model"
-                            + " AnomalySecurityMLAnalyticsSettingsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property anomalyVersion in model AnomalySecurityMLAnalyticsSettingsProperties"));
         }
         if (frequency() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property frequency in model AnomalySecurityMLAnalyticsSettingsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property frequency in model AnomalySecurityMLAnalyticsSettingsProperties"));
         }
         if (settingsStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property settingsStatus in model"
-                            + " AnomalySecurityMLAnalyticsSettingsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property settingsStatus in model AnomalySecurityMLAnalyticsSettingsProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AnomalySecurityMLAnalyticsSettingsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("anomalyVersion", this.anomalyVersion);
+        jsonWriter.writeStringField("frequency", CoreUtils.durationToStringWithDays(this.frequency));
+        jsonWriter.writeStringField("settingsStatus",
+            this.settingsStatus == null ? null : this.settingsStatus.toString());
+        jsonWriter.writeBooleanField("isDefaultSettings", this.isDefaultSettings);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("requiredDataConnectors", this.requiredDataConnectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tactics", this.tactics,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("techniques", this.techniques, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeUntypedField("customizableObservations", this.customizableObservations);
+        jsonWriter.writeNumberField("anomalySettingsVersion", this.anomalySettingsVersion);
+        jsonWriter.writeStringField("settingsDefinitionId", Objects.toString(this.settingsDefinitionId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnomalySecurityMLAnalyticsSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnomalySecurityMLAnalyticsSettingsProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnomalySecurityMLAnalyticsSettingsProperties.
+     */
+    public static AnomalySecurityMLAnalyticsSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnomalySecurityMLAnalyticsSettingsProperties deserializedAnomalySecurityMLAnalyticsSettingsProperties
+                = new AnomalySecurityMLAnalyticsSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.displayName = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.enabled = reader.getBoolean();
+                } else if ("anomalyVersion".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.anomalyVersion = reader.getString();
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.frequency
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("settingsStatus".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.settingsStatus
+                        = SettingsStatus.fromString(reader.getString());
+                } else if ("isDefaultSettings".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.isDefaultSettings = reader.getBoolean();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.description = reader.getString();
+                } else if ("lastModifiedUtc".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.lastModifiedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("requiredDataConnectors".equals(fieldName)) {
+                    List<SecurityMLAnalyticsSettingsDataSource> requiredDataConnectors
+                        = reader.readArray(reader1 -> SecurityMLAnalyticsSettingsDataSource.fromJson(reader1));
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.requiredDataConnectors
+                        = requiredDataConnectors;
+                } else if ("tactics".equals(fieldName)) {
+                    List<AttackTactic> tactics
+                        = reader.readArray(reader1 -> AttackTactic.fromString(reader1.getString()));
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.tactics = tactics;
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.techniques = techniques;
+                } else if ("customizableObservations".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.customizableObservations
+                        = reader.readUntyped();
+                } else if ("anomalySettingsVersion".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.anomalySettingsVersion
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("settingsDefinitionId".equals(fieldName)) {
+                    deserializedAnomalySecurityMLAnalyticsSettingsProperties.settingsDefinitionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnomalySecurityMLAnalyticsSettingsProperties;
+        });
+    }
 }

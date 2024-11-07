@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ContentTypeContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentTypeContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"id\":\"qgo\",\"name\":\"xpwwzt\",\"description\":\"mkkhtgfredml\",\"schema\":\"datagrllcc\",\"version\":\"ovjowazhpabacom\"},\"id\":\"yotgkwsxnsrqorc\",\"name\":\"enmvcebxeetq\",\"type\":\"jxcxxq\"}")
-                .toObject(ContentTypeContractInner.class);
+        ContentTypeContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"id\":\"qgo\",\"name\":\"xpwwzt\",\"description\":\"mkkhtgfredml\",\"schema\":\"datagrllcc\",\"version\":\"ovjowazhpabacom\"},\"id\":\"yotgkwsxnsrqorc\",\"name\":\"enmvcebxeetq\",\"type\":\"jxcxxq\"}")
+            .toObject(ContentTypeContractInner.class);
         Assertions.assertEquals("qgo", model.idPropertiesId());
         Assertions.assertEquals("xpwwzt", model.namePropertiesName());
         Assertions.assertEquals("mkkhtgfredml", model.description());
@@ -24,13 +22,11 @@ public final class ContentTypeContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentTypeContractInner model =
-            new ContentTypeContractInner()
-                .withIdPropertiesId("qgo")
-                .withNamePropertiesName("xpwwzt")
-                .withDescription("mkkhtgfredml")
-                .withSchema("datagrllcc")
-                .withVersion("ovjowazhpabacom");
+        ContentTypeContractInner model = new ContentTypeContractInner().withIdPropertiesId("qgo")
+            .withNamePropertiesName("xpwwzt")
+            .withDescription("mkkhtgfredml")
+            .withSchema("datagrllcc")
+            .withVersion("ovjowazhpabacom");
         model = BinaryData.fromObject(model).toObject(ContentTypeContractInner.class);
         Assertions.assertEquals("qgo", model.idPropertiesId());
         Assertions.assertEquals("xpwwzt", model.namePropertiesName());

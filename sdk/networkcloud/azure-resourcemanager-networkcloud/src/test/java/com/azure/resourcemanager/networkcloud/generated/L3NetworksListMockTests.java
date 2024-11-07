@@ -34,34 +34,24 @@ public final class L3NetworksListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"jgcq\",\"type\":\"ulynkgfcfd\"},\"properties\":{\"associatedResourceIds\":[\"si\",\"xxtclhuulri\",\"byokvjgbzsxe\",\"rsltt\"],\"clusterId\":\"hcdjwsuoardnagt\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"pbpgnrholhujbfwx\",\"hybridAksClustersAssociatedIds\":[\"kysolsyjprxs\",\"whdmcvhtbbz\",\"hfvhuwzbxpcqz\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"ecohm\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"rrskapbxwieexuy\",\"ipv6ConnectedPrefix\":\"erltfokyk\",\"l3IsolationDomainId\":\"yimyccgrvk\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"nuif\",\"rsejegprkj\",\"uw\"],\"vlan\":5307933336729466171},\"location\":\"vvbtuqkxx\",\"tags\":{\"ekotjgxi\":\"gxql\",\"by\":\"qfkyfhiwvjaqu\"},\"id\":\"nvskpaj\",\"name\":\"mgeu\",\"type\":\"exmj\"}]}";
+        String responseStr
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"jgcq\",\"type\":\"ulynkgfcfd\"},\"properties\":{\"associatedResourceIds\":[\"si\",\"xxtclhuulri\",\"byokvjgbzsxe\",\"rsltt\"],\"clusterId\":\"hcdjwsuoardnagt\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"pbpgnrholhujbfwx\",\"hybridAksClustersAssociatedIds\":[\"kysolsyjprxs\",\"whdmcvhtbbz\",\"hfvhuwzbxpcqz\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"ecohm\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"rrskapbxwieexuy\",\"ipv6ConnectedPrefix\":\"erltfokyk\",\"l3IsolationDomainId\":\"yimyccgrvk\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"nuif\",\"rsejegprkj\",\"uw\"],\"vlan\":5307933336729466171},\"location\":\"vvbtuqkxx\",\"tags\":{\"ekotjgxi\":\"gxql\",\"by\":\"qfkyfhiwvjaqu\"},\"id\":\"nvskpaj\",\"name\":\"mgeu\",\"type\":\"exmj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<L3Network> response = manager.l3Networks().list(com.azure.core.util.Context.NONE);
 

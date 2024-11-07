@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserInfo model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ktzlcuiywg\",\"emailAddress\":\"wgndrvynhzgpp\",\"phoneNumber\":\"cgyncocpecf\"}")
-                .toObject(UserInfo.class);
+        UserInfo model = BinaryData
+            .fromString("{\"name\":\"ktzlcuiywg\",\"emailAddress\":\"wgndrvynhzgpp\",\"phoneNumber\":\"cgyncocpecf\"}")
+            .toObject(UserInfo.class);
         Assertions.assertEquals("ktzlcuiywg", model.name());
         Assertions.assertEquals("wgndrvynhzgpp", model.emailAddress());
         Assertions.assertEquals("cgyncocpecf", model.phoneNumber());
@@ -23,8 +21,8 @@ public final class UserInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserInfo model =
-            new UserInfo().withName("ktzlcuiywg").withEmailAddress("wgndrvynhzgpp").withPhoneNumber("cgyncocpecf");
+        UserInfo model
+            = new UserInfo().withName("ktzlcuiywg").withEmailAddress("wgndrvynhzgpp").withPhoneNumber("cgyncocpecf");
         model = BinaryData.fromObject(model).toObject(UserInfo.class);
         Assertions.assertEquals("ktzlcuiywg", model.name());
         Assertions.assertEquals("wgndrvynhzgpp", model.emailAddress());

@@ -33,17 +33,23 @@ import com.azure.resourcemanager.education.fluent.models.StudentDetailsInner;
 import com.azure.resourcemanager.education.models.StudentListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StudentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StudentsClient.
+ */
 public final class StudentsClientImpl implements StudentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StudentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EducationManagementClientImpl client;
 
     /**
      * Initializes an instance of StudentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StudentsClientImpl(EducationManagementClientImpl client) {
@@ -57,107 +63,76 @@ public final class StudentsClientImpl implements StudentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EducationManagementC")
-    private interface StudentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students")
-        @ExpectedResponses({200})
+    public interface StudentsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StudentListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StudentListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
             @PathParam("invoiceSectionName") String invoiceSectionName,
-            @QueryParam("includeDeleted") Boolean includeDeleted,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("includeDeleted") Boolean includeDeleted, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students"
-                + "/{studentAlias}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students/{studentAlias}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StudentDetailsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StudentDetailsInner>> get(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
-            @PathParam("invoiceSectionName") String invoiceSectionName,
-            @PathParam("studentAlias") String studentAlias,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("invoiceSectionName") String invoiceSectionName, @PathParam("studentAlias") String studentAlias,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students"
-                + "/{studentAlias}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students/{studentAlias}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
-            @PathParam("invoiceSectionName") String invoiceSectionName,
-            @PathParam("studentAlias") String studentAlias,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("invoiceSectionName") String invoiceSectionName, @PathParam("studentAlias") String studentAlias,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students"
-                + "/{studentAlias}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/students/{studentAlias}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StudentDetailsInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StudentDetailsInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
-            @PathParam("invoiceSectionName") String invoiceSectionName,
-            @PathParam("studentAlias") String studentAlias,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") StudentDetailsInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("invoiceSectionName") String invoiceSectionName, @PathParam("studentAlias") String studentAlias,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") StudentDetailsInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StudentListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<StudentListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDeleted May be used to show deleted items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of details about students that are associated with the specified lab along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of details about students that are associated with the specified lab along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StudentDetailsInner>> listSinglePageAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Boolean includeDeleted) {
+    private Mono<PagedResponse<StudentDetailsInner>> listSinglePageAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, Boolean includeDeleted) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -173,56 +148,33 @@ public final class StudentsClientImpl implements StudentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            includeDeleted,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<StudentDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, includeDeleted, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<StudentDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDeleted May be used to show deleted items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of details about students that are associated with the specified lab along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of details about students that are associated with the specified lab along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StudentDetailsInner>> listSinglePageAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDeleted,
-        Context context) {
+    private Mono<PagedResponse<StudentDetailsInner>> listSinglePageAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, Boolean includeDeleted, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -239,42 +191,28 @@ public final class StudentsClientImpl implements StudentsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                includeDeleted,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName, includeDeleted,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDeleted May be used to show deleted items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of details about students that are associated with the specified lab as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StudentDetailsInner> listAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Boolean includeDeleted) {
+    private PagedFlux<StudentDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDeleted) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDeleted),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -282,19 +220,19 @@ public final class StudentsClientImpl implements StudentsClient {
 
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of details about students that are associated with the specified lab as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StudentDetailsInner> listAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    private PagedFlux<StudentDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
         final Boolean includeDeleted = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDeleted),
@@ -303,47 +241,40 @@ public final class StudentsClientImpl implements StudentsClient {
 
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDeleted May be used to show deleted items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of details about students that are associated with the specified lab as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StudentDetailsInner> listAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDeleted,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    billingAccountName, billingProfileName, invoiceSectionName, includeDeleted, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<StudentDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDeleted, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName,
+            includeDeleted, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of details about students that are associated with the specified lab as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StudentDetailsInner> list(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    public PagedIterable<StudentDetailsInner> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
         final Boolean includeDeleted = null;
         return new PagedIterable<>(
             listAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDeleted));
@@ -351,50 +282,44 @@ public final class StudentsClientImpl implements StudentsClient {
 
     /**
      * Get a list of details about students that are associated with the specified lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeDeleted May be used to show deleted items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of details about students that are associated with the specified lab as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StudentDetailsInner> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDeleted,
-        Context context) {
+    public PagedIterable<StudentDetailsInner> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDeleted, Context context) {
         return new PagedIterable<>(
             listAsync(billingAccountName, billingProfileName, invoiceSectionName, includeDeleted, context));
     }
 
     /**
      * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific student in the specified lab by student alias along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StudentDetailsInner>> getWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+    private Mono<Response<StudentDetailsInner>> getWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, String studentAlias) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -413,47 +338,31 @@ public final class StudentsClientImpl implements StudentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            studentAlias,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, studentAlias, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific student in the specified lab by student alias along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StudentDetailsInner>> getWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        Context context) {
+    private Mono<Response<StudentDetailsInner>> getWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, String studentAlias, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -472,44 +381,36 @@ public final class StudentsClientImpl implements StudentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                studentAlias,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName,
+            studentAlias, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific student in the specified lab by student alias on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StudentDetailsInner> getAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+    private Mono<StudentDetailsInner> getAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias) {
         return getWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -518,22 +419,18 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return the details for a specific student in the specified lab by student alias along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StudentDetailsInner> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        Context context) {
+    public Response<StudentDetailsInner> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, Context context) {
         return getWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, context)
             .block();
     }
 
     /**
      * Get the details for a specific student in the specified lab by student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -541,18 +438,18 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return the details for a specific student in the specified lab by student alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StudentDetailsInner get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+    public StudentDetailsInner get(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String studentAlias) {
         return getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, Context.NONE)
             .getValue();
     }
 
     /**
      * Delete the specified student based on the student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -560,13 +457,11 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -585,27 +480,17 @@ public final class StudentsClientImpl implements StudentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            studentAlias,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, studentAlias, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the specified student based on the student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -614,17 +499,11 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -643,24 +522,16 @@ public final class StudentsClientImpl implements StudentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                studentAlias,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName,
+            studentAlias, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete the specified student based on the student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -668,18 +539,18 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+    private Mono<Void> deleteAsync(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String studentAlias) {
         return deleteWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Delete the specified student based on the student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,41 +559,36 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        Context context) {
-        return deleteWithResponseAsync(
-                billingAccountName, billingProfileName, invoiceSectionName, studentAlias, context)
-            .block();
+    public Response<Void> deleteWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, Context context) {
+        return deleteWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias,
+            context).block();
     }
 
     /**
      * Delete the specified student based on the student alias.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+    public void delete(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String studentAlias) {
         deleteWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, Context.NONE);
     }
 
     /**
      * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
      * student must have a valid tenant to accept the lab after they have been added to lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param parameters Request parameters that are provided to update student properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -731,17 +597,11 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return student details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StudentDetailsInner>> createOrUpdateWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters) {
+    private Mono<Response<StudentDetailsInner>> createOrUpdateWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, String studentAlias, StudentDetailsInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -766,28 +626,18 @@ public final class StudentsClientImpl implements StudentsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            studentAlias,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                    invoiceSectionName, studentAlias, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
      * student must have a valid tenant to accept the lab after they have been added to lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param parameters Request parameters that are provided to update student properties.
      * @param context The context to associate with this operation.
@@ -797,18 +647,12 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return student details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StudentDetailsInner>> createOrUpdateWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters,
+    private Mono<Response<StudentDetailsInner>> createOrUpdateWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, String studentAlias, StudentDetailsInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -832,26 +676,17 @@ public final class StudentsClientImpl implements StudentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                studentAlias,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), billingAccountName, billingProfileName,
+            invoiceSectionName, studentAlias, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
      * student must have a valid tenant to accept the lab after they have been added to lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param parameters Request parameters that are provided to update student properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -860,24 +695,19 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return student details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StudentDetailsInner> createOrUpdateAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<StudentDetailsInner> createOrUpdateAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, StudentDetailsInner parameters) {
+        return createOrUpdateWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
      * student must have a valid tenant to accept the lab after they have been added to lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param parameters Request parameters that are provided to update student properties.
      * @param context The context to associate with this operation.
@@ -887,25 +717,20 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return student details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StudentDetailsInner> createOrUpdateWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters,
+    public Response<StudentDetailsInner> createOrUpdateWithResponse(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, String studentAlias, StudentDetailsInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, studentAlias,
+            parameters, context).block();
     }
 
     /**
      * Create and add a new student to the specified lab or update the details of an existing student in a lab. Note the
      * student must have a valid tenant to accept the lab after they have been added to lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param studentAlias Student alias.
      * @param parameters Request parameters that are provided to update student properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -914,22 +739,16 @@ public final class StudentsClientImpl implements StudentsClient {
      * @return student details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StudentDetailsInner createOrUpdate(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters) {
-        return createOrUpdateWithResponse(
-                billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters, Context.NONE)
-            .getValue();
+    public StudentDetailsInner createOrUpdate(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String studentAlias, StudentDetailsInner parameters) {
+        return createOrUpdateWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias,
+            parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -941,31 +760,20 @@ public final class StudentsClientImpl implements StudentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StudentDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StudentDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -978,23 +786,13 @@ public final class StudentsClientImpl implements StudentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -3,8 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.messaging.ConsumerIdentifier;
@@ -80,8 +84,19 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(
             NamespaceProperties properties,
-            ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
-            return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
+            ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers,
+            ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
+            ObjectProvider<TokenCredential> defaultTokenCredentials,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
+            DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
+            factory.setDefaultCredential(defaultTokenCredentials.getIfAvailable());
+            factory.setTokenCredentialResolver(tokenCredentialResolvers.getIfAvailable());
+            clientBuilderCustomizers.orderedStream().forEach(factory::addServiceBusClientBuilderCustomizer);
+            processorClientBuilderCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
+            sessionProcessorClientBuilderCustomizers.orderedStream().forEach(factory::addSessionBuilderCustomizer);
+            return factory;
         }
     }
 
@@ -92,8 +107,17 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         ServiceBusProducerFactory defaultServiceBusNamespaceProducerFactory(
             NamespaceProperties properties,
-            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
-            return new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
+            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers,
+            ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
+            ObjectProvider<TokenCredential> defaultTokenCredentials,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
+            DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
+            factory.setDefaultCredential(defaultTokenCredentials.getIfAvailable());
+            factory.setTokenCredentialResolver(tokenCredentialResolvers.getIfAvailable());
+            clientBuilderCustomizers.orderedStream().forEach(factory::addServiceBusClientBuilderCustomizer);
+            senderClientBuilderCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
+            return factory;
         }
 
         @Bean

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of QuotaRequestStatus. */
+/**
+ * Resource collection API of QuotaRequestStatus.
+ */
 public interface QuotaRequestStatus {
     /**
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
      * ID for the resources of the resource provider. The PUT request for the quota (service limit) returns a response
      * with the requestId parameter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -25,14 +27,14 @@ public interface QuotaRequestStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota request details along with {@link Response}.
      */
-    Response<QuotaRequestDetails> getWithResponse(
-        String subscriptionId, String providerId, String location, String id, Context context);
+    Response<QuotaRequestDetails> getWithResponse(String subscriptionId, String providerId, String location, String id,
+        Context context);
 
     /**
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
      * ID for the resources of the resource provider. The PUT request for the quota (service limit) returns a response
      * with the requestId parameter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -47,7 +49,7 @@ public interface QuotaRequestStatus {
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -61,28 +63,23 @@ public interface QuotaRequestStatus {
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
-     * @param filter | Field | Supported operators | |---------------------|------------------------| |requestSubmitTime
-     *     | ge, le, eq, gt, lt |.
+     * @param filter | Field | Supported operators |
+     * |---------------------|------------------------|
+     * |requestSubmitTime | ge, le, eq, gt, lt |.
      * @param top Number of records to return.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies
-     *     a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies a
+     * starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota request details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<QuotaRequestDetails> list(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context);
+    PagedIterable<QuotaRequestDetails> list(String subscriptionId, String providerId, String location, String filter,
+        Integer top, String skiptoken, Context context);
 }

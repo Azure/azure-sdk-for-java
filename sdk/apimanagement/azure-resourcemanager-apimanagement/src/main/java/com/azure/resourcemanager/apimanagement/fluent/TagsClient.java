@@ -40,8 +40,8 @@ public interface TagsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagContractInner> listByOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId);
+    PagedIterable<TagContractInner> listByOperation(String resourceGroupName, String serviceName, String apiId,
+        String operationId);
 
     /**
      * Lists all Tags associated with the Operation.
@@ -65,15 +65,8 @@ public interface TagsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagContractInner> listByOperation(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<TagContractInner> listByOperation(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -92,8 +85,8 @@ public interface TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
+    TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(String resourceGroupName,
+        String serviceName, String apiId, String operationId, String tagId, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -110,8 +103,8 @@ public interface TagsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityStateByOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId);
+    void getEntityStateByOperation(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String tagId);
 
     /**
      * Get tag associated with the Operation.
@@ -130,8 +123,8 @@ public interface TagsClient {
      * @return tag associated with the Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsGetByOperationResponse getByOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
+    TagsGetByOperationResponse getByOperationWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String tagId, Context context);
 
     /**
      * Get tag associated with the Operation.
@@ -149,8 +142,8 @@ public interface TagsClient {
      * @return tag associated with the Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagContractInner getByOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId);
+    TagContractInner getByOperation(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String tagId);
 
     /**
      * Assign tag to the Operation.
@@ -169,8 +162,8 @@ public interface TagsClient {
      * @return tag Contract details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> assignToOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
+    Response<TagContractInner> assignToOperationWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String tagId, Context context);
 
     /**
      * Assign tag to the Operation.
@@ -188,8 +181,8 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagContractInner assignToOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId);
+    TagContractInner assignToOperation(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String tagId);
 
     /**
      * Detach the tag from the Operation.
@@ -208,8 +201,8 @@ public interface TagsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> detachFromOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
+    Response<Void> detachFromOperationWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String tagId, Context context);
 
     /**
      * Detach the tag from the Operation.
@@ -226,8 +219,8 @@ public interface TagsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void detachFromOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId);
+    void detachFromOperation(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String tagId);
 
     /**
      * Lists all Tags associated with the API.
@@ -264,14 +257,8 @@ public interface TagsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagContractInner> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<TagContractInner> listByApi(String resourceGroupName, String serviceName, String apiId, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -288,8 +275,8 @@ public interface TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
+    TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String tagId, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -321,8 +308,8 @@ public interface TagsClient {
      * @return tag associated with the API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsGetByApiResponse getByApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
+    TagsGetByApiResponse getByApiWithResponse(String resourceGroupName, String serviceName, String apiId, String tagId,
+        Context context);
 
     /**
      * Get tag associated with the API.
@@ -355,8 +342,8 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsAssignToApiResponse assignToApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
+    TagsAssignToApiResponse assignToApiWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String tagId, Context context);
 
     /**
      * Assign tag to the Api.
@@ -389,8 +376,8 @@ public interface TagsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> detachFromApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
+    Response<Void> detachFromApiWithResponse(String resourceGroupName, String serviceName, String apiId, String tagId,
+        Context context);
 
     /**
      * Detach the tag from the Api.
@@ -440,14 +427,8 @@ public interface TagsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagContractInner> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<TagContractInner> listByProduct(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -463,8 +444,8 @@ public interface TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, String tagId, Context context);
+    TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(String resourceGroupName,
+        String serviceName, String productId, String tagId, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -494,8 +475,8 @@ public interface TagsClient {
      * @return tag associated with the Product.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsGetByProductResponse getByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, String tagId, Context context);
+    TagsGetByProductResponse getByProductWithResponse(String resourceGroupName, String serviceName, String productId,
+        String tagId, Context context);
 
     /**
      * Get tag associated with the Product.
@@ -526,8 +507,8 @@ public interface TagsClient {
      * @return tag Contract details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagContractInner> assignToProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, String tagId, Context context);
+    Response<TagContractInner> assignToProductWithResponse(String resourceGroupName, String serviceName,
+        String productId, String tagId, Context context);
 
     /**
      * Assign tag to the Product.
@@ -558,8 +539,8 @@ public interface TagsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> detachFromProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, String tagId, Context context);
+    Response<Void> detachFromProductWithResponse(String resourceGroupName, String serviceName, String productId,
+        String tagId, Context context);
 
     /**
      * Detach the tag from the Product.
@@ -607,14 +588,8 @@ public interface TagsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String scope,
-        Context context);
+    PagedIterable<TagContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String scope, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -629,8 +604,8 @@ public interface TagsClient {
      * @return the entity state version of the tag specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsGetEntityStateResponse getEntityStateWithResponse(
-        String resourceGroupName, String serviceName, String tagId, Context context);
+    TagsGetEntityStateResponse getEntityStateWithResponse(String resourceGroupName, String serviceName, String tagId,
+        Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -689,13 +664,8 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String tagId,
-        TagCreateUpdateParameters parameters,
-        String ifMatch,
-        Context context);
+    TagsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName, String tagId,
+        TagCreateUpdateParameters parameters, String ifMatch, Context context);
 
     /**
      * Creates a tag.
@@ -710,8 +680,8 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String tagId, TagCreateUpdateParameters parameters);
+    TagContractInner createOrUpdate(String resourceGroupName, String serviceName, String tagId,
+        TagCreateUpdateParameters parameters);
 
     /**
      * Updates the details of the tag specified by its identifier.
@@ -729,13 +699,8 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String tagId,
-        String ifMatch,
-        TagCreateUpdateParameters parameters,
-        Context context);
+    TagsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String tagId, String ifMatch,
+        TagCreateUpdateParameters parameters, Context context);
 
     /**
      * Updates the details of the tag specified by its identifier.
@@ -752,11 +717,7 @@ public interface TagsClient {
      * @return tag Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String tagId,
-        String ifMatch,
+    TagContractInner update(String resourceGroupName, String serviceName, String tagId, String ifMatch,
         TagCreateUpdateParameters parameters);
 
     /**
@@ -774,8 +735,8 @@ public interface TagsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String tagId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String tagId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific tag of the API Management service instance.

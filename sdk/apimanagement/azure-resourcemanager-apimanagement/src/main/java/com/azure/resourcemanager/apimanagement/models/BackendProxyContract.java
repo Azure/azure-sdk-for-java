@@ -103,9 +103,8 @@ public final class BackendProxyContract {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model BackendProxyContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property url in model BackendProxyContract"));
         }
     }
 

@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
+import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
@@ -34,7 +35,8 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
     ServiceBusClientBuilderFactory, AzureServiceBusProperties> {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+            AzureServiceBusAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {

@@ -12,8 +12,8 @@ public final class ActivationKeyResultImpl implements ActivationKeyResult {
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    ActivationKeyResultImpl(
-        ActivationKeyResultInner innerObject, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    ActivationKeyResultImpl(ActivationKeyResultInner innerObject,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

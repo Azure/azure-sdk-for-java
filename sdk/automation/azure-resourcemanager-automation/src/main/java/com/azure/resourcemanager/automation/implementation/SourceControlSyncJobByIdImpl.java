@@ -15,8 +15,7 @@ public final class SourceControlSyncJobByIdImpl implements SourceControlSyncJobB
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    SourceControlSyncJobByIdImpl(
-        SourceControlSyncJobByIdInner innerObject,
+    SourceControlSyncJobByIdImpl(SourceControlSyncJobByIdInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

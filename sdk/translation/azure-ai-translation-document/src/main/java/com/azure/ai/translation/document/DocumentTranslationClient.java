@@ -662,7 +662,8 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TranslationStatus, Void> beginStartTranslation(StartTranslationDetails startTranslationDetails) {
+    public SyncPoller<TranslationStatus, TranslationStatus>
+        beginStartTranslation(StartTranslationDetails startTranslationDetails) {
         // Generated convenience method for beginStartTranslationWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginStartTranslationWithModel(BinaryData.fromObject(startTranslationDetails),

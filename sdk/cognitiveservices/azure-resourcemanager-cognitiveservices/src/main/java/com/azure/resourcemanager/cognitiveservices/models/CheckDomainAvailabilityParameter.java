@@ -6,36 +6,41 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Check Domain availability parameter. */
+/**
+ * Check Domain availability parameter.
+ */
 @Fluent
-public final class CheckDomainAvailabilityParameter {
+public final class CheckDomainAvailabilityParameter implements JsonSerializable<CheckDomainAvailabilityParameter> {
     /*
      * The subdomain name to use.
      */
-    @JsonProperty(value = "subdomainName", required = true)
     private String subdomainName;
 
     /*
      * The Type of the resource.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * The Kind of the resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
-    /** Creates an instance of CheckDomainAvailabilityParameter class. */
+    /**
+     * Creates an instance of CheckDomainAvailabilityParameter class.
+     */
     public CheckDomainAvailabilityParameter() {
     }
 
     /**
      * Get the subdomainName property: The subdomain name to use.
-     *
+     * 
      * @return the subdomainName value.
      */
     public String subdomainName() {
@@ -44,7 +49,7 @@ public final class CheckDomainAvailabilityParameter {
 
     /**
      * Set the subdomainName property: The subdomain name to use.
-     *
+     * 
      * @param subdomainName the subdomainName value to set.
      * @return the CheckDomainAvailabilityParameter object itself.
      */
@@ -55,7 +60,7 @@ public final class CheckDomainAvailabilityParameter {
 
     /**
      * Get the type property: The Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -64,7 +69,7 @@ public final class CheckDomainAvailabilityParameter {
 
     /**
      * Set the type property: The Type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckDomainAvailabilityParameter object itself.
      */
@@ -75,7 +80,7 @@ public final class CheckDomainAvailabilityParameter {
 
     /**
      * Get the kind property: The Kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -84,7 +89,7 @@ public final class CheckDomainAvailabilityParameter {
 
     /**
      * Set the kind property: The Kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the CheckDomainAvailabilityParameter object itself.
      */
@@ -95,23 +100,65 @@ public final class CheckDomainAvailabilityParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subdomainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subdomainName in model CheckDomainAvailabilityParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subdomainName in model CheckDomainAvailabilityParameter"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model CheckDomainAvailabilityParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model CheckDomainAvailabilityParameter"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckDomainAvailabilityParameter.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subdomainName", this.subdomainName);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckDomainAvailabilityParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckDomainAvailabilityParameter if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckDomainAvailabilityParameter.
+     */
+    public static CheckDomainAvailabilityParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckDomainAvailabilityParameter deserializedCheckDomainAvailabilityParameter
+                = new CheckDomainAvailabilityParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subdomainName".equals(fieldName)) {
+                    deserializedCheckDomainAvailabilityParameter.subdomainName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckDomainAvailabilityParameter.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCheckDomainAvailabilityParameter.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckDomainAvailabilityParameter;
+        });
+    }
 }

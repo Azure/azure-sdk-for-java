@@ -34,34 +34,24 @@ public final class NetworkTapsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"networkPacketBrokerId\":\"mfvjz\",\"sourceTapRuleId\":\"etpdezebvtkgzjna\",\"destinations\":[{\"name\":\"hei\",\"destinationType\":\"Direct\",\"destinationId\":\"cxuounzzckogcv\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"nyofts\",\"diydwklkuamxho\"]},\"destinationTapRuleId\":\"nqeonyi\"}],\"pollingType\":\"Push\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"annotation\":\"wzlwellhmppf\"},\"location\":\"rfuzedud\",\"tags\":{\"a\":\"dv\",\"mimbcflhycluou\":\"fvjv\"},\"id\":\"vrqvxnoa\",\"name\":\"ariv\",\"type\":\"zezeew\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"networkPacketBrokerId\":\"mfvjz\",\"sourceTapRuleId\":\"etpdezebvtkgzjna\",\"destinations\":[{\"name\":\"hei\",\"destinationType\":\"Direct\",\"destinationId\":\"cxuounzzckogcv\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"nyofts\",\"diydwklkuamxho\"]},\"destinationTapRuleId\":\"nqeonyi\"}],\"pollingType\":\"Push\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"annotation\":\"wzlwellhmppf\"},\"location\":\"rfuzedud\",\"tags\":{\"a\":\"dv\",\"mimbcflhycluou\":\"fvjv\"},\"id\":\"vrqvxnoa\",\"name\":\"ariv\",\"type\":\"zezeew\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<NetworkTap> response = manager.networkTaps().list(com.azure.core.util.Context.NONE);
 
@@ -69,17 +59,13 @@ public final class NetworkTapsListMockTests {
         Assertions.assertEquals("dv", response.iterator().next().tags().get("a"));
         Assertions.assertEquals("mfvjz", response.iterator().next().networkPacketBrokerId());
         Assertions.assertEquals("hei", response.iterator().next().destinations().get(0).name());
-        Assertions
-            .assertEquals(DestinationType.DIRECT, response.iterator().next().destinations().get(0).destinationType());
+        Assertions.assertEquals(DestinationType.DIRECT,
+            response.iterator().next().destinations().get(0).destinationType());
         Assertions.assertEquals("cxuounzzckogcv", response.iterator().next().destinations().get(0).destinationId());
-        Assertions
-            .assertEquals(
-                Encapsulation.GRE,
-                response.iterator().next().destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions
-            .assertEquals(
-                "nyofts",
-                response.iterator().next().destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals(Encapsulation.GRE,
+            response.iterator().next().destinations().get(0).isolationDomainProperties().encapsulation());
+        Assertions.assertEquals("nyofts",
+            response.iterator().next().destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
         Assertions.assertEquals("nqeonyi", response.iterator().next().destinations().get(0).destinationTapRuleId());
         Assertions.assertEquals(PollingType.PUSH, response.iterator().next().pollingType());
         Assertions.assertEquals("wzlwellhmppf", response.iterator().next().annotation());

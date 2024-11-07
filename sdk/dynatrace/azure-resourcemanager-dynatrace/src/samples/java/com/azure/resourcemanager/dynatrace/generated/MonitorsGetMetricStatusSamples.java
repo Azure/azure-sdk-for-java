@@ -4,35 +4,37 @@
 
 package com.azure.resourcemanager.dynatrace.generated;
 
-/** Samples for Monitors GetMetricStatus. */
+/**
+ * Samples for Monitors GetMetricStatus.
+ */
 public final class MonitorsGetMetricStatusSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_GetMetricStatus_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricStatus_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
-    public static void monitorsGetMetricStatusMinimumSetGen(
-        com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .monitors()
+    public static void
+        monitorsGetMetricStatusMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
+        manager.monitors()
             .getMetricStatusWithResponse("rgDynatrace", "fhcjxnxumkdlgpwanewtkdnyuz", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_GetMetricStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricStatus_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
-    public static void monitorsGetMetricStatusMaximumSetGen(
-        com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .monitors()
+    public static void
+        monitorsGetMetricStatusMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
+        manager.monitors()
             .getMetricStatusWithResponse("rgDynatrace", "fhcjxnxumkdlgpwanewtkdnyuz", com.azure.core.util.Context.NONE);
     }
 }

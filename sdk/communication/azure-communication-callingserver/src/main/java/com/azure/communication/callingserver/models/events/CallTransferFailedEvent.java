@@ -4,7 +4,11 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The CallTransferFailedEvent model. */
 @Immutable
@@ -12,18 +16,14 @@ public final class CallTransferFailedEvent extends CallAutomationEventBase {
     /*
      * Operation context
      */
-    @JsonProperty(value = "operationContext")
-    private final String operationContext;
+    private String operationContext;
 
     /*
      * The resultInfo property.
      */
-    @JsonProperty(value = "resultInfo")
-    private final ResultInfo resultInfo;
+    private ResultInfo resultInfo;
 
     private CallTransferFailedEvent() {
-        this.resultInfo = null;
-        this.operationContext = null;
     }
 
     /**
@@ -42,5 +42,45 @@ public final class CallTransferFailedEvent extends CallAutomationEventBase {
      */
     public ResultInfo getResultInfo() {
         return this.resultInfo;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return toJsonShared(jsonWriter.writeStartObject()).writeStringField("operationContext", operationContext)
+            .writeJsonField("resultInfo", resultInfo)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link CallTransferFailedEvent} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read from.
+     * @return An instance of {@link CallTransferFailedEvent}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static CallTransferFailedEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CallTransferFailedEvent event = new CallTransferFailedEvent();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (fromJsonShared(event, fieldName, reader)) {
+                    continue;
+                }
+
+                if ("operationContext".equals(fieldName)) {
+                    event.operationContext = reader.getString();
+                } else if ("resultInfo".equals(fieldName)) {
+                    event.resultInfo = ResultInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return event;
+        });
     }
 }

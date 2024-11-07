@@ -136,28 +136,20 @@ public final class VirtualMachinePlacementHint {
      */
     public void validate() {
         if (hintType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hintType in model VirtualMachinePlacementHint"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property hintType in model VirtualMachinePlacementHint"));
         }
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model VirtualMachinePlacementHint"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceId in model VirtualMachinePlacementHint"));
         }
         if (schedulingExecution() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schedulingExecution in model VirtualMachinePlacementHint"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property schedulingExecution in model VirtualMachinePlacementHint"));
         }
         if (scope() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scope in model VirtualMachinePlacementHint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property scope in model VirtualMachinePlacementHint"));
         }
     }
 

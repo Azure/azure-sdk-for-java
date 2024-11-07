@@ -18,117 +18,93 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringLocationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringLocationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"direct\":{\"peeringFacilities\":[{\"address\":\"poczvyifqrvkdvjs\",\"directPeeringType\":\"Edge\",\"peeringDBFacilityId\":1321349224,\"peeringDBFacilityLink\":\"d\"},{\"address\":\"atkpnp\",\"directPeeringType\":\"Transit\",\"peeringDBFacilityId\":891101767,\"peeringDBFacilityLink\":\"czwtruwiqzbqjv\"},{\"address\":\"vmyokacspkwl\",\"directPeeringType\":\"IxRs\",\"peeringDBFacilityId\":1687920757,\"peeringDBFacilityLink\":\"xjmflbvv\"},{\"address\":\"hrk\",\"directPeeringType\":\"IxRs\",\"peeringDBFacilityId\":1426028232,\"peeringDBFacilityLink\":\"juqk\"}],\"bandwidthOffers\":[{\"offerName\":\"jiwkuofoskghsau\",\"valueInMbps\":2118838793}]},\"exchange\":{\"peeringFacilities\":[{\"exchangeName\":\"ied\",\"bandwidthInMbps\":2070328561,\"microsoftIPv4Address\":\"dyjrrfbyaosv\",\"microsoftIPv6Address\":\"csonpclhoco\",\"facilityIPv4Prefix\":\"lkevle\",\"facilityIPv6Prefix\":\"zfbuhf\",\"peeringDBFacilityId\":53032115,\"peeringDBFacilityLink\":\"x\"},{\"exchangeName\":\"feiithlvmez\",\"bandwidthInMbps\":2122365511,\"microsoftIPv4Address\":\"xmzsbbzogg\",\"microsoftIPv6Address\":\"rxwburv\",\"facilityIPv4Prefix\":\"xjnspy\",\"facilityIPv6Prefix\":\"tko\",\"peeringDBFacilityId\":926679159,\"peeringDBFacilityLink\":\"uknvudwti\"},{\"exchangeName\":\"bldngkpoc\",\"bandwidthInMbps\":523665642,\"microsoftIPv4Address\":\"yxoegukgjnp\",\"microsoftIPv6Address\":\"cgygev\",\"facilityIPv4Prefix\":\"ntypmrbpizcdrqj\",\"facilityIPv6Prefix\":\"pyd\",\"peeringDBFacilityId\":1305817330,\"peeringDBFacilityLink\":\"xdeoejzic\"}]},\"peeringLocation\":\"fsj\",\"country\":\"gzfbishcbk\",\"azureRegion\":\"jdeyeamdpha\"}")
-                .toObject(PeeringLocationProperties.class);
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.direct().peeringFacilities().get(0).address());
-        Assertions.assertEquals(DirectPeeringType.EDGE, model.direct().peeringFacilities().get(0).directPeeringType());
-        Assertions.assertEquals(1321349224, model.direct().peeringFacilities().get(0).peeringDBFacilityId());
-        Assertions.assertEquals("d", model.direct().peeringFacilities().get(0).peeringDBFacilityLink());
-        Assertions.assertEquals("jiwkuofoskghsau", model.direct().bandwidthOffers().get(0).offerName());
-        Assertions.assertEquals(2118838793, model.direct().bandwidthOffers().get(0).valueInMbps());
-        Assertions.assertEquals("ied", model.exchange().peeringFacilities().get(0).exchangeName());
-        Assertions.assertEquals(2070328561, model.exchange().peeringFacilities().get(0).bandwidthInMbps());
-        Assertions.assertEquals("dyjrrfbyaosv", model.exchange().peeringFacilities().get(0).microsoftIPv4Address());
-        Assertions.assertEquals("csonpclhoco", model.exchange().peeringFacilities().get(0).microsoftIPv6Address());
-        Assertions.assertEquals("lkevle", model.exchange().peeringFacilities().get(0).facilityIPv4Prefix());
-        Assertions.assertEquals("zfbuhf", model.exchange().peeringFacilities().get(0).facilityIPv6Prefix());
-        Assertions.assertEquals(53032115, model.exchange().peeringFacilities().get(0).peeringDBFacilityId());
-        Assertions.assertEquals("x", model.exchange().peeringFacilities().get(0).peeringDBFacilityLink());
-        Assertions.assertEquals("fsj", model.peeringLocation());
-        Assertions.assertEquals("gzfbishcbk", model.country());
-        Assertions.assertEquals("jdeyeamdpha", model.azureRegion());
+        PeeringLocationProperties model = BinaryData.fromString(
+            "{\"direct\":{\"peeringFacilities\":[{\"address\":\"xjvuujqgidokg\",\"directPeeringType\":\"Ix\",\"peeringDBFacilityId\":1769769453,\"peeringDBFacilityLink\":\"gvcl\"}],\"bandwidthOffers\":[{\"offerName\":\"ncghkje\",\"valueInMbps\":279046587},{\"offerName\":\"bijhtxfvgxbf\",\"valueInMbps\":195417612},{\"offerName\":\"eh\",\"valueInMbps\":1229145222}]},\"exchange\":{\"peeringFacilities\":[{\"exchangeName\":\"odebfqkkrbmpu\",\"bandwidthInMbps\":175699877,\"microsoftIPv4Address\":\"wflzlfbxzpuzy\",\"microsoftIPv6Address\":\"spnqzahmgkb\",\"facilityIPv4Prefix\":\"yydhibnuqqk\",\"facilityIPv6Prefix\":\"kadrgvt\",\"peeringDBFacilityId\":1163936229,\"peeringDBFacilityLink\":\"buynhijggm\"},{\"exchangeName\":\"fsiarbutr\",\"bandwidthInMbps\":1477198207,\"microsoftIPv4Address\":\"azzmhjrunmpxt\",\"microsoftIPv6Address\":\"bh\",\"facilityIPv4Prefix\":\"nlankxmyskpb\",\"facilityIPv6Prefix\":\"nbtkcxywnytnr\",\"peeringDBFacilityId\":815551540,\"peeringDBFacilityLink\":\"qidybyx\"},{\"exchangeName\":\"fclhaaxdbabphlwr\",\"bandwidthInMbps\":818210611,\"microsoftIPv4Address\":\"tsthsucocm\",\"microsoftIPv6Address\":\"yazttbtwwrqpue\",\"facilityIPv4Prefix\":\"kzywbiex\",\"facilityIPv6Prefix\":\"eyueaxibxujwb\",\"peeringDBFacilityId\":913520848,\"peeringDBFacilityLink\":\"lmuzy\"},{\"exchangeName\":\"aepdkzjanc\",\"bandwidthInMbps\":901682674,\"microsoftIPv4Address\":\"d\",\"microsoftIPv6Address\":\"avxbniwdjswztsdb\",\"facilityIPv4Prefix\":\"nxytxh\",\"facilityIPv6Prefix\":\"xbzpfzab\",\"peeringDBFacilityId\":687811406,\"peeringDBFacilityLink\":\"hxw\"}]},\"peeringLocation\":\"tyq\",\"country\":\"lbbovplw\",\"azureRegion\":\"hvgyuguosvmk\"}")
+            .toObject(PeeringLocationProperties.class);
+        Assertions.assertEquals("xjvuujqgidokg", model.direct().peeringFacilities().get(0).address());
+        Assertions.assertEquals(DirectPeeringType.IX, model.direct().peeringFacilities().get(0).directPeeringType());
+        Assertions.assertEquals(1769769453, model.direct().peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("gvcl", model.direct().peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("ncghkje", model.direct().bandwidthOffers().get(0).offerName());
+        Assertions.assertEquals(279046587, model.direct().bandwidthOffers().get(0).valueInMbps());
+        Assertions.assertEquals("odebfqkkrbmpu", model.exchange().peeringFacilities().get(0).exchangeName());
+        Assertions.assertEquals(175699877, model.exchange().peeringFacilities().get(0).bandwidthInMbps());
+        Assertions.assertEquals("wflzlfbxzpuzy", model.exchange().peeringFacilities().get(0).microsoftIPv4Address());
+        Assertions.assertEquals("spnqzahmgkb", model.exchange().peeringFacilities().get(0).microsoftIPv6Address());
+        Assertions.assertEquals("yydhibnuqqk", model.exchange().peeringFacilities().get(0).facilityIPv4Prefix());
+        Assertions.assertEquals("kadrgvt", model.exchange().peeringFacilities().get(0).facilityIPv6Prefix());
+        Assertions.assertEquals(1163936229, model.exchange().peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("buynhijggm", model.exchange().peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("tyq", model.peeringLocation());
+        Assertions.assertEquals("lbbovplw", model.country());
+        Assertions.assertEquals("hvgyuguosvmk", model.azureRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringLocationProperties model =
-            new PeeringLocationProperties()
-                .withDirect(
-                    new PeeringLocationPropertiesDirect()
-                        .withPeeringFacilities(
-                            Arrays
-                                .asList(
-                                    new DirectPeeringFacility()
-                                        .withAddress("poczvyifqrvkdvjs")
-                                        .withDirectPeeringType(DirectPeeringType.EDGE)
-                                        .withPeeringDBFacilityId(1321349224)
-                                        .withPeeringDBFacilityLink("d"),
-                                    new DirectPeeringFacility()
-                                        .withAddress("atkpnp")
-                                        .withDirectPeeringType(DirectPeeringType.TRANSIT)
-                                        .withPeeringDBFacilityId(891101767)
-                                        .withPeeringDBFacilityLink("czwtruwiqzbqjv"),
-                                    new DirectPeeringFacility()
-                                        .withAddress("vmyokacspkwl")
-                                        .withDirectPeeringType(DirectPeeringType.IX_RS)
-                                        .withPeeringDBFacilityId(1687920757)
-                                        .withPeeringDBFacilityLink("xjmflbvv"),
-                                    new DirectPeeringFacility()
-                                        .withAddress("hrk")
-                                        .withDirectPeeringType(DirectPeeringType.IX_RS)
-                                        .withPeeringDBFacilityId(1426028232)
-                                        .withPeeringDBFacilityLink("juqk")))
-                        .withBandwidthOffers(
-                            Arrays
-                                .asList(
-                                    new PeeringBandwidthOffer()
-                                        .withOfferName("jiwkuofoskghsau")
-                                        .withValueInMbps(2118838793))))
-                .withExchange(
-                    new PeeringLocationPropertiesExchange()
-                        .withPeeringFacilities(
-                            Arrays
-                                .asList(
-                                    new ExchangePeeringFacility()
-                                        .withExchangeName("ied")
-                                        .withBandwidthInMbps(2070328561)
-                                        .withMicrosoftIPv4Address("dyjrrfbyaosv")
-                                        .withMicrosoftIPv6Address("csonpclhoco")
-                                        .withFacilityIPv4Prefix("lkevle")
-                                        .withFacilityIPv6Prefix("zfbuhf")
-                                        .withPeeringDBFacilityId(53032115)
-                                        .withPeeringDBFacilityLink("x"),
-                                    new ExchangePeeringFacility()
-                                        .withExchangeName("feiithlvmez")
-                                        .withBandwidthInMbps(2122365511)
-                                        .withMicrosoftIPv4Address("xmzsbbzogg")
-                                        .withMicrosoftIPv6Address("rxwburv")
-                                        .withFacilityIPv4Prefix("xjnspy")
-                                        .withFacilityIPv6Prefix("tko")
-                                        .withPeeringDBFacilityId(926679159)
-                                        .withPeeringDBFacilityLink("uknvudwti"),
-                                    new ExchangePeeringFacility()
-                                        .withExchangeName("bldngkpoc")
-                                        .withBandwidthInMbps(523665642)
-                                        .withMicrosoftIPv4Address("yxoegukgjnp")
-                                        .withMicrosoftIPv6Address("cgygev")
-                                        .withFacilityIPv4Prefix("ntypmrbpizcdrqj")
-                                        .withFacilityIPv6Prefix("pyd")
-                                        .withPeeringDBFacilityId(1305817330)
-                                        .withPeeringDBFacilityLink("xdeoejzic"))))
-                .withPeeringLocation("fsj")
-                .withCountry("gzfbishcbk")
-                .withAzureRegion("jdeyeamdpha");
+        PeeringLocationProperties model = new PeeringLocationProperties()
+            .withDirect(new PeeringLocationPropertiesDirect()
+                .withPeeringFacilities(Arrays.asList(new DirectPeeringFacility().withAddress("xjvuujqgidokg")
+                    .withDirectPeeringType(DirectPeeringType.IX)
+                    .withPeeringDBFacilityId(1769769453)
+                    .withPeeringDBFacilityLink("gvcl")))
+                .withBandwidthOffers(
+                    Arrays.asList(new PeeringBandwidthOffer().withOfferName("ncghkje").withValueInMbps(279046587),
+                        new PeeringBandwidthOffer().withOfferName("bijhtxfvgxbf").withValueInMbps(195417612),
+                        new PeeringBandwidthOffer().withOfferName("eh").withValueInMbps(1229145222))))
+            .withExchange(new PeeringLocationPropertiesExchange().withPeeringFacilities(Arrays.asList(
+                new ExchangePeeringFacility().withExchangeName("odebfqkkrbmpu")
+                    .withBandwidthInMbps(175699877)
+                    .withMicrosoftIPv4Address("wflzlfbxzpuzy")
+                    .withMicrosoftIPv6Address("spnqzahmgkb")
+                    .withFacilityIPv4Prefix("yydhibnuqqk")
+                    .withFacilityIPv6Prefix("kadrgvt")
+                    .withPeeringDBFacilityId(1163936229)
+                    .withPeeringDBFacilityLink("buynhijggm"),
+                new ExchangePeeringFacility().withExchangeName("fsiarbutr")
+                    .withBandwidthInMbps(1477198207)
+                    .withMicrosoftIPv4Address("azzmhjrunmpxt")
+                    .withMicrosoftIPv6Address("bh")
+                    .withFacilityIPv4Prefix("nlankxmyskpb")
+                    .withFacilityIPv6Prefix("nbtkcxywnytnr")
+                    .withPeeringDBFacilityId(815551540)
+                    .withPeeringDBFacilityLink("qidybyx"),
+                new ExchangePeeringFacility().withExchangeName("fclhaaxdbabphlwr")
+                    .withBandwidthInMbps(818210611)
+                    .withMicrosoftIPv4Address("tsthsucocm")
+                    .withMicrosoftIPv6Address("yazttbtwwrqpue")
+                    .withFacilityIPv4Prefix("kzywbiex")
+                    .withFacilityIPv6Prefix("eyueaxibxujwb")
+                    .withPeeringDBFacilityId(913520848)
+                    .withPeeringDBFacilityLink("lmuzy"),
+                new ExchangePeeringFacility().withExchangeName("aepdkzjanc")
+                    .withBandwidthInMbps(901682674)
+                    .withMicrosoftIPv4Address("d")
+                    .withMicrosoftIPv6Address("avxbniwdjswztsdb")
+                    .withFacilityIPv4Prefix("nxytxh")
+                    .withFacilityIPv6Prefix("xbzpfzab")
+                    .withPeeringDBFacilityId(687811406)
+                    .withPeeringDBFacilityLink("hxw"))))
+            .withPeeringLocation("tyq")
+            .withCountry("lbbovplw")
+            .withAzureRegion("hvgyuguosvmk");
         model = BinaryData.fromObject(model).toObject(PeeringLocationProperties.class);
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.direct().peeringFacilities().get(0).address());
-        Assertions.assertEquals(DirectPeeringType.EDGE, model.direct().peeringFacilities().get(0).directPeeringType());
-        Assertions.assertEquals(1321349224, model.direct().peeringFacilities().get(0).peeringDBFacilityId());
-        Assertions.assertEquals("d", model.direct().peeringFacilities().get(0).peeringDBFacilityLink());
-        Assertions.assertEquals("jiwkuofoskghsau", model.direct().bandwidthOffers().get(0).offerName());
-        Assertions.assertEquals(2118838793, model.direct().bandwidthOffers().get(0).valueInMbps());
-        Assertions.assertEquals("ied", model.exchange().peeringFacilities().get(0).exchangeName());
-        Assertions.assertEquals(2070328561, model.exchange().peeringFacilities().get(0).bandwidthInMbps());
-        Assertions.assertEquals("dyjrrfbyaosv", model.exchange().peeringFacilities().get(0).microsoftIPv4Address());
-        Assertions.assertEquals("csonpclhoco", model.exchange().peeringFacilities().get(0).microsoftIPv6Address());
-        Assertions.assertEquals("lkevle", model.exchange().peeringFacilities().get(0).facilityIPv4Prefix());
-        Assertions.assertEquals("zfbuhf", model.exchange().peeringFacilities().get(0).facilityIPv6Prefix());
-        Assertions.assertEquals(53032115, model.exchange().peeringFacilities().get(0).peeringDBFacilityId());
-        Assertions.assertEquals("x", model.exchange().peeringFacilities().get(0).peeringDBFacilityLink());
-        Assertions.assertEquals("fsj", model.peeringLocation());
-        Assertions.assertEquals("gzfbishcbk", model.country());
-        Assertions.assertEquals("jdeyeamdpha", model.azureRegion());
+        Assertions.assertEquals("xjvuujqgidokg", model.direct().peeringFacilities().get(0).address());
+        Assertions.assertEquals(DirectPeeringType.IX, model.direct().peeringFacilities().get(0).directPeeringType());
+        Assertions.assertEquals(1769769453, model.direct().peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("gvcl", model.direct().peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("ncghkje", model.direct().bandwidthOffers().get(0).offerName());
+        Assertions.assertEquals(279046587, model.direct().bandwidthOffers().get(0).valueInMbps());
+        Assertions.assertEquals("odebfqkkrbmpu", model.exchange().peeringFacilities().get(0).exchangeName());
+        Assertions.assertEquals(175699877, model.exchange().peeringFacilities().get(0).bandwidthInMbps());
+        Assertions.assertEquals("wflzlfbxzpuzy", model.exchange().peeringFacilities().get(0).microsoftIPv4Address());
+        Assertions.assertEquals("spnqzahmgkb", model.exchange().peeringFacilities().get(0).microsoftIPv6Address());
+        Assertions.assertEquals("yydhibnuqqk", model.exchange().peeringFacilities().get(0).facilityIPv4Prefix());
+        Assertions.assertEquals("kadrgvt", model.exchange().peeringFacilities().get(0).facilityIPv6Prefix());
+        Assertions.assertEquals(1163936229, model.exchange().peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("buynhijggm", model.exchange().peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("tyq", model.peeringLocation());
+        Assertions.assertEquals("lbbovplw", model.country());
+        Assertions.assertEquals("hvgyuguosvmk", model.azureRegion());
     }
 }

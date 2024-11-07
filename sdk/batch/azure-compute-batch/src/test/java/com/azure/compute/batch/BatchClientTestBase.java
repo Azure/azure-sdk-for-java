@@ -52,7 +52,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-
 class BatchClientTestBase extends TestProxyTestBase {
     protected BatchClientBuilder batchClientBuilder;
 
@@ -69,14 +68,13 @@ class BatchClientTestBase extends TestProxyTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        batchClientBuilder =
-            new BatchClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "https://fakeaccount.batch.windows.net"))
-                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        batchClientBuilder = new BatchClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration()
+                .get("AZURE_BATCH_ENDPOINT", "https://fakeaccount.batch.windows.net"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            batchClientBuilder
-                .httpClient(interceptorManager.getPlaybackClient())
+            batchClientBuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
 
             addTestRulesOnPlayback(interceptorManager);
@@ -104,7 +102,8 @@ class BatchClientTestBase extends TestProxyTestBase {
     public void addTestSanitizersAndRules(InterceptorManager interceptorManager) {
         List<TestProxySanitizer> testProxySanitizers = new ArrayList<TestProxySanitizer>();
         testProxySanitizers.add(new TestProxySanitizer("$..httpUrl", null, redacted, TestProxySanitizerType.BODY_KEY));
-        testProxySanitizers.add(new TestProxySanitizer("$..containerUrl", null, redacted, TestProxySanitizerType.BODY_KEY));
+        testProxySanitizers
+            .add(new TestProxySanitizer("$..containerUrl", null, redacted, TestProxySanitizerType.BODY_KEY));
         interceptorManager.addSanitizers(testProxySanitizers);
     }
 
@@ -156,10 +155,13 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                .setSku("18.04-LTS").setVersion("latest");
+            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+                .setOffer("UbuntuServer")
+                .setSku("18.04-LTS")
+                .setVersion("latest");
 
-            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
+            VirtualMachineConfiguration configuration
+                = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
             List<UserAccount> userList = new ArrayList<>();
             userList.add(new UserAccount("test-user", "kt#_gahr!@aGERDXA")
@@ -180,7 +182,6 @@ class BatchClientTestBase extends TestProxyTestBase {
             System.out.printf("The %s already exists.%n", poolId);
             //logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
-
 
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
@@ -221,8 +222,7 @@ class BatchClientTestBase extends TestProxyTestBase {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            NetworkManager manager = NetworkManager
-                .authenticate(credential, profile);
+            NetworkManager manager = NetworkManager.authenticate(credential, profile);
 
             PagedIterable<Network> networks = manager.networks().listByResourceGroup(vnetResourceGroup);
             boolean networksFound = false;
@@ -233,7 +233,8 @@ class BatchClientTestBase extends TestProxyTestBase {
             }
 
             if (!networksFound) {
-                Network network = manager.networks().define(vnetName)
+                Network network = manager.networks()
+                    .define(vnetName)
                     .withRegion(localConfig.get("AZURE_BATCH_REGION"))
                     .withExistingResourceGroup(vnetResourceGroup)
                     .withAddressSpace(localConfig.get("AZURE_VNET_ADDRESS_SPACE"))
@@ -243,11 +244,8 @@ class BatchClientTestBase extends TestProxyTestBase {
         }
 
         String vNetResourceId = String.format(
-            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s",
-            subId,
-            vnetResourceGroup,
-            vnetName,
-            subnetName);
+            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s", subId,
+            vnetResourceGroup, vnetName, subnetName);
 
         return new NetworkConfiguration().setSubnetId(vNetResourceId);
     }
@@ -257,12 +255,15 @@ class BatchClientTestBase extends TestProxyTestBase {
     }
 
     static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
-                                                   String containerName) throws BlobStorageException {
+        String containerName) throws BlobStorageException {
         // Create storage credential from name and key
         String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", storageAccountName);
         StorageSharedKeyCredential credentials = new StorageSharedKeyCredential(storageAccountName, storageAccountKey);
 
-        return new BlobContainerClientBuilder().credential(credentials).containerName(containerName).endpoint(endPoint).buildClient();
+        return new BlobContainerClientBuilder().credential(credentials)
+            .containerName(containerName)
+            .endpoint(endPoint)
+            .buildClient();
     }
 
     /**
@@ -284,8 +285,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         blobClient.uploadFromFile(source.getPath());
 
         // Create policy with 1 day read permission
-        BlobSasPermission permissions = new BlobSasPermission()
-            .setReadPermission(true);
+        BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
@@ -299,9 +299,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         container.createIfNotExists();
 
         // Create policy with 1 day read permission
-        BlobSasPermission permissions = new BlobSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true);
+        BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true).setWritePermission(true);
 
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
@@ -372,7 +370,8 @@ class BatchClientTestBase extends TestProxyTestBase {
             }
         }
 
-        Assertions.assertTrue(allocationStateReached, "The pool did not reach a allocationStateReached state in the allotted time");
+        Assertions.assertTrue(allocationStateReached,
+            "The pool did not reach a allocationStateReached state in the allotted time");
         return pool;
     }
 

@@ -49,15 +49,16 @@ public class ManageSqlFailoverGroups {
             // Create a primary SQL Server with a sample database.
             System.out.println("Creating a primary SQL Server with a sample database");
 
-            SqlServer sqlPrimaryServer = azureResourceManager.sqlServers().define(sqlPrimaryServerName)
+            SqlServer sqlPrimaryServer = azureResourceManager.sqlServers()
+                .define(sqlPrimaryServerName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)
                 .defineDatabase(dbName)
-                    .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                    .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                    .attach()
+                .fromSample(SampleName.ADVENTURE_WORKS_LT)
+                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+                .attach()
                 .create();
 
             Utils.print(sqlPrimaryServer);
@@ -66,7 +67,8 @@ public class ManageSqlFailoverGroups {
             // Create a secondary SQL Server with a sample database.
             System.out.println("Creating a secondary SQL Server with a sample database");
 
-            SqlServer sqlSecondaryServer = azureResourceManager.sqlServers().define(sqlSecondaryServerName)
+            SqlServer sqlSecondaryServer = azureResourceManager.sqlServers()
+                .define(sqlSecondaryServerName)
                 .withRegion(Region.US_EAST2)
                 .withExistingResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
@@ -75,12 +77,12 @@ public class ManageSqlFailoverGroups {
 
             Utils.print(sqlSecondaryServer);
 
-
             // ============================================================
             // Create a Failover Group from the primary SQL server to the secondary SQL server.
             System.out.println("Creating a Failover Group from the primary SQL server to the secondary SQL server");
 
-            SqlFailoverGroup failoverGroup = sqlPrimaryServer.failoverGroups().define(failoverGroupName)
+            SqlFailoverGroup failoverGroup = sqlPrimaryServer.failoverGroups()
+                .define(failoverGroupName)
                 .withManualReadWriteEndpointPolicy()
                 .withPartnerServerId(sqlSecondaryServer.id())
                 .withReadOnlyEndpointPolicyDisabled()
@@ -96,7 +98,6 @@ public class ManageSqlFailoverGroups {
 
             Utils.print(failoverGroup);
 
-
             // ============================================================
             // Update the Failover Group Endpoint policies and tags.
             System.out.println("Updating the Failover Group Endpoint policies and tags");
@@ -109,10 +110,10 @@ public class ManageSqlFailoverGroups {
 
             Utils.print(failoverGroup);
 
-
             // ============================================================
             // Update the Failover Group to add database and change read-write endpoint's failover policy.
-            System.out.println("Updating the Failover Group to add database and change read-write endpoint's failover policy");
+            System.out.println(
+                "Updating the Failover Group to add database and change read-write endpoint's failover policy");
 
             SqlDatabase db = sqlPrimaryServer.databases().get(dbName);
 
@@ -125,7 +126,6 @@ public class ManageSqlFailoverGroups {
                 .apply();
 
             Utils.print(failoverGroup);
-
 
             // ============================================================
             // List the Failover Group on the secondary server.
@@ -149,8 +149,6 @@ public class ManageSqlFailoverGroups {
             System.out.println("Deleting the Failover Group");
 
             sqlPrimaryServer.failoverGroups().delete(failoverGroup.name());
-
-
 
             // Delete the SQL Servers.
             System.out.println("Deleting the Sql Servers");
@@ -179,8 +177,7 @@ public class ManageSqlFailoverGroups {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

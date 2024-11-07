@@ -296,10 +296,8 @@ public final class WorkflowModelProperties {
             errors().forEach(e -> e.validate());
         }
         if (customProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customProperties in model WorkflowModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property customProperties in model WorkflowModelProperties"));
         } else {
             customProperties().validate();
         }

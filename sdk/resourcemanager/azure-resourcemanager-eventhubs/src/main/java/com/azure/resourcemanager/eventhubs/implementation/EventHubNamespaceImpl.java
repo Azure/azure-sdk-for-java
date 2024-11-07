@@ -28,11 +28,8 @@ import java.util.UUID;
  * Implementation for {@link EventHubNamespace}.
  */
 class EventHubNamespaceImpl
-        extends GroupableResourceImpl<EventHubNamespace, EHNamespaceInner, EventHubNamespaceImpl, EventHubsManager>
-        implements
-        EventHubNamespace,
-        EventHubNamespace.Definition,
-        EventHubNamespace.Update {
+    extends GroupableResourceImpl<EventHubNamespace, EHNamespaceInner, EventHubNamespaceImpl, EventHubsManager>
+    implements EventHubNamespace, EventHubNamespace.Definition, EventHubNamespace.Update {
 
     private Flux<Indexable> postRunTasks;
 
@@ -107,8 +104,8 @@ class EventHubNamespaceImpl
     }
 
     @Override
-    public EventHubNamespaceImpl withNewEventHub(
-        final String eventHubName, final int partitionCount, final int retentionPeriodInDays) {
+    public EventHubNamespaceImpl withNewEventHub(final String eventHubName, final int partitionCount,
+        final int retentionPeriodInDays) {
         concatPostRunTask(manager().eventHubs()
             .define(eventHubName)
             .withExistingNamespace(resourceGroupName(), name())
@@ -182,10 +179,7 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceImpl withSku(EventHubNamespaceSkuType namespaceSku) {
-        Sku newSkuInner = new Sku()
-                .withName(namespaceSku.name())
-                .withTier(namespaceSku.tier())
-                .withCapacity(null);
+        Sku newSkuInner = new Sku().withName(namespaceSku.name()).withTier(namespaceSku.tier()).withCapacity(null);
         Sku currentSkuInner = this.innerModel().sku();
 
         boolean isDifferent = currentSkuInner == null || !currentSkuInner.name().equals(newSkuInner.name());
@@ -220,9 +214,11 @@ class EventHubNamespaceImpl
 
     @Override
     public Mono<EventHubNamespace> createResourceAsync() {
-        return this.manager().serviceClient().getNamespaces()
-                .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
-                .map(innerToFluentMap(this));
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
+            .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -238,8 +234,7 @@ class EventHubNamespaceImpl
 
     @Override
     public PagedFlux<EventHubNamespaceAuthorizationRule> listAuthorizationRulesAsync() {
-        return this.manager().namespaceAuthorizationRules()
-            .listByNamespaceAsync(this.resourceGroupName(), this.name());
+        return this.manager().namespaceAuthorizationRules().listByNamespaceAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -249,8 +244,7 @@ class EventHubNamespaceImpl
 
     @Override
     public PagedIterable<EventHubNamespaceAuthorizationRule> listAuthorizationRules() {
-        return this.manager().namespaceAuthorizationRules()
-                .listByNamespace(this.resourceGroupName(), this.name());
+        return this.manager().namespaceAuthorizationRules().listByNamespace(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -265,7 +259,9 @@ class EventHubNamespaceImpl
 
     @Override
     protected Mono<EHNamespaceInner> getInnerAsync() {
-        return this.manager().serviceClient().getNamespaces()
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 

@@ -10,8 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Divides text at non-letters; Applies the lowercase and stopword token filters. This analyzer is implemented using

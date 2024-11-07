@@ -56,21 +56,24 @@ public final class StorageTasksCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StorageActionsManager manager = StorageActionsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StorageActionsManager manager = StorageActionsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         StorageTask response
-            = manager.storageTasks().define("xoblytkbl").withRegion("l").withExistingResourceGroup("qmcbxvwvxyslqbhs")
+            = manager.storageTasks()
+                .define("xoblytkbl")
+                .withRegion("l")
+                .withExistingResourceGroup("qmcbxvwvxyslqbhs")
                 .withTags(mapOf("jmkcjhwqytj", "fqqnvwpmqtaruo", "jewgdrjerv", "ybn"))
-                .withIdentity(new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("rvrnsvshqjohxc", new UserAssignedIdentity(), "fovasr",
-                        new UserAssignedIdentity(), "wbhsqfsub", new UserAssignedIdentity())))
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("rvrnsvshqjohxc", new UserAssignedIdentity(), "fovasr",
+                            new UserAssignedIdentity(), "wbhsqfsub", new UserAssignedIdentity())))
                 .withProperties(
-                    new StorageTaskProperties()
-                        .withEnabled(false).withDescription(
-                            "xb")
+                    new StorageTaskProperties().withEnabled(false)
+                        .withDescription("xb")
                         .withAction(new StorageTaskAction()
                             .withIfProperty(new IfCondition().withCondition("ybsrfbjfdtwss")
                                 .withOperations(Arrays.asList(

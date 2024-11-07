@@ -7,6 +7,7 @@ package com.azure.resourcemanager.logic.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicies;
 import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicy;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationPolicyClaim;
 import com.azure.resourcemanager.logic.models.OpenAuthenticationProviderType;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,32 +17,45 @@ import org.junit.jupiter.api.Assertions;
 public final class OpenAuthenticationAccessPoliciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OpenAuthenticationAccessPolicies model =
-            BinaryData
-                .fromString(
-                    "{\"policies\":{\"hfepgzgqex\":{\"type\":\"AAD\",\"claims\":[]},\"scpai\":{\"type\":\"AAD\",\"claims\":[]}}}")
-                .toObject(OpenAuthenticationAccessPolicies.class);
-        Assertions.assertEquals(OpenAuthenticationProviderType.AAD, model.policies().get("hfepgzgqex").type());
+        OpenAuthenticationAccessPolicies model = BinaryData.fromString(
+            "{\"policies\":{\"aofmxagkvtme\":{\"type\":\"AAD\",\"claims\":[{\"name\":\"rts\",\"value\":\"spkdee\"}]},\"sowzxcugi\":{\"type\":\"AAD\",\"claims\":[{\"name\":\"ahvljuaha\",\"value\":\"hcdhmdual\"},{\"name\":\"xqpvfadmw\",\"value\":\"crgvxpvgom\"},{\"name\":\"fmisg\",\"value\":\"nbbelda\"},{\"name\":\"zbaliourqha\",\"value\":\"uhashsfwx\"}]},\"euecivyhzceuoj\":{\"type\":\"AAD\",\"claims\":[{\"name\":\"j\",\"value\":\"wpucwwfvovbv\"}]},\"lupj\":{\"type\":\"AAD\",\"claims\":[{\"name\":\"eiotwmcdytdx\",\"value\":\"txnrjaw\"},{\"name\":\"wgxhn\",\"value\":\"kxfbkpycgklwndn\"},{\"name\":\"dauwhvylwzbtd\",\"value\":\"ujznb\"},{\"name\":\"ow\",\"value\":\"przqlveu\"}]}}}")
+            .toObject(OpenAuthenticationAccessPolicies.class);
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD, model.policies().get("aofmxagkvtme").type());
+        Assertions.assertEquals("rts", model.policies().get("aofmxagkvtme").claims().get(0).name());
+        Assertions.assertEquals("spkdee", model.policies().get("aofmxagkvtme").claims().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OpenAuthenticationAccessPolicies model =
-            new OpenAuthenticationAccessPolicies()
-                .withPolicies(
-                    mapOf(
-                        "hfepgzgqex",
-                        new OpenAuthenticationAccessPolicy()
-                            .withType(OpenAuthenticationProviderType.AAD)
-                            .withClaims(Arrays.asList()),
-                        "scpai",
-                        new OpenAuthenticationAccessPolicy()
-                            .withType(OpenAuthenticationProviderType.AAD)
-                            .withClaims(Arrays.asList())));
+        OpenAuthenticationAccessPolicies model
+            = new OpenAuthenticationAccessPolicies().withPolicies(
+                mapOf("aofmxagkvtme", new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                    .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim().withName("rts").withValue("spkdee"))),
+                    "sowzxcugi",
+                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                        .withClaims(Arrays.asList(
+                            new OpenAuthenticationPolicyClaim().withName("ahvljuaha").withValue("hcdhmdual"),
+                            new OpenAuthenticationPolicyClaim().withName("xqpvfadmw").withValue("crgvxpvgom"),
+                            new OpenAuthenticationPolicyClaim().withName("fmisg").withValue("nbbelda"),
+                            new OpenAuthenticationPolicyClaim().withName("zbaliourqha").withValue("uhashsfwx"))),
+                    "euecivyhzceuoj",
+                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                        .withClaims(
+                            Arrays.asList(new OpenAuthenticationPolicyClaim().withName("j").withValue("wpucwwfvovbv"))),
+                    "lupj",
+                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                        .withClaims(Arrays.asList(
+                            new OpenAuthenticationPolicyClaim().withName("eiotwmcdytdx").withValue("txnrjaw"),
+                            new OpenAuthenticationPolicyClaim().withName("wgxhn").withValue("kxfbkpycgklwndn"),
+                            new OpenAuthenticationPolicyClaim().withName("dauwhvylwzbtd").withValue("ujznb"),
+                            new OpenAuthenticationPolicyClaim().withName("ow").withValue("przqlveu")))));
         model = BinaryData.fromObject(model).toObject(OpenAuthenticationAccessPolicies.class);
-        Assertions.assertEquals(OpenAuthenticationProviderType.AAD, model.policies().get("hfepgzgqex").type());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD, model.policies().get("aofmxagkvtme").type());
+        Assertions.assertEquals("rts", model.policies().get("aofmxagkvtme").claims().get(0).name());
+        Assertions.assertEquals("spkdee", model.policies().get("aofmxagkvtme").claims().get(0).value());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

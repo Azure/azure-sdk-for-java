@@ -13,38 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class IotHubConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotHubConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"iotHubResourceId\":\"to\",\"consumerGroup\":\"alswbnfd\",\"tableName\":\"pld\",\"mappingRuleName\":\"jnsfzygleexahvmy\",\"dataFormat\":\"PSV\",\"eventSystemProperties\":[\"carycsjjzyvoaqa\",\"uvehzptd\",\"krrbhmpful\"],\"sharedAccessPolicyName\":\"be\",\"provisioningState\":\"Moving\"}")
-                .toObject(IotHubConnectionProperties.class);
-        Assertions.assertEquals("to", model.iotHubResourceId());
-        Assertions.assertEquals("alswbnfd", model.consumerGroup());
-        Assertions.assertEquals("pld", model.tableName());
-        Assertions.assertEquals("jnsfzygleexahvmy", model.mappingRuleName());
-        Assertions.assertEquals(IotHubDataFormat.PSV, model.dataFormat());
-        Assertions.assertEquals("carycsjjzyvoaqa", model.eventSystemProperties().get(0));
-        Assertions.assertEquals("be", model.sharedAccessPolicyName());
+        IotHubConnectionProperties model = BinaryData.fromString(
+            "{\"iotHubResourceId\":\"ncfgybmxsnxoc\",\"consumerGroup\":\"ullojk\",\"tableName\":\"yhgww\",\"mappingRuleName\":\"uxdbdljzgdyrcvuq\",\"dataFormat\":\"TXT\",\"eventSystemProperties\":[\"rqhbjnqogdxwbsfp\"],\"sharedAccessPolicyName\":\"xxtjlflecomi\",\"provisioningState\":\"Creating\"}")
+            .toObject(IotHubConnectionProperties.class);
+        Assertions.assertEquals("ncfgybmxsnxoc", model.iotHubResourceId());
+        Assertions.assertEquals("ullojk", model.consumerGroup());
+        Assertions.assertEquals("yhgww", model.tableName());
+        Assertions.assertEquals("uxdbdljzgdyrcvuq", model.mappingRuleName());
+        Assertions.assertEquals(IotHubDataFormat.TXT, model.dataFormat());
+        Assertions.assertEquals("rqhbjnqogdxwbsfp", model.eventSystemProperties().get(0));
+        Assertions.assertEquals("xxtjlflecomi", model.sharedAccessPolicyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotHubConnectionProperties model =
-            new IotHubConnectionProperties()
-                .withIotHubResourceId("to")
-                .withConsumerGroup("alswbnfd")
-                .withTableName("pld")
-                .withMappingRuleName("jnsfzygleexahvmy")
-                .withDataFormat(IotHubDataFormat.PSV)
-                .withEventSystemProperties(Arrays.asList("carycsjjzyvoaqa", "uvehzptd", "krrbhmpful"))
-                .withSharedAccessPolicyName("be");
+        IotHubConnectionProperties model = new IotHubConnectionProperties().withIotHubResourceId("ncfgybmxsnxoc")
+            .withConsumerGroup("ullojk")
+            .withTableName("yhgww")
+            .withMappingRuleName("uxdbdljzgdyrcvuq")
+            .withDataFormat(IotHubDataFormat.TXT)
+            .withEventSystemProperties(Arrays.asList("rqhbjnqogdxwbsfp"))
+            .withSharedAccessPolicyName("xxtjlflecomi");
         model = BinaryData.fromObject(model).toObject(IotHubConnectionProperties.class);
-        Assertions.assertEquals("to", model.iotHubResourceId());
-        Assertions.assertEquals("alswbnfd", model.consumerGroup());
-        Assertions.assertEquals("pld", model.tableName());
-        Assertions.assertEquals("jnsfzygleexahvmy", model.mappingRuleName());
-        Assertions.assertEquals(IotHubDataFormat.PSV, model.dataFormat());
-        Assertions.assertEquals("carycsjjzyvoaqa", model.eventSystemProperties().get(0));
-        Assertions.assertEquals("be", model.sharedAccessPolicyName());
+        Assertions.assertEquals("ncfgybmxsnxoc", model.iotHubResourceId());
+        Assertions.assertEquals("ullojk", model.consumerGroup());
+        Assertions.assertEquals("yhgww", model.tableName());
+        Assertions.assertEquals("uxdbdljzgdyrcvuq", model.mappingRuleName());
+        Assertions.assertEquals(IotHubDataFormat.TXT, model.dataFormat());
+        Assertions.assertEquals("rqhbjnqogdxwbsfp", model.eventSystemProperties().get(0));
+        Assertions.assertEquals("xxtjlflecomi", model.sharedAccessPolicyName());
     }
 }

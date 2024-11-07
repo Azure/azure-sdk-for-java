@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The compliance state that should be set on the resource. */
+/**
+ * The compliance state that should be set on the resource.
+ */
 public final class ComplianceState extends ExpandableStringEnum<ComplianceState> {
-    /** Static value Compliant for ComplianceState. */
+    /**
+     * Static value Compliant for ComplianceState.
+     */
     public static final ComplianceState COMPLIANT = fromString("Compliant");
 
-    /** Static value NonCompliant for ComplianceState. */
+    /**
+     * Static value NonCompliant for ComplianceState.
+     */
     public static final ComplianceState NON_COMPLIANT = fromString("NonCompliant");
 
-    /** Static value Unknown for ComplianceState. */
+    /**
+     * Static value Unknown for ComplianceState.
+     */
     public static final ComplianceState UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of ComplianceState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComplianceState() {
+    }
+
+    /**
      * Creates or finds a ComplianceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ComplianceState.
      */
-    @JsonCreator
     public static ComplianceState fromString(String name) {
         return fromString(name, ComplianceState.class);
     }
 
     /**
      * Gets known ComplianceState values.
-     *
+     * 
      * @return known ComplianceState values.
      */
     public static Collection<ComplianceState> values() {

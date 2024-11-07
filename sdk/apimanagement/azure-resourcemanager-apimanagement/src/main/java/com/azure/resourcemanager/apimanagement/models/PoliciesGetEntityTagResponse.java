@@ -19,8 +19,8 @@ public final class PoliciesGetEntityTagResponse extends ResponseBase<PoliciesGet
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PoliciesGetEntityTagResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PoliciesGetEntityTagHeaders headers) {
+    public PoliciesGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
+        PoliciesGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

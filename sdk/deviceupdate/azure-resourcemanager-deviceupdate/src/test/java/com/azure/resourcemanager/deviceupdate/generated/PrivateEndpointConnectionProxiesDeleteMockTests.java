@@ -41,12 +41,13 @@ public final class PrivateEndpointConnectionProxiesDeleteMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.privateEndpointConnectionProxies().delete("wyrpgogtqxepnyl", "fuajly", "tlvofq",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionProxies()
+            .delete("wyrpgogtqxepnyl", "fuajly", "tlvofq", com.azure.core.util.Context.NONE);
 
     }
 }

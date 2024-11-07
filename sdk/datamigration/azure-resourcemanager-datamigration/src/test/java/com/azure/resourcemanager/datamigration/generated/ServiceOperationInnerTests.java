@@ -12,34 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceOperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"c\",\"display\":{\"provider\":\"ivkwlzuvccfwnfnb\",\"resource\":\"fionl\",\"operation\":\"x\",\"description\":\"qgtz\"}}")
-                .toObject(ServiceOperationInner.class);
-        Assertions.assertEquals("c", model.name());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.display().provider());
-        Assertions.assertEquals("fionl", model.display().resource());
-        Assertions.assertEquals("x", model.display().operation());
-        Assertions.assertEquals("qgtz", model.display().description());
+        ServiceOperationInner model = BinaryData.fromString(
+            "{\"name\":\"a\",\"display\":{\"provider\":\"idtqajzyu\",\"resource\":\"kudjkrlkhb\",\"operation\":\"fepgzgq\",\"description\":\"zloc\"}}")
+            .toObject(ServiceOperationInner.class);
+        Assertions.assertEquals("a", model.name());
+        Assertions.assertEquals("idtqajzyu", model.display().provider());
+        Assertions.assertEquals("kudjkrlkhb", model.display().resource());
+        Assertions.assertEquals("fepgzgq", model.display().operation());
+        Assertions.assertEquals("zloc", model.display().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceOperationInner model =
-            new ServiceOperationInner()
-                .withName("c")
-                .withDisplay(
-                    new ServiceOperationDisplay()
-                        .withProvider("ivkwlzuvccfwnfnb")
-                        .withResource("fionl")
-                        .withOperation("x")
-                        .withDescription("qgtz"));
+        ServiceOperationInner model = new ServiceOperationInner().withName("a")
+            .withDisplay(new ServiceOperationDisplay().withProvider("idtqajzyu")
+                .withResource("kudjkrlkhb")
+                .withOperation("fepgzgq")
+                .withDescription("zloc"));
         model = BinaryData.fromObject(model).toObject(ServiceOperationInner.class);
-        Assertions.assertEquals("c", model.name());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.display().provider());
-        Assertions.assertEquals("fionl", model.display().resource());
-        Assertions.assertEquals("x", model.display().operation());
-        Assertions.assertEquals("qgtz", model.display().description());
+        Assertions.assertEquals("a", model.name());
+        Assertions.assertEquals("idtqajzyu", model.display().provider());
+        Assertions.assertEquals("kudjkrlkhb", model.display().resource());
+        Assertions.assertEquals("fepgzgq", model.display().operation());
+        Assertions.assertEquals("zloc", model.display().description());
     }
 }

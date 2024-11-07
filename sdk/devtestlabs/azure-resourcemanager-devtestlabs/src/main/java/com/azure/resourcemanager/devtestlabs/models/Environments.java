@@ -39,15 +39,8 @@ public interface Environments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DtlEnvironment> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<DtlEnvironment> list(String resourceGroupName, String labName, String username, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get environment.
@@ -63,8 +56,8 @@ public interface Environments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return environment along with {@link Response}.
      */
-    Response<DtlEnvironment> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    Response<DtlEnvironment> getWithResponse(String resourceGroupName, String labName, String username, String name,
+        String expand, Context context);
 
     /**
      * Get environment.

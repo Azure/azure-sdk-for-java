@@ -125,7 +125,7 @@ public final class ResourceManagerUtils {
         if (subscriptionList.size() == 0) {
             throw new ClientLogger(ResourceManagerUtils.class).logExceptionAsError(
                 new IllegalStateException("Please create a subscription before you start resource management. "
-                + "To learn more, see: https://azure.microsoft.com/free/."));
+                    + "To learn more, see: https://azure.microsoft.com/free/."));
         } else if (subscriptionList.size() > 1) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("More than one subscription found in your tenant. "
@@ -133,8 +133,8 @@ public final class ResourceManagerUtils {
             subscriptionList.forEach(subscription -> {
                 stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
             });
-            throw new ClientLogger(ResourceManagerUtils.class).logExceptionAsError(
-                new IllegalStateException(stringBuilder.toString()));
+            throw new ClientLogger(ResourceManagerUtils.class)
+                .logExceptionAsError(new IllegalStateException(stringBuilder.toString()));
         }
         return subscriptionList.get(0).subscriptionId();
     }
@@ -230,7 +230,7 @@ public final class ResourceManagerUtils {
      * @return the storage account connection string.
      */
     public static String getStorageConnectionString(String accountName, String accountKey,
-                                                    AzureEnvironment environment) {
+        AzureEnvironment environment) {
         if (environment == null || environment.getStorageEndpointSuffix() == null) {
             environment = AzureEnvironment.AZURE;
         }

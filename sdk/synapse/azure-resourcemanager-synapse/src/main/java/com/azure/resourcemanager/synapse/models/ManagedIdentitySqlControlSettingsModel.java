@@ -6,32 +6,34 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelInner;
 
-/** An immutable client-side representation of ManagedIdentitySqlControlSettingsModel. */
+/**
+ * An immutable client-side representation of ManagedIdentitySqlControlSettingsModel.
+ */
 public interface ManagedIdentitySqlControlSettingsModel {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the grantSqlControlToManagedIdentity property: Grant sql control to managed identity.
-     *
+     * 
      * @return the grantSqlControlToManagedIdentity value.
      */
     ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity();
@@ -39,7 +41,7 @@ public interface ManagedIdentitySqlControlSettingsModel {
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ManagedIdentitySqlControlSettingsModelInner innerModel();

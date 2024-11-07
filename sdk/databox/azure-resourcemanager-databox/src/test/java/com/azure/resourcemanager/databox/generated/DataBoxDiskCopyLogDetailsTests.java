@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.models.DataBoxDiskCopyLogDetails;
 public final class DataBoxDiskCopyLogDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataBoxDiskCopyLogDetails model =
-            BinaryData
-                .fromString(
-                    "{\"copyLogDetailsType\":\"DataBoxDisk\",\"diskSerialNumber\":\"apvhelxprgly\",\"errorLogLink\":\"dd\",\"verboseLogLink\":\"cbcuejrjxgciqi\"}")
-                .toObject(DataBoxDiskCopyLogDetails.class);
+        DataBoxDiskCopyLogDetails model = BinaryData.fromString(
+            "{\"copyLogDetailsType\":\"DataBoxDisk\",\"diskSerialNumber\":\"beddgssofw\",\"errorLogLink\":\"zqalkrmnjijpx\",\"verboseLogLink\":\"q\"}")
+            .toObject(DataBoxDiskCopyLogDetails.class);
     }
 
     @org.junit.jupiter.api.Test

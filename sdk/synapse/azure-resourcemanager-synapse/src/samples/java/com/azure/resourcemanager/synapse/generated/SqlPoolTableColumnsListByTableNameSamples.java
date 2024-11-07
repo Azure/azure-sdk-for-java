@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for SqlPoolTableColumns ListByTableName. */
+/**
+ * Samples for SqlPoolTableColumns ListByTableName.
+ */
 public final class SqlPoolTableColumnsListByTableNameSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolColumns.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolColumns.json
      */
     /**
      * Sample code: List the columns in a table of a given schema in a SQL Analytics pool.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void listTheColumnsInATableOfAGivenSchemaInASQLAnalyticsPool(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .sqlPoolTableColumns()
-            .listByTableName(
-                "myRG", "serverName", "myDatabase", "dbo", "table1", null, com.azure.core.util.Context.NONE);
+        manager.sqlPoolTableColumns()
+            .listByTableName("myRG", "serverName", "myDatabase", "dbo", "table1", null,
+                com.azure.core.util.Context.NONE);
     }
 }

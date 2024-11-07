@@ -30,25 +30,27 @@ public final class PrivateEndpointConnectionListResultTests {
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionListResult model
             = new PrivateEndpointConnectionListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                    .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                                    .withDescription("gyxzk").withActionsRequired("ocukoklyax")),
-                            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                    .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                                    .withDescription("fuwutttxf").withActionsRequired("rbirphxe")),
-                            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                    .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED).withDescription("iw")
-                                    .withActionsRequired("zlfbxzpuzycispnq")),
-                            new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
-                                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                                    .withDescription("nlankxmyskpb").withActionsRequired("nbtkcxywnytnr"))));
+                .withValue(Arrays.asList(
+                    new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                            .withDescription("gyxzk")
+                            .withActionsRequired("ocukoklyax")),
+                    new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                            .withDescription("fuwutttxf")
+                            .withActionsRequired("rbirphxe")),
+                    new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                            .withDescription("iw")
+                            .withActionsRequired("zlfbxzpuzycispnq")),
+                    new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                            .withDescription("nlankxmyskpb")
+                            .withActionsRequired("nbtkcxywnytnr"))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResult.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             model.value().get(0).privateLinkServiceConnectionState().status());

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of cognitive services accounts operation response. */
+/**
+ * The list of cognitive services accounts operation response.
+ */
 @Fluent
-public final class AccountModelListResult {
+public final class AccountModelListResult implements JsonSerializable<AccountModelListResult> {
     /*
      * The link used to get the next page of Model.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Gets the list of Cognitive Services accounts Model and their properties.
      */
-    @JsonProperty(value = "value")
     private List<AccountModelInner> value;
 
-    /** Creates an instance of AccountModelListResult class. */
+    /**
+     * Creates an instance of AccountModelListResult class.
+     */
     public AccountModelListResult() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of Model.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class AccountModelListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of Model.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AccountModelListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class AccountModelListResult {
 
     /**
      * Get the value property: Gets the list of Cognitive Services accounts Model and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<AccountModelInner> value() {
@@ -59,7 +65,7 @@ public final class AccountModelListResult {
 
     /**
      * Set the value property: Gets the list of Cognitive Services accounts Model and their properties.
-     *
+     * 
      * @param value the value value to set.
      * @return the AccountModelListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class AccountModelListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountModelListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountModelListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountModelListResult.
+     */
+    public static AccountModelListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountModelListResult deserializedAccountModelListResult = new AccountModelListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedAccountModelListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<AccountModelInner> value = reader.readArray(reader1 -> AccountModelInner.fromJson(reader1));
+                    deserializedAccountModelListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountModelListResult;
+        });
     }
 }

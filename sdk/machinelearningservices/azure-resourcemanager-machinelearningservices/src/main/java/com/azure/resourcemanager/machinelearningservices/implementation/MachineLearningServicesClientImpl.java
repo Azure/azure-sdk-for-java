@@ -57,9 +57,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @param client the instance of the service client containing this operation class.
      */
     MachineLearningServicesClientImpl(AzureMachineLearningWorkspacesImpl client) {
-        this.service =
-            RestProxy
-                .create(MachineLearningServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(MachineLearningServicesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,89 +69,61 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     private interface MachineLearningServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/services")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/services")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PaginatedServiceList>> listByWorkspace(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PaginatedServiceList>> listByWorkspace(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skip") String skip,
-            @QueryParam("modelId") String modelId,
-            @QueryParam("modelName") String modelName,
-            @QueryParam("tag") String tag,
-            @QueryParam("tags") String tags,
-            @QueryParam("properties") String properties,
-            @QueryParam("runId") String runId,
-            @QueryParam("expand") Boolean expand,
-            @QueryParam("orderby") OrderString orderby,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$skip") String skip,
+            @QueryParam("modelId") String modelId, @QueryParam("modelName") String modelName,
+            @QueryParam("tag") String tag, @QueryParam("tags") String tags, @QueryParam("properties") String properties,
+            @QueryParam("runId") String runId, @QueryParam("expand") Boolean expand,
+            @QueryParam("orderby") OrderString orderby, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/services/{serviceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ServiceResourceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("serviceName") String serviceName,
+            @QueryParam("expand") Boolean expand, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/services/{serviceName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+            + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/services/{serviceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("serviceName") String serviceName,
+            @BodyParam("application/json") CreateServiceRequest properties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/services/{serviceName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("expand") Boolean expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/services/{serviceName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("serviceName") String serviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/services/{serviceName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("serviceName") String serviceName,
-            @BodyParam("application/json") CreateServiceRequest properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PaginatedServiceList>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -177,29 +148,16 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return services in specified workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceResourceInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String modelId,
-        String modelName,
-        String tag,
-        String tags,
-        String properties,
-        String runId,
-        Boolean expand,
-        OrderString orderby) {
+    private Mono<PagedResponse<ServiceResourceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, String skip, String modelId, String modelName, String tag, String tags, String properties,
+        String runId, Boolean expand, OrderString orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -210,35 +168,11 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            this.client.getApiVersion(),
-                            skip,
-                            modelId,
-                            modelName,
-                            tag,
-                            tags,
-                            properties,
-                            runId,
-                            expand,
-                            orderby,
-                            accept,
-                            context))
-            .<PagedResponse<ServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), skip, modelId, modelName, tag, tags,
+                properties, runId, expand, orderby, accept, context))
+            .<PagedResponse<ServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -265,30 +199,16 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return services in specified workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceResourceInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String modelId,
-        String modelName,
-        String tag,
-        String tags,
-        String properties,
-        String runId,
-        Boolean expand,
-        OrderString orderby,
-        Context context) {
+    private Mono<PagedResponse<ServiceResourceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, String skip, String modelId, String modelName, String tag, String tags, String properties,
+        String runId, Boolean expand, OrderString orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -300,32 +220,11 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                this.client.getApiVersion(),
-                skip,
-                modelId,
-                modelName,
-                tag,
-                tags,
-                properties,
-                runId,
-                expand,
-                orderby,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, this.client.getApiVersion(), skip, modelId, modelName, tag, tags, properties, runId,
+                expand, orderby, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -350,32 +249,11 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return services in specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServiceResourceInner> listByWorkspaceAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String modelId,
-        String modelName,
-        String tag,
-        String tags,
-        String properties,
-        String runId,
-        Boolean expand,
-        OrderString orderby) {
-        return new PagedFlux<>(
-            () ->
-                listByWorkspaceSinglePageAsync(
-                    resourceGroupName,
-                    workspaceName,
-                    skip,
-                    modelId,
-                    modelName,
-                    tag,
-                    tags,
-                    properties,
-                    runId,
-                    expand,
-                    orderby),
+    private PagedFlux<ServiceResourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        String skip, String modelId, String modelName, String tag, String tags, String properties, String runId,
+        Boolean expand, OrderString orderby) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, skip, modelId,
+            modelName, tag, tags, properties, runId, expand, orderby),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
@@ -400,20 +278,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         final String runId = null;
         final Boolean expand = null;
         final OrderString orderby = null;
-        return new PagedFlux<>(
-            () ->
-                listByWorkspaceSinglePageAsync(
-                    resourceGroupName,
-                    workspaceName,
-                    skip,
-                    modelId,
-                    modelName,
-                    tag,
-                    tags,
-                    properties,
-                    runId,
-                    expand,
-                    orderby),
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, skip, modelId,
+            modelName, tag, tags, properties, runId, expand, orderby),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
@@ -440,34 +306,12 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return services in specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServiceResourceInner> listByWorkspaceAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String modelId,
-        String modelName,
-        String tag,
-        String tags,
-        String properties,
-        String runId,
-        Boolean expand,
-        OrderString orderby,
-        Context context) {
+    private PagedFlux<ServiceResourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        String skip, String modelId, String modelName, String tag, String tags, String properties, String runId,
+        Boolean expand, OrderString orderby, Context context) {
         return new PagedFlux<>(
-            () ->
-                listByWorkspaceSinglePageAsync(
-                    resourceGroupName,
-                    workspaceName,
-                    skip,
-                    modelId,
-                    modelName,
-                    tag,
-                    tags,
-                    properties,
-                    runId,
-                    expand,
-                    orderby,
-                    context),
+            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, skip, modelId, modelName, tag, tags,
+                properties, runId, expand, orderby, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
@@ -492,19 +336,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         final String runId = null;
         final Boolean expand = null;
         final OrderString orderby = null;
-        return new PagedIterable<>(
-            listByWorkspaceAsync(
-                resourceGroupName,
-                workspaceName,
-                skip,
-                modelId,
-                modelName,
-                tag,
-                tags,
-                properties,
-                runId,
-                expand,
-                orderby));
+        return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, skip, modelId, modelName, tag,
+            tags, properties, runId, expand, orderby));
     }
 
     /**
@@ -530,33 +363,11 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return services in specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServiceResourceInner> listByWorkspace(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String modelId,
-        String modelName,
-        String tag,
-        String tags,
-        String properties,
-        String runId,
-        Boolean expand,
-        OrderString orderby,
-        Context context) {
-        return new PagedIterable<>(
-            listByWorkspaceAsync(
-                resourceGroupName,
-                workspaceName,
-                skip,
-                modelId,
-                modelName,
-                tag,
-                tags,
-                properties,
-                runId,
-                expand,
-                orderby,
-                context));
+    public PagedIterable<ServiceResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        String skip, String modelId, String modelName, String tag, String tags, String properties, String runId,
+        Boolean expand, OrderString orderby, Context context) {
+        return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, skip, modelId, modelName, tag,
+            tags, properties, runId, expand, orderby, context));
     }
 
     /**
@@ -572,19 +383,15 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return a Service by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String serviceName, Boolean expand) {
+    private Mono<Response<ServiceResourceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String serviceName, Boolean expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -598,19 +405,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            this.client.getApiVersion(),
-                            serviceName,
-                            expand,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), serviceName, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -628,19 +424,15 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return a Service by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String serviceName, Boolean expand, Context context) {
+    private Mono<Response<ServiceResourceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String serviceName, Boolean expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -654,17 +446,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                this.client.getApiVersion(),
-                serviceName,
-                expand,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            this.client.getApiVersion(), serviceName, expand, accept, context);
     }
 
     /**
@@ -680,17 +463,16 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return a Service by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceResourceInner> getAsync(
-        String resourceGroupName, String workspaceName, String serviceName, Boolean expand) {
+    private Mono<ServiceResourceInner> getAsync(String resourceGroupName, String workspaceName, String serviceName,
+        Boolean expand) {
         return getWithResponseAsync(resourceGroupName, workspaceName, serviceName, expand)
-            .flatMap(
-                (Response<ServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ServiceResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -708,14 +490,13 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
     private Mono<ServiceResourceInner> getAsync(String resourceGroupName, String workspaceName, String serviceName) {
         final Boolean expand = null;
         return getWithResponseAsync(resourceGroupName, workspaceName, serviceName, expand)
-            .flatMap(
-                (Response<ServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ServiceResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -749,8 +530,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return a Service by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceResourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String serviceName, Boolean expand, Context context) {
+    public Response<ServiceResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String serviceName, Boolean expand, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, serviceName, expand, context).block();
     }
 
@@ -766,19 +547,15 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String serviceName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -792,18 +569,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            this.client.getApiVersion(),
-                            serviceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), serviceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -820,19 +587,15 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String serviceName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -846,16 +609,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                this.client.getApiVersion(),
-                serviceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, this.client.getApiVersion(), serviceName, accept, context);
     }
 
     /**
@@ -903,8 +658,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String serviceName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String serviceName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, serviceName, context).block();
     }
 
@@ -922,19 +677,15 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return machine Learning service object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String serviceName, CreateServiceRequest properties) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String serviceName, CreateServiceRequest properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -953,19 +704,9 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            this.client.getApiVersion(),
-                            serviceName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), serviceName, properties, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -984,23 +725,15 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return machine Learning service object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String serviceName,
-        CreateServiceRequest properties,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String serviceName, CreateServiceRequest properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1019,17 +752,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                this.client.getApiVersion(),
-                serviceName,
-                properties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, this.client.getApiVersion(), serviceName, properties, accept, context);
     }
 
     /**
@@ -1048,16 +772,10 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, String serviceName, CreateServiceRequest properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, serviceName, properties);
-        return this
-            .client
-            .<ServiceResourceInner, ServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServiceResourceInner.class,
-                ServiceResourceInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, serviceName, properties);
+        return this.client.<ServiceResourceInner, ServiceResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ServiceResourceInner.class, ServiceResourceInner.class, Context.NONE);
     }
 
     /**
@@ -1076,18 +794,13 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String serviceName,
-        CreateServiceRequest properties,
+        String resourceGroupName, String workspaceName, String serviceName, CreateServiceRequest properties,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, serviceName, properties, context);
-        return this
-            .client
-            .<ServiceResourceInner, ServiceResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ServiceResourceInner.class, ServiceResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, serviceName, properties, context);
+        return this.client.<ServiceResourceInner, ServiceResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ServiceResourceInner.class, ServiceResourceInner.class, context);
     }
 
     /**
@@ -1125,10 +838,7 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String serviceName,
-        CreateServiceRequest properties,
+        String resourceGroupName, String workspaceName, String serviceName, CreateServiceRequest properties,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, serviceName, properties, context)
             .getSyncPoller();
@@ -1148,10 +858,9 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return machine Learning service object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String serviceName, CreateServiceRequest properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, serviceName, properties)
-            .last()
+    private Mono<ServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String serviceName, CreateServiceRequest properties) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, serviceName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1170,14 +879,9 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return machine Learning service object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String serviceName,
-        CreateServiceRequest properties,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, serviceName, properties, context)
-            .last()
+    private Mono<ServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String serviceName, CreateServiceRequest properties, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, serviceName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1195,8 +899,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return machine Learning service object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceResourceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String serviceName, CreateServiceRequest properties) {
+    public ServiceResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String serviceName,
+        CreateServiceRequest properties) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, serviceName, properties).block();
     }
 
@@ -1215,12 +919,8 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return machine Learning service object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String serviceName,
-        CreateServiceRequest properties,
-        Context context) {
+    public ServiceResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String serviceName,
+        CreateServiceRequest properties, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, serviceName, properties, context).block();
     }
 
@@ -1239,23 +939,14 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1270,29 +961,19 @@ public final class MachineLearningServicesClientImpl implements MachineLearningS
      * @return paginated list of Machine Learning service objects wrapped in ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceResourceInner>> listByWorkspaceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ServiceResourceInner>> listByWorkspaceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

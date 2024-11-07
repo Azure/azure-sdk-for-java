@@ -10,10 +10,6 @@ module com.azure.resourcemanager.dynatrace {
     exports com.azure.resourcemanager.dynatrace.fluent.models;
     exports com.azure.resourcemanager.dynatrace.models;
 
-    opens com.azure.resourcemanager.dynatrace.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.dynatrace.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.dynatrace.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.dynatrace.models to com.azure.core;
 }

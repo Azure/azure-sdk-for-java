@@ -12,8 +12,7 @@ public final class EndpointAccessResourceImpl implements EndpointAccessResource 
 
     private final com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager;
 
-    EndpointAccessResourceImpl(
-        EndpointAccessResourceInner innerObject,
+    EndpointAccessResourceImpl(EndpointAccessResourceInner innerObject,
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

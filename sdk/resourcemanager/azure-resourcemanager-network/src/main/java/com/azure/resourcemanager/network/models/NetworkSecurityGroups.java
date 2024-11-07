@@ -18,14 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to network security group management. */
 @Fluent()
 public interface NetworkSecurityGroups
-    extends SupportsCreating<NetworkSecurityGroup.DefinitionStages.Blank>,
-        SupportsListing<NetworkSecurityGroup>,
-        SupportsListingByResourceGroup<NetworkSecurityGroup>,
-        SupportsGettingByResourceGroup<NetworkSecurityGroup>,
-        SupportsGettingById<NetworkSecurityGroup>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<NetworkSecurityGroup>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+    extends SupportsCreating<NetworkSecurityGroup.DefinitionStages.Blank>, SupportsListing<NetworkSecurityGroup>,
+    SupportsListingByResourceGroup<NetworkSecurityGroup>, SupportsGettingByResourceGroup<NetworkSecurityGroup>,
+    SupportsGettingById<NetworkSecurityGroup>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<NetworkSecurityGroup>, SupportsBatchDeletion, HasManager<NetworkManager> {
 }

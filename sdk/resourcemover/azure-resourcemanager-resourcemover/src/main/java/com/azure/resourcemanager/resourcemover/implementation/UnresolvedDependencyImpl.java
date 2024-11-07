@@ -12,8 +12,7 @@ public final class UnresolvedDependencyImpl implements UnresolvedDependency {
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    UnresolvedDependencyImpl(
-        UnresolvedDependencyInner innerObject,
+    UnresolvedDependencyImpl(UnresolvedDependencyInner innerObject,
         com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

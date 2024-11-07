@@ -6,29 +6,35 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The storage configuration provides the connection details that allows the Time Series Insights service to connect to
  * the customer storage account that is used to store the environment's data.
  */
 @Fluent
-public final class Gen2StorageConfigurationMutableProperties {
+public final class Gen2StorageConfigurationMutableProperties
+    implements JsonSerializable<Gen2StorageConfigurationMutableProperties> {
     /*
-     * The value of the management key that grants the Time Series Insights service write access to the storage
-     * account. This property is not shown in environment responses.
+     * The value of the management key that grants the Time Series Insights service write access to the storage account.
+     * This property is not shown in environment responses.
      */
-    @JsonProperty(value = "managementKey", required = true)
     private String managementKey;
 
-    /** Creates an instance of Gen2StorageConfigurationMutableProperties class. */
+    /**
+     * Creates an instance of Gen2StorageConfigurationMutableProperties class.
+     */
     public Gen2StorageConfigurationMutableProperties() {
     }
 
     /**
      * Get the managementKey property: The value of the management key that grants the Time Series Insights service
      * write access to the storage account. This property is not shown in environment responses.
-     *
+     * 
      * @return the managementKey value.
      */
     public String managementKey() {
@@ -38,7 +44,7 @@ public final class Gen2StorageConfigurationMutableProperties {
     /**
      * Set the managementKey property: The value of the management key that grants the Time Series Insights service
      * write access to the storage account. This property is not shown in environment responses.
-     *
+     * 
      * @param managementKey the managementKey value to set.
      * @return the Gen2StorageConfigurationMutableProperties object itself.
      */
@@ -49,17 +55,54 @@ public final class Gen2StorageConfigurationMutableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (managementKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managementKey in model Gen2StorageConfigurationMutableProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managementKey in model Gen2StorageConfigurationMutableProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Gen2StorageConfigurationMutableProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managementKey", this.managementKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Gen2StorageConfigurationMutableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Gen2StorageConfigurationMutableProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Gen2StorageConfigurationMutableProperties.
+     */
+    public static Gen2StorageConfigurationMutableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Gen2StorageConfigurationMutableProperties deserializedGen2StorageConfigurationMutableProperties
+                = new Gen2StorageConfigurationMutableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managementKey".equals(fieldName)) {
+                    deserializedGen2StorageConfigurationMutableProperties.managementKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGen2StorageConfigurationMutableProperties;
+        });
+    }
 }

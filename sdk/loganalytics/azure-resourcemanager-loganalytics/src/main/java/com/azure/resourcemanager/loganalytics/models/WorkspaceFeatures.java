@@ -48,7 +48,8 @@ public final class WorkspaceFeatures {
     /*
      * Workspace features.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of WorkspaceFeatures class. */
     public WorkspaceFeatures() {
@@ -111,8 +112,8 @@ public final class WorkspaceFeatures {
      * @param enableLogAccessUsingOnlyResourcePermissions the enableLogAccessUsingOnlyResourcePermissions value to set.
      * @return the WorkspaceFeatures object itself.
      */
-    public WorkspaceFeatures withEnableLogAccessUsingOnlyResourcePermissions(
-        Boolean enableLogAccessUsingOnlyResourcePermissions) {
+    public WorkspaceFeatures
+        withEnableLogAccessUsingOnlyResourcePermissions(Boolean enableLogAccessUsingOnlyResourcePermissions) {
         this.enableLogAccessUsingOnlyResourcePermissions = enableLogAccessUsingOnlyResourcePermissions;
         return this;
     }

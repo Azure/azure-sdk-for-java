@@ -6,23 +6,48 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Definition of the webhook type. */
+/**
+ * Definition of the webhook type.
+ */
 @Fluent
 public final class WebhookInner extends ProxyResource {
     /*
      * Gets or sets the webhook properties.
      */
-    @JsonProperty(value = "properties")
     private WebhookProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WebhookInner class.
+     */
+    public WebhookInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the webhook properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookProperties innerProperties() {
@@ -30,8 +55,38 @@ public final class WebhookInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of the webhook.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -40,7 +95,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the isEnabled property: Gets or sets the value of the enabled flag of the webhook.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the WebhookInner object itself.
      */
@@ -54,7 +109,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the uri property: Gets or sets the webhook uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -63,7 +118,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the uri property: Gets or sets the webhook uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the WebhookInner object itself.
      */
@@ -77,7 +132,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the expiryTime property: Gets or sets the expiry time.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -86,7 +141,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the expiryTime property: Gets or sets the expiry time.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the WebhookInner object itself.
      */
@@ -100,7 +155,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the lastInvokedTime property: Gets or sets the last invoked time.
-     *
+     * 
      * @return the lastInvokedTime value.
      */
     public OffsetDateTime lastInvokedTime() {
@@ -109,7 +164,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the lastInvokedTime property: Gets or sets the last invoked time.
-     *
+     * 
      * @param lastInvokedTime the lastInvokedTime value to set.
      * @return the WebhookInner object itself.
      */
@@ -124,7 +179,7 @@ public final class WebhookInner extends ProxyResource {
     /**
      * Get the parameters property: Gets or sets the parameters of the job that is created when the webhook calls the
      * runbook it is associated with.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -134,7 +189,7 @@ public final class WebhookInner extends ProxyResource {
     /**
      * Set the parameters property: Gets or sets the parameters of the job that is created when the webhook calls the
      * runbook it is associated with.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the WebhookInner object itself.
      */
@@ -148,7 +203,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the runbook property: Gets or sets the runbook the webhook is associated with.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -157,7 +212,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the runbook property: Gets or sets the runbook the webhook is associated with.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the WebhookInner object itself.
      */
@@ -171,7 +226,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -180,7 +235,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the WebhookInner object itself.
      */
@@ -194,7 +249,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -203,7 +258,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the WebhookInner object itself.
      */
@@ -217,7 +272,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -226,7 +281,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the WebhookInner object itself.
      */
@@ -240,7 +295,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the lastModifiedBy property: Details of the user who last modified the Webhook.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -249,7 +304,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the lastModifiedBy property: Details of the user who last modified the Webhook.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the WebhookInner object itself.
      */
@@ -263,7 +318,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -272,7 +327,7 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the WebhookInner object itself.
      */
@@ -286,12 +341,55 @@ public final class WebhookInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebhookInner.
+     */
+    public static WebhookInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookInner deserializedWebhookInner = new WebhookInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebhookInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebhookInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebhookInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebhookInner.innerProperties = WebhookProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookInner;
+        });
     }
 }

@@ -19,8 +19,7 @@ public class CreateEntityWithAllTypes extends TableTestBase<PerfStressOptions> {
     }
 
     public Mono<Void> globalSetupAsync() {
-        return tableAsyncClient.createTable()
-            .then(super.globalSetupAsync());
+        return tableAsyncClient.createTable().then(super.globalSetupAsync());
     }
 
     @Override
@@ -30,7 +29,6 @@ public class CreateEntityWithAllTypes extends TableTestBase<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return tableAsyncClient.upsertEntity(tableEntity)
-            .then();
+        return tableAsyncClient.upsertEntity(tableEntity).then();
     }
 }

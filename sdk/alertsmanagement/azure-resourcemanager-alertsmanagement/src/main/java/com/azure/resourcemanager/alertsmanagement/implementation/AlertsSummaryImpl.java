@@ -13,8 +13,7 @@ public final class AlertsSummaryImpl implements AlertsSummary {
 
     private final com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager;
 
-    AlertsSummaryImpl(
-        AlertsSummaryInner innerObject,
+    AlertsSummaryImpl(AlertsSummaryInner innerObject,
         com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-/** Samples for BookmarkRelations CreateOrUpdate. */
+/**
+ * Samples for BookmarkRelations CreateOrUpdate.
+ */
 public final class BookmarkRelationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/relations/CreateBookmarkRelation.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * bookmarks/relations/CreateBookmarkRelation.json
      */
     /**
      * Sample code: Creates or updates a bookmark relation.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void createsOrUpdatesABookmarkRelation(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .bookmarkRelations()
+    public static void
+        createsOrUpdatesABookmarkRelation(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager.bookmarkRelations()
             .define("4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014")
             .withExistingBookmark("myRg", "myWorkspace", "2216d0e1-91e3-4902-89fd-d2df8c535096")
             .withRelatedResourceId(

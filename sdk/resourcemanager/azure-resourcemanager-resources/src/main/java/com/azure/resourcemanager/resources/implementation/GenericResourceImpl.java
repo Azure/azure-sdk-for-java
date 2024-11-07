@@ -23,17 +23,9 @@ import reactor.core.publisher.Mono;
 /**
  * The implementation for GenericResource and its nested interfaces.
  */
-final class GenericResourceImpl
-        extends GroupableResourceImpl<
-        GenericResource,
-        GenericResourceInner,
-        GenericResourceImpl,
-    ResourceManager>
-        implements
-        GenericResource,
-        GenericResource.Definition,
-        GenericResource.UpdateStages.WithApiVersion,
-        GenericResource.Update {
+final class GenericResourceImpl extends
+    GroupableResourceImpl<GenericResource, GenericResourceInner, GenericResourceImpl, ResourceManager> implements
+    GenericResource, GenericResource.Definition, GenericResource.UpdateStages.WithApiVersion, GenericResource.Update {
 
     private final ClientLogger logger = new ClientLogger(GenericResourceImpl.class);
 
@@ -44,9 +36,7 @@ final class GenericResourceImpl
 
     private GenericResourceInner createUpdateParameter = new GenericResourceInner();
 
-    GenericResourceImpl(String key,
-                        GenericResourceInner innerModel,
-                        final ResourceManager resourceManager) {
+    GenericResourceImpl(String key, GenericResourceInner innerModel, final ResourceManager resourceManager) {
         super(key, innerModel, resourceManager);
         resourceProviderNamespace = ResourceUtils.resourceProviderFromResourceId(innerModel.id());
         resourceType = ResourceUtils.resourceTypeFromResourceId(innerModel.id());
@@ -74,8 +64,8 @@ final class GenericResourceImpl
     @Override
     public String apiVersion() {
         if (apiVersion == null) {
-            apiVersion = ResourceUtils.defaultApiVersion(
-                id(), manager().providers().getByName(ResourceUtils.resourceProviderFromResourceId(id())));
+            apiVersion = ResourceUtils.defaultApiVersion(id(),
+                manager().providers().getByName(ResourceUtils.resourceProviderFromResourceId(id())));
         }
         return apiVersion;
     }
@@ -112,13 +102,11 @@ final class GenericResourceImpl
 
     @Override
     protected Mono<GenericResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getResources().getAsync(
-                resourceGroupName(),
-                resourceProviderNamespace(),
-                parentResourcePath(),
-                resourceType(),
-                this.name(),
-                this.apiVersion());
+        return this.manager()
+            .serviceClient()
+            .getResources()
+            .getAsync(resourceGroupName(), resourceProviderNamespace(), parentResourcePath(), resourceType(),
+                this.name(), this.apiVersion());
     }
 
     @Override
@@ -169,11 +157,7 @@ final class GenericResourceImpl
 
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
         this.withPlan(
-            new Plan()
-                .withName(name)
-                .withPublisher(publisher)
-                .withProduct(product)
-                .withPromotionCode(promotionCode));
+            new Plan().withName(name).withPublisher(publisher).withProduct(product).withPromotionCode(promotionCode));
         return this;
     }
 
@@ -213,23 +197,16 @@ final class GenericResourceImpl
         createUpdateParameter.withLocation(innerModel().location());
         createUpdateParameter.withTags(innerModel().tags());
 
-        return AcceptedImpl.newAccepted(logger,
-            this.manager().serviceClient().getHttpPipeline(),
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.manager().serviceClient().getResources()
-                .createOrUpdateWithResponseAsync(
-                    resourceGroupName(),
-                    resourceProviderNamespace,
-                    parentResourcePath(),
-                    resourceType,
-                    name,
-                    apiVersion,
-                    createUpdateParameter).block(),
-            inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
-            GenericResourceInner.class,
-            null,
-            this::setInner,
-            Context.NONE);
+            () -> this.manager()
+                .serviceClient()
+                .getResources()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), resourceProviderNamespace, parentResourcePath(),
+                    resourceType, name, apiVersion, createUpdateParameter)
+                .block(),
+            inner -> new GenericResourceImpl(inner.id(), inner, this.manager()), GenericResourceInner.class, null,
+            this::setInner, Context.NONE);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
@@ -237,43 +214,31 @@ final class GenericResourceImpl
     public Mono<GenericResource> createResourceAsync() {
         Mono<String> observable = this.getApiVersionAsync();
         final ResourcesClient resourceClient = this.manager().serviceClient().getResources();
-        return observable
-                .flatMap(api -> {
-                    String name = this.name();
-                    createUpdateParameter.withLocation(innerModel().location());
-                    createUpdateParameter.withTags(innerModel().tags());
-                    return resourceClient.createOrUpdateAsync(
-                            resourceGroupName(),
-                            resourceProviderNamespace,
-                            parentResourcePath(),
-                            resourceType,
-                            name,
-                            api,
-                            createUpdateParameter)
-                            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
-                            .map(innerToFluentMap(this));
-                });
+        return observable.flatMap(api -> {
+            String name = this.name();
+            createUpdateParameter.withLocation(innerModel().location());
+            createUpdateParameter.withTags(innerModel().tags());
+            return resourceClient
+                .createOrUpdateAsync(resourceGroupName(), resourceProviderNamespace, parentResourcePath(), resourceType,
+                    name, api, createUpdateParameter)
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
+                .map(innerToFluentMap(this));
+        });
     }
 
     @Override
     public Mono<GenericResource> updateResourceAsync() {
         Mono<String> observable = this.getApiVersionAsync();
         final ResourcesClient resourceClient = this.manager().serviceClient().getResources();
-        return observable
-            .flatMap(api -> {
-                String name = ResourceUtils.nameFromResourceId(innerModel().id());
-                createUpdateParameter.withTags(innerModel().tags());
-                return resourceClient.updateAsync(
-                        resourceGroupName(),
-                        resourceProviderNamespace,
-                        parentResourcePath(),
-                        resourceType,
-                        name,
-                        api,
-                        createUpdateParameter)
-                    .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
-                    .map(innerToFluentMap(this));
-            });
+        return observable.flatMap(api -> {
+            String name = ResourceUtils.nameFromResourceId(innerModel().id());
+            createUpdateParameter.withTags(innerModel().tags());
+            return resourceClient
+                .updateAsync(resourceGroupName(), resourceProviderNamespace, parentResourcePath(), resourceType, name,
+                    api, createUpdateParameter)
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
+                .map(innerToFluentMap(this));
+        });
     }
 
     private Mono<String> getApiVersionAsync() {
@@ -281,23 +246,17 @@ final class GenericResourceImpl
         if (this.apiVersion != null) {
             apiVersion = Mono.just(this.apiVersion);
         } else {
-            apiVersion = this.manager().providers().getByNameAsync(resourceProviderNamespace)
-                .flatMap(provider -> {
-                    String id;
-                    if (!isInCreateMode()) {
-                        id = innerModel().id();
-                    } else {
-                        id = ResourceUtils.constructResourceId(
-                            this.manager().subscriptionId(),
-                            resourceGroupName(),
-                            resourceProviderNamespace(),
-                            resourceType(),
-                            this.name(),
-                            parentResourcePath());
-                    }
-                    this.apiVersion = ResourceUtils.defaultApiVersion(id, provider);
-                    return Mono.just(this.apiVersion);
-                });
+            apiVersion = this.manager().providers().getByNameAsync(resourceProviderNamespace).flatMap(provider -> {
+                String id;
+                if (!isInCreateMode()) {
+                    id = innerModel().id();
+                } else {
+                    id = ResourceUtils.constructResourceId(this.manager().subscriptionId(), resourceGroupName(),
+                        resourceProviderNamespace(), resourceType(), this.name(), parentResourcePath());
+                }
+                this.apiVersion = ResourceUtils.defaultApiVersion(id, provider);
+                return Mono.just(this.apiVersion);
+            });
         }
         return apiVersion;
     }

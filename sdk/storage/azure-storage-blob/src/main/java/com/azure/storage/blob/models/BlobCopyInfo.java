@@ -42,7 +42,7 @@ public class BlobCopyInfo {
      * @throws NullPointerException If {@code copyId}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
      */
     public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
-                        OffsetDateTime lastModified, String error) {
+        OffsetDateTime lastModified, String error) {
         this(copySource, copyId, copyStatus, eTag, lastModified, error, null);
     }
 
@@ -61,7 +61,7 @@ public class BlobCopyInfo {
      * @throws NullPointerException If {@code copyId}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
      */
     public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
-                        OffsetDateTime lastModified, String error, String versionId) {
+        OffsetDateTime lastModified, String error, String versionId) {
         this(copySource, copyId, copyStatus, eTag, lastModified, error, versionId, null);
     }
 

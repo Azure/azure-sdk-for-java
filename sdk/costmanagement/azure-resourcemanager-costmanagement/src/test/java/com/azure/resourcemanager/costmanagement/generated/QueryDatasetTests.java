@@ -23,80 +23,537 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryDataset model =
-            BinaryData
-                .fromString(
-                    "{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"fvhqc\",\"a\",\"lvpnpp\",\"uflrwd\"]},\"aggregation\":{\"agafcnihgwqap\":{\"name\":\"lxyjr\",\"function\":\"Sum\"},\"keqdcvdrhvoods\":{\"name\":\"edgfbcvkcvq\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"bzdopcj\"},{\"type\":\"Dimension\",\"name\":\"nhdldwmgxcx\"},{\"type\":\"Dimension\",\"name\":\"lpmutwuoegrpkhj\"},{\"type\":\"TagKey\",\"name\":\"iyq\"}],\"filter\":{\"and\":[{\"and\":[],\"or\":[]}],\"or\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"dimensions\":{\"name\":\"fy\",\"operator\":\"In\",\"values\":[\"pfvmwyhrfou\",\"ft\"]},\"tags\":{\"name\":\"kcpwiy\",\"operator\":\"In\",\"values\":[\"tmnubexkpzksmon\",\"jmquxvypomgk\",\"pkwhojvpa\"]}}}")
-                .toObject(QueryDataset.class);
+        QueryDataset model = BinaryData.fromString(
+            "{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"ubwefqs\"]},\"aggregation\":{\"ex\":{\"name\":\"aqtferr\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"xap\"},{\"type\":\"Dimension\",\"name\":\"og\"},{\"type\":\"TagKey\",\"name\":\"nobpudcdabtqwpw\"},{\"type\":\"TagKey\",\"name\":\"wbzasqbuclj\"}],\"filter\":{\"and\":[{\"and\":[{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"i\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"sdaultxij\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"z\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"nm\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"qxtbjwgnyf\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"zsvtuikzhajqgl\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"xynqnz\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"sovwxznptgoeiyb\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"f\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"vntjlrigjk\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"vzidsxwaab\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"frygznmmax\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"kzobgopxlhsln\",\"operator\":\"In\",\"values\":[\"ieixynllxe\",\"wcrojphslhcaw\",\"u\"]},\"tags\":{\"name\":\"fdwfmvigorqj\",\"operator\":\"In\",\"values\":[\"zhraglkafh\"]}},{\"and\":[{\"and\":[{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"ckpzvcpopmxeln\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"tyjedex\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"scazuawxtzxpu\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"abzxrvxcushsp\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"asflvg\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"wywa\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"mjblmljhlny\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"tqyryuzcbmqqv\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"xo\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"peujlzqn\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"nzoibgsxgnx\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"onmpqoxwdof\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"iiqbi\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"mwwinhehfqpofv\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"blembnkbwvqvxkd\",\"operator\":\"In\",\"values\":[\"ihebwtsw\",\"zuwfmdur\"]},\"tags\":{\"name\":\"egizv\",\"operator\":\"In\",\"values\":[\"elisdjub\",\"gbqi\",\"kxkbsazgakgacyr\"]}}],\"or\":[{\"and\":[{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"pv\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"ylnio\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"edm\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"vnlvxbcuiiznktwf\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"ibmikostbzb\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"buqny\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"sgcrpfbcunezzce\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"fwyfwlwxjwet\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"zvaylptrsqqw\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"mwqkchcxwaxf\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"xfdeqvhpsyl\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"hkbffmbm\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"rgywwp\",\"operator\":\"In\",\"values\":[\"snptfujgicgaao\"]},\"tags\":{\"name\":\"ttaqutdew\",\"operator\":\"In\",\"values\":[\"swvr\",\"unzzjgehk\"]}},{\"and\":[{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"okffqyinljqepqwh\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"onsts\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"clduc\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"rds\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"egstmninwjizci\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"hgshe\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"uluxl\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"vnersbycucrw\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"brqbsmswzi\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"uhok\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"swhvhczznvfbycj\",\"operator\":\"In\",\"values\":[\"wwixzvumw\"]},\"tags\":{\"name\":\"qhndvnoam\",\"operator\":\"In\",\"values\":[\"ehaohdjhh\",\"lzok\",\"coxpelnjeta\",\"ltsxoatf\"]}},{\"and\":[{\"and\":[{}],\"or\":[{}],\"dimensions\":{\"name\":\"wvefloccsrmoz\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"ipgawtxx\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"jxgrytfmp\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"ilrmcaykggnox\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"ndfcpfn\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"hjtwkjaosrx\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"tcqiosmg\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"hgxqdlyrt\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"tz\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"bhjmznnb\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"eq\",\"operator\":\"In\",\"values\":[\"rvlagunbtgfebwln\",\"mhyreeudz\",\"av\"]},\"tags\":{\"name\":\"dqmjxly\",\"operator\":\"In\",\"values\":[\"lgouwtlmjj\",\"uojqt\"]}},{\"and\":[{\"and\":[{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"tu\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"fjkwrusnkq\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"njqhdenxa\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"pakdkifmjnnawt\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"kpggqoweyi\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"lisn\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"pizruwnpqxpxiw\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"gjsaasiixtm\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"hgfgrwsd\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"atzv\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"ictc\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"xkjzwrgxffm\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"gozxw\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"bydpizqaclnapxb\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"nugj\",\"operator\":\"In\",\"values\":[\"smfcttuxuuyilfl\",\"oiquvrehmrnjhvs\",\"jztczytqj\",\"w\"]},\"tags\":{\"name\":\"uunfprnjletlxsm\",\"operator\":\"In\",\"values\":[\"do\",\"ifamowazi\"]}}],\"dimensions\":{\"name\":\"knlqwzdvpiwhxqsz\",\"operator\":\"In\",\"values\":[\"aajquhuxylrj\",\"m\",\"ygjbmzyospspsh\"]},\"tags\":{\"name\":\"fkyjpmspbpssdfpp\",\"operator\":\"In\",\"values\":[\"tieyujtvczkcny\"]}}}")
+            .toObject(QueryDataset.class);
         Assertions.assertEquals(GranularityType.DAILY, model.granularity());
-        Assertions.assertEquals("fvhqc", model.configuration().columns().get(0));
-        Assertions.assertEquals("lxyjr", model.aggregation().get("agafcnihgwqap").name());
-        Assertions.assertEquals(FunctionType.SUM, model.aggregation().get("agafcnihgwqap").function());
+        Assertions.assertEquals("ubwefqs", model.configuration().columns().get(0));
+        Assertions.assertEquals("aqtferr", model.aggregation().get("ex").name());
+        Assertions.assertEquals(FunctionType.SUM, model.aggregation().get("ex").function());
         Assertions.assertEquals(QueryColumnType.DIMENSION, model.grouping().get(0).type());
-        Assertions.assertEquals("bzdopcj", model.grouping().get(0).name());
-        Assertions.assertEquals("fy", model.filter().dimensions().name());
+        Assertions.assertEquals("xap", model.grouping().get(0).name());
+        Assertions.assertEquals("i", model.filter().and().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("sdaultxij", model.filter().and().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("xynqnz", model.filter().and().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("sovwxznptgoeiyb", model.filter().and().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("kzobgopxlhsln", model.filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("ieixynllxe", model.filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("fdwfmvigorqj", model.filter().and().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).tags().operator());
+        Assertions.assertEquals("zhraglkafh", model.filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("pv", model.filter().or().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("ylnio", model.filter().or().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("zvaylptrsqqw", model.filter().or().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("mwqkchcxwaxf", model.filter().or().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("rgywwp", model.filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("snptfujgicgaao", model.filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("ttaqutdew", model.filter().or().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).tags().operator());
+        Assertions.assertEquals("swvr", model.filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("knlqwzdvpiwhxqsz", model.filter().dimensions().name());
         Assertions.assertEquals(QueryOperatorType.IN, model.filter().dimensions().operator());
-        Assertions.assertEquals("pfvmwyhrfou", model.filter().dimensions().values().get(0));
-        Assertions.assertEquals("kcpwiy", model.filter().tags().name());
+        Assertions.assertEquals("aajquhuxylrj", model.filter().dimensions().values().get(0));
+        Assertions.assertEquals("fkyjpmspbpssdfpp", model.filter().tags().name());
         Assertions.assertEquals(QueryOperatorType.IN, model.filter().tags().operator());
-        Assertions.assertEquals("tmnubexkpzksmon", model.filter().tags().values().get(0));
+        Assertions.assertEquals("tieyujtvczkcny", model.filter().tags().values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryDataset model =
-            new QueryDataset()
-                .withGranularity(GranularityType.DAILY)
-                .withConfiguration(
-                    new QueryDatasetConfiguration().withColumns(Arrays.asList("fvhqc", "a", "lvpnpp", "uflrwd")))
-                .withAggregation(
-                    mapOf(
-                        "agafcnihgwqap",
-                        new QueryAggregation().withName("lxyjr").withFunction(FunctionType.SUM),
-                        "keqdcvdrhvoods",
-                        new QueryAggregation().withName("edgfbcvkcvq").withFunction(FunctionType.SUM)))
+        QueryDataset model
+            = new QueryDataset().withGranularity(GranularityType.DAILY)
+                .withConfiguration(new QueryDatasetConfiguration().withColumns(Arrays.asList("ubwefqs")))
+                .withAggregation(mapOf("ex", new QueryAggregation().withName("aqtferr").withFunction(FunctionType.SUM)))
                 .withGrouping(
                     Arrays
-                        .asList(
-                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("bzdopcj"),
-                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("nhdldwmgxcx"),
-                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("lpmutwuoegrpkhj"),
-                            new QueryGrouping().withType(QueryColumnType.TAG_KEY).withName("iyq")))
+                        .asList(new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("xap"),
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("og"),
+                            new QueryGrouping().withType(QueryColumnType.TAG_KEY).withName("nobpudcdabtqwpw"),
+                            new QueryGrouping().withType(QueryColumnType.TAG_KEY).withName("wbzasqbuclj")))
                 .withFilter(
                     new QueryFilter()
-                        .withAnd(Arrays.asList(new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+                        .withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withAnd(Arrays.asList(
+                                    new QueryFilter().withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("i")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression().withName("sdaultxij")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList())),
+                                    new QueryFilter()
+                                        .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter(),
+                                            new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("z")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(
+                                            new QueryComparisonExpression().withName("nm")
+                                                .withOperator(QueryOperatorType.IN)
+                                                .withValues(Arrays.asList())),
+                                    new QueryFilter()
+                                        .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("qxtbjwgnyf")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression().withName("zsvtuikzhajqgl")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))))
+                                .withOr(
+                                    Arrays
+                                        .asList(
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("xynqnz")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("sovwxznptgoeiyb")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("f")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("vntjlrigjk")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("vzidsxwaab")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("frygznmmax")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))))
+                                .withDimensions(new QueryComparisonExpression().withName("kzobgopxlhsln")
+                                    .withOperator(QueryOperatorType.IN)
+                                    .withValues(Arrays.asList("ieixynllxe", "wcrojphslhcaw", "u")))
+                                .withTags(new QueryComparisonExpression().withName("fdwfmvigorqj")
+                                    .withOperator(QueryOperatorType.IN)
+                                    .withValues(Arrays.asList("zhraglkafh"))),
+                            new QueryFilter()
+                                .withAnd(Arrays.asList(
+                                    new QueryFilter().withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("ckpzvcpopmxeln")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression().withName("tyjedex")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList())),
+                                    new QueryFilter().withAnd(Arrays.asList(new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter(),
+                                            new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("scazuawxtzxpu")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression().withName("abzxrvxcushsp")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList())),
+                                    new QueryFilter().withAnd(Arrays.asList(new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("asflvg")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression().withName("wywa")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList())),
+                                    new QueryFilter().withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("mjblmljhlny")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression().withName("tqyryuzcbmqqv")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))))
+                                .withOr(Arrays.asList(
+                                    new QueryFilter()
+                                        .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter(),
+                                            new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("xo")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression()
+                                            .withName("peujlzqn")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList())),
+                                    new QueryFilter().withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("nzoibgsxgnx")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression().withName("onmpqoxwdof")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList())),
+                                    new QueryFilter()
+                                        .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("iiqbi")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(new QueryComparisonExpression().withName("mwwinhehfqpofv")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))))
+                                .withDimensions(new QueryComparisonExpression().withName("blembnkbwvqvxkd")
+                                    .withOperator(QueryOperatorType.IN)
+                                    .withValues(Arrays.asList("ihebwtsw", "zuwfmdur")))
+                                .withTags(new QueryComparisonExpression().withName("egizv")
+                                    .withOperator(QueryOperatorType.IN)
+                                    .withValues(Arrays.asList("elisdjub", "gbqi", "kxkbsazgakgacyr")))))
                         .withOr(
                             Arrays
                                 .asList(
-                                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                        .withDimensions(
-                            new QueryComparisonExpression()
-                                .withName("fy")
-                                .withOperator(QueryOperatorType.IN)
-                                .withValues(Arrays.asList("pfvmwyhrfou", "ft")))
-                        .withTags(
-                            new QueryComparisonExpression()
-                                .withName("kcpwiy")
-                                .withOperator(QueryOperatorType.IN)
-                                .withValues(Arrays.asList("tmnubexkpzksmon", "jmquxvypomgk", "pkwhojvpa"))));
+                                    new QueryFilter()
+                                        .withAnd(Arrays.asList(
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression()
+                                                    .withName("pv")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("ylnio")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withOr(Arrays
+                                                    .asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("edm")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("vnlvxbcuiiznktwf")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("ibmikostbzb")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("buqny")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(
+                                                    new QueryComparisonExpression().withName("sgcrpfbcunezzce")
+                                                        .withOperator(QueryOperatorType.IN)
+                                                        .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("fwyfwlwxjwet")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))))
+                                        .withOr(Arrays.asList(
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression()
+                                                    .withName("zvaylptrsqqw")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("mwqkchcxwaxf")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays
+                                                    .asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("xfdeqvhpsyl")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("hkbffmbm")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))))
+                                        .withDimensions(new QueryComparisonExpression()
+                                            .withName("rgywwp")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("snptfujgicgaao")))
+                                        .withTags(new QueryComparisonExpression()
+                                            .withName("ttaqutdew")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("swvr", "unzzjgehk"))),
+                                    new QueryFilter().withAnd(Arrays.asList(new QueryFilter()
+                                        .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                        .withDimensions(new QueryComparisonExpression().withName("okffqyinljqepqwh")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList()))
+                                        .withTags(
+                                            new QueryComparisonExpression().withName("onsts")
+                                                .withOperator(QueryOperatorType.IN)
+                                                .withValues(Arrays.asList()))))
+                                        .withOr(Arrays.asList(
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("clduc")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("rds")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(
+                                                    new QueryComparisonExpression().withName("egstmninwjizci")
+                                                        .withOperator(QueryOperatorType.IN)
+                                                        .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("hgshe")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays
+                                                    .asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("uluxl")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("vnersbycucrw")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("brqbsmswzi")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("uhok")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))))
+                                        .withDimensions(new QueryComparisonExpression().withName("swhvhczznvfbycj")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("wwixzvumw")))
+                                        .withTags(new QueryComparisonExpression()
+                                            .withName("qhndvnoam")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("ehaohdjhh", "lzok", "coxpelnjeta", "ltsxoatf"))),
+                                    new QueryFilter()
+                                        .withAnd(Arrays.asList(new QueryFilter()
+                                            .withAnd(Arrays.asList(new QueryFilter()))
+                                            .withOr(Arrays.asList(new QueryFilter()))
+                                            .withDimensions(new QueryComparisonExpression().withName("wvefloccsrmoz")
+                                                .withOperator(QueryOperatorType.IN)
+                                                .withValues(Arrays.asList()))
+                                            .withTags(new QueryComparisonExpression().withName("ipgawtxx")
+                                                .withOperator(QueryOperatorType.IN)
+                                                .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("jxgrytfmp")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("ilrmcaykggnox")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))))
+                                        .withOr(Arrays.asList(
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("ndfcpfn")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("hjtwkjaosrx")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("tcqiosmg")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("hgxqdlyrt")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter().withAnd(Arrays.asList(new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("tz")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("bhjmznnb")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))))
+                                        .withDimensions(new QueryComparisonExpression()
+                                            .withName("eq")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("rvlagunbtgfebwln", "mhyreeudz", "av")))
+                                        .withTags(new QueryComparisonExpression().withName("dqmjxly")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("lgouwtlmjj", "uojqt"))),
+                                    new QueryFilter()
+                                        .withAnd(Arrays.asList(
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("tu")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("fjkwrusnkq")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter().withAnd(Arrays.asList(new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("njqhdenxa")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("pakdkifmjnnawt")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("kpggqoweyi")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("lisn")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(
+                                                    new QueryComparisonExpression().withName("pizruwnpqxpxiw")
+                                                        .withOperator(QueryOperatorType.IN)
+                                                        .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("gjsaasiixtm")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))))
+                                        .withOr(Arrays.asList(
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("hgfgrwsd")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("atzv")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("ictc")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression()
+                                                    .withName("xkjzwrgxffm")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList())),
+                                            new QueryFilter()
+                                                .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter()))
+                                                .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(),
+                                                    new QueryFilter(), new QueryFilter()))
+                                                .withDimensions(new QueryComparisonExpression().withName("gozxw")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))
+                                                .withTags(new QueryComparisonExpression().withName("bydpizqaclnapxb")
+                                                    .withOperator(QueryOperatorType.IN)
+                                                    .withValues(Arrays.asList()))))
+                                        .withDimensions(
+                                            new QueryComparisonExpression().withName("nugj")
+                                                .withOperator(QueryOperatorType.IN)
+                                                .withValues(Arrays.asList("smfcttuxuuyilfl", "oiquvrehmrnjhvs",
+                                                    "jztczytqj", "w")))
+                                        .withTags(new QueryComparisonExpression().withName("uunfprnjletlxsm")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("do", "ifamowazi")))))
+                        .withDimensions(new QueryComparisonExpression().withName("knlqwzdvpiwhxqsz")
+                            .withOperator(QueryOperatorType.IN)
+                            .withValues(Arrays.asList("aajquhuxylrj", "m", "ygjbmzyospspsh")))
+                        .withTags(new QueryComparisonExpression().withName("fkyjpmspbpssdfpp")
+                            .withOperator(QueryOperatorType.IN)
+                            .withValues(Arrays.asList("tieyujtvczkcny"))));
         model = BinaryData.fromObject(model).toObject(QueryDataset.class);
         Assertions.assertEquals(GranularityType.DAILY, model.granularity());
-        Assertions.assertEquals("fvhqc", model.configuration().columns().get(0));
-        Assertions.assertEquals("lxyjr", model.aggregation().get("agafcnihgwqap").name());
-        Assertions.assertEquals(FunctionType.SUM, model.aggregation().get("agafcnihgwqap").function());
+        Assertions.assertEquals("ubwefqs", model.configuration().columns().get(0));
+        Assertions.assertEquals("aqtferr", model.aggregation().get("ex").name());
+        Assertions.assertEquals(FunctionType.SUM, model.aggregation().get("ex").function());
         Assertions.assertEquals(QueryColumnType.DIMENSION, model.grouping().get(0).type());
-        Assertions.assertEquals("bzdopcj", model.grouping().get(0).name());
-        Assertions.assertEquals("fy", model.filter().dimensions().name());
+        Assertions.assertEquals("xap", model.grouping().get(0).name());
+        Assertions.assertEquals("i", model.filter().and().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("sdaultxij", model.filter().and().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("xynqnz", model.filter().and().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("sovwxznptgoeiyb", model.filter().and().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("kzobgopxlhsln", model.filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("ieixynllxe", model.filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("fdwfmvigorqj", model.filter().and().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().and().get(0).tags().operator());
+        Assertions.assertEquals("zhraglkafh", model.filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("pv", model.filter().or().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("ylnio", model.filter().or().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("zvaylptrsqqw", model.filter().or().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("mwqkchcxwaxf", model.filter().or().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("rgywwp", model.filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("snptfujgicgaao", model.filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("ttaqutdew", model.filter().or().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.filter().or().get(0).tags().operator());
+        Assertions.assertEquals("swvr", model.filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("knlqwzdvpiwhxqsz", model.filter().dimensions().name());
         Assertions.assertEquals(QueryOperatorType.IN, model.filter().dimensions().operator());
-        Assertions.assertEquals("pfvmwyhrfou", model.filter().dimensions().values().get(0));
-        Assertions.assertEquals("kcpwiy", model.filter().tags().name());
+        Assertions.assertEquals("aajquhuxylrj", model.filter().dimensions().values().get(0));
+        Assertions.assertEquals("fkyjpmspbpssdfpp", model.filter().tags().name());
         Assertions.assertEquals(QueryOperatorType.IN, model.filter().tags().operator());
-        Assertions.assertEquals("tmnubexkpzksmon", model.filter().tags().values().get(0));
+        Assertions.assertEquals("tieyujtvczkcny", model.filter().tags().values().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

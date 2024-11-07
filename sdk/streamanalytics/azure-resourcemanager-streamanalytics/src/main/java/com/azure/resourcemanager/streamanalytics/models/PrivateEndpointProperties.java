@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties associated with a private endpoint.
  */
 @Fluent
-public final class PrivateEndpointProperties {
+public final class PrivateEndpointProperties implements JsonSerializable<PrivateEndpointProperties> {
     /*
      * The date when this private endpoint was created.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private String createdDate;
 
     /*
      * A list of connections to the remote resource. Immutable after it is set.
      */
-    @JsonProperty(value = "manualPrivateLinkServiceConnections")
     private List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections;
 
     /**
@@ -72,5 +74,47 @@ public final class PrivateEndpointProperties {
         if (manualPrivateLinkServiceConnections() != null) {
             manualPrivateLinkServiceConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("manualPrivateLinkServiceConnections", this.manualPrivateLinkServiceConnections,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointProperties.
+     */
+    public static PrivateEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointProperties deserializedPrivateEndpointProperties = new PrivateEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdDate".equals(fieldName)) {
+                    deserializedPrivateEndpointProperties.createdDate = reader.getString();
+                } else if ("manualPrivateLinkServiceConnections".equals(fieldName)) {
+                    List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections
+                        = reader.readArray(reader1 -> PrivateLinkServiceConnection.fromJson(reader1));
+                    deserializedPrivateEndpointProperties.manualPrivateLinkServiceConnections
+                        = manualPrivateLinkServiceConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointProperties;
+        });
     }
 }

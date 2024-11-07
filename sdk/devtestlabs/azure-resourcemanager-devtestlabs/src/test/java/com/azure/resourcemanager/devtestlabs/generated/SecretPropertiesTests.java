@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class SecretPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecretProperties model =
-            BinaryData
-                .fromString(
-                    "{\"value\":\"hu\",\"provisioningState\":\"mjkavlgorbmft\",\"uniqueIdentifier\":\"dtzfjltfvnzcy\"}")
-                .toObject(SecretProperties.class);
+        SecretProperties model = BinaryData
+            .fromString(
+                "{\"value\":\"hu\",\"provisioningState\":\"mjkavlgorbmft\",\"uniqueIdentifier\":\"dtzfjltfvnzcy\"}")
+            .toObject(SecretProperties.class);
         Assertions.assertEquals("hu", model.value());
     }
 

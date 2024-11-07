@@ -36,8 +36,8 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body);
+    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(String resourceGroupName,
+        String networkFabricName, NetworkFabricInner body);
 
     /**
      * Create Network Fabric.
@@ -54,8 +54,8 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context);
+    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(String resourceGroupName,
+        String networkFabricName, NetworkFabricInner body, Context context);
 
     /**
      * Create Network Fabric.
@@ -88,8 +88,8 @@ public interface NetworkFabricsClient {
      * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkFabricInner create(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context);
+    NetworkFabricInner create(String resourceGroupName, String networkFabricName, NetworkFabricInner body,
+        Context context);
 
     /**
      * Gets a Network Fabric.
@@ -105,8 +105,8 @@ public interface NetworkFabricsClient {
      * @return network Fabric resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkFabricInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFabricName, Context context);
+    Response<NetworkFabricInner> getByResourceGroupWithResponse(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Gets a Network Fabric.
@@ -137,8 +137,8 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body);
+    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(String resourceGroupName,
+        String networkFabricName, NetworkFabricPatch body);
 
     /**
      * Updates a Network Fabric.
@@ -155,8 +155,8 @@ public interface NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context);
+    SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(String resourceGroupName,
+        String networkFabricName, NetworkFabricPatch body, Context context);
 
     /**
      * Updates a Network Fabric.
@@ -189,8 +189,8 @@ public interface NetworkFabricsClient {
      * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkFabricInner update(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context);
+    NetworkFabricInner update(String resourceGroupName, String networkFabricName, NetworkFabricPatch body,
+        Context context);
 
     /**
      * Deletes a Network Fabric.
@@ -369,8 +369,8 @@ public interface NetworkFabricsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner provision(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdateInner provision(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -434,8 +434,8 @@ public interface NetworkFabricsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner deprovision(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdateInner deprovision(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -486,8 +486,8 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkFabricName, UpdateVersion body);
+    CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkFabricName,
+        UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -504,8 +504,8 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context);
+    CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkFabricName,
+        UpdateVersion body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -553,8 +553,8 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkFabricName);
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName,
+        String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -570,8 +570,8 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -589,8 +589,8 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateWorkloadManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+        beginUpdateWorkloadManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -609,8 +609,8 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateWorkloadManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+        beginUpdateWorkloadManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -627,8 +627,8 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -646,8 +646,8 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdateInner updateWorkloadManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -665,8 +665,8 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateInfraManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+        beginUpdateInfraManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -685,8 +685,8 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateInfraManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+        beginUpdateInfraManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -703,8 +703,8 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -722,8 +722,8 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -740,8 +740,8 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
-        beginValidateConfiguration(
-            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body);
+        beginValidateConfiguration(String resourceGroupName, String networkFabricName,
+            ValidateConfigurationProperties body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -759,8 +759,8 @@ public interface NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
-        beginValidateConfiguration(
-            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context);
+        beginValidateConfiguration(String resourceGroupName, String networkFabricName,
+            ValidateConfigurationProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -776,8 +776,8 @@ public interface NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
+        ValidateConfigurationProperties body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -794,8 +794,8 @@ public interface NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
+        ValidateConfigurationProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -811,8 +811,8 @@ public interface NetworkFabricsClient {
      *     instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner> beginGetTopology(
-        String resourceGroupName, String networkFabricName);
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginGetTopology(String resourceGroupName, String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -829,8 +829,8 @@ public interface NetworkFabricsClient {
      *     instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner> beginGetTopology(
-        String resourceGroupName, String networkFabricName, Context context);
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginGetTopology(String resourceGroupName, String networkFabricName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -925,6 +925,6 @@ public interface NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName, String networkFabricName,
+        Context context);
 }

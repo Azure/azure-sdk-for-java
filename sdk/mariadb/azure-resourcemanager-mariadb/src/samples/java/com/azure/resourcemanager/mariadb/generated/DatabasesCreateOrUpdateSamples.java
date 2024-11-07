@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for Databases CreateOrUpdate. */
+/**
+ * Samples for Databases CreateOrUpdate.
+ */
 public final class DatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/DatabaseCreate.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/DatabaseCreate.json
      */
     /**
      * Sample code: DatabaseCreate.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void databaseCreate(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .databases()
+        manager.databases()
             .define("db1")
             .withExistingServer("TestGroup", "testserver")
             .withCharset("utf8")

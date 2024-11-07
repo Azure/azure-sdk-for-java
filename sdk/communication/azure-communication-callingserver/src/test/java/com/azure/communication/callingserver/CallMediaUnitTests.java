@@ -29,19 +29,15 @@ public class CallMediaUnitTests {
 
     @BeforeEach
     public void setup() {
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 202)))
-            );
+        CallConnection callConnection = CallAutomationUnitTestBase
+            .getCallConnection(new ArrayList<>(Collections.singletonList(new AbstractMap.SimpleEntry<>("", 202))));
         callMedia = callConnection.getCallMedia();
 
         playSource = new FileSource();
         playSource.setPlaySourceId("playSourceId");
         playSource.setUri("filePath");
 
-        playOptions = new PlayOptions()
-            .setLoop(false)
-            .setOperationContext("operationContext");
+        playOptions = new PlayOptions().setLoop(false).setOperationContext("operationContext");
     }
 
     @Test
@@ -69,7 +65,8 @@ public class CallMediaUnitTests {
     @Test
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recognizeWithResponseTest() {
-        RecognizeOptions recognizeOptions = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
+        RecognizeOptions recognizeOptions
+            = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
         Response<Void> response = callMedia.recognizeWithResponse(recognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }

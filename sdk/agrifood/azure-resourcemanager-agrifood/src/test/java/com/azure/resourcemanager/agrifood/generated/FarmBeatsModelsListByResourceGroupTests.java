@@ -34,37 +34,27 @@ public final class FarmBeatsModelsListByResourceGroupTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"principalId\":\"jfcn\",\"tenantId\":\"k\",\"type\":\"SystemAssigned\"},\"properties\":{\"instanceUri\":\"bttk\",\"provisioningState\":\"Creating\",\"sensorIntegration\":{\"enabled\":\"nv\",\"provisioningState\":\"Creating\"},\"publicNetworkAccess\":\"Hybrid\",\"privateEndpointConnections\":{\"id\":\"lfplp\",\"name\":\"oxuscrpabgyepsbj\",\"type\":\"azqugxywpmueefj\"}},\"location\":\"wfqkquj\",\"tags\":{\"xtccmg\":\"uyonobglaoc\",\"wfudwpzntxhdzhl\":\"udxytlmoyrx\",\"hckfrlhrx\":\"qj\",\"ca\":\"bkyvp\"},\"id\":\"uzbpzkafku\",\"name\":\"b\",\"type\":\"rnwb\"}]}";
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"principalId\":\"jfcn\",\"tenantId\":\"k\",\"type\":\"SystemAssigned\"},\"properties\":{\"instanceUri\":\"bttk\",\"provisioningState\":\"Creating\",\"sensorIntegration\":{\"enabled\":\"nv\",\"provisioningState\":\"Creating\"},\"publicNetworkAccess\":\"Hybrid\",\"privateEndpointConnections\":{\"id\":\"lfplp\",\"name\":\"oxuscrpabgyepsbj\",\"type\":\"azqugxywpmueefj\"}},\"location\":\"wfqkquj\",\"tags\":{\"xtccmg\":\"uyonobglaoc\",\"wfudwpzntxhdzhl\":\"udxytlmoyrx\",\"hckfrlhrx\":\"qj\",\"ca\":\"bkyvp\"},\"id\":\"uzbpzkafku\",\"name\":\"b\",\"type\":\"rnwb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AgriFoodManager manager =
-            AgriFoodManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AgriFoodManager manager = AgriFoodManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<FarmBeats> response =
-            manager.farmBeatsModels().listByResourceGroup("rupqsxvnmicy", 560100496, "ceoveilovno", Context.NONE);
+        PagedIterable<FarmBeats> response
+            = manager.farmBeatsModels().listByResourceGroup("rupqsxvnmicy", 560100496, "ceoveilovno", Context.NONE);
 
         Assertions.assertEquals("wfqkquj", response.iterator().next().location());
         Assertions.assertEquals("uyonobglaoc", response.iterator().next().tags().get("xtccmg"));

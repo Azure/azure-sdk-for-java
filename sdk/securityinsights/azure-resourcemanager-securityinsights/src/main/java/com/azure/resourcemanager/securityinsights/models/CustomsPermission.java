@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Customs permissions required for the connector. */
+/**
+ * Customs permissions required for the connector.
+ */
 @Fluent
-public class CustomsPermission {
+public class CustomsPermission implements JsonSerializable<CustomsPermission> {
     /*
      * Customs permissions name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Customs permissions description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of CustomsPermission class.
+     */
+    public CustomsPermission() {
+    }
+
+    /**
      * Get the name property: Customs permissions name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +43,7 @@ public class CustomsPermission {
 
     /**
      * Set the name property: Customs permissions name.
-     *
+     * 
      * @param name the name value to set.
      * @return the CustomsPermission object itself.
      */
@@ -44,7 +54,7 @@ public class CustomsPermission {
 
     /**
      * Get the description property: Customs permissions description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +63,7 @@ public class CustomsPermission {
 
     /**
      * Set the description property: Customs permissions description.
-     *
+     * 
      * @param description the description value to set.
      * @return the CustomsPermission object itself.
      */
@@ -64,9 +74,48 @@ public class CustomsPermission {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomsPermission from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomsPermission if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomsPermission.
+     */
+    public static CustomsPermission fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomsPermission deserializedCustomsPermission = new CustomsPermission();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCustomsPermission.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCustomsPermission.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomsPermission;
+        });
     }
 }

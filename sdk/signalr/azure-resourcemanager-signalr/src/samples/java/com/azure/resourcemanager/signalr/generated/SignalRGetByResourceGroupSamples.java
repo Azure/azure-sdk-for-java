@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-/** Samples for SignalR GetByResourceGroup. */
+/**
+ * Samples for SignalR GetByResourceGroup.
+ */
 public final class SignalRGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Get.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Get.
+     * json
      */
     /**
      * Sample code: SignalR_Get.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRGet(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRs()
+        manager.signalRs()
             .getByResourceGroupWithResponse("myResourceGroup", "mySignalRService", com.azure.core.util.Context.NONE);
     }
 }

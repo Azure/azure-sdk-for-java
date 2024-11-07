@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PropertyChangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PropertyChange model =
-            BinaryData
-                .fromString(
-                    "{\"changeType\":\"Update\",\"changeCategory\":\"System\",\"jsonPath\":\"vmgxsab\",\"displayName\":\"qduujitcjczdz\",\"level\":\"Noisy\",\"description\":\"hkr\",\"oldValue\":\"d\",\"newValue\":\"p\",\"isDataMasked\":true}")
-                .toObject(PropertyChange.class);
+        PropertyChange model = BinaryData.fromString(
+            "{\"changeType\":\"Update\",\"changeCategory\":\"System\",\"jsonPath\":\"vmgxsab\",\"displayName\":\"qduujitcjczdz\",\"level\":\"Noisy\",\"description\":\"hkr\",\"oldValue\":\"d\",\"newValue\":\"p\",\"isDataMasked\":true}")
+            .toObject(PropertyChange.class);
         Assertions.assertEquals(ChangeType.UPDATE, model.changeType());
         Assertions.assertEquals(ChangeCategory.SYSTEM, model.changeCategory());
         Assertions.assertEquals("vmgxsab", model.jsonPath());
@@ -32,17 +30,15 @@ public final class PropertyChangeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PropertyChange model =
-            new PropertyChange()
-                .withChangeType(ChangeType.UPDATE)
-                .withChangeCategory(ChangeCategory.SYSTEM)
-                .withJsonPath("vmgxsab")
-                .withDisplayName("qduujitcjczdz")
-                .withLevel(Level.NOISY)
-                .withDescription("hkr")
-                .withOldValue("d")
-                .withNewValue("p")
-                .withIsDataMasked(true);
+        PropertyChange model = new PropertyChange().withChangeType(ChangeType.UPDATE)
+            .withChangeCategory(ChangeCategory.SYSTEM)
+            .withJsonPath("vmgxsab")
+            .withDisplayName("qduujitcjczdz")
+            .withLevel(Level.NOISY)
+            .withDescription("hkr")
+            .withOldValue("d")
+            .withNewValue("p")
+            .withIsDataMasked(true);
         model = BinaryData.fromObject(model).toObject(PropertyChange.class);
         Assertions.assertEquals(ChangeType.UPDATE, model.changeType());
         Assertions.assertEquals(ChangeCategory.SYSTEM, model.changeCategory());

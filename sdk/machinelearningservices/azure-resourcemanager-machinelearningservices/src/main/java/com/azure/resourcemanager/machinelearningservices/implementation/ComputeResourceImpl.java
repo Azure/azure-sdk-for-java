@@ -98,25 +98,21 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public ComputeResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningComputes()
-                .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningComputes()
+            .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ComputeResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningComputes()
-                .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningComputes()
+            .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), context);
         return this;
     }
 
-    ComputeResourceImpl(
-        String name, com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
+    ComputeResourceImpl(String name,
+        com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = new ComputeResourceInner();
         this.serviceManager = serviceManager;
         this.computeName = name;
@@ -128,25 +124,20 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public ComputeResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningComputes()
-                .update(resourceGroupName, workspaceName, computeName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningComputes()
+            .update(resourceGroupName, workspaceName, computeName, updateParameters, Context.NONE);
         return this;
     }
 
     public ComputeResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningComputes()
-                .update(resourceGroupName, workspaceName, computeName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningComputes()
+            .update(resourceGroupName, workspaceName, computeName, updateParameters, context);
         return this;
     }
 
-    ComputeResourceImpl(
-        ComputeResourceInner innerObject,
+    ComputeResourceImpl(ComputeResourceInner innerObject,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -156,22 +147,18 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public ComputeResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningComputes()
-                .getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningComputes()
+            .getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ComputeResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineLearningComputes()
-                .getWithResponse(resourceGroupName, workspaceName, computeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineLearningComputes()
+            .getWithResponse(resourceGroupName, workspaceName, computeName, context)
+            .getValue();
         return this;
     }
 
@@ -180,8 +167,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public PagedIterable<AmlComputeNodeInformation> listNodes(Context context) {
-        return serviceManager
-            .machineLearningComputes()
+        return serviceManager.machineLearningComputes()
             .listNodes(resourceGroupName, workspaceName, computeName, context);
     }
 
@@ -190,8 +176,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public Response<ComputeSecrets> listKeysWithResponse(Context context) {
-        return serviceManager
-            .machineLearningComputes()
+        return serviceManager.machineLearningComputes()
             .listKeysWithResponse(resourceGroupName, workspaceName, computeName, context);
     }
 
@@ -216,8 +201,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public Response<Void> restartWithResponse(Context context) {
-        return serviceManager
-            .machineLearningComputes()
+        return serviceManager.machineLearningComputes()
             .restartWithResponse(resourceGroupName, workspaceName, computeName, context);
     }
 

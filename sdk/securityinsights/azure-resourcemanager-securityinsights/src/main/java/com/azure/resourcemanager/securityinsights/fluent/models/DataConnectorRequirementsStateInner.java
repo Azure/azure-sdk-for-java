@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorAuthorizationState;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorLicenseState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Data connector requirements status. */
+/**
+ * Data connector requirements status.
+ */
 @Fluent
-public final class DataConnectorRequirementsStateInner {
+public final class DataConnectorRequirementsStateInner
+    implements JsonSerializable<DataConnectorRequirementsStateInner> {
     /*
      * Authorization state for this connector
      */
-    @JsonProperty(value = "authorizationState")
     private DataConnectorAuthorizationState authorizationState;
 
     /*
      * License state for this connector
      */
-    @JsonProperty(value = "licenseState")
     private DataConnectorLicenseState licenseState;
 
     /**
+     * Creates an instance of DataConnectorRequirementsStateInner class.
+     */
+    public DataConnectorRequirementsStateInner() {
+    }
+
+    /**
      * Get the authorizationState property: Authorization state for this connector.
-     *
+     * 
      * @return the authorizationState value.
      */
     public DataConnectorAuthorizationState authorizationState() {
@@ -35,19 +46,19 @@ public final class DataConnectorRequirementsStateInner {
 
     /**
      * Set the authorizationState property: Authorization state for this connector.
-     *
+     * 
      * @param authorizationState the authorizationState value to set.
      * @return the DataConnectorRequirementsStateInner object itself.
      */
-    public DataConnectorRequirementsStateInner withAuthorizationState(
-        DataConnectorAuthorizationState authorizationState) {
+    public DataConnectorRequirementsStateInner
+        withAuthorizationState(DataConnectorAuthorizationState authorizationState) {
         this.authorizationState = authorizationState;
         return this;
     }
 
     /**
      * Get the licenseState property: License state for this connector.
-     *
+     * 
      * @return the licenseState value.
      */
     public DataConnectorLicenseState licenseState() {
@@ -56,7 +67,7 @@ public final class DataConnectorRequirementsStateInner {
 
     /**
      * Set the licenseState property: License state for this connector.
-     *
+     * 
      * @param licenseState the licenseState value to set.
      * @return the DataConnectorRequirementsStateInner object itself.
      */
@@ -67,9 +78,52 @@ public final class DataConnectorRequirementsStateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authorizationState",
+            this.authorizationState == null ? null : this.authorizationState.toString());
+        jsonWriter.writeStringField("licenseState", this.licenseState == null ? null : this.licenseState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectorRequirementsStateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectorRequirementsStateInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataConnectorRequirementsStateInner.
+     */
+    public static DataConnectorRequirementsStateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectorRequirementsStateInner deserializedDataConnectorRequirementsStateInner
+                = new DataConnectorRequirementsStateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorizationState".equals(fieldName)) {
+                    deserializedDataConnectorRequirementsStateInner.authorizationState
+                        = DataConnectorAuthorizationState.fromString(reader.getString());
+                } else if ("licenseState".equals(fieldName)) {
+                    deserializedDataConnectorRequirementsStateInner.licenseState
+                        = DataConnectorLicenseState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataConnectorRequirementsStateInner;
+        });
     }
 }

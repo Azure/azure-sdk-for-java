@@ -6,23 +6,25 @@ package com.azure.resourcemanager.datalakeanalytics.generated;
 
 import com.azure.resourcemanager.datalakeanalytics.models.FirewallRule;
 
-/** Samples for FirewallRules Update. */
+/**
+ * Samples for FirewallRules Update.
+ */
 public final class FirewallRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/stable/2016-11-01/examples/FirewallRules_Update.json
+     * x-ms-original-file:
+     * specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/stable/2016-11-01/examples/
+     * FirewallRules_Update.json
      */
     /**
      * Sample code: Updates the specified firewall rule.
-     *
+     * 
      * @param manager Entry point to DataLakeAnalyticsManager.
      */
-    public static void updatesTheSpecifiedFirewallRule(
-        com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager manager) {
-        FirewallRule resource =
-            manager
-                .firewallRules()
-                .getWithResponse("contosorg", "contosoadla", "test_rule", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updatesTheSpecifiedFirewallRule(com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager manager) {
+        FirewallRule resource = manager.firewallRules()
+            .getWithResponse("contosorg", "contosoadla", "test_rule", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withStartIpAddress("1.1.1.1").withEndIpAddress("2.2.2.2").apply();
     }
 }

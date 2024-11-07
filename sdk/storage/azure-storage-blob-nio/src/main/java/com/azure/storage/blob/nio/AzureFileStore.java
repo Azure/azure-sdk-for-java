@@ -23,13 +23,12 @@ public final class AzureFileStore extends FileStore {
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;
 
-
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName, Boolean skipConnectionCheck)
         throws IOException {
         // A FileStore should only ever be created by a FileSystem.
         if (Objects.isNull(parentFileSystem)) {
-            throw LoggingUtility.logError(LOGGER, new IllegalStateException("AzureFileStore cannot be instantiated "
-                + "without a parent FileSystem"));
+            throw LoggingUtility.logError(LOGGER,
+                new IllegalStateException("AzureFileStore cannot be instantiated " + "without a parent FileSystem"));
         }
         this.parentFileSystem = parentFileSystem;
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);
@@ -41,8 +40,8 @@ public final class AzureFileStore extends FileStore {
                     this.containerClient.create();
                 }
             } catch (Exception e) {
-                throw LoggingUtility.logError(LOGGER, new IOException("There was an error in establishing the existence of "
-                    + "container: " + containerName, e));
+                throw LoggingUtility.logError(LOGGER, new IOException(
+                    "There was an error in establishing the existence of " + "container: " + containerName, e));
             }
         }
     }
@@ -184,8 +183,8 @@ public final class AzureFileStore extends FileStore {
      */
     @Override
     public Object getAttribute(String s) throws IOException {
-        throw LoggingUtility.logError(LOGGER, new UnsupportedOperationException("FileStoreAttributeViews aren't"
-            + " supported."));
+        throw LoggingUtility.logError(LOGGER,
+            new UnsupportedOperationException("FileStoreAttributeViews aren't" + " supported."));
     }
 
     BlobContainerClient getContainerClient() {

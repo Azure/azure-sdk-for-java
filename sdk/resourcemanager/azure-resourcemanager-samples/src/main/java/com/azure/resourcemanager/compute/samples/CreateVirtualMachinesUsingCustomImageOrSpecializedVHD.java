@@ -53,7 +53,8 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript
+            = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
         List<String> apacheInstallScriptUris = new ArrayList<>();
         apacheInstallScriptUris.add(apacheInstallScript);
@@ -64,26 +65,27 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             System.out.println("Creating a Linux VM");
 
-            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .defineNewExtension("CustomScriptForLinux")
-                        .withPublisher("Microsoft.OSTCExtensions")
-                        .withType("CustomScriptForLinux")
-                        .withVersion("1.4")
-                        .withMinorVersionAutoUpgrade()
-                        .withPublicSetting("fileUris", apacheInstallScriptUris)
-                        .withPublicSetting("commandToExecute", apacheInstallCommand)
-                        .attach()
-                    .create();
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
+                .define(linuxVMName1)
+                .withRegion(Region.US_WEST2)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withUnmanagedDisks()
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                .defineNewExtension("CustomScriptForLinux")
+                .withPublisher("Microsoft.OSTCExtensions")
+                .withType("CustomScriptForLinux")
+                .withVersion("1.4")
+                .withMinorVersionAutoUpgrade()
+                .withPublicSetting("fileUris", apacheInstallScriptUris)
+                .withPublicSetting("commandToExecute", apacheInstallCommand)
+                .attach()
+                .create();
 
             System.out.println("Created a Linux VM: " + linuxVM.id());
             Utils.print(linuxVM);
@@ -121,17 +123,18 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
             System.out.println("Creating a Linux VM using captured image - " + capturedImageUri);
 
-            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines()
+                .define(linuxVMName2)
+                .withRegion(Region.US_WEST2)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+                .create();
 
             Utils.print(linuxVM2);
 
@@ -148,19 +151,19 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
             //=============================================================
             // Create a Linux VM using 'specialized VHD' of previous VM
 
-            System.out.println("Creating a new Linux VM by attaching OS Disk vhd - "
-                    + specializedVhd
-                    + " of deleted VM");
+            System.out
+                .println("Creating a new Linux VM by attaching OS Disk vhd - " + specializedVhd + " of deleted VM");
 
-            VirtualMachine linuxVM3 = azureResourceManager.virtualMachines().define(linuxVMName3)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withSpecializedOSUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))       // when attaching a specialized VHD
-                    .create();
+            VirtualMachine linuxVM3 = azureResourceManager.virtualMachines()
+                .define(linuxVMName3)
+                .withRegion(Region.US_WEST2)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withSpecializedOSUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)       // when attaching a specialized VHD
+                .create();
 
             Utils.print(linuxVM3);
             return true;
@@ -178,6 +181,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -192,8 +196,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -222,7 +225,8 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
         JsonNode resourcesNode = rootNode.path("resources");
         if (resourcesNode instanceof MissingNode) {
-            throw new IllegalArgumentException("Expected 'resources' node not found in the capture result -" + capturedResultJson);
+            throw new IllegalArgumentException(
+                "Expected 'resources' node not found in the capture result -" + capturedResultJson);
         }
 
         String imageUri = null;
@@ -246,7 +250,8 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
         }
 
         if (imageUri == null) {
-            throw new IllegalArgumentException("Could not locate image uri under expected section in the capture result -" + capturedResultJson);
+            throw new IllegalArgumentException(
+                "Could not locate image uri under expected section in the capture result -" + capturedResultJson);
         }
         return imageUri;
     }
@@ -254,11 +259,12 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
     protected static void deprovisionAgentInLinuxVM(VirtualMachine virtualMachine) {
         System.out.println("Trying to de-provision");
 
-        virtualMachine.manager().serviceClient().getVirtualMachines().beginRunCommand(
-            virtualMachine.resourceGroupName(), virtualMachine.name(),
-            new RunCommandInput()
-                .withCommandId("RunShellScript")
-                .withScript(Collections.singletonList("sudo waagent -deprovision+user --force")));
+        virtualMachine.manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .beginRunCommand(virtualMachine.resourceGroupName(), virtualMachine.name(),
+                new RunCommandInput().withCommandId("RunShellScript")
+                    .withScript(Collections.singletonList("sudo waagent -deprovision+user --force")));
 
         // wait as above command will not return as sync
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));

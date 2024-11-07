@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mariadb.models.QueryPerformanceInsightResetDataResultState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Result of Query Performance Insight data reset. */
+/**
+ * Result of Query Performance Insight data reset.
+ */
 @Fluent
-public final class QueryPerformanceInsightResetDataResultInner {
+public final class QueryPerformanceInsightResetDataResultInner
+    implements JsonSerializable<QueryPerformanceInsightResetDataResultInner> {
     /*
      * Indicates result of the operation.
      */
-    @JsonProperty(value = "status")
     private QueryPerformanceInsightResetDataResultState status;
 
     /*
      * operation message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of QueryPerformanceInsightResetDataResultInner class. */
+    /**
+     * Creates an instance of QueryPerformanceInsightResetDataResultInner class.
+     */
     public QueryPerformanceInsightResetDataResultInner() {
     }
 
     /**
      * Get the status property: Indicates result of the operation.
-     *
+     * 
      * @return the status value.
      */
     public QueryPerformanceInsightResetDataResultState status() {
@@ -38,7 +45,7 @@ public final class QueryPerformanceInsightResetDataResultInner {
 
     /**
      * Set the status property: Indicates result of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the QueryPerformanceInsightResetDataResultInner object itself.
      */
@@ -49,7 +56,7 @@ public final class QueryPerformanceInsightResetDataResultInner {
 
     /**
      * Get the message property: operation message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -58,7 +65,7 @@ public final class QueryPerformanceInsightResetDataResultInner {
 
     /**
      * Set the message property: operation message.
-     *
+     * 
      * @param message the message value to set.
      * @return the QueryPerformanceInsightResetDataResultInner object itself.
      */
@@ -69,9 +76,50 @@ public final class QueryPerformanceInsightResetDataResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryPerformanceInsightResetDataResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryPerformanceInsightResetDataResultInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryPerformanceInsightResetDataResultInner.
+     */
+    public static QueryPerformanceInsightResetDataResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryPerformanceInsightResetDataResultInner deserializedQueryPerformanceInsightResetDataResultInner
+                = new QueryPerformanceInsightResetDataResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedQueryPerformanceInsightResetDataResultInner.status
+                        = QueryPerformanceInsightResetDataResultState.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedQueryPerformanceInsightResetDataResultInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryPerformanceInsightResetDataResultInner;
+        });
     }
 }

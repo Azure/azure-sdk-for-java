@@ -7,34 +7,31 @@ package com.azure.resourcemanager.policyinsights.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.ExpressionEvaluationDetails;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ExpressionEvaluationDetailsTests {
-    @Test
-    public void testDeserialize() {
-        ExpressionEvaluationDetails model =
-            BinaryData
-                .fromString(
-                    "{\"result\":\"euecivyhzceuoj\",\"expression\":\"rw\",\"expressionKind\":\"eiotwmcdytdx\",\"path\":\"txnrjaw\",\"operator\":\"xhniskxfbkpycgk\"}")
-                .toObject(ExpressionEvaluationDetails.class);
-        Assertions.assertEquals("euecivyhzceuoj", model.result());
-        Assertions.assertEquals("rw", model.expression());
-        Assertions.assertEquals("txnrjaw", model.path());
-        Assertions.assertEquals("xhniskxfbkpycgk", model.operator());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ExpressionEvaluationDetails model = BinaryData.fromString(
+            "{\"result\":\"v\",\"expression\":\"ovqfzge\",\"expressionKind\":\"dftuljltduce\",\"path\":\"tmczuomejwcwwqi\",\"expressionValue\":\"datanssxmojmsvpk\",\"targetValue\":\"datarvkwc\",\"operator\":\"ql\"}")
+            .toObject(ExpressionEvaluationDetails.class);
+        Assertions.assertEquals("v", model.result());
+        Assertions.assertEquals("ovqfzge", model.expression());
+        Assertions.assertEquals("tmczuomejwcwwqi", model.path());
+        Assertions.assertEquals("ql", model.operator());
     }
 
-    @Test
-    public void testSerialize() {
-        ExpressionEvaluationDetails model =
-            new ExpressionEvaluationDetails()
-                .withResult("euecivyhzceuoj")
-                .withExpression("rw")
-                .withPath("txnrjaw")
-                .withOperator("xhniskxfbkpycgk");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ExpressionEvaluationDetails model = new ExpressionEvaluationDetails().withResult("v")
+            .withExpression("ovqfzge")
+            .withPath("tmczuomejwcwwqi")
+            .withExpressionValue("datanssxmojmsvpk")
+            .withTargetValue("datarvkwc")
+            .withOperator("ql");
         model = BinaryData.fromObject(model).toObject(ExpressionEvaluationDetails.class);
-        Assertions.assertEquals("euecivyhzceuoj", model.result());
-        Assertions.assertEquals("rw", model.expression());
-        Assertions.assertEquals("txnrjaw", model.path());
-        Assertions.assertEquals("xhniskxfbkpycgk", model.operator());
+        Assertions.assertEquals("v", model.result());
+        Assertions.assertEquals("ovqfzge", model.expression());
+        Assertions.assertEquals("tmczuomejwcwwqi", model.path());
+        Assertions.assertEquals("ql", model.operator());
     }
 }

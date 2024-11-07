@@ -23,34 +23,31 @@ public final class TenantSettingsImpl implements TenantSettings {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public TenantSettingsImpl(
-        TenantSettingsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public TenantSettingsImpl(TenantSettingsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<TenantSettingsContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<TenantSettingsContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
+        PagedIterable<TenantSettingsContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
         return Utils.mapPage(inner, inner1 -> new TenantSettingsContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TenantSettingsContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Context context) {
-        PagedIterable<TenantSettingsContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, context);
+    public PagedIterable<TenantSettingsContract> listByService(String resourceGroupName, String serviceName,
+        String filter, Context context) {
+        PagedIterable<TenantSettingsContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, context);
         return Utils.mapPage(inner, inner1 -> new TenantSettingsContractImpl(inner1, this.manager()));
     }
 
-    public Response<TenantSettingsContract> getWithResponse(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context) {
-        TenantSettingsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, settingsType, context);
+    public Response<TenantSettingsContract> getWithResponse(String resourceGroupName, String serviceName,
+        SettingsTypeName settingsType, Context context) {
+        TenantSettingsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, settingsType, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TenantSettingsContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;

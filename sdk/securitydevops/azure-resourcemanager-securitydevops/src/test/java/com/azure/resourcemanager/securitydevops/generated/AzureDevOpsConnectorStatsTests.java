@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsConnectorStatsTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsConnectorStats model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"orgsCount\":7897278653566127978,\"projectsCount\":5452111836189203218,\"reposCount\":3087976590796502634},\"id\":\"dgbb\",\"name\":\"f\",\"type\":\"dgmb\"}")
-                .toObject(AzureDevOpsConnectorStats.class);
+        AzureDevOpsConnectorStats model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"orgsCount\":7897278653566127978,\"projectsCount\":5452111836189203218,\"reposCount\":3087976590796502634},\"id\":\"dgbb\",\"name\":\"f\",\"type\":\"dgmb\"}")
+            .toObject(AzureDevOpsConnectorStats.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
         Assertions.assertEquals(7897278653566127978L, model.properties().orgsCount());
         Assertions.assertEquals(5452111836189203218L, model.properties().projectsCount());
@@ -27,14 +25,11 @@ public final class AzureDevOpsConnectorStatsTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsConnectorStats model =
-            new AzureDevOpsConnectorStats()
-                .withProperties(
-                    new AzureDevOpsConnectorStatsProperties()
-                        .withProvisioningState(ProvisioningState.CANCELED)
-                        .withOrgsCount(7897278653566127978L)
-                        .withProjectsCount(5452111836189203218L)
-                        .withReposCount(3087976590796502634L));
+        AzureDevOpsConnectorStats model = new AzureDevOpsConnectorStats()
+            .withProperties(new AzureDevOpsConnectorStatsProperties().withProvisioningState(ProvisioningState.CANCELED)
+                .withOrgsCount(7897278653566127978L)
+                .withProjectsCount(5452111836189203218L)
+                .withReposCount(3087976590796502634L));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsConnectorStats.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
         Assertions.assertEquals(7897278653566127978L, model.properties().orgsCount());

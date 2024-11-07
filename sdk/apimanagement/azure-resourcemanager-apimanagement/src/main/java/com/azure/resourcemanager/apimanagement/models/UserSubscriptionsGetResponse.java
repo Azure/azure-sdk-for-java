@@ -21,12 +21,8 @@ public final class UserSubscriptionsGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public UserSubscriptionsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        SubscriptionContractInner value,
-        UserSubscriptionsGetHeaders headers) {
+    public UserSubscriptionsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        SubscriptionContractInner value, UserSubscriptionsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

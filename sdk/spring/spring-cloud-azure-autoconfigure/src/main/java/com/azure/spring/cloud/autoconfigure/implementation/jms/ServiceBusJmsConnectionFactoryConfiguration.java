@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
-class ServiceBusJmsConnectionFactoryConfiguration {
+class ServiceBusJmsConnectionFactoryConfiguration  {
 
-    private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties properties,
+    private ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties serviceBusJmsProperties,
                                                                              ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
-        return new ServiceBusJmsConnectionFactoryFactory(properties,
+        return new ServiceBusJmsConnectionFactoryFactory(serviceBusJmsProperties,
             factoryCustomizers.orderedStream().collect(Collectors.toList()))
             .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
     }
@@ -35,7 +35,8 @@ class ServiceBusJmsConnectionFactoryConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "false",
         matchIfMissing = true)
-    static class SimpleConnectionFactoryConfiguration {
+    class SimpleConnectionFactoryConfiguration {
+
 
         @Bean
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "false")
@@ -48,7 +49,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
         @ConditionalOnClass(CachingConnectionFactory.class)
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "true",
             matchIfMissing = true)
-        static class CachingConnectionFactoryConfiguration {
+        class CachingConnectionFactoryConfiguration {
 
             @Bean
             CachingConnectionFactory jmsConnectionFactory(JmsProperties jmsProperties,
@@ -68,7 +69,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({ JmsPoolConnectionFactory.class, PooledObject.class })
-    static class PooledConnectionFactoryConfiguration {
+    class PooledConnectionFactoryConfiguration {
 
         @Bean(destroyMethod = "stop")
         @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "true")

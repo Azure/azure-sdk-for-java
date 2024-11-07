@@ -55,10 +55,9 @@ public class UploadLogsTest extends ServiceTest<PerfStressOptions> {
         List<Object> logs = new ArrayList<>();
 
         for (int i = 0; i < logsCount; i++) {
-            LogData logData = new LogData()
-                    .setTime(OffsetDateTime.parse("2022-01-01T00:00:00+07:00"))
-                    .setExtendedColumn("test" + i)
-                    .setAdditionalContext("additional logs context");
+            LogData logData = new LogData().setTime(OffsetDateTime.parse("2022-01-01T00:00:00+07:00"))
+                .setExtendedColumn("test" + i)
+                .setAdditionalContext("additional logs context");
             logs.add(logData);
         }
         return logs;

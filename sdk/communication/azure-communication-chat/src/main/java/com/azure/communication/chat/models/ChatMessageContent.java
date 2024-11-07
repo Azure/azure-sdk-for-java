@@ -39,8 +39,8 @@ public final class ChatMessageContent implements JsonSerializable<ChatMessageCon
      * @param participants The participants
      * @param initiator The initiator
      */
-    public ChatMessageContent(
-            String message, String topic, Iterable<ChatParticipant> participants, CommunicationIdentifier initiator) {
+    public ChatMessageContent(String message, String topic, Iterable<ChatParticipant> participants,
+        CommunicationIdentifier initiator) {
 
         this.message = message;
         this.topic = topic;
@@ -151,14 +151,14 @@ public final class ChatMessageContent implements JsonSerializable<ChatMessageCon
                 } else if ("attachments".equals(fieldName)) {
                     attachments = reader.readArray(ChatAttachment::fromJson);
                 } else if ("initiatorCommunicationIdentifier".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    final CommunicationIdentifierModel identifier
+                        = reader.readObject(CommunicationIdentifierModel::fromJson);
                     initiator = CommunicationIdentifierConverter.convert(identifier);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ChatMessageContent(message, topic, participants, initiator)
-                .setAttachments(attachments);
+            return new ChatMessageContent(message, topic, participants, initiator).setAttachments(attachments);
         });
     }
 }

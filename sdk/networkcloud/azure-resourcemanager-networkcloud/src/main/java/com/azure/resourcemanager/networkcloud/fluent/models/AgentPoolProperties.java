@@ -196,8 +196,8 @@ public final class AgentPoolProperties {
      * @param attachedNetworkConfiguration the attachedNetworkConfiguration value to set.
      * @return the AgentPoolProperties object itself.
      */
-    public AgentPoolProperties withAttachedNetworkConfiguration(
-        AttachedNetworkConfiguration attachedNetworkConfiguration) {
+    public AgentPoolProperties
+        withAttachedNetworkConfiguration(AttachedNetworkConfiguration attachedNetworkConfiguration) {
         this.attachedNetworkConfiguration = attachedNetworkConfiguration;
         return this;
     }
@@ -407,9 +407,8 @@ public final class AgentPoolProperties {
             labels().forEach(e -> e.validate());
         }
         if (mode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property mode in model AgentPoolProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property mode in model AgentPoolProperties"));
         }
         if (taints() != null) {
             taints().forEach(e -> e.validate());
@@ -418,9 +417,8 @@ public final class AgentPoolProperties {
             upgradeSettings().validate();
         }
         if (vmSkuName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vmSkuName in model AgentPoolProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vmSkuName in model AgentPoolProperties"));
         }
     }
 

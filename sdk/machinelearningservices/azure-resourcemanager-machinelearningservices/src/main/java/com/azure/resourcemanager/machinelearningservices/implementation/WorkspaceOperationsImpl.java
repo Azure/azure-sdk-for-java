@@ -14,14 +14,14 @@ import com.azure.resourcemanager.machinelearningservices.models.WorkspaceSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceOperationsImpl implements WorkspaceOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceOperationsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceOperationsImpl.class);
 
     private final WorkspaceOperationsClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public WorkspaceOperationsImpl(
-        WorkspaceOperationsClient innerClient,
+    public WorkspaceOperationsImpl(WorkspaceOperationsClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

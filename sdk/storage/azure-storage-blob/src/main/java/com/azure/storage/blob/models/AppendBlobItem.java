@@ -74,9 +74,8 @@ public class AppendBlobItem {
      * @param versionId The version identifier of the append blob.
      */
     public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-                          final boolean isServerEncrypted, final String encryptionKeySha256,
-                          final String encryptionScope, final String blobAppendOffset,
-                          final Integer blobCommittedBlockCount, final String versionId) {
+        final boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final String blobAppendOffset, final Integer blobCommittedBlockCount, final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);

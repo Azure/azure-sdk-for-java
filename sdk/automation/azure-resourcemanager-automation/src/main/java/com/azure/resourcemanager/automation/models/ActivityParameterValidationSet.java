@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of the activity parameter validation set. */
+/**
+ * Definition of the activity parameter validation set.
+ */
 @Fluent
-public final class ActivityParameterValidationSet {
+public final class ActivityParameterValidationSet implements JsonSerializable<ActivityParameterValidationSet> {
     /*
      * Gets or sets the name of the activity parameter validation set member.
      */
-    @JsonProperty(value = "memberValue")
     private String memberValue;
 
     /**
+     * Creates an instance of ActivityParameterValidationSet class.
+     */
+    public ActivityParameterValidationSet() {
+    }
+
+    /**
      * Get the memberValue property: Gets or sets the name of the activity parameter validation set member.
-     *
+     * 
      * @return the memberValue value.
      */
     public String memberValue() {
@@ -27,7 +38,7 @@ public final class ActivityParameterValidationSet {
 
     /**
      * Set the memberValue property: Gets or sets the name of the activity parameter validation set member.
-     *
+     * 
      * @param memberValue the memberValue value to set.
      * @return the ActivityParameterValidationSet object itself.
      */
@@ -38,9 +49,46 @@ public final class ActivityParameterValidationSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("memberValue", this.memberValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityParameterValidationSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityParameterValidationSet if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityParameterValidationSet.
+     */
+    public static ActivityParameterValidationSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityParameterValidationSet deserializedActivityParameterValidationSet
+                = new ActivityParameterValidationSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("memberValue".equals(fieldName)) {
+                    deserializedActivityParameterValidationSet.memberValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityParameterValidationSet;
+        });
     }
 }

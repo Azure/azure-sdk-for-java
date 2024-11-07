@@ -47,8 +47,8 @@ public interface DigitalTwinsEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstances Endpoint along with {@link Response}.
      */
-    Response<DigitalTwinsEndpointResource> getWithResponse(
-        String resourceGroupName, String resourceName, String endpointName, Context context);
+    Response<DigitalTwinsEndpointResource> getWithResponse(String resourceGroupName, String resourceName,
+        String endpointName, Context context);
 
     /**
      * Get DigitalTwinsInstances Endpoint.
@@ -88,8 +88,8 @@ public interface DigitalTwinsEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return digitalTwinsInstance endpoint resource.
      */
-    DigitalTwinsEndpointResource delete(
-        String resourceGroupName, String resourceName, String endpointName, Context context);
+    DigitalTwinsEndpointResource delete(String resourceGroupName, String resourceName, String endpointName,
+        Context context);
 
     /**
      * Get DigitalTwinsInstances Endpoint.

@@ -84,7 +84,7 @@ public final class TrafficIncidentTileOptions {
         this.zoom = zoom;
         return this;
     }
-    
+
     /**
      * get tile index
      * @return TileIndex
@@ -119,5 +119,5 @@ public final class TrafficIncidentTileOptions {
     public TrafficIncidentTileOptions setTrafficState(String trafficState) {
         this.trafficState = trafficState;
         return this;
-    }   
+    }
 }

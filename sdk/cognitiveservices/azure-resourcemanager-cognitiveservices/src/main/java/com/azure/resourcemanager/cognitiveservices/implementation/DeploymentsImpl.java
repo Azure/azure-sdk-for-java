@@ -21,8 +21,7 @@ public final class DeploymentsImpl implements Deployments {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public DeploymentsImpl(
-        DeploymentsClient innerClient,
+    public DeploymentsImpl(DeploymentsClient innerClient,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,23 +29,20 @@ public final class DeploymentsImpl implements Deployments {
 
     public PagedIterable<Deployment> list(String resourceGroupName, String accountName) {
         PagedIterable<DeploymentInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Deployment> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<DeploymentInner> inner = this.serviceClient().list(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
     }
 
-    public Response<Deployment> getWithResponse(
-        String resourceGroupName, String accountName, String deploymentName, Context context) {
-        Response<DeploymentInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, deploymentName, context);
+    public Response<Deployment> getWithResponse(String resourceGroupName, String accountName, String deploymentName,
+        Context context) {
+        Response<DeploymentInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, deploymentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeploymentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -71,105 +67,77 @@ public final class DeploymentsImpl implements Deployments {
     }
 
     public Deployment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE).getValue();
     }
 
     public Response<Deployment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, deploymentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         this.delete(resourceGroupName, accountName, deploymentName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         this.delete(resourceGroupName, accountName, deploymentName, context);
     }

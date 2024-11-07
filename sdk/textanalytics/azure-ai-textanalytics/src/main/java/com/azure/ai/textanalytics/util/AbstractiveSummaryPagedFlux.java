@@ -16,8 +16,8 @@ import java.util.function.Supplier;
  * @see ContinuablePagedFluxCore
  */
 @Immutable
-public final class AbstractiveSummaryPagedFlux extends ContinuablePagedFluxCore<String,
-        AbstractiveSummaryResultCollection, PagedResponse<AbstractiveSummaryResultCollection>> {
+public final class AbstractiveSummaryPagedFlux extends
+    ContinuablePagedFluxCore<String, AbstractiveSummaryResultCollection, PagedResponse<AbstractiveSummaryResultCollection>> {
     /**
      * Creates an instance of {@code AbstractiveSummaryPagedFlux}
      *

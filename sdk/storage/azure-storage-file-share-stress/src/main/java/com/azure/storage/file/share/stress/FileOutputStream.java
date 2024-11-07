@@ -43,8 +43,6 @@ public class FileOutputStream extends ShareScenarioBase<StorageStressOptions> {
                 outputStream.write(buffer, 0, bytesRead);
             }
 
-            // Ensure to close the blobOutputStream to flush any remaining data and finalize the blob.
-            outputStream.close();
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }

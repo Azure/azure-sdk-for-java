@@ -8,13 +8,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,26 +28,30 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         RequestOptions requestOptions = new RequestOptions();
         String transactionId = postLedgerEntry();
 
-        Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
+        Response<BinaryData> transactionResponse
+            = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
 
-        JsonNode transactionResponseBodyJson = OBJECT_MAPPER.readTree(transactionResponse.getValue().toBytes());
+        JsonObject transactionResponseBodyJson = transactionResponse.getValue().toObject(JsonObject.class);
 
-        assertEquals(transactionResponseBodyJson.get(TRANSACTION_ID).asText(), transactionId);
+        assertEquals(((JsonString) transactionResponseBodyJson.getProperty(TRANSACTION_ID)).getValue(), transactionId);
 
         int statusCode = transactionResponse.getStatusCode();
         assertTrue(200 == statusCode || 406 == statusCode, "Expected 200, or 206. Actual: " + statusCode);
 
         // Act
-        Response<BinaryData> currentResponse = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
+        Response<BinaryData> currentResponse
+            = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
 
         // Assert
-        JsonNode currentResponseBodyJson = OBJECT_MAPPER.readTree(currentResponse.getValue().toBytes());
+        JsonObject currentResponseBodyJson = currentResponse.getValue().toObject(JsonObject.class);
 
         assertTrue(200 == currentResponse.getStatusCode() || 406 == currentResponse.getStatusCode());
 
         if (200 == currentResponse.getStatusCode()) {
             // we assume no one has created an entry since we created this entry.
-            assertTrue(currentResponseBodyJson.get(TRANSACTION_ID).asDouble() <= Double.parseDouble(transactionId));
+            double jsonTransactionId
+                = Double.parseDouble(((JsonString) currentResponseBodyJson.getProperty(TRANSACTION_ID)).getValue());
+            assertTrue(jsonTransactionId <= Double.parseDouble(transactionId));
         }
     }
 
@@ -64,18 +67,9 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         pagedIterableResponse.streamByPage().forEach(resp -> {
             assertEquals(200, resp.getStatusCode());
             resp.getValue().forEach(item -> {
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode responseBodyJson = null;
-
-                try {
-                    responseBodyJson = objectMapper.readTree(item.toBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    assertTrue(false);
-                }
-
-                Assertions.assertNotNull(responseBodyJson.get(COLLECTION_ID));
-                collectionKeys.add(responseBodyJson.get(COLLECTION_ID).asText());
+                JsonObject responseBodyJson = item.toObject(JsonObject.class);
+                Assertions.assertNotNull(responseBodyJson.getProperty(COLLECTION_ID));
+                collectionKeys.add(((JsonString) responseBodyJson.getProperty(COLLECTION_ID)).getValue());
             });
 
             boolean exists = collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
@@ -83,4 +77,3 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         });
     }
 }
-

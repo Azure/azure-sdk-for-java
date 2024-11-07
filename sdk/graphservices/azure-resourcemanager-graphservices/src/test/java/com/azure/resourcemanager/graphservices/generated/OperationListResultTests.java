@@ -10,11 +10,9 @@ import com.azure.resourcemanager.graphservices.models.OperationListResult;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"v\",\"isDataAction\":false,\"display\":{\"provider\":\"hn\",\"resource\":\"ngbwjz\",\"operation\":\"fygxgispemvtzfk\",\"description\":\"ubljofxqe\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"jhqjbasvmsmjqul\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"v\",\"isDataAction\":false,\"display\":{\"provider\":\"hn\",\"resource\":\"ngbwjz\",\"operation\":\"fygxgispemvtzfk\",\"description\":\"ubljofxqe\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"jhqjbasvmsmjqul\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

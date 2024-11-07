@@ -62,8 +62,8 @@ public interface EdgeModules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the representation of an edge module along with {@link Response}.
      */
-    Response<EdgeModuleEntity> getWithResponse(
-        String resourceGroupName, String accountName, String edgeModuleName, Context context);
+    Response<EdgeModuleEntity> getWithResponse(String resourceGroupName, String accountName, String edgeModuleName,
+        Context context);
 
     /**
      * Deletes an existing edge module resource. Deleting the edge module resource will prevent an Azure Video Analyzer
@@ -93,8 +93,8 @@ public interface EdgeModules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String edgeModuleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String edgeModuleName,
+        Context context);
 
     /**
      * Creates a new provisioning token. A provisioning token allows for a single instance of Azure Video analyzer IoT
@@ -113,8 +113,8 @@ public interface EdgeModules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provisioning token properties.
      */
-    EdgeModuleProvisioningToken listProvisioningToken(
-        String resourceGroupName, String accountName, String edgeModuleName, ListProvisioningTokenInput parameters);
+    EdgeModuleProvisioningToken listProvisioningToken(String resourceGroupName, String accountName,
+        String edgeModuleName, ListProvisioningTokenInput parameters);
 
     /**
      * Creates a new provisioning token. A provisioning token allows for a single instance of Azure Video analyzer IoT
@@ -134,12 +134,8 @@ public interface EdgeModules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provisioning token properties along with {@link Response}.
      */
-    Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String edgeModuleName,
-        ListProvisioningTokenInput parameters,
-        Context context);
+    Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(String resourceGroupName,
+        String accountName, String edgeModuleName, ListProvisioningTokenInput parameters, Context context);
 
     /**
      * Retrieves an existing edge module resource with the given name.

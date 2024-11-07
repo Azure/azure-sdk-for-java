@@ -8,24 +8,26 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateEndpointConnections. */
+/**
+ * Resource collection API of PrivateEndpointConnections.
+ */
 public interface PrivateEndpointConnections {
     /**
      * List all the private endpoint connections associated with the Bot.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of private endpoint connection associated with the specified storage account as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String resourceName);
 
     /**
      * List all the private endpoint connections associated with the Bot.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param context The context to associate with this operation.
@@ -33,17 +35,33 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of private endpoint connection associated with the specified storage account as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the Bot.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the Bot along with {@link Response}.
+     */
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
+
+    /**
+     * Gets the specified private endpoint connection associated with the Bot.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,28 +70,28 @@ public interface PrivateEndpointConnections {
     PrivateEndpointConnection get(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
-     * Gets the specified private endpoint connection associated with the Bot.
-     *
+     * Deletes the specified private endpoint connection associated with the Bot.
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the Bot along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the Bot.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -81,24 +99,8 @@ public interface PrivateEndpointConnections {
     void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
-     * Deletes the specified private endpoint connection associated with the Bot.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
-
-    /**
      * Gets the specified private endpoint connection associated with the Bot.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,7 +111,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Gets the specified private endpoint connection associated with the Bot.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,7 +123,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Deletes the specified private endpoint connection associated with the Bot.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,7 +133,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Deletes the specified private endpoint connection associated with the Bot.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +145,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Begins definition for a new PrivateEndpointConnection resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PrivateEndpointConnection definition.
      */

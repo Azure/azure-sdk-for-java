@@ -17,8 +17,8 @@ import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerDedicat
 
 public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl
     implements WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl.class);
 
     private final WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient innerClient;
 
@@ -31,15 +31,11 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl
         this.serviceManager = serviceManager;
     }
 
-    public DedicatedSQLminimalTlsSettings update(
-        String resourceGroupName,
-        String workspaceName,
+    public DedicatedSQLminimalTlsSettings update(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters) {
-        DedicatedSQLminimalTlsSettingsInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters);
+        DedicatedSQLminimalTlsSettingsInner inner = this.serviceClient()
+            .update(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters);
         if (inner != null) {
             return new DedicatedSQLminimalTlsSettingsImpl(inner, this.manager());
         } else {
@@ -47,16 +43,11 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl
         }
     }
 
-    public DedicatedSQLminimalTlsSettings update(
-        String resourceGroupName,
-        String workspaceName,
+    public DedicatedSQLminimalTlsSettings update(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-        DedicatedSQLminimalTlsSettingsInner parameters,
-        Context context) {
-        DedicatedSQLminimalTlsSettingsInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, context);
+        DedicatedSQLminimalTlsSettingsInner parameters, Context context) {
+        DedicatedSQLminimalTlsSettingsInner inner = this.serviceClient()
+            .update(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, context);
         if (inner != null) {
             return new DedicatedSQLminimalTlsSettingsImpl(inner, this.manager());
         } else {
@@ -64,27 +55,22 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl
         }
     }
 
-    public Response<DedicatedSQLminimalTlsSettings> getWithResponse(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName, Context context) {
-        Response<DedicatedSQLminimalTlsSettingsInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, context);
+    public Response<DedicatedSQLminimalTlsSettings> getWithResponse(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName, Context context) {
+        Response<DedicatedSQLminimalTlsSettingsInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DedicatedSQLminimalTlsSettingsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DedicatedSQLminimalTlsSettings get(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
-        DedicatedSQLminimalTlsSettingsInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName);
+    public DedicatedSQLminimalTlsSettings get(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName) {
+        DedicatedSQLminimalTlsSettingsInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName);
         if (inner != null) {
             return new DedicatedSQLminimalTlsSettingsImpl(inner, this.manager());
         } else {
@@ -93,16 +79,18 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl
     }
 
     public PagedIterable<DedicatedSQLminimalTlsSettings> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<DedicatedSQLminimalTlsSettingsInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new DedicatedSQLminimalTlsSettingsImpl(inner1, this.manager()));
+        PagedIterable<DedicatedSQLminimalTlsSettingsInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DedicatedSQLminimalTlsSettingsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DedicatedSQLminimalTlsSettings> list(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<DedicatedSQLminimalTlsSettingsInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedSQLminimalTlsSettingsImpl(inner1, this.manager()));
+    public PagedIterable<DedicatedSQLminimalTlsSettings> list(String resourceGroupName, String workspaceName,
+        Context context) {
+        PagedIterable<DedicatedSQLminimalTlsSettingsInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DedicatedSQLminimalTlsSettingsImpl(inner1, this.manager()));
     }
 
     private WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient serviceClient() {

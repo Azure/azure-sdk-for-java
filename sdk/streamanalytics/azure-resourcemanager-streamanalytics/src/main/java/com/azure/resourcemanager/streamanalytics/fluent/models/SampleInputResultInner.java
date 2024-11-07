@@ -6,43 +6,42 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.SampleInputResultStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result of the sample input request.
  */
 @Fluent
-public final class SampleInputResultInner {
+public final class SampleInputResultInner implements JsonSerializable<SampleInputResultInner> {
     /*
      * The status of the sample input request.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SampleInputResultStatus status;
 
     /*
      * Diagnostics messages. E.g. message indicating some partitions from the input have no data.
      */
-    @JsonProperty(value = "diagnostics", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> diagnostics;
 
     /*
      * A SAS URL to download the sampled input data.
      */
-    @JsonProperty(value = "eventsDownloadUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String eventsDownloadUrl;
 
     /*
      * The timestamp for the last event in the data. It is in DateTime format.
      */
-    @JsonProperty(value = "lastArrivalTime", access = JsonProperty.Access.WRITE_ONLY)
     private String lastArrivalTime;
 
     /*
      * Error definition properties.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /**
@@ -114,5 +113,50 @@ public final class SampleInputResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SampleInputResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SampleInputResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SampleInputResultInner.
+     */
+    public static SampleInputResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SampleInputResultInner deserializedSampleInputResultInner = new SampleInputResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedSampleInputResultInner.status = SampleInputResultStatus.fromString(reader.getString());
+                } else if ("diagnostics".equals(fieldName)) {
+                    List<String> diagnostics = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSampleInputResultInner.diagnostics = diagnostics;
+                } else if ("eventsDownloadUrl".equals(fieldName)) {
+                    deserializedSampleInputResultInner.eventsDownloadUrl = reader.getString();
+                } else if ("lastArrivalTime".equals(fieldName)) {
+                    deserializedSampleInputResultInner.lastArrivalTime = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedSampleInputResultInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSampleInputResultInner;
+        });
     }
 }

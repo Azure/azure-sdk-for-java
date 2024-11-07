@@ -14,20 +14,19 @@ public final class BackupVaultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"fgslqubkwdl\"},\"location\":\"rds\",\"tags\":{\"lnorwmdu\":\"jbazpjuohminy\",\"ygdxpgpqchis\":\"wpklvxw\",\"bjcrxgibbdaxco\":\"epn\",\"kwbqplhlvnuu\":\"fozauorsuk\"},\"id\":\"pzlrphw\",\"name\":\"soldweyuqdunv\",\"type\":\"nnrwrbiork\"}")
+            "{\"properties\":{\"provisioningState\":\"tdhlfkqo\"},\"location\":\"ykvgtrdcnifmz\",\"tags\":{\"g\":\"ymbrnysuxmpraf\",\"roud\":\"khocxvdfffwaf\"},\"id\":\"spave\",\"name\":\"hrv\",\"type\":\"bunzozudh\"}")
             .toObject(BackupVaultInner.class);
-        Assertions.assertEquals("rds", model.location());
-        Assertions.assertEquals("jbazpjuohminy", model.tags().get("lnorwmdu"));
+        Assertions.assertEquals("ykvgtrdcnifmz", model.location());
+        Assertions.assertEquals("ymbrnysuxmpraf", model.tags().get("g"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultInner model = new BackupVaultInner().withLocation("rds")
-            .withTags(mapOf("lnorwmdu", "jbazpjuohminy", "ygdxpgpqchis", "wpklvxw", "bjcrxgibbdaxco", "epn",
-                "kwbqplhlvnuu", "fozauorsuk"));
+        BackupVaultInner model = new BackupVaultInner().withLocation("ykvgtrdcnifmz")
+            .withTags(mapOf("g", "ymbrnysuxmpraf", "roud", "khocxvdfffwaf"));
         model = BinaryData.fromObject(model).toObject(BackupVaultInner.class);
-        Assertions.assertEquals("rds", model.location());
-        Assertions.assertEquals("jbazpjuohminy", model.tags().get("lnorwmdu"));
+        Assertions.assertEquals("ykvgtrdcnifmz", model.location());
+        Assertions.assertEquals("ymbrnysuxmpraf", model.tags().get("g"));
     }
 
     // Use "Map.of" if available

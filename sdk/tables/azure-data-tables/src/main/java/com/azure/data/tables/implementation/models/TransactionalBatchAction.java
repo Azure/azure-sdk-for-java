@@ -38,10 +38,8 @@ public interface TransactionalBatchAction {
 
         @Override
         public String toString() {
-            return "CreateEntity{"
-                + "partitionKey='" + entity.getPartitionKey() + '\''
-                + ", rowKey='" + entity.getRowKey() + '\''
-                + '}';
+            return "CreateEntity{" + "partitionKey='" + entity.getPartitionKey() + '\'' + ", rowKey='"
+                + entity.getRowKey() + '\'' + '}';
         }
     }
 
@@ -74,11 +72,8 @@ public interface TransactionalBatchAction {
 
         @Override
         public String toString() {
-            return "UpsertEntity{"
-                + "partitionKey='" + entity.getPartitionKey() + '\''
-                + ", rowKey='" + entity.getRowKey() + '\''
-                + ", updateMode=" + updateMode
-                + '}';
+            return "UpsertEntity{" + "partitionKey='" + entity.getPartitionKey() + '\'' + ", rowKey='"
+                + entity.getRowKey() + '\'' + ", updateMode=" + updateMode + '}';
         }
     }
 
@@ -112,18 +107,13 @@ public interface TransactionalBatchAction {
 
         @Override
         public HttpRequest prepareRequest(TableClient preparer) {
-            return preparer
-                .updateEntityWithResponse(entity, updateMode, ifUnchanged, null, null).getRequest();
+            return preparer.updateEntityWithResponse(entity, updateMode, ifUnchanged, null, null).getRequest();
         }
 
         @Override
         public String toString() {
-            return "UpdateEntity{"
-                + "partitionKey='" + entity.getPartitionKey() + '\''
-                + ", rowKey='" + entity.getRowKey() + '\''
-                + ", updateMode=" + updateMode
-                + ", ifUnchanged=" + ifUnchanged
-                + '}';
+            return "UpdateEntity{" + "partitionKey='" + entity.getPartitionKey() + '\'' + ", rowKey='"
+                + entity.getRowKey() + '\'' + ", updateMode=" + updateMode + ", ifUnchanged=" + ifUnchanged + '}';
         }
     }
 
@@ -156,11 +146,8 @@ public interface TransactionalBatchAction {
 
         @Override
         public String toString() {
-            return "DeleteEntity{"
-                + "partitionKey='" + entity.getPartitionKey() + '\''
-                + ", rowKey='" + entity.getRowKey() + '\''
-                + ", eTag='" + entity.getETag() + '\''
-                + ", ifUnchanged=" + ifUnchanged
+            return "DeleteEntity{" + "partitionKey='" + entity.getPartitionKey() + '\'' + ", rowKey='"
+                + entity.getRowKey() + '\'' + ", eTag='" + entity.getETag() + '\'' + ", ifUnchanged=" + ifUnchanged
                 + '}';
         }
     }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datamigration.models.MigrationEligibilityInfo;
 public final class MigrationEligibilityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationEligibilityInfo model =
-            BinaryData
-                .fromString("{\"isEligibleForMigration\":false,\"validationMessages\":[\"fbunrmfqjhhk\"]}")
+        MigrationEligibilityInfo model
+            = BinaryData.fromString("{\"isEligibleForMigration\":true,\"validationMessages\":[\"bkpyc\"]}")
                 .toObject(MigrationEligibilityInfo.class);
     }
 

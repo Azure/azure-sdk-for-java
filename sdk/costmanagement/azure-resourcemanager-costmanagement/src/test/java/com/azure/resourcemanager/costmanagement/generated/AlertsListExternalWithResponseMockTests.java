@@ -6,66 +6,34 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.models.AlertsResult;
 import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AlertsListExternalWithResponseMockTests {
     @Test
     public void testListExternalWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"definition\":{\"type\":\"Quota\",\"category\":\"Billing\",\"criteria\":\"InvoiceDueDateReached\"},\"description\":\"wxs\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"BillingAnnual\",\"periodStartDate\":\"xekr\",\"triggeredBy\":\"k\",\"resourceGroupFilter\":[\"dataud\",\"datatwaokb\"],\"resourceFilter\":[\"dataytt\",\"dataaknwfrkebsmh\",\"datadujdigatoleksc\"],\"meterFilter\":[\"datananqimwbzxpdcldp\",\"dataawnsnlaimou\",\"dataw\"],\"tagFilter\":\"dataqmudmfcoibic\",\"operator\":\"None\",\"unit\":\"wjrkb\",\"contactEmails\":[\"btqqvyfs\",\"yrfwbivq\",\"ogfuyzwvbhlim\",\"yqe\"],\"contactGroups\":[\"odlikcdrdaasax\"],\"contactRoles\":[\"sm\",\"kwiy\",\"v\"],\"overridingAlert\":\"ko\",\"departmentName\":\"nawnvz\",\"companyName\":\"n\",\"enrollmentNumber\":\"ywsxvjabjqqaxu\",\"enrollmentStartDate\":\"y\",\"enrollmentEndDate\":\"nudn\"},\"costEntityId\":\"bhjxwxqweuipmpv\",\"status\":\"None\",\"creationTime\":\"tnsqxtlt\",\"closeTime\":\"krdpqgfhyrfr\",\"modificationTime\":\"kldgrcwfcmfc\",\"statusModificationUserName\":\"jajqmatxjt\",\"statusModificationTime\":\"ln\"},\"eTag\":\"gxxgfb\",\"id\":\"mtlpqagyno\",\"name\":\"prnzc\",\"type\":\"lin\"},{\"properties\":{\"definition\":{\"type\":\"xCloud\",\"category\":\"Cost\",\"criteria\":\"CreditThresholdApproaching\"},\"description\":\"ibmq\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"Annually\",\"periodStartDate\":\"uqguhfupetasvvoq\",\"triggeredBy\":\"pkflanfkgxsyao\",\"resourceGroupFilter\":[\"dataowpuohdkcpr\",\"dataukxrzti\",\"datachlutixmqru\",\"datajizcbfzmcrunfhiu\"],\"resourceFilter\":[\"datafbcpaqktkrumzu\",\"datadkyzbfvxov\",\"datakxiuxqggvqr\",\"datahyhlwcjsqg\"],\"meterFilter\":[\"dataffbxrqrkij\",\"dataeuqlsdxeqztv\"],\"tagFilter\":\"datamwwmjswenaww\",\"operator\":\"LessThan\",\"unit\":\"qioulndhzyoeojht\",\"contactEmails\":[\"svidmytzlnglx\"],\"contactGroups\":[\"vyoanfbcswqagywv\",\"xigvjrktpgaeuk\"],\"contactRoles\":[\"ohpmwhqn\",\"csklhsidsjt\",\"lpbnin\"],\"overridingAlert\":\"azlsvbzfcpuo\",\"departmentName\":\"dwjcciklhs\",\"companyName\":\"krdre\",\"enrollmentNumber\":\"olr\",\"enrollmentStartDate\":\"ehqbeivdlhydwbdb\",\"enrollmentEndDate\":\"rlpunytjlkesmmpa\"},\"costEntityId\":\"btahdeanii\",\"status\":\"None\",\"creationTime\":\"vgw\",\"closeTime\":\"fftedousnktj\",\"modificationTime\":\"ravaq\",\"statusModificationUserName\":\"fkbebauzl\",\"statusModificationTime\":\"txxwpfh\"},\"eTag\":\"zudrtpzk\",\"id\":\"meboywhczzq\",\"name\":\"hmngqb\",\"type\":\"dygisrzwnykd\"}],\"nextLink\":\"jch\"}";
 
-        String responseStr =
-            "{\"value\":[{\"eTag\":\"hlfkqojpy\",\"id\":\"vgtrdcnifmzzs\",\"name\":\"ymbrnysuxmpraf\",\"type\":\"g\"}],\"nextLink\":\"hocxvdfffwafqrou\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AlertsResult response = manager.alerts()
+            .listExternalWithResponse(ExternalCloudProviderType.EXTERNAL_BILLING_ACCOUNTS, "qbmfuvqarwz",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AlertsResult response =
-            manager
-                .alerts()
-                .listExternalWithResponse(
-                    ExternalCloudProviderType.EXTERNAL_BILLING_ACCOUNTS,
-                    "ihfrbbcevqa",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

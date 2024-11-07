@@ -10,11 +10,9 @@ import com.azure.resourcemanager.billingbenefits.models.SavingsPlanSummaryCount;
 public final class SavingsPlanSummaryCountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SavingsPlanSummaryCount model =
-            BinaryData
-                .fromString(
-                    "{\"succeededCount\":55.68268,\"failedCount\":26.599895,\"expiringCount\":49.174603,\"expiredCount\":96.57761,\"pendingCount\":46.781246,\"cancelledCount\":96.58485,\"processingCount\":13.069307,\"noBenefitCount\":35.734074,\"warningCount\":1.1998057}")
-                .toObject(SavingsPlanSummaryCount.class);
+        SavingsPlanSummaryCount model = BinaryData.fromString(
+            "{\"succeededCount\":51.42286,\"failedCount\":51.614838,\"expiringCount\":72.799835,\"expiredCount\":71.703186,\"pendingCount\":33.89374,\"cancelledCount\":48.133312,\"processingCount\":24.825657,\"noBenefitCount\":91.20839,\"warningCount\":31.798958}")
+            .toObject(SavingsPlanSummaryCount.class);
     }
 
     @org.junit.jupiter.api.Test

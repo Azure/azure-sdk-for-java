@@ -119,11 +119,8 @@ public interface IpCommunity {
     IpCommunityInner innerModel();
 
     /** The entirety of the IpCommunity definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The IpCommunity definition stages. */

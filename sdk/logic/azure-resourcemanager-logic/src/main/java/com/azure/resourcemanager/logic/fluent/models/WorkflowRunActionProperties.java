@@ -5,90 +5,88 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.RetryHistory;
 import com.azure.resourcemanager.logic.models.RunActionCorrelation;
 import com.azure.resourcemanager.logic.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The workflow run action properties. */
+/**
+ * The workflow run action properties.
+ */
 @Fluent
-public final class WorkflowRunActionProperties {
+public final class WorkflowRunActionProperties implements JsonSerializable<WorkflowRunActionProperties> {
     /*
      * Gets the start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets the end time.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Gets the status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowStatus status;
 
     /*
      * Gets the code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Gets the error.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
     /*
      * Gets the tracking id.
      */
-    @JsonProperty(value = "trackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingId;
 
     /*
      * The correlation properties.
      */
-    @JsonProperty(value = "correlation")
     private RunActionCorrelation correlation;
 
     /*
      * Gets the link to inputs.
      */
-    @JsonProperty(value = "inputsLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink inputsLink;
 
     /*
      * Gets the link to outputs.
      */
-    @JsonProperty(value = "outputsLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink outputsLink;
 
     /*
      * Gets the tracked properties.
      */
-    @JsonProperty(value = "trackedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object trackedProperties;
 
     /*
      * Gets the retry histories.
      */
-    @JsonProperty(value = "retryHistory")
     private List<RetryHistory> retryHistory;
 
-    /** Creates an instance of WorkflowRunActionProperties class. */
+    /**
+     * Creates an instance of WorkflowRunActionProperties class.
+     */
     public WorkflowRunActionProperties() {
     }
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -97,7 +95,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -106,7 +104,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -115,7 +113,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -124,7 +122,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -133,7 +131,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -142,7 +140,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the correlation property: The correlation properties.
-     *
+     * 
      * @return the correlation value.
      */
     public RunActionCorrelation correlation() {
@@ -151,7 +149,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Set the correlation property: The correlation properties.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunActionProperties object itself.
      */
@@ -162,7 +160,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -171,7 +169,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -180,7 +178,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -189,7 +187,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @return the retryHistory value.
      */
     public List<RetryHistory> retryHistory() {
@@ -198,7 +196,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Set the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @param retryHistory the retryHistory value to set.
      * @return the WorkflowRunActionProperties object itself.
      */
@@ -209,7 +207,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -225,5 +223,65 @@ public final class WorkflowRunActionProperties {
         if (retryHistory() != null) {
             retryHistory().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("correlation", this.correlation);
+        jsonWriter.writeArrayField("retryHistory", this.retryHistory, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowRunActionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowRunActionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowRunActionProperties.
+     */
+    public static WorkflowRunActionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowRunActionProperties deserializedWorkflowRunActionProperties = new WorkflowRunActionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.status = WorkflowStatus.fromString(reader.getString());
+                } else if ("code".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.code = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.error = reader.readUntyped();
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.trackingId = reader.getString();
+                } else if ("correlation".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.correlation = RunActionCorrelation.fromJson(reader);
+                } else if ("inputsLink".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.inputsLink = ContentLink.fromJson(reader);
+                } else if ("outputsLink".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.outputsLink = ContentLink.fromJson(reader);
+                } else if ("trackedProperties".equals(fieldName)) {
+                    deserializedWorkflowRunActionProperties.trackedProperties = reader.readUntyped();
+                } else if ("retryHistory".equals(fieldName)) {
+                    List<RetryHistory> retryHistory = reader.readArray(reader1 -> RetryHistory.fromJson(reader1));
+                    deserializedWorkflowRunActionProperties.retryHistory = retryHistory;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowRunActionProperties;
+        });
     }
 }

@@ -110,11 +110,13 @@ public interface KeyValue {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The KeyValue definition stages. */
     interface DefinitionStages {
         /** The first stage of the KeyValue definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the KeyValue definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -126,6 +128,7 @@ public interface KeyValue {
              */
             WithCreate withExistingConfigurationStore(String resourceGroupName, String configStoreName);
         }
+
         /**
          * The stage of the KeyValue definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -147,6 +150,7 @@ public interface KeyValue {
              */
             KeyValue create(Context context);
         }
+
         /** The stage of the KeyValue definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -158,6 +162,7 @@ public interface KeyValue {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the KeyValue definition allowing to specify value. */
         interface WithValue {
             /**
@@ -168,6 +173,7 @@ public interface KeyValue {
              */
             WithCreate withValue(String value);
         }
+
         /** The stage of the KeyValue definition allowing to specify contentType. */
         interface WithContentType {
             /**
@@ -181,6 +187,7 @@ public interface KeyValue {
             WithCreate withContentType(String contentType);
         }
     }
+
     /**
      * Begins update for the KeyValue resource.
      *
@@ -205,6 +212,7 @@ public interface KeyValue {
          */
         KeyValue apply(Context context);
     }
+
     /** The KeyValue update stages. */
     interface UpdateStages {
         /** The stage of the KeyValue update allowing to specify tags. */
@@ -218,6 +226,7 @@ public interface KeyValue {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the KeyValue update allowing to specify value. */
         interface WithValue {
             /**
@@ -228,6 +237,7 @@ public interface KeyValue {
              */
             Update withValue(String value);
         }
+
         /** The stage of the KeyValue update allowing to specify contentType. */
         interface WithContentType {
             /**
@@ -241,6 +251,7 @@ public interface KeyValue {
             Update withContentType(String contentType);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

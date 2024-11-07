@@ -34,8 +34,8 @@ public interface ClustersClient {
      * @return information about a Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String workspaceName, String clusterName, ClusterCreateParameters parameters);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String workspaceName,
+        String clusterName, ClusterCreateParameters parameters);
 
     /**
      * Creates a Cluster in the given Workspace.
@@ -54,12 +54,8 @@ public interface ClustersClient {
      * @return information about a Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String clusterName,
-        ClusterCreateParameters parameters,
-        Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String workspaceName,
+        String clusterName, ClusterCreateParameters parameters, Context context);
 
     /**
      * Creates a Cluster in the given Workspace.
@@ -77,8 +73,8 @@ public interface ClustersClient {
      * @return information about a Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner create(
-        String resourceGroupName, String workspaceName, String clusterName, ClusterCreateParameters parameters);
+    ClusterInner create(String resourceGroupName, String workspaceName, String clusterName,
+        ClusterCreateParameters parameters);
 
     /**
      * Creates a Cluster in the given Workspace.
@@ -97,12 +93,8 @@ public interface ClustersClient {
      * @return information about a Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String clusterName,
-        ClusterCreateParameters parameters,
-        Context context);
+    ClusterInner create(String resourceGroupName, String workspaceName, String clusterName,
+        ClusterCreateParameters parameters, Context context);
 
     /**
      * Updates properties of a Cluster.
@@ -120,8 +112,8 @@ public interface ClustersClient {
      * @return information about a Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner update(
-        String resourceGroupName, String workspaceName, String clusterName, ClusterUpdateParameters parameters);
+    ClusterInner update(String resourceGroupName, String workspaceName, String clusterName,
+        ClusterUpdateParameters parameters);
 
     /**
      * Updates properties of a Cluster.
@@ -140,12 +132,8 @@ public interface ClustersClient {
      * @return information about a Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String clusterName,
-        ClusterUpdateParameters parameters,
-        Context context);
+    Response<ClusterInner> updateWithResponse(String resourceGroupName, String workspaceName, String clusterName,
+        ClusterUpdateParameters parameters, Context context);
 
     /**
      * Deletes a Cluster.
@@ -180,8 +168,8 @@ public interface ClustersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String clusterName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String clusterName,
+        Context context);
 
     /**
      * Deletes a Cluster.
@@ -249,8 +237,8 @@ public interface ClustersClient {
      * @return information about a Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String clusterName, Context context);
+    Response<ClusterInner> getWithResponse(String resourceGroupName, String workspaceName, String clusterName,
+        Context context);
 
     /**
      * Get the IP address, port of all the compute nodes in the Cluster.
@@ -267,8 +255,8 @@ public interface ClustersClient {
      * @return the IP address, port of all the compute nodes in the Cluster.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String clusterName);
+    PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String clusterName);
 
     /**
      * Get the IP address, port of all the compute nodes in the Cluster.
@@ -286,8 +274,8 @@ public interface ClustersClient {
      * @return the IP address, port of all the compute nodes in the Cluster.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String clusterName, Context context);
+    PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String clusterName, Context context);
 
     /**
      * Gets information about Clusters associated with the given Workspace.
@@ -317,6 +305,6 @@ public interface ClustersClient {
      * @return information about Clusters associated with the given Workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context);
+    PagedIterable<ClusterInner> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context);
 }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TopQueryStatistics. */
+/**
+ * Resource collection API of TopQueryStatistics.
+ */
 public interface TopQueryStatistics {
     /**
      * Retrieve the query statistic for specified identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryStatisticId The Query Statistic identifier.
@@ -22,12 +24,12 @@ public interface TopQueryStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Query Statistic along with {@link Response}.
      */
-    Response<QueryStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String queryStatisticId, Context context);
+    Response<QueryStatistic> getWithResponse(String resourceGroupName, String serverName, String queryStatisticId,
+        Context context);
 
     /**
      * Retrieve the query statistic for specified identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryStatisticId The Query Statistic identifier.
@@ -40,7 +42,7 @@ public interface TopQueryStatistics {
 
     /**
      * Retrieve the Query-Store top queries for specified metric and aggregation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving top query statistics.
@@ -49,12 +51,12 @@ public interface TopQueryStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of query statistics as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<QueryStatistic> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters);
+    PagedIterable<QueryStatistic> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters);
 
     /**
      * Retrieve the Query-Store top queries for specified metric and aggregation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving top query statistics.
@@ -64,6 +66,6 @@ public interface TopQueryStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of query statistics as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<QueryStatistic> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context);
+    PagedIterable<QueryStatistic> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters, Context context);
 }

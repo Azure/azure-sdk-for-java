@@ -20,8 +20,9 @@ public final class MigrationRecoveryPointInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationRecoveryPointInner model = new MigrationRecoveryPointInner()
-            .withProperties(new MigrationRecoveryPointProperties()).withLocation("tdzumveekgpw");
+        MigrationRecoveryPointInner model
+            = new MigrationRecoveryPointInner().withProperties(new MigrationRecoveryPointProperties())
+                .withLocation("tdzumveekgpw");
         model = BinaryData.fromObject(model).toObject(MigrationRecoveryPointInner.class);
         Assertions.assertEquals("tdzumveekgpw", model.location());
     }

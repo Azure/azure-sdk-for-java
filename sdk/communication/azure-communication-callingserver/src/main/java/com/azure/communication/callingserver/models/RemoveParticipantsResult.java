@@ -41,7 +41,8 @@ public final class RemoveParticipantsResult {
      * @param  removeParticipantsResponseInternal The response from the service
      */
     RemoveParticipantsResult(RemoveParticipantsResponseInternal removeParticipantsResponseInternal) {
-        Objects.requireNonNull(removeParticipantsResponseInternal, "removeParticipantsResponseInternal must not be null");
+        Objects.requireNonNull(removeParticipantsResponseInternal,
+            "removeParticipantsResponseInternal must not be null");
 
         this.operationContext = removeParticipantsResponseInternal.getOperationContext();
     }

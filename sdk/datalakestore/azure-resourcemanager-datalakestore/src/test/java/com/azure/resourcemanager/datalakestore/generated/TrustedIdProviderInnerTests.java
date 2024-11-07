@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class TrustedIdProviderInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrustedIdProviderInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"idProvider\":\"yqrimzin\"},\"name\":\"swjdkirso\",\"type\":\"qxhcrmn\",\"id\":\"jtckwhdso\"}")
-                .toObject(TrustedIdProviderInner.class);
-        Assertions.assertEquals("jtckwhdso", model.id());
+        TrustedIdProviderInner model = BinaryData.fromString(
+            "{\"properties\":{\"idProvider\":\"hutje\"},\"name\":\"mrldhu\",\"type\":\"zzd\",\"id\":\"qxhocdgeablgphut\"}")
+            .toObject(TrustedIdProviderInner.class);
+        Assertions.assertEquals("qxhocdgeablgphut", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrustedIdProviderInner model = new TrustedIdProviderInner().withId("jtckwhdso");
+        TrustedIdProviderInner model = new TrustedIdProviderInner().withId("qxhocdgeablgphut");
         model = BinaryData.fromObject(model).toObject(TrustedIdProviderInner.class);
-        Assertions.assertEquals("jtckwhdso", model.id());
+        Assertions.assertEquals("qxhocdgeablgphut", model.id());
     }
 }

@@ -73,8 +73,10 @@ public class DiagnosticSettingsImpl
     @Override
     public List<DiagnosticSettingsCategory> listCategoriesByResource(String resourceId) {
         List<DiagnosticSettingsCategory> categories = new ArrayList<>();
-        PagedIterable<DiagnosticSettingsCategoryResourceInner> collection =
-            this.manager().serviceClient().getDiagnosticSettingsCategories().list(ResourceUtils.encodeResourceId(resourceId));
+        PagedIterable<DiagnosticSettingsCategoryResourceInner> collection = this.manager()
+            .serviceClient()
+            .getDiagnosticSettingsCategories()
+            .list(ResourceUtils.encodeResourceId(resourceId));
         if (collection != null) {
             for (DiagnosticSettingsCategoryResourceInner category : collection) {
                 categories.add(new DiagnosticSettingsCategoryImpl(category));
@@ -85,24 +87,22 @@ public class DiagnosticSettingsImpl
 
     @Override
     public PagedFlux<DiagnosticSettingsCategory> listCategoriesByResourceAsync(String resourceId) {
-        return PagedConverter.mapPage(this
-                .manager
-                .serviceClient()
-                .getDiagnosticSettingsCategories()
-                .listAsync(ResourceUtils.encodeResourceId(resourceId)),
-            DiagnosticSettingsCategoryImpl::new);
+        return PagedConverter.mapPage(this.manager.serviceClient()
+            .getDiagnosticSettingsCategories()
+            .listAsync(ResourceUtils.encodeResourceId(resourceId)), DiagnosticSettingsCategoryImpl::new);
     }
 
     @Override
     public DiagnosticSettingsCategory getCategory(String resourceId, String name) {
-        return new DiagnosticSettingsCategoryImpl(
-            this.manager().serviceClient().getDiagnosticSettingsCategories().get(ResourceUtils.encodeResourceId(resourceId), name));
+        return new DiagnosticSettingsCategoryImpl(this.manager()
+            .serviceClient()
+            .getDiagnosticSettingsCategories()
+            .get(ResourceUtils.encodeResourceId(resourceId), name));
     }
 
     @Override
     public Mono<DiagnosticSettingsCategory> getCategoryAsync(String resourceId, String name) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDiagnosticSettingsCategories()
             .getAsync(ResourceUtils.encodeResourceId(resourceId), name)
@@ -117,8 +117,7 @@ public class DiagnosticSettingsImpl
     @Override
     public PagedFlux<DiagnosticSetting> listByResourceAsync(String resourceId) {
         return PagedConverter.mapPage(
-            this
-                .manager()
+            this.manager()
                 .serviceClient()
                 .getDiagnosticSettingsOperations()
                 .listAsync(ResourceUtils.encodeResourceId(resourceId)),
@@ -127,28 +126,40 @@ public class DiagnosticSettingsImpl
 
     @Override
     public void delete(String resourceId, String name) {
-        this.manager().serviceClient().getDiagnosticSettingsOperations().delete(ResourceUtils.encodeResourceId(resourceId), name);
+        this.manager()
+            .serviceClient()
+            .getDiagnosticSettingsOperations()
+            .delete(ResourceUtils.encodeResourceId(resourceId), name);
     }
 
     @Override
     public Mono<Void> deleteAsync(String resourceId, String name) {
-        return this.manager().serviceClient().getDiagnosticSettingsOperations().deleteAsync(ResourceUtils.encodeResourceId(resourceId), name);
+        return this.manager()
+            .serviceClient()
+            .getDiagnosticSettingsOperations()
+            .deleteAsync(ResourceUtils.encodeResourceId(resourceId), name);
     }
 
     @Override
     public DiagnosticSetting get(String resourceId, String name) {
-        return wrapModel(this.manager().serviceClient().getDiagnosticSettingsOperations().get(ResourceUtils.encodeResourceId(resourceId), name));
+        return wrapModel(this.manager()
+            .serviceClient()
+            .getDiagnosticSettingsOperations()
+            .get(ResourceUtils.encodeResourceId(resourceId), name));
     }
 
     @Override
     public Mono<DiagnosticSetting> getAsync(String resourceId, String name) {
-        return this.manager().serviceClient().getDiagnosticSettingsOperations().getAsync(ResourceUtils.encodeResourceId(resourceId), name).map(this::wrapModel);
+        return this.manager()
+            .serviceClient()
+            .getDiagnosticSettingsOperations()
+            .getAsync(ResourceUtils.encodeResourceId(resourceId), name)
+            .map(this::wrapModel);
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDiagnosticSettingsOperations()
             .deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id));
@@ -160,8 +171,9 @@ public class DiagnosticSettingsImpl
             return Flux.empty();
         }
         return Flux.fromIterable(ids)
-            .flatMapDelayError(id ->
-                deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id)).then(Mono.just(id)), 32, 32)
+            .flatMapDelayError(
+                id -> deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id)).then(Mono.just(id)), 32,
+                32)
             .onErrorMap(AggregatedManagementException::convertToManagementException)
             .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
     }
@@ -222,8 +234,7 @@ public class DiagnosticSettingsImpl
         if (dsIdx == -1) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Parameter 'resourceId' does not represent a valid Diagnostic Settings resource Id ["
-                    + diagnosticSettingId
-                    + "]."));
+                    + diagnosticSettingId + "]."));
         }
 
         return diagnosticSettingId.substring(0, dsIdx);

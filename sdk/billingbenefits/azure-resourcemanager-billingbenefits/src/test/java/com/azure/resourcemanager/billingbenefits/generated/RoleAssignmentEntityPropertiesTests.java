@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RoleAssignmentEntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoleAssignmentEntityProperties model =
-            BinaryData
-                .fromString("{\"principalId\":\"rokft\",\"roleDefinitionId\":\"olniwpwcukjf\",\"scope\":\"iawxklry\"}")
-                .toObject(RoleAssignmentEntityProperties.class);
-        Assertions.assertEquals("rokft", model.principalId());
-        Assertions.assertEquals("olniwpwcukjf", model.roleDefinitionId());
-        Assertions.assertEquals("iawxklry", model.scope());
+        RoleAssignmentEntityProperties model = BinaryData
+            .fromString("{\"principalId\":\"zzd\",\"roleDefinitionId\":\"qxhocdgeablgphut\",\"scope\":\"ndv\"}")
+            .toObject(RoleAssignmentEntityProperties.class);
+        Assertions.assertEquals("zzd", model.principalId());
+        Assertions.assertEquals("qxhocdgeablgphut", model.roleDefinitionId());
+        Assertions.assertEquals("ndv", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleAssignmentEntityProperties model =
-            new RoleAssignmentEntityProperties()
-                .withPrincipalId("rokft")
-                .withRoleDefinitionId("olniwpwcukjf")
-                .withScope("iawxklry");
+        RoleAssignmentEntityProperties model = new RoleAssignmentEntityProperties().withPrincipalId("zzd")
+            .withRoleDefinitionId("qxhocdgeablgphut")
+            .withScope("ndv");
         model = BinaryData.fromObject(model).toObject(RoleAssignmentEntityProperties.class);
-        Assertions.assertEquals("rokft", model.principalId());
-        Assertions.assertEquals("olniwpwcukjf", model.roleDefinitionId());
-        Assertions.assertEquals("iawxklry", model.scope());
+        Assertions.assertEquals("zzd", model.principalId());
+        Assertions.assertEquals("qxhocdgeablgphut", model.roleDefinitionId());
+        Assertions.assertEquals("ndv", model.scope());
     }
 }

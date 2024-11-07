@@ -7,14 +7,15 @@ package com.azure.resourcemanager.automanage.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.automanage.fluent.models.ServicePrincipalInner;
 import com.azure.resourcemanager.automanage.models.ServicePrincipal;
+import com.azure.resourcemanager.automanage.models.ServicePrincipalProperties;
 
 public final class ServicePrincipalImpl implements ServicePrincipal {
     private ServicePrincipalInner innerObject;
 
     private final com.azure.resourcemanager.automanage.AutomanageManager serviceManager;
 
-    ServicePrincipalImpl(
-        ServicePrincipalInner innerObject, com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
+    ServicePrincipalImpl(ServicePrincipalInner innerObject,
+        com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,16 +32,12 @@ public final class ServicePrincipalImpl implements ServicePrincipal {
         return this.innerModel().type();
     }
 
+    public ServicePrincipalProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String servicePrincipalId() {
-        return this.innerModel().servicePrincipalId();
-    }
-
-    public Boolean authorizationSet() {
-        return this.innerModel().authorizationSet();
     }
 
     public ServicePrincipalInner innerModel() {

@@ -32,9 +32,14 @@ public final class CheckAvailabilityParametersTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckAvailabilityParameters model = new CheckAvailabilityParameters().withName("bczmeh")
-            .withLocation("bejhphoycmsxa").withTags(mapOf("zehtbmu", "dxbmtqioq", "wnoi", "p", "bqsoqijg", "hwlrx"))
-            .withIsAvailiable(true).withSku(new Sku().withName(SkuName.STANDARD).withTier("zlobcufpd").withSize("rbt")
-                .withFamily("qjnqglhqgnufoooj").withCapacity(1080301009));
+            .withLocation("bejhphoycmsxa")
+            .withTags(mapOf("zehtbmu", "dxbmtqioq", "wnoi", "p", "bqsoqijg", "hwlrx"))
+            .withIsAvailiable(true)
+            .withSku(new Sku().withName(SkuName.STANDARD)
+                .withTier("zlobcufpd")
+                .withSize("rbt")
+                .withFamily("qjnqglhqgnufoooj")
+                .withCapacity(1080301009));
         model = BinaryData.fromObject(model).toObject(CheckAvailabilityParameters.class);
         Assertions.assertEquals("bczmeh", model.name());
         Assertions.assertEquals("bejhphoycmsxa", model.location());

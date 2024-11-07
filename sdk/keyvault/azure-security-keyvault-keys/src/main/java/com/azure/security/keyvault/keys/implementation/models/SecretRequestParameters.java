@@ -11,7 +11,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-
 /**
  * Represents a set of request options used in REST requests intitiated by Cryptography service.
  */

@@ -5,90 +5,103 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("DatabaseLevelOutput")
+/**
+ * The MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel model.
+ */
 @Immutable
 public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends MigrateSqlServerSqlMISyncTaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "DatabaseLevelOutput";
+
+    /*
      * Name of the database
      */
-    @JsonProperty(value = "sourceDatabaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceDatabaseName;
 
     /*
      * Current state of database
      */
-    @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseMigrationState migrationState;
 
     /*
      * Database migration start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Database migration end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Details of full backup set
      */
-    @JsonProperty(value = "fullBackupSetInfo", access = JsonProperty.Access.WRITE_ONLY)
     private BackupSetInfo fullBackupSetInfo;
 
     /*
      * Last applied backup set information
      */
-    @JsonProperty(value = "lastRestoredBackupSetInfo", access = JsonProperty.Access.WRITE_ONLY)
     private BackupSetInfo lastRestoredBackupSetInfo;
 
     /*
      * Backup sets that are currently active (Either being uploaded or getting restored)
      */
-    @JsonProperty(value = "activeBackupSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<BackupSetInfo> activeBackupSets;
 
     /*
      * Name of container created in the Azure Storage account where backups are copied to
      */
-    @JsonProperty(value = "containerName", access = JsonProperty.Access.WRITE_ONLY)
     private String containerName;
 
     /*
      * prefix string to use for querying errors for this database
      */
-    @JsonProperty(value = "errorPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String errorPrefix;
 
     /*
      * Whether full backup has been applied to the target database or not
      */
-    @JsonProperty(value = "isFullBackupRestored", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isFullBackupRestored;
 
     /*
      * Migration exceptions and warnings
      */
-    @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
 
-    /** Creates an instance of MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel class.
+     */
     public MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the sourceDatabaseName property: Name of the database.
-     *
+     * 
      * @return the sourceDatabaseName value.
      */
     public String sourceDatabaseName() {
@@ -97,7 +110,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
 
     /**
      * Get the migrationState property: Current state of database.
-     *
+     * 
      * @return the migrationState value.
      */
     public DatabaseMigrationState migrationState() {
@@ -106,7 +119,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
 
     /**
      * Get the startedOn property: Database migration start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -115,7 +128,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
 
     /**
      * Get the endedOn property: Database migration end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -124,7 +137,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
 
     /**
      * Get the fullBackupSetInfo property: Details of full backup set.
-     *
+     * 
      * @return the fullBackupSetInfo value.
      */
     public BackupSetInfo fullBackupSetInfo() {
@@ -133,7 +146,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
 
     /**
      * Get the lastRestoredBackupSetInfo property: Last applied backup set information.
-     *
+     * 
      * @return the lastRestoredBackupSetInfo value.
      */
     public BackupSetInfo lastRestoredBackupSetInfo() {
@@ -143,7 +156,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
     /**
      * Get the activeBackupSets property: Backup sets that are currently active (Either being uploaded or getting
      * restored).
-     *
+     * 
      * @return the activeBackupSets value.
      */
     public List<BackupSetInfo> activeBackupSets() {
@@ -153,7 +166,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
     /**
      * Get the containerName property: Name of container created in the Azure Storage account where backups are copied
      * to.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -162,7 +175,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
 
     /**
      * Get the errorPrefix property: prefix string to use for querying errors for this database.
-     *
+     * 
      * @return the errorPrefix value.
      */
     public String errorPrefix() {
@@ -171,7 +184,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
 
     /**
      * Get the isFullBackupRestored property: Whether full backup has been applied to the target database or not.
-     *
+     * 
      * @return the isFullBackupRestored value.
      */
     public Boolean isFullBackupRestored() {
@@ -180,7 +193,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
 
     /**
      * Get the exceptionsAndWarnings property: Migration exceptions and warnings.
-     *
+     * 
      * @return the exceptionsAndWarnings value.
      */
     public List<ReportableException> exceptionsAndWarnings() {
@@ -188,13 +201,22 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (fullBackupSetInfo() != null) {
             fullBackupSetInfo().validate();
         }
@@ -207,5 +229,77 @@ public final class MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel extends Migr
         if (exceptionsAndWarnings() != null) {
             exceptionsAndWarnings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.
+     */
+    public static MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel
+                = new MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.resultType = reader.getString();
+                } else if ("sourceDatabaseName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.sourceDatabaseName
+                        = reader.getString();
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.migrationState
+                        = DatabaseMigrationState.fromString(reader.getString());
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullBackupSetInfo".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.fullBackupSetInfo
+                        = BackupSetInfo.fromJson(reader);
+                } else if ("lastRestoredBackupSetInfo".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.lastRestoredBackupSetInfo
+                        = BackupSetInfo.fromJson(reader);
+                } else if ("activeBackupSets".equals(fieldName)) {
+                    List<BackupSetInfo> activeBackupSets = reader.readArray(reader1 -> BackupSetInfo.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.activeBackupSets = activeBackupSets;
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.containerName = reader.getString();
+                } else if ("errorPrefix".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.errorPrefix = reader.getString();
+                } else if ("isFullBackupRestored".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.isFullBackupRestored
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("exceptionsAndWarnings".equals(fieldName)) {
+                    List<ReportableException> exceptionsAndWarnings
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel.exceptionsAndWarnings
+                        = exceptionsAndWarnings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMISyncTaskOutputDatabaseLevel;
+        });
     }
 }

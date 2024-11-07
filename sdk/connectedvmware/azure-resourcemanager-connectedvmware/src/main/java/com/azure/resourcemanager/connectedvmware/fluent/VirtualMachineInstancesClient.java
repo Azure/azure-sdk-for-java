@@ -31,8 +31,8 @@ public interface VirtualMachineInstancesClient {
      * @return the {@link SyncPoller} for polling of define the virtualMachineInstance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner> beginCreateOrUpdate(
-        String resourceUri);
+    SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner>
+        beginCreateOrUpdate(String resourceUri);
 
     /**
      * Implements virtual machine PUT method.
@@ -50,8 +50,8 @@ public interface VirtualMachineInstancesClient {
      * @return the {@link SyncPoller} for polling of define the virtualMachineInstance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner> beginCreateOrUpdate(
-        String resourceUri, VirtualMachineInstanceInner body, Context context);
+    SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner>
+        beginCreateOrUpdate(String resourceUri, VirtualMachineInstanceInner body, Context context);
 
     /**
      * Implements virtual machine PUT method.
@@ -148,8 +148,8 @@ public interface VirtualMachineInstancesClient {
      * @return the {@link SyncPoller} for polling of define the virtualMachineInstance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner> beginUpdate(
-        String resourceUri, VirtualMachineInstanceUpdate body, Context context);
+    SyncPoller<PollResult<VirtualMachineInstanceInner>, VirtualMachineInstanceInner> beginUpdate(String resourceUri,
+        VirtualMachineInstanceUpdate body, Context context);
 
     /**
      * Updates a virtual machine.
@@ -214,8 +214,8 @@ public interface VirtualMachineInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceUri, Boolean deleteFromHost, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, Boolean deleteFromHost, Boolean force,
+        Context context);
 
     /**
      * Deletes an virtual machine.

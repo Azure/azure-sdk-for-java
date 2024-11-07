@@ -42,16 +42,19 @@ public final class PrivateEndpointConnectionProxiesUpdatePrivateEndpointProperti
             return Mono.just(httpResponse);
         }));
 
-        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.privateEndpointConnectionProxies().updatePrivateEndpointPropertiesWithResponse("ipwoqonmacjek", "izsh",
-            "vcimpev",
-            new PrivateEndpointUpdate().withId("mblrrilbywd").withLocation("miccwrwfscjfnyn")
-                .withImmutableSubscriptionId("qujizdvo").withImmutableResourceId("tiby")
-                .withVnetTrafficTag("bblgyavut"),
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionProxies()
+            .updatePrivateEndpointPropertiesWithResponse("ipwoqonmacjek", "izsh", "vcimpev",
+                new PrivateEndpointUpdate().withId("mblrrilbywd")
+                    .withLocation("miccwrwfscjfnyn")
+                    .withImmutableSubscriptionId("qujizdvo")
+                    .withImmutableResourceId("tiby")
+                    .withVnetTrafficTag("bblgyavut"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

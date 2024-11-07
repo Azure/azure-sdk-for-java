@@ -5,45 +5,49 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityAdministrators;
 import com.azure.resourcemanager.powerbidedicated.models.Mode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An object that represents a set of mutable Dedicated capacity resource properties. */
+/**
+ * An object that represents a set of mutable Dedicated capacity resource properties.
+ */
 @Fluent
-public class DedicatedCapacityMutableProperties {
+public class DedicatedCapacityMutableProperties implements JsonSerializable<DedicatedCapacityMutableProperties> {
     /*
      * A collection of Dedicated capacity administrators
      */
-    @JsonProperty(value = "administration")
     private DedicatedCapacityAdministrators administration;
 
     /*
-     * Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2'
-     * is used. [Learn More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2)
+     * Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is
+     * used. [Learn More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2)
      */
-    @JsonProperty(value = "mode")
     private Mode mode;
 
     /*
      * Tenant ID for the capacity. Used for creating Pro Plus capacity.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * Capacity name
      */
-    @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;
 
-    /** Creates an instance of DedicatedCapacityMutableProperties class. */
+    /**
+     * Creates an instance of DedicatedCapacityMutableProperties class.
+     */
     public DedicatedCapacityMutableProperties() {
     }
 
     /**
      * Get the administration property: A collection of Dedicated capacity administrators.
-     *
+     * 
      * @return the administration value.
      */
     public DedicatedCapacityAdministrators administration() {
@@ -52,7 +56,7 @@ public class DedicatedCapacityMutableProperties {
 
     /**
      * Set the administration property: A collection of Dedicated capacity administrators.
-     *
+     * 
      * @param administration the administration value to set.
      * @return the DedicatedCapacityMutableProperties object itself.
      */
@@ -65,7 +69,7 @@ public class DedicatedCapacityMutableProperties {
      * Get the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
      * default value 'Gen2' is used. [Learn
      * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
-     *
+     * 
      * @return the mode value.
      */
     public Mode mode() {
@@ -76,7 +80,7 @@ public class DedicatedCapacityMutableProperties {
      * Set the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
      * default value 'Gen2' is used. [Learn
      * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
-     *
+     * 
      * @param mode the mode value to set.
      * @return the DedicatedCapacityMutableProperties object itself.
      */
@@ -87,7 +91,7 @@ public class DedicatedCapacityMutableProperties {
 
     /**
      * Get the tenantId property: Tenant ID for the capacity. Used for creating Pro Plus capacity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -95,8 +99,19 @@ public class DedicatedCapacityMutableProperties {
     }
 
     /**
+     * Set the tenantId property: Tenant ID for the capacity. Used for creating Pro Plus capacity.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the DedicatedCapacityMutableProperties object itself.
+     */
+    DedicatedCapacityMutableProperties withTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
      * Get the friendlyName property: Capacity name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -104,13 +119,69 @@ public class DedicatedCapacityMutableProperties {
     }
 
     /**
+     * Set the friendlyName property: Capacity name.
+     * 
+     * @param friendlyName the friendlyName value to set.
+     * @return the DedicatedCapacityMutableProperties object itself.
+     */
+    DedicatedCapacityMutableProperties withFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (administration() != null) {
             administration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("administration", this.administration);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCapacityMutableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCapacityMutableProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedCapacityMutableProperties.
+     */
+    public static DedicatedCapacityMutableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCapacityMutableProperties deserializedDedicatedCapacityMutableProperties
+                = new DedicatedCapacityMutableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administration".equals(fieldName)) {
+                    deserializedDedicatedCapacityMutableProperties.administration
+                        = DedicatedCapacityAdministrators.fromJson(reader);
+                } else if ("mode".equals(fieldName)) {
+                    deserializedDedicatedCapacityMutableProperties.mode = Mode.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedDedicatedCapacityMutableProperties.tenantId = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedDedicatedCapacityMutableProperties.friendlyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCapacityMutableProperties;
+        });
     }
 }

@@ -82,20 +82,13 @@ public final class Utility {
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
 
-    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions,
-        HttpLogOptions logOptions,
-        Configuration configuration,
-        RetryPolicy retryPolicy,
-        RetryOptions retryOptions,
-        AzureKeyCredential azureKeyCredential,
-        TokenCredential tokenCredential,
-        SearchAudience audience,
-        List<HttpPipelinePolicy> perCallPolicies,
-        List<HttpPipelinePolicy> perRetryPolicies,
-        HttpClient httpClient,
+    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
+        Configuration configuration, RetryPolicy retryPolicy, RetryOptions retryOptions,
+        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential, SearchAudience audience,
+        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient,
         ClientLogger logger) {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         ClientOptions buildClientOptions = (clientOptions == null) ? DEFAULT_CLIENT_OPTIONS : clientOptions;
         HttpLogOptions buildLogOptions = (logOptions == null) ? DEFAULT_LOG_OPTIONS : logOptions;
@@ -125,7 +118,7 @@ public final class Utility {
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audienceUrl + "/.default"));
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("Builder doesn't have a credential "
-                                                                          + "configured. Supply either an AzureKeyCredential or TokenCredential."));
+                + "configured. Supply either an AzureKeyCredential or TokenCredential."));
         }
 
         httpPipelinePolicies.addAll(perRetryPolicies);
@@ -138,25 +131,22 @@ public final class Utility {
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
 
-        return new HttpPipelineBuilder()
-            .clientOptions(buildClientOptions)
+        return new HttpPipelineBuilder().clientOptions(buildClientOptions)
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }
 
     public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponseAsync(SearchIndexClientImpl restClient,
-        List<com.azure.search.documents.implementation.models.IndexAction> actions,
-        boolean throwOnAnyError,
-        Context context,
-        ClientLogger logger) {
+        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+        Context context, ClientLogger logger) {
         try {
-            return restClient
-                .getDocuments()
+            return restClient.getDocuments()
                 .indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) ? Mono.error(
-                    new IndexBatchException(response.getValue())) : Mono.just(response));
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
+                    ? Mono.error(new IndexBatchException(response.getValue()))
+                    : Mono.just(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -166,8 +156,8 @@ public final class Utility {
         List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
         Context context, ClientLogger logger) {
         return executeRestCallWithExceptionHandling(() -> {
-            Response<IndexDocumentsResult> response = restClient.getDocuments()
-                .indexWithResponse(new IndexBatch(actions), null, context);
+            Response<IndexDocumentsResult> response
+                = restClient.getDocuments().indexWithResponse(new IndexBatch(actions), null, context);
             if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
                 throw logger.logExceptionAsError(new IndexBatchException(response.getValue()));
             }
@@ -175,10 +165,8 @@ public final class Utility {
         }, logger);
     }
 
-    public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion,
-        String endpoint,
-        String indexName,
-        HttpPipeline httpPipeline) {
+    public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion, String endpoint,
+        String indexName, HttpPipeline httpPipeline) {
         return new SearchIndexClientImpl(httpPipeline, endpoint, indexName, serviceVersion.getVersion());
     }
 
@@ -198,11 +186,11 @@ public final class Utility {
         try {
             return supplier.get();
         } catch (com.azure.search.documents.indexes.implementation.models.ErrorResponseException exception) {
-            throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(),
-                exception.getResponse()));
+            throw logger
+                .logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse()));
         } catch (com.azure.search.documents.implementation.models.ErrorResponseException exception) {
-            throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(),
-                exception.getResponse()));
+            throw logger
+                .logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse()));
         } catch (RuntimeException ex) {
             throw logger.logExceptionAsError(ex);
         }

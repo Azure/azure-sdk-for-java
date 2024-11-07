@@ -26,9 +26,8 @@ public class App {
 
         try {
             testClasses = new Class<?>[] {
-                    Class.forName("com.azure.identity.perf.ReadCache"),
-                    Class.forName("com.azure.identity.perf.WriteCache"),
-            };
+                Class.forName("com.azure.identity.perf.ReadCache"),
+                Class.forName("com.azure.identity.perf.WriteCache"), };
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

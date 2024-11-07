@@ -25,11 +25,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ThreeTierConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThreeTierConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"deploymentType\":\"ThreeTier\",\"networkConfiguration\":{\"isSecondaryIpEnabled\":false},\"centralServer\":{\"subnetId\":\"pulpqblylsyxk\",\"virtualMachineConfiguration\":{\"vmSize\":\"jnsjervtiagxsd\"},\"instanceCount\":1291290959009471574},\"applicationServer\":{\"subnetId\":\"e\",\"virtualMachineConfiguration\":{\"vmSize\":\"psbzkfzbeyvpn\"},\"instanceCount\":3787214015941911197},\"databaseServer\":{\"databaseType\":\"DB2\",\"subnetId\":\"nvkjjxdxrbuukzcl\",\"virtualMachineConfiguration\":{\"vmSize\":\"wyhmlw\"},\"instanceCount\":4136836492530491965,\"diskConfiguration\":{\"diskVolumeConfigurations\":{}}},\"highAvailabilityConfig\":{\"highAvailabilityType\":\"AvailabilitySet\"},\"storageConfiguration\":{\"transportFileShareConfiguration\":{\"configurationType\":\"FileShareConfiguration\"}},\"customResourceNames\":{\"namingPatternType\":\"ThreeTierCustomResourceNames\"},\"appResourceGroup\":\"kwyfzqwhxxbuyqax\"}")
-                .toObject(ThreeTierConfiguration.class);
+        ThreeTierConfiguration model = BinaryData.fromString(
+            "{\"deploymentType\":\"ThreeTier\",\"networkConfiguration\":{\"isSecondaryIpEnabled\":false},\"centralServer\":{\"subnetId\":\"pulpqblylsyxk\",\"virtualMachineConfiguration\":{\"vmSize\":\"jnsjervtiagxsd\"},\"instanceCount\":1291290959009471574},\"applicationServer\":{\"subnetId\":\"e\",\"virtualMachineConfiguration\":{\"vmSize\":\"psbzkfzbeyvpn\"},\"instanceCount\":3787214015941911197},\"databaseServer\":{\"databaseType\":\"DB2\",\"subnetId\":\"nvkjjxdxrbuukzcl\",\"virtualMachineConfiguration\":{\"vmSize\":\"wyhmlw\"},\"instanceCount\":4136836492530491965,\"diskConfiguration\":{\"diskVolumeConfigurations\":{}}},\"highAvailabilityConfig\":{\"highAvailabilityType\":\"AvailabilitySet\"},\"storageConfiguration\":{\"transportFileShareConfiguration\":{\"configurationType\":\"FileShareConfiguration\"}},\"customResourceNames\":{\"namingPatternType\":\"ThreeTierCustomResourceNames\"},\"appResourceGroup\":\"kwyfzqwhxxbuyqax\"}")
+            .toObject(ThreeTierConfiguration.class);
         Assertions.assertEquals("kwyfzqwhxxbuyqax", model.appResourceGroup());
         Assertions.assertEquals(false, model.networkConfiguration().isSecondaryIpEnabled());
         Assertions.assertEquals("pulpqblylsyxk", model.centralServer().subnetId());
@@ -42,40 +40,30 @@ public final class ThreeTierConfigurationTests {
         Assertions.assertEquals("nvkjjxdxrbuukzcl", model.databaseServer().subnetId());
         Assertions.assertEquals("wyhmlw", model.databaseServer().virtualMachineConfiguration().vmSize());
         Assertions.assertEquals(4136836492530491965L, model.databaseServer().instanceCount());
-        Assertions
-            .assertEquals(
-                SapHighAvailabilityType.AVAILABILITY_SET, model.highAvailabilityConfig().highAvailabilityType());
+        Assertions.assertEquals(SapHighAvailabilityType.AVAILABILITY_SET,
+            model.highAvailabilityConfig().highAvailabilityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThreeTierConfiguration model =
-            new ThreeTierConfiguration()
-                .withAppResourceGroup("kwyfzqwhxxbuyqax")
-                .withNetworkConfiguration(new NetworkConfiguration().withIsSecondaryIpEnabled(false))
-                .withCentralServer(
-                    new CentralServerConfiguration()
-                        .withSubnetId("pulpqblylsyxk")
-                        .withVirtualMachineConfiguration(new VirtualMachineConfiguration().withVmSize("jnsjervtiagxsd"))
-                        .withInstanceCount(1291290959009471574L))
-                .withApplicationServer(
-                    new ApplicationServerConfiguration()
-                        .withSubnetId("e")
-                        .withVirtualMachineConfiguration(new VirtualMachineConfiguration().withVmSize("psbzkfzbeyvpn"))
-                        .withInstanceCount(3787214015941911197L))
-                .withDatabaseServer(
-                    new DatabaseConfiguration()
-                        .withDatabaseType(SapDatabaseType.DB2)
-                        .withSubnetId("nvkjjxdxrbuukzcl")
-                        .withVirtualMachineConfiguration(new VirtualMachineConfiguration().withVmSize("wyhmlw"))
-                        .withInstanceCount(4136836492530491965L)
-                        .withDiskConfiguration(new DiskConfiguration().withDiskVolumeConfigurations(mapOf())))
-                .withHighAvailabilityConfig(
-                    new HighAvailabilityConfiguration()
-                        .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET))
-                .withStorageConfiguration(
-                    new StorageConfiguration().withTransportFileShareConfiguration(new FileShareConfiguration()))
-                .withCustomResourceNames(new ThreeTierCustomResourceNames());
+        ThreeTierConfiguration model = new ThreeTierConfiguration().withAppResourceGroup("kwyfzqwhxxbuyqax")
+            .withNetworkConfiguration(new NetworkConfiguration().withIsSecondaryIpEnabled(false))
+            .withCentralServer(new CentralServerConfiguration().withSubnetId("pulpqblylsyxk")
+                .withVirtualMachineConfiguration(new VirtualMachineConfiguration().withVmSize("jnsjervtiagxsd"))
+                .withInstanceCount(1291290959009471574L))
+            .withApplicationServer(new ApplicationServerConfiguration().withSubnetId("e")
+                .withVirtualMachineConfiguration(new VirtualMachineConfiguration().withVmSize("psbzkfzbeyvpn"))
+                .withInstanceCount(3787214015941911197L))
+            .withDatabaseServer(new DatabaseConfiguration().withDatabaseType(SapDatabaseType.DB2)
+                .withSubnetId("nvkjjxdxrbuukzcl")
+                .withVirtualMachineConfiguration(new VirtualMachineConfiguration().withVmSize("wyhmlw"))
+                .withInstanceCount(4136836492530491965L)
+                .withDiskConfiguration(new DiskConfiguration().withDiskVolumeConfigurations(mapOf())))
+            .withHighAvailabilityConfig(
+                new HighAvailabilityConfiguration().withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET))
+            .withStorageConfiguration(
+                new StorageConfiguration().withTransportFileShareConfiguration(new FileShareConfiguration()))
+            .withCustomResourceNames(new ThreeTierCustomResourceNames());
         model = BinaryData.fromObject(model).toObject(ThreeTierConfiguration.class);
         Assertions.assertEquals("kwyfzqwhxxbuyqax", model.appResourceGroup());
         Assertions.assertEquals(false, model.networkConfiguration().isSecondaryIpEnabled());
@@ -89,9 +77,8 @@ public final class ThreeTierConfigurationTests {
         Assertions.assertEquals("nvkjjxdxrbuukzcl", model.databaseServer().subnetId());
         Assertions.assertEquals("wyhmlw", model.databaseServer().virtualMachineConfiguration().vmSize());
         Assertions.assertEquals(4136836492530491965L, model.databaseServer().instanceCount());
-        Assertions
-            .assertEquals(
-                SapHighAvailabilityType.AVAILABILITY_SET, model.highAvailabilityConfig().highAvailabilityType());
+        Assertions.assertEquals(SapHighAvailabilityType.AVAILABILITY_SET,
+            model.highAvailabilityConfig().highAvailabilityType());
     }
 
     @SuppressWarnings("unchecked")

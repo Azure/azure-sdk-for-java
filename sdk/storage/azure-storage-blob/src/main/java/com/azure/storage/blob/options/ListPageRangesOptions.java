@@ -17,7 +17,6 @@ public class ListPageRangesOptions {
     private BlobRequestConditions requestConditions;
     private Integer pageSize;
 
-
     /**
      * @param range The range to diff.
      */

@@ -20,22 +20,18 @@ public final class ComponentQuotaStatusImpl implements ComponentQuotaStatus {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public ComponentQuotaStatusImpl(
-        ComponentQuotaStatusClient innerClient,
+    public ComponentQuotaStatusImpl(ComponentQuotaStatusClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ApplicationInsightsComponentQuotaStatus> getWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<ApplicationInsightsComponentQuotaStatusInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, context);
+    public Response<ApplicationInsightsComponentQuotaStatus> getWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
+        Response<ApplicationInsightsComponentQuotaStatusInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentQuotaStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

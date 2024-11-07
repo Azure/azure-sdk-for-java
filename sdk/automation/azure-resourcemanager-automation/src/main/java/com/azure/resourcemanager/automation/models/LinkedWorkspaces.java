@@ -7,23 +7,13 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of LinkedWorkspaces. */
+/**
+ * Resource collection API of LinkedWorkspaces.
+ */
 public interface LinkedWorkspaces {
     /**
      * Retrieve the linked workspace for the account id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the linked workspace.
-     */
-    LinkedWorkspace get(String resourceGroupName, String automationAccountName);
-
-    /**
-     * Retrieve the linked workspace for the account id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -33,4 +23,16 @@ public interface LinkedWorkspaces {
      * @return definition of the linked workspace along with {@link Response}.
      */
     Response<LinkedWorkspace> getWithResponse(String resourceGroupName, String automationAccountName, Context context);
+
+    /**
+     * Retrieve the linked workspace for the account id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the linked workspace.
+     */
+    LinkedWorkspace get(String resourceGroupName, String automationAccountName);
 }

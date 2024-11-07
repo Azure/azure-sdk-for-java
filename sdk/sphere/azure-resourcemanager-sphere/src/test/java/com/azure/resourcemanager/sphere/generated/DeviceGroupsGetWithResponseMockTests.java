@@ -48,12 +48,14 @@ public final class DeviceGroupsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DeviceGroup response = manager.deviceGroups()
-            .getWithResponse("xxmueedn", "rdvstkwqqtch", "alm", "mtdaa", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("xxmueedn", "rdvstkwqqtch", "alm", "mtdaa", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("v", response.properties().description());
         Assertions.assertEquals(OSFeedType.RETAIL_EVAL, response.properties().osFeedType());

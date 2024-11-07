@@ -73,11 +73,10 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
         int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(dst)) {
-            BlobDownloadResponse response =  client.downloadStreamWithResponse(dstStream,
-                new BlobRange(sourceOffset, (long) dst.remaining()), null /*downloadRetryOptions*/, requestConditions,
-                false, null, null);
-            resourceLength = CoreUtils.extractSizeFromContentRange(
-                response.getDeserializedHeaders().getContentRange());
+            BlobDownloadResponse response
+                = client.downloadStreamWithResponse(dstStream, new BlobRange(sourceOffset, (long) dst.remaining()),
+                    null /*downloadRetryOptions*/, requestConditions, false, null, null);
+            resourceLength = CoreUtils.extractSizeFromContentRange(response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (BlobStorageException e) {
             if (e.getErrorCode() == BlobErrorCode.INVALID_RANGE) {

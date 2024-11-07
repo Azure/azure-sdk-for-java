@@ -14,18 +14,17 @@ public final class NodeTypeListSkuResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeListSkuResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"frpdsofbshrns\",\"sku\":{\"name\":\"swdvzyybycnun\",\"tier\":\"srtkfa\"},\"capacity\":{\"minimum\":1280835844,\"maximum\":204322777,\"default\":610729333,\"scaleType\":\"Manual\"}},{\"resourceType\":\"rtxdyuxzejnt\",\"sku\":{\"name\":\"wgioilqukry\",\"tier\":\"tqmieox\"},\"capacity\":{\"minimum\":563118752,\"maximum\":108943004,\"default\":1347150858,\"scaleType\":\"Manual\"}},{\"resourceType\":\"tbghhavgrvkf\",\"sku\":{\"name\":\"jzhpjbibgjmfx\",\"tier\":\"vfcluyovwxnbkfe\"},\"capacity\":{\"minimum\":1537243599,\"maximum\":405575644,\"default\":1049573139,\"scaleType\":\"None\"}},{\"resourceType\":\"irujbz\",\"sku\":{\"name\":\"vzzbtdcq\",\"tier\":\"niyujv\"},\"capacity\":{\"minimum\":1061424491,\"maximum\":905798226,\"default\":2085086631,\"scaleType\":\"Automatic\"}}],\"nextLink\":\"rbgyefry\"}")
+            "{\"value\":[{\"resourceType\":\"qxvcxgfrpdsofb\",\"sku\":{\"name\":\"nsvbuswdv\",\"tier\":\"ybycnunvj\"},\"capacity\":{\"minimum\":1338270870,\"maximum\":1992046146,\"default\":1116646616,\"scaleType\":\"Automatic\"}},{\"resourceType\":\"gikyzirtx\",\"sku\":{\"name\":\"x\",\"tier\":\"jntpsewgioilqu\"},\"capacity\":{\"minimum\":442929213,\"maximum\":1625650098,\"default\":599402344,\"scaleType\":\"Automatic\"}}],\"nextLink\":\"xorgg\"}")
             .toObject(NodeTypeListSkuResult.class);
-        Assertions.assertEquals("rbgyefry", model.nextLink());
+        Assertions.assertEquals("xorgg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NodeTypeListSkuResult model = new NodeTypeListSkuResult()
-            .withValue(Arrays.asList(new NodeTypeAvailableSkuInner(), new NodeTypeAvailableSkuInner(),
-                new NodeTypeAvailableSkuInner(), new NodeTypeAvailableSkuInner()))
-            .withNextLink("rbgyefry");
+            .withValue(Arrays.asList(new NodeTypeAvailableSkuInner(), new NodeTypeAvailableSkuInner()))
+            .withNextLink("xorgg");
         model = BinaryData.fromObject(model).toObject(NodeTypeListSkuResult.class);
-        Assertions.assertEquals("rbgyefry", model.nextLink());
+        Assertions.assertEquals("xorgg", model.nextLink());
     }
 }

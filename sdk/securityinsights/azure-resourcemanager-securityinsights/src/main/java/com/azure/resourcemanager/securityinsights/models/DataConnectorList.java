@@ -6,28 +6,38 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List all the data connectors. */
+/**
+ * List all the data connectors.
+ */
 @Fluent
-public final class DataConnectorList {
+public final class DataConnectorList implements JsonSerializable<DataConnectorList> {
     /*
      * URL to fetch the next set of data connectors.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Array of data connectors.
      */
-    @JsonProperty(value = "value", required = true)
     private List<DataConnectorInner> value;
 
     /**
+     * Creates an instance of DataConnectorList class.
+     */
+    public DataConnectorList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of data connectors.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class DataConnectorList {
 
     /**
      * Get the value property: Array of data connectors.
-     *
+     * 
      * @return the value value.
      */
     public List<DataConnectorInner> value() {
@@ -45,7 +55,7 @@ public final class DataConnectorList {
 
     /**
      * Set the value property: Array of data connectors.
-     *
+     * 
      * @param value the value value to set.
      * @return the DataConnectorList object itself.
      */
@@ -56,18 +66,57 @@ public final class DataConnectorList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DataConnectorList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model DataConnectorList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataConnectorList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectorList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectorList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataConnectorList.
+     */
+    public static DataConnectorList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectorList deserializedDataConnectorList = new DataConnectorList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataConnectorInner> value = reader.readArray(reader1 -> DataConnectorInner.fromJson(reader1));
+                    deserializedDataConnectorList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDataConnectorList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataConnectorList;
+        });
+    }
 }

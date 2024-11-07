@@ -21,34 +21,31 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.purview.PurviewManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient, com.azure.resourcemanager.purview.PurviewManager serviceManager) {
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
+        com.azure.resourcemanager.purview.PurviewManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PrivateLinkResource> listByAccount(String resourceGroupName, String accountName) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByAccount(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByAccount(resourceGroupName, accountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateLinkResource> listByAccount(
-        String resourceGroupName, String accountName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByAccount(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+    public PagedIterable<PrivateLinkResource> listByAccount(String resourceGroupName, String accountName,
+        Context context) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByAccount(resourceGroupName, accountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public Response<PrivateLinkResource> getByGroupIdWithResponse(
-        String resourceGroupName, String accountName, String groupId, Context context) {
-        Response<PrivateLinkResourceInner> inner =
-            this.serviceClient().getByGroupIdWithResponse(resourceGroupName, accountName, groupId, context);
+    public Response<PrivateLinkResource> getByGroupIdWithResponse(String resourceGroupName, String accountName,
+        String groupId, Context context) {
+        Response<PrivateLinkResourceInner> inner
+            = this.serviceClient().getByGroupIdWithResponse(resourceGroupName, accountName, groupId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

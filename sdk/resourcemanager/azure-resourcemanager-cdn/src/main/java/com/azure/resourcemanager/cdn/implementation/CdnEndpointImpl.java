@@ -42,26 +42,20 @@ import java.util.stream.Collectors;
  * Implementation for {@link CdnEndpoint}.
  */
 @SuppressWarnings("unchecked")
-class CdnEndpointImpl
-    extends ExternalChildResourceImpl<
-        CdnEndpoint,
-        EndpointInner,
-        CdnProfileImpl,
-        CdnProfile>
+class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInner, CdnProfileImpl, CdnProfile>
     implements CdnEndpoint,
 
-        CdnEndpoint.DefinitionStages.Blank.StandardEndpoint<CdnProfile.DefinitionStages.WithStandardCreate>,
-        CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<CdnProfile.DefinitionStages.WithPremiumVerizonCreate>,
-        CdnEndpoint.DefinitionStages.WithStandardAttach<CdnProfile.DefinitionStages.WithStandardCreate>,
-        CdnEndpoint.DefinitionStages.WithPremiumAttach<CdnProfile.DefinitionStages.WithPremiumVerizonCreate>,
+    CdnEndpoint.DefinitionStages.Blank.StandardEndpoint<CdnProfile.DefinitionStages.WithStandardCreate>,
+    CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<CdnProfile.DefinitionStages.WithPremiumVerizonCreate>,
+    CdnEndpoint.DefinitionStages.WithStandardAttach<CdnProfile.DefinitionStages.WithStandardCreate>,
+    CdnEndpoint.DefinitionStages.WithPremiumAttach<CdnProfile.DefinitionStages.WithPremiumVerizonCreate>,
 
-        CdnEndpoint.UpdateDefinitionStages.Blank.StandardEndpoint<CdnProfile.Update>,
-        CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<CdnProfile.Update>,
-        CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<CdnProfile.Update>,
-        CdnEndpoint.UpdateDefinitionStages.WithPremiumAttach<CdnProfile.Update>,
+    CdnEndpoint.UpdateDefinitionStages.Blank.StandardEndpoint<CdnProfile.Update>,
+    CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<CdnProfile.Update>,
+    CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<CdnProfile.Update>,
+    CdnEndpoint.UpdateDefinitionStages.WithPremiumAttach<CdnProfile.Update>,
 
-        CdnEndpoint.UpdateStandardEndpoint,
-        CdnEndpoint.UpdatePremiumEndpoint {
+    CdnEndpoint.UpdateStandardEndpoint, CdnEndpoint.UpdatePremiumEndpoint {
 
     private List<CustomDomainInner> customDomainList;
     private List<CustomDomainInner> deletedCustomDomainList;
@@ -86,32 +80,38 @@ class CdnEndpointImpl
         if (isStandardMicrosoftSku()
             && this.innerModel().deliveryPolicy() == null
             && this.standardRulesEngineRuleMap.size() > 0) {
-            this.innerModel().withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy()
-                .withRules(this.standardRulesEngineRuleMap.values()
-                    .stream()
-                    .sorted(Comparator.comparingInt(DeliveryRule::order))
-                    .collect(Collectors.toList())));
+            this.innerModel()
+                .withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy()
+                    .withRules(this.standardRulesEngineRuleMap.values()
+                        .stream()
+                        .sorted(Comparator.comparingInt(DeliveryRule::order))
+                        .collect(Collectors.toList())));
         }
-        return this.parent().manager().serviceClient().getEndpoints().createAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                this.innerModel())
+        return this.parent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .createAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
             .flatMap(inner -> {
                 self.setInner(inner);
                 return Flux.fromIterable(self.customDomainList)
-                    .flatMapDelayError(customDomainInner -> self.parent().manager().serviceClient()
-                        .getCustomDomains().createAsync(
-                            self.parent().resourceGroupName(),
-                            self.parent().name(),
-                            self.name(),
-                            self.parent().manager().resourceManager().internalContext()
+                    .flatMapDelayError(customDomainInner -> self.parent()
+                        .manager()
+                        .serviceClient()
+                        .getCustomDomains()
+                        .createAsync(self.parent().resourceGroupName(), self.parent().name(), self.name(),
+                            self.parent()
+                                .manager()
+                                .resourceManager()
+                                .internalContext()
                                 .randomResourceName("CustomDomain", 50),
-                            new CustomDomainParameters().withHostname(customDomainInner.hostname())), 32, 32)
-                    .then(self.parent().manager().serviceClient()
-                        .getCustomDomains().listByEndpointAsync(
-                            self.parent().resourceGroupName(),
-                            self.parent().name(),
-                            self.name())
+                            new CustomDomainParameters().withHostname(customDomainInner.hostname())),
+                        32, 32)
+                    .then(self.parent()
+                        .manager()
+                        .serviceClient()
+                        .getCustomDomains()
+                        .listByEndpointAsync(self.parent().resourceGroupName(), self.parent().name(), self.name())
                         .collectList()
                         .map(customDomainInners -> {
                             self.customDomainList.addAll(customDomainInners);
@@ -125,15 +125,15 @@ class CdnEndpointImpl
         final CdnEndpointImpl self = this;
         EndpointUpdateParameters endpointUpdateParameters = new EndpointUpdateParameters();
         endpointUpdateParameters.withIsHttpAllowed(this.innerModel().isHttpAllowed())
-                .withIsHttpsAllowed(this.innerModel().isHttpsAllowed())
-                .withOriginPath(this.innerModel().originPath())
-                .withOriginHostHeader(this.innerModel().originHostHeader())
-                .withIsCompressionEnabled(this.innerModel().isCompressionEnabled())
-                .withContentTypesToCompress(this.innerModel().contentTypesToCompress())
-                .withGeoFilters(this.innerModel().geoFilters())
-                .withOptimizationType(this.innerModel().optimizationType())
-                .withQueryStringCachingBehavior(this.innerModel().queryStringCachingBehavior())
-                .withTags(this.innerModel().tags());
+            .withIsHttpsAllowed(this.innerModel().isHttpsAllowed())
+            .withOriginPath(this.innerModel().originPath())
+            .withOriginHostHeader(this.innerModel().originHostHeader())
+            .withIsCompressionEnabled(this.innerModel().isCompressionEnabled())
+            .withContentTypesToCompress(this.innerModel().contentTypesToCompress())
+            .withGeoFilters(this.innerModel().geoFilters())
+            .withOptimizationType(this.innerModel().optimizationType())
+            .withQueryStringCachingBehavior(this.innerModel().queryStringCachingBehavior())
+            .withTags(this.innerModel().tags());
 
         if (isStandardMicrosoftSku()) {
             List<DeliveryRule> rules = this.standardRulesEngineRuleMap.values()
@@ -141,103 +141,106 @@ class CdnEndpointImpl
                 .sorted(Comparator.comparingInt(DeliveryRule::order))
                 .collect(Collectors.toList());
             ensureDeliveryPolicy();
-            endpointUpdateParameters.withDeliveryPolicy(
-                new EndpointPropertiesUpdateParametersDeliveryPolicy()
-                    .withRules(rules));
+            endpointUpdateParameters
+                .withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy().withRules(rules));
         }
 
         DeepCreatedOrigin originInner = this.innerModel().origins().get(0);
-        OriginUpdateParameters originUpdateParameters = new OriginUpdateParameters()
-                .withHostname(originInner.hostname())
+        OriginUpdateParameters originUpdateParameters
+            = new OriginUpdateParameters().withHostname(originInner.hostname())
                 .withHttpPort(originInner.httpPort())
                 .withHttpsPort(originInner.httpsPort());
 
-        Mono<EndpointInner> originUpdateTask = this.parent().manager().serviceClient().getOrigins().updateAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                originInner.name(),
+        Mono<EndpointInner> originUpdateTask = this.parent()
+            .manager()
+            .serviceClient()
+            .getOrigins()
+            .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), originInner.name(),
                 originUpdateParameters)
             .then(Mono.empty());
 
-        Mono<EndpointInner> endpointUpdateTask = this.parent().manager().serviceClient().getEndpoints().updateAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
+        Mono<EndpointInner> endpointUpdateTask = this.parent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
                 endpointUpdateParameters);
 
         Flux<CustomDomainInner> customDomainCreateTask = Flux.fromIterable(this.customDomainList)
-            .flatMapDelayError(itemToCreate -> this.parent().manager().serviceClient().getCustomDomains().createAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                self.parent().manager().resourceManager().internalContext()
-                    .randomResourceName("CustomDomain", 50),
-                new CustomDomainParameters().withHostname(itemToCreate.hostname())
-            ), 32, 32);
+            .flatMapDelayError(itemToCreate -> this.parent()
+                .manager()
+                .serviceClient()
+                .getCustomDomains()
+                .createAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                    self.parent().manager().resourceManager().internalContext().randomResourceName("CustomDomain", 50),
+                    new CustomDomainParameters().withHostname(itemToCreate.hostname())),
+                32, 32);
 
         Flux<CustomDomainInner> customDomainDeleteTask = Flux.fromIterable(this.deletedCustomDomainList)
-            .flatMapDelayError(itemToDelete -> this.parent().manager().serviceClient().getCustomDomains().deleteAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                itemToDelete.name()
-            ), 32, 32);
+            .flatMapDelayError(itemToDelete -> this.parent()
+                .manager()
+                .serviceClient()
+                .getCustomDomains()
+                .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), itemToDelete.name()),
+                32, 32);
 
-        Mono<EndpointInner> customDomainTask = Flux.concat(customDomainCreateTask, customDomainDeleteTask)
-            .then(Mono.empty());
+        Mono<EndpointInner> customDomainTask
+            = Flux.concat(customDomainCreateTask, customDomainDeleteTask).then(Mono.empty());
 
-        return Flux.mergeDelayError(32, customDomainTask, originUpdateTask, endpointUpdateTask)
-            .last()
-            .map(inner -> {
-                self.setInner(inner);
-                self.customDomainList.clear();
-                self.deletedCustomDomainList.clear();
-                return self;
-            });
+        return Flux.mergeDelayError(32, customDomainTask, originUpdateTask, endpointUpdateTask).last().map(inner -> {
+            self.setInner(inner);
+            self.customDomainList.clear();
+            self.deletedCustomDomainList.clear();
+            return self;
+        });
     }
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.parent().manager().serviceClient().getEndpoints().deleteAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name());
+        return this.parent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
     }
 
     @Override
     public Mono<CdnEndpoint> refreshAsync() {
         final CdnEndpointImpl self = this;
-        return super.refreshAsync()
-            .flatMap(cdnEndpoint -> {
-                self.customDomainList.clear();
-                self.deletedCustomDomainList.clear();
-                initializeRuleMapForStandardMicrosoftSku();
-                return self.parent().manager().serviceClient().getCustomDomains().listByEndpointAsync(
-                        self.parent().resourceGroupName(),
-                        self.parent().name(),
-                        self.name()
-                    )
-                    .collectList()
-                    .map(customDomainInners -> {
-                        self.customDomainList.addAll(customDomainInners);
-                        return self;
-                    });
-            });
+        return super.refreshAsync().flatMap(cdnEndpoint -> {
+            self.customDomainList.clear();
+            self.deletedCustomDomainList.clear();
+            initializeRuleMapForStandardMicrosoftSku();
+            return self.parent()
+                .manager()
+                .serviceClient()
+                .getCustomDomains()
+                .listByEndpointAsync(self.parent().resourceGroupName(), self.parent().name(), self.name())
+                .collectList()
+                .map(customDomainInners -> {
+                    self.customDomainList.addAll(customDomainInners);
+                    return self;
+                });
+        });
     }
 
     @Override
     protected Mono<EndpointInner> getInnerAsync() {
-        return this.parent().manager().serviceClient().getEndpoints().getAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name());
+        return this.parent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
     }
 
     @Override
     public PagedIterable<ResourceUsage> listResourceUsage() {
-        return PagedConverter.mapPage(this.parent().manager().serviceClient().getEndpoints().listResourceUsage(
-            this.parent().resourceGroupName(),
-            this.parent().name(),
-            this.name()),
+        return PagedConverter.mapPage(
+            this.parent()
+                .manager()
+                .serviceClient()
+                .getEndpoints()
+                .listResourceUsage(this.parent().resourceGroupName(), this.parent().name(), this.name()),
             ResourceUsage::new);
     }
 
@@ -348,7 +351,10 @@ class CdnEndpointImpl
     @Override
     public Set<String> customDomains() {
         Set<String> set = new HashSet<>();
-        for (CustomDomainInner customDomainInner : this.parent().manager().serviceClient().getCustomDomains()
+        for (CustomDomainInner customDomainInner : this.parent()
+            .manager()
+            .serviceClient()
+            .getCustomDomains()
             .listByEndpoint(this.parent().resourceGroupName(), this.parent().name(), this.name())) {
             set.add(customDomainInner.hostname());
         }
@@ -409,10 +415,7 @@ class CdnEndpointImpl
 
     @Override
     public CdnEndpointImpl withOrigin(String originName, String hostname) {
-        this.innerModel().origins().add(
-                new DeepCreatedOrigin()
-                        .withName(originName)
-                        .withHostname(hostname));
+        this.innerModel().origins().add(new DeepCreatedOrigin().withName(originName).withHostname(hostname));
         return this;
     }
 
@@ -551,8 +554,8 @@ class CdnEndpointImpl
     }
 
     @Override
-    public CdnEndpointImpl withGeoFilter(
-        String relativePath, GeoFilterActions action, Collection<CountryIsoCode> countryCodes) {
+    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action,
+        Collection<CountryIsoCode> countryCodes) {
         GeoFilter geoFilter = this.createGeoFiltersObject(relativePath, action);
 
         if (geoFilter.countryCodes() == null) {
@@ -624,8 +627,7 @@ class CdnEndpointImpl
         } else {
             this.innerModel().geoFilters().remove(geoFilter);
         }
-        geoFilter.withRelativePath(relativePath)
-                .withAction(action);
+        geoFilter.withRelativePath(relativePath).withAction(action);
 
         return geoFilter;
     }
@@ -647,9 +649,9 @@ class CdnEndpointImpl
 
     private void throwIfNotStandardMicrosoftSku() {
         if (!isStandardMicrosoftSku()) {
-            throw new IllegalStateException(String.format(
-                "Standard rules engine only supports for Standard Microsoft SKU, "
-                    + "current SKU is %s", parent().sku().name()));
+            throw new IllegalStateException(
+                String.format("Standard rules engine only supports for Standard Microsoft SKU, " + "current SKU is %s",
+                    parent().sku().name()));
         }
     }
 

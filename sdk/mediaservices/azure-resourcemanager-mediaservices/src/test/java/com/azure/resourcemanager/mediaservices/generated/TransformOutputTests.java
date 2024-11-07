@@ -14,24 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TransformOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransformOutput model =
-            BinaryData
-                .fromString(
-                    "{\"onError\":\"ContinueJob\",\"relativePriority\":\"High\",\"preset\":{\"@odata.type\":\"Preset\"}}")
-                .toObject(TransformOutput.class);
+        TransformOutput model = BinaryData
+            .fromString(
+                "{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}}")
+            .toObject(TransformOutput.class);
         Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.onError());
-        Assertions.assertEquals(Priority.HIGH, model.relativePriority());
+        Assertions.assertEquals(Priority.NORMAL, model.relativePriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransformOutput model =
-            new TransformOutput()
-                .withOnError(OnErrorType.CONTINUE_JOB)
-                .withRelativePriority(Priority.HIGH)
-                .withPreset(new Preset());
+        TransformOutput model = new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+            .withRelativePriority(Priority.NORMAL)
+            .withPreset(new Preset());
         model = BinaryData.fromObject(model).toObject(TransformOutput.class);
         Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.onError());
-        Assertions.assertEquals(Priority.HIGH, model.relativePriority());
+        Assertions.assertEquals(Priority.NORMAL, model.relativePriority());
     }
 }

@@ -13,7 +13,8 @@ import java.util.Map;
 /** Workspace creation parameters. */
 @Fluent
 public final class WorkspaceCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceCreateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceCreateParameters.class);
 
     /*
      * The region in which to create the Workspace.
@@ -74,10 +75,8 @@ public final class WorkspaceCreateParameters {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model WorkspaceCreateParameters"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model WorkspaceCreateParameters"));
         }
     }
 }

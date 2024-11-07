@@ -137,7 +137,8 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
 
-    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, boolean isPrefetchDisabled, Duration operationTimeout) {
+    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, boolean isPrefetchDisabled,
+        Duration operationTimeout) {
         this.sessionAsyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = operationTimeout;
         this.isPrefetchDisabled = isPrefetchDisabled;

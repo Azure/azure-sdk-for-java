@@ -4,23 +4,24 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for GenerateDetailedCostReportOperationResults Get. */
+/**
+ * Samples for GenerateDetailedCostReportOperationResults Get.
+ */
 public final class GenerateDetailedCostReportOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportOperationResultsBySubscriptionScope.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * GenerateDetailedCostReportOperationResultsBySubscriptionScope.json
      */
     /**
      * Sample code: Get details of the operation result.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void getDetailsOfTheOperationResult(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .generateDetailedCostReportOperationResults()
-            .get(
-                "00000000-0000-0000-0000-000000000000",
-                "subscriptions/00000000-0000-0000-0000-000000000000",
+    public static void
+        getDetailsOfTheOperationResult(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.generateDetailedCostReportOperationResults()
+            .get("00000000-0000-0000-0000-000000000000", "subscriptions/00000000-0000-0000-0000-000000000000",
                 com.azure.core.util.Context.NONE);
     }
 }

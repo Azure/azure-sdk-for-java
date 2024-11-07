@@ -13,8 +13,7 @@ public final class TeamInformationImpl implements TeamInformation {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    TeamInformationImpl(
-        TeamInformationInner innerObject,
+    TeamInformationImpl(TeamInformationInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

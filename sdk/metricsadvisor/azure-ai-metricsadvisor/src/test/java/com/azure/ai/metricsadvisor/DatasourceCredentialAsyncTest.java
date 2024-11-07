@@ -34,24 +34,22 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            super.creatDatasourceCredentialRunner(expectedCredential ->
-                // Act & Assert
-                StepVerifier.create(client.createDataSourceCredential(expectedCredential))
+            // Act & Assert
+            super.creatDatasourceCredentialRunner(
+                expectedCredential -> StepVerifier.create(client.createDataSourceCredential(expectedCredential))
                     .assertNext(createdCredential -> {
                         credentialId.set(createdCredential.getId());
-                        super.validateCredentialResult(expectedCredential,
-                            createdCredential,
+                        super.validateCredentialResult(expectedCredential, createdCredential,
                             DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
                     })
                     .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
+                    .verify(DEFAULT_TIMEOUT),
+                DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {
                 Mono<Void> deleteCredential = client.deleteDataSourceCredential(credentialId.get());
-                StepVerifier.create(deleteCredential)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteCredential).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -64,24 +62,22 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            super.creatDatasourceCredentialRunner(expectedCredential ->
-                // Act & Assert
-                StepVerifier.create(client.createDataSourceCredential(expectedCredential))
+            // Act & Assert
+            super.creatDatasourceCredentialRunner(
+                expectedCredential -> StepVerifier.create(client.createDataSourceCredential(expectedCredential))
                     .assertNext(createdCredential -> {
                         credentialId.set(createdCredential.getId());
-                        super.validateCredentialResult(expectedCredential,
-                            createdCredential,
+                        super.validateCredentialResult(expectedCredential, createdCredential,
                             DataSourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
                     })
                     .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), DataSourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
+                    .verify(DEFAULT_TIMEOUT),
+                DataSourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {
                 Mono<Void> deleteCredential = client.deleteDataSourceCredential(credentialId.get());
-                StepVerifier.create(deleteCredential)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteCredential).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -94,24 +90,22 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            super.creatDatasourceCredentialRunner(expectedCredential ->
-                // Act & Assert
-                StepVerifier.create(client.createDataSourceCredential(expectedCredential))
+            // Act & Assert
+            super.creatDatasourceCredentialRunner(
+                expectedCredential -> StepVerifier.create(client.createDataSourceCredential(expectedCredential))
                     .assertNext(createdCredential -> {
                         credentialId.set(createdCredential.getId());
-                        super.validateCredentialResult(expectedCredential,
-                            createdCredential,
+                        super.validateCredentialResult(expectedCredential, createdCredential,
                             DataSourceAuthenticationType.SERVICE_PRINCIPAL);
                     })
                     .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), DataSourceAuthenticationType.SERVICE_PRINCIPAL);
+                    .verify(DEFAULT_TIMEOUT),
+                DataSourceAuthenticationType.SERVICE_PRINCIPAL);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {
                 Mono<Void> deleteCredential = client.deleteDataSourceCredential(credentialId.get());
-                StepVerifier.create(deleteCredential)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteCredential).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -124,24 +118,22 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            super.creatDatasourceCredentialRunner(expectedCredential ->
-                // Act & Assert
-                StepVerifier.create(client.createDataSourceCredential(expectedCredential))
+            // Act & Assert
+            super.creatDatasourceCredentialRunner(
+                expectedCredential -> StepVerifier.create(client.createDataSourceCredential(expectedCredential))
                     .assertNext(createdCredential -> {
                         credentialId.set(createdCredential.getId());
-                        super.validateCredentialResult(expectedCredential,
-                            createdCredential,
+                        super.validateCredentialResult(expectedCredential, createdCredential,
                             DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
                     })
                     .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+                    .verify(DEFAULT_TIMEOUT),
+                DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {
                 Mono<Void> deleteCredential = client.deleteDataSourceCredential(credentialId.get());
-                StepVerifier.create(deleteCredential)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteCredential).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -154,27 +146,24 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
             super.listDatasourceCredentialRunner(inputCredentialList -> {
-                final List<String> ids =
-                    inputCredentialList.stream()
-                        .map(credential -> client.createDataSourceCredential(credential).block())
-                        .map(credential -> credential.getId())
-                        .collect(Collectors.toList());
+                final List<String> ids = inputCredentialList.stream()
+                    .map(credential -> client.createDataSourceCredential(credential).block())
+                    .map(credential -> credential.getId())
+                    .collect(Collectors.toList());
                 createdCredentialIdList.set(ids);
 
                 List<DataSourceCredentialEntity> retrievedCredentialList = new ArrayList<>();
-                StepVerifier.create(client.listDataSourceCredentials())
-                    .thenConsumeWhile(e -> {
-                        retrievedCredentialList.add(e);
-                        return retrievedCredentialList.size() < inputCredentialList.size();
-                    })
-                    .thenCancel().verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(client.listDataSourceCredentials()).thenConsumeWhile(e -> {
+                    retrievedCredentialList.add(e);
+                    return retrievedCredentialList.size() < inputCredentialList.size();
+                }).thenCancel().verify(DEFAULT_TIMEOUT);
 
                 assertEquals(inputCredentialList.size(), retrievedCredentialList.size());
             });
         } finally {
             if (!CoreUtils.isNullOrEmpty(createdCredentialIdList.get())) {
-                createdCredentialIdList.get().forEach(credentialId ->
-                    StepVerifier.create(client.deleteDataSourceCredential(credentialId))
+                createdCredentialIdList.get()
+                    .forEach(credentialId -> StepVerifier.create(client.deleteDataSourceCredential(credentialId))
                         .expectComplete()
                         .verify(DEFAULT_TIMEOUT));
             }

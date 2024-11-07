@@ -30,8 +30,8 @@ public interface ApiWikisClient {
      * @return the entity state (Etag) version of the Wiki for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiWikisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, Context context);
+    ApiWikisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the Wiki for an API specified by its identifier.
@@ -90,13 +90,8 @@ public interface ApiWikisClient {
      * @return wiki properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiWikisCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        WikiContractInner parameters,
-        String ifMatch,
-        Context context);
+    ApiWikisCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, WikiContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Wiki for an API or updates an existing one.
@@ -111,8 +106,8 @@ public interface ApiWikisClient {
      * @return wiki properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WikiContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, WikiContractInner parameters);
+    WikiContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        WikiContractInner parameters);
 
     /**
      * Updates the details of the Wiki for an API specified by its identifier.
@@ -130,13 +125,8 @@ public interface ApiWikisClient {
      * @return wiki properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiWikisUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String ifMatch,
-        WikiUpdateContract parameters,
-        Context context);
+    ApiWikisUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String ifMatch, WikiUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the Wiki for an API specified by its identifier.
@@ -153,8 +143,8 @@ public interface ApiWikisClient {
      * @return wiki properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WikiContractInner update(
-        String resourceGroupName, String serviceName, String apiId, String ifMatch, WikiUpdateContract parameters);
+    WikiContractInner update(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        WikiUpdateContract parameters);
 
     /**
      * Deletes the specified Wiki from an API.
@@ -171,8 +161,8 @@ public interface ApiWikisClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified Wiki from an API.

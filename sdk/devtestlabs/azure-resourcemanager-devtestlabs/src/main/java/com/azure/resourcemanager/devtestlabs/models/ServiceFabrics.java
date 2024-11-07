@@ -39,15 +39,8 @@ public interface ServiceFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ServiceFabric> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ServiceFabric> list(String resourceGroupName, String labName, String username, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get service fabric.
@@ -63,8 +56,8 @@ public interface ServiceFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service fabric along with {@link Response}.
      */
-    Response<ServiceFabric> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    Response<ServiceFabric> getWithResponse(String resourceGroupName, String labName, String username, String name,
+        String expand, Context context);
 
     /**
      * Get service fabric.
@@ -120,8 +113,8 @@ public interface ServiceFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedules applicable to a virtual machine along with {@link Response}.
      */
-    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(
-        String resourceGroupName, String labName, String username, String name, Context context);
+    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(String resourceGroupName, String labName,
+        String username, String name, Context context);
 
     /**
      * Lists the applicable start/stop schedules, if any.

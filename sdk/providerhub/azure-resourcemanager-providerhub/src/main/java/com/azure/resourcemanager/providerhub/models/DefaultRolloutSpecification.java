@@ -159,8 +159,8 @@ public class DefaultRolloutSpecification {
      * @param restOfTheWorldGroupOne the restOfTheWorldGroupOne value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
-    public DefaultRolloutSpecification withRestOfTheWorldGroupOne(
-        DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne) {
+    public DefaultRolloutSpecification
+        withRestOfTheWorldGroupOne(DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne) {
         this.restOfTheWorldGroupOne = restOfTheWorldGroupOne;
         return this;
     }
@@ -180,8 +180,8 @@ public class DefaultRolloutSpecification {
      * @param restOfTheWorldGroupTwo the restOfTheWorldGroupTwo value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
-    public DefaultRolloutSpecification withRestOfTheWorldGroupTwo(
-        DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo) {
+    public DefaultRolloutSpecification
+        withRestOfTheWorldGroupTwo(DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo) {
         this.restOfTheWorldGroupTwo = restOfTheWorldGroupTwo;
         return this;
     }
@@ -201,8 +201,8 @@ public class DefaultRolloutSpecification {
      * @param providerRegistration the providerRegistration value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
-    public DefaultRolloutSpecification withProviderRegistration(
-        DefaultRolloutSpecificationProviderRegistration providerRegistration) {
+    public DefaultRolloutSpecification
+        withProviderRegistration(DefaultRolloutSpecificationProviderRegistration providerRegistration) {
         this.providerRegistration = providerRegistration;
         return this;
     }
@@ -222,8 +222,8 @@ public class DefaultRolloutSpecification {
      * @param resourceTypeRegistrations the resourceTypeRegistrations value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
-    public DefaultRolloutSpecification withResourceTypeRegistrations(
-        List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
+    public DefaultRolloutSpecification
+        withResourceTypeRegistrations(List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
         this.resourceTypeRegistrations = resourceTypeRegistrations;
         return this;
     }

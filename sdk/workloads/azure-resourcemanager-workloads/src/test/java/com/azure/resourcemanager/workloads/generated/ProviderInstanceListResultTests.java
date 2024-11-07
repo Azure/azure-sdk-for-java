@@ -17,27 +17,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ProviderInstanceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProviderInstanceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Accepted\"},\"id\":\"xogaokonzmnsikv\",\"name\":\"kqze\",\"type\":\"qkdltfz\"}],\"nextLink\":\"hhvh\"}")
-                .toObject(ProviderInstanceListResult.class);
+        ProviderInstanceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Accepted\"},\"id\":\"xogaokonzmnsikv\",\"name\":\"kqze\",\"type\":\"qkdltfz\"}],\"nextLink\":\"hhvh\"}")
+            .toObject(ProviderInstanceListResult.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals("hhvh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProviderInstanceListResult model =
-            new ProviderInstanceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ProviderInstanceInner()
-                                .withIdentity(
-                                    new UserAssignedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))))
+        ProviderInstanceListResult model
+            = new ProviderInstanceListResult().withValue(Arrays.asList(new ProviderInstanceInner()
+                .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf()))))
                 .withNextLink("hhvh");
         model = BinaryData.fromObject(model).toObject(ProviderInstanceListResult.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());

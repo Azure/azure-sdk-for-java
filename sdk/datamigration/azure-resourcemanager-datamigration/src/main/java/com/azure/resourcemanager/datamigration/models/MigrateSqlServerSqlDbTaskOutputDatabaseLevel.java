@@ -5,108 +5,118 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Database level result for Sql Server to Azure Sql DB migration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("DatabaseLevelOutput")
+/**
+ * Database level result for Sql Server to Azure Sql DB migration.
+ */
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateSqlServerSqlDbTaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "DatabaseLevelOutput";
+
+    /*
      * Name of the item
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * Migration start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Migration end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Current state of migration
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState state;
 
     /*
      * Migration stage that this database is in
      */
-    @JsonProperty(value = "stage", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseMigrationStage stage;
 
     /*
      * Status message
      */
-    @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String statusMessage;
 
     /*
      * Migration progress message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Number of objects
      */
-    @JsonProperty(value = "numberOfObjects", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfObjects;
 
     /*
      * Number of successfully completed objects
      */
-    @JsonProperty(value = "numberOfObjectsCompleted", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfObjectsCompleted;
 
     /*
      * Number of database/object errors.
      */
-    @JsonProperty(value = "errorCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long errorCount;
 
     /*
      * Wildcard string prefix to use for querying all errors of the item
      */
-    @JsonProperty(value = "errorPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String errorPrefix;
 
     /*
      * Wildcard string prefix to use for querying all sub-tem results of the item
      */
-    @JsonProperty(value = "resultPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String resultPrefix;
 
     /*
      * Migration exceptions and warnings.
      */
-    @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
 
     /*
      * Summary of object results in the migration
      */
-    @JsonProperty(value = "objectSummary", access = JsonProperty.Access.WRITE_ONLY)
     private String objectSummary;
 
-    /** Creates an instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevel class.
+     */
     public MigrateSqlServerSqlDbTaskOutputDatabaseLevel() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the databaseName property: Name of the item.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -115,7 +125,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the startedOn property: Migration start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -124,7 +134,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the endedOn property: Migration end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -133,7 +143,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the state property: Current state of migration.
-     *
+     * 
      * @return the state value.
      */
     public MigrationState state() {
@@ -142,7 +152,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the stage property: Migration stage that this database is in.
-     *
+     * 
      * @return the stage value.
      */
     public DatabaseMigrationStage stage() {
@@ -151,7 +161,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the statusMessage property: Status message.
-     *
+     * 
      * @return the statusMessage value.
      */
     public String statusMessage() {
@@ -160,7 +170,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the message property: Migration progress message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -169,7 +179,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the numberOfObjects property: Number of objects.
-     *
+     * 
      * @return the numberOfObjects value.
      */
     public Long numberOfObjects() {
@@ -178,7 +188,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the numberOfObjectsCompleted property: Number of successfully completed objects.
-     *
+     * 
      * @return the numberOfObjectsCompleted value.
      */
     public Long numberOfObjectsCompleted() {
@@ -187,7 +197,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the errorCount property: Number of database/object errors.
-     *
+     * 
      * @return the errorCount value.
      */
     public Long errorCount() {
@@ -196,7 +206,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the errorPrefix property: Wildcard string prefix to use for querying all errors of the item.
-     *
+     * 
      * @return the errorPrefix value.
      */
     public String errorPrefix() {
@@ -205,7 +215,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the resultPrefix property: Wildcard string prefix to use for querying all sub-tem results of the item.
-     *
+     * 
      * @return the resultPrefix value.
      */
     public String resultPrefix() {
@@ -214,7 +224,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the exceptionsAndWarnings property: Migration exceptions and warnings.
-     *
+     * 
      * @return the exceptionsAndWarnings value.
      */
     public List<ReportableException> exceptionsAndWarnings() {
@@ -223,7 +233,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the objectSummary property: Summary of object results in the migration.
-     *
+     * 
      * @return the objectSummary value.
      */
     public String objectSummary() {
@@ -231,15 +241,101 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevel extends MigrateS
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (exceptionsAndWarnings() != null) {
             exceptionsAndWarnings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevel if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlDbTaskOutputDatabaseLevel.
+     */
+    public static MigrateSqlServerSqlDbTaskOutputDatabaseLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlDbTaskOutputDatabaseLevel deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel
+                = new MigrateSqlServerSqlDbTaskOutputDatabaseLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.resultType = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.databaseName = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.state
+                        = MigrationState.fromString(reader.getString());
+                } else if ("stage".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.stage
+                        = DatabaseMigrationStage.fromString(reader.getString());
+                } else if ("statusMessage".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.statusMessage = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.message = reader.getString();
+                } else if ("numberOfObjects".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.numberOfObjects
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfObjectsCompleted".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.numberOfObjectsCompleted
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("errorCount".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.errorCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("errorPrefix".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.errorPrefix = reader.getString();
+                } else if ("resultPrefix".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.resultPrefix = reader.getString();
+                } else if ("exceptionsAndWarnings".equals(fieldName)) {
+                    List<ReportableException> exceptionsAndWarnings
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.exceptionsAndWarnings
+                        = exceptionsAndWarnings;
+                } else if ("objectSummary".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel.objectSummary = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevel;
+        });
     }
 }

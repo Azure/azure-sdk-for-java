@@ -30,12 +30,10 @@ public class AzureFileStoreTests extends BlobNioTestBase {
     public void beforeTest() {
         super.beforeTest();
         Map<String, Object> config = initializeConfigMap();
-        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
-            ENV.getPrimaryAccount().getCredential());
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName() + "," + generateContainerName());
         try {
-            fs = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(),
-                config);
+            fs = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -78,12 +76,10 @@ public class AzureFileStoreTests extends BlobNioTestBase {
     }
 
     private static Stream<Arguments> supportsFileAttributeViewSupplier() {
-        return Stream.of(
-            Arguments.of(BasicFileAttributeView.class, "basic", true),
+        return Stream.of(Arguments.of(BasicFileAttributeView.class, "basic", true),
             Arguments.of(AzureBlobFileAttributeView.class, "azureBlob", true),
             Arguments.of(AzureBasicFileAttributeView.class, "azureBasic", true),
-            Arguments.of(PosixFileAttributeView.class, "posix", false)
-        );
+            Arguments.of(PosixFileAttributeView.class, "posix", false));
     }
 
     @Test

@@ -12,35 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class AudioOverlayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AudioOverlay model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.AudioOverlay\",\"inputLabel\":\"acegfnmntf\",\"start\":\"PT49H27M36S\",\"end\":\"PT150H52M6S\",\"fadeInDuration\":\"PT221H48M18S\",\"fadeOutDuration\":\"PT147H47M11S\",\"audioGainLevel\":33.91120911397068}")
-                .toObject(AudioOverlay.class);
-        Assertions.assertEquals("acegfnmntf", model.inputLabel());
-        Assertions.assertEquals(Duration.parse("PT49H27M36S"), model.start());
-        Assertions.assertEquals(Duration.parse("PT150H52M6S"), model.end());
-        Assertions.assertEquals(Duration.parse("PT221H48M18S"), model.fadeInDuration());
-        Assertions.assertEquals(Duration.parse("PT147H47M11S"), model.fadeOutDuration());
-        Assertions.assertEquals(33.91120911397068D, model.audioGainLevel());
+        AudioOverlay model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.AudioOverlay\",\"inputLabel\":\"tnwlduycv\",\"start\":\"PT225H8M11S\",\"end\":\"PT160H30M30S\",\"fadeInDuration\":\"PT205H11M10S\",\"fadeOutDuration\":\"PT94H46M38S\",\"audioGainLevel\":81.7784814983667}")
+            .toObject(AudioOverlay.class);
+        Assertions.assertEquals("tnwlduycv", model.inputLabel());
+        Assertions.assertEquals(Duration.parse("PT225H8M11S"), model.start());
+        Assertions.assertEquals(Duration.parse("PT160H30M30S"), model.end());
+        Assertions.assertEquals(Duration.parse("PT205H11M10S"), model.fadeInDuration());
+        Assertions.assertEquals(Duration.parse("PT94H46M38S"), model.fadeOutDuration());
+        Assertions.assertEquals(81.7784814983667D, model.audioGainLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AudioOverlay model =
-            new AudioOverlay()
-                .withInputLabel("acegfnmntf")
-                .withStart(Duration.parse("PT49H27M36S"))
-                .withEnd(Duration.parse("PT150H52M6S"))
-                .withFadeInDuration(Duration.parse("PT221H48M18S"))
-                .withFadeOutDuration(Duration.parse("PT147H47M11S"))
-                .withAudioGainLevel(33.91120911397068D);
+        AudioOverlay model = new AudioOverlay().withInputLabel("tnwlduycv")
+            .withStart(Duration.parse("PT225H8M11S"))
+            .withEnd(Duration.parse("PT160H30M30S"))
+            .withFadeInDuration(Duration.parse("PT205H11M10S"))
+            .withFadeOutDuration(Duration.parse("PT94H46M38S"))
+            .withAudioGainLevel(81.7784814983667D);
         model = BinaryData.fromObject(model).toObject(AudioOverlay.class);
-        Assertions.assertEquals("acegfnmntf", model.inputLabel());
-        Assertions.assertEquals(Duration.parse("PT49H27M36S"), model.start());
-        Assertions.assertEquals(Duration.parse("PT150H52M6S"), model.end());
-        Assertions.assertEquals(Duration.parse("PT221H48M18S"), model.fadeInDuration());
-        Assertions.assertEquals(Duration.parse("PT147H47M11S"), model.fadeOutDuration());
-        Assertions.assertEquals(33.91120911397068D, model.audioGainLevel());
+        Assertions.assertEquals("tnwlduycv", model.inputLabel());
+        Assertions.assertEquals(Duration.parse("PT225H8M11S"), model.start());
+        Assertions.assertEquals(Duration.parse("PT160H30M30S"), model.end());
+        Assertions.assertEquals(Duration.parse("PT205H11M10S"), model.fadeInDuration());
+        Assertions.assertEquals(Duration.parse("PT94H46M38S"), model.fadeOutDuration());
+        Assertions.assertEquals(81.7784814983667D, model.audioGainLevel());
     }
 }

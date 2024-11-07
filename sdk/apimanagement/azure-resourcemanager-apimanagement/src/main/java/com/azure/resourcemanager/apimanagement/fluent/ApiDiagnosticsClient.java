@@ -49,14 +49,8 @@ public interface ApiDiagnosticsClient {
      * @return paged Diagnostic list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DiagnosticContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<DiagnosticContractInner> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
@@ -72,8 +66,8 @@ public interface ApiDiagnosticsClient {
      * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context);
+    ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String diagnosticId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
@@ -103,8 +97,8 @@ public interface ApiDiagnosticsClient {
      * @return the details of the Diagnostic for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiDiagnosticsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context);
+    ApiDiagnosticsGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String diagnosticId, Context context);
 
     /**
      * Gets the details of the Diagnostic for an API specified by its identifier.
@@ -137,14 +131,8 @@ public interface ApiDiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiDiagnosticsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String diagnosticId,
-        DiagnosticContractInner parameters,
-        String ifMatch,
-        Context context);
+    ApiDiagnosticsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String diagnosticId, DiagnosticContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Diagnostic for an API or updates an existing one.
@@ -160,12 +148,8 @@ public interface ApiDiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String diagnosticId,
-        DiagnosticContractInner parameters);
+    DiagnosticContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        String diagnosticId, DiagnosticContractInner parameters);
 
     /**
      * Updates the details of the Diagnostic for an API specified by its identifier.
@@ -184,14 +168,8 @@ public interface ApiDiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiDiagnosticsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String diagnosticId,
-        String ifMatch,
-        DiagnosticContractInner parameters,
-        Context context);
+    ApiDiagnosticsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String diagnosticId, String ifMatch, DiagnosticContractInner parameters, Context context);
 
     /**
      * Updates the details of the Diagnostic for an API specified by its identifier.
@@ -209,13 +187,8 @@ public interface ApiDiagnosticsClient {
      * @return diagnostic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String diagnosticId,
-        String ifMatch,
-        DiagnosticContractInner parameters);
+    DiagnosticContractInner update(String resourceGroupName, String serviceName, String apiId, String diagnosticId,
+        String ifMatch, DiagnosticContractInner parameters);
 
     /**
      * Deletes the specified Diagnostic from an API.
@@ -233,13 +206,8 @@ public interface ApiDiagnosticsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String diagnosticId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String diagnosticId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified Diagnostic from an API.

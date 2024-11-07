@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtensionEnumPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtensionEnumProperty model =
-            BinaryData.fromString("{\"extension\":\"NoExtension\"}").toObject(ExtensionEnumProperty.class);
+        ExtensionEnumProperty model
+            = BinaryData.fromString("{\"extension\":\"NoExtension\"}").toObject(ExtensionEnumProperty.class);
         Assertions.assertEquals(Extension.NO_EXTENSION, model.extension());
     }
 

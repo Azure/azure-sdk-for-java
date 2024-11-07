@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class LogAnalyticsManagerTests extends TestBase {
+public class LogAnalyticsManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -34,13 +34,11 @@ public class LogAnalyticsManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        logAnalyticsManager = LogAnalyticsManager
-            .configure()
+        logAnalyticsManager = LogAnalyticsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class LogAnalyticsManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -71,13 +66,13 @@ public class LogAnalyticsManagerTests extends TestBase {
         Workspace workspace = null;
         try {
             String spaceName = "space" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             workspace = logAnalyticsManager.workspaces()
                 .define(spaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), spaceName);
             Assertions.assertEquals(workspace.name(), logAnalyticsManager.workspaces().getById(workspace.id()).name());

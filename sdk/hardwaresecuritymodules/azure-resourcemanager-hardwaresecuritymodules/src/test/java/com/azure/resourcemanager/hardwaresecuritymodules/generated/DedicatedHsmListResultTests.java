@@ -37,58 +37,49 @@ public final class DedicatedHsmListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedHsmListResult model
-            = new DedicatedHsmListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DedicatedHsmInner().withLocation("gohdneuelfphsd")
-                                .withTags(mapOf("uvxzxclvi", "ozfikdowwq"))
-                                .withSku(
-                                    new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS250))
-                                .withZones(
-                                    Arrays.asList("ebmnzbtbhjpglk"))
-                                .withProperties(new DedicatedHsmProperties()
-                                    .withNetworkProfile(new NetworkProfile()
-                                        .withSubnet(new ApiEntityReference().withId("bebxmubyyntwl"))
-                                        .withNetworkInterfaces(
-                                            Arrays.asList(new NetworkInterface(), new NetworkInterface())))
-                                    .withManagementNetworkProfile(new NetworkProfile()
-                                        .withSubnet(new ApiEntityReference().withId("ievseotgqrllt"))
-                                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface(),
-                                            new NetworkInterface(), new NetworkInterface(), new NetworkInterface())))
-                                    .withStampId("auwzizxbmpgc")),
-                            new DedicatedHsmInner().withLocation("ggkzzlvmbmpa")
-                                .withTags(mapOf("yw", "dfvue", "yhrfouyftaakcpw", "bpfvm", "nubexk", "yzvqt"))
-                                .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK2_CPS60))
-                                .withZones(Arrays.asList("mgxcxrslpm", "twuoegrpkhjwni", "qsluicp"))
-                                .withProperties(new DedicatedHsmProperties()
-                                    .withNetworkProfile(new NetworkProfile()
-                                        .withSubnet(new ApiEntityReference().withId("xyjrxsagafcnih"))
-                                        .withNetworkInterfaces(
-                                            Arrays.asList(new NetworkInterface(), new NetworkInterface(),
-                                                new NetworkInterface())))
-                                    .withManagementNetworkProfile(
-                                        new NetworkProfile().withSubnet(new ApiEntityReference().withId("edgfbcvkcvq"))
-                                            .withNetworkInterfaces(
-                                                Arrays.asList(new NetworkInterface(), new NetworkInterface(),
-                                                    new NetworkInterface(), new NetworkInterface())))
-                                    .withStampId("qdcvdrhvoo")),
-                            new DedicatedHsmInner().withLocation("hrtdtk")
-                                .withTags(mapOf("aasipqi", "xwbpokulpiuj", "erpqlpqwcciuqg", "obyu", "hykojoxafnndlpic",
-                                    "dbutauvfbtkuwhh"))
-                                .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS2500))
-                                .withZones(Arrays.asList("giwbwoenwa"))
-                                .withProperties(new DedicatedHsmProperties()
-                                    .withNetworkProfile(new NetworkProfile()
-                                        .withSubnet(new ApiEntityReference().withId("cbcuejrjxgciqi"))
-                                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface())))
-                                    .withManagementNetworkProfile(new NetworkProfile()
-                                        .withSubnet(new ApiEntityReference().withId("sdqrhzoymibmrq"))
-                                        .withNetworkInterfaces(
-                                            Arrays.asList(new NetworkInterface(), new NetworkInterface())))
-                                    .withStampId("hwflu"))))
-                .withNextLink("eqnovvqfovl");
+        DedicatedHsmListResult model = new DedicatedHsmListResult().withValue(Arrays.asList(
+            new DedicatedHsmInner().withLocation("gohdneuelfphsd")
+                .withTags(mapOf("uvxzxclvi", "ozfikdowwq"))
+                .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS250))
+                .withZones(Arrays.asList("ebmnzbtbhjpglk"))
+                .withProperties(new DedicatedHsmProperties()
+                    .withNetworkProfile(
+                        new NetworkProfile().withSubnet(new ApiEntityReference().withId("bebxmubyyntwl"))
+                            .withNetworkInterfaces(Arrays.asList(new NetworkInterface(), new NetworkInterface())))
+                    .withManagementNetworkProfile(
+                        new NetworkProfile().withSubnet(new ApiEntityReference().withId("ievseotgqrllt"))
+                            .withNetworkInterfaces(Arrays.asList(new NetworkInterface(), new NetworkInterface(),
+                                new NetworkInterface(), new NetworkInterface())))
+                    .withStampId("auwzizxbmpgc")),
+            new DedicatedHsmInner().withLocation("ggkzzlvmbmpa")
+                .withTags(mapOf("yw", "dfvue", "yhrfouyftaakcpw", "bpfvm", "nubexk", "yzvqt"))
+                .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK2_CPS60))
+                .withZones(Arrays.asList("mgxcxrslpm", "twuoegrpkhjwni", "qsluicp"))
+                .withProperties(
+                    new DedicatedHsmProperties()
+                        .withNetworkProfile(
+                            new NetworkProfile().withSubnet(new ApiEntityReference().withId("xyjrxsagafcnih"))
+                                .withNetworkInterfaces(Arrays.asList(new NetworkInterface(), new NetworkInterface(),
+                                    new NetworkInterface())))
+                        .withManagementNetworkProfile(
+                            new NetworkProfile().withSubnet(new ApiEntityReference().withId("edgfbcvkcvq"))
+                                .withNetworkInterfaces(Arrays.asList(new NetworkInterface(), new NetworkInterface(),
+                                    new NetworkInterface(), new NetworkInterface())))
+                        .withStampId("qdcvdrhvoo")),
+            new DedicatedHsmInner().withLocation("hrtdtk")
+                .withTags(
+                    mapOf("aasipqi", "xwbpokulpiuj", "erpqlpqwcciuqg", "obyu", "hykojoxafnndlpic", "dbutauvfbtkuwhh"))
+                .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS2500))
+                .withZones(Arrays.asList("giwbwoenwa"))
+                .withProperties(new DedicatedHsmProperties()
+                    .withNetworkProfile(
+                        new NetworkProfile().withSubnet(new ApiEntityReference().withId("cbcuejrjxgciqi"))
+                            .withNetworkInterfaces(Arrays.asList(new NetworkInterface())))
+                    .withManagementNetworkProfile(
+                        new NetworkProfile().withSubnet(new ApiEntityReference().withId("sdqrhzoymibmrq"))
+                            .withNetworkInterfaces(Arrays.asList(new NetworkInterface(), new NetworkInterface())))
+                    .withStampId("hwflu"))))
+            .withNextLink("eqnovvqfovl");
         model = BinaryData.fromObject(model).toObject(DedicatedHsmListResult.class);
         Assertions.assertEquals("gohdneuelfphsd", model.value().get(0).location());
         Assertions.assertEquals("ozfikdowwq", model.value().get(0).tags().get("uvxzxclvi"));

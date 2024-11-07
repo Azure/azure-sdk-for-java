@@ -5,83 +5,81 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters to provide for the Slack channel. */
+/**
+ * The parameters to provide for the Slack channel.
+ */
 @Fluent
-public final class SlackChannelProperties {
+public final class SlackChannelProperties implements JsonSerializable<SlackChannelProperties> {
     /*
      * The Slack client id
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
-     * The Slack client secret. Value only returned through POST to the action
-     * Channel List API, otherwise empty.
+     * The Slack client secret. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
-     * The Slack verification token. Value only returned through POST to the
-     * action Channel List API, otherwise empty.
+     * The Slack verification token. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "verificationToken")
     private String verificationToken;
 
     /*
      * The Slack permission scopes.
      */
-    @JsonProperty(value = "scopes")
     private String scopes;
 
     /*
      * The Slack landing page Url
      */
-    @JsonProperty(value = "landingPageUrl")
     private String landingPageUrl;
 
     /*
      * The Slack redirect action
      */
-    @JsonProperty(value = "redirectAction", access = JsonProperty.Access.WRITE_ONLY)
     private String redirectAction;
 
     /*
      * The Sms auth token
      */
-    @JsonProperty(value = "lastSubmissionId", access = JsonProperty.Access.WRITE_ONLY)
     private String lastSubmissionId;
 
     /*
-     * Whether to register the settings before OAuth validation is performed.
-     * Recommended to True.
+     * Whether to register the settings before OAuth validation is performed. Recommended to True.
      */
-    @JsonProperty(value = "registerBeforeOAuthFlow")
     private Boolean registerBeforeOAuthFlow;
 
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "IsValidated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isValidated;
 
     /*
      * The Slack signing secret.
      */
-    @JsonProperty(value = "signingSecret")
     private String signingSecret;
 
     /*
      * Whether this channel is enabled for the bot
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /**
+     * Creates an instance of SlackChannelProperties class.
+     */
+    public SlackChannelProperties() {
+    }
+
+    /**
      * Get the clientId property: The Slack client id.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -90,7 +88,7 @@ public final class SlackChannelProperties {
 
     /**
      * Set the clientId property: The Slack client id.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SlackChannelProperties object itself.
      */
@@ -102,7 +100,7 @@ public final class SlackChannelProperties {
     /**
      * Get the clientSecret property: The Slack client secret. Value only returned through POST to the action Channel
      * List API, otherwise empty.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -112,7 +110,7 @@ public final class SlackChannelProperties {
     /**
      * Set the clientSecret property: The Slack client secret. Value only returned through POST to the action Channel
      * List API, otherwise empty.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the SlackChannelProperties object itself.
      */
@@ -124,7 +122,7 @@ public final class SlackChannelProperties {
     /**
      * Get the verificationToken property: The Slack verification token. Value only returned through POST to the action
      * Channel List API, otherwise empty.
-     *
+     * 
      * @return the verificationToken value.
      */
     public String verificationToken() {
@@ -134,7 +132,7 @@ public final class SlackChannelProperties {
     /**
      * Set the verificationToken property: The Slack verification token. Value only returned through POST to the action
      * Channel List API, otherwise empty.
-     *
+     * 
      * @param verificationToken the verificationToken value to set.
      * @return the SlackChannelProperties object itself.
      */
@@ -145,7 +143,7 @@ public final class SlackChannelProperties {
 
     /**
      * Get the scopes property: The Slack permission scopes.
-     *
+     * 
      * @return the scopes value.
      */
     public String scopes() {
@@ -154,7 +152,7 @@ public final class SlackChannelProperties {
 
     /**
      * Set the scopes property: The Slack permission scopes.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the SlackChannelProperties object itself.
      */
@@ -165,7 +163,7 @@ public final class SlackChannelProperties {
 
     /**
      * Get the landingPageUrl property: The Slack landing page Url.
-     *
+     * 
      * @return the landingPageUrl value.
      */
     public String landingPageUrl() {
@@ -174,7 +172,7 @@ public final class SlackChannelProperties {
 
     /**
      * Set the landingPageUrl property: The Slack landing page Url.
-     *
+     * 
      * @param landingPageUrl the landingPageUrl value to set.
      * @return the SlackChannelProperties object itself.
      */
@@ -185,7 +183,7 @@ public final class SlackChannelProperties {
 
     /**
      * Get the redirectAction property: The Slack redirect action.
-     *
+     * 
      * @return the redirectAction value.
      */
     public String redirectAction() {
@@ -194,7 +192,7 @@ public final class SlackChannelProperties {
 
     /**
      * Get the lastSubmissionId property: The Sms auth token.
-     *
+     * 
      * @return the lastSubmissionId value.
      */
     public String lastSubmissionId() {
@@ -204,7 +202,7 @@ public final class SlackChannelProperties {
     /**
      * Get the registerBeforeOAuthFlow property: Whether to register the settings before OAuth validation is performed.
      * Recommended to True.
-     *
+     * 
      * @return the registerBeforeOAuthFlow value.
      */
     public Boolean registerBeforeOAuthFlow() {
@@ -212,20 +210,8 @@ public final class SlackChannelProperties {
     }
 
     /**
-     * Set the registerBeforeOAuthFlow property: Whether to register the settings before OAuth validation is performed.
-     * Recommended to True.
-     *
-     * @param registerBeforeOAuthFlow the registerBeforeOAuthFlow value to set.
-     * @return the SlackChannelProperties object itself.
-     */
-    public SlackChannelProperties withRegisterBeforeOAuthFlow(Boolean registerBeforeOAuthFlow) {
-        this.registerBeforeOAuthFlow = registerBeforeOAuthFlow;
-        return this;
-    }
-
-    /**
      * Get the isValidated property: Whether this channel is validated for the bot.
-     *
+     * 
      * @return the isValidated value.
      */
     public Boolean isValidated() {
@@ -234,7 +220,7 @@ public final class SlackChannelProperties {
 
     /**
      * Get the signingSecret property: The Slack signing secret.
-     *
+     * 
      * @return the signingSecret value.
      */
     public String signingSecret() {
@@ -243,7 +229,7 @@ public final class SlackChannelProperties {
 
     /**
      * Set the signingSecret property: The Slack signing secret.
-     *
+     * 
      * @param signingSecret the signingSecret value to set.
      * @return the SlackChannelProperties object itself.
      */
@@ -254,7 +240,7 @@ public final class SlackChannelProperties {
 
     /**
      * Get the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -263,7 +249,7 @@ public final class SlackChannelProperties {
 
     /**
      * Set the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the SlackChannelProperties object itself.
      */
@@ -274,9 +260,73 @@ public final class SlackChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        jsonWriter.writeStringField("verificationToken", this.verificationToken);
+        jsonWriter.writeStringField("scopes", this.scopes);
+        jsonWriter.writeStringField("landingPageUrl", this.landingPageUrl);
+        jsonWriter.writeStringField("signingSecret", this.signingSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SlackChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SlackChannelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SlackChannelProperties.
+     */
+    public static SlackChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SlackChannelProperties deserializedSlackChannelProperties = new SlackChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedSlackChannelProperties.isEnabled = reader.getBoolean();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedSlackChannelProperties.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedSlackChannelProperties.clientSecret = reader.getString();
+                } else if ("verificationToken".equals(fieldName)) {
+                    deserializedSlackChannelProperties.verificationToken = reader.getString();
+                } else if ("scopes".equals(fieldName)) {
+                    deserializedSlackChannelProperties.scopes = reader.getString();
+                } else if ("landingPageUrl".equals(fieldName)) {
+                    deserializedSlackChannelProperties.landingPageUrl = reader.getString();
+                } else if ("redirectAction".equals(fieldName)) {
+                    deserializedSlackChannelProperties.redirectAction = reader.getString();
+                } else if ("lastSubmissionId".equals(fieldName)) {
+                    deserializedSlackChannelProperties.lastSubmissionId = reader.getString();
+                } else if ("registerBeforeOAuthFlow".equals(fieldName)) {
+                    deserializedSlackChannelProperties.registerBeforeOAuthFlow
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("IsValidated".equals(fieldName)) {
+                    deserializedSlackChannelProperties.isValidated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("signingSecret".equals(fieldName)) {
+                    deserializedSlackChannelProperties.signingSecret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSlackChannelProperties;
+        });
     }
 }

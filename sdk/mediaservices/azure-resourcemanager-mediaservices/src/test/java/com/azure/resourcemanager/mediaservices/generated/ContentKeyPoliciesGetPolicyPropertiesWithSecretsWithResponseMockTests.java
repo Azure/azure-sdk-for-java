@@ -6,67 +6,36 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContentKeyPoliciesGetPolicyPropertiesWithSecretsWithResponseMockTests {
     @Test
     public void testGetPolicyPropertiesWithSecretsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"policyId\":\"15bb0b50-2781-4b6e-8630-1fa27a5e9b42\",\"created\":\"2021-06-02T05:28:28Z\",\"lastModified\":\"2021-06-01T20:14:30Z\",\"description\":\"afhrkmdyomk\",\"options\":[{\"policyOptionId\":\"19d7456b-e761-4328-a456-12f73a7e7219\",\"name\":\"fbhdy\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}},{\"policyOptionId\":\"b896b2a5-b1a6-4db4-89bc-98e7e004f64e\",\"name\":\"pwpgddei\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}]}";
 
-        String responseStr =
-            "{\"policyId\":\"63503005-74f8-4d42-8235-46692e56f606\",\"created\":\"2021-01-31T22:09:22Z\",\"lastModified\":\"2021-01-03T21:52:46Z\",\"description\":\"hckfkyjpmspbps\",\"options\":[{\"policyOptionId\":\"730d3a0b-4f36-4581-b2a1-3ef784c09e3d\",\"name\":\"pyogtieyuj\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ContentKeyPolicyProperties response = manager.contentKeyPolicies()
+            .getPolicyPropertiesWithSecretsWithResponse("crse", "wjksghudgzhxo", "jggsvo",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ContentKeyPolicyProperties response =
-            manager
-                .contentKeyPolicies()
-                .getPolicyPropertiesWithSecretsWithResponse(
-                    "nknlqwzdvpi", "hxqszdtmaajquh", "xylrjvmtygjbmz", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("hckfkyjpmspbps", response.description());
-        Assertions.assertEquals("pyogtieyuj", response.options().get(0).name());
+        Assertions.assertEquals("afhrkmdyomk", response.description());
+        Assertions.assertEquals("fbhdy", response.options().get(0).name());
     }
 }

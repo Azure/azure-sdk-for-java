@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduledActionProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduledActionProxyResource model =
-            BinaryData
-                .fromString(
-                    "{\"eTag\":\"olbq\",\"kind\":\"Email\",\"id\":\"lmv\",\"name\":\"elfk\",\"type\":\"gplcrpwjxeznoigb\"}")
-                .toObject(ScheduledActionProxyResource.class);
-        Assertions.assertEquals(ScheduledActionKind.EMAIL, model.kind());
+        ScheduledActionProxyResource model = BinaryData.fromString(
+            "{\"eTag\":\"kyewnfnzhhhqo\",\"kind\":\"InsightAlert\",\"id\":\"jkutycyarnr\",\"name\":\"ohguabz\",\"type\":\"ghktdpy\"}")
+            .toObject(ScheduledActionProxyResource.class);
+        Assertions.assertEquals(ScheduledActionKind.INSIGHT_ALERT, model.kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionProxyResource model = new ScheduledActionProxyResource().withKind(ScheduledActionKind.EMAIL);
+        ScheduledActionProxyResource model
+            = new ScheduledActionProxyResource().withKind(ScheduledActionKind.INSIGHT_ALERT);
         model = BinaryData.fromObject(model).toObject(ScheduledActionProxyResource.class);
-        Assertions.assertEquals(ScheduledActionKind.EMAIL, model.kind());
+        Assertions.assertEquals(ScheduledActionKind.INSIGHT_ALERT, model.kind());
     }
 }

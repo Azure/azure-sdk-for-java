@@ -17,49 +17,28 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessConnectorInner model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"d3f50460-46be-46e7-884a-0472d3ced6a0\",\"tenantId\":\"c6ad9185-7349-42a7-9a5a-c54cbe0b6047\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"pwhonowkg\":{\"principalId\":\"ffab6ef8-9d89-4559-9bf1-a3c451a1f48e\",\"clientId\":\"676bb094-89fb-4e81-ac9b-22f8c0fdd646\"},\"ankixzbinjeput\":{\"principalId\":\"f7b1a267-cf28-418a-8b43-6a376a7316ed\",\"clientId\":\"24087e3c-201e-4c88-ac71-552551711bb9\"},\"ywnuzoq\":{\"principalId\":\"1df0b5f8-6614-47d0-a7d8-ba169d810656\",\"clientId\":\"e1a3360b-409c-48ee-81fc-5dd4733dc455\"}}},\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"zrnkcqvyxlwh\",\"tags\":{\"yav\":\"icohoqqnwvl\",\"konocu\":\"hheunmmqhgyx\",\"zf\":\"oklyaxuconuq\",\"vjektcxsenh\":\"beypewrmjmw\"},\"id\":\"lrsf\",\"name\":\"rzpwvlqdqgbiq\",\"type\":\"lihkaetcktvfc\"}")
-                .toObject(AccessConnectorInner.class);
-        Assertions.assertEquals("zrnkcqvyxlwh", model.location());
-        Assertions.assertEquals("icohoqqnwvl", model.tags().get("yav"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        AccessConnectorInner model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"8e8a3731-8ab3-4728-bd89-58ffb901cb32\",\"tenantId\":\"1da1711b-690c-4e04-973b-ad886661a203\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"vnchrkcci\":{\"principalId\":\"8733775c-58cf-45cd-8d71-8fe71785bcc4\",\"clientId\":\"6301bebb-6173-447a-928b-8c8c2279e704\"}}},\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"qkhr\",\"tags\":{\"ghsauuimjmvxied\":\"iwkuofos\",\"byao\":\"ugidyjrr\",\"xc\":\"v\",\"hocohslkev\":\"onpc\"},\"id\":\"eggzfb\",\"name\":\"hfmvfaxkffe\",\"type\":\"ithlvmezyvshxm\"}")
+            .toObject(AccessConnectorInner.class);
+        Assertions.assertEquals("qkhr", model.location());
+        Assertions.assertEquals("iwkuofos", model.tags().get("ghsauuimjmvxied"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessConnectorInner model =
-            new AccessConnectorInner()
-                .withLocation("zrnkcqvyxlwh")
-                .withTags(
-                    mapOf(
-                        "yav",
-                        "icohoqqnwvl",
-                        "konocu",
-                        "hheunmmqhgyx",
-                        "zf",
-                        "oklyaxuconuq",
-                        "vjektcxsenh",
-                        "beypewrmjmw"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "pwhonowkg",
-                                new UserAssignedIdentity(),
-                                "ankixzbinjeput",
-                                new UserAssignedIdentity(),
-                                "ywnuzoq",
-                                new UserAssignedIdentity())))
-                .withProperties(new AccessConnectorProperties());
+        AccessConnectorInner model = new AccessConnectorInner().withLocation("qkhr")
+            .withTags(mapOf("ghsauuimjmvxied", "iwkuofos", "byao", "ugidyjrr", "xc", "v", "hocohslkev", "onpc"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("vnchrkcci", new UserAssignedIdentity())))
+            .withProperties(new AccessConnectorProperties());
         model = BinaryData.fromObject(model).toObject(AccessConnectorInner.class);
-        Assertions.assertEquals("zrnkcqvyxlwh", model.location());
-        Assertions.assertEquals("icohoqqnwvl", model.tags().get("yav"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qkhr", model.location());
+        Assertions.assertEquals("iwkuofos", model.tags().get("ghsauuimjmvxied"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

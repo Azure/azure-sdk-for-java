@@ -18,10 +18,8 @@ import java.util.List;
 
 /** An immutable client-side representation of an Azure Spring Service. */
 @Fluent
-public interface SpringService
-    extends GroupableResource<AppPlatformManager, ServiceResourceInner>,
-        Refreshable<SpringService>,
-        Updatable<SpringService.Update> {
+public interface SpringService extends GroupableResource<AppPlatformManager, ServiceResourceInner>,
+    Refreshable<SpringService>, Updatable<SpringService.Update> {
 
     /** @return Sku of the service */
     Sku sku();
@@ -100,19 +98,19 @@ public interface SpringService
     SpringServiceRegistry getDefaultServiceRegistry();
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithEnterpriseTierCreate { }
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate,
+        DefinitionStages.WithEnterpriseTierCreate {
+    }
 
     /** Grouping of all the spring service definition stages. */
     interface DefinitionStages {
         /** The first stage of the spring service definition. */
-        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> { }
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
 
         /** The stage of a spring service definition allowing to specify the resource group. */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> { }
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        }
 
         /**
          * The stage of a spring service definition allowing to specify sku.
@@ -214,7 +212,8 @@ public interface SpringService
              * @param filePatterns patterns for configuration files to be selected from the git repository
              * @return the next stage of spring service definition
              */
-            WithEnterpriseTierCreate withGitRepository(String name, String uri, String branch, List<String> filePatterns);
+            WithEnterpriseTierCreate withGitRepository(String name, String uri, String branch,
+                List<String> filePatterns);
 
             /**
              * Specifies complete git repository configuration for the spring service.
@@ -251,35 +250,23 @@ public interface SpringService
          * The stage of the definition which contains all the minimum required inputs for the resource of enterprise tier to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithEnterpriseTierCreate
-            extends Creatable<SpringService>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithSku,
-                WithTracing,
-                WithConfigurationService,
-                WithCertificate { }
+        interface WithEnterpriseTierCreate extends Creatable<SpringService>, Resource.DefinitionWithTags<WithCreate>,
+            WithSku, WithTracing, WithConfigurationService, WithCertificate {
+        }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<SpringService>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithSku,
-                WithTracing,
-                WithConfiguration,
-                WithCertificate { }
+        interface WithCreate extends Creatable<SpringService>, Resource.DefinitionWithTags<WithCreate>, WithSku,
+            WithTracing, WithConfiguration, WithCertificate {
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<SpringService>,
-        Resource.UpdateWithTags<Update>,
-        UpdateStages.WithSku,
-        UpdateStages.WithTracing,
-        UpdateStages.WithConfiguration,
-        UpdateStages.WithCertificate { }
+    interface Update extends Appliable<SpringService>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
+        UpdateStages.WithTracing, UpdateStages.WithConfiguration, UpdateStages.WithCertificate {
+    }
 
     /** Grouping of spring service update stages. */
     interface UpdateStages {

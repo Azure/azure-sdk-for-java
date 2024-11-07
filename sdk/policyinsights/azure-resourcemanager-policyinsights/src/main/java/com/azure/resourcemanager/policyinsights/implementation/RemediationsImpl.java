@@ -23,35 +23,32 @@ public final class RemediationsImpl implements Remediations {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    public RemediationsImpl(
-        RemediationsClient innerClient, com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
+    public RemediationsImpl(RemediationsClient innerClient,
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<RemediationDeployment> listDeploymentsAtManagementGroup(
-        String managementGroupId, String remediationName) {
-        PagedIterable<RemediationDeploymentInner> inner =
-            this.serviceClient().listDeploymentsAtManagementGroup(managementGroupId, remediationName);
-        return Utils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
+    public PagedIterable<RemediationDeployment> listDeploymentsAtManagementGroup(String managementGroupId,
+        String remediationName) {
+        PagedIterable<RemediationDeploymentInner> inner
+            = this.serviceClient().listDeploymentsAtManagementGroup(managementGroupId, remediationName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RemediationDeployment> listDeploymentsAtManagementGroup(
-        String managementGroupId, String remediationName, Integer top, Context context) {
-        PagedIterable<RemediationDeploymentInner> inner =
-            this.serviceClient().listDeploymentsAtManagementGroup(managementGroupId, remediationName, top, context);
-        return Utils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
+    public PagedIterable<RemediationDeployment> listDeploymentsAtManagementGroup(String managementGroupId,
+        String remediationName, Integer top, Context context) {
+        PagedIterable<RemediationDeploymentInner> inner
+            = this.serviceClient().listDeploymentsAtManagementGroup(managementGroupId, remediationName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
     }
 
-    public Response<Remediation> cancelAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().cancelAtManagementGroupWithResponse(managementGroupId, remediationName, context);
+    public Response<Remediation> cancelAtManagementGroupWithResponse(String managementGroupId, String remediationName,
+        Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().cancelAtManagementGroupWithResponse(managementGroupId, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -69,37 +66,32 @@ public final class RemediationsImpl implements Remediations {
 
     public PagedIterable<Remediation> listForManagementGroup(String managementGroupId) {
         PagedIterable<RemediationInner> inner = this.serviceClient().listForManagementGroup(managementGroupId);
-        return Utils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Remediation> listForManagementGroup(
-        String managementGroupId, Integer top, String filter, Context context) {
-        PagedIterable<RemediationInner> inner =
-            this.serviceClient().listForManagementGroup(managementGroupId, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
+    public PagedIterable<Remediation> listForManagementGroup(String managementGroupId, Integer top, String filter,
+        Context context) {
+        PagedIterable<RemediationInner> inner
+            = this.serviceClient().listForManagementGroup(managementGroupId, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
     }
 
-    public Response<Remediation> createOrUpdateAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, RemediationInner parameters, Context context) {
-        Response<RemediationInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateAtManagementGroupWithResponse(managementGroupId, remediationName, parameters, context);
+    public Response<Remediation> createOrUpdateAtManagementGroupWithResponse(String managementGroupId,
+        String remediationName, RemediationInner parameters, Context context) {
+        Response<RemediationInner> inner = this.serviceClient()
+            .createOrUpdateAtManagementGroupWithResponse(managementGroupId, remediationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Remediation createOrUpdateAtManagementGroup(
-        String managementGroupId, String remediationName, RemediationInner parameters) {
-        RemediationInner inner =
-            this.serviceClient().createOrUpdateAtManagementGroup(managementGroupId, remediationName, parameters);
+    public Remediation createOrUpdateAtManagementGroup(String managementGroupId, String remediationName,
+        RemediationInner parameters) {
+        RemediationInner inner
+            = this.serviceClient().createOrUpdateAtManagementGroup(managementGroupId, remediationName, parameters);
         if (inner != null) {
             return new RemediationImpl(inner, this.manager());
         } else {
@@ -107,15 +99,12 @@ public final class RemediationsImpl implements Remediations {
         }
     }
 
-    public Response<Remediation> getAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().getAtManagementGroupWithResponse(managementGroupId, remediationName, context);
+    public Response<Remediation> getAtManagementGroupWithResponse(String managementGroupId, String remediationName,
+        Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().getAtManagementGroupWithResponse(managementGroupId, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -131,15 +120,12 @@ public final class RemediationsImpl implements Remediations {
         }
     }
 
-    public Response<Remediation> deleteAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().deleteAtManagementGroupWithResponse(managementGroupId, remediationName, context);
+    public Response<Remediation> deleteAtManagementGroupWithResponse(String managementGroupId, String remediationName,
+        Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().deleteAtManagementGroupWithResponse(managementGroupId, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -156,26 +142,23 @@ public final class RemediationsImpl implements Remediations {
     }
 
     public PagedIterable<RemediationDeployment> listDeploymentsAtSubscription(String remediationName) {
-        PagedIterable<RemediationDeploymentInner> inner =
-            this.serviceClient().listDeploymentsAtSubscription(remediationName);
-        return Utils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
+        PagedIterable<RemediationDeploymentInner> inner
+            = this.serviceClient().listDeploymentsAtSubscription(remediationName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RemediationDeployment> listDeploymentsAtSubscription(
-        String remediationName, Integer top, Context context) {
-        PagedIterable<RemediationDeploymentInner> inner =
-            this.serviceClient().listDeploymentsAtSubscription(remediationName, top, context);
-        return Utils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
+    public PagedIterable<RemediationDeployment> listDeploymentsAtSubscription(String remediationName, Integer top,
+        Context context) {
+        PagedIterable<RemediationDeploymentInner> inner
+            = this.serviceClient().listDeploymentsAtSubscription(remediationName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
     }
 
     public Response<Remediation> cancelAtSubscriptionWithResponse(String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().cancelAtSubscriptionWithResponse(remediationName, context);
+        Response<RemediationInner> inner
+            = this.serviceClient().cancelAtSubscriptionWithResponse(remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -193,23 +176,20 @@ public final class RemediationsImpl implements Remediations {
 
     public PagedIterable<Remediation> list() {
         PagedIterable<RemediationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Remediation> list(Integer top, String filter, Context context) {
         PagedIterable<RemediationInner> inner = this.serviceClient().list(top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
     }
 
-    public Response<Remediation> createOrUpdateAtSubscriptionWithResponse(
-        String remediationName, RemediationInner parameters, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().createOrUpdateAtSubscriptionWithResponse(remediationName, parameters, context);
+    public Response<Remediation> createOrUpdateAtSubscriptionWithResponse(String remediationName,
+        RemediationInner parameters, Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().createOrUpdateAtSubscriptionWithResponse(remediationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -228,10 +208,7 @@ public final class RemediationsImpl implements Remediations {
     public Response<Remediation> getAtSubscriptionWithResponse(String remediationName, Context context) {
         Response<RemediationInner> inner = this.serviceClient().getAtSubscriptionWithResponse(remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -248,13 +225,10 @@ public final class RemediationsImpl implements Remediations {
     }
 
     public Response<Remediation> deleteAtSubscriptionWithResponse(String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().deleteAtSubscriptionWithResponse(remediationName, context);
+        Response<RemediationInner> inner
+            = this.serviceClient().deleteAtSubscriptionWithResponse(remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -270,29 +244,26 @@ public final class RemediationsImpl implements Remediations {
         }
     }
 
-    public PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup(
-        String resourceGroupName, String remediationName) {
-        PagedIterable<RemediationDeploymentInner> inner =
-            this.serviceClient().listDeploymentsAtResourceGroup(resourceGroupName, remediationName);
-        return Utils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
+    public PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup(String resourceGroupName,
+        String remediationName) {
+        PagedIterable<RemediationDeploymentInner> inner
+            = this.serviceClient().listDeploymentsAtResourceGroup(resourceGroupName, remediationName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup(
-        String resourceGroupName, String remediationName, Integer top, Context context) {
-        PagedIterable<RemediationDeploymentInner> inner =
-            this.serviceClient().listDeploymentsAtResourceGroup(resourceGroupName, remediationName, top, context);
-        return Utils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
+    public PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup(String resourceGroupName,
+        String remediationName, Integer top, Context context) {
+        PagedIterable<RemediationDeploymentInner> inner
+            = this.serviceClient().listDeploymentsAtResourceGroup(resourceGroupName, remediationName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
     }
 
-    public Response<Remediation> cancelAtResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().cancelAtResourceGroupWithResponse(resourceGroupName, remediationName, context);
+    public Response<Remediation> cancelAtResourceGroupWithResponse(String resourceGroupName, String remediationName,
+        Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().cancelAtResourceGroupWithResponse(resourceGroupName, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -310,25 +281,22 @@ public final class RemediationsImpl implements Remediations {
 
     public PagedIterable<Remediation> listByResourceGroup(String resourceGroupName) {
         PagedIterable<RemediationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Remediation> listByResourceGroup(
-        String resourceGroupName, Integer top, String filter, Context context) {
-        PagedIterable<RemediationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
+    public PagedIterable<Remediation> listByResourceGroup(String resourceGroupName, Integer top, String filter,
+        Context context) {
+        PagedIterable<RemediationInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
     }
 
-    public Response<Remediation> getByResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, remediationName, context);
+    public Response<Remediation> getByResourceGroupWithResponse(String resourceGroupName, String remediationName,
+        Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -344,15 +312,12 @@ public final class RemediationsImpl implements Remediations {
         }
     }
 
-    public Response<Remediation> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().deleteWithResponse(resourceGroupName, remediationName, context);
+    public Response<Remediation> deleteByResourceGroupWithResponse(String resourceGroupName, String remediationName,
+        Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().deleteWithResponse(resourceGroupName, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -369,27 +334,24 @@ public final class RemediationsImpl implements Remediations {
     }
 
     public PagedIterable<RemediationDeployment> listDeploymentsAtResource(String resourceId, String remediationName) {
-        PagedIterable<RemediationDeploymentInner> inner =
-            this.serviceClient().listDeploymentsAtResource(resourceId, remediationName);
-        return Utils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
+        PagedIterable<RemediationDeploymentInner> inner
+            = this.serviceClient().listDeploymentsAtResource(resourceId, remediationName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RemediationDeployment> listDeploymentsAtResource(
-        String resourceId, String remediationName, Integer top, Context context) {
-        PagedIterable<RemediationDeploymentInner> inner =
-            this.serviceClient().listDeploymentsAtResource(resourceId, remediationName, top, context);
-        return Utils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
+    public PagedIterable<RemediationDeployment> listDeploymentsAtResource(String resourceId, String remediationName,
+        Integer top, Context context) {
+        PagedIterable<RemediationDeploymentInner> inner
+            = this.serviceClient().listDeploymentsAtResource(resourceId, remediationName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationDeploymentImpl(inner1, this.manager()));
     }
 
-    public Response<Remediation> cancelAtResourceWithResponse(
-        String resourceId, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().cancelAtResourceWithResponse(resourceId, remediationName, context);
+    public Response<Remediation> cancelAtResourceWithResponse(String resourceId, String remediationName,
+        Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().cancelAtResourceWithResponse(resourceId, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -407,31 +369,28 @@ public final class RemediationsImpl implements Remediations {
 
     public PagedIterable<Remediation> listForResource(String resourceId) {
         PagedIterable<RemediationInner> inner = this.serviceClient().listForResource(resourceId);
-        return Utils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Remediation> listForResource(String resourceId, Integer top, String filter, Context context) {
         PagedIterable<RemediationInner> inner = this.serviceClient().listForResource(resourceId, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemediationImpl(inner1, this.manager()));
     }
 
-    public Response<Remediation> createOrUpdateAtResourceWithResponse(
-        String resourceId, String remediationName, RemediationInner parameters, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().createOrUpdateAtResourceWithResponse(resourceId, remediationName, parameters, context);
+    public Response<Remediation> createOrUpdateAtResourceWithResponse(String resourceId, String remediationName,
+        RemediationInner parameters, Context context) {
+        Response<RemediationInner> inner = this.serviceClient()
+            .createOrUpdateAtResourceWithResponse(resourceId, remediationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Remediation createOrUpdateAtResource(
-        String resourceId, String remediationName, RemediationInner parameters) {
+    public Remediation createOrUpdateAtResource(String resourceId, String remediationName,
+        RemediationInner parameters) {
         RemediationInner inner = this.serviceClient().createOrUpdateAtResource(resourceId, remediationName, parameters);
         if (inner != null) {
             return new RemediationImpl(inner, this.manager());
@@ -441,13 +400,10 @@ public final class RemediationsImpl implements Remediations {
     }
 
     public Response<Remediation> getAtResourceWithResponse(String resourceId, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().getAtResourceWithResponse(resourceId, remediationName, context);
+        Response<RemediationInner> inner
+            = this.serviceClient().getAtResourceWithResponse(resourceId, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -463,15 +419,12 @@ public final class RemediationsImpl implements Remediations {
         }
     }
 
-    public Response<Remediation> deleteAtResourceWithResponse(
-        String resourceId, String remediationName, Context context) {
-        Response<RemediationInner> inner =
-            this.serviceClient().deleteAtResourceWithResponse(resourceId, remediationName, context);
+    public Response<Remediation> deleteAtResourceWithResponse(String resourceId, String remediationName,
+        Context context) {
+        Response<RemediationInner> inner
+            = this.serviceClient().deleteAtResourceWithResponse(resourceId, remediationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RemediationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -488,77 +441,57 @@ public final class RemediationsImpl implements Remediations {
     }
 
     public Remediation getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String remediationName = Utils.getValueFromIdByName(id, "remediations");
+        String remediationName = ResourceManagerUtils.getValueFromIdByName(id, "remediations");
         if (remediationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'remediations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'remediations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, remediationName, Context.NONE).getValue();
     }
 
     public Response<Remediation> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String remediationName = Utils.getValueFromIdByName(id, "remediations");
+        String remediationName = ResourceManagerUtils.getValueFromIdByName(id, "remediations");
         if (remediationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'remediations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'remediations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, remediationName, context);
     }
 
     public Remediation deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String remediationName = Utils.getValueFromIdByName(id, "remediations");
+        String remediationName = ResourceManagerUtils.getValueFromIdByName(id, "remediations");
         if (remediationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'remediations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'remediations'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, remediationName, Context.NONE).getValue();
     }
 
     public Response<Remediation> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String remediationName = Utils.getValueFromIdByName(id, "remediations");
+        String remediationName = ResourceManagerUtils.getValueFromIdByName(id, "remediations");
         if (remediationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'remediations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'remediations'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, remediationName, context);
     }

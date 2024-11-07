@@ -6,39 +6,41 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageAccountInformationInner;
 
-/** An immutable client-side representation of StorageAccountInformation. */
+/**
+ * An immutable client-side representation of StorageAccountInformation.
+ */
 public interface StorageAccountInformation {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @return the suffix value.
      */
     String suffix();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageAccountInformationInner object.
-     *
+     * 
      * @return the inner object.
      */
     StorageAccountInformationInner innerModel();

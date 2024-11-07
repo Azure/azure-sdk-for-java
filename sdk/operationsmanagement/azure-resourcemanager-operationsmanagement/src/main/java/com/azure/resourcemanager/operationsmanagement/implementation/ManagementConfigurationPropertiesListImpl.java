@@ -17,8 +17,7 @@ public final class ManagementConfigurationPropertiesListImpl implements Manageme
 
     private final com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager;
 
-    ManagementConfigurationPropertiesListImpl(
-        ManagementConfigurationPropertiesListInner innerObject,
+    ManagementConfigurationPropertiesListImpl(ManagementConfigurationPropertiesListInner innerObject,
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class ManagementConfigurationPropertiesListImpl implements Manageme
     public List<ManagementConfiguration> value() {
         List<ManagementConfigurationInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ManagementConfigurationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ManagementConfigurationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

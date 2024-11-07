@@ -45,12 +45,14 @@ public final class ResourceProvidersGetKubernetesVersionsWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridContainerServiceManager manager = HybridContainerServiceManager.configure().withHttpClient(httpClient)
+        HybridContainerServiceManager manager = HybridContainerServiceManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         KubernetesVersionProfile response = manager.resourceProviders()
-            .getKubernetesVersionsWithResponse("vu", com.azure.core.util.Context.NONE).getValue();
+            .getKubernetesVersionsWithResponse("vu", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
         Assertions.assertEquals("htwdwrftswibyrcd", response.extendedLocation().name());

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OutboundNetworkDependenciesEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OutboundNetworkDependenciesEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"jq\",\"endpoints\":[{\"domainName\":\"zpfrla\",\"endpointDetails\":[{\"port\":1822187571,\"ipAddress\":\"oiindfpwpjy\"}]}],\"provisioningState\":\"Moving\"}")
-                .toObject(OutboundNetworkDependenciesEndpointProperties.class);
+        OutboundNetworkDependenciesEndpointProperties model = BinaryData.fromString(
+            "{\"category\":\"jq\",\"endpoints\":[{\"domainName\":\"zpfrla\",\"endpointDetails\":[{\"port\":1822187571,\"ipAddress\":\"oiindfpwpjy\"}]}],\"provisioningState\":\"Moving\"}")
+            .toObject(OutboundNetworkDependenciesEndpointProperties.class);
         Assertions.assertEquals("jq", model.category());
         Assertions.assertEquals("zpfrla", model.endpoints().get(0).domainName());
         Assertions.assertEquals(1822187571, model.endpoints().get(0).endpointDetails().get(0).port());
@@ -27,18 +25,11 @@ public final class OutboundNetworkDependenciesEndpointPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundNetworkDependenciesEndpointProperties model =
-            new OutboundNetworkDependenciesEndpointProperties()
-                .withCategory("jq")
-                .withEndpoints(
-                    Arrays
-                        .asList(
-                            new EndpointDependency()
-                                .withDomainName("zpfrla")
-                                .withEndpointDetails(
-                                    Arrays
-                                        .asList(
-                                            new EndpointDetail().withPort(1822187571).withIpAddress("oiindfpwpjy")))));
+        OutboundNetworkDependenciesEndpointProperties model
+            = new OutboundNetworkDependenciesEndpointProperties().withCategory("jq")
+                .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("zpfrla")
+                    .withEndpointDetails(
+                        Arrays.asList(new EndpointDetail().withPort(1822187571).withIpAddress("oiindfpwpjy")))));
         model = BinaryData.fromObject(model).toObject(OutboundNetworkDependenciesEndpointProperties.class);
         Assertions.assertEquals("jq", model.category());
         Assertions.assertEquals("zpfrla", model.endpoints().get(0).domainName());

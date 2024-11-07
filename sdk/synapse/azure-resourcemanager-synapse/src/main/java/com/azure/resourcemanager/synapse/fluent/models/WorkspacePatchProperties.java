@@ -5,65 +5,66 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedVirtualNetworkSettings;
 import com.azure.resourcemanager.synapse.models.PurviewConfiguration;
 import com.azure.resourcemanager.synapse.models.WorkspacePublicNetworkAccess;
 import com.azure.resourcemanager.synapse.models.WorkspaceRepositoryConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Workspace patch properties. */
+/**
+ * Workspace patch properties.
+ */
 @Fluent
-public final class WorkspacePatchProperties {
+public final class WorkspacePatchProperties implements JsonSerializable<WorkspacePatchProperties> {
     /*
      * SQL administrator login password
      */
-    @JsonProperty(value = "sqlAdministratorLoginPassword")
     private String sqlAdministratorLoginPassword;
 
     /*
      * Managed Virtual Network Settings
      */
-    @JsonProperty(value = "managedVirtualNetworkSettings")
     private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
 
     /*
      * Git integration settings
      */
-    @JsonProperty(value = "workspaceRepositoryConfiguration")
     private WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration;
 
     /*
      * Purview Configuration
      */
-    @JsonProperty(value = "purviewConfiguration")
     private PurviewConfiguration purviewConfiguration;
 
     /*
      * Resource provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The encryption details of the workspace
      */
-    @JsonProperty(value = "encryption")
     private EncryptionDetails encryption;
 
     /*
      * Enable or Disable public network access to workspace
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private WorkspacePublicNetworkAccess publicNetworkAccess;
 
-    /** Creates an instance of WorkspacePatchProperties class. */
+    /**
+     * Creates an instance of WorkspacePatchProperties class.
+     */
     public WorkspacePatchProperties() {
     }
 
     /**
      * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
+     * 
      * @return the sqlAdministratorLoginPassword value.
      */
     public String sqlAdministratorLoginPassword() {
@@ -72,7 +73,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
+     * 
      * @param sqlAdministratorLoginPassword the sqlAdministratorLoginPassword value to set.
      * @return the WorkspacePatchProperties object itself.
      */
@@ -83,7 +84,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Get the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
+     * 
      * @return the managedVirtualNetworkSettings value.
      */
     public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
@@ -92,19 +93,19 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
+     * 
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the WorkspacePatchProperties object itself.
      */
-    public WorkspacePatchProperties withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+    public WorkspacePatchProperties
+        withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
         return this;
     }
 
     /**
      * Get the workspaceRepositoryConfiguration property: Git integration settings.
-     *
+     * 
      * @return the workspaceRepositoryConfiguration value.
      */
     public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
@@ -113,19 +114,19 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the workspaceRepositoryConfiguration property: Git integration settings.
-     *
+     * 
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the WorkspacePatchProperties object itself.
      */
-    public WorkspacePatchProperties withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public WorkspacePatchProperties
+        withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
         return this;
     }
 
     /**
      * Get the purviewConfiguration property: Purview Configuration.
-     *
+     * 
      * @return the purviewConfiguration value.
      */
     public PurviewConfiguration purviewConfiguration() {
@@ -134,7 +135,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the purviewConfiguration property: Purview Configuration.
-     *
+     * 
      * @param purviewConfiguration the purviewConfiguration value to set.
      * @return the WorkspacePatchProperties object itself.
      */
@@ -145,7 +146,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -154,7 +155,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Get the encryption property: The encryption details of the workspace.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionDetails encryption() {
@@ -163,7 +164,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the encryption property: The encryption details of the workspace.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the WorkspacePatchProperties object itself.
      */
@@ -174,7 +175,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Get the publicNetworkAccess property: Enable or Disable public network access to workspace.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public WorkspacePublicNetworkAccess publicNetworkAccess() {
@@ -183,7 +184,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the publicNetworkAccess property: Enable or Disable public network access to workspace.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspacePatchProperties object itself.
      */
@@ -194,7 +195,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -210,5 +211,62 @@ public final class WorkspacePatchProperties {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sqlAdministratorLoginPassword", this.sqlAdministratorLoginPassword);
+        jsonWriter.writeJsonField("managedVirtualNetworkSettings", this.managedVirtualNetworkSettings);
+        jsonWriter.writeJsonField("workspaceRepositoryConfiguration", this.workspaceRepositoryConfiguration);
+        jsonWriter.writeJsonField("purviewConfiguration", this.purviewConfiguration);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspacePatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspacePatchProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspacePatchProperties.
+     */
+    public static WorkspacePatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspacePatchProperties deserializedWorkspacePatchProperties = new WorkspacePatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sqlAdministratorLoginPassword".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.sqlAdministratorLoginPassword = reader.getString();
+                } else if ("managedVirtualNetworkSettings".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.managedVirtualNetworkSettings
+                        = ManagedVirtualNetworkSettings.fromJson(reader);
+                } else if ("workspaceRepositoryConfiguration".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.workspaceRepositoryConfiguration
+                        = WorkspaceRepositoryConfiguration.fromJson(reader);
+                } else if ("purviewConfiguration".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.purviewConfiguration = PurviewConfiguration.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.provisioningState = reader.getString();
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.encryption = EncryptionDetails.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.publicNetworkAccess
+                        = WorkspacePublicNetworkAccess.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspacePatchProperties;
+        });
     }
 }

@@ -89,8 +89,8 @@ public interface CloudServicesNetworksClient {
      * @return properties of the provided cloud services network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CloudServicesNetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String cloudServicesNetworkName, Context context);
+    Response<CloudServicesNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String cloudServicesNetworkName, Context context);
 
     /**
      * Retrieve the cloud services network.
@@ -123,8 +123,7 @@ public interface CloudServicesNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+        String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters);
 
     /**
@@ -144,10 +143,8 @@ public interface CloudServicesNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context);
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkInner cloudServicesNetworkParameters, Context context);
 
     /**
      * Create or update the cloud services network.
@@ -164,9 +161,7 @@ public interface CloudServicesNetworksClient {
      *     machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudServicesNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+    CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters);
 
     /**
@@ -185,11 +180,8 @@ public interface CloudServicesNetworksClient {
      *     machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudServicesNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context);
+    CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkInner cloudServicesNetworkParameters, Context context);
 
     /**
      * Delete the cloud services network.
@@ -220,8 +212,8 @@ public interface CloudServicesNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cloudServicesNetworkName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
+        Context context);
 
     /**
      * Delete the cloud services network.
@@ -267,8 +259,8 @@ public interface CloudServicesNetworksClient {
      *     will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
-        String resourceGroupName, String cloudServicesNetworkName);
+    SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(String resourceGroupName,
+        String cloudServicesNetworkName);
 
     /**
      * Patch the cloud services network.
@@ -287,10 +279,8 @@ public interface CloudServicesNetworksClient {
      *     will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
+    SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
         Context context);
 
     /**
@@ -327,9 +317,6 @@ public interface CloudServicesNetworksClient {
      *     machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudServicesNetworkInner update(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context);
+    CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context);
 }

@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Navigation for DSC Report Resource. */
+/**
+ * Navigation for DSC Report Resource.
+ */
 @Fluent
-public final class DscReportResourceNavigation {
+public final class DscReportResourceNavigation implements JsonSerializable<DscReportResourceNavigation> {
     /*
      * Gets or sets the ID of the resource to navigate to.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /**
+     * Creates an instance of DscReportResourceNavigation class.
+     */
+    public DscReportResourceNavigation() {
+    }
+
+    /**
      * Get the resourceId property: Gets or sets the ID of the resource to navigate to.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -27,7 +38,7 @@ public final class DscReportResourceNavigation {
 
     /**
      * Set the resourceId property: Gets or sets the ID of the resource to navigate to.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DscReportResourceNavigation object itself.
      */
@@ -38,9 +49,45 @@ public final class DscReportResourceNavigation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscReportResourceNavigation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscReportResourceNavigation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscReportResourceNavigation.
+     */
+    public static DscReportResourceNavigation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscReportResourceNavigation deserializedDscReportResourceNavigation = new DscReportResourceNavigation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedDscReportResourceNavigation.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscReportResourceNavigation;
+        });
     }
 }

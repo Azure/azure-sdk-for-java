@@ -11,9 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
  *
  * @param <InnerT> wrapped type
  */
-public abstract class IndexableWrapperImpl<InnerT>
-        extends IndexableImpl
-        implements HasInnerModel<InnerT> {
+public abstract class IndexableWrapperImpl<InnerT> extends IndexableImpl implements HasInnerModel<InnerT> {
     private InnerT innerObject;
 
     protected IndexableWrapperImpl(InnerT innerObject) {

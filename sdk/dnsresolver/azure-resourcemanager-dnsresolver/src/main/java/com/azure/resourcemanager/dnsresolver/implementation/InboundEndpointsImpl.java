@@ -21,23 +21,31 @@ public final class InboundEndpointsImpl implements InboundEndpoints {
 
     private final com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager;
 
-    public InboundEndpointsImpl(
-        InboundEndpointsClient innerClient, com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
+    public InboundEndpointsImpl(InboundEndpointsClient innerClient,
+        com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public void delete(String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, dnsResolverName, inboundEndpointName, ifMatch);
     }
 
     public void delete(String resourceGroupName, String dnsResolverName, String inboundEndpointName) {
         this.serviceClient().delete(resourceGroupName, dnsResolverName, inboundEndpointName);
     }
 
-    public void delete(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch, Context context) {
+    public void delete(String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, dnsResolverName, inboundEndpointName, ifMatch, context);
+    }
+
+    public Response<InboundEndpoint> getWithResponse(String resourceGroupName, String dnsResolverName,
+        String inboundEndpointName, Context context) {
+        Response<InboundEndpointInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new InboundEndpointImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public InboundEndpoint get(String resourceGroupName, String dnsResolverName, String inboundEndpointName) {
@@ -49,142 +57,91 @@ public final class InboundEndpointsImpl implements InboundEndpoints {
         }
     }
 
-    public Response<InboundEndpoint> getWithResponse(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, Context context) {
-        Response<InboundEndpointInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new InboundEndpointImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<InboundEndpoint> list(String resourceGroupName, String dnsResolverName) {
         PagedIterable<InboundEndpointInner> inner = this.serviceClient().list(resourceGroupName, dnsResolverName);
-        return Utils.mapPage(inner, inner1 -> new InboundEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InboundEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<InboundEndpoint> list(
-        String resourceGroupName, String dnsResolverName, Integer top, Context context) {
-        PagedIterable<InboundEndpointInner> inner =
-            this.serviceClient().list(resourceGroupName, dnsResolverName, top, context);
-        return Utils.mapPage(inner, inner1 -> new InboundEndpointImpl(inner1, this.manager()));
+    public PagedIterable<InboundEndpoint> list(String resourceGroupName, String dnsResolverName, Integer top,
+        Context context) {
+        PagedIterable<InboundEndpointInner> inner
+            = this.serviceClient().list(resourceGroupName, dnsResolverName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InboundEndpointImpl(inner1, this.manager()));
     }
 
     public InboundEndpoint getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
+        String dnsResolverName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
         }
-        String inboundEndpointName = Utils.getValueFromIdByName(id, "inboundEndpoints");
+        String inboundEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "inboundEndpoints");
         if (inboundEndpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'inboundEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'inboundEndpoints'.", id)));
         }
         return this.getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, Context.NONE).getValue();
     }
 
     public Response<InboundEndpoint> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
+        String dnsResolverName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
         }
-        String inboundEndpointName = Utils.getValueFromIdByName(id, "inboundEndpoints");
+        String inboundEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "inboundEndpoints");
         if (inboundEndpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'inboundEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'inboundEndpoints'.", id)));
         }
         return this.getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
+        String dnsResolverName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
         }
-        String inboundEndpointName = Utils.getValueFromIdByName(id, "inboundEndpoints");
+        String inboundEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "inboundEndpoints");
         if (inboundEndpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'inboundEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'inboundEndpoints'.", id)));
         }
         String localIfMatch = null;
         this.delete(resourceGroupName, dnsResolverName, inboundEndpointName, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
+        String dnsResolverName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
         }
-        String inboundEndpointName = Utils.getValueFromIdByName(id, "inboundEndpoints");
+        String inboundEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "inboundEndpoints");
         if (inboundEndpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'inboundEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'inboundEndpoints'.", id)));
         }
         this.delete(resourceGroupName, dnsResolverName, inboundEndpointName, ifMatch, context);
     }

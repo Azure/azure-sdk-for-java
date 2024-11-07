@@ -27,8 +27,7 @@ public final class ReservationOrdersImpl implements ReservationOrders {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public ReservationOrdersImpl(
-        ReservationOrdersClient innerClient,
+    public ReservationOrdersImpl(ReservationOrdersClient innerClient,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -37,10 +36,7 @@ public final class ReservationOrdersImpl implements ReservationOrders {
     public Response<CalculatePriceResponse> calculateWithResponse(PurchaseRequest body, Context context) {
         Response<CalculatePriceResponseInner> inner = this.serviceClient().calculateWithResponse(body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CalculatePriceResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -58,12 +54,12 @@ public final class ReservationOrdersImpl implements ReservationOrders {
 
     public PagedIterable<ReservationOrderResponse> list() {
         PagedIterable<ReservationOrderResponseInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ReservationOrderResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationOrderResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReservationOrderResponse> list(Context context) {
         PagedIterable<ReservationOrderResponseInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ReservationOrderResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationOrderResponseImpl(inner1, this.manager()));
     }
 
     public ReservationOrderResponse purchase(String reservationOrderId, PurchaseRequest body) {
@@ -84,15 +80,12 @@ public final class ReservationOrdersImpl implements ReservationOrders {
         }
     }
 
-    public Response<ReservationOrderResponse> getWithResponse(
-        String reservationOrderId, String expand, Context context) {
-        Response<ReservationOrderResponseInner> inner =
-            this.serviceClient().getWithResponse(reservationOrderId, expand, context);
+    public Response<ReservationOrderResponse> getWithResponse(String reservationOrderId, String expand,
+        Context context) {
+        Response<ReservationOrderResponseInner> inner
+            = this.serviceClient().getWithResponse(reservationOrderId, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReservationOrderResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -108,15 +101,12 @@ public final class ReservationOrdersImpl implements ReservationOrders {
         }
     }
 
-    public Response<ChangeDirectoryResponse> changeDirectoryWithResponse(
-        String reservationOrderId, ChangeDirectoryRequest body, Context context) {
-        Response<ChangeDirectoryResponseInner> inner =
-            this.serviceClient().changeDirectoryWithResponse(reservationOrderId, body, context);
+    public Response<ChangeDirectoryResponse> changeDirectoryWithResponse(String reservationOrderId,
+        ChangeDirectoryRequest body, Context context) {
+        Response<ChangeDirectoryResponseInner> inner
+            = this.serviceClient().changeDirectoryWithResponse(reservationOrderId, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ChangeDirectoryResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

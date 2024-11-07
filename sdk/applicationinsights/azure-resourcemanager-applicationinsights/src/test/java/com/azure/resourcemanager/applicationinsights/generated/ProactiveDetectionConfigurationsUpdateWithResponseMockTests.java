@@ -33,44 +33,29 @@ public final class ProactiveDetectionConfigurationsUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"Name\":\"kxn\",\"Enabled\":false,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"vudtjuewbcihx\",\"uwhcjyxccybv\",\"ayakkudzpx\"],\"LastUpdatedTime\":\"jplmagstcy\",\"RuleDefinitions\":{\"Name\":\"fkyrk\",\"DisplayName\":\"dg\",\"Description\":\"gsj\",\"HelpUrl\":\"nwqjnoba\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":true,\"SupportsEmailNotifications\":true}}";
+        String responseStr
+            = "{\"Name\":\"kxn\",\"Enabled\":false,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"vudtjuewbcihx\",\"uwhcjyxccybv\",\"ayakkudzpx\"],\"LastUpdatedTime\":\"jplmagstcy\",\"RuleDefinitions\":{\"Name\":\"fkyrk\",\"DisplayName\":\"dg\",\"Description\":\"gsj\",\"HelpUrl\":\"nwqjnoba\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":true,\"SupportsEmailNotifications\":true}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApplicationInsightsComponentProactiveDetectionConfiguration response =
-            manager
-                .proactiveDetectionConfigurations()
-                .updateWithResponse(
-                    "pjui",
-                    "av",
-                    "k",
-                    new ApplicationInsightsComponentProactiveDetectionConfigurationInner()
-                        .withName("zfvazi")
+        ApplicationInsightsComponentProactiveDetectionConfiguration response
+            = manager.proactiveDetectionConfigurations()
+                .updateWithResponse("pjui", "av", "k",
+                    new ApplicationInsightsComponentProactiveDetectionConfigurationInner().withName("zfvazi")
                         .withEnabled(false)
                         .withSendEmailsToSubscriptionOwners(true)
                         .withCustomEmails(Arrays.asList("tbajlkatn", "xyiopidkqqfku"))

@@ -37,24 +37,28 @@ import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceIndic
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceInformationList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ThreatIntelligenceIndicatorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ThreatIntelligenceIndicatorsClient.
+ */
 public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntelligenceIndicatorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ThreatIntelligenceIndicatorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityInsightsImpl client;
 
     /**
      * Initializes an instance of ThreatIntelligenceIndicatorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ThreatIntelligenceIndicatorsClientImpl(SecurityInsightsImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ThreatIntelligenceIndicatorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ThreatIntelligenceIndicatorsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,166 +68,109 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityInsightsThre")
-    private interface ThreatIntelligenceIndicatorsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main"
-                + "/createIndicator")
-        @ExpectedResponses({200, 201})
+    public interface ThreatIntelligenceIndicatorsService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/createIndicator")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThreatIntelligenceInformationInner>> createIndicator(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<ThreatIntelligenceInformationInner>> createIndicator(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @BodyParam("application/json") ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators"
-                + "/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThreatIntelligenceInformationInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ThreatIntelligenceInformationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators"
-                + "/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThreatIntelligenceInformationInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<ThreatIntelligenceInformationInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("name") String name,
             @BodyParam("application/json") ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators"
-                + "/{name}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main"
-                + "/queryIndicators")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/queryIndicators")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThreatIntelligenceInformationList>> queryIndicators(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<ThreatIntelligenceInformationList>> queryIndicators(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @BodyParam("application/json") ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators"
-                + "/{name}/appendTags")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/appendTags")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> appendTags(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Void>> appendTags(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("name") String name,
             @BodyParam("application/json") ThreatIntelligenceAppendTags threatIntelligenceAppendTags,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators"
-                + "/{name}/replaceTags")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/replaceTags")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThreatIntelligenceInformationInner>> replaceTags(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<ThreatIntelligenceInformationInner>> replaceTags(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("name") String name,
             @BodyParam("application/json") ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ThreatIntelligenceInformationList>> queryIndicatorsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create a new threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return threat intelligence information object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ThreatIntelligenceInformationInner>> createIndicatorWithResponseAsync(
         String resourceGroupName, String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -233,33 +180,22 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (threatIntelligenceProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter threatIntelligenceProperties is required and cannot be null."));
         } else {
             threatIntelligenceProperties.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createIndicator(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            threatIntelligenceProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.createIndicator(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, threatIntelligenceProperties, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a new threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
@@ -267,26 +203,20 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return threat intelligence information object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ThreatIntelligenceInformationInner>> createIndicatorWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
+        String resourceGroupName, String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -296,30 +226,21 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (threatIntelligenceProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter threatIntelligenceProperties is required and cannot be null."));
         } else {
             threatIntelligenceProperties.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createIndicator(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                threatIntelligenceProperties,
-                accept,
-                context);
+        return service.createIndicator(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, threatIntelligenceProperties, accept,
+            context);
     }
 
     /**
      * Create a new threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
@@ -329,32 +250,15 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return threat intelligence information object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThreatIntelligenceInformationInner> createIndicatorAsync(
-        String resourceGroupName, String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
+    private Mono<ThreatIntelligenceInformationInner> createIndicatorAsync(String resourceGroupName,
+        String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
         return createIndicatorWithResponseAsync(resourceGroupName, workspaceName, threatIntelligenceProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create a new threat intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreatIntelligenceInformationInner createIndicator(
-        String resourceGroupName, String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
-        return createIndicatorAsync(resourceGroupName, workspaceName, threatIntelligenceProperties).block();
-    }
-
-    /**
-     * Create a new threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
@@ -365,41 +269,52 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return threat intelligence information object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ThreatIntelligenceInformationInner> createIndicatorWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
-        Context context) {
+    public Response<ThreatIntelligenceInformationInner> createIndicatorWithResponse(String resourceGroupName,
+        String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties, Context context) {
         return createIndicatorWithResponseAsync(resourceGroupName, workspaceName, threatIntelligenceProperties, context)
             .block();
     }
 
     /**
+     * Create a new threat intelligence indicator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return threat intelligence information object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreatIntelligenceInformationInner createIndicator(String resourceGroupName, String workspaceName,
+        ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
+        return createIndicatorWithResponse(resourceGroupName, workspaceName, threatIntelligenceProperties, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * View a threat intelligence indicator by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return threat intelligence information object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThreatIntelligenceInformationInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name) {
+    private Mono<Response<ThreatIntelligenceInformationInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -413,24 +328,14 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * View a threat intelligence indicator by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -438,23 +343,19 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return threat intelligence information object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThreatIntelligenceInformationInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    private Mono<Response<ThreatIntelligenceInformationInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -468,21 +369,13 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, name, accept, context);
     }
 
     /**
      * View a threat intelligence indicator by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -492,15 +385,33 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return threat intelligence information object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThreatIntelligenceInformationInner> getAsync(
-        String resourceGroupName, String workspaceName, String name) {
+    private Mono<ThreatIntelligenceInformationInner> getAsync(String resourceGroupName, String workspaceName,
+        String name) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * View a threat intelligence indicator by name.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param name Threat intelligence indicator name field.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return threat intelligence information object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ThreatIntelligenceInformationInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String name, Context context) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
+    }
+
+    /**
+     * View a threat intelligence indicator by name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -511,30 +422,12 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThreatIntelligenceInformationInner get(String resourceGroupName, String workspaceName, String name) {
-        return getAsync(resourceGroupName, workspaceName, name).block();
-    }
-
-    /**
-     * View a threat intelligence indicator by name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param name Threat intelligence indicator name field.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ThreatIntelligenceInformationInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
-        return getWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
+        return getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
     }
 
     /**
      * Update a threat Intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -542,26 +435,19 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return threat intelligence information object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThreatIntelligenceInformationInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
+    private Mono<Response<ThreatIntelligenceInformationInner>> createWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name, ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -574,34 +460,22 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (threatIntelligenceProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter threatIntelligenceProperties is required and cannot be null."));
         } else {
             threatIntelligenceProperties.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            threatIntelligenceProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, threatIntelligenceProperties,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a threat Intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -610,27 +484,20 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return threat intelligence information object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThreatIntelligenceInformationInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
+    private Mono<Response<ThreatIntelligenceInformationInner>> createWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name, ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -643,31 +510,20 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (threatIntelligenceProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter threatIntelligenceProperties is required and cannot be null."));
         } else {
             threatIntelligenceProperties.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                threatIntelligenceProperties,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, name, threatIntelligenceProperties, accept, context);
     }
 
     /**
      * Update a threat Intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -678,39 +534,15 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return threat intelligence information object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThreatIntelligenceInformationInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
+    private Mono<ThreatIntelligenceInformationInner> createAsync(String resourceGroupName, String workspaceName,
+        String name, ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
         return createWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a threat Intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param name Threat intelligence indicator name field.
-     * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreatIntelligenceInformationInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
-        return createAsync(resourceGroupName, workspaceName, name, threatIntelligenceProperties).block();
-    }
-
-    /**
-     * Update a threat Intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -722,19 +554,35 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return threat intelligence information object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ThreatIntelligenceInformationInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
+    public Response<ThreatIntelligenceInformationInner> createWithResponse(String resourceGroupName,
+        String workspaceName, String name, ThreatIntelligenceIndicatorModel threatIntelligenceProperties,
         Context context) {
         return createWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceProperties, context)
             .block();
     }
 
     /**
+     * Update a threat Intelligence indicator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param name Threat intelligence indicator name field.
+     * @param threatIntelligenceProperties Properties of threat intelligence indicators to create and update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return threat intelligence information object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreatIntelligenceInformationInner create(String resourceGroupName, String workspaceName, String name,
+        ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
+        return createWithResponse(resourceGroupName, workspaceName, name, threatIntelligenceProperties, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Delete a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -746,16 +594,12 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -769,24 +613,14 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -797,19 +631,15 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -823,21 +653,13 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, name, accept, context);
     }
 
     /**
      * Delete a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -853,22 +675,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
 
     /**
      * Delete a threat intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param name Threat intelligence indicator name field.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String name) {
-        deleteAsync(resourceGroupName, workspaceName, name).block();
-    }
-
-    /**
-     * Delete a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -879,14 +686,29 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
     }
 
     /**
+     * Delete a threat intelligence indicator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param name Threat intelligence indicator name field.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String name) {
+        deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
+    }
+
+    /**
      * Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceFilteringCriteria Filtering criteria for querying threat intelligence indicators.
@@ -894,24 +716,19 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the threat intelligence information objects along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ThreatIntelligenceInformationInner>> queryIndicatorsSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
+        String resourceGroupName, String workspaceName,
         ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -921,42 +738,24 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (threatIntelligenceFilteringCriteria == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceFilteringCriteria is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter threatIntelligenceFilteringCriteria is required and cannot be null."));
         } else {
             threatIntelligenceFilteringCriteria.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .queryIndicators(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            threatIntelligenceFilteringCriteria,
-                            accept,
-                            context))
-            .<PagedResponse<ThreatIntelligenceInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.queryIndicators(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria,
+                accept, context))
+            .<PagedResponse<ThreatIntelligenceInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceFilteringCriteria Filtering criteria for querying threat intelligence indicators.
@@ -965,25 +764,19 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the threat intelligence information objects along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ThreatIntelligenceInformationInner>> queryIndicatorsSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria,
-        Context context) {
+        String resourceGroupName, String workspaceName,
+        ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -993,39 +786,23 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (threatIntelligenceFilteringCriteria == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceFilteringCriteria is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter threatIntelligenceFilteringCriteria is required and cannot be null."));
         } else {
             threatIntelligenceFilteringCriteria.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .queryIndicators(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                threatIntelligenceFilteringCriteria,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .queryIndicators(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceFilteringCriteria Filtering criteria for querying threat intelligence indicators.
@@ -1035,10 +812,8 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return list of all the threat intelligence information objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ThreatIntelligenceInformationInner> queryIndicatorsAsync(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria) {
+    private PagedFlux<ThreatIntelligenceInformationInner> queryIndicatorsAsync(String resourceGroupName,
+        String workspaceName, ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria) {
         return new PagedFlux<>(
             () -> queryIndicatorsSinglePageAsync(resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria),
             nextLink -> queryIndicatorsNextSinglePageAsync(nextLink));
@@ -1046,7 +821,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
 
     /**
      * Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceFilteringCriteria Filtering criteria for querying threat intelligence indicators.
@@ -1057,21 +832,17 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return list of all the threat intelligence information objects as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ThreatIntelligenceInformationInner> queryIndicatorsAsync(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria,
+    private PagedFlux<ThreatIntelligenceInformationInner> queryIndicatorsAsync(String resourceGroupName,
+        String workspaceName, ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria,
         Context context) {
-        return new PagedFlux<>(
-            () ->
-                queryIndicatorsSinglePageAsync(
-                    resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria, context),
+        return new PagedFlux<>(() -> queryIndicatorsSinglePageAsync(resourceGroupName, workspaceName,
+            threatIntelligenceFilteringCriteria, context),
             nextLink -> queryIndicatorsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceFilteringCriteria Filtering criteria for querying threat intelligence indicators.
@@ -1081,17 +852,15 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return list of all the threat intelligence information objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ThreatIntelligenceInformationInner> queryIndicators(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria) {
+    public PagedIterable<ThreatIntelligenceInformationInner> queryIndicators(String resourceGroupName,
+        String workspaceName, ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria) {
         return new PagedIterable<>(
             queryIndicatorsAsync(resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria));
     }
 
     /**
      * Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param threatIntelligenceFilteringCriteria Filtering criteria for querying threat intelligence indicators.
@@ -1102,10 +871,8 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return list of all the threat intelligence information objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ThreatIntelligenceInformationInner> queryIndicators(
-        String resourceGroupName,
-        String workspaceName,
-        ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria,
+    public PagedIterable<ThreatIntelligenceInformationInner> queryIndicators(String resourceGroupName,
+        String workspaceName, ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria,
         Context context) {
         return new PagedIterable<>(
             queryIndicatorsAsync(resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria, context));
@@ -1113,7 +880,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
 
     /**
      * Append tags to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -1124,22 +891,15 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> appendTagsWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceAppendTags threatIntelligenceAppendTags) {
+    private Mono<Response<Void>> appendTagsWithResponseAsync(String resourceGroupName, String workspaceName,
+        String name, ThreatIntelligenceAppendTags threatIntelligenceAppendTags) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1152,34 +912,22 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (threatIntelligenceAppendTags == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceAppendTags is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter threatIntelligenceAppendTags is required and cannot be null."));
         } else {
             threatIntelligenceAppendTags.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .appendTags(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            threatIntelligenceAppendTags,
-                            accept,
-                            context))
+            .withContext(context -> service.appendTags(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, threatIntelligenceAppendTags,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Append tags to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -1191,23 +939,15 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> appendTagsWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceAppendTags threatIntelligenceAppendTags,
-        Context context) {
+    private Mono<Response<Void>> appendTagsWithResponseAsync(String resourceGroupName, String workspaceName,
+        String name, ThreatIntelligenceAppendTags threatIntelligenceAppendTags, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1220,31 +960,21 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (threatIntelligenceAppendTags == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceAppendTags is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter threatIntelligenceAppendTags is required and cannot be null."));
         } else {
             threatIntelligenceAppendTags.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .appendTags(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                threatIntelligenceAppendTags,
-                accept,
-                context);
+        return service.appendTags(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, threatIntelligenceAppendTags,
+            accept, context);
     }
 
     /**
      * Append tags to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -1255,10 +985,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> appendTagsAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
+    private Mono<Void> appendTagsAsync(String resourceGroupName, String workspaceName, String name,
         ThreatIntelligenceAppendTags threatIntelligenceAppendTags) {
         return appendTagsWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceAppendTags)
             .flatMap(ignored -> Mono.empty());
@@ -1266,27 +993,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
 
     /**
      * Append tags to a threat intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param name Threat intelligence indicator name field.
-     * @param threatIntelligenceAppendTags The threat intelligence append tags request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void appendTags(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceAppendTags threatIntelligenceAppendTags) {
-        appendTagsAsync(resourceGroupName, workspaceName, name, threatIntelligenceAppendTags).block();
-    }
-
-    /**
-     * Append tags to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -1298,20 +1005,32 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> appendTagsWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceAppendTags threatIntelligenceAppendTags,
-        Context context) {
-        return appendTagsWithResponseAsync(
-                resourceGroupName, workspaceName, name, threatIntelligenceAppendTags, context)
-            .block();
+    public Response<Void> appendTagsWithResponse(String resourceGroupName, String workspaceName, String name,
+        ThreatIntelligenceAppendTags threatIntelligenceAppendTags, Context context) {
+        return appendTagsWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceAppendTags,
+            context).block();
+    }
+
+    /**
+     * Append tags to a threat intelligence indicator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param name Threat intelligence indicator name field.
+     * @param threatIntelligenceAppendTags The threat intelligence append tags request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void appendTags(String resourceGroupName, String workspaceName, String name,
+        ThreatIntelligenceAppendTags threatIntelligenceAppendTags) {
+        appendTagsWithResponse(resourceGroupName, workspaceName, name, threatIntelligenceAppendTags, Context.NONE);
     }
 
     /**
      * Replace tags added to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -1319,26 +1038,19 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return threat intelligence information object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThreatIntelligenceInformationInner>> replaceTagsWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags) {
+    private Mono<Response<ThreatIntelligenceInformationInner>> replaceTagsWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name, ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1351,34 +1063,22 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (threatIntelligenceReplaceTags == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceReplaceTags is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter threatIntelligenceReplaceTags is required and cannot be null."));
         } else {
             threatIntelligenceReplaceTags.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .replaceTags(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            threatIntelligenceReplaceTags,
-                            accept,
-                            context))
+            .withContext(context -> service.replaceTags(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Replace tags added to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -1387,27 +1087,20 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return threat intelligence information object along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThreatIntelligenceInformationInner>> replaceTagsWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags,
+    private Mono<Response<ThreatIntelligenceInformationInner>> replaceTagsWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name, ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1420,31 +1113,21 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (threatIntelligenceReplaceTags == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter threatIntelligenceReplaceTags is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter threatIntelligenceReplaceTags is required and cannot be null."));
         } else {
             threatIntelligenceReplaceTags.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .replaceTags(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                threatIntelligenceReplaceTags,
-                accept,
-                context);
+        return service.replaceTags(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags,
+            accept, context);
     }
 
     /**
      * Replace tags added to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -1455,39 +1138,15 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return threat intelligence information object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThreatIntelligenceInformationInner> replaceTagsAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags) {
+    private Mono<ThreatIntelligenceInformationInner> replaceTagsAsync(String resourceGroupName, String workspaceName,
+        String name, ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags) {
         return replaceTagsWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Replace tags added to a threat intelligence indicator.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param name Threat intelligence indicator name field.
-     * @param threatIntelligenceReplaceTags Tags in the threat intelligence indicator to be replaced.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence information object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreatIntelligenceInformationInner replaceTags(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags) {
-        return replaceTagsAsync(resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags).block();
-    }
-
-    /**
-     * Replace tags added to a threat intelligence indicator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param name Threat intelligence indicator name field.
@@ -1499,91 +1158,85 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      * @return threat intelligence information object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ThreatIntelligenceInformationInner> replaceTagsWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags,
+    public Response<ThreatIntelligenceInformationInner> replaceTagsWithResponse(String resourceGroupName,
+        String workspaceName, String name, ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags,
         Context context) {
-        return replaceTagsWithResponseAsync(
-                resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags, context)
-            .block();
+        return replaceTagsWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags,
+            context).block();
+    }
+
+    /**
+     * Replace tags added to a threat intelligence indicator.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param name Threat intelligence indicator name field.
+     * @param threatIntelligenceReplaceTags Tags in the threat intelligence indicator to be replaced.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return threat intelligence information object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreatIntelligenceInformationInner replaceTags(String resourceGroupName, String workspaceName, String name,
+        ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags) {
+        return replaceTagsWithResponse(resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the threat intelligence information objects along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ThreatIntelligenceInformationInner>> queryIndicatorsNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ThreatIntelligenceInformationInner>>
+        queryIndicatorsNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.queryIndicatorsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ThreatIntelligenceInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ThreatIntelligenceInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the threat intelligence information objects along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ThreatIntelligenceInformationInner>> queryIndicatorsNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ThreatIntelligenceInformationInner>> queryIndicatorsNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .queryIndicatorsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.queryIndicatorsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

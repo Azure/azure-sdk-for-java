@@ -35,11 +35,6 @@ public interface UnresolvedDependencies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of unresolved dependencies as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<UnresolvedDependency> get(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context);
+    PagedIterable<UnresolvedDependency> get(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter, Context context);
 }

@@ -72,10 +72,8 @@ public final class LinkedStorageAccountsResourceInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LinkedStorageAccountsResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model LinkedStorageAccountsResourceInner"));
         } else {
             innerProperties().validate();
         }

@@ -13,32 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmStreamingEndpointSkuInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmStreamingEndpointSkuInfo model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"ywrckp\",\"capacity\":{\"scaleType\":\"yhpluodpvruudlgz\",\"default\":1325865791,\"minimum\":1621588970,\"maximum\":777690092},\"sku\":{\"name\":\"tstvdxeclzedq\"}}")
-                .toObject(ArmStreamingEndpointSkuInfo.class);
-        Assertions.assertEquals("ywrckp", model.resourceType());
-        Assertions.assertEquals(1325865791, model.capacity().defaultProperty());
-        Assertions.assertEquals(1621588970, model.capacity().minimum());
-        Assertions.assertEquals(777690092, model.capacity().maximum());
+        ArmStreamingEndpointSkuInfo model = BinaryData.fromString(
+            "{\"resourceType\":\"zzp\",\"capacity\":{\"scaleType\":\"zysdzh\",\"default\":1413339279,\"minimum\":39322733,\"maximum\":1899705757},\"sku\":{\"name\":\"uvvfonkp\"}}")
+            .toObject(ArmStreamingEndpointSkuInfo.class);
+        Assertions.assertEquals("zzp", model.resourceType());
+        Assertions.assertEquals(1413339279, model.capacity().defaultProperty());
+        Assertions.assertEquals(39322733, model.capacity().minimum());
+        Assertions.assertEquals(1899705757, model.capacity().maximum());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmStreamingEndpointSkuInfo model =
-            new ArmStreamingEndpointSkuInfo()
-                .withResourceType("ywrckp")
-                .withCapacity(
-                    new ArmStreamingEndpointCapacity()
-                        .withDefaultProperty(1325865791)
-                        .withMinimum(1621588970)
-                        .withMaximum(777690092))
-                .withSku(new ArmStreamingEndpointSku());
+        ArmStreamingEndpointSkuInfo model = new ArmStreamingEndpointSkuInfo().withResourceType("zzp")
+            .withCapacity(new ArmStreamingEndpointCapacity().withDefaultProperty(1413339279)
+                .withMinimum(39322733)
+                .withMaximum(1899705757))
+            .withSku(new ArmStreamingEndpointSku());
         model = BinaryData.fromObject(model).toObject(ArmStreamingEndpointSkuInfo.class);
-        Assertions.assertEquals("ywrckp", model.resourceType());
-        Assertions.assertEquals(1325865791, model.capacity().defaultProperty());
-        Assertions.assertEquals(1621588970, model.capacity().minimum());
-        Assertions.assertEquals(777690092, model.capacity().maximum());
+        Assertions.assertEquals("zzp", model.resourceType());
+        Assertions.assertEquals(1413339279, model.capacity().defaultProperty());
+        Assertions.assertEquals(39322733, model.capacity().minimum());
+        Assertions.assertEquals(1899705757, model.capacity().maximum());
     }
 }

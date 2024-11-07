@@ -5,49 +5,55 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Describes the basic properties for encoding the input video. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata.type",
-    defaultImpl = Video.class)
-@JsonTypeName("#Microsoft.Media.Video")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Media.H265Video", value = H265Video.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.Image", value = Image.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.H264Video", value = H264Video.class)
-})
+/**
+ * Describes the basic properties for encoding the input video.
+ */
 @Fluent
 public class Video extends Codec {
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.Video";
+
     /*
      * The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in
      * ISO 8601 format. The default is 2 seconds(PT2S). Note that this setting is ignored if VideoSyncMode.Passthrough
      * is set, where the KeyFrameInterval value will follow the input source setting.
      */
-    @JsonProperty(value = "keyFrameInterval")
     private Duration keyFrameInterval;
 
     /*
      * The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is
      * AutoSize
      */
-    @JsonProperty(value = "stretchMode")
     private StretchMode stretchMode;
 
     /*
      * The Video Sync Mode
      */
-    @JsonProperty(value = "syncMode")
     private VideoSyncMode syncMode;
 
-    /** Creates an instance of Video class. */
+    /**
+     * Creates an instance of Video class.
+     */
     public Video() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
@@ -55,7 +61,7 @@ public class Video extends Codec {
      * [0.5, 20] seconds, specified in ISO 8601 format. The default is 2 seconds(PT2S). Note that this setting is
      * ignored if VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source
      * setting.
-     *
+     * 
      * @return the keyFrameInterval value.
      */
     public Duration keyFrameInterval() {
@@ -67,7 +73,7 @@ public class Video extends Codec {
      * [0.5, 20] seconds, specified in ISO 8601 format. The default is 2 seconds(PT2S). Note that this setting is
      * ignored if VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will follow the input source
      * setting.
-     *
+     * 
      * @param keyFrameInterval the keyFrameInterval value to set.
      * @return the Video object itself.
      */
@@ -79,7 +85,7 @@ public class Video extends Codec {
     /**
      * Get the stretchMode property: The resizing mode - how the input video will be resized to fit the desired output
      * resolution(s). Default is AutoSize.
-     *
+     * 
      * @return the stretchMode value.
      */
     public StretchMode stretchMode() {
@@ -89,7 +95,7 @@ public class Video extends Codec {
     /**
      * Set the stretchMode property: The resizing mode - how the input video will be resized to fit the desired output
      * resolution(s). Default is AutoSize.
-     *
+     * 
      * @param stretchMode the stretchMode value to set.
      * @return the Video object itself.
      */
@@ -100,7 +106,7 @@ public class Video extends Codec {
 
     /**
      * Get the syncMode property: The Video Sync Mode.
-     *
+     * 
      * @return the syncMode value.
      */
     public VideoSyncMode syncMode() {
@@ -109,7 +115,7 @@ public class Video extends Codec {
 
     /**
      * Set the syncMode property: The Video Sync Mode.
-     *
+     * 
      * @param syncMode the syncMode value to set.
      * @return the Video object itself.
      */
@@ -118,7 +124,9 @@ public class Video extends Codec {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Video withLabel(String label) {
         super.withLabel(label);
@@ -127,11 +135,92 @@ public class Video extends Codec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("keyFrameInterval", CoreUtils.durationToStringWithDays(this.keyFrameInterval));
+        jsonWriter.writeStringField("stretchMode", this.stretchMode == null ? null : this.stretchMode.toString());
+        jsonWriter.writeStringField("syncMode", this.syncMode == null ? null : this.syncMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Video from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Video if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Video.
+     */
+    public static Video fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Media.H265Video".equals(discriminatorValue)) {
+                    return H265Video.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.Image".equals(discriminatorValue)) {
+                    return Image.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("#Microsoft.Media.JpgImage".equals(discriminatorValue)) {
+                    return JpgImage.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.PngImage".equals(discriminatorValue)) {
+                    return PngImage.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.H264Video".equals(discriminatorValue)) {
+                    return H264Video.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Video fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Video deserializedVideo = new Video();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("label".equals(fieldName)) {
+                    deserializedVideo.withLabel(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedVideo.odataType = reader.getString();
+                } else if ("keyFrameInterval".equals(fieldName)) {
+                    deserializedVideo.keyFrameInterval
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("stretchMode".equals(fieldName)) {
+                    deserializedVideo.stretchMode = StretchMode.fromString(reader.getString());
+                } else if ("syncMode".equals(fieldName)) {
+                    deserializedVideo.syncMode = VideoSyncMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVideo;
+        });
     }
 }

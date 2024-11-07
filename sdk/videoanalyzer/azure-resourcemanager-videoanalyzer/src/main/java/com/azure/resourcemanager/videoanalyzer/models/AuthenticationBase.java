@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = AuthenticationBase.class)
 @JsonTypeName("AuthenticationBase")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.JwtAuthentication", value = JwtAuthentication.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.JwtAuthentication", value = JwtAuthentication.class) })
 @Immutable
 public class AuthenticationBase {
     /**

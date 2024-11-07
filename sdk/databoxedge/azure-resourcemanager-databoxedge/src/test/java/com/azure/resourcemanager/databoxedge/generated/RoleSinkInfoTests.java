@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class RoleSinkInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoleSinkInfo model = BinaryData.fromString("{\"roleId\":\"oefki\"}").toObject(RoleSinkInfo.class);
-        Assertions.assertEquals("oefki", model.roleId());
+        RoleSinkInfo model = BinaryData.fromString("{\"roleId\":\"nyowxwlmdjrkvfg\"}").toObject(RoleSinkInfo.class);
+        Assertions.assertEquals("nyowxwlmdjrkvfg", model.roleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleSinkInfo model = new RoleSinkInfo().withRoleId("oefki");
+        RoleSinkInfo model = new RoleSinkInfo().withRoleId("nyowxwlmdjrkvfg");
         model = BinaryData.fromObject(model).toObject(RoleSinkInfo.class);
-        Assertions.assertEquals("oefki", model.roleId());
+        Assertions.assertEquals("nyowxwlmdjrkvfg", model.roleId());
     }
 }

@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.fluidrelay.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The set of available keys for this server. */
+/**
+ * The set of available keys for this server.
+ */
 @Immutable
-public final class FluidRelayServerKeysInner {
+public final class FluidRelayServerKeysInner implements JsonSerializable<FluidRelayServerKeysInner> {
     /*
      * The primary key for this server
      */
-    @JsonProperty(value = "key1", access = JsonProperty.Access.WRITE_ONLY)
     private String key1;
 
     /*
      * The secondary key for this server
      */
-    @JsonProperty(value = "key2", access = JsonProperty.Access.WRITE_ONLY)
     private String key2;
 
     /**
+     * Creates an instance of FluidRelayServerKeysInner class.
+     */
+    public FluidRelayServerKeysInner() {
+    }
+
+    /**
      * Get the key1 property: The primary key for this server.
-     *
+     * 
      * @return the key1 value.
      */
     public String key1() {
@@ -33,7 +43,7 @@ public final class FluidRelayServerKeysInner {
 
     /**
      * Get the key2 property: The secondary key for this server.
-     *
+     * 
      * @return the key2 value.
      */
     public String key2() {
@@ -42,9 +52,46 @@ public final class FluidRelayServerKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayServerKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayServerKeysInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluidRelayServerKeysInner.
+     */
+    public static FluidRelayServerKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayServerKeysInner deserializedFluidRelayServerKeysInner = new FluidRelayServerKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key1".equals(fieldName)) {
+                    deserializedFluidRelayServerKeysInner.key1 = reader.getString();
+                } else if ("key2".equals(fieldName)) {
+                    deserializedFluidRelayServerKeysInner.key2 = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayServerKeysInner;
+        });
     }
 }

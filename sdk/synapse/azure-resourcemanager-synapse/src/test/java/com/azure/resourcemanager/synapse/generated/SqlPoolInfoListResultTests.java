@@ -19,116 +19,77 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolInfoListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolInfoListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"ancuxrhd\",\"value\":[{\"sku\":{\"tier\":\"bniwdj\",\"name\":\"zt\",\"capacity\":593552862},\"properties\":{\"maxSizeBytes\":6037940700314515859,\"collation\":\"txhp\",\"sourceDatabaseId\":\"bzpfzab\",\"recoverableDatabaseId\":\"cuh\",\"provisioningState\":\"tcty\",\"status\":\"klbb\",\"restorePointInTime\":\"2021-04-06T10:17:39Z\",\"createMode\":\"Recovery\",\"creationDate\":\"2021-08-16T02:09:31Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-01-10T00:04:32Z\"},\"location\":\"u\",\"tags\":{\"fpl\":\"svmkfssxquk\",\"xnkjzkdesl\":\"mg\"},\"id\":\"vlopwiyighx\",\"name\":\"kdwzbaiuebbaumny\",\"type\":\"upedeojnabckhs\"},{\"sku\":{\"tier\":\"psiebtfhvpes\",\"name\":\"skrdqmhjj\",\"capacity\":871941711},\"properties\":{\"maxSizeBytes\":2973722017967146384,\"collation\":\"zxuutkncwscwsvl\",\"sourceDatabaseId\":\"togt\",\"recoverableDatabaseId\":\"upqsx\",\"provisioningState\":\"micykvceoveilo\",\"status\":\"oty\",\"restorePointInTime\":\"2021-10-24T21:54:25Z\",\"createMode\":\"Restore\",\"creationDate\":\"2021-02-15T03:10:17Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-03-04T17:11:57Z\"},\"location\":\"dhbt\",\"tags\":{\"wpn\":\"h\",\"mclfplphoxuscr\":\"jtoqne\"},\"id\":\"abgy\",\"name\":\"psbjta\",\"type\":\"qugxywpmueefjzwf\"},{\"sku\":{\"tier\":\"ujidsuyono\",\"name\":\"laocqxtccmg\",\"capacity\":1054992005},\"properties\":{\"maxSizeBytes\":6928065700546189319,\"collation\":\"oyrxvwfudwpzntxh\",\"sourceDatabaseId\":\"hl\",\"recoverableDatabaseId\":\"jbhckfrlhr\",\"provisioningState\":\"bkyvp\",\"status\":\"anuzbpzkafkuw\",\"restorePointInTime\":\"2021-02-12T18:02:16Z\",\"createMode\":\"Default\",\"creationDate\":\"2021-12-08T08:00:45Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-06-08T07:46:39Z\"},\"location\":\"eyvjusrtslhspkde\",\"tags\":{\"ahvljuaha\":\"ofmxagkvtmelmqkr\",\"ualaexqpvfadmw\":\"uhcdhm\",\"vgomz\":\"rcrgvx\"},\"id\":\"fmisg\",\"name\":\"bnbbeldawkz\",\"type\":\"ali\"},{\"sku\":{\"tier\":\"qhakauhashsf\",\"name\":\"osow\",\"capacity\":38783234},\"properties\":{\"maxSizeBytes\":48775130109439677,\"collation\":\"ooxdjebwpuc\",\"sourceDatabaseId\":\"fvovbvmeuecivy\",\"recoverableDatabaseId\":\"ce\",\"provisioningState\":\"jgjrwjueiotwm\",\"status\":\"ytdxwit\",\"restorePointInTime\":\"2021-05-14T21:36:27Z\",\"createMode\":\"Recovery\",\"creationDate\":\"2021-06-11T21:37:26Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-10-18T22:59:22Z\"},\"location\":\"hniskxfbkpyc\",\"tags\":{\"auwhvylwzbtdhx\":\"wndnhj\"},\"id\":\"jznb\",\"name\":\"pow\",\"type\":\"wpr\"}]}")
-                .toObject(SqlPoolInfoListResult.class);
-        Assertions.assertEquals("ancuxrhd", model.nextLink());
-        Assertions.assertEquals("u", model.value().get(0).location());
-        Assertions.assertEquals("svmkfssxquk", model.value().get(0).tags().get("fpl"));
-        Assertions.assertEquals("bniwdj", model.value().get(0).sku().tier());
-        Assertions.assertEquals("zt", model.value().get(0).sku().name());
-        Assertions.assertEquals(593552862, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(6037940700314515859L, model.value().get(0).maxSizeBytes());
-        Assertions.assertEquals("txhp", model.value().get(0).collation());
-        Assertions.assertEquals("bzpfzab", model.value().get(0).sourceDatabaseId());
-        Assertions.assertEquals("cuh", model.value().get(0).recoverableDatabaseId());
-        Assertions.assertEquals("tcty", model.value().get(0).provisioningState());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-06T10:17:39Z"), model.value().get(0).restorePointInTime());
-        Assertions.assertEquals(CreateMode.RECOVERY, model.value().get(0).createMode());
-        Assertions.assertEquals(StorageAccountType.GRS, model.value().get(0).storageAccountType());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-01-10T00:04:32Z"), model.value().get(0).sourceDatabaseDeletionDate());
+        SqlPoolInfoListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"fqbuaceopzf\",\"value\":[{\"sku\":{\"tier\":\"ao\",\"name\":\"pcqeqx\",\"capacity\":72119187},\"properties\":{\"maxSizeBytes\":4786890397912480430,\"collation\":\"ctobg\",\"sourceDatabaseId\":\"dmoizpostmg\",\"recoverableDatabaseId\":\"fbunrmfqjhhk\",\"provisioningState\":\"pvjymjhxxjyng\",\"status\":\"ivkrtsw\",\"restorePointInTime\":\"2021-05-30T10:12:47Z\",\"createMode\":\"Restore\",\"creationDate\":\"2021-10-26T13:42:02Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-04-01T03:47:56Z\"},\"location\":\"vjfdx\",\"tags\":{\"vtcqaqtdo\":\"e\",\"bhsfxob\":\"mcbxvwvxysl\"},\"id\":\"ytkblmpew\",\"name\":\"wfbkrvrns\",\"type\":\"shqjohxcrsbf\"},{\"sku\":{\"tier\":\"srruvwbhsqfsubcg\",\"name\":\"irx\",\"capacity\":1282258802},\"properties\":{\"maxSizeBytes\":4717614806856860947,\"collation\":\"jfdtwssotftpvj\",\"sourceDatabaseId\":\"exilzznfqqnvwpmq\",\"recoverableDatabaseId\":\"ruoujmk\",\"provisioningState\":\"hwqytj\",\"status\":\"bnw\",\"restorePointInTime\":\"2021-08-28T18:20:54Z\",\"createMode\":\"Restore\",\"creationDate\":\"2021-05-04T09:11:45Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-02-06T06:59:31Z\"},\"location\":\"aen\",\"tags\":{\"oygmift\":\"hin\"},\"id\":\"nzdndslgna\",\"name\":\"qig\",\"type\":\"nduhavhqlkthum\"}]}")
+            .toObject(SqlPoolInfoListResult.class);
+        Assertions.assertEquals("fqbuaceopzf", model.nextLink());
+        Assertions.assertEquals("vjfdx", model.value().get(0).location());
+        Assertions.assertEquals("e", model.value().get(0).tags().get("vtcqaqtdo"));
+        Assertions.assertEquals("ao", model.value().get(0).sku().tier());
+        Assertions.assertEquals("pcqeqx", model.value().get(0).sku().name());
+        Assertions.assertEquals(72119187, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(4786890397912480430L, model.value().get(0).maxSizeBytes());
+        Assertions.assertEquals("ctobg", model.value().get(0).collation());
+        Assertions.assertEquals("dmoizpostmg", model.value().get(0).sourceDatabaseId());
+        Assertions.assertEquals("fbunrmfqjhhk", model.value().get(0).recoverableDatabaseId());
+        Assertions.assertEquals("pvjymjhxxjyng", model.value().get(0).provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T10:12:47Z"),
+            model.value().get(0).restorePointInTime());
+        Assertions.assertEquals(CreateMode.RESTORE, model.value().get(0).createMode());
+        Assertions.assertEquals(StorageAccountType.LRS, model.value().get(0).storageAccountType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T03:47:56Z"),
+            model.value().get(0).sourceDatabaseDeletionDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolInfoListResult model =
-            new SqlPoolInfoListResult()
-                .withNextLink("ancuxrhd")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SqlPoolInner()
-                                .withLocation("u")
-                                .withTags(mapOf("fpl", "svmkfssxquk", "xnkjzkdesl", "mg"))
-                                .withSku(new Sku().withTier("bniwdj").withName("zt").withCapacity(593552862))
-                                .withMaxSizeBytes(6037940700314515859L)
-                                .withCollation("txhp")
-                                .withSourceDatabaseId("bzpfzab")
-                                .withRecoverableDatabaseId("cuh")
-                                .withProvisioningState("tcty")
-                                .withRestorePointInTime(OffsetDateTime.parse("2021-04-06T10:17:39Z"))
-                                .withCreateMode(CreateMode.RECOVERY)
-                                .withStorageAccountType(StorageAccountType.GRS)
-                                .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-01-10T00:04:32Z")),
-                            new SqlPoolInner()
-                                .withLocation("dhbt")
-                                .withTags(mapOf("wpn", "h", "mclfplphoxuscr", "jtoqne"))
-                                .withSku(
-                                    new Sku().withTier("psiebtfhvpes").withName("skrdqmhjj").withCapacity(871941711))
-                                .withMaxSizeBytes(2973722017967146384L)
-                                .withCollation("zxuutkncwscwsvl")
-                                .withSourceDatabaseId("togt")
-                                .withRecoverableDatabaseId("upqsx")
-                                .withProvisioningState("micykvceoveilo")
-                                .withRestorePointInTime(OffsetDateTime.parse("2021-10-24T21:54:25Z"))
-                                .withCreateMode(CreateMode.RESTORE)
-                                .withStorageAccountType(StorageAccountType.GRS)
-                                .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-03-04T17:11:57Z")),
-                            new SqlPoolInner()
-                                .withLocation("eyvjusrtslhspkde")
-                                .withTags(
-                                    mapOf(
-                                        "ahvljuaha", "ofmxagkvtmelmqkr", "ualaexqpvfadmw", "uhcdhm", "vgomz", "rcrgvx"))
-                                .withSku(
-                                    new Sku().withTier("ujidsuyono").withName("laocqxtccmg").withCapacity(1054992005))
-                                .withMaxSizeBytes(6928065700546189319L)
-                                .withCollation("oyrxvwfudwpzntxh")
-                                .withSourceDatabaseId("hl")
-                                .withRecoverableDatabaseId("jbhckfrlhr")
-                                .withProvisioningState("bkyvp")
-                                .withRestorePointInTime(OffsetDateTime.parse("2021-02-12T18:02:16Z"))
-                                .withCreateMode(CreateMode.DEFAULT)
-                                .withStorageAccountType(StorageAccountType.GRS)
-                                .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-06-08T07:46:39Z")),
-                            new SqlPoolInner()
-                                .withLocation("hniskxfbkpyc")
-                                .withTags(mapOf("auwhvylwzbtdhx", "wndnhj"))
-                                .withSku(new Sku().withTier("qhakauhashsf").withName("osow").withCapacity(38783234))
-                                .withMaxSizeBytes(48775130109439677L)
-                                .withCollation("ooxdjebwpuc")
-                                .withSourceDatabaseId("fvovbvmeuecivy")
-                                .withRecoverableDatabaseId("ce")
-                                .withProvisioningState("jgjrwjueiotwm")
-                                .withRestorePointInTime(OffsetDateTime.parse("2021-05-14T21:36:27Z"))
-                                .withCreateMode(CreateMode.RECOVERY)
-                                .withStorageAccountType(StorageAccountType.GRS)
-                                .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-10-18T22:59:22Z"))));
+        SqlPoolInfoListResult model = new SqlPoolInfoListResult().withNextLink("fqbuaceopzf")
+            .withValue(Arrays.asList(
+                new SqlPoolInner().withLocation("vjfdx")
+                    .withTags(mapOf("vtcqaqtdo", "e", "bhsfxob", "mcbxvwvxysl"))
+                    .withSku(new Sku().withTier("ao").withName("pcqeqx").withCapacity(72119187))
+                    .withMaxSizeBytes(4786890397912480430L)
+                    .withCollation("ctobg")
+                    .withSourceDatabaseId("dmoizpostmg")
+                    .withRecoverableDatabaseId("fbunrmfqjhhk")
+                    .withProvisioningState("pvjymjhxxjyng")
+                    .withRestorePointInTime(OffsetDateTime.parse("2021-05-30T10:12:47Z"))
+                    .withCreateMode(CreateMode.RESTORE)
+                    .withStorageAccountType(StorageAccountType.LRS)
+                    .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-04-01T03:47:56Z")),
+                new SqlPoolInner().withLocation("aen")
+                    .withTags(mapOf("oygmift", "hin"))
+                    .withSku(new Sku().withTier("srruvwbhsqfsubcg").withName("irx").withCapacity(1282258802))
+                    .withMaxSizeBytes(4717614806856860947L)
+                    .withCollation("jfdtwssotftpvj")
+                    .withSourceDatabaseId("exilzznfqqnvwpmq")
+                    .withRecoverableDatabaseId("ruoujmk")
+                    .withProvisioningState("hwqytj")
+                    .withRestorePointInTime(OffsetDateTime.parse("2021-08-28T18:20:54Z"))
+                    .withCreateMode(CreateMode.RESTORE)
+                    .withStorageAccountType(StorageAccountType.LRS)
+                    .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-02-06T06:59:31Z"))));
         model = BinaryData.fromObject(model).toObject(SqlPoolInfoListResult.class);
-        Assertions.assertEquals("ancuxrhd", model.nextLink());
-        Assertions.assertEquals("u", model.value().get(0).location());
-        Assertions.assertEquals("svmkfssxquk", model.value().get(0).tags().get("fpl"));
-        Assertions.assertEquals("bniwdj", model.value().get(0).sku().tier());
-        Assertions.assertEquals("zt", model.value().get(0).sku().name());
-        Assertions.assertEquals(593552862, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(6037940700314515859L, model.value().get(0).maxSizeBytes());
-        Assertions.assertEquals("txhp", model.value().get(0).collation());
-        Assertions.assertEquals("bzpfzab", model.value().get(0).sourceDatabaseId());
-        Assertions.assertEquals("cuh", model.value().get(0).recoverableDatabaseId());
-        Assertions.assertEquals("tcty", model.value().get(0).provisioningState());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-06T10:17:39Z"), model.value().get(0).restorePointInTime());
-        Assertions.assertEquals(CreateMode.RECOVERY, model.value().get(0).createMode());
-        Assertions.assertEquals(StorageAccountType.GRS, model.value().get(0).storageAccountType());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-01-10T00:04:32Z"), model.value().get(0).sourceDatabaseDeletionDate());
+        Assertions.assertEquals("fqbuaceopzf", model.nextLink());
+        Assertions.assertEquals("vjfdx", model.value().get(0).location());
+        Assertions.assertEquals("e", model.value().get(0).tags().get("vtcqaqtdo"));
+        Assertions.assertEquals("ao", model.value().get(0).sku().tier());
+        Assertions.assertEquals("pcqeqx", model.value().get(0).sku().name());
+        Assertions.assertEquals(72119187, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(4786890397912480430L, model.value().get(0).maxSizeBytes());
+        Assertions.assertEquals("ctobg", model.value().get(0).collation());
+        Assertions.assertEquals("dmoizpostmg", model.value().get(0).sourceDatabaseId());
+        Assertions.assertEquals("fbunrmfqjhhk", model.value().get(0).recoverableDatabaseId());
+        Assertions.assertEquals("pvjymjhxxjyng", model.value().get(0).provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-30T10:12:47Z"),
+            model.value().get(0).restorePointInTime());
+        Assertions.assertEquals(CreateMode.RESTORE, model.value().get(0).createMode());
+        Assertions.assertEquals(StorageAccountType.LRS, model.value().get(0).storageAccountType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T03:47:56Z"),
+            model.value().get(0).sourceDatabaseDeletionDate());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -35,22 +35,28 @@ import com.azure.resourcemanager.powerbidedicated.models.AutoScaleVCoreListResul
 import com.azure.resourcemanager.powerbidedicated.models.AutoScaleVCoreUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AutoScaleVCoresClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AutoScaleVCoresClient.
+ */
 public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AutoScaleVCoresService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PowerBIDedicatedImpl client;
 
     /**
      * Initializes an instance of AutoScaleVCoresClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AutoScaleVCoresClientImpl(PowerBIDedicatedImpl client) {
-        this.service =
-            RestProxy.create(AutoScaleVCoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AutoScaleVCoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,120 +67,86 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
     @Host("{$host}")
     @ServiceInterface(name = "PowerBIDedicatedAuto")
     public interface AutoScaleVCoresService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/autoScaleVCores/{vcoreName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoScaleVCoreInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AutoScaleVCoreInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vcoreName") String vcoreName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vcoreName") String vcoreName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AutoScaleVCoreInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vcoreName") String vcoreName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AutoScaleVCoreInner vCoreParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/autoScaleVCores/{vcoreName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoScaleVCoreInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vcoreName") String vcoreName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AutoScaleVCoreInner vCoreParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vcoreName") String vcoreName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/autoScaleVCores/{vcoreName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AutoScaleVCoreInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vcoreName") String vcoreName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/autoScaleVCores/{vcoreName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoScaleVCoreInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vcoreName") String vcoreName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vcoreName") String vcoreName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AutoScaleVCoreUpdateParameters vCoreUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
-                + "/autoScaleVCores")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoScaleVCoreListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AutoScaleVCoreListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/autoScaleVCores")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AutoScaleVCoreListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AutoScaleVCoreListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified auto scale v-core along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AutoScaleVCoreInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vcoreName) {
+    private Mono<Response<AutoScaleVCoreInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String vcoreName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -186,46 +158,34 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vcoreName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, vcoreName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified auto scale v-core along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AutoScaleVCoreInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vcoreName, Context context) {
+    private Mono<Response<AutoScaleVCoreInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String vcoreName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -236,22 +196,15 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vcoreName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vcoreName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -266,9 +219,9 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,16 +230,16 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @return details about the specified auto scale v-core along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutoScaleVCoreInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vcoreName, Context context) {
+    public Response<AutoScaleVCoreInner> getByResourceGroupWithResponse(String resourceGroupName, String vcoreName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vcoreName, context).block();
     }
 
     /**
      * Gets details about the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -300,31 +253,27 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Provisions the specified auto scale v-core based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreParameters Contains the information used to provision the auto scale v-core.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an instance of an auto scale v-core resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AutoScaleVCoreInner>> createWithResponseAsync(
-        String resourceGroupName, String vcoreName, AutoScaleVCoreInner vCoreParameters) {
+    private Mono<Response<AutoScaleVCoreInner>> createWithResponseAsync(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreInner vCoreParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -341,26 +290,16 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vcoreName,
-                            this.client.getApiVersion(),
-                            vCoreParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vcoreName, this.client.getApiVersion(), vCoreParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Provisions the specified auto scale v-core based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreParameters Contains the information used to provision the auto scale v-core.
      * @param context The context to associate with this operation.
@@ -368,22 +307,18 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an instance of an auto scale v-core resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AutoScaleVCoreInner>> createWithResponseAsync(
-        String resourceGroupName, String vcoreName, AutoScaleVCoreInner vCoreParameters, Context context) {
+    private Mono<Response<AutoScaleVCoreInner>> createWithResponseAsync(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreInner vCoreParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -400,23 +335,15 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vcoreName,
-                this.client.getApiVersion(),
-                vCoreParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vcoreName,
+            this.client.getApiVersion(), vCoreParameters, accept, context);
     }
 
     /**
      * Provisions the specified auto scale v-core based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreParameters Contains the information used to provision the auto scale v-core.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -425,17 +352,17 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @return represents an instance of an auto scale v-core resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AutoScaleVCoreInner> createAsync(
-        String resourceGroupName, String vcoreName, AutoScaleVCoreInner vCoreParameters) {
+    private Mono<AutoScaleVCoreInner> createAsync(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreInner vCoreParameters) {
         return createWithResponseAsync(resourceGroupName, vcoreName, vCoreParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Provisions the specified auto scale v-core based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreParameters Contains the information used to provision the auto scale v-core.
      * @param context The context to associate with this operation.
@@ -445,16 +372,16 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @return represents an instance of an auto scale v-core resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutoScaleVCoreInner> createWithResponse(
-        String resourceGroupName, String vcoreName, AutoScaleVCoreInner vCoreParameters, Context context) {
+    public Response<AutoScaleVCoreInner> createWithResponse(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreInner vCoreParameters, Context context) {
         return createWithResponseAsync(resourceGroupName, vcoreName, vCoreParameters, context).block();
     }
 
     /**
      * Provisions the specified auto scale v-core based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreParameters Contains the information used to provision the auto scale v-core.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,9 +396,9 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -481,16 +408,12 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vcoreName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -501,25 +424,16 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vcoreName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vcoreName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -530,16 +444,12 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vcoreName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -550,22 +460,15 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vcoreName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vcoreName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -579,9 +482,9 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -596,9 +499,9 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Deletes the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -611,31 +514,27 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Updates the current state of the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreUpdateParameters Request object that contains the updated information for the auto scale v-core.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an instance of an auto scale v-core resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AutoScaleVCoreInner>> updateWithResponseAsync(
-        String resourceGroupName, String vcoreName, AutoScaleVCoreUpdateParameters vCoreUpdateParameters) {
+    private Mono<Response<AutoScaleVCoreInner>> updateWithResponseAsync(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreUpdateParameters vCoreUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -652,26 +551,16 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vcoreName,
-                            this.client.getApiVersion(),
-                            vCoreUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vcoreName, this.client.getApiVersion(), vCoreUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the current state of the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreUpdateParameters Request object that contains the updated information for the auto scale v-core.
      * @param context The context to associate with this operation.
@@ -679,25 +568,18 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an instance of an auto scale v-core resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AutoScaleVCoreInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String vcoreName,
-        AutoScaleVCoreUpdateParameters vCoreUpdateParameters,
-        Context context) {
+    private Mono<Response<AutoScaleVCoreInner>> updateWithResponseAsync(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreUpdateParameters vCoreUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -714,23 +596,15 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vcoreName,
-                this.client.getApiVersion(),
-                vCoreUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vcoreName,
+            this.client.getApiVersion(), vCoreUpdateParameters, accept, context);
     }
 
     /**
      * Updates the current state of the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreUpdateParameters Request object that contains the updated information for the auto scale v-core.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -739,17 +613,17 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @return represents an instance of an auto scale v-core resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AutoScaleVCoreInner> updateAsync(
-        String resourceGroupName, String vcoreName, AutoScaleVCoreUpdateParameters vCoreUpdateParameters) {
+    private Mono<AutoScaleVCoreInner> updateAsync(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreUpdateParameters vCoreUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, vcoreName, vCoreUpdateParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the current state of the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreUpdateParameters Request object that contains the updated information for the auto scale v-core.
      * @param context The context to associate with this operation.
@@ -759,19 +633,16 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @return represents an instance of an auto scale v-core resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutoScaleVCoreInner> updateWithResponse(
-        String resourceGroupName,
-        String vcoreName,
-        AutoScaleVCoreUpdateParameters vCoreUpdateParameters,
-        Context context) {
+    public Response<AutoScaleVCoreInner> updateWithResponse(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreUpdateParameters vCoreUpdateParameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, vcoreName, vCoreUpdateParameters, context).block();
     }
 
     /**
      * Updates the current state of the specified auto scale v-core.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
      * @param vCoreUpdateParameters Request object that contains the updated information for the auto scale v-core.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -780,35 +651,31 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @return represents an instance of an auto scale v-core resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoScaleVCoreInner update(
-        String resourceGroupName, String vcoreName, AutoScaleVCoreUpdateParameters vCoreUpdateParameters) {
+    public AutoScaleVCoreInner update(String resourceGroupName, String vcoreName,
+        AutoScaleVCoreUpdateParameters vCoreUpdateParameters) {
         return updateWithResponse(resourceGroupName, vcoreName, vCoreUpdateParameters, Context.NONE).getValue();
     }
 
     /**
      * Gets all the auto scale v-cores for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the auto scale v-cores for the given resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoScaleVCoreInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -816,49 +683,35 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AutoScaleVCoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AutoScaleVCoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the auto scale v-cores for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the auto scale v-cores for the given resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AutoScaleVCoreInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<AutoScaleVCoreInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -867,24 +720,17 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Gets all the auto scale v-cores for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -897,9 +743,9 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Gets all the auto scale v-cores for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -913,9 +759,9 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Gets all the auto scale v-cores for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -928,9 +774,9 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Gets all the auto scale v-cores for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -944,86 +790,63 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Lists all the auto scale v-cores for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of auto scale v-core resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoScaleVCoreInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AutoScaleVCoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AutoScaleVCoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the auto scale v-cores for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of auto scale v-core resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoScaleVCoreInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all the auto scale v-cores for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of auto scale v-core resources as paginated response with {@link PagedFlux}.
@@ -1035,7 +858,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Lists all the auto scale v-cores for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1049,7 +872,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Lists all the auto scale v-cores for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of auto scale v-core resources as paginated response with {@link PagedIterable}.
@@ -1061,7 +884,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
 
     /**
      * Lists all the auto scale v-cores for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

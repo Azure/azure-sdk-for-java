@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageFormat model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ImageFormat\",\"filenamePattern\":\"widf\"}")
-                .toObject(ImageFormat.class);
-        Assertions.assertEquals("widf", model.filenamePattern());
+        ImageFormat model = BinaryData
+            .fromString("{\"@odata.type\":\"#Microsoft.Media.ImageFormat\",\"filenamePattern\":\"gpmuneqsxvmhfbuz\"}")
+            .toObject(ImageFormat.class);
+        Assertions.assertEquals("gpmuneqsxvmhfbuz", model.filenamePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageFormat model = new ImageFormat().withFilenamePattern("widf");
+        ImageFormat model = new ImageFormat().withFilenamePattern("gpmuneqsxvmhfbuz");
         model = BinaryData.fromObject(model).toObject(ImageFormat.class);
-        Assertions.assertEquals("widf", model.filenamePattern());
+        Assertions.assertEquals("gpmuneqsxvmhfbuz", model.filenamePattern());
     }
 }

@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"peeringServiceLocation\":\"olbgycduiertgccy\",\"peeringServiceProvider\":\"aolps\",\"provisioningState\":\"Deleting\",\"providerPrimaryPeeringLocation\":\"fmmdnbbg\",\"providerBackupPeeringLocation\":\"pswiydmcwyh\"}")
-                .toObject(PeeringServiceProperties.class);
-        Assertions.assertEquals("olbgycduiertgccy", model.peeringServiceLocation());
-        Assertions.assertEquals("aolps", model.peeringServiceProvider());
-        Assertions.assertEquals("fmmdnbbg", model.providerPrimaryPeeringLocation());
-        Assertions.assertEquals("pswiydmcwyh", model.providerBackupPeeringLocation());
+        PeeringServiceProperties model = BinaryData.fromString(
+            "{\"peeringServiceLocation\":\"ywsuwsy\",\"peeringServiceProvider\":\"ndsytgadg\",\"provisioningState\":\"Failed\",\"providerPrimaryPeeringLocation\":\"aeneqnzarrwl\",\"providerBackupPeeringLocation\":\"uijfqk\"}")
+            .toObject(PeeringServiceProperties.class);
+        Assertions.assertEquals("ywsuwsy", model.peeringServiceLocation());
+        Assertions.assertEquals("ndsytgadg", model.peeringServiceProvider());
+        Assertions.assertEquals("aeneqnzarrwl", model.providerPrimaryPeeringLocation());
+        Assertions.assertEquals("uijfqk", model.providerBackupPeeringLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceProperties model =
-            new PeeringServiceProperties()
-                .withPeeringServiceLocation("olbgycduiertgccy")
-                .withPeeringServiceProvider("aolps")
-                .withProviderPrimaryPeeringLocation("fmmdnbbg")
-                .withProviderBackupPeeringLocation("pswiydmcwyh");
+        PeeringServiceProperties model = new PeeringServiceProperties().withPeeringServiceLocation("ywsuwsy")
+            .withPeeringServiceProvider("ndsytgadg")
+            .withProviderPrimaryPeeringLocation("aeneqnzarrwl")
+            .withProviderBackupPeeringLocation("uijfqk");
         model = BinaryData.fromObject(model).toObject(PeeringServiceProperties.class);
-        Assertions.assertEquals("olbgycduiertgccy", model.peeringServiceLocation());
-        Assertions.assertEquals("aolps", model.peeringServiceProvider());
-        Assertions.assertEquals("fmmdnbbg", model.providerPrimaryPeeringLocation());
-        Assertions.assertEquals("pswiydmcwyh", model.providerBackupPeeringLocation());
+        Assertions.assertEquals("ywsuwsy", model.peeringServiceLocation());
+        Assertions.assertEquals("ndsytgadg", model.peeringServiceProvider());
+        Assertions.assertEquals("aeneqnzarrwl", model.providerPrimaryPeeringLocation());
+        Assertions.assertEquals("uijfqk", model.providerBackupPeeringLocation());
     }
 }

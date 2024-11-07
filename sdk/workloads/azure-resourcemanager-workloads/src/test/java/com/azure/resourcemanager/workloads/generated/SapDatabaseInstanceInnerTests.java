@@ -13,21 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SapDatabaseInstanceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapDatabaseInstanceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"subnet\":\"mvxi\",\"databaseSid\":\"uugidyjrrfby\",\"databaseType\":\"svexcsonpclhoco\",\"ipAddress\":\"lkevle\",\"loadBalancerDetails\":{\"id\":\"fbuhfmvfaxkffe\"},\"vmDetails\":[{\"virtualMachineId\":\"lvmezyvshxmzsbbz\",\"status\":\"Stopping\",\"storageDetails\":[]}],\"status\":\"PartiallyRunning\",\"provisioningState\":\"Updating\",\"errors\":{}},\"location\":\"vjxxjnsp\",\"tags\":{\"nkoukn\":\"tko\",\"ngkpocipazy\":\"udwtiukbl\",\"gukgjnpiucgygevq\":\"o\"},\"id\":\"ntypmrbpizcdrqj\",\"name\":\"dpydn\",\"type\":\"yhxdeoejzicwi\"}")
-                .toObject(SapDatabaseInstanceInner.class);
+        SapDatabaseInstanceInner model = BinaryData.fromString(
+            "{\"properties\":{\"subnet\":\"mvxi\",\"databaseSid\":\"uugidyjrrfby\",\"databaseType\":\"svexcsonpclhoco\",\"ipAddress\":\"lkevle\",\"loadBalancerDetails\":{\"id\":\"fbuhfmvfaxkffe\"},\"vmDetails\":[{\"virtualMachineId\":\"lvmezyvshxmzsbbz\",\"status\":\"Stopping\",\"storageDetails\":[]}],\"status\":\"PartiallyRunning\",\"provisioningState\":\"Updating\",\"errors\":{}},\"location\":\"vjxxjnsp\",\"tags\":{\"nkoukn\":\"tko\",\"ngkpocipazy\":\"udwtiukbl\",\"gukgjnpiucgygevq\":\"o\"},\"id\":\"ntypmrbpizcdrqj\",\"name\":\"dpydn\",\"type\":\"yhxdeoejzicwi\"}")
+            .toObject(SapDatabaseInstanceInner.class);
         Assertions.assertEquals("vjxxjnsp", model.location());
         Assertions.assertEquals("tko", model.tags().get("nkoukn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapDatabaseInstanceInner model =
-            new SapDatabaseInstanceInner()
-                .withLocation("vjxxjnsp")
-                .withTags(mapOf("nkoukn", "tko", "ngkpocipazy", "udwtiukbl", "gukgjnpiucgygevq", "o"));
+        SapDatabaseInstanceInner model = new SapDatabaseInstanceInner().withLocation("vjxxjnsp")
+            .withTags(mapOf("nkoukn", "tko", "ngkpocipazy", "udwtiukbl", "gukgjnpiucgygevq", "o"));
         model = BinaryData.fromObject(model).toObject(SapDatabaseInstanceInner.class);
         Assertions.assertEquals("vjxxjnsp", model.location());
         Assertions.assertEquals("tko", model.tags().get("nkoukn"));

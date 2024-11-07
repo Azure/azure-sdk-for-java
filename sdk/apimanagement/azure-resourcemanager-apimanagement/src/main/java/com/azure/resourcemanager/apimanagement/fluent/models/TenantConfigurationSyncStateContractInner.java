@@ -188,8 +188,8 @@ public final class TenantConfigurationSyncStateContractInner extends ProxyResour
      * @param configurationChangeDate the configurationChangeDate value to set.
      * @return the TenantConfigurationSyncStateContractInner object itself.
      */
-    public TenantConfigurationSyncStateContractInner withConfigurationChangeDate(
-        OffsetDateTime configurationChangeDate) {
+    public TenantConfigurationSyncStateContractInner
+        withConfigurationChangeDate(OffsetDateTime configurationChangeDate) {
         if (this.innerProperties() == null) {
             this.innerProperties = new TenantConfigurationSyncStateContractProperties();
         }

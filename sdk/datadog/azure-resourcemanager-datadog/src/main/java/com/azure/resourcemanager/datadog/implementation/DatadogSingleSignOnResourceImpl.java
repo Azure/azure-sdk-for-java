@@ -61,25 +61,21 @@ public final class DatadogSingleSignOnResourceImpl
     }
 
     public DatadogSingleSignOnResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOnConfigurations()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOnConfigurations()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DatadogSingleSignOnResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOnConfigurations()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOnConfigurations()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
-    DatadogSingleSignOnResourceImpl(
-        String name, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
+    DatadogSingleSignOnResourceImpl(String name,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = new DatadogSingleSignOnResourceInner();
         this.serviceManager = serviceManager;
         this.configurationName = name;
@@ -90,25 +86,20 @@ public final class DatadogSingleSignOnResourceImpl
     }
 
     public DatadogSingleSignOnResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOnConfigurations()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOnConfigurations()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DatadogSingleSignOnResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOnConfigurations()
-                .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOnConfigurations()
+            .createOrUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), context);
         return this;
     }
 
-    DatadogSingleSignOnResourceImpl(
-        DatadogSingleSignOnResourceInner innerObject,
+    DatadogSingleSignOnResourceImpl(DatadogSingleSignOnResourceInner innerObject,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -118,22 +109,18 @@ public final class DatadogSingleSignOnResourceImpl
     }
 
     public DatadogSingleSignOnResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOnConfigurations()
-                .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOnConfigurations()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DatadogSingleSignOnResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSingleSignOnConfigurations()
-                .getWithResponse(resourceGroupName, monitorName, configurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSingleSignOnConfigurations()
+            .getWithResponse(resourceGroupName, monitorName, configurationName, context)
+            .getValue();
         return this;
     }
 

@@ -21,37 +21,28 @@ public final class DataMaskingRulesImpl implements DataMaskingRules {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public DataMaskingRulesImpl(
-        DataMaskingRulesClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public DataMaskingRulesImpl(DataMaskingRulesClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DataMaskingRule> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        Context context) {
-        Response<DataMaskingRuleInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, context);
+    public Response<DataMaskingRule> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName, Context context) {
+        Response<DataMaskingRuleInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DataMaskingRuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DataMaskingRule get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
-        DataMaskingRuleInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName);
+    public DataMaskingRule get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName) {
+        DataMaskingRuleInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName);
         if (inner != null) {
             return new DataMaskingRuleImpl(inner, this.manager());
         } else {
@@ -59,84 +50,65 @@ public final class DataMaskingRulesImpl implements DataMaskingRules {
         }
     }
 
-    public PagedIterable<DataMaskingRule> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
-        PagedIterable<DataMaskingRuleInner> inner =
-            this.serviceClient().listBySqlPool(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new DataMaskingRuleImpl(inner1, this.manager()));
+    public PagedIterable<DataMaskingRule> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
+        PagedIterable<DataMaskingRuleInner> inner
+            = this.serviceClient().listBySqlPool(resourceGroupName, workspaceName, sqlPoolName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataMaskingRuleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DataMaskingRule> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        PagedIterable<DataMaskingRuleInner> inner =
-            this.serviceClient().listBySqlPool(resourceGroupName, workspaceName, sqlPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new DataMaskingRuleImpl(inner1, this.manager()));
+    public PagedIterable<DataMaskingRule> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
+        PagedIterable<DataMaskingRuleInner> inner
+            = this.serviceClient().listBySqlPool(resourceGroupName, workspaceName, sqlPoolName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataMaskingRuleImpl(inner1, this.manager()));
     }
 
     public DataMaskingRule getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        String dataMaskingRuleName = Utils.getValueFromIdByName(id, "rules");
+        String dataMaskingRuleName = ResourceManagerUtils.getValueFromIdByName(id, "rules");
         if (dataMaskingRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'rules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'rules'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, Context.NONE)
             .getValue();
     }
 
     public Response<DataMaskingRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        String dataMaskingRuleName = Utils.getValueFromIdByName(id, "rules");
+        String dataMaskingRuleName = ResourceManagerUtils.getValueFromIdByName(id, "rules");
         if (dataMaskingRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'rules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'rules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, context);
     }

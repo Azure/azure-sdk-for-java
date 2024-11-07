@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborGroupInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"networkTapIds\":[\"oqueqihkkyowltj\",\"uwhldxwhieproqks\",\"fxmcvprstvk\",\"tbfjtdyotnplf\"],\"networkTapRuleIds\":[\"occqrqxw\",\"tjtdrhutfd\",\"a\",\"txop\"],\"provisioningState\":\"Updating\",\"destination\":{\"ipv4Addresses\":[\"k\",\"d\",\"gssz\"],\"ipv6Addresses\":[\"tkbbxuhar\",\"sirncclabvoy\",\"gsuxxczbmyqj\"]},\"annotation\":\"hdsaidj\"},\"location\":\"ormovdxxurntujmo\",\"tags\":{\"d\":\"nwemhdeeljslkyo\",\"jtv\":\"fzjuegrhrhtsl\"},\"id\":\"j\",\"name\":\"xvgjbfi\",\"type\":\"bpnjodf\"}")
-                .toObject(NeighborGroupInner.class);
+        NeighborGroupInner model = BinaryData.fromString(
+            "{\"properties\":{\"networkTapIds\":[\"oqueqihkkyowltj\",\"uwhldxwhieproqks\",\"fxmcvprstvk\",\"tbfjtdyotnplf\"],\"networkTapRuleIds\":[\"occqrqxw\",\"tjtdrhutfd\",\"a\",\"txop\"],\"provisioningState\":\"Updating\",\"destination\":{\"ipv4Addresses\":[\"k\",\"d\",\"gssz\"],\"ipv6Addresses\":[\"tkbbxuhar\",\"sirncclabvoy\",\"gsuxxczbmyqj\"]},\"annotation\":\"hdsaidj\"},\"location\":\"ormovdxxurntujmo\",\"tags\":{\"d\":\"nwemhdeeljslkyo\",\"jtv\":\"fzjuegrhrhtsl\"},\"id\":\"j\",\"name\":\"xvgjbfi\",\"type\":\"bpnjodf\"}")
+            .toObject(NeighborGroupInner.class);
         Assertions.assertEquals("ormovdxxurntujmo", model.location());
         Assertions.assertEquals("nwemhdeeljslkyo", model.tags().get("d"));
         Assertions.assertEquals("k", model.destination().ipv4Addresses().get(0));
@@ -29,15 +27,11 @@ public final class NeighborGroupInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupInner model =
-            new NeighborGroupInner()
-                .withLocation("ormovdxxurntujmo")
-                .withTags(mapOf("d", "nwemhdeeljslkyo", "jtv", "fzjuegrhrhtsl"))
-                .withDestination(
-                    new NeighborGroupDestination()
-                        .withIpv4Addresses(Arrays.asList("k", "d", "gssz"))
-                        .withIpv6Addresses(Arrays.asList("tkbbxuhar", "sirncclabvoy", "gsuxxczbmyqj")))
-                .withAnnotation("hdsaidj");
+        NeighborGroupInner model = new NeighborGroupInner().withLocation("ormovdxxurntujmo")
+            .withTags(mapOf("d", "nwemhdeeljslkyo", "jtv", "fzjuegrhrhtsl"))
+            .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("k", "d", "gssz"))
+                .withIpv6Addresses(Arrays.asList("tkbbxuhar", "sirncclabvoy", "gsuxxczbmyqj")))
+            .withAnnotation("hdsaidj");
         model = BinaryData.fromObject(model).toObject(NeighborGroupInner.class);
         Assertions.assertEquals("ormovdxxurntujmo", model.location());
         Assertions.assertEquals("nwemhdeeljslkyo", model.tags().get("d"));

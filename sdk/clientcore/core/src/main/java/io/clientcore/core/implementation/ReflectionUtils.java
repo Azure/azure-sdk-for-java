@@ -22,15 +22,15 @@ public abstract class ReflectionUtils {
             instance = new ReflectionUtilsMethodHandle();
             LOGGER.atVerbose().log("Successfully used java.lang.invoke package to handle reflection.");
         } catch (LinkageError ignored) {
-            LOGGER.atVerbose().log("Failed to use java.lang.invoke package to handle reflection. Falling back to "
-                + "java.lang.reflect package to handle reflection.");
+            LOGGER.atVerbose()
+                .log("Failed to use java.lang.invoke package to handle reflection. Falling back to "
+                    + "java.lang.reflect package to handle reflection.");
             instance = new ReflectionUtilsClassic();
             LOGGER.atVerbose().log("Successfully used java.lang.reflect package to handle reflection.");
         }
 
         INSTANCE = instance;
     }
-
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
@@ -122,7 +122,7 @@ public abstract class ReflectionUtils {
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
     public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
-                                                          boolean scopeToAzureCore) throws Exception {
+        boolean scopeToAzureCore) throws Exception {
         if (constructor == null) {
             throw LOGGER.logThrowableAsError(new NullPointerException("'constructor' cannot be null."));
         }

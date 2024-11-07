@@ -60,21 +60,14 @@ public interface PolicyRule extends HasInnerModel<ManagementPolicyRule> {
 
     /** Container interface for all of the definitions related to a rule in a management policy. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithPolicyRuleType,
-            DefinitionStages.WithBlobTypesToFilterFor,
-            DefinitionStages.PrefixActionFork,
-            DefinitionStages.WithPrefixesToFilterFor,
-            DefinitionStages.WithRuleActions,
-            DefinitionStages.WithPolicyRuleAttachable {
+        extends DefinitionStages.Blank, DefinitionStages.WithPolicyRuleType, DefinitionStages.WithBlobTypesToFilterFor,
+        DefinitionStages.PrefixActionFork, DefinitionStages.WithPrefixesToFilterFor, DefinitionStages.WithRuleActions,
+        DefinitionStages.WithPolicyRuleAttachable {
     }
 
     /** Container interface for all of the updates related to a rule in a management policy. */
-    interface Update
-        extends UpdateStages.WithBlobTypesToFilterFor,
-            UpdateStages.WithPrefixesToFilterFor,
-            UpdateStages.WithActions,
-            Settable<ManagementPolicy.Update> {
+    interface Update extends UpdateStages.WithBlobTypesToFilterFor, UpdateStages.WithPrefixesToFilterFor,
+        UpdateStages.WithActions, Settable<ManagementPolicy.Update> {
     }
 
     /** Grouping of management policy rule definition stages. */
@@ -165,8 +158,8 @@ public interface PolicyRule extends HasInnerModel<ManagementPolicyRule> {
              *     until it is archived.
              * @return the next stage of the management policy rule definition.
              */
-            WithPolicyRuleAttachable withTierToArchiveActionOnBaseBlob(
-                float daysAfterBaseBlobModificationUntilArchiving);
+            WithPolicyRuleAttachable
+                withTierToArchiveActionOnBaseBlob(float daysAfterBaseBlobModificationUntilArchiving);
 
             /**
              * The function that specifies a delete action on the selected base blobs.
@@ -208,9 +201,8 @@ public interface PolicyRule extends HasInnerModel<ManagementPolicyRule> {
          * attached, but also allows for any other optional settings to be specified.
          */
         interface WithPolicyRuleAttachable
-            extends PolicyRule.DefinitionStages.WithRuleActions,
-                PolicyRule.DefinitionStages.WithPrefixesToFilterFor,
-                Attachable<ManagementPolicy.DefinitionStages.WithCreate> {
+            extends PolicyRule.DefinitionStages.WithRuleActions, PolicyRule.DefinitionStages.WithPrefixesToFilterFor,
+            Attachable<ManagementPolicy.DefinitionStages.WithCreate> {
         }
     }
 

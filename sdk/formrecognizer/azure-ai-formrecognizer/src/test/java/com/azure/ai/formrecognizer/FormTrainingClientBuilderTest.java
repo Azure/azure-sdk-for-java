@@ -53,10 +53,12 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void trainingClientBuilderNullServiceVersion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient().getFormRecognizerClient()
-                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
+    public void trainingClientBuilderNullServiceVersion(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> assertNotNull(setSyncPollerPollInterval(
+                clientBuilder.buildClient().getFormRecognizerClient().beginRecognizeContentFromUrl(input),
+                interceptorManager).getFinalResult()));
     }
 
     /**
@@ -64,71 +66,64 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void trainingClientBuilderDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient().getFormRecognizerClient()
-                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
+    public void trainingClientBuilderDefaultPipeline(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> assertNotNull(setSyncPollerPollInterval(
+                clientBuilder.buildClient().getFormRecognizerClient().beginRecognizeContentFromUrl(input),
+                interceptorManager).getFinalResult()));
     }
 
     @Test
     @DoNotRecord
     public void applicationIdFallsBackToLogOptions() {
-        FormTrainingClient formTrainingClient =
-            new FormTrainingClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(getCredential())
-                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
-        assertThrows(HttpResponseException.class,
-            () -> formTrainingClient.getAccountProperties());
+        FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().endpoint(getEndpoint())
+            .credential(getCredential())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
+        assertThrows(HttpResponseException.class, () -> formTrainingClient.getAccountProperties());
     }
 
     @Test
     @DoNotRecord
     public void clientOptionsIsPreferredOverLogOptions() {
-        FormTrainingClient formTrainingClient =
-            new FormTrainingClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(getCredential())
-                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
-                .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
-        assertThrows(HttpResponseException.class,
-            () -> formTrainingClient.getAccountProperties());
+        FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().endpoint(getEndpoint())
+            .credential(getCredential())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
+        assertThrows(HttpResponseException.class, () -> formTrainingClient.getAccountProperties());
     }
 
     @Test
     @DoNotRecord
     public void clientOptionHeadersAreAddedLast() {
-        FormTrainingClient formTrainingClient =
-            new FormTrainingClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(getCredential())
-                .clientOptions(new ClientOptions()
-                    .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .httpClient(httpRequest -> {
-                    assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
-        assertThrows(HttpResponseException.class,
-            () -> formTrainingClient.getAccountProperties());
+        FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().endpoint(getEndpoint())
+            .credential(getCredential())
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
+        assertThrows(HttpResponseException.class, () -> formTrainingClient.getAccountProperties());
     }
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         Function<FormTrainingClientBuilder, Consumer<String>> testRunner) {
-        final FormTrainingClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), getCredential())
+        final FormTrainingClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(), getCredential())
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
         testRunner.apply(clientBuilder).accept(TEST_FILE);
@@ -136,8 +131,8 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
 
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         Function<FormTrainingClientBuilder, Consumer<String>> testRunner) {
-        final FormTrainingClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), getCredential())
+        final FormTrainingClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(), getCredential())
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         testRunner.apply(clientBuilder).accept(TEST_FILE);
@@ -156,10 +151,9 @@ public class FormTrainingClientBuilderTest extends TestProxyTestBase {
      * @param credential the given {@link AzureKeyCredential} credential
      * @return {@link FormTrainingClientBuilder}
      */
-    private FormTrainingClientBuilder createClientBuilder(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
-        String endpoint, TokenCredential credential) {
-        final FormTrainingClientBuilder clientBuilder = new FormTrainingClientBuilder()
-            .credential(credential)
+    private FormTrainingClientBuilder createClientBuilder(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion, String endpoint, TokenCredential credential) {
+        final FormTrainingClientBuilder clientBuilder = new FormTrainingClientBuilder().credential(credential)
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);

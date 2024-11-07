@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.AzureCapacity;
 import com.azure.resourcemanager.synapse.models.AzureSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Azure resource SKU definition. */
+/**
+ * Azure resource SKU definition.
+ */
 @Fluent
-public final class AzureResourceSkuInner {
+public final class AzureResourceSkuInner implements JsonSerializable<AzureResourceSkuInner> {
     /*
      * Resource Namespace and Type.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The SKU details.
      */
-    @JsonProperty(value = "sku")
     private AzureSku sku;
 
     /*
      * The number of instances of the cluster.
      */
-    @JsonProperty(value = "capacity")
     private AzureCapacity capacity;
 
-    /** Creates an instance of AzureResourceSkuInner class. */
+    /**
+     * Creates an instance of AzureResourceSkuInner class.
+     */
     public AzureResourceSkuInner() {
     }
 
     /**
      * Get the resourceType property: Resource Namespace and Type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -45,7 +50,7 @@ public final class AzureResourceSkuInner {
 
     /**
      * Set the resourceType property: Resource Namespace and Type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the AzureResourceSkuInner object itself.
      */
@@ -56,7 +61,7 @@ public final class AzureResourceSkuInner {
 
     /**
      * Get the sku property: The SKU details.
-     *
+     * 
      * @return the sku value.
      */
     public AzureSku sku() {
@@ -65,7 +70,7 @@ public final class AzureResourceSkuInner {
 
     /**
      * Set the sku property: The SKU details.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AzureResourceSkuInner object itself.
      */
@@ -76,7 +81,7 @@ public final class AzureResourceSkuInner {
 
     /**
      * Get the capacity property: The number of instances of the cluster.
-     *
+     * 
      * @return the capacity value.
      */
     public AzureCapacity capacity() {
@@ -85,7 +90,7 @@ public final class AzureResourceSkuInner {
 
     /**
      * Set the capacity property: The number of instances of the cluster.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the AzureResourceSkuInner object itself.
      */
@@ -96,7 +101,7 @@ public final class AzureResourceSkuInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -106,5 +111,47 @@ public final class AzureResourceSkuInner {
         if (capacity() != null) {
             capacity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureResourceSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureResourceSkuInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureResourceSkuInner.
+     */
+    public static AzureResourceSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureResourceSkuInner deserializedAzureResourceSkuInner = new AzureResourceSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedAzureResourceSkuInner.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAzureResourceSkuInner.sku = AzureSku.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedAzureResourceSkuInner.capacity = AzureCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureResourceSkuInner;
+        });
     }
 }

@@ -85,13 +85,15 @@ public final class ConfigurationGroupValueImpl
     }
 
     public ConfigurationGroupValue create() {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupValues()
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupValues()
             .createOrUpdate(resourceGroupName, configurationGroupValueName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConfigurationGroupValue create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupValues()
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupValues()
             .createOrUpdate(resourceGroupName, configurationGroupValueName, this.innerModel(), context);
         return this;
     }
@@ -109,14 +111,16 @@ public final class ConfigurationGroupValueImpl
     }
 
     public ConfigurationGroupValue apply() {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupValues()
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupValues()
             .updateTagsWithResponse(resourceGroupName, configurationGroupValueName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public ConfigurationGroupValue apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupValues()
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupValues()
             .updateTagsWithResponse(resourceGroupName, configurationGroupValueName, updateParameters, context)
             .getValue();
         return this;
@@ -131,14 +135,18 @@ public final class ConfigurationGroupValueImpl
     }
 
     public ConfigurationGroupValue refresh() {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupValues()
-            .getByResourceGroupWithResponse(resourceGroupName, configurationGroupValueName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupValues()
+            .getByResourceGroupWithResponse(resourceGroupName, configurationGroupValueName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationGroupValue refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupValues()
-            .getByResourceGroupWithResponse(resourceGroupName, configurationGroupValueName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupValues()
+            .getByResourceGroupWithResponse(resourceGroupName, configurationGroupValueName, context)
+            .getValue();
         return this;
     }
 

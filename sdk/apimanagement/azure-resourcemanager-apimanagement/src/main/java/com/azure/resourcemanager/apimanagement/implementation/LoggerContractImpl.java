@@ -85,24 +85,20 @@ public final class LoggerContractImpl implements LoggerContract, LoggerContract.
     }
 
     public LoggerContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoggers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, loggerId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLoggers()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, loggerId, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public LoggerContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoggers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, loggerId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLoggers()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, loggerId, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -120,28 +116,23 @@ public final class LoggerContractImpl implements LoggerContract, LoggerContract.
     }
 
     public LoggerContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoggers()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, loggerId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLoggers()
+            .updateWithResponse(resourceGroupName, serviceName, loggerId, updateIfMatch, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LoggerContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoggers()
-                .updateWithResponse(resourceGroupName, serviceName, loggerId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLoggers()
+            .updateWithResponse(resourceGroupName, serviceName, loggerId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    LoggerContractImpl(
-        LoggerContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    LoggerContractImpl(LoggerContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -150,22 +141,18 @@ public final class LoggerContractImpl implements LoggerContract, LoggerContract.
     }
 
     public LoggerContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoggers()
-                .getWithResponse(resourceGroupName, serviceName, loggerId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLoggers()
+            .getWithResponse(resourceGroupName, serviceName, loggerId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LoggerContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLoggers()
-                .getWithResponse(resourceGroupName, serviceName, loggerId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLoggers()
+            .getWithResponse(resourceGroupName, serviceName, loggerId, context)
+            .getValue();
         return this;
     }
 

@@ -186,7 +186,7 @@ public final class ParallelTransferOptions {
         return this;
     }
 
-   /**
+    /**
      * Gets the maximum number of parallel requests that will be issued at any given time.
      * @return The max concurrency value.
      */

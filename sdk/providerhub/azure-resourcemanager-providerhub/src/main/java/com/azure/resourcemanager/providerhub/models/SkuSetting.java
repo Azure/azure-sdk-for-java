@@ -335,9 +335,8 @@ public final class SkuSetting {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SkuSetting"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model SkuSetting"));
         }
         if (locationInfo() != null) {
             locationInfo().forEach(e -> e.validate());

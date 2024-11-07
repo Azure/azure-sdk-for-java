@@ -7,42 +7,50 @@ package com.azure.resourcemanager.dnsresolver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolverState;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents the properties of a DNS resolver. */
+/**
+ * Represents the properties of a DNS resolver.
+ */
 @Fluent
-public final class DnsResolverProperties {
+public final class DnsResolverProperties implements JsonSerializable<DnsResolverProperties> {
     /*
      * The reference to the virtual network. This cannot be changed after creation.
      */
-    @JsonProperty(value = "virtualNetwork", required = true)
     private SubResource virtualNetwork;
 
     /*
      * The current status of the DNS resolver. This is a read-only property and any attempt to set this value will be
      * ignored.
      */
-    @JsonProperty(value = "dnsResolverState", access = JsonProperty.Access.WRITE_ONLY)
     private DnsResolverState dnsResolverState;
 
     /*
      * The current provisioning state of the DNS resolver. This is a read-only property and any attempt to set this
      * value will be ignored.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The resourceGuid property of the DNS resolver resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /**
+     * Creates an instance of DnsResolverProperties class.
+     */
+    public DnsResolverProperties() {
+    }
+
+    /**
      * Get the virtualNetwork property: The reference to the virtual network. This cannot be changed after creation.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -51,7 +59,7 @@ public final class DnsResolverProperties {
 
     /**
      * Set the virtualNetwork property: The reference to the virtual network. This cannot be changed after creation.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the DnsResolverProperties object itself.
      */
@@ -63,7 +71,7 @@ public final class DnsResolverProperties {
     /**
      * Get the dnsResolverState property: The current status of the DNS resolver. This is a read-only property and any
      * attempt to set this value will be ignored.
-     *
+     * 
      * @return the dnsResolverState value.
      */
     public DnsResolverState dnsResolverState() {
@@ -73,7 +81,7 @@ public final class DnsResolverProperties {
     /**
      * Get the provisioningState property: The current provisioning state of the DNS resolver. This is a read-only
      * property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -82,7 +90,7 @@ public final class DnsResolverProperties {
 
     /**
      * Get the resourceGuid property: The resourceGuid property of the DNS resolver resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -91,17 +99,61 @@ public final class DnsResolverProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (virtualNetwork() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualNetwork in model DnsResolverProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetwork in model DnsResolverProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DnsResolverProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("virtualNetwork", this.virtualNetwork);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsResolverProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsResolverProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DnsResolverProperties.
+     */
+    public static DnsResolverProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsResolverProperties deserializedDnsResolverProperties = new DnsResolverProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetwork".equals(fieldName)) {
+                    deserializedDnsResolverProperties.virtualNetwork = SubResource.fromJson(reader);
+                } else if ("dnsResolverState".equals(fieldName)) {
+                    deserializedDnsResolverProperties.dnsResolverState
+                        = DnsResolverState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDnsResolverProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedDnsResolverProperties.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsResolverProperties;
+        });
+    }
 }

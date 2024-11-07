@@ -17,8 +17,7 @@ public final class RecipientUserCollectionImpl implements RecipientUserCollectio
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    RecipientUserCollectionImpl(
-        RecipientUserCollectionInner innerObject,
+    RecipientUserCollectionImpl(RecipientUserCollectionInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class RecipientUserCollectionImpl implements RecipientUserCollectio
     public List<RecipientUserContract> value() {
         List<RecipientUserContractInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new RecipientUserContractImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new RecipientUserContractImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

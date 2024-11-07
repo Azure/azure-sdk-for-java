@@ -21,8 +21,8 @@ public interface TenantAccessGits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    Response<Void> regeneratePrimaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Regenerate primary access key for GIT.
@@ -48,8 +48,8 @@ public interface TenantAccessGits {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    Response<Void> regenerateSecondaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Regenerate secondary access key for GIT.

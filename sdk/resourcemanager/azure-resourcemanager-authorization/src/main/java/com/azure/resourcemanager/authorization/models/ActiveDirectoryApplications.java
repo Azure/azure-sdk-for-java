@@ -17,12 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to application management API. */
 @Fluent
 public interface ActiveDirectoryApplications
-    extends SupportsListing<ActiveDirectoryApplication>,
-        SupportsListingByFilter<ActiveDirectoryApplication>,
-        SupportsGettingById<ActiveDirectoryApplication>,
-        SupportsGettingByName<ActiveDirectoryApplication>,
-        SupportsCreating<ActiveDirectoryApplication.DefinitionStages.Blank>,
-        SupportsBatchCreation<ActiveDirectoryApplication>,
-        SupportsDeletingById,
-        HasManager<AuthorizationManager> {
+    extends SupportsListing<ActiveDirectoryApplication>, SupportsListingByFilter<ActiveDirectoryApplication>,
+    SupportsGettingById<ActiveDirectoryApplication>, SupportsGettingByName<ActiveDirectoryApplication>,
+    SupportsCreating<ActiveDirectoryApplication.DefinitionStages.Blank>,
+    SupportsBatchCreation<ActiveDirectoryApplication>, SupportsDeletingById, HasManager<AuthorizationManager> {
 }

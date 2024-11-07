@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** property configuration state. */
+/**
+ * property configuration state.
+ */
 public final class StateValue extends ExpandableStringEnum<StateValue> {
-    /** Static value Consistent for StateValue. */
+    /**
+     * Static value Consistent for StateValue.
+     */
     public static final StateValue CONSISTENT = fromString("Consistent");
 
-    /** Static value InConsistent for StateValue. */
+    /**
+     * Static value InConsistent for StateValue.
+     */
     public static final StateValue IN_CONSISTENT = fromString("InConsistent");
 
-    /** Static value Updating for StateValue. */
+    /**
+     * Static value Updating for StateValue.
+     */
     public static final StateValue UPDATING = fromString("Updating");
 
     /**
      * Creates a new instance of StateValue value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class StateValue extends ExpandableStringEnum<StateValue> {
 
     /**
      * Creates or finds a StateValue from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StateValue.
      */
-    @JsonCreator
     public static StateValue fromString(String name) {
         return fromString(name, StateValue.class);
     }
 
     /**
      * Gets known StateValue values.
-     *
+     * 
      * @return known StateValue values.
      */
     public static Collection<StateValue> values() {

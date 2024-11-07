@@ -51,8 +51,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ContentItemsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ContentItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ContentItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,97 +63,64 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientC")
     public interface ContentItemsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContentItemCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("contentTypeId") String contentTypeId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ContentItemCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("contentTypeId") String contentTypeId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<ContentItemsGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("contentTypeId") String contentTypeId, @PathParam("contentItemId") String contentItemId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<ContentItemsGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("contentTypeId") String contentTypeId, @PathParam("contentItemId") String contentItemId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<ContentItemsCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("contentTypeId") String contentTypeId, @PathParam("contentItemId") String contentItemId,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ContentItemContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ContentItemsGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("contentTypeId") String contentTypeId,
-            @PathParam("contentItemId") String contentItemId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("contentTypeId") String contentTypeId, @PathParam("contentItemId") String contentItemId,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ContentItemsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("contentTypeId") String contentTypeId,
-            @PathParam("contentItemId") String contentItemId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ContentItemsCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("contentTypeId") String contentTypeId,
-            @PathParam("contentItemId") String contentItemId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ContentItemContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}/contentItems/{contentItemId}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("contentTypeId") String contentTypeId,
-            @PathParam("contentItemId") String contentItemId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContentItemCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -168,13 +135,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return paged list of content items along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContentItemContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String contentTypeId) {
+    private Mono<PagedResponse<ContentItemContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String contentTypeId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -187,34 +152,15 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter contentTypeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            contentTypeId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ContentItemContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+                contentTypeId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ContentItemContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -231,13 +177,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return paged list of content items along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContentItemContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, Context context) {
+    private Mono<PagedResponse<ContentItemContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String contentTypeId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -250,32 +194,16 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter contentTypeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                contentTypeId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, contentTypeId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -290,10 +218,9 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return paged list of content items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ContentItemContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String contentTypeId) {
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, contentTypeId),
+    private PagedFlux<ContentItemContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String contentTypeId) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, contentTypeId),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -310,8 +237,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return paged list of content items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ContentItemContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, Context context) {
+    private PagedFlux<ContentItemContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String contentTypeId, Context context) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, contentTypeId, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
@@ -329,8 +256,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return paged list of content items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ContentItemContractInner> listByService(
-        String resourceGroupName, String serviceName, String contentTypeId) {
+    public PagedIterable<ContentItemContractInner> listByService(String resourceGroupName, String serviceName,
+        String contentTypeId) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, contentTypeId));
     }
 
@@ -347,8 +274,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return paged list of content items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ContentItemContractInner> listByService(
-        String resourceGroupName, String serviceName, String contentTypeId, Context context) {
+    public PagedIterable<ContentItemContractInner> listByService(String resourceGroupName, String serviceName,
+        String contentTypeId, Context context) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, contentTypeId, context));
     }
 
@@ -365,13 +292,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContentItemsGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
+    private Mono<ContentItemsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String contentTypeId, String contentItemId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -387,26 +312,14 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter contentItemId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            contentTypeId,
-                            contentItemId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName,
+                contentTypeId, contentItemId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -424,13 +337,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContentItemsGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
+    private Mono<ContentItemsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String contentTypeId, String contentItemId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -446,24 +357,13 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter contentItemId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                contentTypeId,
-                contentItemId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, contentTypeId,
+            contentItemId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -479,8 +379,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getEntityTagAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
+    private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId)
             .flatMap(ignored -> Mono.empty());
     }
@@ -499,8 +399,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContentItemsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
+    public ContentItemsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String contentTypeId, String contentItemId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId, context)
             .block();
     }
@@ -534,13 +434,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContentItemsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
+    private Mono<ContentItemsGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String contentTypeId, String contentItemId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,26 +454,14 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter contentItemId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            contentTypeId,
-                            contentItemId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, contentTypeId,
+                    contentItemId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -593,13 +479,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContentItemsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
+    private Mono<ContentItemsGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String contentTypeId, String contentItemId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -615,24 +499,13 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter contentItemId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                contentTypeId,
-                contentItemId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, contentTypeId, contentItemId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -648,8 +521,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContentItemContractInner> getAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
+    private Mono<ContentItemContractInner> getAsync(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId) {
         return getWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -668,8 +541,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContentItemsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
+    public ContentItemsGetResponse getWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId, context).block();
     }
 
@@ -686,8 +559,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContentItemContractInner get(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
+    public ContentItemContractInner get(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId) {
         return getWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, Context.NONE).getValue();
     }
 
@@ -706,18 +579,12 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContentItemsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        ContentItemContractInner parameters,
+    private Mono<ContentItemsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String contentTypeId, String contentItemId, ContentItemContractInner parameters,
         String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -733,10 +600,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter contentItemId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -745,21 +610,9 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            contentTypeId,
-                            contentItemId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                contentTypeId, contentItemId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -779,19 +632,12 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContentItemsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        ContentItemContractInner parameters,
-        String ifMatch,
-        Context context) {
+    private Mono<ContentItemsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String contentTypeId, String contentItemId, ContentItemContractInner parameters,
+        String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -807,10 +653,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter contentItemId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -819,19 +663,9 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                contentTypeId,
-                contentItemId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, contentTypeId,
+            contentItemId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+            context);
     }
 
     /**
@@ -848,16 +682,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContentItemContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        ContentItemContractInner parameters) {
+    private Mono<ContentItemContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String contentTypeId, String contentItemId, ContentItemContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, contentTypeId, contentItemId, parameters, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId, parameters,
+            ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -876,17 +705,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContentItemsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        ContentItemContractInner parameters,
-        String ifMatch,
+    public ContentItemsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String contentTypeId, String contentItemId, ContentItemContractInner parameters, String ifMatch,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, contentTypeId, contentItemId, parameters, ifMatch, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId, parameters,
+            ifMatch, context).block();
     }
 
     /**
@@ -903,16 +726,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContentItemContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        ContentItemContractInner parameters) {
+    public ContentItemContractInner createOrUpdate(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId, ContentItemContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, serviceName, contentTypeId, contentItemId, parameters, ifMatch, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, parameters,
+            ifMatch, Context.NONE).getValue();
     }
 
     /**
@@ -930,13 +748,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String contentTypeId, String contentItemId, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -955,27 +771,14 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            contentTypeId,
-                            contentItemId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName,
+                contentTypeId, contentItemId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -995,18 +798,11 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String contentTypeId, String contentItemId, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1025,25 +821,13 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                contentTypeId,
-                contentItemId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, contentTypeId, contentItemId,
+            ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1061,8 +845,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, String ifMatch) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId, ifMatch)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1083,13 +867,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        String ifMatch,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId, String ifMatch, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, contentTypeId, contentItemId, ifMatch, context)
             .block();
     }
@@ -1108,8 +887,8 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, String ifMatch) {
+    public void delete(String resourceGroupName, String serviceName, String contentTypeId, String contentItemId,
+        String ifMatch) {
         deleteWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, ifMatch, Context.NONE);
     }
 
@@ -1129,23 +908,14 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ContentItemContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ContentItemContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1161,29 +931,19 @@ public final class ContentItemsClientImpl implements ContentItemsClient {
      * @return paged list of content items along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContentItemContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ContentItemContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -13,33 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CompatibilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Compatibility model =
-            BinaryData
-                .fromString(
-                    "{\"isCompatible\":true,\"message\":\"pj\",\"description\":\"asxazjpqyegualhb\",\"issues\":[\"ConnectionToInternetRequired\",\"DevelopmentBillingModelRequired\"]}")
-                .toObject(Compatibility.class);
+        Compatibility model = BinaryData.fromString(
+            "{\"isCompatible\":true,\"message\":\"e\",\"description\":\"sonpclhocohs\",\"issues\":[\"DevelopmentBillingModelRequired\"]}")
+            .toObject(Compatibility.class);
         Assertions.assertEquals(true, model.isCompatible());
-        Assertions.assertEquals("pj", model.message());
-        Assertions.assertEquals("asxazjpqyegualhb", model.description());
-        Assertions.assertEquals(CompatibilityIssue.CONNECTION_TO_INTERNET_REQUIRED, model.issues().get(0));
+        Assertions.assertEquals("e", model.message());
+        Assertions.assertEquals("sonpclhocohs", model.description());
+        Assertions.assertEquals(CompatibilityIssue.DEVELOPMENT_BILLING_MODEL_REQUIRED, model.issues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Compatibility model =
-            new Compatibility()
-                .withIsCompatible(true)
-                .withMessage("pj")
-                .withDescription("asxazjpqyegualhb")
-                .withIssues(
-                    Arrays
-                        .asList(
-                            CompatibilityIssue.CONNECTION_TO_INTERNET_REQUIRED,
-                            CompatibilityIssue.DEVELOPMENT_BILLING_MODEL_REQUIRED));
+        Compatibility model = new Compatibility().withIsCompatible(true)
+            .withMessage("e")
+            .withDescription("sonpclhocohs")
+            .withIssues(Arrays.asList(CompatibilityIssue.DEVELOPMENT_BILLING_MODEL_REQUIRED));
         model = BinaryData.fromObject(model).toObject(Compatibility.class);
         Assertions.assertEquals(true, model.isCompatible());
-        Assertions.assertEquals("pj", model.message());
-        Assertions.assertEquals("asxazjpqyegualhb", model.description());
-        Assertions.assertEquals(CompatibilityIssue.CONNECTION_TO_INTERNET_REQUIRED, model.issues().get(0));
+        Assertions.assertEquals("e", model.message());
+        Assertions.assertEquals("sonpclhocohs", model.description());
+        Assertions.assertEquals(CompatibilityIssue.DEVELOPMENT_BILLING_MODEL_REQUIRED, model.issues().get(0));
     }
 }

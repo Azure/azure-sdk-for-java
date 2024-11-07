@@ -18,8 +18,7 @@ public final class CommunicationUserIdentifierAndToken {
      * @param userToken the user token of the communication user
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
-    public CommunicationUserIdentifierAndToken(CommunicationUserIdentifier communicationUser,
-        AccessToken userToken) {
+    public CommunicationUserIdentifierAndToken(CommunicationUserIdentifier communicationUser, AccessToken userToken) {
         this.communicationUser = communicationUser;
         this.userToken = userToken;
     }

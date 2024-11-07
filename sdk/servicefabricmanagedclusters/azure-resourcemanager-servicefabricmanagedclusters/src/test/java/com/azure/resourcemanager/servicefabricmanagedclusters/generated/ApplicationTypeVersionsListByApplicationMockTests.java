@@ -22,7 +22,7 @@ public final class ApplicationTypeVersionsListByApplicationMockTests {
     @Test
     public void testListByApplicationTypes() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"spuunnoxyhkxgq\",\"appPackageUrl\":\"drihpfhoqcaaewda\"},\"location\":\"djvlpj\",\"tags\":{\"msgeivsiykzk\":\"zb\",\"xonbzoggculapz\":\"ncj\",\"pgogtqxepny\":\"y\",\"uajlyj\":\"b\"},\"id\":\"vofqzhvfc\",\"name\":\"byfmowuxr\",\"type\":\"jpvd\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"cyohpfkyrkdbd\",\"appPackageUrl\":\"iogsjkmnwq\"},\"location\":\"obaiyhddviaceg\",\"tags\":{\"dwvvba\":\"ntfpmvmemfnc\"},\"id\":\"lllchpodb\",\"name\":\"evwrdnhfuk\",\"type\":\"vsjcswsmystuluqy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ApplicationTypeVersionsListByApplicationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ApplicationTypeVersionResource> response = manager.applicationTypeVersions()
-            .listByApplicationTypes("vsjcswsmystuluqy", "fcvlerch", "qbmfpjbabwidf", com.azure.core.util.Context.NONE);
+            .listByApplicationTypes("payakkud", "px", "wjplma", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("djvlpj", response.iterator().next().location());
-        Assertions.assertEquals("zb", response.iterator().next().tags().get("msgeivsiykzk"));
-        Assertions.assertEquals("drihpfhoqcaaewda", response.iterator().next().appPackageUrl());
+        Assertions.assertEquals("obaiyhddviaceg", response.iterator().next().location());
+        Assertions.assertEquals("ntfpmvmemfnc", response.iterator().next().tags().get("dwvvba"));
+        Assertions.assertEquals("iogsjkmnwq", response.iterator().next().appPackageUrl());
     }
 }

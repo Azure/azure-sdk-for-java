@@ -167,23 +167,18 @@ public final class RepresentationContract {
      */
     public void validate() {
         if (contentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property contentType in model RepresentationContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contentType in model RepresentationContract"));
         }
         if (formParameters() != null) {
             formParameters().forEach(e -> e.validate());
         }
         if (examples() != null) {
-            examples()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            examples().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

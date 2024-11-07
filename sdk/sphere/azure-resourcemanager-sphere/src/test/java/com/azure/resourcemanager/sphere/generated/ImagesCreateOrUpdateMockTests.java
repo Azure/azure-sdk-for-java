@@ -46,12 +46,16 @@ public final class ImagesCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Image response = manager.images().define("apnedgfbcvkc").withExistingCatalog("hdlxyjrxsagafcn", "hgw")
-            .withProperties(new ImageProperties().withImage("pkeqdcvdrhvoo").withImageId("otbobzdopcj")
+        Image response = manager.images()
+            .define("apnedgfbcvkc")
+            .withExistingCatalog("hdlxyjrxsagafcn", "hgw")
+            .withProperties(new ImageProperties().withImage("pkeqdcvdrhvoo")
+                .withImageId("otbobzdopcj")
                 .withRegionalDataBoundary(RegionalDataBoundary.EU))
             .create();
 

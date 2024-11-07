@@ -6,26 +6,47 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The WidgetTypeResourceFormat. */
+/**
+ * The WidgetTypeResourceFormat.
+ */
 @Fluent
 public final class WidgetTypeResourceFormatInner extends ProxyResource {
     /*
      * Definition of WidgetType.
      */
-    @JsonProperty(value = "properties")
     private WidgetType innerProperties;
 
-    /** Creates an instance of WidgetTypeResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WidgetTypeResourceFormatInner class.
+     */
     public WidgetTypeResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: Definition of WidgetType.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WidgetType innerProperties() {
@@ -33,8 +54,38 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the widgetTypeName property: Name of the widget type.
-     *
+     * 
      * @return the widgetTypeName value.
      */
     public String widgetTypeName() {
@@ -43,7 +94,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Get the definition property: Definition for widget type.
-     *
+     * 
      * @return the definition value.
      */
     public String definition() {
@@ -52,7 +103,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Set the definition property: Definition for widget type.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the WidgetTypeResourceFormatInner object itself.
      */
@@ -66,7 +117,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: Description for widget type.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -75,7 +126,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Description for widget type.
-     *
+     * 
      * @param description the description value to set.
      * @return the WidgetTypeResourceFormatInner object itself.
      */
@@ -89,7 +140,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized display name for the widget type.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -98,7 +149,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Localized display name for the widget type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WidgetTypeResourceFormatInner object itself.
      */
@@ -112,7 +163,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Get the imageUrl property: The image URL.
-     *
+     * 
      * @return the imageUrl value.
      */
     public String imageUrl() {
@@ -121,7 +172,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Set the imageUrl property: The image URL.
-     *
+     * 
      * @param imageUrl the imageUrl value to set.
      * @return the WidgetTypeResourceFormatInner object itself.
      */
@@ -135,7 +186,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -144,7 +195,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Get the widgetVersion property: The widget version.
-     *
+     * 
      * @return the widgetVersion value.
      */
     public String widgetVersion() {
@@ -153,7 +204,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Set the widgetVersion property: The widget version.
-     *
+     * 
      * @param widgetVersion the widgetVersion value to set.
      * @return the WidgetTypeResourceFormatInner object itself.
      */
@@ -167,7 +218,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Get the changed property: Date time when widget type was last modified.
-     *
+     * 
      * @return the changed value.
      */
     public OffsetDateTime changed() {
@@ -176,7 +227,7 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Get the created property: Date time when widget type was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -185,12 +236,56 @@ public final class WidgetTypeResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WidgetTypeResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WidgetTypeResourceFormatInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WidgetTypeResourceFormatInner.
+     */
+    public static WidgetTypeResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WidgetTypeResourceFormatInner deserializedWidgetTypeResourceFormatInner
+                = new WidgetTypeResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWidgetTypeResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWidgetTypeResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWidgetTypeResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWidgetTypeResourceFormatInner.innerProperties = WidgetType.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWidgetTypeResourceFormatInner;
+        });
     }
 }

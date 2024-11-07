@@ -109,8 +109,8 @@ public final class BackendServiceFabricClusterProperties {
      * @param maxPartitionResolutionRetries the maxPartitionResolutionRetries value to set.
      * @return the BackendServiceFabricClusterProperties object itself.
      */
-    public BackendServiceFabricClusterProperties withMaxPartitionResolutionRetries(
-        Integer maxPartitionResolutionRetries) {
+    public BackendServiceFabricClusterProperties
+        withMaxPartitionResolutionRetries(Integer maxPartitionResolutionRetries) {
         this.maxPartitionResolutionRetries = maxPartitionResolutionRetries;
         return this;
     }
@@ -152,8 +152,8 @@ public final class BackendServiceFabricClusterProperties {
      * @param serverCertificateThumbprints the serverCertificateThumbprints value to set.
      * @return the BackendServiceFabricClusterProperties object itself.
      */
-    public BackendServiceFabricClusterProperties withServerCertificateThumbprints(
-        List<String> serverCertificateThumbprints) {
+    public BackendServiceFabricClusterProperties
+        withServerCertificateThumbprints(List<String> serverCertificateThumbprints) {
         this.serverCertificateThumbprints = serverCertificateThumbprints;
         return this;
     }
@@ -185,11 +185,8 @@ public final class BackendServiceFabricClusterProperties {
      */
     public void validate() {
         if (managementEndpoints() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managementEndpoints in model"
-                            + " BackendServiceFabricClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property managementEndpoints in model" + " BackendServiceFabricClusterProperties"));
         }
         if (serverX509Names() != null) {
             serverX509Names().forEach(e -> e.validate());

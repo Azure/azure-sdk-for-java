@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.dynatrace.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dynatrace.models.SsoStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** SSO details from the Dynatrace partner. */
+/**
+ * SSO details from the Dynatrace partner.
+ */
 @Fluent
-public final class SsoDetailsResponseInner {
+public final class SsoDetailsResponseInner implements JsonSerializable<SsoDetailsResponseInner> {
     /*
      * Whether the SSO is enabled for this resource or not.
      */
-    @JsonProperty(value = "isSsoEnabled")
     private SsoStatus isSsoEnabled;
 
     /*
      * URL for Azure AD metadata
      */
-    @JsonProperty(value = "metadataUrl")
     private String metadataUrl;
 
     /*
      * The login URL specific to this Dynatrace Environment
      */
-    @JsonProperty(value = "singleSignOnUrl")
     private String singleSignOnUrl;
 
     /*
      * array of Aad(azure active directory) domains
      */
-    @JsonProperty(value = "aadDomains")
     private List<String> aadDomains;
 
     /*
      * Array of admin user emails.
      */
-    @JsonProperty(value = "adminUsers")
     private List<String> adminUsers;
 
-    /** Creates an instance of SsoDetailsResponseInner class. */
+    /**
+     * Creates an instance of SsoDetailsResponseInner class.
+     */
     public SsoDetailsResponseInner() {
     }
 
     /**
      * Get the isSsoEnabled property: Whether the SSO is enabled for this resource or not.
-     *
+     * 
      * @return the isSsoEnabled value.
      */
     public SsoStatus isSsoEnabled() {
@@ -57,7 +60,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Set the isSsoEnabled property: Whether the SSO is enabled for this resource or not.
-     *
+     * 
      * @param isSsoEnabled the isSsoEnabled value to set.
      * @return the SsoDetailsResponseInner object itself.
      */
@@ -68,7 +71,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Get the metadataUrl property: URL for Azure AD metadata.
-     *
+     * 
      * @return the metadataUrl value.
      */
     public String metadataUrl() {
@@ -77,7 +80,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Set the metadataUrl property: URL for Azure AD metadata.
-     *
+     * 
      * @param metadataUrl the metadataUrl value to set.
      * @return the SsoDetailsResponseInner object itself.
      */
@@ -88,7 +91,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Get the singleSignOnUrl property: The login URL specific to this Dynatrace Environment.
-     *
+     * 
      * @return the singleSignOnUrl value.
      */
     public String singleSignOnUrl() {
@@ -97,7 +100,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Set the singleSignOnUrl property: The login URL specific to this Dynatrace Environment.
-     *
+     * 
      * @param singleSignOnUrl the singleSignOnUrl value to set.
      * @return the SsoDetailsResponseInner object itself.
      */
@@ -108,7 +111,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Get the aadDomains property: array of Aad(azure active directory) domains.
-     *
+     * 
      * @return the aadDomains value.
      */
     public List<String> aadDomains() {
@@ -117,7 +120,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Set the aadDomains property: array of Aad(azure active directory) domains.
-     *
+     * 
      * @param aadDomains the aadDomains value to set.
      * @return the SsoDetailsResponseInner object itself.
      */
@@ -128,7 +131,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Get the adminUsers property: Array of admin user emails.
-     *
+     * 
      * @return the adminUsers value.
      */
     public List<String> adminUsers() {
@@ -137,7 +140,7 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Set the adminUsers property: Array of admin user emails.
-     *
+     * 
      * @param adminUsers the adminUsers value to set.
      * @return the SsoDetailsResponseInner object itself.
      */
@@ -148,9 +151,59 @@ public final class SsoDetailsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("isSsoEnabled", this.isSsoEnabled == null ? null : this.isSsoEnabled.toString());
+        jsonWriter.writeStringField("metadataUrl", this.metadataUrl);
+        jsonWriter.writeStringField("singleSignOnUrl", this.singleSignOnUrl);
+        jsonWriter.writeArrayField("aadDomains", this.aadDomains, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("adminUsers", this.adminUsers, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsoDetailsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsoDetailsResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsoDetailsResponseInner.
+     */
+    public static SsoDetailsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsoDetailsResponseInner deserializedSsoDetailsResponseInner = new SsoDetailsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isSsoEnabled".equals(fieldName)) {
+                    deserializedSsoDetailsResponseInner.isSsoEnabled = SsoStatus.fromString(reader.getString());
+                } else if ("metadataUrl".equals(fieldName)) {
+                    deserializedSsoDetailsResponseInner.metadataUrl = reader.getString();
+                } else if ("singleSignOnUrl".equals(fieldName)) {
+                    deserializedSsoDetailsResponseInner.singleSignOnUrl = reader.getString();
+                } else if ("aadDomains".equals(fieldName)) {
+                    List<String> aadDomains = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSsoDetailsResponseInner.aadDomains = aadDomains;
+                } else if ("adminUsers".equals(fieldName)) {
+                    List<String> adminUsers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSsoDetailsResponseInner.adminUsers = adminUsers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsoDetailsResponseInner;
+        });
     }
 }

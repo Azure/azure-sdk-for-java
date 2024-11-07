@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** pyTorch job settings. */
 @Fluent
 public final class PyTorchSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PyTorchSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PyTorchSettings.class);
 
     /*
      * The python script to execute.
@@ -157,10 +158,8 @@ public final class PyTorchSettings {
      */
     public void validate() {
         if (pythonScriptFilePath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pythonScriptFilePath in model PyTorchSettings"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property pythonScriptFilePath in model PyTorchSettings"));
         }
     }
 }

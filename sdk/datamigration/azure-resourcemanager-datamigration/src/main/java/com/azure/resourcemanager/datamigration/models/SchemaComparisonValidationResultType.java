@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Description about the errors happen while performing migration validation. */
+/**
+ * Description about the errors happen while performing migration validation.
+ */
 @Immutable
-public final class SchemaComparisonValidationResultType {
+public final class SchemaComparisonValidationResultType
+    implements JsonSerializable<SchemaComparisonValidationResultType> {
     /*
      * Name of the object that has the difference
      */
-    @JsonProperty(value = "objectName", access = JsonProperty.Access.WRITE_ONLY)
     private String objectName;
 
     /*
      * Type of the object that has the difference. e.g (Table/View/StoredProcedure)
      */
-    @JsonProperty(value = "objectType", access = JsonProperty.Access.WRITE_ONLY)
     private ObjectType objectType;
 
     /*
      * Update action type with respect to target
      */
-    @JsonProperty(value = "updateAction", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateActionType updateAction;
 
-    /** Creates an instance of SchemaComparisonValidationResultType class. */
+    /**
+     * Creates an instance of SchemaComparisonValidationResultType class.
+     */
     public SchemaComparisonValidationResultType() {
     }
 
     /**
      * Get the objectName property: Name of the object that has the difference.
-     *
+     * 
      * @return the objectName value.
      */
     public String objectName() {
@@ -43,7 +49,7 @@ public final class SchemaComparisonValidationResultType {
 
     /**
      * Get the objectType property: Type of the object that has the difference. e.g (Table/View/StoredProcedure).
-     *
+     * 
      * @return the objectType value.
      */
     public ObjectType objectType() {
@@ -52,7 +58,7 @@ public final class SchemaComparisonValidationResultType {
 
     /**
      * Get the updateAction property: Update action type with respect to target.
-     *
+     * 
      * @return the updateAction value.
      */
     public UpdateActionType updateAction() {
@@ -61,9 +67,51 @@ public final class SchemaComparisonValidationResultType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SchemaComparisonValidationResultType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SchemaComparisonValidationResultType if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SchemaComparisonValidationResultType.
+     */
+    public static SchemaComparisonValidationResultType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SchemaComparisonValidationResultType deserializedSchemaComparisonValidationResultType
+                = new SchemaComparisonValidationResultType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectName".equals(fieldName)) {
+                    deserializedSchemaComparisonValidationResultType.objectName = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedSchemaComparisonValidationResultType.objectType
+                        = ObjectType.fromString(reader.getString());
+                } else if ("updateAction".equals(fieldName)) {
+                    deserializedSchemaComparisonValidationResultType.updateAction
+                        = UpdateActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSchemaComparisonValidationResultType;
+        });
     }
 }

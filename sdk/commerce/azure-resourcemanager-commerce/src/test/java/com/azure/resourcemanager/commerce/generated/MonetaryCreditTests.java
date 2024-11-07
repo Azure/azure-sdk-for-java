@@ -14,30 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MonetaryCreditTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonetaryCredit model =
-            BinaryData
-                .fromString(
-                    "{\"Name\":\"Monetary"
-                        + " Credit\",\"ExcludedMeterIds\":[\"ab7692b8-06a7-4e11-81ad-8c3c5575f463\",\"f7a4db67-3ed6-4b5a-a329-21f2a6ac6a4a\"],\"EffectiveDate\":\"2021-07-03T12:16:15Z\"}")
-                .toObject(MonetaryCredit.class);
+        MonetaryCredit model = BinaryData.fromString("{\"Name\":\"Monetary"
+            + " Credit\",\"ExcludedMeterIds\":[\"ab7692b8-06a7-4e11-81ad-8c3c5575f463\",\"f7a4db67-3ed6-4b5a-a329-21f2a6ac6a4a\"],\"EffectiveDate\":\"2021-07-03T12:16:15Z\"}")
+            .toObject(MonetaryCredit.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T12:16:15Z"), model.effectiveDate());
-        Assertions
-            .assertEquals(UUID.fromString("ab7692b8-06a7-4e11-81ad-8c3c5575f463"), model.excludedMeterIds().get(0));
+        Assertions.assertEquals(UUID.fromString("ab7692b8-06a7-4e11-81ad-8c3c5575f463"),
+            model.excludedMeterIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonetaryCredit model =
-            new MonetaryCredit()
-                .withEffectiveDate(OffsetDateTime.parse("2021-07-03T12:16:15Z"))
-                .withExcludedMeterIds(
-                    Arrays
-                        .asList(
-                            UUID.fromString("ab7692b8-06a7-4e11-81ad-8c3c5575f463"),
-                            UUID.fromString("f7a4db67-3ed6-4b5a-a329-21f2a6ac6a4a")));
+        MonetaryCredit model = new MonetaryCredit().withEffectiveDate(OffsetDateTime.parse("2021-07-03T12:16:15Z"))
+            .withExcludedMeterIds(Arrays.asList(UUID.fromString("ab7692b8-06a7-4e11-81ad-8c3c5575f463"),
+                UUID.fromString("f7a4db67-3ed6-4b5a-a329-21f2a6ac6a4a")));
         model = BinaryData.fromObject(model).toObject(MonetaryCredit.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T12:16:15Z"), model.effectiveDate());
-        Assertions
-            .assertEquals(UUID.fromString("ab7692b8-06a7-4e11-81ad-8c3c5575f463"), model.excludedMeterIds().get(0));
+        Assertions.assertEquals(UUID.fromString("ab7692b8-06a7-4e11-81ad-8c3c5575f463"),
+            model.excludedMeterIds().get(0));
     }
 }

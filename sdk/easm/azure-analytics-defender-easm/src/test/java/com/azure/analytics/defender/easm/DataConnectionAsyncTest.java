@@ -36,48 +36,42 @@ public class DataConnectionAsyncTest extends EasmClientTestBase {
 
     @Test
     public void testDataConnectionValidateAsync() {
-        LogAnalyticsDataConnectionProperties properties = new LogAnalyticsDataConnectionProperties()
-            .setApiKey(logAnalyticsKey)
-            .setWorkspaceId(logAnalyticsWorkspace);
-        LogAnalyticsDataConnectionData request = new LogAnalyticsDataConnectionData(properties)
-            .setName(newDataConnectionName)
-            .setContent(DataConnectionContent.ATTACK_SURFACE_INSIGHTS)
-            .setFrequency(DataConnectionFrequency.WEEKLY)
-            .setFrequencyOffset(1);
+        LogAnalyticsDataConnectionProperties properties
+            = new LogAnalyticsDataConnectionProperties().setApiKey(logAnalyticsKey)
+                .setWorkspaceId(logAnalyticsWorkspace);
+        LogAnalyticsDataConnectionData request
+            = new LogAnalyticsDataConnectionData(properties).setName(newDataConnectionName)
+                .setContent(DataConnectionContent.ATTACK_SURFACE_INSIGHTS)
+                .setFrequency(DataConnectionFrequency.WEEKLY)
+                .setFrequencyOffset(1);
         Mono<ValidateResult> validateResultMono = easmAsyncClient.validateDataConnection(request);
-        StepVerifier.create(validateResultMono)
-            .assertNext(validateResult -> {
-                assertNull(validateResult.getError());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(validateResultMono).assertNext(validateResult -> {
+            assertNull(validateResult.getError());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testDataConnectionsPutAsync() {
-        LogAnalyticsDataConnectionProperties properties = new LogAnalyticsDataConnectionProperties()
-            .setWorkspaceId(logAnalyticsWorkspace)
-            .setApiKey(logAnalyticsKey);
-        LogAnalyticsDataConnectionData request = new LogAnalyticsDataConnectionData(properties)
-            .setName(newDataConnectionName)
-            .setContent(DataConnectionContent.ATTACK_SURFACE_INSIGHTS)
-            .setFrequency(DataConnectionFrequency.WEEKLY)
-            .setFrequencyOffset(1);
-        Mono<DataConnection> dataConnectionMono = easmAsyncClient.createOrReplaceDataConnection(newDataConnectionName, request);
-        StepVerifier.create(dataConnectionMono)
-            .assertNext(dataConnection -> {
-                assertNotNull(dataConnection);
-                assertEquals(newDataConnectionName, dataConnection.getName());
-                assertEquals(newDataConnectionName, dataConnection.getDisplayName());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        LogAnalyticsDataConnectionProperties properties
+            = new LogAnalyticsDataConnectionProperties().setWorkspaceId(logAnalyticsWorkspace)
+                .setApiKey(logAnalyticsKey);
+        LogAnalyticsDataConnectionData request
+            = new LogAnalyticsDataConnectionData(properties).setName(newDataConnectionName)
+                .setContent(DataConnectionContent.ATTACK_SURFACE_INSIGHTS)
+                .setFrequency(DataConnectionFrequency.WEEKLY)
+                .setFrequencyOffset(1);
+        Mono<DataConnection> dataConnectionMono
+            = easmAsyncClient.createOrReplaceDataConnection(newDataConnectionName, request);
+        StepVerifier.create(dataConnectionMono).assertNext(dataConnection -> {
+            assertNotNull(dataConnection);
+            assertEquals(newDataConnectionName, dataConnection.getName());
+            assertEquals(newDataConnectionName, dataConnection.getDisplayName());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testDataConnectionDeleteAsync() {
         Mono<Void> deleteMono = easmAsyncClient.deleteDataConnection(dataConnectionName);
-        StepVerifier.create(deleteMono)
-            .expectComplete();
+        StepVerifier.create(deleteMono).expectComplete();
     }
 }

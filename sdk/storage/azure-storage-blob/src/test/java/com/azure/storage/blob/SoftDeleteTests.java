@@ -17,6 +17,7 @@ import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SoftDeleteTests extends BlobTestBase {
     private BlobContainerClient containerClient;
@@ -42,6 +43,15 @@ public class SoftDeleteTests extends BlobTestBase {
     }
 
     @Test
+    public void undeleteSimple() {
+        blobClient.delete();
+        assertFalse(blobClient.exists());
+
+        blobClient.undelete();
+        assertTrue(blobClient.exists());
+    }
+
+    @Test
     public void undelete() {
         blobClient.delete();
 
@@ -57,9 +67,8 @@ public class SoftDeleteTests extends BlobTestBase {
     public void listBlobsFlatOptionsDeleted() {
         blobClient.delete();
 
-        ListBlobsOptions options = new ListBlobsOptions()
-            .setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-            .setPrefix(prefix);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true)).setPrefix(prefix);
         Iterator<BlobItem> blobs = containerClient.listBlobs(options, null).iterator();
 
         assertEquals(blobClient.getBlobName(), blobs.next().getName());
@@ -70,8 +79,8 @@ public class SoftDeleteTests extends BlobTestBase {
     public void listBlobsHierOptionsDeleted() {
         blobClient.delete();
 
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(
-            new BlobListDetails().setRetrieveDeletedBlobs(true)).setPrefix(prefix);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true)).setPrefix(prefix);
         Iterator<BlobItem> blobs = containerClient.listBlobsByHierarchy("", options, null).iterator();
 
         assertEquals(blobClient.getBlobName(), blobs.next().getName());

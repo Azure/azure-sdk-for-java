@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountPartnerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of integration account partners. */
+/**
+ * The list of integration account partners.
+ */
 @Fluent
-public final class IntegrationAccountPartnerListResult {
+public final class IntegrationAccountPartnerListResult
+    implements JsonSerializable<IntegrationAccountPartnerListResult> {
     /*
      * The list of integration account partners.
      */
-    @JsonProperty(value = "value")
     private List<IntegrationAccountPartnerInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of IntegrationAccountPartnerListResult class. */
+    /**
+     * Creates an instance of IntegrationAccountPartnerListResult class.
+     */
     public IntegrationAccountPartnerListResult() {
     }
 
     /**
      * Get the value property: The list of integration account partners.
-     *
+     * 
      * @return the value value.
      */
     public List<IntegrationAccountPartnerInner> value() {
@@ -39,7 +46,7 @@ public final class IntegrationAccountPartnerListResult {
 
     /**
      * Set the value property: The list of integration account partners.
-     *
+     * 
      * @param value the value value to set.
      * @return the IntegrationAccountPartnerListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class IntegrationAccountPartnerListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +66,7 @@ public final class IntegrationAccountPartnerListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IntegrationAccountPartnerListResult object itself.
      */
@@ -70,12 +77,54 @@ public final class IntegrationAccountPartnerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountPartnerListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountPartnerListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationAccountPartnerListResult.
+     */
+    public static IntegrationAccountPartnerListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountPartnerListResult deserializedIntegrationAccountPartnerListResult
+                = new IntegrationAccountPartnerListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<IntegrationAccountPartnerInner> value
+                        = reader.readArray(reader1 -> IntegrationAccountPartnerInner.fromJson(reader1));
+                    deserializedIntegrationAccountPartnerListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountPartnerListResult;
+        });
     }
 }

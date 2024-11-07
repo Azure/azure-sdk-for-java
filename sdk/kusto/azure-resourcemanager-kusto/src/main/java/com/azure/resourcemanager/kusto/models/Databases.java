@@ -23,8 +23,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        CheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the databases resource name is valid and is not already in use.
@@ -66,8 +66,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Database> listByCluster(
-        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context);
+    PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Integer top, String skiptoken,
+        Context context);
 
     /**
      * Returns a database.
@@ -81,8 +81,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database along with {@link Response}.
      */
-    Response<Database> getWithResponse(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    Response<Database> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
+        Context context);
 
     /**
      * Returns a database.
@@ -109,8 +109,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database.
      */
-    Database createOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters);
+    Database createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters);
 
     /**
      * Creates or updates a database.
@@ -127,13 +127,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database.
      */
-    Database createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    Database createOrUpdate(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters,
+        CallerRole callerRole, Context context);
 
     /**
      * Updates a database.
@@ -164,13 +159,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database.
      */
-    Database update(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    Database update(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters,
+        CallerRole callerRole, Context context);
 
     /**
      * Deletes the database with the given name.
@@ -222,8 +212,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DatabasePrincipal> listPrincipals(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    PagedIterable<DatabasePrincipal> listPrincipals(String resourceGroupName, String clusterName, String databaseName,
+        Context context);
 
     /**
      * Add Database principals permissions.
@@ -238,12 +228,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link Response}.
      */
-    Response<DatabasePrincipalListResult> addPrincipalsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd,
-        Context context);
+    Response<DatabasePrincipalListResult> addPrincipalsWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalListRequest databasePrincipalsToAdd, Context context);
 
     /**
      * Add Database principals permissions.
@@ -257,10 +243,7 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response.
      */
-    DatabasePrincipalListResult addPrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    DatabasePrincipalListResult addPrincipals(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalListRequest databasePrincipalsToAdd);
 
     /**
@@ -276,12 +259,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link Response}.
      */
-    Response<DatabasePrincipalListResult> removePrincipalsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove,
-        Context context);
+    Response<DatabasePrincipalListResult> removePrincipalsWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalListRequest databasePrincipalsToRemove, Context context);
 
     /**
      * Remove Database principals permissions.
@@ -295,9 +274,6 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response.
      */
-    DatabasePrincipalListResult removePrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    DatabasePrincipalListResult removePrincipals(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalListRequest databasePrincipalsToRemove);
 }

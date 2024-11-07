@@ -54,18 +54,17 @@ public final class Constants {
     /**
      * Exception message when the value could not be parsed into an enum.
      */
-    public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE =
-        "%s could not be parsed from '%s' due to invalid value %s.";
+    public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE
+        = "%s could not be parsed from '%s' due to invalid value %s.";
 
+    public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER
+        = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
 
-    public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
+    public static final String BLOB_ALREADY_EXISTS
+        = "Blob already exists. Specify overwrite to true to force update the blob.";
 
-    public static final String BLOB_ALREADY_EXISTS =
-        "Blob already exists. Specify overwrite to true to force update the blob.";
-
-    public static final String FILE_ALREADY_EXISTS =
-        "File already exists. Specify overwrite to true to force update the file.";
+    public static final String FILE_ALREADY_EXISTS
+        = "File already exists. Specify overwrite to true to force update the file.";
 
     /**
      * Buffer width used to copy data to output streams.
@@ -88,8 +87,10 @@ public final class Constants {
 
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
-    public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
-        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2024-11-04");
+    public static final String SAS_SERVICE_VERSION
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2025-01-05");
+
+    public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
     private Constants() {
     }
@@ -194,7 +195,7 @@ public final class Constants {
          * The default account key for the development storage.
          */
         public static final String EMULATOR_ACCOUNT_KEY
-                = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
+            = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
 
         /**
          * The default account name for the development storage.
@@ -217,7 +218,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2024-11-04";
+        public static final String TARGET_STORAGE_VERSION = "2025-01-05";
 
         /**
          * Error code returned from the service.

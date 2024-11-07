@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains information used to connect to a Kubernetes cluster. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("Kubernetes")
+/**
+ * Contains information used to connect to a Kubernetes cluster.
+ */
 @Fluent
 public final class KubernetesConnectionDetails extends OrchestratorSpecificConnectionDetails {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "Kubernetes";
+
+    /*
      * Gets the kubeconfig for the cluster.
      */
-    @JsonProperty(value = "kubeConfig")
     private String kubeConfig;
 
-    /** Creates an instance of KubernetesConnectionDetails class. */
+    /**
+     * Creates an instance of KubernetesConnectionDetails class.
+     */
     public KubernetesConnectionDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the kubeConfig property: Gets the kubeconfig for the cluster.
-     *
+     * 
      * @return the kubeConfig value.
      */
     public String kubeConfig() {
@@ -35,7 +52,7 @@ public final class KubernetesConnectionDetails extends OrchestratorSpecificConne
 
     /**
      * Set the kubeConfig property: Gets the kubeconfig for the cluster.
-     *
+     * 
      * @param kubeConfig the kubeConfig value to set.
      * @return the KubernetesConnectionDetails object itself.
      */
@@ -46,11 +63,49 @@ public final class KubernetesConnectionDetails extends OrchestratorSpecificConne
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("kubeConfig", this.kubeConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesConnectionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesConnectionDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesConnectionDetails.
+     */
+    public static KubernetesConnectionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesConnectionDetails deserializedKubernetesConnectionDetails = new KubernetesConnectionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedKubernetesConnectionDetails.instanceType = reader.getString();
+                } else if ("kubeConfig".equals(fieldName)) {
+                    deserializedKubernetesConnectionDetails.kubeConfig = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesConnectionDetails;
+        });
     }
 }
