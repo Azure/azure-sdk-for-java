@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Improves the synchronous `acceptNextSession` and `acceptSession` APIs of `ServiceBusSessionReceiverClient` to reduce the chances of the broker holding session lock for some time when client-side timeout occurs. ([42838](https://github.com/Azure/azure-sdk-for-java/pull/42838))
+
 ### Other Changes
 
 ## 7.17.5 (2024-10-16)

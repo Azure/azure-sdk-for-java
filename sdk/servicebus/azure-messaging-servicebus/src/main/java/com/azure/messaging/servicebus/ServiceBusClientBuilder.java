@@ -2108,8 +2108,8 @@ public final class ServiceBusClientBuilder
             final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(
                 getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
 
-            // For ServiceBusSessionProcessorClient, the session acquire should be retried if broker timeout due to no session.
-            // The session acquire, with optional retry on timeout, is managed within the ServiceBusSessionAcquirer type.
+            // For session enabled ServiceBusProcessorClient, the session acquire should be retried if broker timeout
+            // due to no session (see the type ServiceBusSessionAcquirer).
             final boolean timeoutRetryDisabled = false;
             final ServiceBusSessionAcquirer sessionAcquirer
                 = new ServiceBusSessionAcquirer(logger, clientIdentifier, entityPath, entityType, receiveMode,
@@ -2219,8 +2219,8 @@ public final class ServiceBusClientBuilder
                 clientIdentifier = UUID.randomUUID().toString();
             }
 
-            // For ServiceBusSessionReceiverClient, the broker timeout due to no session is not retried but propagated to the acceptNextSession() caller.
-            // The session acquire, with optional retry on timeout, is managed within the ServiceBusSessionAcquirer type.
+            // For ServiceBusSessionReceiverClient, the session acquire should not be retried if broker timeout due to
+            // no session (see the type ServiceBusSessionAcquirer), such timeout are propagated to the acceptNextSession() caller.
             final boolean timeoutRetryDisabled = isV2 && isForSyncMode;
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(

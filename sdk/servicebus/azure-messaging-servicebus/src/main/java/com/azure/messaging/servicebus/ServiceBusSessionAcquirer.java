@@ -30,10 +30,9 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 
 /**
  * A type to acquire a session from a session enabled Service Bus entity. If the broker cannot find a session within
- * the timeout, it returns a timeout error. The acquirer retries on timeout unless {@code timeoutRetryDisabled} is set
- * to true.
+ * the timeout, it returns a timeout error. The acquirer retries on timeout unless disabled via {@code timeoutRetryDisabled}.
  * <p>
- * The {@code timeoutRetryDisabled} is true when the session acquirer is used for synchronous ServiceBusSessionReceiverClient.
+ * The {@code timeoutRetryDisabled} is true when the session acquirer is used for synchronous {@link ServiceBusSessionReceiverClient}.
  * This allows the synchronous 'acceptNextSession()' API to propagate the broker timeout error if no session is available.
  * The 'acceptNextSession()' has a client-side timeout that is set slightly longer than the broker's timeout, ensuring
  * the broker's timeout usually triggers first (the client-side timeout still helps in case of unexpected hanging).
@@ -42,6 +41,10 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
  * acquire request to the broker, which means, the broker may still lock a session for an acquire request that nobody
  * is waiting on, resulting that session to be unavailable for any other 'acceptNextSession()' until initial broker
  * lock expires. Hence, library propagate the broker timeout error in ServiceBusSessionReceiverClient case.
+ * </p>
+ * <p>
+ * For session enabled {@link ServiceBusProcessorClient} and {@link ServiceBusSessionReceiverAsyncClient},
+ * the {@code timeoutRetryDisabled} is false, hence session acquirer retries on broker timeout.
  * </p>
  */
 final class ServiceBusSessionAcquirer {
