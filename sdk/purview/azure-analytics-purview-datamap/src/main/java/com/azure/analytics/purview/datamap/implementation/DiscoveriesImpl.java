@@ -147,9 +147,9 @@ public final class DiscoveriesImpl {
      *     limit: Integer (Optional)
      *     continuationToken: String (Optional)
      *     orderby (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      *     facets (Optional): [
      *          (Optional){
      *             count: Integer (Optional)
@@ -306,9 +306,9 @@ public final class DiscoveriesImpl {
      *     limit: Integer (Optional)
      *     continuationToken: String (Optional)
      *     orderby (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      *     facets (Optional): [
      *          (Optional){
      *             count: Integer (Optional)
@@ -463,7 +463,7 @@ public final class DiscoveriesImpl {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      * }
      * }
      * </pre>
@@ -549,7 +549,7 @@ public final class DiscoveriesImpl {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      * }
      * }
      * </pre>
@@ -634,7 +634,7 @@ public final class DiscoveriesImpl {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      * }
      * }
      * </pre>
@@ -679,7 +679,7 @@ public final class DiscoveriesImpl {
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
-     *     filter: Object (Optional)
+     *     filter: BinaryData (Optional)
      * }
      * }
      * </pre>
