@@ -66,12 +66,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertThrows;
 import static org.testng.Assert.fail;
@@ -110,15 +114,24 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 { 400, false, 1, 3, 6},
                 // endLSN is equal to number of documents
                 { 400, false, 1, 3, 3},
-                // endLSN is greater than number of documents
-                { 400, false, 1, 2, 2},
-                // 2 partitions but only write to one, so
-                // that the other partition stops on 304
-                { 11000, true, 1, 3, 6},
-                { 11000, false, 1, 3, 6},
                 // both partitions have more than the endLSN
                 { 11000, true, 5, 6, 30},
                 { 11000, false, 5, 6, 30},
+        };
+    }
+
+    @DataProvider(name = "changeFeedQueryEndLSNHangDataProvider")
+    public static Object[][] changeFeedQueryEndLSNHangDataProvider() {
+        return new Object[][]{
+                // container RU, partition count
+                // number of docs from cf, documents to write
+
+                // endLSN is greater than number of documents
+                { 400, 1, 3, 2},
+                // 2 partitions but only write to one, so
+                // that the other partition stops on 304
+                { 11000, 1, 6, 6},
+                { 11000, 1, 6, 6},
         };
     }
 
@@ -294,7 +307,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         // applying updates
         updateAction.run();
 
-        Thread.sleep(3000);
+        sleep(3000);
 
         for (int i = 0; i < 20; i++) {
             String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
@@ -571,7 +584,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 Instant.now().minus(10, ChronoUnit.SECONDS),
                 FeedRange.forFullRange());
 
-        Thread.sleep(1000);
+        sleep(1000);
 
         String continuation = drainAndValidateChangeFeedResults(options, null, expectedInitialEventCount);
 
@@ -897,7 +910,6 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             cosmosChangeFeedRequestOptions.setMaxPrefetchPageCount(8);
 
             AtomicInteger totalQueryCount = new AtomicInteger(0);
-            AtomicBoolean hasMoreChanges = new AtomicBoolean(false);
             testContainer.queryChangeFeed(cosmosChangeFeedRequestOptions, JsonNode.class)
                 .byPage(1)
                 .flatMap(response -> {
@@ -915,7 +927,57 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                     }
                 })
                 .blockLast();
-            assertThat(hasMoreChanges.get()).isFalse();
+            assertThat(totalQueryCount.get()).isEqualTo(expectedDocs);
+        } finally {
+            safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
+        }
+    }
+
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryEndLSNHangDataProvider", timeOut = 100 * TIMEOUT)
+    public void changeFeedQueryCompleteAfterEndLSNHang(
+            int throughput,
+            int partitionCount,
+            int expectedDocs,
+            int docsToWrite) throws InterruptedException {
+        String testContainerId = UUID.randomUUID().toString();
+
+        try {
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            CosmosAsyncContainer testContainer =
+                    createCollection(
+                            this.createdAsyncDatabase,
+                            containerProperties,
+                            new CosmosContainerRequestOptions(),
+                            throughput);
+
+
+            insertDocuments(partitionCount, docsToWrite, testContainer);
+            CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions =
+                    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+                    .setEndLSN(cosmosChangeFeedRequestOptions, 4L);
+            cosmosChangeFeedRequestOptions.setMaxPrefetchPageCount(8);
+
+            AtomicInteger totalQueryCount = new AtomicInteger(0);
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+            Future<Void> future = CompletableFuture.runAsync(() -> {
+                testContainer.queryChangeFeed(cosmosChangeFeedRequestOptions, JsonNode.class)
+                        .byPage(1)
+                        .flatMap(response -> {
+                            totalQueryCount.set(totalQueryCount.get() + response.getResults().size());
+
+                           return Mono.empty();
+                        }).blockLast();
+            }, scheduler);
+
+            Thread.sleep(2000);
+            assertThat(future.isDone()).isFalse();
+
+           insertDocuments(10, 25, testContainer);
+           assertThat(future.isDone()).isTrue();
+
+
             assertThat(totalQueryCount.get()).isEqualTo(expectedDocs);
         } finally {
             safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
@@ -1160,7 +1222,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                             emptyResultCount));
 
                     try {
-                        Thread.sleep(1000 / changeFeedRequestOptions.size());
+                        sleep(1000 / changeFeedRequestOptions.size());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

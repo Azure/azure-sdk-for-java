@@ -285,22 +285,8 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         } while (
             !this.currentToken.getRange().equals(initialToken) &&
                 this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange()));
-        feedRangeLSNContext.hasNoChanges = ModelBridgeInternal.<T>noChanges(responseMessage);
 
         return this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange());
-    }
-
-    @Override
-    public boolean hasFetchedAllChanges() {
-        if (feedRangeLSNContextMap.size() != this.compositeContinuationTokens.size()) {
-            return false;
-        }
-        for (Map.Entry<Range<String>, FeedRangeLSNContext> entry : feedRangeLSNContextMap.entrySet()) {
-            if (!entry.getValue().hasCompleted && !entry.getValue().hasNoChanges) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
@@ -603,13 +589,11 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         private Range<String> range;
         private Long endLSN;
         private boolean hasCompleted;
-        private boolean hasNoChanges;
 
         public FeedRangeLSNContext(Range<String> range, Long endLSN) {
             this.range = range;
             this.endLSN = endLSN;
             this.hasCompleted = false;
-            this.hasNoChanges = false;
         }
 
         public void handleLSNFromContinuation(CompositeContinuationToken compositeContinuationToken) {

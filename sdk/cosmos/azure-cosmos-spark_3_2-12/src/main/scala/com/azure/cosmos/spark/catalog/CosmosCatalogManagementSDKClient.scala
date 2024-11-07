@@ -123,6 +123,7 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                 databaseName,
                 containerName,
                 new SqlContainerCreateUpdateParameters()
+                    .withLocation("")
                     .withResource(sqlContainerResource)
                     .withOptions(getThroughputCreateUpdateOption(containerProperties))
             )

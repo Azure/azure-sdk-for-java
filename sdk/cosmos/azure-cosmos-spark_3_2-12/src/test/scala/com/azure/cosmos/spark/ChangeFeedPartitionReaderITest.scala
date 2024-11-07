@@ -10,7 +10,9 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
+import java.lang.Thread.sleep
 import java.util.{Base64, UUID}
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Random
 
 class ChangeFeedPartitionReaderITest
@@ -21,15 +23,104 @@ class ChangeFeedPartitionReaderITest
 
 
  "change feed partition reader" should "honor endLSN during split" in {
-  changeFeedPartitionReaderTest(-1)
+  val cosmosEndpoint = TestConfigurations.HOST
+  val cosmosMasterKey = TestConfigurations.MASTER_KEY
+  val testId = UUID.randomUUID().toString
+  val sourceContainerResponse = cosmosClient.getDatabase(cosmosDatabase).createContainer(
+   "source_" + testId,
+   "/sequenceNumber",
+   ThroughputProperties.createManualThroughput(11000)).block()
+  val sourceContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(sourceContainerResponse.getProperties.getId)
+  val rid = sourceContainerResponse.getProperties.getResourceId
+  val continuationState = s"""{
+  "V": 1,
+  "Rid": "$rid",
+  "Mode": "INCREMENTAL",
+  "StartFrom": {
+    "Type": "BEGINNING"
+  },
+  "Continuation": {
+    "V": 1,
+    "Rid": "$rid",
+    "Continuation": [
+      {
+        "token": "1",
+        "range": {
+          "min": "",
+          "max": "FF"
+        }
+      }
+    ],
+    "Range": {
+      "min": "",
+      "max": "FF"
+    }
+  }
+}"""
+  val encoder = Base64.getEncoder
+  val encodedBytes = encoder.encode(continuationState.getBytes("UTF-8"))
+  val continuationStateEncoded = new String(encodedBytes, "UTF-8")
+
+  val changeFeedCfg = Map(
+   "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+   "spark.cosmos.accountKey" -> cosmosMasterKey,
+   "spark.cosmos.database" -> cosmosDatabase,
+   "spark.cosmos.container" -> sourceContainer.getId(),
+   "spark.cosmos.read.inferSchema.enabled" -> "false",
+  )
+  var inputtedDocuments = 10
+  var lsn1 = 0L
+  var lsn2 = 0L
+  for (_ <- 0 until inputtedDocuments) {
+   lsn1 = ingestTestDocuments(sourceContainer, 1)
+   lsn2 = ingestTestDocuments(sourceContainer, 2)
+  }
+  inputtedDocuments *= 2
+
+  while (lsn1 != lsn2) {
+   if (lsn1 < lsn2) {
+    lsn1 = ingestTestDocuments(sourceContainer, 1)
+   } else {
+    lsn2 = ingestTestDocuments(sourceContainer, 2)
+   }
+   inputtedDocuments += 1
+  }
+
+  val structs = Array(
+   StructField("_rawBody", StringType, false),
+   StructField("_etag", StringType, false),
+   StructField("_ts", StringType, false),
+   StructField("id", StringType, false),
+   StructField("_lsn", StringType, false)
+  )
+  val schema = new StructType(structs)
+
+  val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
+  val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
+  val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
+  val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(lsn1),
+   Some(continuationStateEncoded))
+  val changeFeedPartitionReader = new ChangeFeedPartitionReader(
+   cosmosInputPartition,
+   changeFeedCfg,
+   schema,
+   diagnosticContext,
+   cosmosClientStateHandles,
+   diagnosticsConfig,
+   ""
+  )
+  var count = 0
+
+  while (changeFeedPartitionReader.next()) {
+   changeFeedPartitionReader.get()
+   count += 1
+  }
+
+  count shouldEqual inputtedDocuments
  }
 
 
- "change feed partition reader" should "honor endLSN during split with higher endLSN than changes" in {
-  changeFeedPartitionReaderTest(1000)
- }
-
- private[this] def changeFeedPartitionReaderTest(endLSN: Long): Unit = {
+ "change feed partition reader" should "honor endLSN during split and should hang" in {
   val cosmosEndpoint = TestConfigurations.HOST
   val cosmosMasterKey = TestConfigurations.MASTER_KEY
   val testId = UUID.randomUUID().toString
@@ -93,8 +184,9 @@ class ChangeFeedPartitionReaderITest
   val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
   val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
   val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
-  val effectiveEndLSN = Math.max(endLSN, lsn)
-  val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(effectiveEndLSN), Some(continuationStateEncoded))
+  val documentsAdded = 3
+  val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(lsn + documentsAdded)
+   , Some(continuationStateEncoded))
   val changeFeedPartitionReader = new ChangeFeedPartitionReader(
    cosmosInputPartition,
    changeFeedCfg,
@@ -104,14 +196,19 @@ class ChangeFeedPartitionReaderITest
    diagnosticsConfig,
    ""
   )
-  var count = 0
-
-  while (changeFeedPartitionReader.next()) {
-   changeFeedPartitionReader.get()
-   count += 1
+  implicit val ec: ExecutionContext = ExecutionContext.global
+  val future = Future {
+   while (changeFeedPartitionReader.next()) {
+    changeFeedPartitionReader.get()
+   }
   }
+  sleep(2000)
+  future.isCompleted shouldEqual false
+  for (_ <- 0 until 25) {
+   lsn = Math.max(ingestTestDocuments(sourceContainer, Random.nextInt()), lsn)
+  }
+  future.isCompleted shouldEqual true
 
-  count shouldEqual inputtedDocuments
  }
 
  private[this] def initializeAndBroadcastCosmosClientStatesForContainer(config: Map[String, String])

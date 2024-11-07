@@ -130,7 +130,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
                                // We will return if we have seen either a 304 or we
                                // have processed all changed up to an lsn for all sub-feedRanges
-                               if (ModelBridgeInternal.<T>noChanges(r) && !continuationSnapshot.hasFetchedAllChanges()) {
+                               if (ModelBridgeInternal.<T>noChanges(r)) {
                                    // if we have reached here, it means we have got 304 for the current feedRange,
                                    // but we need to continue drain the changes from other sub-feedRange
 
