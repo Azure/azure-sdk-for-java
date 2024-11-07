@@ -41,7 +41,7 @@ Group;Azure Mixed Reality Remote Rendering;com.azure.mixedreality.remoterenderin
 Group;Azure Monitor - Ingestion;com.azure.monitor.ingestion*
 Group;Azure Monitor - Logs and Metrics query;com.azure.monitor.query*
 Group;Azure Monitor - OpenTelemetry Exporter;com.azure.monitor.opentelemetry.exporter*
-Group;Azure Monitor - OpenTelemetry Exporter;com.azure.monitor.opentelemetry.autoconfigure*
+Group;Azure Monitor - Azure Monitor OpenTelemetry SDK Autoconfigure Distro;com.azure.monitor.opentelemetry.autoconfigure*
 Group;Azure Personalizer;com.azure.ai.personalizer*
 Group;Azure Purview Administration;com.azure.analytics.purview.administration*
 Group;Azure Purview Catalog;com.azure.analytics.purview.catalog*
