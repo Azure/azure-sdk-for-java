@@ -171,7 +171,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client
             = new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
                 receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer, () -> {
-                }, CLIENT_IDENTIFIER);
+                }, CLIENT_IDENTIFIER, false);
 
         // Act & Assert
         StepVerifier
@@ -267,7 +267,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client
             = new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
                 receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer, () -> {
-                }, CLIENT_IDENTIFIER);
+                }, CLIENT_IDENTIFIER, false);
 
         // Act & Assert
         StepVerifier
@@ -335,7 +335,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         final ServiceBusSessionReceiverAsyncClient client
             = new ServiceBusSessionReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
                 receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer, () -> {
-                }, CLIENT_IDENTIFIER);
+                }, CLIENT_IDENTIFIER, false);
 
         try {
             final Flux<ServiceBusReceivedMessage> sessionMessages

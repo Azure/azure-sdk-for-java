@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpClientOptions;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -32,20 +34,35 @@ final class ServiceBusSessionAcquirer {
     private final String identifier;
     private final String entityPath;
     private final MessagingEntityType entityType;
-    private final Duration sessionActiveTimeout;
+    private final Duration tryTimeout;
+    private final boolean timeoutRetryDisabled;
     private final ServiceBusReceiveMode receiveMode;
     private final ConnectionCacheWrapper connectionCacheWrapper;
     private final Mono<ServiceBusManagementNode> sessionManagement;
 
+    /**
+     * Creates ServiceBusSessionAcquirer to acquire session from a session enabled entity.
+     *
+     * @param logger the logger to use.
+     * @param identifier the client identifier, currently callsites uses {@link AmqpClientOptions#getIdentifier()}.
+     * @param entityPath path to the session enabled entity.
+     * @param entityType the entity type (e.g., queue, topic subscription)
+     * @param receiveMode the mode of receiving messages from the acquired session.
+     * @param tryTimeout the try timeout, currently callsites uses {@link AmqpRetryOptions#getTryTimeout()}}.
+     * @param timeoutRetryDisabled if session acquire retry should be disabled when broker timeout on no session (the timeout
+     *     error will be propagated for synchronous clients but retried for asynchronous or processor clients).
+     * @param connectionCacheWrapper the connection cache.
+     */
     ServiceBusSessionAcquirer(ClientLogger logger, String identifier, String entityPath, MessagingEntityType entityType,
-        ServiceBusReceiveMode receiveMode, Duration sessionActiveTimeout,
+        ServiceBusReceiveMode receiveMode, Duration tryTimeout, boolean timeoutRetryDisabled,
         ConnectionCacheWrapper connectionCacheWrapper) {
         assert connectionCacheWrapper.isV2();
         this.logger = logger;
         this.identifier = identifier;
         this.entityPath = entityPath;
         this.entityType = entityType;
-        this.sessionActiveTimeout = sessionActiveTimeout;
+        this.tryTimeout = tryTimeout;
+        this.timeoutRetryDisabled = timeoutRetryDisabled;
         this.receiveMode = receiveMode;
         this.connectionCacheWrapper = connectionCacheWrapper;
         this.sessionManagement = connectionCacheWrapper.getConnection()
@@ -79,12 +96,12 @@ final class ServiceBusSessionAcquirer {
     }
 
     private Mono<Session> acquireIntern(String sessionId) {
-        return Mono
+        final Mono<Session> acquireSession = Mono
             .defer(() -> createSessionReceiveLink(sessionId).flatMap(sessionLink -> sessionLink.getSessionProperties() // Await for sessionLink to "ACTIVE" then reads its properties
-                .flatMap(sessionProperties -> {
-                    return Mono.just(new Session(sessionLink, sessionProperties, sessionManagement));
-                })))
-            .timeout(sessionActiveTimeout)
+                .flatMap(
+                    sessionProperties -> Mono.just(new Session(sessionLink, sessionProperties, sessionManagement)))));
+
+        return (timeoutRetryDisabled ? acquireSession : acquireSession.timeout(tryTimeout))
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
                 logger.atInfo()
@@ -94,29 +111,41 @@ final class ServiceBusSessionAcquirer {
                         ? "Error occurred while getting unnamed session."
                         : "Error occurred while getting session " + sessionId, failure);
 
-                if (failure instanceof TimeoutException) {
-                    return Mono.delay(Duration.ZERO);
-                } else if (failure instanceof AmqpException
-                    && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-                    // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
-                    // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
-                    //
-                    // Given N seconds elapsed since the last session acquire attempt, request for a session on
-                    // the 'parallel' Scheduler and free the QPid thread for other IO.
-                    //
-                    return Mono.delay(Duration.ZERO);
-                } else {
-                    final long id = System.nanoTime();
-                    logger.atInfo().addKeyValue(TRACKING_ID_KEY, id).log("Unable to acquire a session.", failure);
-                    // The link-endpoint-state publisher will emit error on the QPid Thread, that is a non-blocking Thread,
-                    // publish the error on the (blockable) bounded-elastic thread to free QPid thread and to allow
-                    // any blocking operation that downstream may do.
-                    return Mono.<Long>error(failure)
-                        .publishOn(Schedulers.boundedElastic())
-                        .doOnError(e -> logger.atInfo()
-                            .addKeyValue(TRACKING_ID_KEY, id)
-                            .log("Emitting the error signal received for session acquire attempt.", e));
+                // The 'timeoutRetryDisabled' is true when this session acquirer is used for synchronous ServiceBusSessionReceiverClient.
+                // This allows the synchronous `acceptNextSession()` API to propagate the broker timeout error if no session is available.
+                // The 'acceptNextSession()' (invoking acquire) has a client-side timeout that is set slightly longer than the broker's timeout,
+                // ensuring  the broker's timeout usually triggers first (the client-side timeout still helps in case of unexpected hanging).
+                // For sync case, if the library retries session-acquire on broker timeout, the client-side sync timeout might expire
+                // while waiting. When client-side timeout like this, library cannot cancel the outstanding acquire request to the broker,
+                // which means, the broker can still lock a session for an acquire request that nobody is waiting on, this means that
+                // session is unavailable for any other 'acceptNextSession()' until initial broker lock expires. Hence, library
+                // propagate the broker timeout error in synchronous ServiceBusSessionReceiverClient case.
+                //
+                if (!timeoutRetryDisabled) {
+                    if (failure instanceof TimeoutException) {
+                        return Mono.delay(Duration.ZERO);
+                    } else if (failure instanceof AmqpException
+                        && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
+                        // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
+                        // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
+                        //
+                        // Given N seconds elapsed since the last session acquire attempt, request for a session on
+                        // the 'parallel' Scheduler and free the QPid thread for other IO.
+                        //
+                        return Mono.delay(Duration.ZERO);
+                    }
                 }
+                final long id = System.nanoTime();
+                logger.atInfo().addKeyValue(TRACKING_ID_KEY, id).log("Unable to acquire a session.", failure);
+                // The link-endpoint-state publisher will emit error on the QPid Thread, that is a non-blocking Thread,
+                // publish the error on the (blockable) bounded-elastic thread to free QPid thread and to allow
+                // any blocking operation that downstream may do.
+                return Mono.<Long>error(failure)
+                    .publishOn(Schedulers.boundedElastic())
+                    .doOnError(e -> logger.atInfo()
+                        .addKeyValue(TRACKING_ID_KEY, id)
+                        .log("Emitting the error signal received for session acquire attempt.", e));
+
             })));
     }
 
