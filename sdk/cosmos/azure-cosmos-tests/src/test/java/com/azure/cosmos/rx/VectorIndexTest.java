@@ -296,7 +296,7 @@ public class VectorIndexTest extends TestSuiteBase {
         for (int i = 0; i < expectedEmbeddings.size(); i++) {
             assertThat(expectedEmbeddings.get(i).getPath()).isEqualTo(actualEmbeddings.get(i).getPath());
             assertThat(expectedEmbeddings.get(i).getDataType()).isEqualTo(actualEmbeddings.get(i).getDataType());
-            assertThat(expectedEmbeddings.get(i).getDimensions()).isEqualTo(actualEmbeddings.get(i).getDimensions());
+            assertThat(expectedEmbeddings.get(i).getEmbeddingDimensions()).isEqualTo(actualEmbeddings.get(i).getEmbeddingDimensions());
             assertThat(expectedEmbeddings.get(i).getDistanceFunction()).isEqualTo(actualEmbeddings.get(i).getDistanceFunction());
         }
     }
