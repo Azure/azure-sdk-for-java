@@ -2,21 +2,25 @@
 // Licensed under the MIT License.
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -69,11 +73,14 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
+        TokenCredential pipelinesCredential = getIdentityTestCredential(interceptorManager);
 
-
+        AccessToken accessToken = pipelinesCredential
+            .getTokenSync(new TokenRequestContext().addScopes("https://management.azure.com/.default"));
 
         String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String oidc = configuration.get("AZ_OIDC_TOKEN");
+//        String oidc = configuration.get("AZ_OIDC_TOKEN");
+        String oidc = accessToken.getToken();
         String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String aksCluster = configuration.get("IDENTITY_AKS_CLUSTER_NAME");
@@ -97,6 +104,36 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
             "Failed to get response from AKS");
     }
 
+
+    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        }
+
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            AzurePipelinesCredential azurePipelinesCredential = new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build();
+
+            return trc -> azurePipelinesCredential.getToken(trc).subscribeOn(Schedulers.boundedElastic());
+        }
+        return null;
+    }
+
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
@@ -108,8 +145,14 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
+        TokenCredential pipelinesCredential = getIdentityTestCredential(interceptorManager);
+
+        AccessToken accessToken = pipelinesCredential
+            .getTokenSync(new TokenRequestContext().addScopes("https://management.azure.com/.default"));
+
         String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String oidc = configuration.get("AZ_OIDC_TOKEN");
+//        String oidc = configuration.get("AZ_OIDC_TOKEN");
+        String oidc = accessToken.getToken();
         String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
