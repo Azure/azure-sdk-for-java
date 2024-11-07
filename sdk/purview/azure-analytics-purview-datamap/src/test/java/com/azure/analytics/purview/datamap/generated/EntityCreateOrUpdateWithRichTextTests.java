@@ -8,9 +8,8 @@ import com.azure.analytics.purview.datamap.models.AtlasEntity;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
 import com.azure.analytics.purview.datamap.models.EntityStatus;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -21,18 +20,20 @@ import org.junit.jupiter.api.Test;
 public final class EntityCreateOrUpdateWithRichTextTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testEntityCreateOrUpdateWithRichTextTests() throws IOException {
+    public void testEntityCreateOrUpdateWithRichTextTests() {
         // method invocation
         EntityMutationResult response
             = entityClient.createOrUpdate(new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
                 .setEntity(new AtlasEntity()
-                    .setAttributes(mapOf("owner", "ExampleOwner", "modifiedTime", 0, "createTime", 0, "qualifiedName",
-                        "https://exampleaccount.core.windows.net", "name", "ExampleStorageAccount", "description",
-                        JacksonAdapter.createDefaultSerializerAdapter()
-                            .deserialize("null", Object.class, SerializerEncoding.JSON),
-                        "userDescription", "<div><b>testing</b></div>", "publicAccessLevel",
-                        JacksonAdapter.createDefaultSerializerAdapter()
-                            .deserialize("null", Object.class, SerializerEncoding.JSON)))
+                    .setAttributes(mapOf("owner", BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
+                        "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
+                        BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
+                        BinaryData
+                            .fromBytes("https://exampleaccount.core.windows.net".getBytes(StandardCharsets.UTF_8)),
+                        "name", BinaryData.fromBytes("ExampleStorageAccount".getBytes(StandardCharsets.UTF_8)),
+                        "description", null, "userDescription",
+                        BinaryData.fromBytes("<div><b>testing</b></div>".getBytes(StandardCharsets.UTF_8)),
+                        "publicAccessLevel", null))
                     .setTypeName("azure_storage_account")
                     .setCreatedBy("ExampleCreator")
                     .setCustomAttributes(mapOf("microsoft_isDescriptionRichText", "true"))
