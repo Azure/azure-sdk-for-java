@@ -11,7 +11,7 @@
 
 #### Other Changes
 * Enable `JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS` by default for objectMapper. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
-* Added system property `COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS` which allow customer to disable/enable `JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS`. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520) 
+* Added system property `COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS` which allow customer to disable/enable `JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS`. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
 * Added system property `COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT` and `COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER` to allow user config error action on invalid UTF-8 bytes. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
 
 ### 4.63.4 (2024-10-15)
@@ -30,7 +30,7 @@
 
 #### Bugs Fixed
 * Fixed an issue where a `NullPointerException` was thrown with circuit breaker enabled and partition split / merge scenarios. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)
-* Fixed an issue when a `Batch` operation hitting end-to-end timeout would not capture diagnostics correctly. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)
+* Fixed an issue when a `Batch` operation hitting end-to-end timeout would not capture diagnostics correctly. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)  
 * Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property in `DocumentCollection`. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608) and [PR 42244](https://github.com/Azure/azure-sdk-for-java/pull/42244)
 * Fixed an issue where holding onto a `CosmosException` instance would hold a strong reference to a `RxDocumentClientImpl` instance preventing garbage collection of the `RxDocumentClientImpl` instance. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)
 
