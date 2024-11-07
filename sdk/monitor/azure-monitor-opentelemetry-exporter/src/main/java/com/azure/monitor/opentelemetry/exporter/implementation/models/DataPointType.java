@@ -23,7 +23,7 @@ public final class DataPointType extends ExpandableStringEnum<DataPointType> {
 
     /**
      * Creates a new instance of DataPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +32,7 @@ public final class DataPointType extends ExpandableStringEnum<DataPointType> {
 
     /**
      * Creates or finds a DataPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataPointType.
      */
@@ -42,7 +42,7 @@ public final class DataPointType extends ExpandableStringEnum<DataPointType> {
 
     /**
      * Gets known DataPointType values.
-     *
+     * 
      * @return known DataPointType values.
      */
     public static Collection<DataPointType> values() {

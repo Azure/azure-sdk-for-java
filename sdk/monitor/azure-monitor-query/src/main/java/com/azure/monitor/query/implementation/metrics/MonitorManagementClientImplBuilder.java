@@ -11,7 +11,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -285,6 +284,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
      */
     @Generated
     public MonitorManagementClientImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
         String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
@@ -293,6 +293,13 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
         MonitorManagementClientImpl client = new MonitorManagementClientImpl(localPipeline, localSerializerAdapter,
             this.subscriptionId, localHost, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(subscriptionId, "'subscriptionId' cannot be null.");
     }
 
     @Generated
@@ -308,10 +315,8 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()

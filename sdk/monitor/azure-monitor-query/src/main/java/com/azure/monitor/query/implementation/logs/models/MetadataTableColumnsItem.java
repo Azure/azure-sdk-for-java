@@ -39,8 +39,8 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
     private Boolean isPreferredFacet;
 
     /*
-     * an indication of the source of the column, used only when multiple workspaces have conflicting definition for
-     * the column
+     * an indication of the source of the column, used only when multiple workspaces have conflicting definition for the
+     * column
      */
     private Object source;
 
@@ -135,6 +135,9 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

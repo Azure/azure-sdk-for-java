@@ -5,19 +5,14 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
-import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
-import io.opentelemetry.sdk.resources.Resource;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +21,8 @@ import java.util.Map;
 @Fluent
 public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /*
-     * Envelope version. For internal use only. By assigning this the default, it will not be serialized within the payload unless changed to a value other than #1.
+     * Envelope version. For internal use only. By assigning this the default, it will not be serialized within the
+     * payload unless changed to a value other than #1.
      */
     private Integer version;
 
@@ -36,7 +32,12 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     private String name;
 
     /*
-     * Event date time when telemetry item was created. This is the wall clock time on the client when the event was generated. There is no guarantee that the client's time is accurate. This field must be formatted in UTC ISO 8601 format, with a trailing 'Z' character, as described publicly on https://en.wikipedia.org/wiki/ISO_8601#UTC. Note: the number of decimal seconds digits provided are variable (and unspecified). Consumers should handle this, i.e. managed code consumers should not use format 'O' for parsing as it specifies a fixed length. Example: 2009-06-15T13:45:30.0000000Z.
+     * Event date time when telemetry item was created. This is the wall clock time on the client when the event was
+     * generated. There is no guarantee that the client's time is accurate. This field must be formatted in UTC ISO 8601
+     * format, with a trailing 'Z' character, as described publicly on https://en.wikipedia.org/wiki/ISO_8601#UTC. Note:
+     * the number of decimal seconds digits provided are variable (and unspecified). Consumers should handle this, i.e.
+     * managed code consumers should not use format 'O' for parsing as it specifies a fixed length. Example:
+     * 2009-06-15T13:45:30.0000000Z.
      */
     private OffsetDateTime time;
 
@@ -65,9 +66,6 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      */
     private MonitorBase data;
 
-    private String connectionString;
-    private Resource resource;
-
     /**
      * Creates an instance of TelemetryItem class.
      */
@@ -77,7 +75,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /**
      * Get the version property: Envelope version. For internal use only. By assigning this the default, it will not be
      * serialized within the payload unless changed to a value other than #1.
-     *
+     * 
      * @return the version value.
      */
     public Integer getVersion() {
@@ -87,7 +85,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /**
      * Set the version property: Envelope version. For internal use only. By assigning this the default, it will not be
      * serialized within the payload unless changed to a value other than #1.
-     *
+     * 
      * @param version the version value to set.
      * @return the TelemetryItem object itself.
      */
@@ -98,7 +96,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
 
     /**
      * Get the name property: Type name of telemetry data item.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -107,7 +105,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
 
     /**
      * Set the name property: Type name of telemetry data item.
-     *
+     * 
      * @param name the name value to set.
      * @return the TelemetryItem object itself.
      */
@@ -123,7 +121,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * https://en.wikipedia.org/wiki/ISO_8601#UTC. Note: the number of decimal seconds digits provided are variable (and
      * unspecified). Consumers should handle this, i.e. managed code consumers should not use format 'O' for parsing as
      * it specifies a fixed length. Example: 2009-06-15T13:45:30.0000000Z.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -137,7 +135,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
      * https://en.wikipedia.org/wiki/ISO_8601#UTC. Note: the number of decimal seconds digits provided are variable (and
      * unspecified). Consumers should handle this, i.e. managed code consumers should not use format 'O' for parsing as
      * it specifies a fixed length. Example: 2009-06-15T13:45:30.0000000Z.
-     *
+     * 
      * @param time the time value to set.
      * @return the TelemetryItem object itself.
      */
@@ -149,7 +147,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /**
      * Get the sampleRate property: Sampling rate used in application. This telemetry item represents 100 / sampleRate
      * actual telemetry items.
-     *
+     * 
      * @return the sampleRate value.
      */
     public Float getSampleRate() {
@@ -159,7 +157,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /**
      * Set the sampleRate property: Sampling rate used in application. This telemetry item represents 100 / sampleRate
      * actual telemetry items.
-     *
+     * 
      * @param sampleRate the sampleRate value to set.
      * @return the TelemetryItem object itself.
      */
@@ -170,7 +168,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
 
     /**
      * Get the sequence property: Sequence field used to track absolute order of uploaded events.
-     *
+     * 
      * @return the sequence value.
      */
     public String getSequence() {
@@ -179,7 +177,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
 
     /**
      * Set the sequence property: Sequence field used to track absolute order of uploaded events.
-     *
+     * 
      * @param sequence the sequence value to set.
      * @return the TelemetryItem object itself.
      */
@@ -190,7 +188,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
 
     /**
      * Get the instrumentationKey property: The instrumentation key of the Application Insights resource.
-     *
+     * 
      * @return the instrumentationKey value.
      */
     public String getInstrumentationKey() {
@@ -199,7 +197,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
 
     /**
      * Set the instrumentationKey property: The instrumentation key of the Application Insights resource.
-     *
+     * 
      * @param instrumentationKey the instrumentationKey value to set.
      * @return the TelemetryItem object itself.
      */
@@ -211,7 +209,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /**
      * Get the tags property: Key/value collection of context properties. See ContextTagKeys for information on
      * available properties.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -221,7 +219,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     /**
      * Set the tags property: Key/value collection of context properties. See ContextTagKeys for information on
      * available properties.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TelemetryItem object itself.
      */
@@ -232,7 +230,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
 
     /**
      * Get the data property: Telemetry data item.
-     *
+     * 
      * @return the data value.
      */
     public MonitorBase getData() {
@@ -241,7 +239,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
 
     /**
      * Set the data property: Telemetry data item.
-     *
+     * 
      * @param data the data value to set.
      * @return the TelemetryItem object itself.
      */
@@ -250,81 +248,27 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
         return this;
     }
 
-    public String getConnectionString() {
-        return connectionString;
-    }
-
-    public TelemetryItem setConnectionString(String connectionString) {
-        this.connectionString = connectionString;
-        this.instrumentationKey = ConnectionString.parse(connectionString).getInstrumentationKey();
-        return this;
-    }
-
-    public TelemetryItem setConnectionString(ConnectionString connectionString) {
-        this.connectionString = connectionString.getOriginalString();
-        this.instrumentationKey = connectionString.getInstrumentationKey();
-        return this;
-    }
-
-    public TelemetryItem setConnectionString(StatsbeatConnectionString connectionString) {
-        instrumentationKey = connectionString.getInstrumentationKey();
-        // TODO (heya) turn StatsbeatConnectionString into a real connection string?
-        this.connectionString = "InstrumentationKey=" + instrumentationKey + ";IngestionEndpoint="
-            + connectionString.getIngestionEndpoint();
-        return this;
-    }
-
-    public Resource getResource() {
-        return resource;
-    }
-
-    public void setResource(Resource resource) {
-        this.resource = resource;
-    }
-
-    public Map<String, String> getResourceFromTags() {
-        if (tags == null) {
-            // Statsbeat doesn't have tags
-            return Collections.emptyMap();
-        }
-        Map<String, String> resourceFromTags = new HashMap<>();
-        populateFromTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), resourceFromTags);
-        populateFromTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), resourceFromTags);
-        populateFromTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), resourceFromTags);
-        return resourceFromTags;
-    }
-
-    private void populateFromTag(String contextTagKey, Map<String, String> resourceFromTags) {
-        if (tags == null) {
-            return;
-        }
-        String roleName = tags.get(contextTagKey);
-        if (roleName != null) {
-            resourceFromTags.put(contextTagKey, roleName);
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("ver", this.version);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("time",
             this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
+        jsonWriter.writeNumberField("ver", this.version);
         jsonWriter.writeNumberField("sampleRate", this.sampleRate);
         jsonWriter.writeStringField("seq", this.sequence);
         jsonWriter.writeStringField("iKey", this.instrumentationKey);
-        jsonWriter.writeMapField("tags", this.tags, JsonWriter::writeString);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("data", this.data);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of TelemetryItem from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TelemetryItem if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -338,13 +282,13 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("ver".equals(fieldName)) {
-                    deserializedTelemetryItem.version = reader.getNullable(JsonReader::getInt);
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedTelemetryItem.name = reader.getString();
                 } else if ("time".equals(fieldName)) {
-                    deserializedTelemetryItem.time
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedTelemetryItem.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("ver".equals(fieldName)) {
+                    deserializedTelemetryItem.version = reader.getNullable(JsonReader::getInt);
                 } else if ("sampleRate".equals(fieldName)) {
                     deserializedTelemetryItem.sampleRate = reader.getNullable(JsonReader::getFloat);
                 } else if ("seq".equals(fieldName)) {
@@ -352,7 +296,8 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
                 } else if ("iKey".equals(fieldName)) {
                     deserializedTelemetryItem.instrumentationKey = reader.getString();
                 } else if ("tags".equals(fieldName)) {
-                    deserializedTelemetryItem.tags = reader.readMap(JsonReader::getString);
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTelemetryItem.tags = tags;
                 } else if ("data".equals(fieldName)) {
                     deserializedTelemetryItem.data = MonitorBase.fromJson(reader);
                 } else {

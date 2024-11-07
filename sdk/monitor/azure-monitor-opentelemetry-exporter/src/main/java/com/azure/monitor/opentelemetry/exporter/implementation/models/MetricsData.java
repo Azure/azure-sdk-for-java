@@ -19,7 +19,8 @@ import java.util.Map;
 @Fluent
 public final class MetricsData extends MonitorDomain {
     /*
-     * List of metrics. Only one metric in the list is currently supported by Application Insights storage. If multiple data points were sent only the first one will be used.
+     * List of metrics. Only one metric in the list is currently supported by Application Insights storage. If multiple
+     * data points were sent only the first one will be used.
      */
     private List<MetricDataPoint> metrics;
 
@@ -37,7 +38,7 @@ public final class MetricsData extends MonitorDomain {
     /**
      * Get the metrics property: List of metrics. Only one metric in the list is currently supported by Application
      * Insights storage. If multiple data points were sent only the first one will be used.
-     *
+     * 
      * @return the metrics value.
      */
     public List<MetricDataPoint> getMetrics() {
@@ -47,7 +48,7 @@ public final class MetricsData extends MonitorDomain {
     /**
      * Set the metrics property: List of metrics. Only one metric in the list is currently supported by Application
      * Insights storage. If multiple data points were sent only the first one will be used.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the MetricsData object itself.
      */
@@ -58,7 +59,7 @@ public final class MetricsData extends MonitorDomain {
 
     /**
      * Get the properties property: Collection of custom properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -67,7 +68,7 @@ public final class MetricsData extends MonitorDomain {
 
     /**
      * Set the properties property: Collection of custom properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetricsData object itself.
      */
@@ -92,8 +93,8 @@ public final class MetricsData extends MonitorDomain {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("ver", getVersion());
-        jsonWriter.writeArrayField("metrics", this.metrics, JsonWriter::writeJson);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
+        jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -104,7 +105,7 @@ public final class MetricsData extends MonitorDomain {
 
     /**
      * Reads an instance of MetricsData from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of MetricsData if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -122,9 +123,11 @@ public final class MetricsData extends MonitorDomain {
                 if ("ver".equals(fieldName)) {
                     deserializedMetricsData.setVersion(reader.getInt());
                 } else if ("metrics".equals(fieldName)) {
-                    deserializedMetricsData.metrics = reader.readArray(MetricDataPoint::fromJson);
+                    List<MetricDataPoint> metrics = reader.readArray(reader1 -> MetricDataPoint.fromJson(reader1));
+                    deserializedMetricsData.metrics = metrics;
                 } else if ("properties".equals(fieldName)) {
-                    deserializedMetricsData.properties = reader.readMap(JsonReader::getString);
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMetricsData.properties = properties;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
