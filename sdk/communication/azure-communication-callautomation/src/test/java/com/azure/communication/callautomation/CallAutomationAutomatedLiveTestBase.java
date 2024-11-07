@@ -236,6 +236,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             if (!eventStore.containsKey(callConnectionId)) {
                 eventStore.put(callConnectionId, new ConcurrentHashMap<>());
             }
+
+            System.out.println("CallConnectionId: " + callConnectionId + " Event Type " + event.getClass());
             eventStore.get(callConnectionId).put(event.getClass(), event);
         }
     }
