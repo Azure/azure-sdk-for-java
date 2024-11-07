@@ -144,48 +144,6 @@ public class VectorIndexTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void shouldFailOnWrongVectorIndex() {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-
-        IndexingPolicy indexingPolicy = new IndexingPolicy();
-        indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath("/*");
-        indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
-
-        IncludedPath includedPath1 = new IncludedPath("/name/?");
-        IncludedPath includedPath2 = new IncludedPath("/description/?");
-        indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
-
-        CosmosVectorIndexSpec cosmosVectorIndexSpec = new CosmosVectorIndexSpec();
-        cosmosVectorIndexSpec.setPath("/vector1");
-        cosmosVectorIndexSpec.setType("NonFlat");
-        indexingPolicy.setVectorIndexes(ImmutableList.of(cosmosVectorIndexSpec));
-        collectionDefinition.setIndexingPolicy(indexingPolicy);
-
-        CosmosVectorEmbedding embedding = new CosmosVectorEmbedding();
-        embedding.setPath("/vector1");
-        embedding.setDataType(CosmosVectorDataType.FLOAT32);
-        embedding.setDimensions(3);
-        embedding.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
-        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy();
-        cosmosVectorEmbeddingPolicy.setCosmosVectorEmbeddings(ImmutableList.of(embedding));
-        collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
-
-        try {
-            database.createContainer(collectionDefinition).block();
-            fail("Container creation will fail as wrong vector index type is being passed");
-        } catch (CosmosException ex) {
-            assertThat(ex.getStatusCode()).isEqualTo(400);
-            assertThat(ex.getMessage()).contains("NonFlat is invalid. Valid types are 'flat', 'quantizedFlat' or 'diskANN'.");
-        }
-    }
-
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void shouldFailVectorIndexSimilarPathDifferentVectorType() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -258,6 +216,18 @@ public class VectorIndexTest extends TestSuiteBase {
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(400);
             assertThat(ex.getMessage()).contains("Duplicate Path :/vector2 found in Vector Embedding Policy.");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void shouldFailOnWrongVectorIndex() {
+        try {
+            CosmosVectorIndexSpec cosmosVectorIndexSpec = new CosmosVectorIndexSpec();
+            cosmosVectorIndexSpec.setPath("/vector1");
+            cosmosVectorIndexSpec.setType("NonFlat");
+            fail("Container creation will fail as wrong vector index type is being passed");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).contains("NonFlat is an invalid index type. Valid index types are 'flat', 'quantizedFlat' or 'diskANN'.");
         }
     }
 
@@ -338,8 +308,7 @@ public class VectorIndexTest extends TestSuiteBase {
             assertThat(expected.get(i).getType()).isEqualTo(actual.get(i).getType());
             if (Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
                 Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
-                assertThat(expected.get(i).getQuantizationByteSize()).isEqualTo(actual.get(i).getQuantizationByteSize());
-                assertThat(expected.get(i).getVectorIndexShardKey()).isEqualTo(actual.get(i).getVectorIndexShardKey());
+                assertThat(expected.get(i).getQuantizationSizeInBytes()).isEqualTo(actual.get(i).getQuantizationSizeInBytes());
             }
             if (Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
                 assertThat(expected.get(i).getIndexingSearchListSize()).isEqualTo(actual.get(i).getIndexingSearchListSize());
@@ -356,15 +325,13 @@ public class VectorIndexTest extends TestSuiteBase {
         CosmosVectorIndexSpec cosmosVectorIndexSpec2 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec2.setPath("/vector2");
         cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
-        cosmosVectorIndexSpec2.setQuantizationByteSize(2);
-        cosmosVectorIndexSpec2.setVectorIndexShardKey(Arrays.asList("/Country/City"));
+        cosmosVectorIndexSpec2.setQuantizationSizeInBytes(2);
 
         CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec3.setPath("/vector3");
         cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
-        cosmosVectorIndexSpec3.setQuantizationByteSize(2);
+        cosmosVectorIndexSpec3.setQuantizationSizeInBytes(2);
         cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
-        cosmosVectorIndexSpec3.setVectorIndexShardKey(Arrays.asList("/Country/City"));
 
         return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
     }

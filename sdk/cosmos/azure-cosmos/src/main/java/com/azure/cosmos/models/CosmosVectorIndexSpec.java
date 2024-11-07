@@ -7,9 +7,7 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -21,9 +19,9 @@ public final class CosmosVectorIndexSpec {
 
     private final JsonSerializable jsonSerializable;
     private String type;
-    private Integer quantizationByteSize;
+    @JsonProperty(Constants.Properties.VECTOR_QUANTIZATION_SIZE_IN_BYTES)
+    private Integer quantizationSizeInBytes;
     private Integer indexingSearchListSize;
-    private List<String> vectorIndexShardKey;
 
     /**
      * Constructor
@@ -72,17 +70,12 @@ public final class CosmosVectorIndexSpec {
      */
     public CosmosVectorIndexSpec setType(String type) {
         checkNotNull(type, "cosmosVectorIndexType cannot be null");
+        if (!CosmosVectorIndexType.isValidType(type)) {
+            throw new IllegalArgumentException(String.format("%s is an invalid index type. Valid index types are 'flat', 'quantizedFlat' or 'diskANN'.", type));
+        }
         this.type = type;
         this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type, CosmosItemSerializer.DEFAULT_SERIALIZER);
 
-        // Reset restricted properties if the type is not DiskANN or QuantizedFlat
-        if (!type.equals(CosmosVectorIndexType.DISK_ANN.toString()) && !type.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString())) {
-            this.quantizationByteSize = null;
-            this.vectorIndexShardKey = null;
-        }
-        if (!type.equals(CosmosVectorIndexType.DISK_ANN.toString())) {
-            this.indexingSearchListSize = null;
-        }
         return this;
     }
 
@@ -94,24 +87,11 @@ public final class CosmosVectorIndexSpec {
      * This applies to index types DiskANN and quantizedFlat. The allowed range for this parameter
      * is between 1 and 3.
      */
-    public Integer getQuantizationByteSize() {
-        if (this.quantizationByteSize == null && validateIndexType(false)) {
-            this.quantizationByteSize = this.jsonSerializable.getInt(Constants.Properties.VECTOR_QUANTIZATION_BYTE_SIZE);
-
-            if (this.quantizationByteSize <= 0) {
-                this.quantizationByteSize = null;
-            }
+    public Integer getQuantizationSizeInBytes() {
+        if (this.quantizationSizeInBytes == null) {
+            this.quantizationSizeInBytes = this.jsonSerializable.getInt(Constants.Properties.VECTOR_QUANTIZATION_SIZE_IN_BYTES);
         }
-        return this.quantizationByteSize;
-    }
-
-    private Boolean validateIndexType(boolean isIndexingSearchListSize) {
-        String vectorIndexType = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
-        if (!isIndexingSearchListSize) {
-            return vectorIndexType.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
-                vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
-        }
-        return vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
+        return this.quantizationSizeInBytes;
     }
 
     /**
@@ -120,13 +100,15 @@ public final class CosmosVectorIndexSpec {
      * @param quantizationByteSize the number of bytes used in product quantization of the vectors. A larger value may
      *                             result in better recall for vector searches at the expense of latency. This applies
      *                             to index types DiskANN and quantizedFlat. The allowed range for this parameter is
-     *                             between 1 and 3.
+     *                             between 1 and min(Dimensions, 512). The default value would be 64.
      * @return CosmosVectorIndexSpec
      */
-    public CosmosVectorIndexSpec setQuantizationByteSize(Integer quantizationByteSize) {
-        if (validateIndexType(false) && quantizationByteSize != null) {
-            this.quantizationByteSize = quantizationByteSize;
-            this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_BYTE_SIZE, this.quantizationByteSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+    public CosmosVectorIndexSpec setQuantizationSizeInBytes(Integer quantizationByteSize) {
+        if (validateIndexType(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) && quantizationByteSize != null) {
+            this.quantizationSizeInBytes = quantizationByteSize;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_SIZE_IN_BYTES, this.quantizationSizeInBytes, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        } else {
+            this.quantizationSizeInBytes = null;
         }
         return this;
     }
@@ -139,12 +121,8 @@ public final class CosmosVectorIndexSpec {
      * parameter is between 25 and 500.
      */
     public Integer getIndexingSearchListSize() {
-        if (this.indexingSearchListSize == null && validateIndexType(true)) {
+        if (this.indexingSearchListSize == null) {
             this.indexingSearchListSize = this.jsonSerializable.getInt(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE);
-
-            if (this.indexingSearchListSize <= 0) {
-                this.indexingSearchListSize = null;
-            }
         }
         return this.indexingSearchListSize;
     }
@@ -159,41 +137,11 @@ public final class CosmosVectorIndexSpec {
      * @return CosmosVectorIndexSpec
      */
     public CosmosVectorIndexSpec setIndexingSearchListSize(Integer indexingSearchListSize) {
-        if (validateIndexType(true) && indexingSearchListSize != null) {
+        if (validateIndexType(IndexProperty.INDEXING_SEARCH_LIST_SIZE) && indexingSearchListSize != null) {
             this.indexingSearchListSize = indexingSearchListSize;
             this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE, this.indexingSearchListSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        }
-        return this;
-    }
-
-    /**
-     * Gets the vector index shard key
-     *
-     * @return vectorIndexShardKey the list of string containing the shard keys used for partitioning the vector
-     * indexes. This applies to index types DiskANN and quantizedFlat.
-     */
-    public List<String> getVectorIndexShardKey() {
-        if (this.vectorIndexShardKey == null && validateIndexType(false)) {
-            this.vectorIndexShardKey = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEX_SHARD_KEY, String.class);
-
-            if (this.vectorIndexShardKey == null) {
-                this.vectorIndexShardKey = new ArrayList<>();
-            }
-        }
-        return this.vectorIndexShardKey;
-    }
-
-    /**
-     * Sets the vector index shard key
-     *
-     * @param vectorIndexShardKey the list of string containing the shard keys used for partitioning the vector
-     *                            indexes. This applies to index types DiskANN and quantizedFlat.
-     * @return CosmosVectorIndexSpec
-     */
-    public CosmosVectorIndexSpec setVectorIndexShardKey(List<String> vectorIndexShardKey) {
-        if (validateIndexType(true) && vectorIndexShardKey != null) {
-            this.vectorIndexShardKey = vectorIndexShardKey;
-            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEY, this.vectorIndexShardKey, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        } else {
+            this.indexingSearchListSize = null;
         }
         return this;
     }
@@ -204,5 +152,19 @@ public final class CosmosVectorIndexSpec {
 
     JsonSerializable getJsonSerializable() {
         return this.jsonSerializable;
+    }
+
+    private Boolean validateIndexType(IndexProperty indexProperty) {
+        String vectorIndexType = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
+        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES)) {
+            return vectorIndexType.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
+                vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
+        }
+        return vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
+    }
+
+    public enum IndexProperty {
+        INDEXING_SEARCH_LIST_SIZE,
+        QUANTIZATION_SIZE_IN_BYTES;
     }
 }
