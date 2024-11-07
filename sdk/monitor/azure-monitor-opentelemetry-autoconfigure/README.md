@@ -1,4 +1,4 @@
-# Azure Monitor OpenTelemetry SDK Autoconfigure Distro for Application Insights in Java applications
+# Azure Monitor OpenTelemetry SDK Autoconfigure Distro for Application Insights in Java applications client library for Java
 
 This client library provides support for exporting OpenTelemetry data to Azure Monitor. This package assumes your
 application is already instrumented with the [OpenTelemetry SDK][opentelemetry_sdk] following the [OpenTelemetry
