@@ -79,8 +79,8 @@ public final class PrivateEndpointConnectionWrapperProperties {
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionWrapperProperties object itself.
      */
-    public PrivateEndpointConnectionWrapperProperties withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionWrapperProperties
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
@@ -113,11 +113,9 @@ public final class PrivateEndpointConnectionWrapperProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateLinkServiceConnectionState in model"
-                            + " PrivateEndpointConnectionWrapperProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property privateLinkServiceConnectionState in model"
+                    + " PrivateEndpointConnectionWrapperProperties"));
         } else {
             privateLinkServiceConnectionState().validate();
         }

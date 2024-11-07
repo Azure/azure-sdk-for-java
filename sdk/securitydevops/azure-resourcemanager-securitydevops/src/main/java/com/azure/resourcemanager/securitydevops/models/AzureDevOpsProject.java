@@ -63,11 +63,13 @@ public interface AzureDevOpsProject {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AzureDevOpsProject definition stages. */
     interface DefinitionStages {
         /** The first stage of the AzureDevOpsProject definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AzureDevOpsProject definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -78,9 +80,10 @@ public interface AzureDevOpsProject {
              * @param azureDevOpsOrgName Name of the AzureDevOps Org.
              * @return the next definition stage.
              */
-            WithCreate withExistingOrg(
-                String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName);
+            WithCreate withExistingOrg(String resourceGroupName, String azureDevOpsConnectorName,
+                String azureDevOpsOrgName);
         }
+
         /**
          * The stage of the AzureDevOpsProject definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -101,6 +104,7 @@ public interface AzureDevOpsProject {
              */
             AzureDevOpsProject create(Context context);
         }
+
         /** The stage of the AzureDevOpsProject definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -112,6 +116,7 @@ public interface AzureDevOpsProject {
             WithCreate withProperties(AzureDevOpsProjectProperties properties);
         }
     }
+
     /**
      * Begins update for the AzureDevOpsProject resource.
      *
@@ -136,6 +141,7 @@ public interface AzureDevOpsProject {
          */
         AzureDevOpsProject apply(Context context);
     }
+
     /** The AzureDevOpsProject update stages. */
     interface UpdateStages {
         /** The stage of the AzureDevOpsProject update allowing to specify properties. */
@@ -149,6 +155,7 @@ public interface AzureDevOpsProject {
             Update withProperties(AzureDevOpsProjectProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

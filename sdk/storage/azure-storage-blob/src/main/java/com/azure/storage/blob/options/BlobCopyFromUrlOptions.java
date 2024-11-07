@@ -100,7 +100,6 @@ public class BlobCopyFromUrlOptions {
         return sourceRequestConditions;
     }
 
-
     /**
      * @param sourceRequestConditions {@link RequestConditions} for the source.
      * @return The updated options.

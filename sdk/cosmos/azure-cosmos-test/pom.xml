@@ -52,6 +52,7 @@ Licensed under the MIT License.
     <jacoco.skip>true</jacoco.skip> <!-- project has no tests -->
 
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>

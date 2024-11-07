@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cognitive Services resource type and SKU. */
+/**
+ * Cognitive Services resource type and SKU.
+ */
 @Fluent
-public final class AccountSku {
+public final class AccountSku implements JsonSerializable<AccountSku> {
     /*
      * Resource Namespace and Type
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The SKU of Cognitive Services account.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
-    /** Creates an instance of AccountSku class. */
+    /**
+     * Creates an instance of AccountSku class.
+     */
     public AccountSku() {
     }
 
     /**
      * Get the resourceType property: Resource Namespace and Type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -37,7 +43,7 @@ public final class AccountSku {
 
     /**
      * Set the resourceType property: Resource Namespace and Type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the AccountSku object itself.
      */
@@ -48,7 +54,7 @@ public final class AccountSku {
 
     /**
      * Get the sku property: The SKU of Cognitive Services account.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -57,7 +63,7 @@ public final class AccountSku {
 
     /**
      * Set the sku property: The SKU of Cognitive Services account.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AccountSku object itself.
      */
@@ -68,12 +74,51 @@ public final class AccountSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountSku if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AccountSku.
+     */
+    public static AccountSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountSku deserializedAccountSku = new AccountSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedAccountSku.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAccountSku.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountSku;
+        });
     }
 }

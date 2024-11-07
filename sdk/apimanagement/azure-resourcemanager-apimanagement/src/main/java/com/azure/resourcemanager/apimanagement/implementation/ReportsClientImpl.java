@@ -58,218 +58,138 @@ public final class ReportsClientImpl implements ReportsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientR")
     public interface ReportsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byApi")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byApi")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByApi(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByApi(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byUser")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byUser")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByUser(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByUser(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byOperation")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byOperation")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByOperation(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByOperation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byProduct")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byProduct")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByProduct(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByProduct(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byGeo")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byGeo")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByGeo(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByGeo(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/bySubscription")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/bySubscription")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listBySubscription(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byTime")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byTime")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByTime(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("interval") Duration interval,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByTime(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$orderby") String orderby, @QueryParam("interval") Duration interval,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byRequest")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/reports/byRequest")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RequestReportCollection>> listByRequest(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RequestReportCollection>> listByRequest(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByApiNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByApiNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByUserNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByUserNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReportCollection>> listByOperationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReportCollection>> listByProductNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByGeoNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByGeoNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReportCollection>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportCollection>> listByTimeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReportCollection>> listByTimeNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -288,13 +208,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByApiSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByApiSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -307,37 +225,15 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByApi(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            orderby,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByApi(this.client.getEndpoint(), resourceGroupName, serviceName, filter,
+                top, skip, orderby, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -358,19 +254,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByApiSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByApiSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -383,35 +271,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByApi(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                orderby,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByApi(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip, orderby,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -429,8 +298,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByApiAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private PagedFlux<ReportRecordContractInner> listByApiAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby) {
         return new PagedFlux<>(
             () -> listByApiSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby),
             nextLink -> listByApiNextSinglePageAsync(nextLink));
@@ -448,8 +317,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByApiAsync(
-        String resourceGroupName, String serviceName, String filter) {
+    private PagedFlux<ReportRecordContractInner> listByApiAsync(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -474,14 +343,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByApiAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private PagedFlux<ReportRecordContractInner> listByApiAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedFlux<>(
             () -> listByApiSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context),
             nextLink -> listByApiNextSinglePageAsync(nextLink, context));
@@ -499,8 +362,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByApi(
-        String resourceGroupName, String serviceName, String filter) {
+    public PagedIterable<ReportRecordContractInner> listByApi(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -523,14 +386,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    public PagedIterable<ReportRecordContractInner> listByApi(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedIterable<>(listByApiAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context));
     }
 
@@ -561,13 +418,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByUserSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByUserSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -580,37 +435,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByUser(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            orderby,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByUser(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top,
+                    skip, orderby, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -642,19 +476,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByUserSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByUserSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -667,35 +493,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByUser(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                orderby,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByUser(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip, orderby,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -724,8 +531,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByUserAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private PagedFlux<ReportRecordContractInner> listByUserAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby) {
         return new PagedFlux<>(
             () -> listByUserSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby),
             nextLink -> listByUserNextSinglePageAsync(nextLink));
@@ -754,8 +561,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByUserAsync(
-        String resourceGroupName, String serviceName, String filter) {
+    private PagedFlux<ReportRecordContractInner> listByUserAsync(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -791,14 +598,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByUserAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private PagedFlux<ReportRecordContractInner> listByUserAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedFlux<>(
             () -> listByUserSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context),
             nextLink -> listByUserNextSinglePageAsync(nextLink, context));
@@ -827,8 +628,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByUser(
-        String resourceGroupName, String serviceName, String filter) {
+    public PagedIterable<ReportRecordContractInner> listByUser(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -862,14 +663,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByUser(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    public PagedIterable<ReportRecordContractInner> listByUser(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedIterable<>(
             listByUserAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context));
     }
@@ -901,13 +696,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByOperationSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByOperationSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -920,37 +713,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByOperation(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            orderby,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByOperation(this.client.getEndpoint(), resourceGroupName, serviceName, filter,
+                    top, skip, orderby, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -982,19 +754,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByOperationSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByOperationSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1007,35 +771,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByOperation(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                orderby,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByOperation(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip, orderby,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1064,8 +809,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByOperationAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private PagedFlux<ReportRecordContractInner> listByOperationAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby) {
         return new PagedFlux<>(
             () -> listByOperationSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby),
             nextLink -> listByOperationNextSinglePageAsync(nextLink));
@@ -1094,8 +839,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByOperationAsync(
-        String resourceGroupName, String serviceName, String filter) {
+    private PagedFlux<ReportRecordContractInner> listByOperationAsync(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -1131,14 +876,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByOperationAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private PagedFlux<ReportRecordContractInner> listByOperationAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedFlux<>(
             () -> listByOperationSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context),
             nextLink -> listByOperationNextSinglePageAsync(nextLink, context));
@@ -1167,8 +906,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByOperation(
-        String resourceGroupName, String serviceName, String filter) {
+    public PagedIterable<ReportRecordContractInner> listByOperation(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -1202,14 +941,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByOperation(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    public PagedIterable<ReportRecordContractInner> listByOperation(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedIterable<>(
             listByOperationAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context));
     }
@@ -1240,13 +973,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByProductSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByProductSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1259,37 +990,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByProduct(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            orderby,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByProduct(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top,
+                    skip, orderby, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1320,19 +1030,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByProductSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByProductSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1345,35 +1047,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProduct(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                orderby,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByProduct(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip, orderby,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1401,8 +1084,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByProductAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private PagedFlux<ReportRecordContractInner> listByProductAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby) {
         return new PagedFlux<>(
             () -> listByProductSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby),
             nextLink -> listByProductNextSinglePageAsync(nextLink));
@@ -1430,8 +1113,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByProductAsync(
-        String resourceGroupName, String serviceName, String filter) {
+    private PagedFlux<ReportRecordContractInner> listByProductAsync(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -1466,14 +1149,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByProductAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private PagedFlux<ReportRecordContractInner> listByProductAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedFlux<>(
             () -> listByProductSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context),
             nextLink -> listByProductNextSinglePageAsync(nextLink, context));
@@ -1501,8 +1178,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByProduct(
-        String resourceGroupName, String serviceName, String filter) {
+    public PagedIterable<ReportRecordContractInner> listByProduct(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -1535,14 +1212,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    public PagedIterable<ReportRecordContractInner> listByProduct(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedIterable<>(
             listByProductAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context));
     }
@@ -1572,13 +1243,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByGeoSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByGeoSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1591,36 +1260,15 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByGeo(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByGeo(this.client.getEndpoint(), resourceGroupName, serviceName, filter,
+                top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1650,13 +1298,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByGeoSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByGeoSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1669,34 +1315,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByGeo(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByGeo(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1723,10 +1351,9 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByGeoAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
-        return new PagedFlux<>(
-            () -> listByGeoSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
+    private PagedFlux<ReportRecordContractInner> listByGeoAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip) {
+        return new PagedFlux<>(() -> listByGeoSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
             nextLink -> listByGeoNextSinglePageAsync(nextLink));
     }
 
@@ -1752,12 +1379,11 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByGeoAsync(
-        String resourceGroupName, String serviceName, String filter) {
+    private PagedFlux<ReportRecordContractInner> listByGeoAsync(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-            () -> listByGeoSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
+        return new PagedFlux<>(() -> listByGeoSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
             nextLink -> listByGeoNextSinglePageAsync(nextLink));
     }
 
@@ -1786,8 +1412,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByGeoAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private PagedFlux<ReportRecordContractInner> listByGeoAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByGeoSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, context),
             nextLink -> listByGeoNextSinglePageAsync(nextLink, context));
@@ -1815,8 +1441,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByGeo(
-        String resourceGroupName, String serviceName, String filter) {
+    public PagedIterable<ReportRecordContractInner> listByGeo(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         return new PagedIterable<>(listByGeoAsync(resourceGroupName, serviceName, filter, top, skip));
@@ -1847,8 +1473,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByGeo(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    public PagedIterable<ReportRecordContractInner> listByGeo(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(listByGeoAsync(resourceGroupName, serviceName, filter, top, skip, context));
     }
 
@@ -1878,13 +1504,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listBySubscriptionSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listBySubscriptionSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1897,37 +1521,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            orderby,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listBySubscription(this.client.getEndpoint(), resourceGroupName, serviceName, filter,
+                    top, skip, orderby, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1958,19 +1561,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listBySubscriptionSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listBySubscriptionSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1983,35 +1578,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscription(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                orderby,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySubscription(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip, orderby,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2039,8 +1615,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listBySubscriptionAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, String orderby) {
+    private PagedFlux<ReportRecordContractInner> listBySubscriptionAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby) {
         return new PagedFlux<>(
             () -> listBySubscriptionSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
@@ -2068,8 +1644,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listBySubscriptionAsync(
-        String resourceGroupName, String serviceName, String filter) {
+    private PagedFlux<ReportRecordContractInner> listBySubscriptionAsync(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -2104,18 +1680,10 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listBySubscriptionAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listBySubscriptionSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    private PagedFlux<ReportRecordContractInner> listBySubscriptionAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
+        return new PagedFlux<>(() -> listBySubscriptionSinglePageAsync(resourceGroupName, serviceName, filter, top,
+            skip, orderby, context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2140,8 +1708,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listBySubscription(
-        String resourceGroupName, String serviceName, String filter) {
+    public PagedIterable<ReportRecordContractInner> listBySubscription(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -2174,14 +1742,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listBySubscription(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    public PagedIterable<ReportRecordContractInner> listBySubscription(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, String orderby, Context context) {
         return new PagedIterable<>(
             listBySubscriptionAsync(resourceGroupName, serviceName, filter, top, skip, orderby, context));
     }
@@ -2215,19 +1777,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByTimeSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Duration interval,
-        Integer top,
-        Integer skip,
-        String orderby) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByTimeSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Duration interval, Integer top, Integer skip, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2243,38 +1797,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter interval is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByTime(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            orderby,
-                            interval,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByTime(this.client.getEndpoint(), resourceGroupName, serviceName,
+                filter, top, skip, orderby, interval, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2308,20 +1840,12 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByTimeSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Duration interval,
-        Integer top,
-        Integer skip,
-        String orderby,
+    private Mono<PagedResponse<ReportRecordContractInner>> listByTimeSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Duration interval, Integer top, Integer skip, String orderby,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2337,36 +1861,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter interval is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTime(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                orderby,
-                interval,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTime(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip, orderby, interval,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2397,14 +1901,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByTimeAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Duration interval,
-        Integer top,
-        Integer skip,
-        String orderby) {
+    private PagedFlux<ReportRecordContractInner> listByTimeAsync(String resourceGroupName, String serviceName,
+        String filter, Duration interval, Integer top, Integer skip, String orderby) {
         return new PagedFlux<>(
             () -> listByTimeSinglePageAsync(resourceGroupName, serviceName, filter, interval, top, skip, orderby),
             nextLink -> listByTimeNextSinglePageAsync(nextLink));
@@ -2435,8 +1933,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByTimeAsync(
-        String resourceGroupName, String serviceName, String filter, Duration interval) {
+    private PagedFlux<ReportRecordContractInner> listByTimeAsync(String resourceGroupName, String serviceName,
+        String filter, Duration interval) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -2474,20 +1972,10 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportRecordContractInner> listByTimeAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Duration interval,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByTimeSinglePageAsync(
-                    resourceGroupName, serviceName, filter, interval, top, skip, orderby, context),
-            nextLink -> listByTimeNextSinglePageAsync(nextLink, context));
+    private PagedFlux<ReportRecordContractInner> listByTimeAsync(String resourceGroupName, String serviceName,
+        String filter, Duration interval, Integer top, Integer skip, String orderby, Context context) {
+        return new PagedFlux<>(() -> listByTimeSinglePageAsync(resourceGroupName, serviceName, filter, interval, top,
+            skip, orderby, context), nextLink -> listByTimeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2515,8 +2003,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByTime(
-        String resourceGroupName, String serviceName, String filter, Duration interval) {
+    public PagedIterable<ReportRecordContractInner> listByTime(String resourceGroupName, String serviceName,
+        String filter, Duration interval) {
         final Integer top = null;
         final Integer skip = null;
         final String orderby = null;
@@ -2553,15 +2041,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportRecordContractInner> listByTime(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Duration interval,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context) {
+    public PagedIterable<ReportRecordContractInner> listByTime(String resourceGroupName, String serviceName,
+        String filter, Duration interval, Integer top, Integer skip, String orderby, Context context) {
         return new PagedIterable<>(
             listByTimeAsync(resourceGroupName, serviceName, filter, interval, top, skip, orderby, context));
     }
@@ -2585,13 +2066,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RequestReportRecordContractInner>> listByRequestSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<RequestReportRecordContractInner>> listByRequestSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2604,31 +2083,15 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByRequest(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RequestReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByRequest(this.client.getEndpoint(), resourceGroupName, serviceName,
+                filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RequestReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2652,13 +2115,11 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RequestReportRecordContractInner>> listByRequestSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private Mono<PagedResponse<RequestReportRecordContractInner>> listByRequestSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2671,29 +2132,16 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByRequest(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByRequest(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -2714,8 +2162,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RequestReportRecordContractInner> listByRequestAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
+    private PagedFlux<RequestReportRecordContractInner> listByRequestAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip) {
         return new PagedFlux<>(() -> listByRequestSinglePageAsync(resourceGroupName, serviceName, filter, top, skip));
     }
 
@@ -2735,8 +2183,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RequestReportRecordContractInner> listByRequestAsync(
-        String resourceGroupName, String serviceName, String filter) {
+    private PagedFlux<RequestReportRecordContractInner> listByRequestAsync(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         return new PagedFlux<>(() -> listByRequestSinglePageAsync(resourceGroupName, serviceName, filter, top, skip));
@@ -2761,8 +2209,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RequestReportRecordContractInner> listByRequestAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private PagedFlux<RequestReportRecordContractInner> listByRequestAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByRequestSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, context));
     }
@@ -2783,8 +2231,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RequestReportRecordContractInner> listByRequest(
-        String resourceGroupName, String serviceName, String filter) {
+    public PagedIterable<RequestReportRecordContractInner> listByRequest(String resourceGroupName, String serviceName,
+        String filter) {
         final Integer top = null;
         final Integer skip = null;
         return new PagedIterable<>(listByRequestAsync(resourceGroupName, serviceName, filter, top, skip));
@@ -2809,8 +2257,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RequestReportRecordContractInner> listByRequest(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    public PagedIterable<RequestReportRecordContractInner> listByRequest(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(listByRequestAsync(resourceGroupName, serviceName, filter, top, skip, context));
     }
 
@@ -2831,23 +2279,14 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByApiNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2864,30 +2303,20 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByApiNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByApiNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByApiNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByApiNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2907,23 +2336,14 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByUserNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2940,30 +2360,20 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByUserNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByUserNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByUserNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByUserNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2983,23 +2393,14 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByOperationNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3016,30 +2417,20 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByOperationNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByOperationNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByOperationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByOperationNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3059,23 +2450,14 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByProductNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3092,30 +2474,20 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByProductNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByProductNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByProductNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByProductNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3135,23 +2507,14 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByGeoNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3168,30 +2531,20 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByGeoNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByGeoNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByGeoNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByGeoNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3211,24 +2564,15 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3245,30 +2589,20 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -3288,23 +2622,14 @@ public final class ReportsClientImpl implements ReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByTimeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReportRecordContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReportRecordContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3321,29 +2646,19 @@ public final class ReportsClientImpl implements ReportsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReportRecordContractInner>> listByTimeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReportRecordContractInner>> listByTimeNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTimeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTimeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

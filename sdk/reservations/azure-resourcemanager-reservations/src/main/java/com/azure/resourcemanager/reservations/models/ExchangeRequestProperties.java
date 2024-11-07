@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Exchange request properties. */
+/**
+ * Exchange request properties.
+ */
 @Fluent
-public final class ExchangeRequestProperties {
+public final class ExchangeRequestProperties implements JsonSerializable<ExchangeRequestProperties> {
     /*
      * SessionId that was returned by CalculateExchange API.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
-    /** Creates an instance of ExchangeRequestProperties class. */
+    /**
+     * Creates an instance of ExchangeRequestProperties class.
+     */
     public ExchangeRequestProperties() {
     }
 
     /**
      * Get the sessionId property: SessionId that was returned by CalculateExchange API.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -31,7 +38,7 @@ public final class ExchangeRequestProperties {
 
     /**
      * Set the sessionId property: SessionId that was returned by CalculateExchange API.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the ExchangeRequestProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class ExchangeRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExchangeRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExchangeRequestProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExchangeRequestProperties.
+     */
+    public static ExchangeRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExchangeRequestProperties deserializedExchangeRequestProperties = new ExchangeRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedExchangeRequestProperties.sessionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExchangeRequestProperties;
+        });
     }
 }

@@ -22,10 +22,7 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+    OperationResultContract deploy(String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         DeployConfigurationParameters parameters);
 
     /**
@@ -42,12 +39,8 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+    OperationResultContract deploy(String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        DeployConfigurationParameters parameters, Context context);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
@@ -62,10 +55,7 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+    OperationResultContract save(String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         SaveConfigurationParameter parameters);
 
     /**
@@ -82,12 +72,8 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters,
-        Context context);
+    OperationResultContract save(String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        SaveConfigurationParameter parameters, Context context);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
@@ -102,11 +88,8 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters);
+    OperationResultContract validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
@@ -122,12 +105,8 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return long Running Git Operation Results.
      */
-    OperationResultContract validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+    OperationResultContract validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters, Context context);
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
@@ -142,8 +121,8 @@ public interface TenantConfigurations {
      * @return the status of the most recent synchronization between the configuration database and the Git repository
      *     along with {@link Response}.
      */
-    Response<TenantConfigurationSyncStateContract> getSyncStateWithResponse(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName, Context context);
+    Response<TenantConfigurationSyncStateContract> getSyncStateWithResponse(String resourceGroupName,
+        String serviceName, ConfigurationIdName configurationName, Context context);
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
@@ -156,6 +135,6 @@ public interface TenantConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository.
      */
-    TenantConfigurationSyncStateContract getSyncState(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName);
+    TenantConfigurationSyncStateContract getSyncState(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName);
 }

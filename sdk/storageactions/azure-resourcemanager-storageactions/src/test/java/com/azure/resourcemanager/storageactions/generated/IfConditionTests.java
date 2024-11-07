@@ -31,17 +31,23 @@ public final class IfConditionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IfCondition model = new IfCondition().withCondition("nteiwaopv")
-            .withOperations(Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
-                .withParameters(mapOf("uf", "mmxdcu")).withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+            .withOperations(Arrays.asList(
+                new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
+                    .withParameters(mapOf("uf", "mmxdcu"))
+                    .withOnSuccess(OnSuccess.CONTINUE)
+                    .withOnFailure(OnFailure.BREAK),
                 new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
                     .withParameters(
                         mapOf("xtbzsgfyccsne", "nsez", "flnrosfqpteehzz", "mdwzjeiachboo", "swjdkirso", "ypyqrimzinp"))
-                    .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                    .withOnSuccess(OnSuccess.CONTINUE)
+                    .withOnFailure(OnFailure.BREAK),
                 new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
-                    .withParameters(mapOf("kwh", "nohjt")).withOnSuccess(OnSuccess.CONTINUE)
+                    .withParameters(mapOf("kwh", "nohjt"))
+                    .withOnSuccess(OnSuccess.CONTINUE)
                     .withOnFailure(OnFailure.BREAK),
                 new StorageTaskOperation().withName(StorageTaskOperationName.DELETE_BLOB)
-                    .withParameters(mapOf("jxvsnbyxqabn", "pjxsqwpgrjbznor")).withOnSuccess(OnSuccess.CONTINUE)
+                    .withParameters(mapOf("jxvsnbyxqabn", "pjxsqwpgrjbznor"))
+                    .withOnSuccess(OnSuccess.CONTINUE)
                     .withOnFailure(OnFailure.BREAK)));
         model = BinaryData.fromObject(model).toObject(IfCondition.class);
         Assertions.assertEquals("nteiwaopv", model.condition());

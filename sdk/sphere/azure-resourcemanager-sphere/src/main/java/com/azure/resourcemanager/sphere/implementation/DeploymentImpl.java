@@ -67,14 +67,18 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment create() {
-        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
-            catalogName, productName, deviceGroupName, deploymentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public Deployment create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
-            catalogName, productName, deviceGroupName, deploymentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+                this.innerModel(), context);
         return this;
     }
 
@@ -89,14 +93,18 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment apply() {
-        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
-            catalogName, productName, deviceGroupName, deploymentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public Deployment apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
-            catalogName, productName, deviceGroupName, deploymentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+                this.innerModel(), context);
         return this;
     }
 
@@ -111,14 +119,16 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment refresh() {
-        this.innerObject = serviceManager.serviceClient().getDeployments()
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
             .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE)
             .getValue();
         return this;
     }
 
     public Deployment refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDeployments()
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
             .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
             .getValue();
         return this;

@@ -15,52 +15,33 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingEndpointSkuInfoListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingEndpointSkuInfoListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"srhnjivo\",\"capacity\":{\"scaleType\":\"novqfzge\",\"default\":1068336147,\"minimum\":566007686,\"maximum\":311257977},\"sku\":{\"name\":\"tduceamt\"}},{\"resourceType\":\"zuo\",\"capacity\":{\"scaleType\":\"wcw\",\"default\":303130680,\"minimum\":173191465,\"maximum\":2110240419},\"sku\":{\"name\":\"mojmsvpkjprvkw\"}},{\"resourceType\":\"zqljyxgtczh\",\"capacity\":{\"scaleType\":\"bsdshmkxmaehvbbx\",\"default\":870827030,\"minimum\":874326134,\"maximum\":1041302406},\"sku\":{\"name\":\"tbaxk\"}}]}")
-                .toObject(StreamingEndpointSkuInfoListResultInner.class);
-        Assertions.assertEquals("srhnjivo", model.value().get(0).resourceType());
-        Assertions.assertEquals(1068336147, model.value().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(566007686, model.value().get(0).capacity().minimum());
-        Assertions.assertEquals(311257977, model.value().get(0).capacity().maximum());
+        StreamingEndpointSkuInfoListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"pvz\",\"capacity\":{\"scaleType\":\"t\",\"default\":443285023,\"minimum\":60135256,\"maximum\":456968385},\"sku\":{\"name\":\"rclnpkc\"}},{\"resourceType\":\"yzriykhy\",\"capacity\":{\"scaleType\":\"vjlboxqvk\",\"default\":980720490,\"minimum\":498716082,\"maximum\":715260705},\"sku\":{\"name\":\"nhdwdigumbnra\"}}]}")
+            .toObject(StreamingEndpointSkuInfoListResultInner.class);
+        Assertions.assertEquals("pvz", model.value().get(0).resourceType());
+        Assertions.assertEquals(443285023, model.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(60135256, model.value().get(0).capacity().minimum());
+        Assertions.assertEquals(456968385, model.value().get(0).capacity().maximum());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingEndpointSkuInfoListResultInner model =
-            new StreamingEndpointSkuInfoListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ArmStreamingEndpointSkuInfo()
-                                .withResourceType("srhnjivo")
-                                .withCapacity(
-                                    new ArmStreamingEndpointCapacity()
-                                        .withDefaultProperty(1068336147)
-                                        .withMinimum(566007686)
-                                        .withMaximum(311257977))
-                                .withSku(new ArmStreamingEndpointSku()),
-                            new ArmStreamingEndpointSkuInfo()
-                                .withResourceType("zuo")
-                                .withCapacity(
-                                    new ArmStreamingEndpointCapacity()
-                                        .withDefaultProperty(303130680)
-                                        .withMinimum(173191465)
-                                        .withMaximum(2110240419))
-                                .withSku(new ArmStreamingEndpointSku()),
-                            new ArmStreamingEndpointSkuInfo()
-                                .withResourceType("zqljyxgtczh")
-                                .withCapacity(
-                                    new ArmStreamingEndpointCapacity()
-                                        .withDefaultProperty(870827030)
-                                        .withMinimum(874326134)
-                                        .withMaximum(1041302406))
-                                .withSku(new ArmStreamingEndpointSku())));
+        StreamingEndpointSkuInfoListResultInner model
+            = new StreamingEndpointSkuInfoListResultInner().withValue(Arrays.asList(
+                new ArmStreamingEndpointSkuInfo().withResourceType("pvz")
+                    .withCapacity(new ArmStreamingEndpointCapacity().withDefaultProperty(443285023)
+                        .withMinimum(60135256)
+                        .withMaximum(456968385))
+                    .withSku(new ArmStreamingEndpointSku()),
+                new ArmStreamingEndpointSkuInfo().withResourceType("yzriykhy")
+                    .withCapacity(new ArmStreamingEndpointCapacity().withDefaultProperty(980720490)
+                        .withMinimum(498716082)
+                        .withMaximum(715260705))
+                    .withSku(new ArmStreamingEndpointSku())));
         model = BinaryData.fromObject(model).toObject(StreamingEndpointSkuInfoListResultInner.class);
-        Assertions.assertEquals("srhnjivo", model.value().get(0).resourceType());
-        Assertions.assertEquals(1068336147, model.value().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(566007686, model.value().get(0).capacity().minimum());
-        Assertions.assertEquals(311257977, model.value().get(0).capacity().maximum());
+        Assertions.assertEquals("pvz", model.value().get(0).resourceType());
+        Assertions.assertEquals(443285023, model.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(60135256, model.value().get(0).capacity().minimum());
+        Assertions.assertEquals(456968385, model.value().get(0).capacity().maximum());
     }
 }

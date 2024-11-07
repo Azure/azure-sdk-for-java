@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous ConfidentialLedgerClient type. */
 @ServiceClient(builder = ConfidentialLedgerClientBuilder.class, isAsync = true)
 public final class ConfidentialLedgerAsyncClient {
-    @Generated private final ConfidentialLedgerClientImpl serviceClient;
+    @Generated
+    private final ConfidentialLedgerClientImpl serviceClient;
 
     /**
      * Initializes an instance of ConfidentialLedgerAsyncClient class.
@@ -357,8 +358,8 @@ public final class ConfidentialLedgerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTransactionStatusWithResponse(
-            String transactionId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTransactionStatusWithResponse(String transactionId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTransactionStatusWithResponseAsync(transactionId, requestOptions);
     }
 
@@ -474,8 +475,8 @@ public final class ConfidentialLedgerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateUserWithResponse(
-            String userId, BinaryData userDetails, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateUserWithResponse(String userId, BinaryData userDetails,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateUserWithResponseAsync(userId, userDetails, requestOptions);
     }
 }

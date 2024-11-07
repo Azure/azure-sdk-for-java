@@ -5,47 +5,46 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Minimum properties that should be present in each individual validation response. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "validationType",
-    defaultImpl = ValidationInputResponse.class)
-@JsonTypeName("ValidationInputResponse")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ValidateAddress", value = AddressValidationProperties.class),
-    @JsonSubTypes.Type(
-        name = "ValidateCreateOrderLimit",
-        value = CreateOrderLimitForSubscriptionValidationResponseProperties.class),
-    @JsonSubTypes.Type(
-        name = "ValidateDataTransferDetails",
-        value = DataTransferDetailsValidationResponseProperties.class),
-    @JsonSubTypes.Type(name = "ValidatePreferences", value = PreferencesValidationResponseProperties.class),
-    @JsonSubTypes.Type(name = "ValidateSkuAvailability", value = SkuAvailabilityValidationResponseProperties.class),
-    @JsonSubTypes.Type(
-        name = "ValidateSubscriptionIsAllowedToCreateJob",
-        value = SubscriptionIsAllowedToCreateJobValidationResponseProperties.class)
-})
+/**
+ * Minimum properties that should be present in each individual validation response.
+ */
 @Immutable
-public class ValidationInputResponse {
+public class ValidationInputResponse implements JsonSerializable<ValidationInputResponse> {
+    /*
+     * Identifies the type of validation response.
+     */
+    private ValidationInputDiscriminator validationType
+        = ValidationInputDiscriminator.fromString("ValidationInputResponse");
+
     /*
      * Error code and message of validation response.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private CloudError error;
 
-    /** Creates an instance of ValidationInputResponse class. */
+    /**
+     * Creates an instance of ValidationInputResponse class.
+     */
     public ValidationInputResponse() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation response.
+     * 
+     * @return the validationType value.
+     */
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Get the error property: Error code and message of validation response.
-     *
+     * 
      * @return the error value.
      */
     public CloudError error() {
@@ -53,13 +52,99 @@ public class ValidationInputResponse {
     }
 
     /**
+     * Set the error property: Error code and message of validation response.
+     * 
+     * @param error the error value to set.
+     * @return the ValidationInputResponse object itself.
+     */
+    ValidationInputResponse withError(CloudError error) {
+        this.error = error;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationInputResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationInputResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidationInputResponse.
+     */
+    public static ValidationInputResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("validationType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ValidateAddress".equals(discriminatorValue)) {
+                    return AddressValidationProperties.fromJson(readerToUse.reset());
+                } else if ("ValidateCreateOrderLimit".equals(discriminatorValue)) {
+                    return CreateOrderLimitForSubscriptionValidationResponseProperties.fromJson(readerToUse.reset());
+                } else if ("ValidateDataTransferDetails".equals(discriminatorValue)) {
+                    return DataTransferDetailsValidationResponseProperties.fromJson(readerToUse.reset());
+                } else if ("ValidatePreferences".equals(discriminatorValue)) {
+                    return PreferencesValidationResponseProperties.fromJson(readerToUse.reset());
+                } else if ("ValidateSkuAvailability".equals(discriminatorValue)) {
+                    return SkuAvailabilityValidationResponseProperties.fromJson(readerToUse.reset());
+                } else if ("ValidateSubscriptionIsAllowedToCreateJob".equals(discriminatorValue)) {
+                    return SubscriptionIsAllowedToCreateJobValidationResponseProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ValidationInputResponse fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationInputResponse deserializedValidationInputResponse = new ValidationInputResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationType".equals(fieldName)) {
+                    deserializedValidationInputResponse.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedValidationInputResponse.error = CloudError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationInputResponse;
+        });
     }
 }

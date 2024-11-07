@@ -13,8 +13,7 @@ public final class CheckQuotaAvailabilityResponseImpl implements CheckQuotaAvail
 
     private final com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager;
 
-    CheckQuotaAvailabilityResponseImpl(
-        CheckQuotaAvailabilityResponseInner innerObject,
+    CheckQuotaAvailabilityResponseImpl(CheckQuotaAvailabilityResponseInner innerObject,
         com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -111,8 +111,8 @@ public class PathSetAccessControlRecursiveOptions {
      * @param progressHandler The progress handler.
      * @return The updated object.
      */
-    public PathSetAccessControlRecursiveOptions setProgressHandler(
-        Consumer<Response<AccessControlChanges>> progressHandler) {
+    public PathSetAccessControlRecursiveOptions
+        setProgressHandler(Consumer<Response<AccessControlChanges>> progressHandler) {
         this.progressHandler = progressHandler;
         return this;
     }

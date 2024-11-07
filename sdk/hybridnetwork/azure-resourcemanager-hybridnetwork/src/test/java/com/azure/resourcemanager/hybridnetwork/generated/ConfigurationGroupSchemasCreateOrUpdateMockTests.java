@@ -47,14 +47,18 @@ public final class ConfigurationGroupSchemasCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ConfigurationGroupSchema response = manager.configurationGroupSchemas().define("qwztcmwqkc")
-            .withRegion("zjrgyww").withExistingPublisher("fwlwxjwetnps", "hclafzvaylptrs")
-            .withTags(mapOf("ptfujgicgaaoept", "xs")).withProperties(new ConfigurationGroupSchemaPropertiesFormat()
-                .withDescription("ewzjkjexfd").withSchemaDefinition("vhpsylkkshkbffmb"))
+        ConfigurationGroupSchema response = manager.configurationGroupSchemas()
+            .define("qwztcmwqkc")
+            .withRegion("zjrgyww")
+            .withExistingPublisher("fwlwxjwetnps", "hclafzvaylptrs")
+            .withTags(mapOf("ptfujgicgaaoept", "xs"))
+            .withProperties(new ConfigurationGroupSchemaPropertiesFormat().withDescription("ewzjkjexfd")
+                .withSchemaDefinition("vhpsylkkshkbffmb"))
             .create();
 
         Assertions.assertEquals("gvelfc", response.location());

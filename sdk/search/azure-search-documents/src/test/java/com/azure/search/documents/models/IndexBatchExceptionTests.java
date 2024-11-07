@@ -25,51 +25,51 @@ public class IndexBatchExceptionTests {
 
     @Test
     public void clientShouldNotRetrySuccessfulBatch() {
-        IndexDocumentsResult result = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"),
-            createResult("2")));
+        IndexDocumentsResult result
+            = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"), createResult("2")));
 
         assertRetryBatchEmpty(result);
     }
 
     @Test
     public void clientShouldNotRetryBatchWithAllNonRetriableFailures() {
-        IndexDocumentsResult result = new IndexDocumentsResult(Arrays.asList(createFailedResult("1", 500),
-            createFailedResult("2", 404), createFailedResult("3", 400)));
+        IndexDocumentsResult result = new IndexDocumentsResult(
+            Arrays.asList(createFailedResult("1", 500), createFailedResult("2", 404), createFailedResult("3", 400)));
 
         assertRetryBatchEmpty(result);
     }
 
     @Test
     public void clientShouldNotRetryBatchWithSuccessesAndNonRetriableFailures() {
-        IndexDocumentsResult result = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"),
-            createFailedResult("2", 500), createFailedResult("3", 404), createResult("4"),
-            createFailedResult("5", 400)));
+        IndexDocumentsResult result
+            = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"), createFailedResult("2", 500),
+                createFailedResult("3", 404), createResult("4"), createFailedResult("5", 400)));
 
         assertRetryBatchEmpty(result);
     }
 
     @Test
     public void clientShouldRetryBatchWithAllRetriableFailures() {
-        IndexDocumentsResult result = new IndexDocumentsResult(Arrays.asList(createFailedResult("1", 422),
-            createFailedResult("2", 409), createFailedResult("3", 503)));
+        IndexDocumentsResult result = new IndexDocumentsResult(
+            Arrays.asList(createFailedResult("1", 422), createFailedResult("2", 409), createFailedResult("3", 503)));
 
         assertRetryBatchContains(result, Arrays.asList("1", "2", "3"));
     }
 
     @Test
     public void clientShouldRetryBatchWithSomeRetriableFailures() {
-        IndexDocumentsResult result = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"),
-            createFailedResult("2", 500), createFailedResult("3", 422), createFailedResult("4", 404),
-            createFailedResult("5", 409), createFailedResult("6", 400), createResult("7"),
-            createFailedResult("8", 503)));
+        IndexDocumentsResult result
+            = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"), createFailedResult("2", 500),
+                createFailedResult("3", 422), createFailedResult("4", 404), createFailedResult("5", 409),
+                createFailedResult("6", 400), createResult("7"), createFailedResult("8", 503)));
 
         assertRetryBatchContains(result, Arrays.asList("3", "5", "8"));
     }
 
     @Test
     public void clientShouldNotRetryResultWithUnexpectedStatusCode() {
-        IndexDocumentsResult result = new IndexDocumentsResult(Arrays.asList(createSucceededResult("1"),
-            createFailedResult("2", 502), createFailedResult("3", 503)));
+        IndexDocumentsResult result = new IndexDocumentsResult(
+            Arrays.asList(createSucceededResult("1"), createFailedResult("2", 502), createFailedResult("3", 503)));
 
         assertRetryBatchContains(result, Collections.singletonList("3"));
     }
@@ -80,20 +80,26 @@ public class IndexBatchExceptionTests {
     }
 
     private static void assertRetryBatchContains(IndexDocumentsResult result, List<String> expectedKeys) {
-        Assertions.assertEquals(expectedKeys, getRetryBatch(result).getActions().stream()
-            .map(IndexBatchExceptionTests::getValueFromDocHelper).collect(Collectors.toList()));
+        Assertions.assertEquals(expectedKeys,
+            getRetryBatch(result).getActions()
+                .stream()
+                .map(IndexBatchExceptionTests::getValueFromDocHelper)
+                .collect(Collectors.toList()));
 
-        Assertions.assertEquals(expectedKeys, getTypedRetryBatch(result).getActions().stream()
-            .map(action -> action.getDocument().getHotelId()).collect(Collectors.toList()));
+        Assertions.assertEquals(expectedKeys,
+            getTypedRetryBatch(result).getActions()
+                .stream()
+                .map(action -> action.getDocument().getHotelId())
+                .collect(Collectors.toList()));
     }
 
     public static Object getValueFromDocHelper(IndexAction<SearchDocument> action) {
         if (action.getDocument() != null) {
             return action.getDocument().get(KEY_FIELD_NAME);
         }
-//        else if (action.getParamMap() != null) {
-//            return action.getParamMap().get(KEY_FIELD_NAME);
-//        }
+        //        else if (action.getParamMap() != null) {
+        //            return action.getParamMap().get(KEY_FIELD_NAME);
+        //        }
         return null;
     }
 
@@ -101,8 +107,9 @@ public class IndexBatchExceptionTests {
         List<String> allKeys = result.getResults().stream().map(IndexingResult::getKey).collect(Collectors.toList());
         IndexBatchException exception = new IndexBatchException(result);
 
-        IndexDocumentsBatch<SearchDocument> originalBatch = new IndexDocumentsBatch<SearchDocument>().addUploadActions(
-            allKeys.stream().map(key -> new SearchDocument(Collections.singletonMap(KEY_FIELD_NAME, key)))
+        IndexDocumentsBatch<SearchDocument> originalBatch
+            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(allKeys.stream()
+                .map(key -> new SearchDocument(Collections.singletonMap(KEY_FIELD_NAME, key)))
                 .collect(Collectors.toList()));
         return exception.findFailedActionsToRetry(originalBatch, KEY_FIELD_NAME);
     }
@@ -110,9 +117,8 @@ public class IndexBatchExceptionTests {
     private static IndexBatchBase<Hotel> getTypedRetryBatch(IndexDocumentsResult result) {
         List<String> allKeys = result.getResults().stream().map(IndexingResult::getKey).collect(Collectors.toList());
         IndexBatchException exception = new IndexBatchException(result);
-        IndexDocumentsBatch<Hotel> originalBatch = new IndexDocumentsBatch<Hotel>().addUploadActions(
-            allKeys.stream().map(key -> new Hotel().setHotelId(key)).collect(Collectors.toList())
-        );
+        IndexDocumentsBatch<Hotel> originalBatch = new IndexDocumentsBatch<Hotel>()
+            .addUploadActions(allKeys.stream().map(key -> new Hotel().setHotelId(key)).collect(Collectors.toList()));
         return exception.findFailedActionsToRetry(originalBatch, Hotel::getHotelId);
     }
 

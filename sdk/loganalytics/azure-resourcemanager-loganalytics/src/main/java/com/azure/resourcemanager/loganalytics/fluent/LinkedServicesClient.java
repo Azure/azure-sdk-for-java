@@ -28,8 +28,8 @@ public interface LinkedServicesClient {
      * @return the {@link SyncPoller} for polling of the top level Linked service resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String linkedServiceName, LinkedServiceInner parameters);
+    SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String linkedServiceName, LinkedServiceInner parameters);
 
     /**
      * Create or update a linked service.
@@ -45,12 +45,8 @@ public interface LinkedServicesClient {
      * @return the {@link SyncPoller} for polling of the top level Linked service resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String linkedServiceName,
-        LinkedServiceInner parameters,
-        Context context);
+    SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String linkedServiceName, LinkedServiceInner parameters, Context context);
 
     /**
      * Create or update a linked service.
@@ -65,8 +61,8 @@ public interface LinkedServicesClient {
      * @return the top level Linked service resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedServiceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String linkedServiceName, LinkedServiceInner parameters);
+    LinkedServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String linkedServiceName,
+        LinkedServiceInner parameters);
 
     /**
      * Create or update a linked service.
@@ -82,12 +78,8 @@ public interface LinkedServicesClient {
      * @return the top level Linked service resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedServiceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String linkedServiceName,
-        LinkedServiceInner parameters,
-        Context context);
+    LinkedServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String linkedServiceName,
+        LinkedServiceInner parameters, Context context);
 
     /**
      * Deletes a linked service instance.
@@ -101,8 +93,8 @@ public interface LinkedServicesClient {
      * @return the {@link SyncPoller} for polling of the top level Linked service resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginDelete(
-        String resourceGroupName, String workspaceName, String linkedServiceName);
+    SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginDelete(String resourceGroupName,
+        String workspaceName, String linkedServiceName);
 
     /**
      * Deletes a linked service instance.
@@ -117,8 +109,8 @@ public interface LinkedServicesClient {
      * @return the {@link SyncPoller} for polling of the top level Linked service resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginDelete(
-        String resourceGroupName, String workspaceName, String linkedServiceName, Context context);
+    SyncPoller<PollResult<LinkedServiceInner>, LinkedServiceInner> beginDelete(String resourceGroupName,
+        String workspaceName, String linkedServiceName, Context context);
 
     /**
      * Deletes a linked service instance.
@@ -147,8 +139,8 @@ public interface LinkedServicesClient {
      * @return the top level Linked service resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedServiceInner delete(
-        String resourceGroupName, String workspaceName, String linkedServiceName, Context context);
+    LinkedServiceInner delete(String resourceGroupName, String workspaceName, String linkedServiceName,
+        Context context);
 
     /**
      * Gets a linked service instance.
@@ -163,8 +155,8 @@ public interface LinkedServicesClient {
      * @return a linked service instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LinkedServiceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String linkedServiceName, Context context);
+    Response<LinkedServiceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String linkedServiceName, Context context);
 
     /**
      * Gets a linked service instance.

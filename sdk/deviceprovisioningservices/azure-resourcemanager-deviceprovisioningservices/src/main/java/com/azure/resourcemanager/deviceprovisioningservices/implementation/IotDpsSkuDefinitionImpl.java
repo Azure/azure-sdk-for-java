@@ -13,8 +13,7 @@ public final class IotDpsSkuDefinitionImpl implements IotDpsSkuDefinition {
 
     private final com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager;
 
-    IotDpsSkuDefinitionImpl(
-        IotDpsSkuDefinitionInner innerObject,
+    IotDpsSkuDefinitionImpl(IotDpsSkuDefinitionInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

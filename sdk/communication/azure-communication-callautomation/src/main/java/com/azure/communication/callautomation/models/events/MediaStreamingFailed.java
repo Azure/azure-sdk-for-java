@@ -25,9 +25,9 @@ public final class MediaStreamingFailed extends CallAutomationEventBase {
      */
     private MediaStreamingUpdate mediaStreamingUpdateResult;
 
-      /**
-     * Creates an instance of MediaStreamingFailed class.
-     */
+    /**
+    * Creates an instance of MediaStreamingFailed class.
+    */
     public MediaStreamingFailed() {
         resultInformation = null;
         mediaStreamingUpdateResult = null;

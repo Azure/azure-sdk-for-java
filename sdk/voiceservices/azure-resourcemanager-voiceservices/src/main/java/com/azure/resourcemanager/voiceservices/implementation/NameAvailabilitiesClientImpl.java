@@ -41,8 +41,8 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
      * @param client the instance of the service client containing this operation class.
      */
     NameAvailabilitiesClientImpl(MicrosoftVoiceServicesImpl client) {
-        this.service =
-            RestProxy.create(NameAvailabilitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NameAvailabilitiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,18 +53,14 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftVoiceServic")
     public interface NameAvailabilitiesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.VoiceServices/locations/{location}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.VoiceServices/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResponseInner>> checkLocal(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CheckNameAvailabilityResponseInner>> checkLocal(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CheckNameAvailabilityRequest body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") CheckNameAvailabilityRequest body, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -79,22 +75,18 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
      * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkLocalWithResponseAsync(
-        String location, CheckNameAvailabilityRequest body) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>> checkLocalWithResponseAsync(String location,
+        CheckNameAvailabilityRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -103,17 +95,8 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkLocal(
-                            this.client.getEndpoint(),
-                            location,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.checkLocal(this.client.getEndpoint(), location,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -129,22 +112,18 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
      * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkLocalWithResponseAsync(
-        String location, CheckNameAvailabilityRequest body, Context context) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>> checkLocalWithResponseAsync(String location,
+        CheckNameAvailabilityRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -153,15 +132,8 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkLocal(
-                this.client.getEndpoint(),
-                location,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.checkLocal(this.client.getEndpoint(), location, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -175,8 +147,8 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
      * @return the check availability result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityResponseInner> checkLocalAsync(
-        String location, CheckNameAvailabilityRequest body) {
+    private Mono<CheckNameAvailabilityResponseInner> checkLocalAsync(String location,
+        CheckNameAvailabilityRequest body) {
         return checkLocalWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -192,8 +164,8 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseInner> checkLocalWithResponse(
-        String location, CheckNameAvailabilityRequest body, Context context) {
+    public Response<CheckNameAvailabilityResponseInner> checkLocalWithResponse(String location,
+        CheckNameAvailabilityRequest body, Context context) {
         return checkLocalWithResponseAsync(location, body, context).block();
     }
 

@@ -53,11 +53,8 @@ public interface ReplicationExtensionModel {
     ReplicationExtensionModelInner innerModel();
 
     /** The entirety of the ReplicationExtensionModel definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /** The ReplicationExtensionModel definition stages. */

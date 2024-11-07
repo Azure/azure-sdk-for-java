@@ -19,12 +19,9 @@ import reactor.core.publisher.Mono;
  * Type representing disaster recovery pairing for event hub namespaces.
  */
 @Fluent
-public interface EventHubDisasterRecoveryPairing extends
-    NestedResource,
-    HasManager<EventHubsManager>,
-    Refreshable<EventHubDisasterRecoveryPairing>,
-    Updatable<EventHubDisasterRecoveryPairing.Update>,
-        HasInnerModel<ArmDisasterRecoveryInner> {
+public interface EventHubDisasterRecoveryPairing
+    extends NestedResource, HasManager<EventHubsManager>, Refreshable<EventHubDisasterRecoveryPairing>,
+    Updatable<EventHubDisasterRecoveryPairing.Update>, HasInnerModel<ArmDisasterRecoveryInner> {
     /**
      * @return primary event hub namespace resource group
      */
@@ -87,11 +84,8 @@ public interface EventHubDisasterRecoveryPairing extends
     /**
      * The entirety of the event hub disaster recovery pairing definition.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithPrimaryNamespace,
-            DefinitionStages.WithSecondaryNamespace,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithPrimaryNamespace,
+        DefinitionStages.WithSecondaryNamespace, DefinitionStages.WithCreate {
     }
 
     /**
@@ -176,8 +170,7 @@ public interface EventHubDisasterRecoveryPairing extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<EventHubDisasterRecoveryPairing> {
+        interface WithCreate extends Creatable<EventHubDisasterRecoveryPairing> {
         }
     }
 
@@ -219,8 +212,6 @@ public interface EventHubDisasterRecoveryPairing extends
      * The template for a disaster recovery pairing update operation, containing all the settings
      * that can be modified.
      */
-    interface Update extends
-        UpdateStages.WithSecondaryNamespace,
-        Appliable<EventHubDisasterRecoveryPairing> {
+    interface Update extends UpdateStages.WithSecondaryNamespace, Appliable<EventHubDisasterRecoveryPairing> {
     }
 }

@@ -27,7 +27,8 @@ public final class InboundEndpointsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.inboundEndpoints().delete("t", "oellwp", "fdygpfqbuaceopz", "qrhhu", com.azure.core.util.Context.NONE);
+        manager.inboundEndpoints()
+            .delete("iipfpubj", "bwwift", "hqkvpuvksgplsak", "ynfs", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.iothub.models.ArmUserIdentity;
 public final class ArmUserIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmUserIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"tfhvpesapskrdqmh\",\"clientId\":\"dhtldwkyz\"}")
+        ArmUserIdentity model
+            = BinaryData.fromString("{\"principalId\":\"tfhvpesapskrdqmh\",\"clientId\":\"dhtldwkyz\"}")
                 .toObject(ArmUserIdentity.class);
     }
 

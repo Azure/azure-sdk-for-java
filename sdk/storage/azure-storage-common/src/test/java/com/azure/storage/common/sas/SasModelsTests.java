@@ -30,8 +30,8 @@ public class SasModelsTests {
         SasIpRange ip = SasIpRange.parse("a-b");
         SasProtocol prot = SasProtocol.HTTPS_ONLY;
 
-        AccountSasSignatureValues v = new AccountSasSignatureValues(e, p, s, rt).setStartTime(st).setSasIpRange(ip)
-            .setProtocol(prot);
+        AccountSasSignatureValues v
+            = new AccountSasSignatureValues(e, p, s, rt).setStartTime(st).setSasIpRange(ip).setProtocol(prot);
 
         assertEquals(e, v.getExpiryTime());
         assertEquals(p.toString(), v.getPermissions());
@@ -42,7 +42,6 @@ public class SasModelsTests {
         assertEquals(prot, v.getProtocol());
     }
 
-
     @ParameterizedTest
     @MethodSource("accountSasSignatureValuesNullSupplier")
     public void accountSasSignatureValuesNull(boolean expiryTime, boolean permissions, boolean services,
@@ -52,8 +51,8 @@ public class SasModelsTests {
         AccountSasService s = services ? null : AccountSasService.parse("b");
         AccountSasResourceType rt = resourceTypes ? null : AccountSasResourceType.parse("o");
 
-        NullPointerException ex = assertThrows(NullPointerException.class,
-            () -> new AccountSasSignatureValues(e, p, s, rt));
+        NullPointerException ex
+            = assertThrows(NullPointerException.class, () -> new AccountSasSignatureValues(e, p, s, rt));
         assertTrue(ex.getMessage().contains(variable));
     }
 
@@ -69,11 +68,19 @@ public class SasModelsTests {
     public void accountSASPermissionsToString(boolean read, boolean write, boolean delete, boolean list, boolean add,
         boolean create, boolean update, boolean process, boolean deleteVersion, boolean tags, boolean filterTags,
         boolean setImmutabilityPolicy, boolean permanentDelete, String expectedString) {
-        AccountSasPermission perms = new AccountSasPermission().setReadPermission(read).setWritePermission(write)
-            .setDeletePermission(delete).setListPermission(list).setAddPermission(add).setCreatePermission(create)
-            .setUpdatePermission(update).setProcessMessages(process).setDeleteVersionPermission(deleteVersion)
-            .setTagsPermission(tags).setFilterTagsPermission(filterTags)
-            .setImmutabilityPolicyPermission(setImmutabilityPolicy).setPermanentDeletePermission(permanentDelete);
+        AccountSasPermission perms = new AccountSasPermission().setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setListPermission(list)
+            .setAddPermission(add)
+            .setCreatePermission(create)
+            .setUpdatePermission(update)
+            .setProcessMessages(process)
+            .setDeleteVersionPermission(deleteVersion)
+            .setTagsPermission(tags)
+            .setFilterTagsPermission(filterTags)
+            .setImmutabilityPolicyPermission(setImmutabilityPolicy)
+            .setPermanentDeletePermission(permanentDelete);
 
         assertEquals(expectedString, perms.toString());
     }
@@ -151,8 +158,8 @@ public class SasModelsTests {
     @MethodSource("accountSASResourceTypeToStringSupplier")
     public void accountSASResourceTypeToString(boolean service, boolean container, boolean object,
         String expectedString) {
-        AccountSasResourceType resourceTypes = new AccountSasResourceType().setService(service).setContainer(container)
-            .setObject(object);
+        AccountSasResourceType resourceTypes
+            = new AccountSasResourceType().setService(service).setContainer(container).setObject(object);
 
         assertEquals(expectedString, resourceTypes.toString());
     }
@@ -230,8 +237,8 @@ public class SasModelsTests {
         AccountSasSignatureValues v = new AccountSasSignatureValues(e, p, s, rt);
         AccountSasImplUtil implUtil = new AccountSasImplUtil(v, null);
 
-        NullPointerException ex = assertThrows(NullPointerException.class,
-            () -> implUtil.generateSas(null, Context.NONE));
+        NullPointerException ex
+            = assertThrows(NullPointerException.class, () -> implUtil.generateSas(null, Context.NONE));
         assertTrue(ex.getMessage().contains("storageSharedKeyCredential"));
     }
 

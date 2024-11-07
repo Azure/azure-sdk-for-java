@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchGetSchemaResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchGetSchemaResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"metadata\":{\"requestId\":\"rsndsytgadgvra\",\"resultType\":\"en\",\"total\":4293634280481383135,\"top\":7415749586040440135,\"id\":\"lquuijfqkacewii\",\"coreSummaries\":[{\"status\":\"bjibwwiftohq\",\"numberOfDocuments\":5878202490026583142},{\"status\":\"vksgplsaknynfsy\",\"numberOfDocuments\":2482302250486318586}],\"status\":\"huopxodlqiynto\",\"startTime\":\"2021-01-16T08:56:29Z\",\"lastUpdated\":\"2021-08-30T07:21:47Z\",\"eTag\":\"osjswsr\",\"sort\":[{\"name\":\"zrpzb\",\"order\":\"desc\"},{\"name\":\"qqzqioxiysuiizyn\",\"order\":\"asc\"},{\"name\":\"atrwyhqmibzyh\",\"order\":\"desc\"},{\"name\":\"mypyynpcdpu\",\"order\":\"desc\"}],\"requestTime\":4287611654348954436,\"aggregatedValueField\":\"nmabik\",\"aggregatedGroupingFields\":\"orgjhxbldt\",\"sum\":8467924740961026044,\"max\":5101849209530474984,\"schema\":{\"name\":\"ncvokotllxdyhg\",\"version\":1161349380}},\"value\":[{\"name\":\"jlt\",\"displayName\":\"bnnhadoocrkvcik\",\"type\":\"vpa\",\"indexed\":true,\"stored\":true,\"facet\":false,\"ownerType\":[\"u\",\"zikywgg\"]},{\"name\":\"allatmelwuipic\",\"displayName\":\"zkzivgvvcnay\",\"type\":\"yrnxxmueedn\",\"indexed\":true,\"stored\":false,\"facet\":false,\"ownerType\":[\"kwqqtchealmf\",\"tdaaygdvwvg\",\"iohgwxrtfud\"]},{\"name\":\"pxgy\",\"displayName\":\"gvr\",\"type\":\"npkukghimdblx\",\"indexed\":false,\"stored\":true,\"facet\":false,\"ownerType\":[\"jhfjxwm\"]},{\"name\":\"kkfoqr\",\"displayName\":\"fkzikfj\",\"type\":\"n\",\"indexed\":false,\"stored\":false,\"facet\":false,\"ownerType\":[\"czelpcirel\",\"feaenwab\"]}]}")
-                .toObject(SearchGetSchemaResponseInner.class);
+        SearchGetSchemaResponseInner model = BinaryData.fromString(
+            "{\"metadata\":{\"requestId\":\"rsndsytgadgvra\",\"resultType\":\"en\",\"total\":4293634280481383135,\"top\":7415749586040440135,\"id\":\"lquuijfqkacewii\",\"coreSummaries\":[{\"status\":\"bjibwwiftohq\",\"numberOfDocuments\":5878202490026583142},{\"status\":\"vksgplsaknynfsy\",\"numberOfDocuments\":2482302250486318586}],\"status\":\"huopxodlqiynto\",\"startTime\":\"2021-01-16T08:56:29Z\",\"lastUpdated\":\"2021-08-30T07:21:47Z\",\"eTag\":\"osjswsr\",\"sort\":[{\"name\":\"zrpzb\",\"order\":\"desc\"},{\"name\":\"qqzqioxiysuiizyn\",\"order\":\"asc\"},{\"name\":\"atrwyhqmibzyh\",\"order\":\"desc\"},{\"name\":\"mypyynpcdpu\",\"order\":\"desc\"}],\"requestTime\":4287611654348954436,\"aggregatedValueField\":\"nmabik\",\"aggregatedGroupingFields\":\"orgjhxbldt\",\"sum\":8467924740961026044,\"max\":5101849209530474984,\"schema\":{\"name\":\"ncvokotllxdyhg\",\"version\":1161349380}},\"value\":[{\"name\":\"jlt\",\"displayName\":\"bnnhadoocrkvcik\",\"type\":\"vpa\",\"indexed\":true,\"stored\":true,\"facet\":false,\"ownerType\":[\"u\",\"zikywgg\"]},{\"name\":\"allatmelwuipic\",\"displayName\":\"zkzivgvvcnay\",\"type\":\"yrnxxmueedn\",\"indexed\":true,\"stored\":false,\"facet\":false,\"ownerType\":[\"kwqqtchealmf\",\"tdaaygdvwvg\",\"iohgwxrtfud\"]},{\"name\":\"pxgy\",\"displayName\":\"gvr\",\"type\":\"npkukghimdblx\",\"indexed\":false,\"stored\":true,\"facet\":false,\"ownerType\":[\"jhfjxwm\"]},{\"name\":\"kkfoqr\",\"displayName\":\"fkzikfj\",\"type\":\"n\",\"indexed\":false,\"stored\":false,\"facet\":false,\"ownerType\":[\"czelpcirel\",\"feaenwab\"]}]}")
+            .toObject(SearchGetSchemaResponseInner.class);
         Assertions.assertEquals("rsndsytgadgvra", model.metadata().searchId());
         Assertions.assertEquals("en", model.metadata().resultType());
         Assertions.assertEquals(4293634280481383135L, model.metadata().total());
@@ -55,76 +53,58 @@ public final class SearchGetSchemaResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchGetSchemaResponseInner model =
-            new SearchGetSchemaResponseInner()
-                .withMetadata(
-                    new SearchMetadata()
-                        .withSearchId("rsndsytgadgvra")
-                        .withResultType("en")
-                        .withTotal(4293634280481383135L)
-                        .withTop(7415749586040440135L)
-                        .withId("lquuijfqkacewii")
-                        .withCoreSummaries(
-                            Arrays
-                                .asList(
-                                    new CoreSummary()
-                                        .withStatus("bjibwwiftohq")
-                                        .withNumberOfDocuments(5878202490026583142L),
-                                    new CoreSummary()
-                                        .withStatus("vksgplsaknynfsy")
-                                        .withNumberOfDocuments(2482302250486318586L)))
-                        .withStatus("huopxodlqiynto")
-                        .withStartTime(OffsetDateTime.parse("2021-01-16T08:56:29Z"))
-                        .withLastUpdated(OffsetDateTime.parse("2021-08-30T07:21:47Z"))
-                        .withEtag("osjswsr")
-                        .withSort(
-                            Arrays
-                                .asList(
-                                    new SearchSort().withName("zrpzb").withOrder(SearchSortEnum.DESC),
-                                    new SearchSort().withName("qqzqioxiysuiizyn").withOrder(SearchSortEnum.ASC),
-                                    new SearchSort().withName("atrwyhqmibzyh").withOrder(SearchSortEnum.DESC),
-                                    new SearchSort().withName("mypyynpcdpu").withOrder(SearchSortEnum.DESC)))
-                        .withRequestTime(4287611654348954436L)
-                        .withAggregatedValueField("nmabik")
-                        .withAggregatedGroupingFields("orgjhxbldt")
-                        .withSum(8467924740961026044L)
-                        .withMax(5101849209530474984L)
-                        .withSchema(new SearchMetadataSchema().withName("ncvokotllxdyhg").withVersion(1161349380)))
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SearchSchemaValue()
-                                .withName("jlt")
-                                .withDisplayName("bnnhadoocrkvcik")
-                                .withType("vpa")
-                                .withIndexed(true)
-                                .withStored(true)
-                                .withFacet(false)
-                                .withOwnerType(Arrays.asList("u", "zikywgg")),
-                            new SearchSchemaValue()
-                                .withName("allatmelwuipic")
-                                .withDisplayName("zkzivgvvcnay")
-                                .withType("yrnxxmueedn")
-                                .withIndexed(true)
-                                .withStored(false)
-                                .withFacet(false)
-                                .withOwnerType(Arrays.asList("kwqqtchealmf", "tdaaygdvwvg", "iohgwxrtfud")),
-                            new SearchSchemaValue()
-                                .withName("pxgy")
-                                .withDisplayName("gvr")
-                                .withType("npkukghimdblx")
-                                .withIndexed(false)
-                                .withStored(true)
-                                .withFacet(false)
-                                .withOwnerType(Arrays.asList("jhfjxwm")),
-                            new SearchSchemaValue()
-                                .withName("kkfoqr")
-                                .withDisplayName("fkzikfj")
-                                .withType("n")
-                                .withIndexed(false)
-                                .withStored(false)
-                                .withFacet(false)
-                                .withOwnerType(Arrays.asList("czelpcirel", "feaenwab"))));
+        SearchGetSchemaResponseInner model = new SearchGetSchemaResponseInner()
+            .withMetadata(new SearchMetadata().withSearchId("rsndsytgadgvra")
+                .withResultType("en")
+                .withTotal(4293634280481383135L)
+                .withTop(7415749586040440135L)
+                .withId("lquuijfqkacewii")
+                .withCoreSummaries(Arrays.asList(
+                    new CoreSummary().withStatus("bjibwwiftohq").withNumberOfDocuments(5878202490026583142L),
+                    new CoreSummary().withStatus("vksgplsaknynfsy").withNumberOfDocuments(2482302250486318586L)))
+                .withStatus("huopxodlqiynto")
+                .withStartTime(OffsetDateTime.parse("2021-01-16T08:56:29Z"))
+                .withLastUpdated(OffsetDateTime.parse("2021-08-30T07:21:47Z"))
+                .withEtag("osjswsr")
+                .withSort(Arrays.asList(new SearchSort().withName("zrpzb").withOrder(SearchSortEnum.DESC),
+                    new SearchSort().withName("qqzqioxiysuiizyn").withOrder(SearchSortEnum.ASC),
+                    new SearchSort().withName("atrwyhqmibzyh").withOrder(SearchSortEnum.DESC),
+                    new SearchSort().withName("mypyynpcdpu").withOrder(SearchSortEnum.DESC)))
+                .withRequestTime(4287611654348954436L)
+                .withAggregatedValueField("nmabik")
+                .withAggregatedGroupingFields("orgjhxbldt")
+                .withSum(8467924740961026044L)
+                .withMax(5101849209530474984L)
+                .withSchema(new SearchMetadataSchema().withName("ncvokotllxdyhg").withVersion(1161349380)))
+            .withValue(Arrays.asList(
+                new SearchSchemaValue().withName("jlt")
+                    .withDisplayName("bnnhadoocrkvcik")
+                    .withType("vpa")
+                    .withIndexed(true)
+                    .withStored(true)
+                    .withFacet(false)
+                    .withOwnerType(Arrays.asList("u", "zikywgg")),
+                new SearchSchemaValue().withName("allatmelwuipic")
+                    .withDisplayName("zkzivgvvcnay")
+                    .withType("yrnxxmueedn")
+                    .withIndexed(true)
+                    .withStored(false)
+                    .withFacet(false)
+                    .withOwnerType(Arrays.asList("kwqqtchealmf", "tdaaygdvwvg", "iohgwxrtfud")),
+                new SearchSchemaValue().withName("pxgy")
+                    .withDisplayName("gvr")
+                    .withType("npkukghimdblx")
+                    .withIndexed(false)
+                    .withStored(true)
+                    .withFacet(false)
+                    .withOwnerType(Arrays.asList("jhfjxwm")),
+                new SearchSchemaValue().withName("kkfoqr")
+                    .withDisplayName("fkzikfj")
+                    .withType("n")
+                    .withIndexed(false)
+                    .withStored(false)
+                    .withFacet(false)
+                    .withOwnerType(Arrays.asList("czelpcirel", "feaenwab"))));
         model = BinaryData.fromObject(model).toObject(SearchGetSchemaResponseInner.class);
         Assertions.assertEquals("rsndsytgadgvra", model.metadata().searchId());
         Assertions.assertEquals("en", model.metadata().resultType());

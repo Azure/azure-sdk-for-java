@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.ClusterPrincipalAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list Kusto cluster principal assignments operation response. */
+/**
+ * The list Kusto cluster principal assignments operation response.
+ */
 @Fluent
-public final class ClusterPrincipalAssignmentListResult {
+public final class ClusterPrincipalAssignmentListResult
+    implements JsonSerializable<ClusterPrincipalAssignmentListResult> {
     /*
      * The list of Kusto cluster principal assignments.
      */
-    @JsonProperty(value = "value")
     private List<ClusterPrincipalAssignmentInner> value;
 
-    /** Creates an instance of ClusterPrincipalAssignmentListResult class. */
+    /**
+     * Creates an instance of ClusterPrincipalAssignmentListResult class.
+     */
     public ClusterPrincipalAssignmentListResult() {
     }
 
     /**
      * Get the value property: The list of Kusto cluster principal assignments.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterPrincipalAssignmentInner> value() {
@@ -33,7 +41,7 @@ public final class ClusterPrincipalAssignmentListResult {
 
     /**
      * Set the value property: The list of Kusto cluster principal assignments.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterPrincipalAssignmentListResult object itself.
      */
@@ -44,12 +52,51 @@ public final class ClusterPrincipalAssignmentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPrincipalAssignmentListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPrincipalAssignmentListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterPrincipalAssignmentListResult.
+     */
+    public static ClusterPrincipalAssignmentListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPrincipalAssignmentListResult deserializedClusterPrincipalAssignmentListResult
+                = new ClusterPrincipalAssignmentListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ClusterPrincipalAssignmentInner> value
+                        = reader.readArray(reader1 -> ClusterPrincipalAssignmentInner.fromJson(reader1));
+                    deserializedClusterPrincipalAssignmentListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPrincipalAssignmentListResult;
+        });
     }
 }

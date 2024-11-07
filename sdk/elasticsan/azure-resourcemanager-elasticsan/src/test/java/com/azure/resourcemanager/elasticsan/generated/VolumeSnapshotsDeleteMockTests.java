@@ -27,8 +27,7 @@ public final class VolumeSnapshotsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumeSnapshots()
-            .delete("t", "jqppyostronzmy", "gfipnsxk", "cwaekrrjre", com.azure.core.util.Context.NONE);
+        manager.volumeSnapshots().delete("dm", "qjjlwuen", "rkpyouaibrebqaay", "j", com.azure.core.util.Context.NONE);
 
     }
 }

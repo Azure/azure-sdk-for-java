@@ -52,7 +52,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ReservationsManager. This API describe Azure Reservation. */
+/**
+ * Entry point to ReservationsManager.
+ * This API describe Azure Reservation.
+ */
 public final class ReservationsManager {
     private Reservations reservations;
 
@@ -79,17 +82,15 @@ public final class ReservationsManager {
     private ReservationsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AzureReservationApiBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AzureReservationApiBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of reservations service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the reservations service API instance.
@@ -102,7 +103,7 @@ public final class ReservationsManager {
 
     /**
      * Creates an instance of reservations service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the reservations service API instance.
@@ -115,14 +116,16 @@ public final class ReservationsManager {
 
     /**
      * Gets a Configurable instance that can be used to create ReservationsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ReservationsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -194,8 +197,8 @@ public final class ReservationsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -212,8 +215,8 @@ public final class ReservationsManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -233,15 +236,13 @@ public final class ReservationsManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.reservations")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -266,38 +267,28 @@ public final class ReservationsManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new ReservationsManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Reservations.
-     *
+     * 
      * @return Resource collection API of Reservations.
      */
     public Reservations reservations() {
@@ -309,7 +300,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -321,7 +312,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of ReservationOrders.
-     *
+     * 
      * @return Resource collection API of ReservationOrders.
      */
     public ReservationOrders reservationOrders() {
@@ -333,7 +324,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -345,7 +336,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of CalculateRefunds.
-     *
+     * 
      * @return Resource collection API of CalculateRefunds.
      */
     public CalculateRefunds calculateRefunds() {
@@ -357,7 +348,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Returns.
-     *
+     * 
      * @return Resource collection API of Returns.
      */
     public Returns returns() {
@@ -369,7 +360,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of CalculateExchanges.
-     *
+     * 
      * @return Resource collection API of CalculateExchanges.
      */
     public CalculateExchanges calculateExchanges() {
@@ -381,7 +372,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Exchanges.
-     *
+     * 
      * @return Resource collection API of Exchanges.
      */
     public Exchanges exchanges() {
@@ -393,7 +384,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Quotas. It manages CurrentQuotaLimitBase.
-     *
+     * 
      * @return Resource collection API of Quotas.
      */
     public Quotas quotas() {
@@ -405,7 +396,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of QuotaRequestStatus.
-     *
+     * 
      * @return Resource collection API of QuotaRequestStatus.
      */
     public QuotaRequestStatus quotaRequestStatus() {
@@ -416,8 +407,10 @@ public final class ReservationsManager {
     }
 
     /**
-     * @return Wrapped service client AzureReservationApi providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client AzureReservationApi providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AzureReservationApi.
      */
     public AzureReservationApi serviceClient() {
         return this.clientObject;

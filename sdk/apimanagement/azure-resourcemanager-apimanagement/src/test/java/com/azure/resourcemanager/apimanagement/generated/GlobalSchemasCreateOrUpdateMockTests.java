@@ -31,46 +31,34 @@ public final class GlobalSchemasCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"schemaType\":\"json\",\"description\":\"gpxnaaiit\",\"value\":\"dataruywrxnk\",\"document\":\"dataaeb\"},\"id\":\"rxjsmrseauxeovb\",\"name\":\"rqwfuxntuegy\",\"type\":\"leketk\"}";
+        String responseStr
+            = "{\"properties\":{\"schemaType\":\"json\",\"description\":\"gpxnaaiit\",\"value\":\"dataruywrxnk\",\"document\":\"dataaeb\"},\"id\":\"rxjsmrseauxeovb\",\"name\":\"rqwfuxntuegy\",\"type\":\"leketk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GlobalSchemaContract response =
-            manager
-                .globalSchemas()
-                .define("hdhoyvpdu")
-                .withExistingService("uoh", "kimntxdvlqmn")
-                .withSchemaType(SchemaType.JSON)
-                .withDescription("p")
-                .withValue("datariettnmi")
-                .withDocument("datap")
-                .withIfMatch("xrcsevqjdxiiqwqb")
-                .create();
+        GlobalSchemaContract response = manager.globalSchemas()
+            .define("hdhoyvpdu")
+            .withExistingService("uoh", "kimntxdvlqmn")
+            .withSchemaType(SchemaType.JSON)
+            .withDescription("p")
+            .withValue("datariettnmi")
+            .withDocument("datap")
+            .withIfMatch("xrcsevqjdxiiqwqb")
+            .create();
 
         Assertions.assertEquals(SchemaType.JSON, response.schemaType());
         Assertions.assertEquals("gpxnaaiit", response.description());

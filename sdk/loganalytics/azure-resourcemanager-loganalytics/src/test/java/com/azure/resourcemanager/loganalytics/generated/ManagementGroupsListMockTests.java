@@ -31,45 +31,35 @@ public final class ManagementGroupsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"serverCount\":1433738455,\"isGateway\":false,\"name\":\"kqtob\",\"id\":\"uxofshfphwpnulai\",\"created\":\"2021-06-23T08:21:26Z\",\"dataReceived\":\"2021-04-12T10:10:02Z\",\"version\":\"whslwkoj\",\"sku\":\"l\"}}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"serverCount\":1433738455,\"isGateway\":false,\"name\":\"kqtob\",\"id\":\"uxofshfphwpnulai\",\"created\":\"2021-06-23T08:21:26Z\",\"dataReceived\":\"2021-04-12T10:10:02Z\",\"version\":\"whslwkoj\",\"sku\":\"l\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ManagementGroup> response =
-            manager.managementGroups().list("hppubowsepdfgkmt", "herngb", com.azure.core.util.Context.NONE);
+        PagedIterable<ManagementGroup> response
+            = manager.managementGroups().list("hppubowsepdfgkmt", "herngb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(1433738455, response.iterator().next().serverCount());
         Assertions.assertEquals(false, response.iterator().next().isGateway());
         Assertions.assertEquals("kqtob", response.iterator().next().name());
         Assertions.assertEquals("uxofshfphwpnulai", response.iterator().next().id());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T08:21:26Z"), response.iterator().next().created());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-12T10:10:02Z"), response.iterator().next().dataReceived());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T10:10:02Z"),
+            response.iterator().next().dataReceived());
         Assertions.assertEquals("whslwkoj", response.iterator().next().version());
         Assertions.assertEquals("l", response.iterator().next().sku());
     }

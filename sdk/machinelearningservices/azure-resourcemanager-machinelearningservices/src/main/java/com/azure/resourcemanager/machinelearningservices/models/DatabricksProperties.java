@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The DatabricksProperties model. */
 @Fluent
 public final class DatabricksProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabricksProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DatabricksProperties.class);
 
     /*
      * Databricks access token

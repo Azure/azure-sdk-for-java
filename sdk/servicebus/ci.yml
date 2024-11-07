@@ -11,14 +11,12 @@ trigger:
       - sdk/servicebus/ci.yml
       - sdk/servicebus/azure-messaging-servicebus/
       - sdk/servicebus/azure-messaging-servicebus-stress/
-      - sdk/servicebus/azure-messaging-servicebus-track1-perf/
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/
       - sdk/servicebus/build/
     exclude:
       - sdk/servicebus/pom.xml
       - sdk/servicebus/azure-messaging-servicebus/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-stress/pom.xml
-      - sdk/servicebus/azure-messaging-servicebus-track1-perf/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/pom.xml
 
 pr:
@@ -33,14 +31,12 @@ pr:
       - sdk/servicebus/ci.yml
       - sdk/servicebus/azure-messaging-servicebus/
       - sdk/servicebus/azure-messaging-servicebus-stress/
-      - sdk/servicebus/azure-messaging-servicebus-track1-perf/
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/
       - sdk/servicebus/build/
     exclude:
       - sdk/servicebus/pom.xml
       - sdk/servicebus/azure-messaging-servicebus/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-stress/pom.xml
-      - sdk/servicebus/azure-messaging-servicebus-track1-perf/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/pom.xml
 
 parameters:
@@ -58,8 +54,6 @@ extends:
         groupId: com.azure
         safeName: azuremessagingservicebus
     AdditionalModules:
-      - name: azure-messaging-servicebus-track1-perf
-        groupId: com.azure
       - name: azure-messaging-servicebus-track2-perf
         groupId: com.azure
         # required by the above perf libraries

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.workloads.models.DatabaseVmDetails;
 public final class DatabaseVmDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseVmDetails model =
-            BinaryData
-                .fromString(
-                    "{\"virtualMachineId\":\"yxzk\",\"status\":\"SoftShutdown\",\"storageDetails\":[{\"id\":\"oklyaxuconuq\"}]}")
-                .toObject(DatabaseVmDetails.class);
+        DatabaseVmDetails model = BinaryData.fromString(
+            "{\"virtualMachineId\":\"yxzk\",\"status\":\"SoftShutdown\",\"storageDetails\":[{\"id\":\"oklyaxuconuq\"}]}")
+            .toObject(DatabaseVmDetails.class);
     }
 
     @org.junit.jupiter.api.Test

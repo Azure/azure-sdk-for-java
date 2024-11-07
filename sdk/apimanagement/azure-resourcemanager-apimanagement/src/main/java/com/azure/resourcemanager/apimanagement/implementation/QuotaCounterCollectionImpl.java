@@ -17,8 +17,7 @@ public final class QuotaCounterCollectionImpl implements QuotaCounterCollection 
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    QuotaCounterCollectionImpl(
-        QuotaCounterCollectionInner innerObject,
+    QuotaCounterCollectionImpl(QuotaCounterCollectionInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class QuotaCounterCollectionImpl implements QuotaCounterCollection 
     public List<QuotaCounterContract> value() {
         List<QuotaCounterContractInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new QuotaCounterContractImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new QuotaCounterContractImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

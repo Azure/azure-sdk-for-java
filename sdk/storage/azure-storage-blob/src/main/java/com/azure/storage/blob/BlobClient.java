@@ -122,8 +122,8 @@ public class BlobClient extends BlobClientBase {
     protected BlobClient(BlobAsyncClient client, HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, String versionId) {
-        super(client, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, versionId);
+        super(client, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot,
+            customerProvidedKey, encryptionScope, versionId);
         this.client = client;
     }
 
@@ -135,9 +135,9 @@ public class BlobClient extends BlobClientBase {
      */
     @Override
     public BlobClient getSnapshotClient(String snapshot) {
-        BlobAsyncClient asyncClient = new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(),
-            encryptionScope, getVersionId());
+        BlobAsyncClient asyncClient
+            = new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+                getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
         return new BlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
     }
@@ -186,8 +186,7 @@ public class BlobClient extends BlobClientBase {
     public BlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
-            finalCustomerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -203,9 +202,7 @@ public class BlobClient extends BlobClientBase {
      */
     public AppendBlobClient getAppendBlobClient() {
         if (appendBlobClient == null) {
-            appendBlobClient = new SpecializedBlobClientBuilder()
-                .blobClient(this)
-                .buildAppendBlobClient();
+            appendBlobClient = new SpecializedBlobClientBuilder().blobClient(this).buildAppendBlobClient();
         }
         return appendBlobClient;
     }
@@ -217,9 +214,7 @@ public class BlobClient extends BlobClientBase {
      */
     public BlockBlobClient getBlockBlobClient() {
         if (blockBlobClient == null) {
-            blockBlobClient = new SpecializedBlobClientBuilder()
-                .blobClient(this)
-                .buildBlockBlobClient();
+            blockBlobClient = new SpecializedBlobClientBuilder().blobClient(this).buildBlockBlobClient();
         }
         return blockBlobClient;
     }
@@ -231,9 +226,7 @@ public class BlobClient extends BlobClientBase {
      */
     public PageBlobClient getPageBlobClient() {
         if (pageBlobClient == null) {
-            pageBlobClient = new SpecializedBlobClientBuilder()
-                .blobClient(this)
-                .buildPageBlobClient();
+            pageBlobClient = new SpecializedBlobClientBuilder().blobClient(this).buildPageBlobClient();
         }
         return pageBlobClient;
     }
@@ -248,7 +241,7 @@ public class BlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(InputStream data) {
-        uploadWithResponse(new BlobParallelUploadOptions(data), null, null);
+        upload(data, false);
     }
 
     /**
@@ -281,7 +274,8 @@ public class BlobClient extends BlobClientBase {
         if (!overwrite) {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        uploadWithResponse(new BlobParallelUploadOptions(data).setRequestConditions(blobRequestConditions), null, Context.NONE);
+        uploadWithResponse(new BlobParallelUploadOptions(data).setRequestConditions(blobRequestConditions), null,
+            Context.NONE);
     }
 
     /**
@@ -326,8 +320,8 @@ public class BlobClient extends BlobClientBase {
         if (!overwrite) {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        uploadWithResponse(new BlobParallelUploadOptions(data).setRequestConditions(blobRequestConditions),
-            null, Context.NONE);
+        uploadWithResponse(new BlobParallelUploadOptions(data).setRequestConditions(blobRequestConditions), null,
+            Context.NONE);
     }
 
     /**
@@ -356,9 +350,13 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        this.uploadWithResponse(new BlobParallelUploadOptions(data, length)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
-            .setRequestConditions(requestConditions), timeout, context);
+        this.uploadWithResponse(
+            new BlobParallelUploadOptions(data, length).setParallelTransferOptions(parallelTransferOptions)
+                .setHeaders(headers)
+                .setMetadata(metadata)
+                .setTier(tier)
+                .setRequestConditions(requestConditions),
+            timeout, context);
     }
 
     /**
@@ -391,8 +389,8 @@ public class BlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Duration timeout,
         Context context) {
         Objects.requireNonNull(options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options)
-            .contextWrite(FluxUtil.toReactorContext(context));
+        Mono<Response<BlockBlobItem>> upload
+            = client.uploadWithResponse(options).contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
@@ -509,9 +507,13 @@ public class BlobClient extends BlobClientBase {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
-        this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions), timeout, null);
+        this.uploadFromFileWithResponse(
+            new BlobUploadFromFileOptions(filePath).setParallelTransferOptions(parallelTransferOptions)
+                .setHeaders(headers)
+                .setMetadata(metadata)
+                .setTier(tier)
+                .setRequestConditions(requestConditions),
+            timeout, null);
     }
 
     /**
@@ -557,9 +559,8 @@ public class BlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options, Duration timeout,
         Context context) {
-        Mono<Response<BlockBlobItem>> upload =
-            this.client.uploadFromFileWithResponse(options)
-                .contextWrite(FluxUtil.toReactorContext(context));
+        Mono<Response<BlockBlobItem>> upload
+            = this.client.uploadFromFileWithResponse(options).contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

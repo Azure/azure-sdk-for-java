@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Test;
 public final class OperationDisplayTests {
     @Test
     public void testDeserialize() {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"nchgej\",\"resource\":\"odmailzyd\",\"operation\":\"o\",\"description\":\"yahux\"}")
-                .toObject(OperationDisplay.class);
+        OperationDisplay model = BinaryData
+            .fromString(
+                "{\"provider\":\"nchgej\",\"resource\":\"odmailzyd\",\"operation\":\"o\",\"description\":\"yahux\"}")
+            .toObject(OperationDisplay.class);
         Assertions.assertEquals("nchgej", model.provider());
         Assertions.assertEquals("odmailzyd", model.resource());
         Assertions.assertEquals("o", model.operation());
@@ -25,12 +24,10 @@ public final class OperationDisplayTests {
 
     @Test
     public void testSerialize() {
-        OperationDisplay model =
-            new OperationDisplay()
-                .withProvider("nchgej")
-                .withResource("odmailzyd")
-                .withOperation("o")
-                .withDescription("yahux");
+        OperationDisplay model = new OperationDisplay().withProvider("nchgej")
+            .withResource("odmailzyd")
+            .withOperation("o")
+            .withDescription("yahux");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
         Assertions.assertEquals("nchgej", model.provider());
         Assertions.assertEquals("odmailzyd", model.resource());

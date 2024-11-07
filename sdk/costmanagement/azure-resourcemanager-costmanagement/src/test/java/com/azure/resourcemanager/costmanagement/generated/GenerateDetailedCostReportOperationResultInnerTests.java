@@ -12,32 +12,29 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateDetailedCostReportOperationResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateDetailedCostReportOperationResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"tjivfxzsjabib\",\"name\":\"stawfsdjpvkv\",\"type\":\"jxbkzbzkdvn\",\"properties\":{\"expiryTime\":\"2021-03-28T13:01:06Z\",\"validTill\":\"2021-09-14T12:39:28Z\",\"downloadUrl\":\"r\"}}")
-                .toObject(GenerateDetailedCostReportOperationResultInner.class);
-        Assertions.assertEquals("tjivfxzsjabib", model.id());
-        Assertions.assertEquals("stawfsdjpvkv", model.name());
-        Assertions.assertEquals("jxbkzbzkdvn", model.type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T12:39:28Z"), model.validTill());
-        Assertions.assertEquals("r", model.downloadUrl());
+        GenerateDetailedCostReportOperationResultInner model = BinaryData.fromString(
+            "{\"id\":\"hu\",\"name\":\"erctatoyin\",\"type\":\"pbrlcyrduczkgofx\",\"properties\":{\"expiryTime\":\"2021-09-24T20:07:26Z\",\"validTill\":\"2020-12-21T07:33:22Z\",\"downloadUrl\":\"crrpcjttbstvje\"}}")
+            .toObject(GenerateDetailedCostReportOperationResultInner.class);
+        Assertions.assertEquals("hu", model.id());
+        Assertions.assertEquals("erctatoyin", model.name());
+        Assertions.assertEquals("pbrlcyrduczkgofx", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T07:33:22Z"), model.validTill());
+        Assertions.assertEquals("crrpcjttbstvje", model.downloadUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateDetailedCostReportOperationResultInner model =
-            new GenerateDetailedCostReportOperationResultInner()
-                .withId("tjivfxzsjabib")
-                .withName("stawfsdjpvkv")
-                .withType("jxbkzbzkdvn")
-                .withValidTill(OffsetDateTime.parse("2021-09-14T12:39:28Z"))
-                .withDownloadUrl("r");
+        GenerateDetailedCostReportOperationResultInner model
+            = new GenerateDetailedCostReportOperationResultInner().withId("hu")
+                .withName("erctatoyin")
+                .withType("pbrlcyrduczkgofx")
+                .withValidTill(OffsetDateTime.parse("2020-12-21T07:33:22Z"))
+                .withDownloadUrl("crrpcjttbstvje");
         model = BinaryData.fromObject(model).toObject(GenerateDetailedCostReportOperationResultInner.class);
-        Assertions.assertEquals("tjivfxzsjabib", model.id());
-        Assertions.assertEquals("stawfsdjpvkv", model.name());
-        Assertions.assertEquals("jxbkzbzkdvn", model.type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T12:39:28Z"), model.validTill());
-        Assertions.assertEquals("r", model.downloadUrl());
+        Assertions.assertEquals("hu", model.id());
+        Assertions.assertEquals("erctatoyin", model.name());
+        Assertions.assertEquals("pbrlcyrduczkgofx", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T07:33:22Z"), model.validTill());
+        Assertions.assertEquals("crrpcjttbstvje", model.downloadUrl());
     }
 }

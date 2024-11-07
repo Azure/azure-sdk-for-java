@@ -110,8 +110,8 @@ public class ShareSetPropertiesOptions {
      * @param snapshotVirtualDirectoryAccessEnabled the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the ShareSetPropertiesOptions object itself.
      */
-    public ShareSetPropertiesOptions setSnapshotVirtualDirectoryAccessEnabled(
-        Boolean snapshotVirtualDirectoryAccessEnabled) {
+    public ShareSetPropertiesOptions
+        setSnapshotVirtualDirectoryAccessEnabled(Boolean snapshotVirtualDirectoryAccessEnabled) {
         this.enableSnapshotVirtualDirectoryAccess = snapshotVirtualDirectoryAccessEnabled;
         return this;
     }
@@ -185,7 +185,6 @@ public class ShareSetPropertiesOptions {
         this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
         return this;
     }
-
 
     /**
      * Get the provisionedMaxIops property:

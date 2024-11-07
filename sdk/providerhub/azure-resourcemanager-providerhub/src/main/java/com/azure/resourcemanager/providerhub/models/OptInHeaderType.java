@@ -23,8 +23,8 @@ public final class OptInHeaderType extends ExpandableStringEnum<OptInHeaderType>
     public static final OptInHeaderType SIGNED_AUXILIARY_TOKENS = fromString("SignedAuxiliaryTokens");
 
     /** Static value UnboundedClientGroupMembership for OptInHeaderType. */
-    public static final OptInHeaderType UNBOUNDED_CLIENT_GROUP_MEMBERSHIP =
-        fromString("UnboundedClientGroupMembership");
+    public static final OptInHeaderType UNBOUNDED_CLIENT_GROUP_MEMBERSHIP
+        = fromString("UnboundedClientGroupMembership");
 
     /**
      * Creates a new instance of OptInHeaderType value.

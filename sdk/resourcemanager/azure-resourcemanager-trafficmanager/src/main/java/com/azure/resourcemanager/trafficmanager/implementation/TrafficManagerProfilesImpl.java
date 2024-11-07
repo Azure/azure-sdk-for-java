@@ -20,16 +20,15 @@ import java.util.ArrayList;
 import reactor.core.publisher.Mono;
 
 /** Implementation for TrafficManagerProfiles. */
-public class TrafficManagerProfilesImpl
-    extends TopLevelModifiableResourcesImpl<
-        TrafficManagerProfile, TrafficManagerProfileImpl, ProfileInner, ProfilesClient, TrafficManager>
+public class TrafficManagerProfilesImpl extends
+    TopLevelModifiableResourcesImpl<TrafficManagerProfile, TrafficManagerProfileImpl, ProfileInner, ProfilesClient, TrafficManager>
     implements TrafficManagerProfiles {
     private GeographicHierarchies geographicHierarchies;
 
     public TrafficManagerProfilesImpl(final TrafficManager trafficManager) {
         super(trafficManager.serviceClient().getProfiles(), trafficManager);
-        this.geographicHierarchies =
-            new GeographicHierarchiesImpl(trafficManager, trafficManager.serviceClient().getGeographicHierarchies());
+        this.geographicHierarchies
+            = new GeographicHierarchiesImpl(trafficManager, trafficManager.serviceClient().getGeographicHierarchies());
     }
 
     @Override
@@ -39,12 +38,10 @@ public class TrafficManagerProfilesImpl
 
     @Override
     public Mono<CheckProfileDnsNameAvailabilityResult> checkDnsNameAvailabilityAsync(String dnsNameLabel) {
-        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameter =
-            new CheckTrafficManagerRelativeDnsNameAvailabilityParameters()
-                .withName(dnsNameLabel)
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameter
+            = new CheckTrafficManagerRelativeDnsNameAvailabilityParameters().withName(dnsNameLabel)
                 .withType("Microsoft.Network/trafficManagerProfiles");
-        return this
-            .inner()
+        return this.inner()
             .checkTrafficManagerRelativeDnsNameAvailabilityAsync(parameter)
             .map(CheckProfileDnsNameAvailabilityResult::new);
     }

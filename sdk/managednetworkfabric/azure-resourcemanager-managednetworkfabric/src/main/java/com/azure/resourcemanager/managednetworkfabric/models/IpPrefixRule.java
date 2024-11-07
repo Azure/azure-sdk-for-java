@@ -164,14 +164,12 @@ public final class IpPrefixRule {
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model IpPrefixRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model IpPrefixRule"));
         }
         if (networkPrefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property networkPrefix in model IpPrefixRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property networkPrefix in model IpPrefixRule"));
         }
     }
 

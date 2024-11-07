@@ -33,6 +33,6 @@ public interface StorageAccountsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListStorageAccountKeysResultInner> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListStorageAccountKeysResultInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 }

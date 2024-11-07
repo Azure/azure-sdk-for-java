@@ -95,14 +95,16 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster create() {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters().createOrUpdate(resourceGroupName,
-            cloudHsmClusterName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .createOrUpdate(resourceGroupName, cloudHsmClusterName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CloudHsmCluster create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters().createOrUpdate(resourceGroupName,
-            cloudHsmClusterName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .createOrUpdate(resourceGroupName, cloudHsmClusterName, this.innerModel(), context);
         return this;
     }
 
@@ -119,14 +121,16 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster apply() {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters().update(resourceGroupName,
-            cloudHsmClusterName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .update(resourceGroupName, cloudHsmClusterName, updateBody, Context.NONE);
         return this;
     }
 
     public CloudHsmCluster apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters().update(resourceGroupName,
-            cloudHsmClusterName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .update(resourceGroupName, cloudHsmClusterName, updateBody, context);
         return this;
     }
 
@@ -139,14 +143,18 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster refresh() {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CloudHsmCluster refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, context)
+            .getValue();
         return this;
     }
 

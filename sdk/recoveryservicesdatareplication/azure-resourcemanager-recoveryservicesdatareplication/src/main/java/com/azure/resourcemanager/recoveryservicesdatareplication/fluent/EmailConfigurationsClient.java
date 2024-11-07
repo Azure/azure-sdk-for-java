@@ -28,8 +28,8 @@ public interface EmailConfigurationsClient {
      * @return the details of the alert configuration setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EmailConfigurationModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String emailConfigurationName, Context context);
+    Response<EmailConfigurationModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String emailConfigurationName, Context context);
 
     /**
      * Gets the email configuration setting.
@@ -63,12 +63,8 @@ public interface EmailConfigurationsClient {
      * @return email configuration model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EmailConfigurationModelInner> createWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String emailConfigurationName,
-        EmailConfigurationModelInner body,
-        Context context);
+    Response<EmailConfigurationModelInner> createWithResponse(String resourceGroupName, String vaultName,
+        String emailConfigurationName, EmailConfigurationModelInner body, Context context);
 
     /**
      * Creates email configuration settings.

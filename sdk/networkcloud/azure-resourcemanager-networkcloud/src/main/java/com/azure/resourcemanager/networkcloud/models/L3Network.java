@@ -209,14 +209,9 @@ public interface L3Network {
     L3NetworkInner innerModel();
 
     /** The entirety of the L3Network definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithL3IsolationDomainId,
-            DefinitionStages.WithVlan,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
+        DefinitionStages.WithL3IsolationDomainId, DefinitionStages.WithVlan, DefinitionStages.WithCreate {
     }
 
     /** The L3Network definition stages. */
@@ -297,14 +292,10 @@ public interface L3Network {
          * The stage of the L3Network definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithHybridAksIpamEnabled,
-                DefinitionStages.WithHybridAksPluginType,
-                DefinitionStages.WithInterfaceName,
-                DefinitionStages.WithIpAllocationType,
-                DefinitionStages.WithIpv4ConnectedPrefix,
-                DefinitionStages.WithIpv6ConnectedPrefix {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithHybridAksIpamEnabled,
+            DefinitionStages.WithHybridAksPluginType, DefinitionStages.WithInterfaceName,
+            DefinitionStages.WithIpAllocationType, DefinitionStages.WithIpv4ConnectedPrefix,
+            DefinitionStages.WithIpv6ConnectedPrefix {
             /**
              * Executes the create request.
              *

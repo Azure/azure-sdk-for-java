@@ -114,8 +114,8 @@ public final class AutomaticOsUpgradePolicy implements JsonSerializable<Automati
     /*
      * Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a
      * newer version of the OS image becomes available. <br /><br /> If this is set to true for Windows based pools,
-     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?
-     * tabs=HTTP#windowsconfiguration) cannot be set to true.
+     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/rest/api/batchservice/pool/add?tabs=
+     * HTTP#windowsconfiguration) cannot be set to true.
      */
     @Generated
     private Boolean enableAutomaticOsUpgrade;
@@ -124,7 +124,7 @@ public final class AutomaticOsUpgradePolicy implements JsonSerializable<Automati
      * Get the enableAutomaticOsUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
      * set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br /&gt;&lt;br
      * /&gt; If this is set to true for Windows based pools,
-     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
+     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
      * cannot be set to true.
      *
      * @return the enableAutomaticOsUpgrade value.
@@ -138,7 +138,7 @@ public final class AutomaticOsUpgradePolicy implements JsonSerializable<Automati
      * Set the enableAutomaticOsUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
      * set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br /&gt;&lt;br
      * /&gt; If this is set to true for Windows based pools,
-     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
+     * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/rest/api/batchservice/pool/add?tabs=HTTP#windowsconfiguration)
      * cannot be set to true.
      *
      * @param enableAutomaticOsUpgrade the enableAutomaticOsUpgrade value to set.

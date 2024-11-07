@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Specifies the settings for Horovod job. */
 @Fluent
 public final class HorovodSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HorovodSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(HorovodSettings.class);
 
     /*
      * The python script to execute.
@@ -128,10 +129,8 @@ public final class HorovodSettings {
      */
     public void validate() {
         if (pythonScriptFilePath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pythonScriptFilePath in model HorovodSettings"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property pythonScriptFilePath in model HorovodSettings"));
         }
     }
 }

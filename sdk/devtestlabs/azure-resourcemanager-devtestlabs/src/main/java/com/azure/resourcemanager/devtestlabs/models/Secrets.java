@@ -39,15 +39,8 @@ public interface Secrets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Secret> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Secret> list(String resourceGroupName, String labName, String username, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get secret.
@@ -63,8 +56,8 @@ public interface Secrets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return secret along with {@link Response}.
      */
-    Response<Secret> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    Response<Secret> getWithResponse(String resourceGroupName, String labName, String username, String name,
+        String expand, Context context);
 
     /**
      * Get secret.
@@ -93,8 +86,8 @@ public interface Secrets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String username, String name, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String labName, String username, String name,
+        Context context);
 
     /**
      * Delete secret.

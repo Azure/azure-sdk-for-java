@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /** Defines values for MediaStreamingTransportTypeInternal. */
 public final class MediaStreamingTransportTypeInternal
-        extends ExpandableStringEnum<MediaStreamingTransportTypeInternal> {
+    extends ExpandableStringEnum<MediaStreamingTransportTypeInternal> {
     /** Static value websocket for MediaStreamingTransportTypeInternal. */
     public static final MediaStreamingTransportTypeInternal WEBSOCKET = fromString("websocket");
 

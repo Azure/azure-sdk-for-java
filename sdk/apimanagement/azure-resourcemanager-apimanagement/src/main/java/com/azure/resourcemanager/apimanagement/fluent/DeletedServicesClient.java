@@ -77,8 +77,8 @@ public interface DeletedServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(
-        String serviceName, String location);
+    SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(String serviceName,
+        String location);
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
@@ -92,8 +92,8 @@ public interface DeletedServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(
-        String serviceName, String location, Context context);
+    SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(String serviceName,
+        String location, Context context);
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).

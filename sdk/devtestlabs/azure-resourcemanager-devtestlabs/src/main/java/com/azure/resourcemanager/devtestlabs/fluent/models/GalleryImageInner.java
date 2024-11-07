@@ -225,10 +225,8 @@ public final class GalleryImageInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model GalleryImageInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model GalleryImageInner"));
         } else {
             innerProperties().validate();
         }

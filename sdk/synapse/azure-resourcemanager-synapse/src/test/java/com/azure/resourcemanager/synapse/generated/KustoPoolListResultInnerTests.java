@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.synapse.fluent.models.KustoPoolInner;
 import com.azure.resourcemanager.synapse.fluent.models.KustoPoolListResultInner;
 import com.azure.resourcemanager.synapse.models.AzureSku;
+import com.azure.resourcemanager.synapse.models.OptimizedAutoscale;
 import com.azure.resourcemanager.synapse.models.SkuName;
 import com.azure.resourcemanager.synapse.models.SkuSize;
 import java.util.Arrays;
@@ -18,105 +19,88 @@ import org.junit.jupiter.api.Assertions;
 public final class KustoPoolListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustoPoolListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"Storage"
-                        + " optimized\",\"capacity\":949193893,\"size\":\"Medium\"},\"properties\":{\"state\":\"Deleted\",\"provisioningState\":\"Moving\",\"uri\":\"jcitdigsxcdglj\",\"dataIngestionUri\":\"keuachtomf\",\"stateReason\":\"ytswfp\",\"enableStreamingIngest\":true,\"enablePurge\":true,\"workspaceUID\":\"mskwhqjjysl\"},\"etag\":\"lpshhkvpedwqslsr\",\"location\":\"pq\",\"tags\":{\"qejo\":\"skondcbrwimu\",\"tljqobbpih\":\"ovyrrleaesinu\",\"bbmpxdlvykfre\":\"hcecybmrqbr\",\"wjksghudgzhxo\":\"crse\"},\"id\":\"jggsvo\",\"name\":\"jkxibda\",\"type\":\"hrkmdyomkxfbvfbh\"},{\"sku\":{\"name\":\"Compute"
-                        + " optimized\",\"capacity\":1026762793,\"size\":\"Large\"},\"properties\":{\"state\":\"Stopped\",\"provisioningState\":\"Deleting\",\"uri\":\"eimawzovgkkumui\",\"dataIngestionUri\":\"cjc\",\"stateReason\":\"tbw\",\"enableStreamingIngest\":false,\"enablePurge\":false,\"workspaceUID\":\"comlikytwvczc\"},\"etag\":\"k\",\"location\":\"ve\",\"tags\":{\"qthe\":\"dvlvhbwrnfxtgdd\"},\"id\":\"n\",\"name\":\"naoyank\",\"type\":\"oe\"},{\"sku\":{\"name\":\"Storage"
-                        + " optimized\",\"capacity\":1901940761,\"size\":\"Small\"},\"properties\":{\"state\":\"Deleting\",\"provisioningState\":\"Moving\",\"uri\":\"hdroznnh\",\"dataIngestionUri\":\"lktgjc\",\"stateReason\":\"guxhem\",\"enableStreamingIngest\":true,\"enablePurge\":false,\"workspaceUID\":\"zgfbukklelssx\"},\"etag\":\"ycsxzu\",\"location\":\"srlsmd\",\"tags\":{\"cdoewbidyv\":\"plpvm\",\"deugf\":\"eowxvgpi\"},\"id\":\"xzecpaxwkufykhvu\",\"name\":\"xepmrut\",\"type\":\"nabaobnslujd\"},{\"sku\":{\"name\":\"Storage"
-                        + " optimized\",\"capacity\":571478298,\"size\":\"Large\"},\"properties\":{\"state\":\"Stopped\",\"provisioningState\":\"Running\",\"uri\":\"hywartspph\",\"dataIngestionUri\":\"xkykxdssjp\",\"stateReason\":\"mucfxhikkf\",\"enableStreamingIngest\":true,\"enablePurge\":false,\"workspaceUID\":\"cqlh\"},\"etag\":\"s\",\"location\":\"lmiiiovg\",\"tags\":{\"otiowlxteqd\":\"xuugqkc\",\"anblwphqlkccu\":\"tjgwdtguk\",\"iul\":\"gygqwah\",\"wzdufypivlsbb\":\"gniiprglvaw\"},\"id\":\"pmcubkmifoxxkub\",\"name\":\"phavpmhbrb\",\"type\":\"gvgovpbbttefjo\"}]}")
-                .toObject(KustoPoolListResultInner.class);
-        Assertions.assertEquals("pq", model.value().get(0).location());
-        Assertions.assertEquals("skondcbrwimu", model.value().get(0).tags().get("qejo"));
-        Assertions.assertEquals(SkuName.STORAGE_OPTIMIZED, model.value().get(0).sku().name());
-        Assertions.assertEquals(949193893, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(SkuSize.MEDIUM, model.value().get(0).sku().size());
+        KustoPoolListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"Compute optimized\",\"capacity\":1494340900,\"size\":\"Extra small\"},\"properties\":{\"state\":\"Running\",\"provisioningState\":\"Succeeded\",\"uri\":\"brlc\",\"dataIngestionUri\":\"duczkgof\",\"stateReason\":\"fsrucv\",\"optimizedAutoscale\":{\"version\":1881322830,\"isEnabled\":true,\"minimum\":1764052687,\"maximum\":1614382020},\"enableStreamingIngest\":true,\"enablePurge\":false,\"languageExtensions\":{\"value\":[{}]},\"workspaceUID\":\"aqnrmvvfkoxmlg\"},\"etag\":\"tuidvrmazlpd\",\"location\":\"exymzvla\",\"tags\":{\"uzivensrpmeyyvp\":\"bhpwvqsgnyy\"},\"id\":\"patlbijp\",\"name\":\"gsksrfhf\",\"type\":\"olmk\"},{\"sku\":{\"name\":\"Compute optimized\",\"capacity\":1673744879,\"size\":\"Medium\"},\"properties\":{\"state\":\"Running\",\"provisioningState\":\"Deleting\",\"uri\":\"vfqawzfgbrttuiac\",\"dataIngestionUri\":\"iexhajl\",\"stateReason\":\"t\",\"optimizedAutoscale\":{\"version\":1682611856,\"isEnabled\":false,\"minimum\":2025473151,\"maximum\":69460429},\"enableStreamingIngest\":false,\"enablePurge\":false,\"languageExtensions\":{\"value\":[{}]},\"workspaceUID\":\"vnwsw\"},\"etag\":\"xkyctwwgzwx\",\"location\":\"mecvogygzyvneeza\",\"tags\":{\"jjjavfqnvhnq\":\"htmoqqtlffhzbkr\"},\"id\":\"ewdogiyetesy\",\"name\":\"vidbztjhqtfb\",\"type\":\"vnynkb\"},{\"sku\":{\"name\":\"Storage optimized\",\"capacity\":835275806,\"size\":\"Medium\"},\"properties\":{\"state\":\"Stopped\",\"provisioningState\":\"Deleting\",\"uri\":\"kzyaup\",\"dataIngestionUri\":\"ccxnafbwqroohtuo\",\"stateReason\":\"aonurjtumg\",\"optimizedAutoscale\":{\"version\":784380912,\"isEnabled\":false,\"minimum\":410392818,\"maximum\":118637187},\"enableStreamingIngest\":true,\"enablePurge\":true,\"languageExtensions\":{\"value\":[{}]},\"workspaceUID\":\"yjxltbsjusc\"},\"etag\":\"f\",\"location\":\"gctmgxuupbezq\",\"tags\":{\"ukdqkkyihztg\":\"drtc\",\"qzgwldoychil\":\"qm\"},\"id\":\"cecfehuwaoaguh\",\"name\":\"cqlliz\",\"type\":\"tac\"},{\"sku\":{\"name\":\"Compute optimized\",\"capacity\":2124357758,\"size\":\"Small\"},\"properties\":{\"state\":\"Unavailable\",\"provisioningState\":\"Creating\",\"uri\":\"qejpmvssehaepwa\",\"dataIngestionUri\":\"xtczhupeuknijd\",\"stateReason\":\"yespydjfbocyv\",\"optimizedAutoscale\":{\"version\":629630238,\"isEnabled\":true,\"minimum\":1075169547,\"maximum\":1596124539},\"enableStreamingIngest\":false,\"enablePurge\":true,\"languageExtensions\":{\"value\":[{}]},\"workspaceUID\":\"akuflgbhgauacdix\"},\"etag\":\"ufr\",\"location\":\"yjq\",\"tags\":{\"efgwbmqjc\":\"fnozoeoqbvjh\",\"pzealbmqkyojw\":\"ntasfaymxbu\",\"mbtsuahxsg\":\"vf\"},\"id\":\"jcmmzrrscub\",\"name\":\"wsdrnpxqwodif\",\"type\":\"jxcjrmmuabwib\"}]}")
+            .toObject(KustoPoolListResultInner.class);
+        Assertions.assertEquals("exymzvla", model.value().get(0).location());
+        Assertions.assertEquals("bhpwvqsgnyy", model.value().get(0).tags().get("uzivensrpmeyyvp"));
+        Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, model.value().get(0).sku().name());
+        Assertions.assertEquals(1494340900, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(SkuSize.EXTRA_SMALL, model.value().get(0).sku().size());
+        Assertions.assertEquals(1881322830, model.value().get(0).optimizedAutoscale().version());
+        Assertions.assertEquals(true, model.value().get(0).optimizedAutoscale().isEnabled());
+        Assertions.assertEquals(1764052687, model.value().get(0).optimizedAutoscale().minimum());
+        Assertions.assertEquals(1614382020, model.value().get(0).optimizedAutoscale().maximum());
         Assertions.assertEquals(true, model.value().get(0).enableStreamingIngest());
-        Assertions.assertEquals(true, model.value().get(0).enablePurge());
-        Assertions.assertEquals("mskwhqjjysl", model.value().get(0).workspaceUid());
+        Assertions.assertEquals(false, model.value().get(0).enablePurge());
+        Assertions.assertEquals("aqnrmvvfkoxmlg", model.value().get(0).workspaceUid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KustoPoolListResultInner model =
-            new KustoPoolListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new KustoPoolInner()
-                                .withLocation("pq")
-                                .withTags(
-                                    mapOf(
-                                        "qejo",
-                                        "skondcbrwimu",
-                                        "tljqobbpih",
-                                        "ovyrrleaesinu",
-                                        "bbmpxdlvykfre",
-                                        "hcecybmrqbr",
-                                        "wjksghudgzhxo",
-                                        "crse"))
-                                .withSku(
-                                    new AzureSku()
-                                        .withName(SkuName.STORAGE_OPTIMIZED)
-                                        .withCapacity(949193893)
-                                        .withSize(SkuSize.MEDIUM))
-                                .withEnableStreamingIngest(true)
-                                .withEnablePurge(true)
-                                .withWorkspaceUid("mskwhqjjysl"),
-                            new KustoPoolInner()
-                                .withLocation("ve")
-                                .withTags(mapOf("qthe", "dvlvhbwrnfxtgdd"))
-                                .withSku(
-                                    new AzureSku()
-                                        .withName(SkuName.COMPUTE_OPTIMIZED)
-                                        .withCapacity(1026762793)
-                                        .withSize(SkuSize.LARGE))
-                                .withEnableStreamingIngest(false)
-                                .withEnablePurge(false)
-                                .withWorkspaceUid("comlikytwvczc"),
-                            new KustoPoolInner()
-                                .withLocation("srlsmd")
-                                .withTags(mapOf("cdoewbidyv", "plpvm", "deugf", "eowxvgpi"))
-                                .withSku(
-                                    new AzureSku()
-                                        .withName(SkuName.STORAGE_OPTIMIZED)
-                                        .withCapacity(1901940761)
-                                        .withSize(SkuSize.SMALL))
-                                .withEnableStreamingIngest(true)
-                                .withEnablePurge(false)
-                                .withWorkspaceUid("zgfbukklelssx"),
-                            new KustoPoolInner()
-                                .withLocation("lmiiiovg")
-                                .withTags(
-                                    mapOf(
-                                        "otiowlxteqd",
-                                        "xuugqkc",
-                                        "anblwphqlkccu",
-                                        "tjgwdtguk",
-                                        "iul",
-                                        "gygqwah",
-                                        "wzdufypivlsbb",
-                                        "gniiprglvaw"))
-                                .withSku(
-                                    new AzureSku()
-                                        .withName(SkuName.STORAGE_OPTIMIZED)
-                                        .withCapacity(571478298)
-                                        .withSize(SkuSize.LARGE))
-                                .withEnableStreamingIngest(true)
-                                .withEnablePurge(false)
-                                .withWorkspaceUid("cqlh")));
+        KustoPoolListResultInner model = new KustoPoolListResultInner().withValue(Arrays.asList(
+            new KustoPoolInner().withLocation("exymzvla")
+                .withTags(mapOf("uzivensrpmeyyvp", "bhpwvqsgnyy"))
+                .withSku(new AzureSku().withName(SkuName.COMPUTE_OPTIMIZED)
+                    .withCapacity(1494340900)
+                    .withSize(SkuSize.EXTRA_SMALL))
+                .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(1881322830)
+                    .withIsEnabled(true)
+                    .withMinimum(1764052687)
+                    .withMaximum(1614382020))
+                .withEnableStreamingIngest(true)
+                .withEnablePurge(false)
+                .withWorkspaceUid("aqnrmvvfkoxmlg"),
+            new KustoPoolInner().withLocation("mecvogygzyvneeza")
+                .withTags(mapOf("jjjavfqnvhnq", "htmoqqtlffhzbkr"))
+                .withSku(new AzureSku().withName(SkuName.COMPUTE_OPTIMIZED)
+                    .withCapacity(1673744879)
+                    .withSize(SkuSize.MEDIUM))
+                .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(1682611856)
+                    .withIsEnabled(false)
+                    .withMinimum(2025473151)
+                    .withMaximum(69460429))
+                .withEnableStreamingIngest(false)
+                .withEnablePurge(false)
+                .withWorkspaceUid("vnwsw"),
+            new KustoPoolInner().withLocation("gctmgxuupbezq")
+                .withTags(mapOf("ukdqkkyihztg", "drtc", "qzgwldoychil", "qm"))
+                .withSku(
+                    new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(835275806).withSize(SkuSize.MEDIUM))
+                .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(784380912)
+                    .withIsEnabled(false)
+                    .withMinimum(410392818)
+                    .withMaximum(118637187))
+                .withEnableStreamingIngest(true)
+                .withEnablePurge(true)
+                .withWorkspaceUid("yjxltbsjusc"),
+            new KustoPoolInner().withLocation("yjq")
+                .withTags(mapOf("efgwbmqjc", "fnozoeoqbvjh", "pzealbmqkyojw", "ntasfaymxbu", "mbtsuahxsg", "vf"))
+                .withSku(
+                    new AzureSku().withName(SkuName.COMPUTE_OPTIMIZED).withCapacity(2124357758).withSize(SkuSize.SMALL))
+                .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(629630238)
+                    .withIsEnabled(true)
+                    .withMinimum(1075169547)
+                    .withMaximum(1596124539))
+                .withEnableStreamingIngest(false)
+                .withEnablePurge(true)
+                .withWorkspaceUid("akuflgbhgauacdix")));
         model = BinaryData.fromObject(model).toObject(KustoPoolListResultInner.class);
-        Assertions.assertEquals("pq", model.value().get(0).location());
-        Assertions.assertEquals("skondcbrwimu", model.value().get(0).tags().get("qejo"));
-        Assertions.assertEquals(SkuName.STORAGE_OPTIMIZED, model.value().get(0).sku().name());
-        Assertions.assertEquals(949193893, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(SkuSize.MEDIUM, model.value().get(0).sku().size());
+        Assertions.assertEquals("exymzvla", model.value().get(0).location());
+        Assertions.assertEquals("bhpwvqsgnyy", model.value().get(0).tags().get("uzivensrpmeyyvp"));
+        Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, model.value().get(0).sku().name());
+        Assertions.assertEquals(1494340900, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(SkuSize.EXTRA_SMALL, model.value().get(0).sku().size());
+        Assertions.assertEquals(1881322830, model.value().get(0).optimizedAutoscale().version());
+        Assertions.assertEquals(true, model.value().get(0).optimizedAutoscale().isEnabled());
+        Assertions.assertEquals(1764052687, model.value().get(0).optimizedAutoscale().minimum());
+        Assertions.assertEquals(1614382020, model.value().get(0).optimizedAutoscale().maximum());
         Assertions.assertEquals(true, model.value().get(0).enableStreamingIngest());
-        Assertions.assertEquals(true, model.value().get(0).enablePurge());
-        Assertions.assertEquals("mskwhqjjysl", model.value().get(0).workspaceUid());
+        Assertions.assertEquals(false, model.value().get(0).enablePurge());
+        Assertions.assertEquals("aqnrmvvfkoxmlg", model.value().get(0).workspaceUid());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

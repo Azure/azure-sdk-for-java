@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountInfo model =
-            BinaryData.fromString("{\"accountId\":\"kohdbiha\",\"regionId\":\"fhfcb\"}").toObject(AccountInfo.class);
+        AccountInfo model
+            = BinaryData.fromString("{\"accountId\":\"kohdbiha\",\"regionId\":\"fhfcb\"}").toObject(AccountInfo.class);
         Assertions.assertEquals("kohdbiha", model.accountId());
         Assertions.assertEquals("fhfcb", model.regionId());
     }

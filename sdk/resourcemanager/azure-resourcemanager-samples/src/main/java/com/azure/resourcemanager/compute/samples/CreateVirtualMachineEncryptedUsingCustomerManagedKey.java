@@ -63,17 +63,13 @@ public final class CreateVirtualMachineEncryptedUsingCustomerManagedKey {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
-                    .forServicePrincipal(clientId)
-                    .allowKeyPermissions(KeyPermissions.CREATE)
-                    .attach()
+                .forServicePrincipal(clientId)
+                .allowKeyPermissions(KeyPermissions.CREATE)
+                .attach()
                 .withPurgeProtectionEnabled()
                 .create();
 
-            Key vaultKey = vault.keys()
-                .define(keyName)
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
+            Key vaultKey = vault.keys().define(keyName).withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
 
             //=============================================================
             // Create disk encryption set
@@ -94,9 +90,9 @@ public final class CreateVirtualMachineEncryptedUsingCustomerManagedKey {
 
             vault.update()
                 .defineAccessPolicy()
-                    .forObjectId(des.systemAssignedManagedServiceIdentityPrincipalId())
-                    .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
-                    .attach()
+                .forObjectId(des.systemAssignedManagedServiceIdentityPrincipalId())
+                .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
+                .attach()
                 .apply();
 
             //=============================================================
@@ -127,9 +123,7 @@ public final class CreateVirtualMachineEncryptedUsingCustomerManagedKey {
 
             linuxVM.deallocate();
             Disk lun1 = azureResourceManager.disks().getById(linuxVM.dataDisks().get(1).id());
-            lun1.update()
-                .withDiskEncryptionSet(des.id(), EncryptionType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                .apply();
+            lun1.update().withDiskEncryptionSet(des.id(), EncryptionType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY).apply();
             linuxVM.start();
             linuxVM.refresh();
             System.out.println("Converted encryption of data disk lun2 to customer-managed keys: ");
@@ -138,7 +132,8 @@ public final class CreateVirtualMachineEncryptedUsingCustomerManagedKey {
             //=============================================================
             // Create a new disk encrypted using customer-managed key
 
-            Disk lun2 = azureResourceManager.disks().define(diskLun3Name)
+            Disk lun2 = azureResourceManager.disks()
+                .define(diskLun3Name)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withData()
@@ -149,9 +144,7 @@ public final class CreateVirtualMachineEncryptedUsingCustomerManagedKey {
             //=============================================================
             // Attach the disk to the vm as lun2
 
-            linuxVM.update()
-                .withExistingDataDisk(lun2, 2, CachingTypes.READ_WRITE)
-                .apply();
+            linuxVM.update().withExistingDataDisk(lun2, 2, CachingTypes.READ_WRITE).apply();
             System.out.println("Updated virtual machine with 2 data disks all encrypted using customer-managed key");
             Utils.print(linuxVM);
             return true;
@@ -183,8 +176,7 @@ public final class CreateVirtualMachineEncryptedUsingCustomerManagedKey {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

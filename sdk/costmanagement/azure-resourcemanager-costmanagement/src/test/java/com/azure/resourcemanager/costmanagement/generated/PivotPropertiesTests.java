@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PivotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PivotProperties model =
-            BinaryData.fromString("{\"type\":\"TagKey\",\"name\":\"rzayv\"}").toObject(PivotProperties.class);
-        Assertions.assertEquals(PivotType.TAG_KEY, model.type());
-        Assertions.assertEquals("rzayv", model.name());
+        PivotProperties model = BinaryData.fromString("{\"type\":\"Dimension\",\"name\":\"tkwqqtchealm\"}")
+            .toObject(PivotProperties.class);
+        Assertions.assertEquals(PivotType.DIMENSION, model.type());
+        Assertions.assertEquals("tkwqqtchealm", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PivotProperties model = new PivotProperties().withType(PivotType.TAG_KEY).withName("rzayv");
+        PivotProperties model = new PivotProperties().withType(PivotType.DIMENSION).withName("tkwqqtchealm");
         model = BinaryData.fromObject(model).toObject(PivotProperties.class);
-        Assertions.assertEquals(PivotType.TAG_KEY, model.type());
-        Assertions.assertEquals("rzayv", model.name());
+        Assertions.assertEquals(PivotType.DIMENSION, model.type());
+        Assertions.assertEquals("tkwqqtchealm", model.name());
     }
 }

@@ -16,24 +16,29 @@ public final class CommunicationUserIdentifierConverter {
      */
     public static CommunicationUserIdentifierModel convert(CommunicationUserIdentifier communicationUserIdentifier) {
 
-        CommunicationUserIdentifierModel communicationUserIdentifierModel =
-            (communicationUserIdentifier == null || communicationUserIdentifier.getId().isEmpty()) ? null
+        CommunicationUserIdentifierModel communicationUserIdentifierModel
+            = (communicationUserIdentifier == null || communicationUserIdentifier.getId().isEmpty())
+                ? null
                 : CommunicationIdentifierConverter
-                    .convert(new CommunicationUserIdentifier(communicationUserIdentifier.getId())).getCommunicationUser();
+                    .convert(new CommunicationUserIdentifier(communicationUserIdentifier.getId()))
+                    .getCommunicationUser();
         return communicationUserIdentifierModel;
     }
 
     /**
      * Converts to {@link CommunicationUserIdentifier}.
      */
-    public static CommunicationUserIdentifier convert(CommunicationUserIdentifierModel communicationUserIdentifierModel) {
+    public static CommunicationUserIdentifier
+        convert(CommunicationUserIdentifierModel communicationUserIdentifierModel) {
 
-        CommunicationUserIdentifier communicationUserIdentifier =
-            (communicationUserIdentifierModel == null || communicationUserIdentifierModel.getId().isEmpty()) ? null
+        CommunicationUserIdentifier communicationUserIdentifier
+            = (communicationUserIdentifierModel == null || communicationUserIdentifierModel.getId().isEmpty())
+                ? null
                 : new CommunicationUserIdentifier(communicationUserIdentifierModel.getId());
 
         return communicationUserIdentifier;
     }
+
     private CommunicationUserIdentifierConverter() {
     }
 }

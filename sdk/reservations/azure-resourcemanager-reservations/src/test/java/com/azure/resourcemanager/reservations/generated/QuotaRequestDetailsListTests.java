@@ -8,34 +8,78 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.reservations.fluent.models.QuotaRequestDetailsInner;
 import com.azure.resourcemanager.reservations.models.QuotaRequestDetailsList;
 import com.azure.resourcemanager.reservations.models.QuotaRequestState;
+import com.azure.resourcemanager.reservations.models.ResourceName;
+import com.azure.resourcemanager.reservations.models.SubRequest;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class QuotaRequestDetailsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaRequestDetailsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"jaltolmnc\",\"requestSubmitTime\":\"2021-02-08T05:43:26Z\",\"value\":[]},\"id\":\"qwcsdbnwdcfhuc\",\"name\":\"dpfuvg\",\"type\":\"sbjjc\"}],\"nextLink\":\"vxb\"}")
-                .toObject(QuotaRequestDetailsList.class);
-        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.value().get(0).provisioningState());
-        Assertions.assertEquals("vxb", model.nextLink());
+        QuotaRequestDetailsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"message\":\"doaon\",\"requestSubmitTime\":\"2021-06-02T01:39:29Z\",\"value\":[{\"limit\":905406491,\"name\":{},\"resourceType\":\"tcje\",\"unit\":\"twwaezkojvdcpzf\",\"provisioningState\":\"Accepted\",\"message\":\"i\",\"subRequestId\":\"bxarzgszufoxci\"},{\"limit\":153808073,\"name\":{},\"resourceType\":\"oamciodh\",\"unit\":\"azxkhnzbonlwnto\",\"provisioningState\":\"Invalid\",\"message\":\"dwbwhkszzcmrvexz\",\"subRequestId\":\"bt\"}]},\"id\":\"gsfraoyzkoow\",\"name\":\"lmnguxaw\",\"type\":\"aldsy\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"message\":\"erqf\",\"requestSubmitTime\":\"2021-11-12T10:02:05Z\",\"value\":[{\"limit\":634741251,\"name\":{},\"resourceType\":\"kutwpf\",\"unit\":\"a\",\"provisioningState\":\"Accepted\",\"message\":\"skdsnfdsdoakg\",\"subRequestId\":\"lmkk\"},{\"limit\":1673981436,\"name\":{},\"resourceType\":\"hewpusdsttwv\",\"unit\":\"vbbejdcng\",\"provisioningState\":\"Succeeded\",\"message\":\"akufgmjz\",\"subRequestId\":\"rdgrtw\"},{\"limit\":196089645,\"name\":{},\"resourceType\":\"zkopb\",\"unit\":\"nrfdw\",\"provisioningState\":\"Accepted\",\"message\":\"hziuiefozbhdms\",\"subRequestId\":\"mzqhoftrmaequi\"},{\"limit\":1964875083,\"name\":{},\"resourceType\":\"slfaoqzpiyyl\",\"unit\":\"lnswhcc\",\"provisioningState\":\"Failed\",\"message\":\"aivwitqscywu\",\"subRequestId\":\"woluhczbwemhair\"}]},\"id\":\"brgz\",\"name\":\"wmsweypqwd\",\"type\":\"ggicccnxqhue\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"message\":\"lstvlzywe\",\"requestSubmitTime\":\"2021-12-10T13:38:49Z\",\"value\":[{\"limit\":1008650845,\"name\":{},\"resourceType\":\"clusiy\",\"unit\":\"sfgytguslfead\",\"provisioningState\":\"InProgress\",\"message\":\"ukyhejhzis\",\"subRequestId\":\"fpel\"},{\"limit\":129297763,\"name\":{},\"resourceType\":\"ksrpqv\",\"unit\":\"zraehtwd\",\"provisioningState\":\"Accepted\",\"message\":\"swibyr\",\"subRequestId\":\"l\"},{\"limit\":1538697515,\"name\":{},\"resourceType\":\"wpracstwitykhev\",\"unit\":\"cedcpnmdy\",\"provisioningState\":\"Succeeded\",\"message\":\"zxltjcvn\",\"subRequestId\":\"tiugcxnav\"}]},\"id\":\"wxqibyq\",\"name\":\"nyowxwlmdjrkvfg\",\"type\":\"vfvpdbodaciz\"},{\"properties\":{\"provisioningState\":\"Failed\",\"message\":\"krribdeibqi\",\"requestSubmitTime\":\"2021-08-10T16:45:38Z\",\"value\":[{\"limit\":1573874006,\"name\":{},\"resourceType\":\"zwmk\",\"unit\":\"fajpjorwk\",\"provisioningState\":\"Accepted\",\"message\":\"gbijtjivfx\",\"subRequestId\":\"jabibsystawf\"},{\"limit\":2111279751,\"name\":{},\"resourceType\":\"kvpbjxbkzbz\",\"unit\":\"vncjabudurgk\",\"provisioningState\":\"InProgress\",\"message\":\"kzhjj\",\"subRequestId\":\"ffhmouwqlgzr\"},{\"limit\":1353078478,\"name\":{},\"resourceType\":\"ebizikayuh\",\"unit\":\"bjbsybb\",\"provisioningState\":\"Succeeded\",\"message\":\"t\",\"subRequestId\":\"gmfpgvmp\"},{\"limit\":299337354,\"name\":{},\"resourceType\":\"thaqfxssmwu\",\"unit\":\"bdsrez\",\"provisioningState\":\"InProgress\",\"message\":\"neuyow\",\"subRequestId\":\"d\"}]},\"id\":\"ytisibir\",\"name\":\"gpikpzimejza\",\"type\":\"lfzxiavrmbzonoki\"}],\"nextLink\":\"jq\"}")
+            .toObject(QuotaRequestDetailsList.class);
+        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("twwaezkojvdcpzf", model.value().get(0).value().get(0).unit());
+        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).value().get(0).provisioningState());
+        Assertions.assertEquals("jq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaRequestDetailsList model =
-            new QuotaRequestDetailsList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new QuotaRequestDetailsInner()
-                                .withProvisioningState(QuotaRequestState.SUCCEEDED)
-                                .withValue(Arrays.asList())))
-                .withNextLink("vxb");
+        QuotaRequestDetailsList model = new QuotaRequestDetailsList().withValue(Arrays.asList(
+            new QuotaRequestDetailsInner().withProvisioningState(QuotaRequestState.ACCEPTED)
+                .withValue(Arrays.asList(
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("twwaezkojvdcpzf")
+                        .withProvisioningState(QuotaRequestState.ACCEPTED),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("azxkhnzbonlwnto")
+                        .withProvisioningState(QuotaRequestState.INVALID))),
+            new QuotaRequestDetailsInner().withProvisioningState(QuotaRequestState.ACCEPTED)
+                .withValue(Arrays.asList(
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("a")
+                        .withProvisioningState(QuotaRequestState.ACCEPTED),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("vbbejdcng")
+                        .withProvisioningState(QuotaRequestState.SUCCEEDED),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("nrfdw")
+                        .withProvisioningState(QuotaRequestState.ACCEPTED),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("lnswhcc")
+                        .withProvisioningState(QuotaRequestState.FAILED))),
+            new QuotaRequestDetailsInner().withProvisioningState(QuotaRequestState.INVALID)
+                .withValue(Arrays.asList(
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("sfgytguslfead")
+                        .withProvisioningState(QuotaRequestState.IN_PROGRESS),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("zraehtwd")
+                        .withProvisioningState(QuotaRequestState.ACCEPTED),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("cedcpnmdy")
+                        .withProvisioningState(QuotaRequestState.SUCCEEDED))),
+            new QuotaRequestDetailsInner().withProvisioningState(QuotaRequestState.FAILED)
+                .withValue(Arrays.asList(
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("fajpjorwk")
+                        .withProvisioningState(QuotaRequestState.ACCEPTED),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("vncjabudurgk")
+                        .withProvisioningState(QuotaRequestState.IN_PROGRESS),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("bjbsybb")
+                        .withProvisioningState(QuotaRequestState.SUCCEEDED),
+                    new SubRequest().withName(new ResourceName())
+                        .withUnit("bdsrez")
+                        .withProvisioningState(QuotaRequestState.IN_PROGRESS)))))
+            .withNextLink("jq");
         model = BinaryData.fromObject(model).toObject(QuotaRequestDetailsList.class);
-        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.value().get(0).provisioningState());
-        Assertions.assertEquals("vxb", model.nextLink());
+        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("twwaezkojvdcpzf", model.value().get(0).value().get(0).unit());
+        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).value().get(0).provisioningState());
+        Assertions.assertEquals("jq", model.nextLink());
     }
 }

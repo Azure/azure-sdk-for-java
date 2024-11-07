@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrimaryRegionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrimaryRegionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"operatorAddresses\":[\"bcryffdfd\",\"sy\",\"expa\",\"jakhmsbzjh\"],\"esrpAddresses\":[\"evdphlxaol\",\"hqtrgqjbpf\"],\"allowedSignalingSourceAddressPrefixes\":[\"inzgvfcj\"],\"allowedMediaSourceAddressPrefixes\":[\"oxxjtfelluwf\",\"it\"]}")
-                .toObject(PrimaryRegionProperties.class);
+        PrimaryRegionProperties model = BinaryData.fromString(
+            "{\"operatorAddresses\":[\"bcryffdfd\",\"sy\",\"expa\",\"jakhmsbzjh\"],\"esrpAddresses\":[\"evdphlxaol\",\"hqtrgqjbpf\"],\"allowedSignalingSourceAddressPrefixes\":[\"inzgvfcj\"],\"allowedMediaSourceAddressPrefixes\":[\"oxxjtfelluwf\",\"it\"]}")
+            .toObject(PrimaryRegionProperties.class);
         Assertions.assertEquals("bcryffdfd", model.operatorAddresses().get(0));
         Assertions.assertEquals("evdphlxaol", model.esrpAddresses().get(0));
         Assertions.assertEquals("inzgvfcj", model.allowedSignalingSourceAddressPrefixes().get(0));
@@ -25,12 +23,11 @@ public final class PrimaryRegionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrimaryRegionProperties model =
-            new PrimaryRegionProperties()
-                .withOperatorAddresses(Arrays.asList("bcryffdfd", "sy", "expa", "jakhmsbzjh"))
-                .withEsrpAddresses(Arrays.asList("evdphlxaol", "hqtrgqjbpf"))
-                .withAllowedSignalingSourceAddressPrefixes(Arrays.asList("inzgvfcj"))
-                .withAllowedMediaSourceAddressPrefixes(Arrays.asList("oxxjtfelluwf", "it"));
+        PrimaryRegionProperties model = new PrimaryRegionProperties()
+            .withOperatorAddresses(Arrays.asList("bcryffdfd", "sy", "expa", "jakhmsbzjh"))
+            .withEsrpAddresses(Arrays.asList("evdphlxaol", "hqtrgqjbpf"))
+            .withAllowedSignalingSourceAddressPrefixes(Arrays.asList("inzgvfcj"))
+            .withAllowedMediaSourceAddressPrefixes(Arrays.asList("oxxjtfelluwf", "it"));
         model = BinaryData.fromObject(model).toObject(PrimaryRegionProperties.class);
         Assertions.assertEquals("bcryffdfd", model.operatorAddresses().get(0));
         Assertions.assertEquals("evdphlxaol", model.esrpAddresses().get(0));

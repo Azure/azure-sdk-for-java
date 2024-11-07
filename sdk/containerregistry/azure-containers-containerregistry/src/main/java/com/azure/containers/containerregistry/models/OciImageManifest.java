@@ -36,7 +36,8 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
     private int schemaVersion;
 
     /** Creates an instance of OciImageManifest class. */
-    public OciImageManifest() {}
+    public OciImageManifest() {
+    }
 
     /**
      * Get the configuration property: V2 image config descriptor.
@@ -138,28 +139,27 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * @throws IOException If an error occurs while reading the OciImageManifest.
      */
     public static OciImageManifest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    OciImageManifest deserializedOciImageManifest = new OciImageManifest();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            OciImageManifest deserializedOciImageManifest = new OciImageManifest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("schemaVersion".equals(fieldName)) {
-                            deserializedOciImageManifest.schemaVersion = reader.getInt();
-                        } else if ("config".equals(fieldName)) {
-                            deserializedOciImageManifest.configuration = OciDescriptor.fromJson(reader);
-                        } else if ("layers".equals(fieldName)) {
-                            List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
-                            deserializedOciImageManifest.layers = layers;
-                        } else if ("annotations".equals(fieldName)) {
-                            deserializedOciImageManifest.annotations = OciAnnotations.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("schemaVersion".equals(fieldName)) {
+                    deserializedOciImageManifest.schemaVersion = reader.getInt();
+                } else if ("config".equals(fieldName)) {
+                    deserializedOciImageManifest.configuration = OciDescriptor.fromJson(reader);
+                } else if ("layers".equals(fieldName)) {
+                    List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
+                    deserializedOciImageManifest.layers = layers;
+                } else if ("annotations".equals(fieldName)) {
+                    deserializedOciImageManifest.annotations = OciAnnotations.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedOciImageManifest;
-                });
+            return deserializedOciImageManifest;
+        });
     }
 }

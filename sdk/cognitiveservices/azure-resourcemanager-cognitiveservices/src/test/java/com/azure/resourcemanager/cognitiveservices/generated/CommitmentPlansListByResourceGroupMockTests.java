@@ -6,64 +6,35 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlan;
 import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
 import com.azure.resourcemanager.cognitiveservices.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class CommitmentPlansListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"etag\":\"dviauogp\",\"kind\":\"artvti\",\"sku\":{\"name\":\"yefchnm\",\"tier\":\"Standard\",\"size\":\"nxhkxjqi\",\"family\":\"rweooxffifhx\",\"capacity\":1065674647},\"tags\":{\"ma\":\"wmozqvbub\",\"taboidvmf\":\"hsycxhxzgaz\",\"herngb\":\"hppubowsepdfgkmt\"},\"location\":\"juahokqto\",\"properties\":{\"provisioningState\":\"Creating\",\"commitmentPlanGuid\":\"ofshfphwpnulaiyw\",\"hostingModel\":\"Web\",\"planType\":\"whslwkoj\",\"current\":{\"tier\":\"ndnpdwrpqafgfug\",\"count\":87564439,\"quota\":{\"quantity\":7318681116567971060,\"unit\":\"efy\"},\"startDate\":\"coc\",\"endDate\":\"jgtixr\"},\"autoRenew\":false,\"next\":{\"tier\":\"turmlmuow\",\"count\":1927248982,\"quota\":{\"quantity\":2372097816305611576,\"unit\":\"p\"},\"startDate\":\"nszonwpngaj\",\"endDate\":\"nixjawrtmjfjmy\"},\"last\":{\"tier\":\"lzhcoxovnekh\",\"count\":1961698443,\"quota\":{\"quantity\":1504714150527944683,\"unit\":\"dtjxtxrdcqt\"},\"startDate\":\"idttgepus\",\"endDate\":\"yjtcvuwk\"},\"provisioningIssues\":[\"zies\",\"uughtuqfecjxeyg\",\"uhxu\",\"cbuewmrswnjlxuz\"]},\"id\":\"hwpusxj\",\"name\":\"aqehg\",\"type\":\"dohzjq\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"etag\":\"dviauogp\",\"kind\":\"artvti\",\"sku\":{\"name\":\"yefchnm\",\"tier\":\"Standard\",\"size\":\"nxhkxjqi\",\"family\":\"rweooxffifhx\",\"capacity\":1065674647},\"tags\":{\"ma\":\"wmozqvbub\",\"taboidvmf\":\"hsycxhxzgaz\",\"herngb\":\"hppubowsepdfgkmt\"},\"location\":\"juahokqto\",\"properties\":{\"provisioningState\":\"Creating\",\"commitmentPlanGuid\":\"ofshfphwpnulaiyw\",\"hostingModel\":\"Web\",\"planType\":\"whslwkoj\",\"current\":{\"tier\":\"ndnpdwrpqafgfug\",\"count\":87564439,\"quota\":{\"quantity\":7318681116567971060,\"unit\":\"efy\"},\"startDate\":\"coc\",\"endDate\":\"jgtixr\"},\"autoRenew\":false,\"next\":{\"tier\":\"turmlmuow\",\"count\":1927248982,\"quota\":{\"quantity\":2372097816305611576,\"unit\":\"p\"},\"startDate\":\"nszonwpngaj\",\"endDate\":\"nixjawrtmjfjmy\"},\"last\":{\"tier\":\"lzhcoxovnekh\",\"count\":1961698443,\"quota\":{\"quantity\":1504714150527944683,\"unit\":\"dtjxtxrdcqt\"},\"startDate\":\"idttgepus\",\"endDate\":\"yjtcvuwk\"},\"provisioningIssues\":[\"zies\",\"uughtuqfecjxeyg\",\"uhxu\",\"cbuewmrswnjlxuz\"]},\"id\":\"hwpusxj\",\"name\":\"aqehg\",\"type\":\"dohzjq\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CognitiveServicesManager manager = CognitiveServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        CognitiveServicesManager manager =
-            CognitiveServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<CommitmentPlan> response =
-            manager.commitmentPlans().listByResourceGroup("l", com.azure.core.util.Context.NONE);
+        PagedIterable<CommitmentPlan> response
+            = manager.commitmentPlans().listByResourceGroup("l", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("artvti", response.iterator().next().kind());
         Assertions.assertEquals("yefchnm", response.iterator().next().sku().name());

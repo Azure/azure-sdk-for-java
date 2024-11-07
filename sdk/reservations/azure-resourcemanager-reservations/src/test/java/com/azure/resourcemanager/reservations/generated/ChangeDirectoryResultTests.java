@@ -11,24 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangeDirectoryResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeDirectoryResult model =
-            BinaryData
-                .fromString("{\"id\":\"e\",\"name\":\"zar\",\"isSucceeded\":true,\"error\":\"uu\"}")
-                .toObject(ChangeDirectoryResult.class);
-        Assertions.assertEquals("e", model.id());
-        Assertions.assertEquals("zar", model.name());
-        Assertions.assertEquals(true, model.isSucceeded());
-        Assertions.assertEquals("uu", model.error());
+        ChangeDirectoryResult model = BinaryData
+            .fromString("{\"id\":\"sytgadgvraea\",\"name\":\"e\",\"isSucceeded\":false,\"error\":\"rrwlquuijfqkace\"}")
+            .toObject(ChangeDirectoryResult.class);
+        Assertions.assertEquals("sytgadgvraea", model.id());
+        Assertions.assertEquals("e", model.name());
+        Assertions.assertEquals(false, model.isSucceeded());
+        Assertions.assertEquals("rrwlquuijfqkace", model.error());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeDirectoryResult model =
-            new ChangeDirectoryResult().withId("e").withName("zar").withIsSucceeded(true).withError("uu");
+        ChangeDirectoryResult model = new ChangeDirectoryResult().withId("sytgadgvraea")
+            .withName("e")
+            .withIsSucceeded(false)
+            .withError("rrwlquuijfqkace");
         model = BinaryData.fromObject(model).toObject(ChangeDirectoryResult.class);
-        Assertions.assertEquals("e", model.id());
-        Assertions.assertEquals("zar", model.name());
-        Assertions.assertEquals(true, model.isSucceeded());
-        Assertions.assertEquals("uu", model.error());
+        Assertions.assertEquals("sytgadgvraea", model.id());
+        Assertions.assertEquals("e", model.name());
+        Assertions.assertEquals(false, model.isSucceeded());
+        Assertions.assertEquals("rrwlquuijfqkace", model.error());
     }
 }

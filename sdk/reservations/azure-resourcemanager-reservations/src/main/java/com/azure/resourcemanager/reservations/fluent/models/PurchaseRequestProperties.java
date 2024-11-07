@@ -5,100 +5,98 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.AppliedScopeProperties;
 import com.azure.resourcemanager.reservations.models.AppliedScopeType;
 import com.azure.resourcemanager.reservations.models.PurchaseRequestPropertiesReservedResourceProperties;
 import com.azure.resourcemanager.reservations.models.ReservationBillingPlan;
 import com.azure.resourcemanager.reservations.models.ReservationTerm;
 import com.azure.resourcemanager.reservations.models.ReservedResourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Properties of reservation purchase request. */
+/**
+ * Properties of reservation purchase request.
+ */
 @Fluent
-public final class PurchaseRequestProperties {
+public final class PurchaseRequestProperties implements JsonSerializable<PurchaseRequestProperties> {
     /*
      * The type of the resource that is being reserved.
      */
-    @JsonProperty(value = "reservedResourceType")
     private ReservedResourceType reservedResourceType;
 
     /*
      * Subscription that will be charged for purchasing reservation or savings plan
      */
-    @JsonProperty(value = "billingScopeId")
     private String billingScopeId;
 
     /*
      * Represent the term of reservation.
      */
-    @JsonProperty(value = "term")
     private ReservationTerm term;
 
     /*
      * Represent the billing plans.
      */
-    @JsonProperty(value = "billingPlan")
     private ReservationBillingPlan billingPlan;
 
     /*
      * Quantity of the skus that are part of the reservation.
      */
-    @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /*
      * Friendly name of the reservation
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Type of the Applied Scope.
      */
-    @JsonProperty(value = "appliedScopeType")
     private AppliedScopeType appliedScopeType;
 
     /*
      * List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared. This
      * property will be deprecated and replaced by appliedScopeProperties instead for Single AppliedScopeType.
      */
-    @JsonProperty(value = "appliedScopes")
     private List<String> appliedScopes;
 
     /*
      * Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId
      * and managementGroupId if AppliedScopeType is ManagementGroup
      */
-    @JsonProperty(value = "appliedScopeProperties")
     private AppliedScopeProperties appliedScopeProperties;
 
     /*
      * Setting this to true will automatically purchase a new reservation on the expiration date time.
      */
-    @JsonProperty(value = "renew")
     private Boolean renew;
 
     /*
      * Properties specific to each reserved resource type. Not required if not applicable.
      */
-    @JsonProperty(value = "reservedResourceProperties")
     private PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties;
 
     /*
      * This is the date-time when the Azure hybrid benefit needs to be reviewed.
      */
-    @JsonProperty(value = "reviewDateTime")
     private OffsetDateTime reviewDateTime;
 
-    /** Creates an instance of PurchaseRequestProperties class. */
+    /**
+     * Creates an instance of PurchaseRequestProperties class.
+     */
     public PurchaseRequestProperties() {
     }
 
     /**
      * Get the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @return the reservedResourceType value.
      */
     public ReservedResourceType reservedResourceType() {
@@ -107,7 +105,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @param reservedResourceType the reservedResourceType value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -118,7 +116,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -127,7 +125,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -138,7 +136,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the term property: Represent the term of reservation.
-     *
+     * 
      * @return the term value.
      */
     public ReservationTerm term() {
@@ -147,7 +145,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the term property: Represent the term of reservation.
-     *
+     * 
      * @param term the term value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -158,7 +156,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the billingPlan property: Represent the billing plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public ReservationBillingPlan billingPlan() {
@@ -167,7 +165,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the billingPlan property: Represent the billing plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -178,7 +176,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the quantity property: Quantity of the skus that are part of the reservation.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -187,7 +185,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the quantity property: Quantity of the skus that are part of the reservation.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -198,7 +196,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the displayName property: Friendly name of the reservation.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -207,7 +205,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the displayName property: Friendly name of the reservation.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -218,7 +216,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -227,7 +225,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -240,7 +238,7 @@ public final class PurchaseRequestProperties {
      * Get the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
      * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
      * Single AppliedScopeType.
-     *
+     * 
      * @return the appliedScopes value.
      */
     public List<String> appliedScopes() {
@@ -251,7 +249,7 @@ public final class PurchaseRequestProperties {
      * Set the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
      * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
      * Single AppliedScopeType.
-     *
+     * 
      * @param appliedScopes the appliedScopes value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -263,7 +261,7 @@ public final class PurchaseRequestProperties {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -273,7 +271,7 @@ public final class PurchaseRequestProperties {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -285,7 +283,7 @@ public final class PurchaseRequestProperties {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -295,7 +293,7 @@ public final class PurchaseRequestProperties {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -307,7 +305,7 @@ public final class PurchaseRequestProperties {
     /**
      * Get the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @return the reservedResourceProperties value.
      */
     public PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties() {
@@ -317,19 +315,19 @@ public final class PurchaseRequestProperties {
     /**
      * Set the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @param reservedResourceProperties the reservedResourceProperties value to set.
      * @return the PurchaseRequestProperties object itself.
      */
-    public PurchaseRequestProperties withReservedResourceProperties(
-        PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties) {
+    public PurchaseRequestProperties
+        withReservedResourceProperties(PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties) {
         this.reservedResourceProperties = reservedResourceProperties;
         return this;
     }
 
     /**
      * Get the reviewDateTime property: This is the date-time when the Azure hybrid benefit needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     public OffsetDateTime reviewDateTime() {
@@ -338,7 +336,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Set the reviewDateTime property: This is the date-time when the Azure hybrid benefit needs to be reviewed.
-     *
+     * 
      * @param reviewDateTime the reviewDateTime value to set.
      * @return the PurchaseRequestProperties object itself.
      */
@@ -349,7 +347,7 @@ public final class PurchaseRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -359,5 +357,85 @@ public final class PurchaseRequestProperties {
         if (reservedResourceProperties() != null) {
             reservedResourceProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reservedResourceType",
+            this.reservedResourceType == null ? null : this.reservedResourceType.toString());
+        jsonWriter.writeStringField("billingScopeId", this.billingScopeId);
+        jsonWriter.writeStringField("term", this.term == null ? null : this.term.toString());
+        jsonWriter.writeStringField("billingPlan", this.billingPlan == null ? null : this.billingPlan.toString());
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("appliedScopeType",
+            this.appliedScopeType == null ? null : this.appliedScopeType.toString());
+        jsonWriter.writeArrayField("appliedScopes", this.appliedScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("appliedScopeProperties", this.appliedScopeProperties);
+        jsonWriter.writeBooleanField("renew", this.renew);
+        jsonWriter.writeJsonField("reservedResourceProperties", this.reservedResourceProperties);
+        jsonWriter.writeStringField("reviewDateTime",
+            this.reviewDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.reviewDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PurchaseRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PurchaseRequestProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PurchaseRequestProperties.
+     */
+    public static PurchaseRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PurchaseRequestProperties deserializedPurchaseRequestProperties = new PurchaseRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservedResourceType".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.reservedResourceType
+                        = ReservedResourceType.fromString(reader.getString());
+                } else if ("billingScopeId".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.billingScopeId = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.term = ReservationTerm.fromString(reader.getString());
+                } else if ("billingPlan".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.billingPlan
+                        = ReservationBillingPlan.fromString(reader.getString());
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.quantity = reader.getNullable(JsonReader::getInt);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.displayName = reader.getString();
+                } else if ("appliedScopeType".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.appliedScopeType
+                        = AppliedScopeType.fromString(reader.getString());
+                } else if ("appliedScopes".equals(fieldName)) {
+                    List<String> appliedScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPurchaseRequestProperties.appliedScopes = appliedScopes;
+                } else if ("appliedScopeProperties".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.appliedScopeProperties
+                        = AppliedScopeProperties.fromJson(reader);
+                } else if ("renew".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.renew = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reservedResourceProperties".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.reservedResourceProperties
+                        = PurchaseRequestPropertiesReservedResourceProperties.fromJson(reader);
+                } else if ("reviewDateTime".equals(fieldName)) {
+                    deserializedPurchaseRequestProperties.reviewDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPurchaseRequestProperties;
+        });
     }
 }

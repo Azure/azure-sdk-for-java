@@ -160,16 +160,16 @@ public final class ApiTagResourceContractProperties extends ApiEntityBaseContrac
 
     /** {@inheritDoc} */
     @Override
-    public ApiTagResourceContractProperties withAuthenticationSettings(
-        AuthenticationSettingsContract authenticationSettings) {
+    public ApiTagResourceContractProperties
+        withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings) {
         super.withAuthenticationSettings(authenticationSettings);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ApiTagResourceContractProperties withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiTagResourceContractProperties
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         super.withSubscriptionKeyParameterNames(subscriptionKeyParameterNames);
         return this;
     }

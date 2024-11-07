@@ -38,13 +38,12 @@ public final class InfluxDbDataFeedSource extends DataFeedSource {
     private final String query;
 
     static {
-        InfluxDbDataFeedSourceAccessor.setAccessor(
-            new InfluxDbDataFeedSourceAccessor.Accessor() {
-                @Override
-                public String getPassword(InfluxDbDataFeedSource feedSource) {
-                    return feedSource.getPassword();
-                }
-            });
+        InfluxDbDataFeedSourceAccessor.setAccessor(new InfluxDbDataFeedSourceAccessor.Accessor() {
+            @Override
+            public String getPassword(InfluxDbDataFeedSource feedSource) {
+                return feedSource.getPassword();
+            }
+        });
     }
 
     /**
@@ -57,8 +56,7 @@ public final class InfluxDbDataFeedSource extends DataFeedSource {
      * @param query the query value.
      */
     public InfluxDbDataFeedSource(final String connectionString, final String database, final String userName,
-                                  final String password,
-                                  final String query) {
+        final String password, final String query) {
         this.connectionString = connectionString;
         this.database = database;
         this.userName = userName;
@@ -83,7 +81,6 @@ public final class InfluxDbDataFeedSource extends DataFeedSource {
     public String getDatabase() {
         return this.database;
     }
-
 
     /**
      * Get the userName property: Database access user.

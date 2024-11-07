@@ -17,64 +17,51 @@ import org.junit.jupiter.api.Assertions;
 public final class KustoPoolUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustoPoolUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"qpd\":\"omacluzvxnqmhr\",\"ssffxuifmc\":\"wmkoisq\",\"zsylollgt\":\"ypobkdqzr\",\"vuaurk\":\"czzydmxzjij\"},\"sku\":{\"name\":\"Compute"
-                        + " optimized\",\"capacity\":772541424,\"size\":\"Medium\"},\"properties\":{\"state\":\"Creating\",\"provisioningState\":\"Failed\",\"uri\":\"c\",\"dataIngestionUri\":\"nbkkjanurnnq\",\"stateReason\":\"q\",\"optimizedAutoscale\":{\"version\":170755995,\"isEnabled\":true,\"minimum\":1872065986,\"maximum\":1388268954},\"enableStreamingIngest\":true,\"enablePurge\":false,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"pxrxvbfihwu\"},\"id\":\"vctafsrb\",\"name\":\"rblmli\",\"type\":\"wxihs\"}")
-                .toObject(KustoPoolUpdate.class);
-        Assertions.assertEquals("omacluzvxnqmhr", model.tags().get("qpd"));
-        Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, model.sku().name());
-        Assertions.assertEquals(772541424, model.sku().capacity());
-        Assertions.assertEquals(SkuSize.MEDIUM, model.sku().size());
-        Assertions.assertEquals(170755995, model.optimizedAutoscale().version());
-        Assertions.assertEquals(true, model.optimizedAutoscale().isEnabled());
-        Assertions.assertEquals(1872065986, model.optimizedAutoscale().minimum());
-        Assertions.assertEquals(1388268954, model.optimizedAutoscale().maximum());
+        KustoPoolUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"zhhh\":\"ewnf\",\"mffjkutycyarn\":\"o\",\"pyc\":\"oohguabzoghkt\",\"ot\":\"hcoeocnhzq\"},\"sku\":{\"name\":\"Storage optimized\",\"capacity\":1955213837,\"size\":\"Extra small\"},\"properties\":{\"state\":\"Creating\",\"provisioningState\":\"Running\",\"uri\":\"lohap\",\"dataIngestionUri\":\"nfszpyglqdhmrjz\",\"stateReason\":\"l\",\"optimizedAutoscale\":{\"version\":968773203,\"isEnabled\":false,\"minimum\":1606890839,\"maximum\":2002700390},\"enableStreamingIngest\":true,\"enablePurge\":true,\"languageExtensions\":{\"value\":[{\"languageExtensionName\":\"PYTHON\"},{\"languageExtensionName\":\"R\"},{\"languageExtensionName\":\"PYTHON\"},{\"languageExtensionName\":\"PYTHON\"}]},\"workspaceUID\":\"vsqxfxjelgcmpzqj\"},\"id\":\"hhqxuwyvcacoyviv\",\"name\":\"s\",\"type\":\"zusjsz\"}")
+            .toObject(KustoPoolUpdate.class);
+        Assertions.assertEquals("ewnf", model.tags().get("zhhh"));
+        Assertions.assertEquals(SkuName.STORAGE_OPTIMIZED, model.sku().name());
+        Assertions.assertEquals(1955213837, model.sku().capacity());
+        Assertions.assertEquals(SkuSize.EXTRA_SMALL, model.sku().size());
+        Assertions.assertEquals(968773203, model.optimizedAutoscale().version());
+        Assertions.assertEquals(false, model.optimizedAutoscale().isEnabled());
+        Assertions.assertEquals(1606890839, model.optimizedAutoscale().minimum());
+        Assertions.assertEquals(2002700390, model.optimizedAutoscale().maximum());
         Assertions.assertEquals(true, model.enableStreamingIngest());
-        Assertions.assertEquals(false, model.enablePurge());
-        Assertions.assertEquals("pxrxvbfihwu", model.workspaceUid());
+        Assertions.assertEquals(true, model.enablePurge());
+        Assertions.assertEquals("vsqxfxjelgcmpzqj", model.workspaceUid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KustoPoolUpdate model =
-            new KustoPoolUpdate()
-                .withTags(
-                    mapOf(
-                        "qpd",
-                        "omacluzvxnqmhr",
-                        "ssffxuifmc",
-                        "wmkoisq",
-                        "zsylollgt",
-                        "ypobkdqzr",
-                        "vuaurk",
-                        "czzydmxzjij"))
-                .withSku(
-                    new AzureSku().withName(SkuName.COMPUTE_OPTIMIZED).withCapacity(772541424).withSize(SkuSize.MEDIUM))
-                .withOptimizedAutoscale(
-                    new OptimizedAutoscale()
-                        .withVersion(170755995)
-                        .withIsEnabled(true)
-                        .withMinimum(1872065986)
-                        .withMaximum(1388268954))
-                .withEnableStreamingIngest(true)
-                .withEnablePurge(false)
-                .withWorkspaceUid("pxrxvbfihwu");
+        KustoPoolUpdate model = new KustoPoolUpdate()
+            .withTags(mapOf("zhhh", "ewnf", "mffjkutycyarn", "o", "pyc", "oohguabzoghkt", "ot", "hcoeocnhzq"))
+            .withSku(new AzureSku().withName(SkuName.STORAGE_OPTIMIZED)
+                .withCapacity(1955213837)
+                .withSize(SkuSize.EXTRA_SMALL))
+            .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(968773203)
+                .withIsEnabled(false)
+                .withMinimum(1606890839)
+                .withMaximum(2002700390))
+            .withEnableStreamingIngest(true)
+            .withEnablePurge(true)
+            .withWorkspaceUid("vsqxfxjelgcmpzqj");
         model = BinaryData.fromObject(model).toObject(KustoPoolUpdate.class);
-        Assertions.assertEquals("omacluzvxnqmhr", model.tags().get("qpd"));
-        Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, model.sku().name());
-        Assertions.assertEquals(772541424, model.sku().capacity());
-        Assertions.assertEquals(SkuSize.MEDIUM, model.sku().size());
-        Assertions.assertEquals(170755995, model.optimizedAutoscale().version());
-        Assertions.assertEquals(true, model.optimizedAutoscale().isEnabled());
-        Assertions.assertEquals(1872065986, model.optimizedAutoscale().minimum());
-        Assertions.assertEquals(1388268954, model.optimizedAutoscale().maximum());
+        Assertions.assertEquals("ewnf", model.tags().get("zhhh"));
+        Assertions.assertEquals(SkuName.STORAGE_OPTIMIZED, model.sku().name());
+        Assertions.assertEquals(1955213837, model.sku().capacity());
+        Assertions.assertEquals(SkuSize.EXTRA_SMALL, model.sku().size());
+        Assertions.assertEquals(968773203, model.optimizedAutoscale().version());
+        Assertions.assertEquals(false, model.optimizedAutoscale().isEnabled());
+        Assertions.assertEquals(1606890839, model.optimizedAutoscale().minimum());
+        Assertions.assertEquals(2002700390, model.optimizedAutoscale().maximum());
         Assertions.assertEquals(true, model.enableStreamingIngest());
-        Assertions.assertEquals(false, model.enablePurge());
-        Assertions.assertEquals("pxrxvbfihwu", model.workspaceUid());
+        Assertions.assertEquals(true, model.enablePurge());
+        Assertions.assertEquals("vsqxfxjelgcmpzqj", model.workspaceUid());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

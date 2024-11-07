@@ -16,13 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for certificate management API. */
 @Fluent
-public interface AppServiceCertificates
-    extends SupportsCreating<AppServiceCertificate.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListingByResourceGroup<AppServiceCertificate>,
-        SupportsListing<AppServiceCertificate>,
-        SupportsGettingByResourceGroup<AppServiceCertificate>,
-        SupportsGettingById<AppServiceCertificate>,
-        SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager> {
+public interface AppServiceCertificates extends SupportsCreating<AppServiceCertificate.DefinitionStages.Blank>,
+    SupportsDeletingById, SupportsListingByResourceGroup<AppServiceCertificate>, SupportsListing<AppServiceCertificate>,
+    SupportsGettingByResourceGroup<AppServiceCertificate>, SupportsGettingById<AppServiceCertificate>,
+    SupportsDeletingByResourceGroup, HasManager<AppServiceManager> {
 }

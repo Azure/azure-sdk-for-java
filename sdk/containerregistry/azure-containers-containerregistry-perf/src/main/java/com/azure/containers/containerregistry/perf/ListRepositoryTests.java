@@ -25,8 +25,8 @@ public class ListRepositoryTests extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(importImageAsync(REPOSITORY_NAME, Arrays.asList(TEST_PERF_TAG1_NAME, TEST_PERF_TAG2_NAME, TEST_PERF_TAG3_NAME, TEST_PERF_TAG4_NAME)));
+        return super.globalSetupAsync().then(importImageAsync(REPOSITORY_NAME,
+            Arrays.asList(TEST_PERF_TAG1_NAME, TEST_PERF_TAG2_NAME, TEST_PERF_TAG3_NAME, TEST_PERF_TAG4_NAME)));
     }
 
     @Override

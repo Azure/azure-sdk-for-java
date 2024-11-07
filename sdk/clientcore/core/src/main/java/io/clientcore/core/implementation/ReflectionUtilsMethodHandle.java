@@ -53,8 +53,8 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
             methodHandlesPrivateLookupIn = lookup.findStatic(MethodHandles.class, "privateLookupIn",
                 MethodType.methodType(MethodHandles.Lookup.class, Class.class, MethodHandles.Lookup.class));
             moduleIsOpenUnconditionally = lookup.unreflect(moduleClass.getDeclaredMethod("isOpen", String.class));
-            moduleIsOpenToOtherModule = lookup.unreflect(
-                moduleClass.getDeclaredMethod("isOpen", String.class, moduleClass));
+            moduleIsOpenToOtherModule
+                = lookup.unreflect(moduleClass.getDeclaredMethod("isOpen", String.class, moduleClass));
 
             coreModule = classGetModule.invokeWithArguments(ReflectionUtils.class);
             moduleBased = true;
@@ -62,15 +62,16 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
             if (throwable instanceof Error) {
                 throw (Error) throwable;
             } else {
-                LOGGER.atInfo().log("Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. "
-                    + "Will attempt to fallback to using the package-private constructor.", throwable);
+                LOGGER.atInfo()
+                    .log("Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. "
+                        + "Will attempt to fallback to using the package-private constructor.", throwable);
             }
         }
 
         if (!moduleBased) {
             try {
-                Constructor<MethodHandles.Lookup> privateLookupInConstructor =
-                    MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
+                Constructor<MethodHandles.Lookup> privateLookupInConstructor
+                    = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
 
                 if (!privateLookupInConstructor.isAccessible()) {
                     privateLookupInConstructor.setAccessible(true);
@@ -96,15 +97,16 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
     }
 
     @Override
-    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToGenericCore) throws Exception {
+    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToGenericCore)
+        throws Exception {
         MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToGenericCore);
 
         return new MethodHandleReflectiveInvoker(lookup.unreflect(method));
     }
 
     @Override
-    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToGenericCore)
-        throws Exception {
+    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
+        boolean scopeToGenericCore) throws Exception {
         MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToGenericCore);
 
         return new MethodHandleReflectiveInvoker(lookup.unreflectConstructor(constructor));
@@ -159,8 +161,9 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
                 // also use a private proxy lookup to enable all lookup scenarios.
                 String packageName = targetClass.getPackage().getName();
                 if ((boolean) MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE.invokeWithArguments(responseModule,
-                    packageName) || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE.invokeWithArguments(
-                    responseModule, packageName, CORE_MODULE)) {
+                    packageName)
+                    || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE.invokeWithArguments(responseModule,
+                        packageName, CORE_MODULE)) {
                     MODULE_ADD_READS_METHOD_HANDLE.invokeWithArguments(CORE_MODULE, responseModule);
                     return performSafePrivateLookupIn(targetClass);
                 }
@@ -187,8 +190,8 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
     private static MethodHandles.Lookup performSafePrivateLookupIn(Class<?> targetClass) throws Throwable {
         // MethodHandles::privateLookupIn() throws SecurityException if denied by the security manager
         if (System.getSecurityManager() == null) {
-            return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
-                .invokeExact(targetClass, LOOKUP);
+            return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE.invokeExact(targetClass,
+                LOOKUP);
         } else {
             return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>) () -> {
                 try {

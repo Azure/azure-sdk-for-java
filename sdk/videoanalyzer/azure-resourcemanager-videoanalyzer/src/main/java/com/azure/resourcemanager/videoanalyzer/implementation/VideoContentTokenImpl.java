@@ -13,8 +13,7 @@ public final class VideoContentTokenImpl implements VideoContentToken {
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    VideoContentTokenImpl(
-        VideoContentTokenInner innerObject,
+    VideoContentTokenImpl(VideoContentTokenInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

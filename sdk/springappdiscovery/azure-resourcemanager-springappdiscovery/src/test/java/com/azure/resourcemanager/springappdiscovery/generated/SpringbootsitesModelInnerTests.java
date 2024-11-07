@@ -32,7 +32,8 @@ public final class SpringbootsitesModelInnerTests {
     public void testSerialize() throws Exception {
         SpringbootsitesModelInner model = new SpringbootsitesModelInner().withLocation("ao")
             .withTags(mapOf("htbmuf", "xbmtqioqjz", "rxybqsoq", "ownoizhw", "pdznrbtcqqjnqgl", "jgkdmbpazlobcu"))
-            .withProperties(new SpringbootsitesProperties().withMasterSiteId("hq").withMigrateProjectId("gjxpybczmehmt")
+            .withProperties(new SpringbootsitesProperties().withMasterSiteId("hq")
+                .withMigrateProjectId("gjxpybczmehmt")
                 .withProvisioningState(ProvisioningState.FAILED))
             .withExtendedLocation(
                 new SpringbootsitesModelExtendedLocation().withType("phrupidgsybbejhp").withName("ycm"));

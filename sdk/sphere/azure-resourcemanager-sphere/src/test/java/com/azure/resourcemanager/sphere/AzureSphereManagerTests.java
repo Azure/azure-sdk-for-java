@@ -35,13 +35,11 @@ public class AzureSphereManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        azureSphereManager = AzureSphereManager
-            .configure()
+        azureSphereManager = AzureSphereManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -52,10 +50,7 @@ public class AzureSphereManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION_USEAST)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION_USEAST).create();
         }
     }
 
@@ -82,7 +77,8 @@ public class AzureSphereManagerTests extends TestProxyTestBase {
             catalog.refresh();
             Assertions.assertEquals(catalogName, catalog.name());
             Assertions.assertEquals(catalogName, azureSphereManager.catalogs().getById(catalog.id()).name());
-            Assertions.assertTrue(azureSphereManager.catalogs().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertTrue(
+                azureSphereManager.catalogs().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (catalog != null) {
                 azureSphereManager.catalogs().deleteById(catalog.id());

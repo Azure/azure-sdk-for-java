@@ -51,6 +51,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>
@@ -81,7 +82,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.0</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.1</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>

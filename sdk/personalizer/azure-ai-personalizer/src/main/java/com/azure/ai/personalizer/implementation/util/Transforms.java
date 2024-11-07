@@ -17,11 +17,8 @@ public class Transforms {
             if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
                 error = (errorResponseException.getValue().getError());
             }
-            return new HttpResponseException(
-                errorResponseException.getMessage(),
-                errorResponseException.getResponse(),
-                toResponseError(error)
-            );
+            return new HttpResponseException(errorResponseException.getMessage(), errorResponseException.getResponse(),
+                toResponseError(error));
         }
         return throwable;
     }
@@ -35,8 +32,7 @@ public class Transforms {
         StringBuilder errorInformationStringBuilder = new StringBuilder().append(message);
 
         if (innerError != null) {
-            errorInformationStringBuilder.append(", " + "errorCode" + ": [")
-                .append(innerError.getCode()).append("]");
+            errorInformationStringBuilder.append(", " + "errorCode" + ": [").append(innerError.getCode()).append("]");
         }
         return new ResponseError(error.getCode().toString(), errorInformationStringBuilder.toString());
     }

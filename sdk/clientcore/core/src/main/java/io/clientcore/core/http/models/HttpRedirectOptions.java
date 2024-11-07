@@ -27,15 +27,14 @@ public final class HttpRedirectOptions {
      * @param locationHeader The header name containing the redirect URI.
      * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
      */
-    public HttpRedirectOptions(int maxAttempts, HttpHeaderName locationHeader, EnumSet<HttpMethod> allowedRedirectHttpMethods) {
+    public HttpRedirectOptions(int maxAttempts, HttpHeaderName locationHeader,
+        EnumSet<HttpMethod> allowedRedirectHttpMethods) {
         if (maxAttempts < 0) {
-            throw LOGGER.atError().log(null,
-                new IllegalArgumentException("Max attempts cannot be less than 0."));
+            throw LOGGER.atError().log(null, new IllegalArgumentException("Max attempts cannot be less than 0."));
         }
         this.maxAttempts = maxAttempts;
-        this.allowedRedirectHttpMethods = allowedRedirectHttpMethods == null
-            ? EnumSet.noneOf(HttpMethod.class)
-            : allowedRedirectHttpMethods;
+        this.allowedRedirectHttpMethods
+            = allowedRedirectHttpMethods == null ? EnumSet.noneOf(HttpMethod.class) : allowedRedirectHttpMethods;
         this.locationHeader = locationHeader;
     }
 
@@ -67,7 +66,8 @@ public final class HttpRedirectOptions {
      * {@link Response}.
      * @return The updated {@link HttpRedirectOptions} object.
      */
-    public HttpRedirectOptions setShouldRedirectCondition(Predicate<HttpRequestRedirectCondition> shouldRedirectCondition) {
+    public HttpRedirectOptions
+        setShouldRedirectCondition(Predicate<HttpRequestRedirectCondition> shouldRedirectCondition) {
         this.shouldRedirectCondition = shouldRedirectCondition;
         return this;
     }

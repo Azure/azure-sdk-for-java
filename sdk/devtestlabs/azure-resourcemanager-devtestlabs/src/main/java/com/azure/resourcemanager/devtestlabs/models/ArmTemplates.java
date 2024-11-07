@@ -39,15 +39,8 @@ public interface ArmTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ArmTemplate> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ArmTemplate> list(String resourceGroupName, String labName, String artifactSourceName, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get azure resource manager template.
@@ -63,13 +56,8 @@ public interface ArmTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure resource manager template along with {@link Response}.
      */
-    Response<ArmTemplate> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context);
+    Response<ArmTemplate> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,
+        String name, String expand, Context context);
 
     /**
      * Get azure resource manager template.

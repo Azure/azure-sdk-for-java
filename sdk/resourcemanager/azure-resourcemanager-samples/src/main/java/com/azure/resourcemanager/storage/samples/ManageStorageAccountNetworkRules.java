@@ -49,15 +49,16 @@ public final class ManageStorageAccountNetworkRules {
 
             System.out.println("Creating a Virtual network and subnet with storage service subnet access enabled:");
 
-            final Network network = azureResourceManager.networks().define(networkName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("10.0.0.0/28")
-                    .defineSubnet(subnetName)
-                    .withAddressPrefix("10.0.0.8/29")
-                    .withAccessFromService(ServiceEndpointType.MICROSOFT_STORAGE)
-                    .attach()
-                    .create();
+            final Network network = azureResourceManager.networks()
+                .define(networkName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/28")
+                .defineSubnet(subnetName)
+                .withAddressPrefix("10.0.0.8/29")
+                .withAccessFromService(ServiceEndpointType.MICROSOFT_STORAGE)
+                .attach()
+                .create();
 
             System.out.println("Created a Virtual network with subnet:");
             Utils.print(network);
@@ -69,12 +70,13 @@ public final class ManageStorageAccountNetworkRules {
 
             System.out.println("Creating a storage account with access allowed only from the subnet :" + subnetId);
 
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withAccessFromSelectedNetworks()
-                    .withAccessFromNetworkSubnet(subnetId)
-                    .create();
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(storageAccountName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withAccessFromSelectedNetworks()
+                .withAccessFromNetworkSubnet(subnetId)
+                .create();
 
             System.out.println("Created storage account:");
             Utils.print(storageAccount);
@@ -85,11 +87,11 @@ public final class ManageStorageAccountNetworkRules {
             System.out.println("Creating a Public IP address");
 
             final PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses()
-                    .define(publicIpName)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withLeafDomainLabel(publicIpName)
-                    .create();
+                .define(publicIpName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withLeafDomainLabel(publicIpName)
+                .create();
 
             System.out.println("Created Public IP address:");
             Utils.print(publicIPAddress);
@@ -100,17 +102,17 @@ public final class ManageStorageAccountNetworkRules {
             System.out.println("Creating a VM with the Public IP address");
 
             VirtualMachine linuxVM = azureResourceManager.virtualMachines()
-                    .define(vmName)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.1.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withExistingPrimaryPublicIPAddress(publicIPAddress)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername("tirekicker")
-                    .withRootPassword(Utils.password())
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+                .define(vmName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.1.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withExistingPrimaryPublicIPAddress(publicIPAddress)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("tirekicker")
+                .withRootPassword(Utils.password())
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .create();
 
             System.out.println("Created the VM: " + linuxVM.id());
             Utils.print(linuxVM);
@@ -120,11 +122,10 @@ public final class ManageStorageAccountNetworkRules {
             // ============================================================
             // Update the storage account so that it can also be accessed from the PublicIP address
 
-            System.out.println("Updating storage account with access also allowed from publicIP :" + publicIPAddress.ipAddress());
+            System.out.println(
+                "Updating storage account with access also allowed from publicIP :" + publicIPAddress.ipAddress());
 
-            storageAccount.update()
-                    .withAccessFromIpAddress(publicIPAddress.ipAddress())
-                    .apply();
+            storageAccount.update().withAccessFromIpAddress(publicIPAddress.ipAddress()).apply();
 
             System.out.println("Updated storage account:");
             Utils.print(storageAccount);
@@ -134,9 +135,7 @@ public final class ManageStorageAccountNetworkRules {
 
             System.out.println("Restricting access to storage account only via HTTPS");
 
-            storageAccount.update()
-                    .withOnlyHttpsTraffic()
-                    .apply();
+            storageAccount.update().withOnlyHttpsTraffic().apply();
 
             System.out.println("Updated the storage account:");
             Utils.print(storageAccount);
@@ -165,8 +164,7 @@ public final class ManageStorageAccountNetworkRules {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

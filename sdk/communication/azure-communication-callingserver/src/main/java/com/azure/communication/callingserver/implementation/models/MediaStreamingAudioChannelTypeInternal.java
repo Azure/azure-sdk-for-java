@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /** Defines values for MediaStreamingAudioChannelTypeInternal. */
 public final class MediaStreamingAudioChannelTypeInternal
-        extends ExpandableStringEnum<MediaStreamingAudioChannelTypeInternal> {
+    extends ExpandableStringEnum<MediaStreamingAudioChannelTypeInternal> {
     /** Static value mixed for MediaStreamingAudioChannelTypeInternal. */
     public static final MediaStreamingAudioChannelTypeInternal MIXED = fromString("mixed");
 

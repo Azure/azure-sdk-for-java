@@ -6,76 +6,48 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.SqlPool;
 import com.azure.resourcemanager.synapse.models.StorageAccountType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SqlPoolsDeleteMockTests {
     @Test
     public void testDelete() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"tier\":\"yzgleofjs\",\"name\":\"bwwzvdajf\",\"capacity\":237480750},\"properties\":{\"maxSizeBytes\":1453633443337432425,\"collation\":\"iqgjjrlhiql\",\"sourceDatabaseId\":\"xvtbougux\",\"recoverableDatabaseId\":\"dop\",\"provisioningState\":\"Succeeded\",\"status\":\"lapdlnd\",\"restorePointInTime\":\"2021-11-18T07:15:08Z\",\"createMode\":\"Recovery\",\"creationDate\":\"2021-08-26T23:47:14Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-07-04T21:04:33Z\"},\"location\":\"wy\",\"tags\":{\"zfe\":\"bfqvzfjmspu\"},\"id\":\"zjljmphfk\",\"name\":\"ezolgjzm\",\"type\":\"cuydoccnxshanz\"}";
 
-        String responseStr =
-            "{\"sku\":{\"tier\":\"gfgf\",\"name\":\"jrykwlefksxqce\",\"capacity\":119953679},\"properties\":{\"maxSizeBytes\":428961828074750240,\"collation\":\"qvzvlu\",\"sourceDatabaseId\":\"qa\",\"recoverableDatabaseId\":\"ssscyvai\",\"provisioningState\":\"Succeeded\",\"status\":\"cvfyeowpsfxtjdhs\",\"restorePointInTime\":\"2021-10-20T12:49:56Z\",\"createMode\":\"Restore\",\"creationDate\":\"2021-06-14T00:45:35Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-11-12T07:02:25Z\"},\"location\":\"tehdpboujs\",\"tags\":{\"ygnxcgjtfrnqukt\":\"vvdshxcdedsue\",\"trwntfmtbgw\":\"fnslnlrxsmy\",\"eyz\":\"dxwnazkurrd\",\"uzu\":\"whsetwwjwzzqs\"},\"id\":\"kykcyqhyqqzz\",\"name\":\"c\",\"type\":\"keys\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        SqlPool response
+            = manager.sqlPools().delete("eaqgrvgpomxpupd", "sdfjyiesoc", "iqbuou", com.azure.core.util.Context.NONE);
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        SqlPool response = manager.sqlPools().delete("ljssm", "tsnld", "pwolgisubxb", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("tehdpboujs", response.location());
-        Assertions.assertEquals("vvdshxcdedsue", response.tags().get("ygnxcgjtfrnqukt"));
-        Assertions.assertEquals("gfgf", response.sku().tier());
-        Assertions.assertEquals("jrykwlefksxqce", response.sku().name());
-        Assertions.assertEquals(119953679, response.sku().capacity());
-        Assertions.assertEquals(428961828074750240L, response.maxSizeBytes());
-        Assertions.assertEquals("qvzvlu", response.collation());
-        Assertions.assertEquals("qa", response.sourceDatabaseId());
-        Assertions.assertEquals("ssscyvai", response.recoverableDatabaseId());
+        Assertions.assertEquals("wy", response.location());
+        Assertions.assertEquals("bfqvzfjmspu", response.tags().get("zfe"));
+        Assertions.assertEquals("yzgleofjs", response.sku().tier());
+        Assertions.assertEquals("bwwzvdajf", response.sku().name());
+        Assertions.assertEquals(237480750, response.sku().capacity());
+        Assertions.assertEquals(1453633443337432425L, response.maxSizeBytes());
+        Assertions.assertEquals("iqgjjrlhiql", response.collation());
+        Assertions.assertEquals("xvtbougux", response.sourceDatabaseId());
+        Assertions.assertEquals("dop", response.recoverableDatabaseId());
         Assertions.assertEquals("Succeeded", response.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T12:49:56Z"), response.restorePointInTime());
-        Assertions.assertEquals(CreateMode.RESTORE, response.createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T07:15:08Z"), response.restorePointInTime());
+        Assertions.assertEquals(CreateMode.RECOVERY, response.createMode());
         Assertions.assertEquals(StorageAccountType.LRS, response.storageAccountType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T07:02:25Z"), response.sourceDatabaseDeletionDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T21:04:33Z"), response.sourceDatabaseDeletionDate());
     }
 }

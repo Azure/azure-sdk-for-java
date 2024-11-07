@@ -76,10 +76,8 @@ public final class CommunicationsGatewayListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model CommunicationsGatewayListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model CommunicationsGatewayListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

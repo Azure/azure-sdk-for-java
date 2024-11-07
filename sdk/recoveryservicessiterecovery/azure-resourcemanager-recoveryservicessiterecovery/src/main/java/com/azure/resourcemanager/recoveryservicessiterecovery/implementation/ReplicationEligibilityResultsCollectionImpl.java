@@ -26,9 +26,9 @@ public final class ReplicationEligibilityResultsCollectionImpl implements Replic
     public List<ReplicationEligibilityResults> value() {
         List<ReplicationEligibilityResultsInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections.unmodifiableList(
-                inner.stream().map(inner1 -> new ReplicationEligibilityResultsImpl(inner1, this.manager()))
-                    .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ReplicationEligibilityResultsImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

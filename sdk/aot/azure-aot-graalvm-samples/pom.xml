@@ -46,7 +46,6 @@
     <!-- This sample package is not released to maven and revapi checks are not required -->
     <revapi.skip>true</revapi.skip>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>
@@ -61,12 +60,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -93,7 +92,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.19.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.19.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -108,7 +107,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
-      <version>5.5.2</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
+      <version>5.5.3</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
     </dependency>
 
 

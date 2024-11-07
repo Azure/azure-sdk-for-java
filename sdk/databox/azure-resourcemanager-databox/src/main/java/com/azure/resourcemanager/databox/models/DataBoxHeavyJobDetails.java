@@ -5,39 +5,111 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Databox Heavy Device Job Details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobDetailsType")
-@JsonTypeName("DataBoxHeavy")
+/**
+ * Databox Heavy Device Job Details.
+ */
 @Fluent
 public final class DataBoxHeavyJobDetails extends JobDetails {
     /*
+     * Indicates the type of job details.
+     */
+    private ClassDiscriminator jobDetailsType = ClassDiscriminator.DATA_BOX_HEAVY;
+
+    /*
      * Copy progress per account.
      */
-    @JsonProperty(value = "copyProgress", access = JsonProperty.Access.WRITE_ONLY)
     private List<CopyProgress> copyProgress;
 
     /*
      * Set Device password for unlocking Databox Heavy. Should not be passed for TransferType:ExportFromAzure jobs. If
      * this is not passed, the service will generate password itself. This will not be returned in Get Call. Password
-     * Requirements :  Password must be minimum of 12 and maximum of 64 characters. Password must have at least one
-     * uppercase alphabet, one number and one special character. Password cannot have the following characters :
-     * IilLoO0 Password can have only alphabets, numbers and these characters : @#\-$%^!+=;:_()]+
+     * Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at least one
+     * uppercase alphabet, one number and one special character. Password cannot have the following characters : IilLoO0
+     * Password can have only alphabets, numbers and these characters : @#\-$%^!+=;:_()]+
      */
-    @JsonProperty(value = "devicePassword")
     private String devicePassword;
 
-    /** Creates an instance of DataBoxHeavyJobDetails class. */
+    /*
+     * DataCenter code.
+     */
+    private DataCenterCode dataCenterCode;
+
+    /*
+     * Datacenter address to ship to, for the given sku and storage location.
+     */
+    private DatacenterAddressResponse datacenterAddress;
+
+    /*
+     * Last mitigation action performed on the job.
+     */
+    private LastMitigationActionOnJob lastMitigationActionOnJob;
+
+    /*
+     * Available actions on the job.
+     */
+    private List<CustomerResolutionCode> actions;
+
+    /*
+     * Holds device data erasure details
+     */
+    private DeviceErasureDetails deviceErasureDetails;
+
+    /*
+     * Shared access key to download the chain of custody logs
+     */
+    private String chainOfCustodySasKey;
+
+    /*
+     * Shared access key to download the return shipment label
+     */
+    private String reverseShipmentLabelSasKey;
+
+    /*
+     * List of copy log details.
+     */
+    private List<CopyLogDetails> copyLogDetails;
+
+    /*
+     * Return package shipping details.
+     */
+    private PackageShippingDetails returnPackage;
+
+    /*
+     * Delivery package shipping details.
+     */
+    private PackageShippingDetails deliveryPackage;
+
+    /*
+     * List of stages that run in the job.
+     */
+    private List<JobStages> jobStages;
+
+    /**
+     * Creates an instance of DataBoxHeavyJobDetails class.
+     */
     public DataBoxHeavyJobDetails() {
     }
 
     /**
+     * Get the jobDetailsType property: Indicates the type of job details.
+     * 
+     * @return the jobDetailsType value.
+     */
+    @Override
+    public ClassDiscriminator jobDetailsType() {
+        return this.jobDetailsType;
+    }
+
+    /**
      * Get the copyProgress property: Copy progress per account.
-     *
+     * 
      * @return the copyProgress value.
      */
     public List<CopyProgress> copyProgress() {
@@ -49,9 +121,9 @@ public final class DataBoxHeavyJobDetails extends JobDetails {
      * TransferType:ExportFromAzure jobs. If this is not passed, the service will generate password itself. This will
      * not be returned in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters.
      * Password must have at least one uppercase alphabet, one number and one special character. Password cannot have
-     * the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
-     * : @#\-$%^!+=;:_()]+.
-     *
+     * the following characters : IilLoO0 Password can have only alphabets, numbers and these characters :
+     * &#064;#\-$%^!+=;:_()]+.
+     * 
      * @return the devicePassword value.
      */
     public String devicePassword() {
@@ -63,9 +135,9 @@ public final class DataBoxHeavyJobDetails extends JobDetails {
      * TransferType:ExportFromAzure jobs. If this is not passed, the service will generate password itself. This will
      * not be returned in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters.
      * Password must have at least one uppercase alphabet, one number and one special character. Password cannot have
-     * the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
-     * : @#\-$%^!+=;:_()]+.
-     *
+     * the following characters : IilLoO0 Password can have only alphabets, numbers and these characters :
+     * &#064;#\-$%^!+=;:_()]+.
+     * 
      * @param devicePassword the devicePassword value to set.
      * @return the DataBoxHeavyJobDetails object itself.
      */
@@ -74,56 +146,182 @@ public final class DataBoxHeavyJobDetails extends JobDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the dataCenterCode property: DataCenter code.
+     * 
+     * @return the dataCenterCode value.
+     */
+    @Override
+    public DataCenterCode dataCenterCode() {
+        return this.dataCenterCode;
+    }
+
+    /**
+     * Get the datacenterAddress property: Datacenter address to ship to, for the given sku and storage location.
+     * 
+     * @return the datacenterAddress value.
+     */
+    @Override
+    public DatacenterAddressResponse datacenterAddress() {
+        return this.datacenterAddress;
+    }
+
+    /**
+     * Get the lastMitigationActionOnJob property: Last mitigation action performed on the job.
+     * 
+     * @return the lastMitigationActionOnJob value.
+     */
+    @Override
+    public LastMitigationActionOnJob lastMitigationActionOnJob() {
+        return this.lastMitigationActionOnJob;
+    }
+
+    /**
+     * Get the actions property: Available actions on the job.
+     * 
+     * @return the actions value.
+     */
+    @Override
+    public List<CustomerResolutionCode> actions() {
+        return this.actions;
+    }
+
+    /**
+     * Get the deviceErasureDetails property: Holds device data erasure details.
+     * 
+     * @return the deviceErasureDetails value.
+     */
+    @Override
+    public DeviceErasureDetails deviceErasureDetails() {
+        return this.deviceErasureDetails;
+    }
+
+    /**
+     * Get the chainOfCustodySasKey property: Shared access key to download the chain of custody logs.
+     * 
+     * @return the chainOfCustodySasKey value.
+     */
+    @Override
+    public String chainOfCustodySasKey() {
+        return this.chainOfCustodySasKey;
+    }
+
+    /**
+     * Get the reverseShipmentLabelSasKey property: Shared access key to download the return shipment label.
+     * 
+     * @return the reverseShipmentLabelSasKey value.
+     */
+    @Override
+    public String reverseShipmentLabelSasKey() {
+        return this.reverseShipmentLabelSasKey;
+    }
+
+    /**
+     * Get the copyLogDetails property: List of copy log details.
+     * 
+     * @return the copyLogDetails value.
+     */
+    @Override
+    public List<CopyLogDetails> copyLogDetails() {
+        return this.copyLogDetails;
+    }
+
+    /**
+     * Get the returnPackage property: Return package shipping details.
+     * 
+     * @return the returnPackage value.
+     */
+    @Override
+    public PackageShippingDetails returnPackage() {
+        return this.returnPackage;
+    }
+
+    /**
+     * Get the deliveryPackage property: Delivery package shipping details.
+     * 
+     * @return the deliveryPackage value.
+     */
+    @Override
+    public PackageShippingDetails deliveryPackage() {
+        return this.deliveryPackage;
+    }
+
+    /**
+     * Get the jobStages property: List of stages that run in the job.
+     * 
+     * @return the jobStages value.
+     */
+    @Override
+    public List<JobStages> jobStages() {
+        return this.jobStages;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withContactDetails(ContactDetails contactDetails) {
         super.withContactDetails(contactDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withShippingAddress(ShippingAddress shippingAddress) {
         super.withShippingAddress(shippingAddress);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withDataImportDetails(List<DataImportDetails> dataImportDetails) {
         super.withDataImportDetails(dataImportDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withDataExportDetails(List<DataExportDetails> dataExportDetails) {
         super.withDataExportDetails(dataExportDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withPreferences(Preferences preferences) {
         super.withPreferences(preferences);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withReverseShippingDetails(ReverseShippingDetails reverseShippingDetails) {
         super.withReverseShippingDetails(reverseShippingDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withKeyEncryptionKey(KeyEncryptionKey keyEncryptionKey) {
         super.withKeyEncryptionKey(keyEncryptionKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxHeavyJobDetails withExpectedDataSizeInTeraBytes(Integer expectedDataSizeInTeraBytes) {
         super.withExpectedDataSizeInTeraBytes(expectedDataSizeInTeraBytes);
@@ -132,14 +330,165 @@ public final class DataBoxHeavyJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (copyProgress() != null) {
             copyProgress().forEach(e -> e.validate());
         }
+        if (jobStages() != null) {
+            jobStages().forEach(e -> e.validate());
+        }
+        if (contactDetails() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contactDetails in model DataBoxHeavyJobDetails"));
+        } else {
+            contactDetails().validate();
+        }
+        if (shippingAddress() != null) {
+            shippingAddress().validate();
+        }
+        if (deliveryPackage() != null) {
+            deliveryPackage().validate();
+        }
+        if (returnPackage() != null) {
+            returnPackage().validate();
+        }
+        if (dataImportDetails() != null) {
+            dataImportDetails().forEach(e -> e.validate());
+        }
+        if (dataExportDetails() != null) {
+            dataExportDetails().forEach(e -> e.validate());
+        }
+        if (preferences() != null) {
+            preferences().validate();
+        }
+        if (reverseShippingDetails() != null) {
+            reverseShippingDetails().validate();
+        }
+        if (copyLogDetails() != null) {
+            copyLogDetails().forEach(e -> e.validate());
+        }
+        if (deviceErasureDetails() != null) {
+            deviceErasureDetails().validate();
+        }
+        if (keyEncryptionKey() != null) {
+            keyEncryptionKey().validate();
+        }
+        if (lastMitigationActionOnJob() != null) {
+            lastMitigationActionOnJob().validate();
+        }
+        if (datacenterAddress() != null) {
+            datacenterAddress().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataBoxHeavyJobDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactDetails", contactDetails());
+        jsonWriter.writeJsonField("shippingAddress", shippingAddress());
+        jsonWriter.writeArrayField("dataImportDetails", dataImportDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataExportDetails", dataExportDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("preferences", preferences());
+        jsonWriter.writeJsonField("reverseShippingDetails", reverseShippingDetails());
+        jsonWriter.writeJsonField("keyEncryptionKey", keyEncryptionKey());
+        jsonWriter.writeNumberField("expectedDataSizeInTeraBytes", expectedDataSizeInTeraBytes());
+        jsonWriter.writeStringField("jobDetailsType",
+            this.jobDetailsType == null ? null : this.jobDetailsType.toString());
+        jsonWriter.writeStringField("devicePassword", this.devicePassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxHeavyJobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxHeavyJobDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataBoxHeavyJobDetails.
+     */
+    public static DataBoxHeavyJobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxHeavyJobDetails deserializedDataBoxHeavyJobDetails = new DataBoxHeavyJobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactDetails".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withContactDetails(ContactDetails.fromJson(reader));
+                } else if ("jobStages".equals(fieldName)) {
+                    List<JobStages> jobStages = reader.readArray(reader1 -> JobStages.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.jobStages = jobStages;
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withShippingAddress(ShippingAddress.fromJson(reader));
+                } else if ("deliveryPackage".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.deliveryPackage = PackageShippingDetails.fromJson(reader);
+                } else if ("returnPackage".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.returnPackage = PackageShippingDetails.fromJson(reader);
+                } else if ("dataImportDetails".equals(fieldName)) {
+                    List<DataImportDetails> dataImportDetails
+                        = reader.readArray(reader1 -> DataImportDetails.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.withDataImportDetails(dataImportDetails);
+                } else if ("dataExportDetails".equals(fieldName)) {
+                    List<DataExportDetails> dataExportDetails
+                        = reader.readArray(reader1 -> DataExportDetails.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.withDataExportDetails(dataExportDetails);
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withPreferences(Preferences.fromJson(reader));
+                } else if ("reverseShippingDetails".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails
+                        .withReverseShippingDetails(ReverseShippingDetails.fromJson(reader));
+                } else if ("copyLogDetails".equals(fieldName)) {
+                    List<CopyLogDetails> copyLogDetails = reader.readArray(reader1 -> CopyLogDetails.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.copyLogDetails = copyLogDetails;
+                } else if ("reverseShipmentLabelSasKey".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.reverseShipmentLabelSasKey = reader.getString();
+                } else if ("chainOfCustodySasKey".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.chainOfCustodySasKey = reader.getString();
+                } else if ("deviceErasureDetails".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.deviceErasureDetails = DeviceErasureDetails.fromJson(reader);
+                } else if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.withKeyEncryptionKey(KeyEncryptionKey.fromJson(reader));
+                } else if ("expectedDataSizeInTeraBytes".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails
+                        .withExpectedDataSizeInTeraBytes(reader.getNullable(JsonReader::getInt));
+                } else if ("actions".equals(fieldName)) {
+                    List<CustomerResolutionCode> actions
+                        = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
+                    deserializedDataBoxHeavyJobDetails.actions = actions;
+                } else if ("lastMitigationActionOnJob".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.lastMitigationActionOnJob
+                        = LastMitigationActionOnJob.fromJson(reader);
+                } else if ("datacenterAddress".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.datacenterAddress = DatacenterAddressResponse.fromJson(reader);
+                } else if ("dataCenterCode".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.dataCenterCode = DataCenterCode.fromString(reader.getString());
+                } else if ("jobDetailsType".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.jobDetailsType
+                        = ClassDiscriminator.fromString(reader.getString());
+                } else if ("copyProgress".equals(fieldName)) {
+                    List<CopyProgress> copyProgress = reader.readArray(reader1 -> CopyProgress.fromJson(reader1));
+                    deserializedDataBoxHeavyJobDetails.copyProgress = copyProgress;
+                } else if ("devicePassword".equals(fieldName)) {
+                    deserializedDataBoxHeavyJobDetails.devicePassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxHeavyJobDetails;
+        });
     }
 }

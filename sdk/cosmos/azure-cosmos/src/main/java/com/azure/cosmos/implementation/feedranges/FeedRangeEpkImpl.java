@@ -203,8 +203,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                                             "EpkRange %s spans %s physical partitions: %s",
                                             this.range,
                                             pkRanges.size(),
-                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList()),
-                                    this.range));
+                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList())));
                             BridgeInternal.setSubStatusCode(
                                 goneException,
                                 HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);

@@ -31,7 +31,8 @@ public class DialogStarted extends CallAutomationEventBase {
     private String dialogId;
 
     /** Creates an instance of DialogStarted class. */
-    public DialogStarted() {}
+    public DialogStarted() {
+    }
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.

@@ -18,11 +18,13 @@ import com.azure.resourcemanager.managedapplications.fluent.models.ManagedIdenti
 import com.azure.resourcemanager.managedapplications.fluent.models.UpdateAccessDefinitionInner;
 import com.azure.resourcemanager.managedapplications.models.ListTokenRequest;
 
-/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationsClient.
+ */
 public interface ApplicationsClient {
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -32,12 +34,12 @@ public interface ApplicationsClient {
      * @return the managed application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationName, Context context);
+    Response<ApplicationInner> getByResourceGroupWithResponse(String resourceGroupName, String applicationName,
+        Context context);
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +52,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +65,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -77,7 +79,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +91,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -102,7 +104,7 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -112,12 +114,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdate(
-        String resourceGroupName, String applicationName, ApplicationInner parameters);
+    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdate(String resourceGroupName,
+        String applicationName, ApplicationInner parameters);
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -128,12 +130,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdate(
-        String resourceGroupName, String applicationName, ApplicationInner parameters, Context context);
+    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdate(String resourceGroupName,
+        String applicationName, ApplicationInner parameters, Context context);
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -147,7 +149,7 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -158,12 +160,12 @@ public interface ApplicationsClient {
      * @return information about managed application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner createOrUpdate(
-        String resourceGroupName, String applicationName, ApplicationInner parameters, Context context);
+    ApplicationInner createOrUpdate(String resourceGroupName, String applicationName, ApplicationInner parameters,
+        Context context);
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,12 +174,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdate(
-        String resourceGroupName, String applicationName);
+    SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdate(String resourceGroupName,
+        String applicationName);
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -188,12 +190,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdate(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters, Context context);
+    SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdate(String resourceGroupName,
+        String applicationName, ApplicationPatchableInner parameters, Context context);
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +208,7 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -217,12 +219,12 @@ public interface ApplicationsClient {
      * @return information about managed application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationPatchableInner update(
-        String resourceGroupName, String applicationName, ApplicationPatchableInner parameters, Context context);
+    ApplicationPatchableInner update(String resourceGroupName, String applicationName,
+        ApplicationPatchableInner parameters, Context context);
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,7 +236,7 @@ public interface ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -247,7 +249,7 @@ public interface ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed applications as paginated response with {@link PagedIterable}.
@@ -257,7 +259,7 @@ public interface ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -269,10 +271,10 @@ public interface ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -284,10 +286,10 @@ public interface ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,10 +300,10 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -312,10 +314,10 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -327,10 +329,10 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -340,10 +342,10 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -354,10 +356,10 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -365,15 +367,15 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateById(
-        String applicationId, ApplicationInner parameters);
+    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateById(String applicationId,
+        ApplicationInner parameters);
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,15 +384,15 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateById(
-        String applicationId, ApplicationInner parameters, Context context);
+    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreateOrUpdateById(String applicationId,
+        ApplicationInner parameters, Context context);
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -402,10 +404,10 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -418,10 +420,10 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -432,10 +434,10 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -444,15 +446,15 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of information about managed application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateById(
-        String applicationId, ApplicationPatchableInner parameters, Context context);
+    SyncPoller<PollResult<ApplicationPatchableInner>, ApplicationPatchableInner> beginUpdateById(String applicationId,
+        ApplicationPatchableInner parameters, Context context);
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -463,10 +465,10 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,7 +481,7 @@ public interface ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,7 +494,7 @@ public interface ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -502,12 +504,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRefreshPermissions(
-        String resourceGroupName, String applicationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRefreshPermissions(String resourceGroupName, String applicationName,
+        Context context);
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -519,7 +521,7 @@ public interface ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -532,7 +534,7 @@ public interface ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -542,12 +544,12 @@ public interface ApplicationsClient {
      * @return the array of plan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AllowedUpgradePlansResultInner> listAllowedUpgradePlansWithResponse(
-        String resourceGroupName, String applicationName, Context context);
+    Response<AllowedUpgradePlansResultInner> listAllowedUpgradePlansWithResponse(String resourceGroupName,
+        String applicationName, Context context);
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,7 +562,7 @@ public interface ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -570,12 +572,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UpdateAccessDefinitionInner>, UpdateAccessDefinitionInner> beginUpdateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters);
+    SyncPoller<PollResult<UpdateAccessDefinitionInner>, UpdateAccessDefinitionInner>
+        beginUpdateAccess(String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters);
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -591,7 +593,7 @@ public interface ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -601,12 +603,12 @@ public interface ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UpdateAccessDefinitionInner updateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters);
+    UpdateAccessDefinitionInner updateAccess(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters);
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -617,12 +619,12 @@ public interface ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UpdateAccessDefinitionInner updateAccess(
-        String resourceGroupName, String applicationName, UpdateAccessDefinitionInner parameters, Context context);
+    UpdateAccessDefinitionInner updateAccess(String resourceGroupName, String applicationName,
+        UpdateAccessDefinitionInner parameters, Context context);
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -633,12 +635,12 @@ public interface ApplicationsClient {
      * @return the array of managed identity tokens along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedIdentityTokenResultInner> listTokensWithResponse(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters, Context context);
+    Response<ManagedIdentityTokenResultInner> listTokensWithResponse(String resourceGroupName, String applicationName,
+        ListTokenRequest parameters, Context context);
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -648,6 +650,6 @@ public interface ApplicationsClient {
      * @return the array of managed identity tokens.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedIdentityTokenResultInner listTokens(
-        String resourceGroupName, String applicationName, ListTokenRequest parameters);
+    ManagedIdentityTokenResultInner listTokens(String resourceGroupName, String applicationName,
+        ListTokenRequest parameters);
 }

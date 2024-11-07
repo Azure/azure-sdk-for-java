@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ReferenceDataSetUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReferenceDataSetUpdateParameters model =
-            BinaryData
-                .fromString("{\"tags\":{\"scjeypv\":\"tynnaamdectehfi\"}}")
-                .toObject(ReferenceDataSetUpdateParameters.class);
-        Assertions.assertEquals("tynnaamdectehfi", model.tags().get("scjeypv"));
+        ReferenceDataSetUpdateParameters model = BinaryData.fromString("{\"tags\":{\"iarbutrcvpna\":\"ebf\"}}")
+            .toObject(ReferenceDataSetUpdateParameters.class);
+        Assertions.assertEquals("ebf", model.tags().get("iarbutrcvpna"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReferenceDataSetUpdateParameters model =
-            new ReferenceDataSetUpdateParameters().withTags(mapOf("scjeypv", "tynnaamdectehfi"));
+        ReferenceDataSetUpdateParameters model
+            = new ReferenceDataSetUpdateParameters().withTags(mapOf("iarbutrcvpna", "ebf"));
         model = BinaryData.fromObject(model).toObject(ReferenceDataSetUpdateParameters.class);
-        Assertions.assertEquals("tynnaamdectehfi", model.tags().get("scjeypv"));
+        Assertions.assertEquals("ebf", model.tags().get("iarbutrcvpna"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class EventSourceMutablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSourceMutableProperties model =
-            BinaryData
-                .fromString("{\"timestampPropertyName\":\"fudwpznt\"}")
-                .toObject(EventSourceMutableProperties.class);
-        Assertions.assertEquals("fudwpznt", model.timestampPropertyName());
+        EventSourceMutableProperties model
+            = BinaryData.fromString("{\"timestampPropertyName\":\"aln\"}").toObject(EventSourceMutableProperties.class);
+        Assertions.assertEquals("aln", model.timestampPropertyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSourceMutableProperties model = new EventSourceMutableProperties().withTimestampPropertyName("fudwpznt");
+        EventSourceMutableProperties model = new EventSourceMutableProperties().withTimestampPropertyName("aln");
         model = BinaryData.fromObject(model).toObject(EventSourceMutableProperties.class);
-        Assertions.assertEquals("fudwpznt", model.timestampPropertyName());
+        Assertions.assertEquals("aln", model.timestampPropertyName());
     }
 }

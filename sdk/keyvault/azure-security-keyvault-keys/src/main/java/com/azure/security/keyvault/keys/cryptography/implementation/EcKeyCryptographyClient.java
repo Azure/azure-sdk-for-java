@@ -173,7 +173,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-                                          Context context) {
+        Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
@@ -212,8 +212,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ISignatureTransform signer = algo.createSignatureTransform(ecKeyPair, provider);
 
-        return Mono.fromCallable(() ->
-            new VerifyResult(signer.verify(digest, signature), algorithm, jsonWebKey.getId()));
+        return Mono
+            .fromCallable(() -> new VerifyResult(signer.verify(digest, signature), algorithm, jsonWebKey.getId()));
     }
 
     @Override
@@ -307,7 +307,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-                                              Context context) {
+        Context context) {
         try {
             return verifyAsync(algorithm, calculateDigest(algorithm, data), signature, context);
         } catch (NoSuchAlgorithmException e) {

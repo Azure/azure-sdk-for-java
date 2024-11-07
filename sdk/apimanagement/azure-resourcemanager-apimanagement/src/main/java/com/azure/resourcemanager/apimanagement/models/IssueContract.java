@@ -115,14 +115,9 @@ public interface IssueContract {
          * The stage of the IssueContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTitle,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithUserId,
-                DefinitionStages.WithCreatedDate,
-                DefinitionStages.WithState,
-                DefinitionStages.WithApiId,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithTitle, DefinitionStages.WithDescription,
+            DefinitionStages.WithUserId, DefinitionStages.WithCreatedDate, DefinitionStages.WithState,
+            DefinitionStages.WithApiId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -227,14 +222,8 @@ public interface IssueContract {
     IssueContract.Update update();
 
     /** The template for IssueContract update. */
-    interface Update
-        extends UpdateStages.WithTitle,
-            UpdateStages.WithDescription,
-            UpdateStages.WithUserId,
-            UpdateStages.WithCreatedDate,
-            UpdateStages.WithState,
-            UpdateStages.WithApiId,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTitle, UpdateStages.WithDescription, UpdateStages.WithUserId,
+        UpdateStages.WithCreatedDate, UpdateStages.WithState, UpdateStages.WithApiId, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

@@ -40,8 +40,8 @@ public interface MonitoredSubscriptionsClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MonitoredSubscriptionPropertiesInner> list(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<MonitoredSubscriptionPropertiesInner> list(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
@@ -57,8 +57,8 @@ public interface MonitoredSubscriptionsClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitoredSubscriptionPropertiesInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<MonitoredSubscriptionPropertiesInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.
@@ -106,12 +106,8 @@ public interface MonitoredSubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdate(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            MonitoredSubscriptionPropertiesInner body,
-            Context context);
+        beginCreateorUpdate(String resourceGroupName, String monitorName, String configurationName,
+            MonitoredSubscriptionPropertiesInner body, Context context);
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
@@ -125,8 +121,8 @@ public interface MonitoredSubscriptionsClient {
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitoredSubscriptionPropertiesInner createorUpdate(
-        String resourceGroupName, String monitorName, String configurationName);
+    MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
+        String configurationName);
 
     /**
      * Add the subscriptions that should be monitored by the Datadog monitor resource.
@@ -142,12 +138,8 @@ public interface MonitoredSubscriptionsClient {
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitoredSubscriptionPropertiesInner createorUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context);
+    MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
+        String configurationName, MonitoredSubscriptionPropertiesInner body, Context context);
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
@@ -162,8 +154,8 @@ public interface MonitoredSubscriptionsClient {
      *     Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner> beginUpdate(
-        String resourceGroupName, String monitorName, String configurationName);
+    SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
+        beginUpdate(String resourceGroupName, String monitorName, String configurationName);
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
@@ -181,11 +173,8 @@ public interface MonitoredSubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner> beginUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context);
+        String resourceGroupName, String monitorName, String configurationName,
+        MonitoredSubscriptionPropertiesInner body, Context context);
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
@@ -215,12 +204,8 @@ public interface MonitoredSubscriptionsClient {
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitoredSubscriptionPropertiesInner update(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        MonitoredSubscriptionPropertiesInner body,
-        Context context);
+    MonitoredSubscriptionPropertiesInner update(String resourceGroupName, String monitorName, String configurationName,
+        MonitoredSubscriptionPropertiesInner body, Context context);
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
@@ -234,8 +219,8 @@ public interface MonitoredSubscriptionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String configurationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        String configurationName);
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.
@@ -250,8 +235,8 @@ public interface MonitoredSubscriptionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Updates the subscriptions that are being monitored by the Datadog monitor resource.

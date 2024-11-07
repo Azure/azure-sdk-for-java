@@ -35,8 +35,8 @@ public interface WorkspaceConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paginated list of Workspace connection objects.
      */
-    PagedIterable<WorkspaceConnection> list(
-        String resourceGroupName, String workspaceName, String target, String category, Context context);
+    PagedIterable<WorkspaceConnection> list(String resourceGroupName, String workspaceName, String target,
+        String category, Context context);
 
     /**
      * Get the detail of a workspace connection.
@@ -63,8 +63,8 @@ public interface WorkspaceConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detail of a workspace connection.
      */
-    Response<WorkspaceConnection> getWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context);
+    Response<WorkspaceConnection> getWithResponse(String resourceGroupName, String workspaceName, String connectionName,
+        Context context);
 
     /**
      * Delete a workspace connection.
@@ -90,8 +90,8 @@ public interface WorkspaceConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String connectionName,
+        Context context);
 
     /**
      * Get the detail of a workspace connection.

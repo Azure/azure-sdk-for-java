@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.ReplicationLinkInner;
 public final class ReplicationLinkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationLinkInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"dfznudaodv\",\"properties\":{\"isTerminationAllowed\":true,\"replicationMode\":\"blylpstdbh\",\"partnerServer\":\"srzdzucerscdn\",\"partnerDatabase\":\"evfiwjmygt\",\"partnerLocation\":\"slswtm\",\"role\":\"Secondary\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-10-28T16:23:15Z\",\"percentComplete\":1861097710,\"replicationState\":\"CATCH_UP\"},\"id\":\"emwabnet\",\"name\":\"hhszh\",\"type\":\"d\"}")
-                .toObject(ReplicationLinkInner.class);
+        ReplicationLinkInner model = BinaryData.fromString(
+            "{\"location\":\"wifto\",\"properties\":{\"isTerminationAllowed\":false,\"replicationMode\":\"uvksgplsaknynfsy\",\"partnerServer\":\"jphuopxodlqi\",\"partnerDatabase\":\"torzih\",\"partnerLocation\":\"osjswsr\",\"role\":\"NonReadableSecondary\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-03-30T08:07:03Z\",\"percentComplete\":671314930,\"replicationState\":\"CATCH_UP\"},\"id\":\"ckqqzqioxiysui\",\"name\":\"zynkedya\",\"type\":\"rwyhqmibzyhwitsm\"}")
+            .toObject(ReplicationLinkInner.class);
     }
 
     @org.junit.jupiter.api.Test

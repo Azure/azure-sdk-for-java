@@ -10,10 +10,8 @@ import com.azure.resourcemanager.databox.models.ApplianceNetworkConfiguration;
 public final class ApplianceNetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplianceNetworkConfiguration model =
-            BinaryData
-                .fromString("{\"name\":\"cbxvwvxyslqbh\",\"macAddress\":\"xoblytkbl\"}")
-                .toObject(ApplianceNetworkConfiguration.class);
+        ApplianceNetworkConfiguration model = BinaryData.fromString("{\"name\":\"hos\",\"macAddress\":\"dqrhzoymib\"}")
+            .toObject(ApplianceNetworkConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

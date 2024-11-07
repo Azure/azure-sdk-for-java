@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Required if status == failed or status == canceled. */
+/**
+ * Required if status == failed or status == canceled.
+ */
 @Fluent
-public final class OperationResultError {
+public final class OperationResultError implements JsonSerializable<OperationResultError> {
     /*
      * Required if status == failed or status == cancelled. If status == failed, provide an invariant error code used
      * for error troubleshooting, aggregation, and analysis.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
-     * Required if status == failed. Localized. If status == failed, provide an actionable error message indicating
-     * what error occurred, and what the user can do to address the issue.
+     * Required if status == failed. Localized. If status == failed, provide an actionable error message indicating what
+     * error occurred, and what the user can do to address the issue.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of OperationResultError class. */
+    /**
+     * Creates an instance of OperationResultError class.
+     */
     public OperationResultError() {
     }
 
     /**
      * Get the code property: Required if status == failed or status == cancelled. If status == failed, provide an
      * invariant error code used for error troubleshooting, aggregation, and analysis.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -41,7 +47,7 @@ public final class OperationResultError {
     /**
      * Set the code property: Required if status == failed or status == cancelled. If status == failed, provide an
      * invariant error code used for error troubleshooting, aggregation, and analysis.
-     *
+     * 
      * @param code the code value to set.
      * @return the OperationResultError object itself.
      */
@@ -53,7 +59,7 @@ public final class OperationResultError {
     /**
      * Get the message property: Required if status == failed. Localized. If status == failed, provide an actionable
      * error message indicating what error occurred, and what the user can do to address the issue.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -63,7 +69,7 @@ public final class OperationResultError {
     /**
      * Set the message property: Required if status == failed. Localized. If status == failed, provide an actionable
      * error message indicating what error occurred, and what the user can do to address the issue.
-     *
+     * 
      * @param message the message value to set.
      * @return the OperationResultError object itself.
      */
@@ -74,9 +80,48 @@ public final class OperationResultError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultError if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultError.
+     */
+    public static OperationResultError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultError deserializedOperationResultError = new OperationResultError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedOperationResultError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedOperationResultError.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultError;
+        });
     }
 }

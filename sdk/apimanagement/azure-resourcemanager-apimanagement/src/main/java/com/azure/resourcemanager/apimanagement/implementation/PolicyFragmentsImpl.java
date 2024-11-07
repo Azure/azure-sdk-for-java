@@ -27,30 +27,18 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public PolicyFragmentsImpl(
-        PolicyFragmentsClient innerClient,
+    public PolicyFragmentsImpl(PolicyFragmentsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PolicyFragmentCollection> listByServiceWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context) {
-        Response<PolicyFragmentCollectionInner> inner =
-            this
-                .serviceClient()
-                .listByServiceWithResponse(resourceGroupName, serviceName, filter, orderby, top, skip, context);
+    public Response<PolicyFragmentCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        String filter, String orderby, Integer top, Integer skip, Context context) {
+        Response<PolicyFragmentCollectionInner> inner = this.serviceClient()
+            .listByServiceWithResponse(resourceGroupName, serviceName, filter, orderby, top, skip, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyFragmentCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -66,8 +54,8 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
         }
     }
 
-    public PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String id, Context context) {
+    public PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String id, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, id, context);
     }
 
@@ -75,15 +63,12 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, id);
     }
 
-    public Response<PolicyFragmentContract> getWithResponse(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContentFormat format, Context context) {
-        PolicyFragmentsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, id, format, context);
+    public Response<PolicyFragmentContract> getWithResponse(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContentFormat format, Context context) {
+        PolicyFragmentsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, id, format, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyFragmentContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -99,8 +84,8 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String id, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String id, String ifMatch,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, id, ifMatch, context);
     }
 
@@ -108,15 +93,12 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
         this.serviceClient().delete(resourceGroupName, serviceName, id, ifMatch);
     }
 
-    public Response<ResourceCollection> listReferencesWithResponse(
-        String resourceGroupName, String serviceName, String id, Integer top, Integer skip, Context context) {
-        Response<ResourceCollectionInner> inner =
-            this.serviceClient().listReferencesWithResponse(resourceGroupName, serviceName, id, top, skip, context);
+    public Response<ResourceCollection> listReferencesWithResponse(String resourceGroupName, String serviceName,
+        String id, Integer top, Integer skip, Context context) {
+        Response<ResourceCollectionInner> inner
+            = this.serviceClient().listReferencesWithResponse(resourceGroupName, serviceName, id, top, skip, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ResourceCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -135,55 +117,39 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
     public PolicyFragmentContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String varId = Utils.getValueFromIdByName(id, "policyFragments");
         if (varId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'policyFragments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'policyFragments'.", id)));
         }
         PolicyFragmentContentFormat localFormat = null;
         return this.getWithResponse(resourceGroupName, serviceName, varId, localFormat, Context.NONE).getValue();
     }
 
-    public Response<PolicyFragmentContract> getByIdWithResponse(
-        String id, PolicyFragmentContentFormat format, Context context) {
+    public Response<PolicyFragmentContract> getByIdWithResponse(String id, PolicyFragmentContentFormat format,
+        Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String varId = Utils.getValueFromIdByName(id, "policyFragments");
         if (varId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'policyFragments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'policyFragments'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, varId, format, context);
     }
@@ -191,26 +157,18 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String varId = Utils.getValueFromIdByName(id, "policyFragments");
         if (varId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'policyFragments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'policyFragments'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, varId, localIfMatch, Context.NONE);
@@ -219,26 +177,18 @@ public final class PolicyFragmentsImpl implements PolicyFragments {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String varId = Utils.getValueFromIdByName(id, "policyFragments");
         if (varId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'policyFragments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'policyFragments'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, varId, ifMatch, context);
     }

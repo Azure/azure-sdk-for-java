@@ -5,20 +5,42 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** It does all pre-job creation validations. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "validationCategory")
-@JsonTypeName("JobCreationValidation")
+/**
+ * It does all pre-job creation validations.
+ */
 @Fluent
 public final class CreateJobValidations extends ValidationRequest {
-    /** Creates an instance of CreateJobValidations class. */
+    /*
+     * Identify the nature of validation.
+     */
+    private String validationCategory = "JobCreationValidation";
+
+    /**
+     * Creates an instance of CreateJobValidations class.
+     */
     public CreateJobValidations() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the validationCategory property: Identify the nature of validation.
+     * 
+     * @return the validationCategory value.
+     */
+    @Override
+    public String validationCategory() {
+        return this.validationCategory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CreateJobValidations withIndividualRequestDetails(List<ValidationInputRequest> individualRequestDetails) {
         super.withIndividualRequestDetails(individualRequestDetails);
@@ -27,11 +49,62 @@ public final class CreateJobValidations extends ValidationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (individualRequestDetails() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property individualRequestDetails in model CreateJobValidations"));
+        } else {
+            individualRequestDetails().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateJobValidations.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("individualRequestDetails", individualRequestDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("validationCategory", this.validationCategory);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateJobValidations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateJobValidations if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateJobValidations.
+     */
+    public static CreateJobValidations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateJobValidations deserializedCreateJobValidations = new CreateJobValidations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("individualRequestDetails".equals(fieldName)) {
+                    List<ValidationInputRequest> individualRequestDetails
+                        = reader.readArray(reader1 -> ValidationInputRequest.fromJson(reader1));
+                    deserializedCreateJobValidations.withIndividualRequestDetails(individualRequestDetails);
+                } else if ("validationCategory".equals(fieldName)) {
+                    deserializedCreateJobValidations.validationCategory = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateJobValidations;
+        });
     }
 }

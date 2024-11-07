@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkFabricSkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkFabricSkuProperties model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SingleRack\",\"maxComputeRacks\":982301337,\"maximumServerCount\":513170915,\"supportedVersions\":[\"uqmllfeothxu\",\"rigrjdljlkq\",\"vkrbzkuastaxklpr\"],\"details\":\"l\",\"provisioningState\":\"Accepted\"}")
-                .toObject(NetworkFabricSkuProperties.class);
+        NetworkFabricSkuProperties model = BinaryData.fromString(
+            "{\"type\":\"SingleRack\",\"maxComputeRacks\":982301337,\"maximumServerCount\":513170915,\"supportedVersions\":[\"uqmllfeothxu\",\"rigrjdljlkq\",\"vkrbzkuastaxklpr\"],\"details\":\"l\",\"provisioningState\":\"Accepted\"}")
+            .toObject(NetworkFabricSkuProperties.class);
         Assertions.assertEquals(982301337, model.maxComputeRacks());
         Assertions.assertEquals(513170915, model.maximumServerCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkFabricSkuProperties model =
-            new NetworkFabricSkuProperties().withMaxComputeRacks(982301337).withMaximumServerCount(513170915);
+        NetworkFabricSkuProperties model
+            = new NetworkFabricSkuProperties().withMaxComputeRacks(982301337).withMaximumServerCount(513170915);
         model = BinaryData.fromObject(model).toObject(NetworkFabricSkuProperties.class);
         Assertions.assertEquals(982301337, model.maxComputeRacks());
         Assertions.assertEquals(513170915, model.maximumServerCount());

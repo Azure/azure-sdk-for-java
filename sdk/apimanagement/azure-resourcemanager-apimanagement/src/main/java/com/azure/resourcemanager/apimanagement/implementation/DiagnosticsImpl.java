@@ -25,27 +25,27 @@ public final class DiagnosticsImpl implements Diagnostics {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public DiagnosticsImpl(
-        DiagnosticsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public DiagnosticsImpl(DiagnosticsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<DiagnosticContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<DiagnosticContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
+        PagedIterable<DiagnosticContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
         return Utils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DiagnosticContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
-        PagedIterable<DiagnosticContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
+    public PagedIterable<DiagnosticContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context) {
+        PagedIterable<DiagnosticContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
     }
 
-    public DiagnosticsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, Context context) {
+    public DiagnosticsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String diagnosticId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, diagnosticId, context);
     }
 
@@ -53,15 +53,12 @@ public final class DiagnosticsImpl implements Diagnostics {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, diagnosticId);
     }
 
-    public Response<DiagnosticContract> getWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, Context context) {
-        DiagnosticsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, diagnosticId, context);
+    public Response<DiagnosticContract> getWithResponse(String resourceGroupName, String serviceName,
+        String diagnosticId, Context context) {
+        DiagnosticsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, diagnosticId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiagnosticContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -77,69 +74,22 @@ public final class DiagnosticsImpl implements Diagnostics {
         }
     }
 
-    public Response<DiagnosticContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        DiagnosticContractInner parameters,
-        String ifMatch,
-        Context context) {
-        DiagnosticsCreateOrUpdateResponse inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, serviceName, diagnosticId, parameters, ifMatch, context);
+    public Response<DiagnosticContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String diagnosticId, DiagnosticContractInner parameters, String ifMatch, Context context) {
+        DiagnosticsCreateOrUpdateResponse inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, diagnosticId, parameters, ifMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiagnosticContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DiagnosticContract createOrUpdate(
-        String resourceGroupName, String serviceName, String diagnosticId, DiagnosticContractInner parameters) {
-        DiagnosticContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, diagnosticId, parameters);
-        if (inner != null) {
-            return new DiagnosticContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<DiagnosticContract> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        String ifMatch,
-        DiagnosticContractInner parameters,
-        Context context) {
-        DiagnosticsUpdateResponse inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, serviceName, diagnosticId, ifMatch, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DiagnosticContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public DiagnosticContract update(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        String ifMatch,
+    public DiagnosticContract createOrUpdate(String resourceGroupName, String serviceName, String diagnosticId,
         DiagnosticContractInner parameters) {
-        DiagnosticContractInner inner =
-            this.serviceClient().update(resourceGroupName, serviceName, diagnosticId, ifMatch, parameters);
+        DiagnosticContractInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, diagnosticId, parameters);
         if (inner != null) {
             return new DiagnosticContractImpl(inner, this.manager());
         } else {
@@ -147,8 +97,31 @@ public final class DiagnosticsImpl implements Diagnostics {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String diagnosticId, String ifMatch, Context context) {
+    public Response<DiagnosticContract> updateWithResponse(String resourceGroupName, String serviceName,
+        String diagnosticId, String ifMatch, DiagnosticContractInner parameters, Context context) {
+        DiagnosticsUpdateResponse inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, serviceName, diagnosticId, ifMatch, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DiagnosticContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DiagnosticContract update(String resourceGroupName, String serviceName, String diagnosticId, String ifMatch,
+        DiagnosticContractInner parameters) {
+        DiagnosticContractInner inner
+            = this.serviceClient().update(resourceGroupName, serviceName, diagnosticId, ifMatch, parameters);
+        if (inner != null) {
+            return new DiagnosticContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String diagnosticId,
+        String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, diagnosticId, ifMatch, context);
     }
 

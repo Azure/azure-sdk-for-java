@@ -193,11 +193,8 @@ public interface NetworkFabricController {
     NetworkFabricControllerInner innerModel();
 
     /** The entirety of the NetworkFabricController definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The NetworkFabricController definition stages. */
@@ -240,16 +237,11 @@ public interface NetworkFabricController {
          * The stage of the NetworkFabricController definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithManagedResourceGroupConfiguration,
-                DefinitionStages.WithIsWorkloadManagementNetworkEnabled,
-                DefinitionStages.WithIpv4AddressSpace,
-                DefinitionStages.WithIpv6AddressSpace,
-                DefinitionStages.WithNfcSku,
-                DefinitionStages.WithInfrastructureExpressRouteConnections,
-                DefinitionStages.WithWorkloadExpressRouteConnections,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithManagedResourceGroupConfiguration,
+            DefinitionStages.WithIsWorkloadManagementNetworkEnabled, DefinitionStages.WithIpv4AddressSpace,
+            DefinitionStages.WithIpv6AddressSpace, DefinitionStages.WithNfcSku,
+            DefinitionStages.WithInfrastructureExpressRouteConnections,
+            DefinitionStages.WithWorkloadExpressRouteConnections, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -398,10 +390,8 @@ public interface NetworkFabricController {
     NetworkFabricController.Update update();
 
     /** The template for NetworkFabricController update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithInfrastructureExpressRouteConnections,
-            UpdateStages.WithWorkloadExpressRouteConnections {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithInfrastructureExpressRouteConnections,
+        UpdateStages.WithWorkloadExpressRouteConnections {
         /**
          * Executes the update request.
          *

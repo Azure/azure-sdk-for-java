@@ -208,8 +208,8 @@ public final class ClusterManagerProperties {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the ClusterManagerProperties object itself.
      */
-    public ClusterManagerProperties withManagedResourceGroupConfiguration(
-        ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+    public ClusterManagerProperties
+        withManagedResourceGroupConfiguration(ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
         this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
         return this;
     }
@@ -270,10 +270,8 @@ public final class ClusterManagerProperties {
             clusterVersions().forEach(e -> e.validate());
         }
         if (fabricControllerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fabricControllerId in model ClusterManagerProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fabricControllerId in model ClusterManagerProperties"));
         }
         if (managedResourceGroupConfiguration() != null) {
             managedResourceGroupConfiguration().validate();

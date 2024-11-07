@@ -38,8 +38,8 @@ public interface GlobalSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list schema operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GlobalSchemaContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<GlobalSchemaContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
@@ -53,8 +53,8 @@ public interface GlobalSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Schema specified by its identifier.
      */
-    GlobalSchemasGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String schemaId, Context context);
+    GlobalSchemasGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String schemaId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
@@ -80,8 +80,8 @@ public interface GlobalSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Schema specified by its identifier.
      */
-    Response<GlobalSchemaContract> getWithResponse(
-        String resourceGroupName, String serviceName, String schemaId, Context context);
+    Response<GlobalSchemaContract> getWithResponse(String resourceGroupName, String serviceName, String schemaId,
+        Context context);
 
     /**
      * Gets the details of the Schema specified by its identifier.
@@ -110,8 +110,8 @@ public interface GlobalSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String schemaId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String schemaId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Schema.

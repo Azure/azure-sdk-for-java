@@ -45,14 +45,8 @@ public interface CustomImagesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CustomImageInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<CustomImageInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get custom image.
@@ -68,8 +62,8 @@ public interface CustomImagesClient {
      * @return custom image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomImageInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<CustomImageInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get custom image.
@@ -98,8 +92,8 @@ public interface CustomImagesClient {
      * @return the {@link SyncPoller} for polling of a custom image.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, CustomImageInner customImage);
+    SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(String resourceGroupName,
+        String labName, String name, CustomImageInner customImage);
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
@@ -115,8 +109,8 @@ public interface CustomImagesClient {
      * @return the {@link SyncPoller} for polling of a custom image.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, CustomImageInner customImage, Context context);
+    SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(String resourceGroupName,
+        String labName, String name, CustomImageInner customImage, Context context);
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
@@ -131,8 +125,8 @@ public interface CustomImagesClient {
      * @return a custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomImageInner createOrUpdate(
-        String resourceGroupName, String labName, String name, CustomImageInner customImage);
+    CustomImageInner createOrUpdate(String resourceGroupName, String labName, String name,
+        CustomImageInner customImage);
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
@@ -148,8 +142,8 @@ public interface CustomImagesClient {
      * @return a custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomImageInner createOrUpdate(
-        String resourceGroupName, String labName, String name, CustomImageInner customImage, Context context);
+    CustomImageInner createOrUpdate(String resourceGroupName, String labName, String name, CustomImageInner customImage,
+        Context context);
 
     /**
      * Delete custom image. This operation can take a while to complete.
@@ -178,8 +172,8 @@ public interface CustomImagesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name,
+        Context context);
 
     /**
      * Delete custom image. This operation can take a while to complete.
@@ -222,8 +216,8 @@ public interface CustomImagesClient {
      * @return a custom image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomImageInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, CustomImageFragment customImage, Context context);
+    Response<CustomImageInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        CustomImageFragment customImage, Context context);
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.

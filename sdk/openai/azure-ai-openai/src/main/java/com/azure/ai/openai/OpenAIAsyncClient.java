@@ -21,6 +21,7 @@ import com.azure.ai.openai.implementation.accesshelpers.PageableListAccessHelper
 import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch;
 import com.azure.ai.openai.implementation.models.UploadFileRequest;
+import com.azure.ai.openai.models.AddUploadPartRequest;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
@@ -30,8 +31,10 @@ import com.azure.ai.openai.models.Batch;
 import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.CompleteUploadRequest;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.CreateUploadRequest;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.FileDeletionStatus;
@@ -42,6 +45,8 @@ import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.OpenAIFile;
 import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
+import com.azure.ai.openai.models.Upload;
+import com.azure.ai.openai.models.UploadPart;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -2234,7 +2239,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<OpenAIFile>> listFiles(FilePurpose purpose) {
-        // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
@@ -2273,7 +2277,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
-        // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose).setFilename(filename);
         BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
@@ -2301,7 +2304,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
-        // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose);
         BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
@@ -2328,7 +2330,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileDeletionStatus> deleteFile(String fileId) {
-        // Generated convenience method for deleteFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2347,7 +2348,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OpenAIFile> getFile(String fileId) {
-        // Generated convenience method for getFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2366,7 +2366,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> getFileContent(String fileId) {
-        // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2386,7 +2385,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<Batch>> listBatches(String after, Integer limit) {
-        // Generated convenience method for listBatchesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -2426,7 +2424,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> getBatch(String batchId) {
-        // Generated convenience method for getBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2445,7 +2442,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> cancelBatch(String batchId) {
-        // Generated convenience method for cancelBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2466,9 +2462,364 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> createBatch(BatchCreateRequest createBatchRequest) {
-        // Generated convenience method for createBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createBatchWithResponse(BinaryData.fromObject(createBatchRequest), requestOptions)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates an intermediate Upload object that you can add Parts to. Currently, an Upload can accept at most 8 GB in
+     * total and expires after an hour after you create it.
+     *
+     * Once you complete the Upload, we will create a File object that contains all the parts you uploaded. This File is
+     * usable in the rest of our platform as a regular File object.
+     *
+     * For certain purposes, the correct mime_type must be specified. Please refer to documentation for the supported
+     * MIME types for your use case.
+     *
+     * For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a
+     * File.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     filename: String (Required)
+     *     purpose: String(assistants/batch/fine-tune/vision) (Required)
+     *     bytes: int (Required)
+     *     mime_type: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestBody The request body for the operation options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Upload>> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> createUploadWithResponse;
+        if (openAIServiceClient != null) {
+            createUploadWithResponse
+                = this.openAIServiceClient.createUploadWithResponseAsync(requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            createUploadWithResponse = this.serviceClient.createUploadWithResponseAsync(requestBody, requestOptions);
+        }
+        return createUploadWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Upload.class)));
+    }
+
+    /**
+     * Adds a Part to an Upload object. A Part represents a chunk of bytes from the file you are trying to upload.
+     *
+     * Each Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.
+     *
+     * It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you
+     * complete the Upload.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     upload_id: String (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body data payload for the operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the upload Part represents a chunk of bytes we can add to an Upload object along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<UploadPart>> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        // Protocol API requires serialization of parts with content-disposition and data, as operation 'addUploadPart'
+        // is 'multipart/form-data'
+        Mono<Response<BinaryData>> addUploadPartWithResponse;
+        if (openAIServiceClient != null) {
+            addUploadPartWithResponse
+                = this.openAIServiceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            addUploadPartWithResponse
+                = this.serviceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
+        }
+        return addUploadPartWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(UploadPart.class)));
+    }
+
+    /**
+     * Completes the Upload.
+     *
+     * Within the returned Upload object, there is a nested File object that is ready to use in the rest of the
+     * platform.
+     *
+     * You can specify the order of the Parts by passing in an ordered list of the Part IDs.
+     *
+     * The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the
+     * Upload object. No Parts may be added after an Upload is completed.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     part_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     md5: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body for the completion operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Upload>> completeUploadWithResponse(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> completeUploadWithResponse;
+        if (openAIServiceClient != null) {
+            completeUploadWithResponse
+                = this.openAIServiceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            completeUploadWithResponse
+                = this.serviceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
+        }
+        return completeUploadWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Upload.class)));
+    }
+
+    /**
+     * Cancels the Upload. No Parts may be added after an Upload is cancelled.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Upload>> cancelUploadWithResponse(String uploadId, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> cancelUploadWithResponse;
+        if (openAIServiceClient != null) {
+            cancelUploadWithResponse = this.openAIServiceClient.cancelUploadWithResponseAsync(uploadId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            cancelUploadWithResponse = this.serviceClient.cancelUploadWithResponseAsync(uploadId, requestOptions);
+        }
+        return cancelUploadWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Upload.class)));
+    }
+
+    /**
+     * Creates an intermediate Upload object that you can add Parts to. Currently, an Upload can accept at most 8 GB in
+     * total and expires after an hour after you create it.
+     *
+     * Once you complete the Upload, we will create a File object that contains all the parts you uploaded. This File is
+     * usable in the rest of our platform as a regular File object.
+     *
+     * For certain purposes, the correct mime_type must be specified. Please refer to documentation for the supported
+     * MIME types for your use case.
+     *
+     * For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a
+     * File.
+     *
+     * @param requestBody The request body for the operation options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Upload object can accept byte chunks in the form of Parts on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Upload> createUpload(CreateUploadRequest requestBody) {
+        RequestOptions requestOptions = new RequestOptions();
+        return createUploadWithResponse(BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Adds a Part to an Upload object. A Part represents a chunk of bytes from the file you are trying to upload.
+     *
+     * Each Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.
+     *
+     * It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you
+     * complete the Upload.
+     *
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body data payload for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upload Part represents a chunk of bytes we can add to an Upload object on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UploadPart> addUploadPart(String uploadId, AddUploadPartRequest requestBody) {
+        RequestOptions requestOptions = new RequestOptions();
+        return addUploadPartWithResponse(uploadId,
+            new MultipartFormDataHelper(requestOptions).serializeFileField("data", requestBody.getData().getContent(),
+                requestBody.getData().getContentType(), requestBody.getData().getFilename()).end().getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Completes the Upload.
+     *
+     * Within the returned Upload object, there is a nested File object that is ready to use in the rest of the
+     * platform.
+     *
+     * You can specify the order of the Parts by passing in an ordered list of the Part IDs.
+     *
+     * The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the
+     * Upload object. No Parts may be added after an Upload is completed.
+     *
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body for the completion operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Upload object can accept byte chunks in the form of Parts on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Upload> completeUpload(String uploadId, CompleteUploadRequest requestBody) {
+        RequestOptions requestOptions = new RequestOptions();
+        return completeUploadWithResponse(uploadId, BinaryData.fromObject(requestBody), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Cancels the Upload. No Parts may be added after an Upload is cancelled.
+     *
+     * @param uploadId The ID of the upload associated with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Upload object can accept byte chunks in the form of Parts on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Upload> cancelUpload(String uploadId) {
+        RequestOptions requestOptions = new RequestOptions();
+        return cancelUploadWithResponse(uploadId, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

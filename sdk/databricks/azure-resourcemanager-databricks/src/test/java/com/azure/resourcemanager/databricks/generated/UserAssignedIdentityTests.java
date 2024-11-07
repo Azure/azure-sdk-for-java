@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databricks.models.UserAssignedIdentity;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"17fb418c-c62c-4db8-92c6-b5b0d9a2992f\",\"clientId\":\"d17d7149-360f-434e-b652-83e0e70795fe\"}")
-                .toObject(UserAssignedIdentity.class);
+        UserAssignedIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"ff60e273-7a35-4ba2-9c73-7594f401a95f\",\"clientId\":\"75764393-efcb-4057-9bdb-4f55d88a7ded\"}")
+            .toObject(UserAssignedIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

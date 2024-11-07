@@ -5,35 +5,56 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for H264Profile. */
+/**
+ * The H264 Profile.
+ */
 public final class H264Profile extends ExpandableStringEnum<H264Profile> {
-    /** Static value Baseline for H264Profile. */
+    /**
+     * Static value Baseline for H264Profile.
+     */
     public static final H264Profile BASELINE = fromString("Baseline");
 
-    /** Static value Main for H264Profile. */
+    /**
+     * Static value Main for H264Profile.
+     */
     public static final H264Profile MAIN = fromString("Main");
 
-    /** Static value Extended for H264Profile. */
+    /**
+     * Static value Extended for H264Profile.
+     */
     public static final H264Profile EXTENDED = fromString("Extended");
 
-    /** Static value High for H264Profile. */
+    /**
+     * Static value High for H264Profile.
+     */
     public static final H264Profile HIGH = fromString("High");
 
     /**
+     * Creates a new instance of H264Profile value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public H264Profile() {
+    }
+
+    /**
      * Creates or finds a H264Profile from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding H264Profile.
      */
-    @JsonCreator
     public static H264Profile fromString(String name) {
         return fromString(name, H264Profile.class);
     }
 
-    /** @return known H264Profile values. */
+    /**
+     * Gets known H264Profile values.
+     * 
+     * @return known H264Profile values.
+     */
     public static Collection<H264Profile> values() {
         return values(H264Profile.class);
     }

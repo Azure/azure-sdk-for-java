@@ -28,11 +28,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner body);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String farmBeatsResourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner body);
 
     /**
      * Approves or Rejects a Private endpoint connection request.
@@ -48,11 +45,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner body,
+    Response<PrivateEndpointConnectionInner> createOrUpdateWithResponse(String resourceGroupName,
+        String farmBeatsResourceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner body,
         Context context);
 
     /**
@@ -67,8 +61,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return private endpoint connection object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String farmBeatsResourceName,
+        String privateEndpointConnectionName);
 
     /**
      * Get Private endpoint connection object.
@@ -83,8 +77,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return private endpoint connection object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Delete Private endpoint connection request.
@@ -98,8 +92,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String farmBeatsResourceName,
+        String privateEndpointConnectionName);
 
     /**
      * Delete Private endpoint connection request.
@@ -114,8 +108,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String farmBeatsResourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Delete Private endpoint connection request.
@@ -142,8 +136,8 @@ public interface PrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName, Context context);
+    void delete(String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName,
+        Context context);
 
     /**
      * Get list of Private endpoint connections.
@@ -156,8 +150,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return list of Private endpoint connections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listByResource(
-        String resourceGroupName, String farmBeatsResourceName);
+    PagedIterable<PrivateEndpointConnectionInner> listByResource(String resourceGroupName,
+        String farmBeatsResourceName);
 
     /**
      * Get list of Private endpoint connections.
@@ -171,6 +165,6 @@ public interface PrivateEndpointConnectionsClient {
      * @return list of Private endpoint connections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listByResource(
-        String resourceGroupName, String farmBeatsResourceName, Context context);
+    PagedIterable<PrivateEndpointConnectionInner> listByResource(String resourceGroupName, String farmBeatsResourceName,
+        Context context);
 }

@@ -32,6 +32,6 @@ public interface Locations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityRequest parameters, Context context);
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityRequest parameters, Context context);
 }

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkResourcesOperations. */
+/**
+ * Resource collection API of PrivateLinkResourcesOperations.
+ */
 public interface PrivateLinkResourcesOperations {
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface PrivateLinkResourcesOperations {
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface PrivateLinkResourcesOperations {
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -53,14 +55,14 @@ public interface PrivateLinkResourcesOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link resource in workspace along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Kind of the recommendation scope. */
+/**
+ * Kind of the recommendation scope.
+ */
 public final class Scope extends ExpandableStringEnum<Scope> {
-    /** Static value Single for Scope. */
+    /**
+     * Static value Single for Scope.
+     */
     public static final Scope SINGLE = fromString("Single");
 
-    /** Static value Shared for Scope. */
+    /**
+     * Static value Shared for Scope.
+     */
     public static final Scope SHARED = fromString("Shared");
 
     /**
      * Creates a new instance of Scope value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Scope extends ExpandableStringEnum<Scope> {
 
     /**
      * Creates or finds a Scope from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Scope.
      */
-    @JsonCreator
     public static Scope fromString(String name) {
         return fromString(name, Scope.class);
     }
 
     /**
      * Gets known Scope values.
-     *
+     * 
      * @return known Scope values.
      */
     public static Collection<Scope> values() {

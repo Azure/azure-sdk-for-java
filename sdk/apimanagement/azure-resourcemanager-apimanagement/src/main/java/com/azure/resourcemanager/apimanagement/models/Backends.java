@@ -40,8 +40,8 @@ public interface Backends {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Backend list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BackendContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<BackendContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the backend specified by its identifier.
@@ -55,8 +55,8 @@ public interface Backends {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the backend specified by its identifier.
      */
-    BackendsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String backendId, Context context);
+    BackendsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String backendId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the backend specified by its identifier.
@@ -82,8 +82,8 @@ public interface Backends {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the backend specified by its identifier.
      */
-    Response<BackendContract> getWithResponse(
-        String resourceGroupName, String serviceName, String backendId, Context context);
+    Response<BackendContract> getWithResponse(String resourceGroupName, String serviceName, String backendId,
+        Context context);
 
     /**
      * Gets the details of the backend specified by its identifier.
@@ -112,8 +112,8 @@ public interface Backends {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String backendId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String backendId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified backend.
@@ -143,12 +143,8 @@ public interface Backends {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> reconnectWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String backendId,
-        BackendReconnectContract parameters,
-        Context context);
+    Response<Void> reconnectWithResponse(String resourceGroupName, String serviceName, String backendId,
+        BackendReconnectContract parameters, Context context);
 
     /**
      * Notifies the API Management gateway to create a new connection to the backend after the specified timeout. If no

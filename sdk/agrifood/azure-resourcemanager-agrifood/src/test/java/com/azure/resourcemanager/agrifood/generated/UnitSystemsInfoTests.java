@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Test;
 public final class UnitSystemsInfoTests {
     @Test
     public void testDeserialize() {
-        UnitSystemsInfo model =
-            BinaryData
-                .fromString("{\"key\":\"pnddhsgcbacphejk\",\"values\":[\"ynqgoulzndlikwyq\",\"gfgibm\"]}")
+        UnitSystemsInfo model
+            = BinaryData.fromString("{\"key\":\"pnddhsgcbacphejk\",\"values\":[\"ynqgoulzndlikwyq\",\"gfgibm\"]}")
                 .toObject(UnitSystemsInfo.class);
         Assertions.assertEquals("pnddhsgcbacphejk", model.key());
         Assertions.assertEquals("ynqgoulzndlikwyq", model.values().get(0));
@@ -23,8 +22,8 @@ public final class UnitSystemsInfoTests {
 
     @Test
     public void testSerialize() {
-        UnitSystemsInfo model =
-            new UnitSystemsInfo().withKey("pnddhsgcbacphejk").withValues(Arrays.asList("ynqgoulzndlikwyq", "gfgibm"));
+        UnitSystemsInfo model
+            = new UnitSystemsInfo().withKey("pnddhsgcbacphejk").withValues(Arrays.asList("ynqgoulzndlikwyq", "gfgibm"));
         model = BinaryData.fromObject(model).toObject(UnitSystemsInfo.class);
         Assertions.assertEquals("pnddhsgcbacphejk", model.key());
         Assertions.assertEquals("ynqgoulzndlikwyq", model.values().get(0));

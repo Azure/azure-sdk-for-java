@@ -10,8 +10,8 @@ import com.azure.resourcemanager.workloads.models.WindowsConfiguration;
 public final class WindowsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WindowsConfiguration model =
-            BinaryData.fromString("{\"osType\":\"Windows\"}").toObject(WindowsConfiguration.class);
+        WindowsConfiguration model
+            = BinaryData.fromString("{\"osType\":\"Windows\"}").toObject(WindowsConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

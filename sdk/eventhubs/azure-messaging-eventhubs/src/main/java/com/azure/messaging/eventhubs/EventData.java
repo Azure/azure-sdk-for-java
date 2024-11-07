@@ -82,8 +82,8 @@ public class EventData extends MessageContent {
      */
     public EventData(byte[] body) {
         this.context = Context.NONE;
-        final AmqpMessageBody messageBody = AmqpMessageBody.fromData(
-            Objects.requireNonNull(body, "'body' cannot be null."));
+        final AmqpMessageBody messageBody
+            = AmqpMessageBody.fromData(Objects.requireNonNull(body, "'body' cannot be null."));
 
         this.annotatedMessage = new AmqpAnnotatedMessage(messageBody);
         this.properties = annotatedMessage.getApplicationProperties();
@@ -139,21 +139,23 @@ public class EventData extends MessageContent {
     EventData(AmqpAnnotatedMessage amqpAnnotatedMessage, SystemProperties systemProperties, Context context) {
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.properties = Collections.unmodifiableMap(amqpAnnotatedMessage.getApplicationProperties());
-        this.annotatedMessage = Objects.requireNonNull(amqpAnnotatedMessage,
-            "'amqpAnnotatedMessage' cannot be null.");
+        this.annotatedMessage = Objects.requireNonNull(amqpAnnotatedMessage, "'amqpAnnotatedMessage' cannot be null.");
         this.systemProperties = systemProperties;
 
         switch (annotatedMessage.getBody().getBodyType()) {
             case DATA:
                 break;
+
             case SEQUENCE:
             case VALUE:
-                LOGGER.warning("Message body type '{}' is not supported in EH. "
-                    + " Getting contents of body may throw.", annotatedMessage.getBody().getBodyType());
+                LOGGER.warning(
+                    "Message body type '{}' is not supported in EH. " + " Getting contents of body may throw.",
+                    annotatedMessage.getBody().getBodyType());
                 break;
+
             default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Body type not valid " + annotatedMessage.getBody().getBodyType()));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Body type not valid " + annotatedMessage.getBody().getBodyType()));
         }
     }
 

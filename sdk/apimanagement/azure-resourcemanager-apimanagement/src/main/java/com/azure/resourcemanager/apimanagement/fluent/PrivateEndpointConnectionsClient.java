@@ -45,8 +45,8 @@ public interface PrivateEndpointConnectionsClient {
      *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listByService(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<PrivateEndpointConnectionInner> listByService(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the details of the Private Endpoint Connection specified by its identifier.
@@ -61,8 +61,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the details of the Private Endpoint Connection specified by its identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getByNameWithResponse(
-        String resourceGroupName, String serviceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getByNameWithResponse(String resourceGroupName, String serviceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the details of the Private Endpoint Connection specified by its identifier.
@@ -76,8 +76,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the details of the Private Endpoint Connection specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner getByName(
-        String resourceGroupName, String serviceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner getByName(String resourceGroupName, String serviceName,
+        String privateEndpointConnectionName);
 
     /**
      * Creates a new Private Endpoint Connection or updates an existing one.
@@ -93,9 +93,7 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String serviceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionRequest privateEndpointConnectionRequest);
 
     /**
@@ -113,11 +111,8 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionRequest privateEndpointConnectionRequest,
-        Context context);
+        String resourceGroupName, String serviceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionRequest privateEndpointConnectionRequest, Context context);
 
     /**
      * Creates a new Private Endpoint Connection or updates an existing one.
@@ -132,11 +127,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionRequest privateEndpointConnectionRequest);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String serviceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionRequest privateEndpointConnectionRequest);
 
     /**
      * Creates a new Private Endpoint Connection or updates an existing one.
@@ -152,11 +144,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionRequest privateEndpointConnectionRequest,
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String serviceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionRequest privateEndpointConnectionRequest,
         Context context);
 
     /**
@@ -171,8 +160,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specified Private Endpoint Connection.
@@ -187,8 +176,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specified Private Endpoint Connection.
@@ -229,8 +218,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceListResultInner> listPrivateLinkResourcesWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PrivateLinkResourceListResultInner> listPrivateLinkResourcesWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the private link resources.
@@ -258,8 +247,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getPrivateLinkResourceWithResponse(
-        String resourceGroupName, String serviceName, String privateLinkSubResourceName, Context context);
+    Response<PrivateLinkResourceInner> getPrivateLinkResourceWithResponse(String resourceGroupName, String serviceName,
+        String privateLinkSubResourceName, Context context);
 
     /**
      * Gets the private link resources.
@@ -273,6 +262,6 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private link resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkResourceInner getPrivateLinkResource(
-        String resourceGroupName, String serviceName, String privateLinkSubResourceName);
+    PrivateLinkResourceInner getPrivateLinkResource(String resourceGroupName, String serviceName,
+        String privateLinkSubResourceName);
 }

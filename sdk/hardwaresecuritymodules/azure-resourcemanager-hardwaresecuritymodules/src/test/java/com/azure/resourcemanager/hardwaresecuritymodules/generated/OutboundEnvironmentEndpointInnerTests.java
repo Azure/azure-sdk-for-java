@@ -31,21 +31,35 @@ public final class OutboundEnvironmentEndpointInnerTests {
             .withEndpoints(Arrays.asList(
                 new EndpointDependency().withDomainName("suiizynkedyat")
                     .withEndpointDetails(Arrays.asList(
-                        new EndpointDetail().withIpAddress("q").withPort(937941437).withProtocol("yhwitsmypyynpcdp")
+                        new EndpointDetail().withIpAddress("q")
+                            .withPort(937941437)
+                            .withProtocol("yhwitsmypyynpcdp")
                             .withDescription("nzgmwznmabik"),
-                        new EndpointDetail().withIpAddress("orgjhxbldt").withPort(1971592368)
-                            .withProtocol("lkdmtncvokotllxd").withDescription("gsyocogj"),
-                        new EndpointDetail().withIpAddress("dtbnnha").withPort(168472048).withProtocol("rkvcikhnvpa")
+                        new EndpointDetail().withIpAddress("orgjhxbldt")
+                            .withPort(1971592368)
+                            .withProtocol("lkdmtncvokotllxd")
+                            .withDescription("gsyocogj"),
+                        new EndpointDetail().withIpAddress("dtbnnha")
+                            .withPort(168472048)
+                            .withProtocol("rkvcikhnvpa")
                             .withDescription("gxqquezik"))),
                 new EndpointDependency().withDomainName("ggxkallatmelwuip")
                     .withEndpointDetails(Arrays.asList(
-                        new EndpointDetail().withIpAddress("zkzivgvvcnay").withPort(740874462)
-                            .withProtocol("nxxmueedndrdv").withDescription("kwqqtchealmf"),
-                        new EndpointDetail().withIpAddress("d").withPort(1434664141).withProtocol("dvwvgpio")
+                        new EndpointDetail().withIpAddress("zkzivgvvcnay")
+                            .withPort(740874462)
+                            .withProtocol("nxxmueedndrdv")
+                            .withDescription("kwqqtchealmf"),
+                        new EndpointDetail().withIpAddress("d")
+                            .withPort(1434664141)
+                            .withProtocol("dvwvgpio")
                             .withDescription("wxrt"),
-                        new EndpointDetail().withIpAddress("dxepxgyq").withPort(1302983125)
-                            .withProtocol("vmnpkukghimdblx").withDescription("imfnjhfjx"),
-                        new EndpointDetail().withIpAddress("szkkfoqre").withPort(1941529863).withProtocol("ikf")
+                        new EndpointDetail().withIpAddress("dxepxgyq")
+                            .withPort(1302983125)
+                            .withProtocol("vmnpkukghimdblx")
+                            .withDescription("imfnjhfjx"),
+                        new EndpointDetail().withIpAddress("szkkfoqre")
+                            .withPort(1941529863)
+                            .withProtocol("ikf")
                             .withDescription("wneaiv")))));
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointInner.class);
         Assertions.assertEquals("lyzrpzbchckqqzqi", model.category());

@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUpgradePolicy;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUserAssignedIdentity;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,25 +20,21 @@ import java.util.Map;
  * The application resource properties for patch operations.
  */
 @Fluent
-public class ApplicationResourceUpdateProperties {
+public class ApplicationResourceUpdateProperties implements JsonSerializable<ApplicationResourceUpdateProperties> {
     /*
      * The version of the application type as defined in the application manifest.
      */
-    @JsonProperty(value = "typeVersion")
     private String typeVersion;
 
     /*
      * List of application parameters with overridden values from their default values specified in the application
      * manifest.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * Describes the policy for a monitored application upgrade.
      */
-    @JsonProperty(value = "upgradePolicy")
     private ApplicationUpgradePolicy upgradePolicy;
 
     /*
@@ -44,7 +43,6 @@ public class ApplicationResourceUpdateProperties {
      * zero, no capacity will be reserved. The value of this property cannot be more than the value of the MaximumNodes
      * property.
      */
-    @JsonProperty(value = "minimumNodes")
     private Long minimumNodes;
 
     /*
@@ -52,25 +50,21 @@ public class ApplicationResourceUpdateProperties {
      * not mean that the services of this application will be placed on all of those nodes. By default, the value of
      * this property is zero and it means that the services can be placed on any node.
      */
-    @JsonProperty(value = "maximumNodes")
     private Long maximumNodes;
 
     /*
      * Remove the current application capacity settings.
      */
-    @JsonProperty(value = "removeApplicationCapacity")
     private Boolean removeApplicationCapacity;
 
     /*
      * List of application capacity metric description.
      */
-    @JsonProperty(value = "metrics")
     private List<ApplicationMetricDescription> metrics;
 
     /*
      * List of user assigned identities for the application, each mapped to a friendly name.
      */
-    @JsonProperty(value = "managedIdentities")
     private List<ApplicationUserAssignedIdentity> managedIdentities;
 
     /**
@@ -269,5 +263,73 @@ public class ApplicationResourceUpdateProperties {
         if (managedIdentities() != null) {
             managedIdentities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeVersion", this.typeVersion);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("upgradePolicy", this.upgradePolicy);
+        jsonWriter.writeNumberField("minimumNodes", this.minimumNodes);
+        jsonWriter.writeNumberField("maximumNodes", this.maximumNodes);
+        jsonWriter.writeBooleanField("removeApplicationCapacity", this.removeApplicationCapacity);
+        jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("managedIdentities", this.managedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationResourceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationResourceUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationResourceUpdateProperties.
+     */
+    public static ApplicationResourceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationResourceUpdateProperties deserializedApplicationResourceUpdateProperties
+                = new ApplicationResourceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("typeVersion".equals(fieldName)) {
+                    deserializedApplicationResourceUpdateProperties.typeVersion = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationResourceUpdateProperties.parameters = parameters;
+                } else if ("upgradePolicy".equals(fieldName)) {
+                    deserializedApplicationResourceUpdateProperties.upgradePolicy
+                        = ApplicationUpgradePolicy.fromJson(reader);
+                } else if ("minimumNodes".equals(fieldName)) {
+                    deserializedApplicationResourceUpdateProperties.minimumNodes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("maximumNodes".equals(fieldName)) {
+                    deserializedApplicationResourceUpdateProperties.maximumNodes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("removeApplicationCapacity".equals(fieldName)) {
+                    deserializedApplicationResourceUpdateProperties.removeApplicationCapacity
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("metrics".equals(fieldName)) {
+                    List<ApplicationMetricDescription> metrics
+                        = reader.readArray(reader1 -> ApplicationMetricDescription.fromJson(reader1));
+                    deserializedApplicationResourceUpdateProperties.metrics = metrics;
+                } else if ("managedIdentities".equals(fieldName)) {
+                    List<ApplicationUserAssignedIdentity> managedIdentities
+                        = reader.readArray(reader1 -> ApplicationUserAssignedIdentity.fromJson(reader1));
+                    deserializedApplicationResourceUpdateProperties.managedIdentities = managedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationResourceUpdateProperties;
+        });
     }
 }

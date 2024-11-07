@@ -47,8 +47,8 @@ public final class ExtensionCategory extends ExpandableStringEnum<ExtensionCateg
     public static final ExtensionCategory RESOURCE_POST_ACTION = fromString("ResourcePostAction");
 
     /** Static value SubscriptionLifecycleNotification for ExtensionCategory. */
-    public static final ExtensionCategory SUBSCRIPTION_LIFECYCLE_NOTIFICATION =
-        fromString("SubscriptionLifecycleNotification");
+    public static final ExtensionCategory SUBSCRIPTION_LIFECYCLE_NOTIFICATION
+        = fromString("SubscriptionLifecycleNotification");
 
     /** Static value ResourcePatchBegin for ExtensionCategory. */
     public static final ExtensionCategory RESOURCE_PATCH_BEGIN = fromString("ResourcePatchBegin");

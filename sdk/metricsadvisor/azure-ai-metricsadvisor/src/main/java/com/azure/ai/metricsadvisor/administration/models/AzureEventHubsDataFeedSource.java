@@ -21,13 +21,12 @@ public final class AzureEventHubsDataFeedSource extends DataFeedSource {
     private final String consumerGroup;
 
     static {
-        AzureEventHubsDataFeedSourceAccessor.setAccessor(
-            new AzureEventHubsDataFeedSourceAccessor.Accessor() {
-                @Override
-                public String getConnectionString(AzureEventHubsDataFeedSource feedSource) {
-                    return feedSource.getConnectionString();
-                }
-            });
+        AzureEventHubsDataFeedSourceAccessor.setAccessor(new AzureEventHubsDataFeedSourceAccessor.Accessor() {
+            @Override
+            public String getConnectionString(AzureEventHubsDataFeedSource feedSource) {
+                return feedSource.getConnectionString();
+            }
+        });
     }
 
     /**

@@ -21,12 +21,8 @@ import java.util.Set;
 
 /** Entry point for application gateway management API in Azure. */
 public interface ApplicationGateway
-    extends GroupableResource<NetworkManager, ApplicationGatewayInner>,
-        Refreshable<ApplicationGateway>,
-        Updatable<ApplicationGateway.Update>,
-        UpdatableWithTags<ApplicationGateway>,
-        HasSubnet,
-        HasPrivateIpAddress {
+    extends GroupableResource<NetworkManager, ApplicationGatewayInner>, Refreshable<ApplicationGateway>,
+    Updatable<ApplicationGateway.Update>, UpdatableWithTags<ApplicationGateway>, HasSubnet, HasPrivateIpAddress {
 
     // Actions
 
@@ -289,8 +285,8 @@ public interface ApplicationGateway
              * @param name a unique name for the redirect configuration
              * @return the first stage of the redirect configuration definition
              */
-            ApplicationGatewayRedirectConfiguration.DefinitionStages.Blank<WithCreate> defineRedirectConfiguration(
-                String name);
+            ApplicationGatewayRedirectConfiguration.DefinitionStages.Blank<WithCreate>
+                defineRedirectConfiguration(String name);
         }
 
         /** The stage of an application gateway definition allowing to add a probe. */
@@ -683,7 +679,7 @@ public interface ApplicationGateway
              * @return the next stage of the definition
              */
             WithCreate withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion,
-                                             List<ApplicationGatewaySslCipherSuite> cipherSuites);
+                List<ApplicationGatewaySslCipherSuite> cipherSuites);
 
             /**
              * Configures to use the provided TLS/SSL policy for the application gateway.
@@ -698,41 +694,18 @@ public interface ApplicationGateway
          * The stage of an application gateway definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<ApplicationGateway>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithSku,
-                WithInstanceCount,
-                WithWebApplicationFirewall,
-                WithSslCert,
-                WithFrontendPort,
-                WithListener,
-                WithBackendHttpConfig,
-                WithBackend,
-                WithExistingSubnet,
-                WithPrivateIPAddress,
-                WithPrivateFrontend,
-                WithPublicFrontend,
-                WithPublicIPAddress,
-                WithProbe,
-                WithDisabledSslProtocol,
-                WithAuthenticationCertificate,
-                WithRedirectConfiguration,
-                WithAvailabilityZone,
-                WithManagedServiceIdentity,
-                WithHttp2,
-                WithWebApplicationFirewallPolicy,
-                WithSslPolicy {
+        interface WithCreate extends Creatable<ApplicationGateway>, Resource.DefinitionWithTags<WithCreate>, WithSku,
+            WithInstanceCount, WithWebApplicationFirewall, WithSslCert, WithFrontendPort, WithListener,
+            WithBackendHttpConfig, WithBackend, WithExistingSubnet, WithPrivateIPAddress, WithPrivateFrontend,
+            WithPublicFrontend, WithPublicIPAddress, WithProbe, WithDisabledSslProtocol, WithAuthenticationCertificate,
+            WithRedirectConfiguration, WithAvailabilityZone, WithManagedServiceIdentity, WithHttp2,
+            WithWebApplicationFirewallPolicy, WithSslPolicy {
         }
     }
 
     /** The entirety of the application gateway definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithRequestRoutingRule,
-            DefinitionStages.WithRequestRoutingRuleOrCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate,
+        DefinitionStages.WithRequestRoutingRule, DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
 
     /** Grouping of application gateway update stages. */
@@ -1182,8 +1155,8 @@ public interface ApplicationGateway
              * @param name a unique name for the redirect configuration
              * @return the first stage of the redirect configuration definition
              */
-            ApplicationGatewayRedirectConfiguration.UpdateDefinitionStages.Blank<Update> defineRedirectConfiguration(
-                String name);
+            ApplicationGatewayRedirectConfiguration.UpdateDefinitionStages.Blank<Update>
+                defineRedirectConfiguration(String name);
 
             /**
              * Removes a redirect configuration from the application gateway.
@@ -1266,8 +1239,8 @@ public interface ApplicationGateway
              * @param name a unique name for the request routing rule
              * @return the first stage of the request routing rule
              */
-            ApplicationGatewayRequestRoutingRule.UpdateDefinitionStages.Blank<Update> defineRequestRoutingRule(
-                String name);
+            ApplicationGatewayRequestRoutingRule.UpdateDefinitionStages.Blank<Update>
+                defineRequestRoutingRule(String name);
 
             /**
              * Removes a request routing rule from the application gateway.
@@ -1454,7 +1427,7 @@ public interface ApplicationGateway
              * @return the next stage of the update
              */
             Update withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion,
-                                                              List<ApplicationGatewaySslCipherSuite> cipherSuites);
+                List<ApplicationGatewaySslCipherSuite> cipherSuites);
 
             /**
              * Configures to use the provided TLS/SSL policy for the application gateway.
@@ -1467,30 +1440,13 @@ public interface ApplicationGateway
     }
 
     /** The template for an application gateway update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<ApplicationGateway>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithInstanceCount,
-            UpdateStages.WithWebApplicationFirewall,
-            UpdateStages.WithBackend,
-            UpdateStages.WithBackendHttpConfig,
-            UpdateStages.WithIPConfig,
-            UpdateStages.WithFrontend,
-            UpdateStages.WithPublicIPAddress,
-            UpdateStages.WithFrontendPort,
-            UpdateStages.WithSslCert,
-            UpdateStages.WithListener,
-            UpdateStages.WithRequestRoutingRule,
-            UpdateStages.WithExistingSubnet,
-            UpdateStages.WithProbe,
-            UpdateStages.WithDisabledSslProtocol,
-            UpdateStages.WithAuthenticationCertificate,
-            UpdateStages.WithRedirectConfiguration,
-            UpdateStages.WithUrlPathMap,
-            UpdateStages.WithManagedServiceIdentity,
-            UpdateStages.WithHttp2,
-            UpdateStages.WithWebApplicationFirewallPolicy,
-            UpdateStages.WithSslPolicy {
+    interface Update extends Appliable<ApplicationGateway>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
+        UpdateStages.WithInstanceCount, UpdateStages.WithWebApplicationFirewall, UpdateStages.WithBackend,
+        UpdateStages.WithBackendHttpConfig, UpdateStages.WithIPConfig, UpdateStages.WithFrontend,
+        UpdateStages.WithPublicIPAddress, UpdateStages.WithFrontendPort, UpdateStages.WithSslCert,
+        UpdateStages.WithListener, UpdateStages.WithRequestRoutingRule, UpdateStages.WithExistingSubnet,
+        UpdateStages.WithProbe, UpdateStages.WithDisabledSslProtocol, UpdateStages.WithAuthenticationCertificate,
+        UpdateStages.WithRedirectConfiguration, UpdateStages.WithUrlPathMap, UpdateStages.WithManagedServiceIdentity,
+        UpdateStages.WithHttp2, UpdateStages.WithWebApplicationFirewallPolicy, UpdateStages.WithSslPolicy {
     }
 }

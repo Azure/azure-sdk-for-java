@@ -7,6 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.SharedExecutorService;
+import io.clientcore.core.util.auth.ChallengeHandler;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
 import io.clientcore.http.okhttp3.implementation.ProxyAuthenticator;
@@ -304,9 +305,8 @@ public class OkHttpHttpClientBuilder {
      * @return A new OkHttp-backed {@link HttpClient} instance.
      */
     public HttpClient build() {
-        OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
-            ? new OkHttpClient.Builder()
-            : this.okHttpClient.newBuilder();
+        OkHttpClient.Builder httpClientBuilder
+            = this.okHttpClient == null ? new OkHttpClient.Builder() : this.okHttpClient.newBuilder();
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
@@ -341,21 +341,20 @@ public class OkHttpHttpClientBuilder {
             httpClientBuilder = httpClientBuilder.hostnameVerifier(hostnameVerifier);
         }
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration,
-            true) : proxyOptions;
+        ProxyOptions buildProxyOptions
+            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxySelector(
-                new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(), buildProxyOptions::getAddress,
-                    buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder
+                = httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
+                    buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
+            ChallengeHandler challengeHandler = buildProxyOptions.getChallengeHandler();
 
             if (buildProxyOptions.getUsername() != null) {
-                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(buildProxyOptions.getUsername(),
-                    buildProxyOptions.getPassword());
+                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(challengeHandler);
 
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());

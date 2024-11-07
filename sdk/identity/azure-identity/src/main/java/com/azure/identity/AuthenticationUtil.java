@@ -47,7 +47,8 @@ public final class AuthenticationUtil {
      * @return A {@link Supplier} which returns the bearer token as a {@link String}.
      */
     public static Supplier<String> getBearerTokenSupplier(TokenCredential credential, String... scopes) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new BearerTokenAuthenticationPolicy(credential, scopes)).build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new BearerTokenAuthenticationPolicy(credential, scopes)).build();
         return () -> {
             // This request will never need to go anywhere; it is simply to cause the policy to interact with
             // the user's credential

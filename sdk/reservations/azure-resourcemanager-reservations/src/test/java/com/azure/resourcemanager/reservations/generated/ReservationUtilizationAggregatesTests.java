@@ -10,11 +10,10 @@ import com.azure.resourcemanager.reservations.models.ReservationUtilizationAggre
 public final class ReservationUtilizationAggregatesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationUtilizationAggregates model =
-            BinaryData
-                .fromString(
-                    "{\"grain\":84.77034,\"grainUnit\":\"tpngjcrcczsqpjh\",\"value\":15.68377,\"valueUnit\":\"jvnysounqe\"}")
-                .toObject(ReservationUtilizationAggregates.class);
+        ReservationUtilizationAggregates model = BinaryData
+            .fromString(
+                "{\"grain\":88.15669,\"grainUnit\":\"npzaoq\",\"value\":97.4391,\"valueUnit\":\"hcffcyddglmjthjq\"}")
+            .toObject(ReservationUtilizationAggregates.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -119,8 +119,8 @@ public final class InitialAgentPoolConfiguration {
      * @param administratorConfiguration the administratorConfiguration value to set.
      * @return the InitialAgentPoolConfiguration object itself.
      */
-    public InitialAgentPoolConfiguration withAdministratorConfiguration(
-        AdministratorConfiguration administratorConfiguration) {
+    public InitialAgentPoolConfiguration
+        withAdministratorConfiguration(AdministratorConfiguration administratorConfiguration) {
         this.administratorConfiguration = administratorConfiguration;
         return this;
     }
@@ -174,8 +174,8 @@ public final class InitialAgentPoolConfiguration {
      * @param attachedNetworkConfiguration the attachedNetworkConfiguration value to set.
      * @return the InitialAgentPoolConfiguration object itself.
      */
-    public InitialAgentPoolConfiguration withAttachedNetworkConfiguration(
-        AttachedNetworkConfiguration attachedNetworkConfiguration) {
+    public InitialAgentPoolConfiguration
+        withAttachedNetworkConfiguration(AttachedNetworkConfiguration attachedNetworkConfiguration) {
         this.attachedNetworkConfiguration = attachedNetworkConfiguration;
         return this;
     }
@@ -369,16 +369,12 @@ public final class InitialAgentPoolConfiguration {
             labels().forEach(e -> e.validate());
         }
         if (mode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property mode in model InitialAgentPoolConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property mode in model InitialAgentPoolConfiguration"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model InitialAgentPoolConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model InitialAgentPoolConfiguration"));
         }
         if (taints() != null) {
             taints().forEach(e -> e.validate());
@@ -387,10 +383,8 @@ public final class InitialAgentPoolConfiguration {
             upgradeSettings().validate();
         }
         if (vmSkuName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSkuName in model InitialAgentPoolConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vmSkuName in model InitialAgentPoolConfiguration"));
         }
     }
 

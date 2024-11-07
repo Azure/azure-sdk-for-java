@@ -24,8 +24,10 @@ public final class TargetDescriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDescription model = new TargetDescription().withId("rmfqjhhkxbpvj").withName("jhxxjyn")
-            .withDescription("divkrt").withAcceptedDataFormats(Arrays.asList("xqzvszjfa"))
+        TargetDescription model = new TargetDescription().withId("rmfqjhhkxbpvj")
+            .withName("jhxxjyn")
+            .withDescription("divkrt")
+            .withAcceptedDataFormats(Arrays.asList("xqzvszjfa"))
             .withAcceptedContentEncodings(Arrays.asList("fdxxivetvtcqaqtd"));
         model = BinaryData.fromObject(model).toObject(TargetDescription.class);
         Assertions.assertEquals("rmfqjhhkxbpvj", model.id());

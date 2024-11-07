@@ -73,8 +73,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> setDefaultKeyWithResponse(
-        String resourceGroupName, String monitorName, DatadogApiKeyInner body, Context context);
+    Response<Void> setDefaultKeyWithResponse(String resourceGroupName, String monitorName, DatadogApiKeyInner body,
+        Context context);
 
     /**
      * Set the default api key.
@@ -160,8 +160,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MonitoredResource> listMonitoredResources(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * List all monitors under the specified subscription.
@@ -217,8 +217,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a specific monitor resource along with {@link Response}.
      */
-    Response<DatadogMonitorResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<DatadogMonitorResource> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get the properties of a specific monitor resource.
@@ -266,8 +266,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<DatadogSetPasswordLink> refreshSetPasswordLinkWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<DatadogSetPasswordLink> refreshSetPasswordLinkWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Refresh the set password link and return a latest one.

@@ -15,8 +15,7 @@ public final class OperationsDefinitionImpl implements OperationsDefinition {
 
     private final com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager;
 
-    OperationsDefinitionImpl(
-        OperationsDefinitionInner innerObject,
+    OperationsDefinitionImpl(OperationsDefinitionInner innerObject,
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

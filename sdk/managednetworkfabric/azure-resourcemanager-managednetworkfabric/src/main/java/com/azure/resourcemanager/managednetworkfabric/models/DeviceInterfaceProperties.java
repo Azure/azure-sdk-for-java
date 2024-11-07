@@ -88,8 +88,8 @@ public final class DeviceInterfaceProperties {
      * @param supportedConnectorTypes the supportedConnectorTypes value to set.
      * @return the DeviceInterfaceProperties object itself.
      */
-    public DeviceInterfaceProperties withSupportedConnectorTypes(
-        List<SupportedConnectorProperties> supportedConnectorTypes) {
+    public DeviceInterfaceProperties
+        withSupportedConnectorTypes(List<SupportedConnectorProperties> supportedConnectorTypes) {
         this.supportedConnectorTypes = supportedConnectorTypes;
         return this;
     }

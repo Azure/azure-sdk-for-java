@@ -10,10 +10,6 @@ module com.azure.resourcemanager.agrifood {
     exports com.azure.resourcemanager.agrifood.fluent.models;
     exports com.azure.resourcemanager.agrifood.models;
 
-    opens com.azure.resourcemanager.agrifood.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.agrifood.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.agrifood.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.agrifood.models to com.azure.core, com.fasterxml.jackson.databind;
 }

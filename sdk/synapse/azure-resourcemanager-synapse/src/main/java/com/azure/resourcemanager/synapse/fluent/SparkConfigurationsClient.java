@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourceInner;
 
-/** An instance of this class provides access to all the operations defined in SparkConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SparkConfigurationsClient.
+ */
 public interface SparkConfigurationsClient {
     /**
      * Get SparkConfiguration by name.
-     *
-     * <p>Get SparkConfiguration by name in a workspace.
-     *
+     * 
+     * Get SparkConfiguration by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sparkConfigurationName SparkConfiguration name.
      * @param workspaceName The name of the workspace.
@@ -27,14 +29,14 @@ public interface SparkConfigurationsClient {
      * @return sparkConfiguration by name in a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SparkConfigurationResourceInner> getWithResponse(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName, Context context);
+    Response<SparkConfigurationResourceInner> getWithResponse(String resourceGroupName, String sparkConfigurationName,
+        String workspaceName, Context context);
 
     /**
      * Get SparkConfiguration by name.
-     *
-     * <p>Get SparkConfiguration by name in a workspace.
-     *
+     * 
+     * Get SparkConfiguration by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sparkConfigurationName SparkConfiguration name.
      * @param workspaceName The name of the workspace.

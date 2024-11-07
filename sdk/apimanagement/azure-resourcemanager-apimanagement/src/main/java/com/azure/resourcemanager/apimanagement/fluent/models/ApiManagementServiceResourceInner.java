@@ -356,8 +356,8 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * @param hostnameConfigurations the hostnameConfigurations value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
-    public ApiManagementServiceResourceInner withHostnameConfigurations(
-        List<HostnameConfiguration> hostnameConfigurations) {
+    public ApiManagementServiceResourceInner
+        withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceProperties();
         }
@@ -455,8 +455,8 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * @param virtualNetworkConfiguration the virtualNetworkConfiguration value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
-    public ApiManagementServiceResourceInner withVirtualNetworkConfiguration(
-        VirtualNetworkConfiguration virtualNetworkConfiguration) {
+    public ApiManagementServiceResourceInner
+        withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceProperties();
         }
@@ -756,8 +756,8 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the ApiManagementServiceResourceInner object itself.
      */
-    public ApiManagementServiceResourceInner withPrivateEndpointConnections(
-        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+    public ApiManagementServiceResourceInner
+        withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceProperties();
         }
@@ -783,18 +783,14 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApiManagementServiceResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ApiManagementServiceResourceInner"));
         } else {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model ApiManagementServiceResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sku in model ApiManagementServiceResourceInner"));
         } else {
             sku().validate();
         }
@@ -802,10 +798,8 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
             identity().validate();
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model ApiManagementServiceResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property location in model ApiManagementServiceResourceInner"));
         }
     }
 

@@ -21,47 +21,41 @@ public final class PrivateLinkHubPrivateLinkResourcesImpl implements PrivateLink
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public PrivateLinkHubPrivateLinkResourcesImpl(
-        PrivateLinkHubPrivateLinkResourcesClient innerClient,
+    public PrivateLinkHubPrivateLinkResourcesImpl(PrivateLinkHubPrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String privateLinkHubName) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, privateLinkHubName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, privateLinkHubName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateLinkResource> list(
-        String resourceGroupName, String privateLinkHubName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, privateLinkHubName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+    public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String privateLinkHubName,
+        Context context) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, privateLinkHubName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName, Context context) {
-        Response<PrivateLinkResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, privateLinkHubName, privateLinkResourceName, context);
+    public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String privateLinkHubName,
+        String privateLinkResourceName, Context context) {
+        Response<PrivateLinkResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, privateLinkHubName, privateLinkResourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PrivateLinkResource get(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName) {
-        PrivateLinkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, privateLinkHubName, privateLinkResourceName);
+    public PrivateLinkResource get(String resourceGroupName, String privateLinkHubName,
+        String privateLinkResourceName) {
+        PrivateLinkResourceInner inner
+            = this.serviceClient().get(resourceGroupName, privateLinkHubName, privateLinkResourceName);
         if (inner != null) {
             return new PrivateLinkResourceImpl(inner, this.manager());
         } else {

@@ -22,8 +22,7 @@ import java.util.Objects;
  */
 public class ContentReference
     // sort of: we will read back as "UNKNOWN"
-    implements java.io.Serializable
-{
+    implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -33,8 +32,7 @@ public class ContentReference
      * NOTE: As of 2.13 assume to contain Binary content, meaning that no
      * content snippets will be included.
      */
-    protected final static ContentReference UNKNOWN_CONTENT =
-            new ContentReference(false, null);
+    protected final static ContentReference UNKNOWN_CONTENT = new ContentReference(false, null);
 
     /**
      * Include at most first 500 characters/bytes from contents; should be enough
@@ -81,9 +79,7 @@ public class ContentReference
         this(isContentTextual, rawContent, -1, -1);
     }
 
-    protected ContentReference(boolean isContentTextual, Object rawContent,
-            int offset, int length)
-    {
+    protected ContentReference(boolean isContentTextual, Object rawContent, int offset, int length) {
         _isContentTextual = isContentTextual;
         _rawContent = rawContent;
         _offset = offset;
@@ -105,8 +101,7 @@ public class ContentReference
         return new ContentReference(isContentTextual, rawContent);
     }
 
-    public static ContentReference construct(boolean isContentTextual, Object rawContent,
-            int offset, int length) {
+    public static ContentReference construct(boolean isContentTextual, Object rawContent, int offset, int length) {
         return new ContentReference(isContentTextual, rawContent, offset, length);
     }
 
@@ -122,9 +117,7 @@ public class ContentReference
      * @return Instance with minimal information about content (basically just
      *    raw content reference without offsets
      */
-    public static ContentReference rawReference(boolean isContentTextual,
-            Object rawContent)
-    {
+    public static ContentReference rawReference(boolean isContentTextual, Object rawContent) {
         // Just to avoid russian-doll-nesting, let's:
         if (rawContent instanceof ContentReference) {
             return (ContentReference) rawContent;
@@ -171,8 +164,13 @@ public class ContentReference
         return _rawContent;
     }
 
-    public int contentOffset() { return _offset; }
-    public int contentLength() { return _length; }
+    public int contentOffset() {
+        return _offset;
+    }
+
+    public int contentLength() {
+        return _length;
+    }
 
     /**
      * Internal accessor, overridable, used for checking length (in units in
@@ -209,8 +207,7 @@ public class ContentReference
      *
      * @return StringBuilder passed as argument (for call chaining)
      */
-    public StringBuilder appendSourceDescription(StringBuilder sb)
-    {
+    public StringBuilder appendSourceDescription(StringBuilder sb) {
         final Object srcRef = getRawContent();
 
         if (srcRef == null) {
@@ -218,8 +215,7 @@ public class ContentReference
             return sb;
         }
         // First, figure out what name to use as source type
-        Class<?> srcType = (srcRef instanceof Class<?>) ?
-                ((Class<?>) srcRef) : srcRef.getClass();
+        Class<?> srcType = (srcRef instanceof Class<?>) ? ((Class<?>) srcRef) : srcRef.getClass();
         String tn = srcType.getName();
         // standard JDK types without package
         if (tn.startsWith("java.")) {
@@ -265,9 +261,7 @@ public class ContentReference
                 if (length < 0) {
                     length = ((byte[]) srcRef).length;
                 }
-                sb.append('[')
-                    .append(length)
-                    .append(" bytes]");
+                sb.append('[').append(length).append(" bytes]");
             }
         }
         return sb;
@@ -354,16 +348,17 @@ public class ContentReference
     // to care about identity, for backwards compatibility better compare
     // bit more
     @Override
-    public boolean equals(Object other)
-    {
-        if (other == this) return true;
-        if (other == null) return false;
-        if (!(other instanceof ContentReference)) return false;
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (other == null)
+            return false;
+        if (!(other instanceof ContentReference))
+            return false;
         ContentReference otherSrc = (ContentReference) other;
 
         // 16-Jan-2022, tatu: First ensure offset/length the same
-        if ((_offset != otherSrc._offset)
-                || (_length != otherSrc._length)) {
+        if ((_offset != otherSrc._offset) || (_length != otherSrc._length)) {
             return false;
         }
 
@@ -378,10 +373,7 @@ public class ContentReference
             return false;
         }
 
-        if ((_rawContent instanceof File)
-                || (_rawContent instanceof URL)
-                || (_rawContent instanceof URI)
-        ) {
+        if ((_rawContent instanceof File) || (_rawContent instanceof URL) || (_rawContent instanceof URI)) {
             return _rawContent.equals(otherRaw);
         }
         return _rawContent == otherSrc._rawContent;

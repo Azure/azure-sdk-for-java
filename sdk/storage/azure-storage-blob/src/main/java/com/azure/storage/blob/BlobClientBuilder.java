@@ -59,15 +59,11 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class})
-public final class BlobClientBuilder implements
-    TokenCredentialTrait<BlobClientBuilder>,
-    ConnectionStringTrait<BlobClientBuilder>,
-    AzureNamedKeyCredentialTrait<BlobClientBuilder>,
-    AzureSasCredentialTrait<BlobClientBuilder>,
-    HttpTrait<BlobClientBuilder>,
-    ConfigurationTrait<BlobClientBuilder>,
-    EndpointTrait<BlobClientBuilder> {
+@ServiceClientBuilder(serviceClients = { BlobClient.class, BlobAsyncClient.class })
+public final class BlobClientBuilder
+    implements TokenCredentialTrait<BlobClientBuilder>, ConnectionStringTrait<BlobClientBuilder>,
+    AzureNamedKeyCredentialTrait<BlobClientBuilder>, AzureSasCredentialTrait<BlobClientBuilder>,
+    HttpTrait<BlobClientBuilder>, ConfigurationTrait<BlobClientBuilder>, EndpointTrait<BlobClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(BlobClientBuilder.class);
 
     private String endpoint;
@@ -133,16 +129,16 @@ public final class BlobClientBuilder implements
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
-                + "scope cannot both be set"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        String blobContainerName = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerClient.ROOT_CONTAINER_NAME
-            : containerName;
+        String blobContainerName
+            = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerClient.ROOT_CONTAINER_NAME : containerName;
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
@@ -180,16 +176,16 @@ public final class BlobClientBuilder implements
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
-                + "scope cannot both be set"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        String blobContainerName = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME
-            : containerName;
+        String blobContainerName
+            = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
@@ -200,10 +196,11 @@ public final class BlobClientBuilder implements
     }
 
     private HttpPipeline constructPipeline() {
-        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
@@ -216,8 +213,7 @@ public final class BlobClientBuilder implements
         if (customerProvidedKey == null) {
             this.customerProvidedKey = null;
         } else {
-            this.customerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            this.customerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -294,8 +290,7 @@ public final class BlobClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public BlobClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -310,8 +305,7 @@ public final class BlobClientBuilder implements
      */
     @Override
     public BlobClientBuilder credential(AzureSasCredential credential) {
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -339,13 +333,11 @@ public final class BlobClientBuilder implements
      */
     @Override
     public BlobClientBuilder connectionString(String connectionString) {
-        StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, LOGGER);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException(
-                            "connectionString missing required settings to derive blob service endpoint."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "connectionString missing required settings to derive blob service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
@@ -354,7 +346,7 @@ public final class BlobClientBuilder implements
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
             this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
-                    authSettings.getAccount().getAccessKey()));
+                authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
         }
@@ -382,8 +374,8 @@ public final class BlobClientBuilder implements
 
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
-            this.containerName = parts.getBlobContainerName() == null ? this.containerName
-                : parts.getBlobContainerName();
+            this.containerName
+                = parts.getBlobContainerName() == null ? this.containerName : parts.getBlobContainerName();
             this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();

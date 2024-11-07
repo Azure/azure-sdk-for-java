@@ -250,7 +250,7 @@
 
     <!-- Disables Spotless linting. -->
     <!-- Spotless is disabled by default until all libraries are manually updated, after that this setting will be removed. -->
-    <spotless.skip>true</spotless.skip>
+    <spotless.skip>false</spotless.skip>
 
     <!-- Skips Spotless applying code style formatting. -->
     <spotless.apply.skip>false</spotless.apply.skip>
@@ -1686,27 +1686,27 @@
     <!-- Used when Reactor had milestone releases to the Spring Milestone repository. -->
     <!-- If Reactor milestones are needed again in the future, and they're being released -->
     <!-- to the Spring Milestone repository uncomment the XML below. -->
-<!--    <profile>-->
-<!--      <id>external-dependency-version-overrides</id>-->
-<!--      <activation>-->
-<!--        <property>-->
-<!--          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-<!--      <repositories>-->
-<!--        <repository>-->
-<!--          <id>repository.spring.milestone</id>-->
-<!--          <name>Spring Milestone Repository</name>-->
-<!--          <url>https://repo.spring.io/milestone</url>-->
-<!--          <releases>-->
-<!--            <enabled>true</enabled>-->
-<!--          </releases>-->
-<!--          <snapshots>-->
-<!--            <enabled>true</enabled>-->
-<!--          </snapshots>-->
-<!--        </repository>-->
-<!--      </repositories>-->
-<!--    </profile>-->
+    <profile>
+      <id>external-dependency-version-overrides</id>
+      <activation>
+        <property>
+          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>repository.spring.milestone</id>
+          <name>Spring Milestone Repository</name>
+          <url>https://repo.spring.io/milestone</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
 
     <profile>
       <id>test-module-base-compile</id>

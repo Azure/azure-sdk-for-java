@@ -565,7 +565,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -673,7 +673,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -779,7 +779,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -887,7 +887,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -993,7 +993,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1110,7 +1110,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1224,7 +1224,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1341,7 +1341,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1456,7 +1456,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1592,7 +1592,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1726,7 +1726,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1862,7 +1862,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2348,7 +2348,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2466,7 +2466,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2582,7 +2582,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2701,7 +2701,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2817,7 +2817,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2924,7 +2924,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3029,7 +3029,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3136,7 +3136,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3250,7 +3250,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3408,7 +3408,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3564,7 +3564,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3722,7 +3722,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3919,7 +3919,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -4233,7 +4233,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -4534,7 +4534,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -4819,7 +4819,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -5122,7 +5122,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -5407,7 +5407,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -5711,7 +5711,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -5996,7 +5996,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -6300,7 +6300,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -6585,7 +6585,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -6888,7 +6888,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -7191,7 +7191,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Required)
+     *                                 String: BinaryData (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -7578,7 +7578,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -7685,7 +7685,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -7791,7 +7791,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -7899,7 +7899,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     type: String (Optional)
      *                 }

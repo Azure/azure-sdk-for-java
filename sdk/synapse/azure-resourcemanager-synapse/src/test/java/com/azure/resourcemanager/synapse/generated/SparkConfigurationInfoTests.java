@@ -15,51 +15,38 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkConfigurationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkConfigurationInfo model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"enuygbq\",\"configs\":{\"guaucmfdjwnla\":\"qekewvnqvcd\",\"ikczvvitacgxmf\":\"punj\",\"sjgqrsxyp\":\"sserxhtvsoxhlwn\",\"yuel\":\"uuuybnchrsziz\"},\"annotations\":[\"ndnbfqy\"],\"notes\":\"agfl\",\"createdBy\":\"gm\",\"created\":\"2021-02-22T20:12:59Z\",\"configMergeRule\":{\"pigqfusuckzmkw\":\"zjmucftbyrplroh\",\"jnhgwydyyn\":\"lsnoxaxmqeqalh\",\"ta\":\"svkhgbv\"}}")
-                .toObject(SparkConfigurationInfo.class);
-        Assertions.assertEquals("enuygbq", model.description());
-        Assertions.assertEquals("qekewvnqvcd", model.configs().get("guaucmfdjwnla"));
-        Assertions.assertEquals("ndnbfqy", model.annotations().get(0));
-        Assertions.assertEquals("agfl", model.notes());
-        Assertions.assertEquals("gm", model.createdBy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T20:12:59Z"), model.created());
-        Assertions.assertEquals("zjmucftbyrplroh", model.configMergeRule().get("pigqfusuckzmkw"));
+        SparkConfigurationInfo model = BinaryData.fromString(
+            "{\"description\":\"zhxogjggsvo\",\"configs\":{\"kmdyomkxfbvfbh\":\"kxibdafh\",\"rhpw\":\"y\"},\"annotations\":[\"deimawzov\"],\"notes\":\"kumuikjcjca\",\"createdBy\":\"bwsnsqow\",\"created\":\"2021-06-25T23:30:28Z\",\"configMergeRule\":{\"ve\":\"likytwvczcswka\",\"pqthehnmnaoya\":\"yfdvlvhbwrnfxtgd\"}}")
+            .toObject(SparkConfigurationInfo.class);
+        Assertions.assertEquals("zhxogjggsvo", model.description());
+        Assertions.assertEquals("kxibdafh", model.configs().get("kmdyomkxfbvfbh"));
+        Assertions.assertEquals("deimawzov", model.annotations().get(0));
+        Assertions.assertEquals("kumuikjcjca", model.notes());
+        Assertions.assertEquals("bwsnsqow", model.createdBy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T23:30:28Z"), model.created());
+        Assertions.assertEquals("likytwvczcswka", model.configMergeRule().get("ve"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkConfigurationInfo model =
-            new SparkConfigurationInfo()
-                .withDescription("enuygbq")
-                .withConfigs(
-                    mapOf(
-                        "guaucmfdjwnla",
-                        "qekewvnqvcd",
-                        "ikczvvitacgxmf",
-                        "punj",
-                        "sjgqrsxyp",
-                        "sserxhtvsoxhlwn",
-                        "yuel",
-                        "uuuybnchrsziz"))
-                .withAnnotations(Arrays.asList("ndnbfqy"))
-                .withNotes("agfl")
-                .withCreatedBy("gm")
-                .withCreated(OffsetDateTime.parse("2021-02-22T20:12:59Z"))
-                .withConfigMergeRule(
-                    mapOf("pigqfusuckzmkw", "zjmucftbyrplroh", "jnhgwydyyn", "lsnoxaxmqeqalh", "ta", "svkhgbv"));
+        SparkConfigurationInfo model = new SparkConfigurationInfo().withDescription("zhxogjggsvo")
+            .withConfigs(mapOf("kmdyomkxfbvfbh", "kxibdafh", "rhpw", "y"))
+            .withAnnotations(Arrays.asList("deimawzov"))
+            .withNotes("kumuikjcjca")
+            .withCreatedBy("bwsnsqow")
+            .withCreated(OffsetDateTime.parse("2021-06-25T23:30:28Z"))
+            .withConfigMergeRule(mapOf("ve", "likytwvczcswka", "pqthehnmnaoya", "yfdvlvhbwrnfxtgd"));
         model = BinaryData.fromObject(model).toObject(SparkConfigurationInfo.class);
-        Assertions.assertEquals("enuygbq", model.description());
-        Assertions.assertEquals("qekewvnqvcd", model.configs().get("guaucmfdjwnla"));
-        Assertions.assertEquals("ndnbfqy", model.annotations().get(0));
-        Assertions.assertEquals("agfl", model.notes());
-        Assertions.assertEquals("gm", model.createdBy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T20:12:59Z"), model.created());
-        Assertions.assertEquals("zjmucftbyrplroh", model.configMergeRule().get("pigqfusuckzmkw"));
+        Assertions.assertEquals("zhxogjggsvo", model.description());
+        Assertions.assertEquals("kxibdafh", model.configs().get("kmdyomkxfbvfbh"));
+        Assertions.assertEquals("deimawzov", model.annotations().get(0));
+        Assertions.assertEquals("kumuikjcjca", model.notes());
+        Assertions.assertEquals("bwsnsqow", model.createdBy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T23:30:28Z"), model.created());
+        Assertions.assertEquals("likytwvczcswka", model.configMergeRule().get("ve"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

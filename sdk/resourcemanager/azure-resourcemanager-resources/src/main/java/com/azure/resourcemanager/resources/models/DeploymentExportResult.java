@@ -11,8 +11,7 @@ import com.azure.resourcemanager.resources.fluent.models.DeploymentExportResultI
  * An immutable client-side representation of an Azure deployment template export result.
  */
 @Fluent
-public interface DeploymentExportResult extends
-        HasInnerModel<DeploymentExportResultInner> {
+public interface DeploymentExportResult extends HasInnerModel<DeploymentExportResultInner> {
 
     /**
      * @return the template content

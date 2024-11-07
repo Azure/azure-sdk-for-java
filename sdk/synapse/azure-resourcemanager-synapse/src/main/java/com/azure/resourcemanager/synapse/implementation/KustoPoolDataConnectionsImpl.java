@@ -27,46 +27,29 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public KustoPoolDataConnectionsImpl(
-        KustoPoolDataConnectionsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public KustoPoolDataConnectionsImpl(KustoPoolDataConnectionsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName,
-        Context context) {
-        Response<CheckNameResultInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(
-                    resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, context);
+    public Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionCheckNameRequest dataConnectionName, Context context) {
+        Response<CheckNameResultInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(resourceGroupName, workspaceName, kustoPoolName, databaseName,
+                dataConnectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName) {
-        CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(
-                    resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
+    public CheckNameResult checkNameAvailability(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DataConnectionCheckNameRequest dataConnectionName) {
+        CheckNameResultInner inner = this.serviceClient()
+            .checkNameAvailability(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
         if (inner != null) {
             return new CheckNameResultImpl(inner, this.manager());
         } else {
@@ -74,16 +57,10 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         }
     }
 
-    public DataConnectionValidationListResult dataConnectionValidation(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionValidationInner parameters) {
-        DataConnectionValidationListResultInner inner =
-            this
-                .serviceClient()
-                .dataConnectionValidation(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters);
+    public DataConnectionValidationListResult dataConnectionValidation(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionValidationInner parameters) {
+        DataConnectionValidationListResultInner inner = this.serviceClient()
+            .dataConnectionValidation(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters);
         if (inner != null) {
             return new DataConnectionValidationListResultImpl(inner, this.manager());
         } else {
@@ -91,18 +68,11 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         }
     }
 
-    public DataConnectionValidationListResult dataConnectionValidation(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionValidationInner parameters,
-        Context context) {
-        DataConnectionValidationListResultInner inner =
-            this
-                .serviceClient()
-                .dataConnectionValidation(
-                    resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context);
+    public DataConnectionValidationListResult dataConnectionValidation(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionValidationInner parameters, Context context) {
+        DataConnectionValidationListResultInner inner = this.serviceClient()
+            .dataConnectionValidation(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters,
+                context);
         if (inner != null) {
             return new DataConnectionValidationListResultImpl(inner, this.manager());
         } else {
@@ -110,51 +80,37 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         }
     }
 
-    public PagedIterable<DataConnection> listByDatabase(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
-        PagedIterable<DataConnectionInner> inner =
-            this.serviceClient().listByDatabase(resourceGroupName, workspaceName, kustoPoolName, databaseName);
-        return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
+    public PagedIterable<DataConnection> listByDatabase(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName) {
+        PagedIterable<DataConnectionInner> inner
+            = this.serviceClient().listByDatabase(resourceGroupName, workspaceName, kustoPoolName, databaseName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DataConnection> listByDatabase(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
-        PagedIterable<DataConnectionInner> inner =
-            this.serviceClient().listByDatabase(resourceGroupName, workspaceName, kustoPoolName, databaseName, context);
-        return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
+    public PagedIterable<DataConnection> listByDatabase(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, Context context) {
+        PagedIterable<DataConnectionInner> inner = this.serviceClient()
+            .listByDatabase(resourceGroupName, workspaceName, kustoPoolName, databaseName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
-    public Response<DataConnection> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        Context context) {
-        Response<DataConnectionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, context);
+    public Response<DataConnection> getWithResponse(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, String dataConnectionName, Context context) {
+        Response<DataConnectionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DataConnectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DataConnection get(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    public DataConnection get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         String dataConnectionName) {
-        DataConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
+        DataConnectionInner inner = this.serviceClient()
+            .get(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
         if (inner != null) {
             return new DataConnectionImpl(inner, this.manager());
         } else {
@@ -162,18 +118,11 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         }
     }
 
-    public DataConnection createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
-        DataConnectionInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters);
+    public DataConnection createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters) {
+        DataConnectionInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName,
+                parameters);
         if (inner != null) {
             return new DataConnectionImpl(inner, this.manager());
         } else {
@@ -181,25 +130,11 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         }
     }
 
-    public DataConnection createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
-        DataConnectionInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    kustoPoolName,
-                    databaseName,
-                    dataConnectionName,
-                    parameters,
-                    context);
+    public DataConnection createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters, Context context) {
+        DataConnectionInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName,
+                parameters, context);
         if (inner != null) {
             return new DataConnectionImpl(inner, this.manager());
         } else {
@@ -207,17 +142,10 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         }
     }
 
-    public DataConnection update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
-        DataConnectionInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters);
+    public DataConnection update(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters) {
+        DataConnectionInner inner = this.serviceClient()
+            .update(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters);
         if (inner != null) {
             return new DataConnectionImpl(inner, this.manager());
         } else {
@@ -225,25 +153,11 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         }
     }
 
-    public DataConnection update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
-        DataConnectionInner inner =
-            this
-                .serviceClient()
-                .update(
-                    resourceGroupName,
-                    workspaceName,
-                    kustoPoolName,
-                    databaseName,
-                    dataConnectionName,
-                    parameters,
-                    context);
+    public DataConnection update(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters, Context context) {
+        DataConnectionInner inner = this.serviceClient()
+            .update(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, parameters,
+                context);
         if (inner != null) {
             return new DataConnectionImpl(inner, this.manager());
         } else {
@@ -251,24 +165,14 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         }
     }
 
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    public void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         String dataConnectionName) {
         this.serviceClient().delete(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        Context context) {
-        this
-            .serviceClient()
+    public void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        String dataConnectionName, Context context) {
+        this.serviceClient()
             .delete(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName, context);
     }
 

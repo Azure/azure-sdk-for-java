@@ -10,15 +10,14 @@ import java.util.Objects;
 import reactor.core.publisher.Mono;
 
 /** Implementation for Azure SQL subscription usage. */
-public class SqlSubscriptionUsageMetricImpl
-    extends RefreshableWrapperImpl<SubscriptionUsageInner, SqlSubscriptionUsageMetric>
-    implements SqlSubscriptionUsageMetric {
+public class SqlSubscriptionUsageMetricImpl extends
+    RefreshableWrapperImpl<SubscriptionUsageInner, SqlSubscriptionUsageMetric> implements SqlSubscriptionUsageMetric {
 
     private final SqlServerManager sqlServerManager;
     private final String location;
 
-    protected SqlSubscriptionUsageMetricImpl(
-        String location, SubscriptionUsageInner innerObject, SqlServerManager sqlServerManager) {
+    protected SqlSubscriptionUsageMetricImpl(String location, SubscriptionUsageInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;

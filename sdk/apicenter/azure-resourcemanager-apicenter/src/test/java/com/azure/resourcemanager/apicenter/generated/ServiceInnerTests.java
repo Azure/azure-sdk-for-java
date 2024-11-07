@@ -27,7 +27,8 @@ public final class ServiceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceInner model = new ServiceInner().withLocation("bpf").withTags(mapOf("wzo", "inzgvfcj"))
+        ServiceInner model = new ServiceInner().withLocation("bpf")
+            .withTags(mapOf("wzo", "inzgvfcj"))
             .withProperties(new ServiceProperties())
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(

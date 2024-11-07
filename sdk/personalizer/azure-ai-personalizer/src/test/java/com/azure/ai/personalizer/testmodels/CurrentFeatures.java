@@ -3,36 +3,53 @@
 
 package com.azure.ai.personalizer.testmodels;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
-public class CurrentFeatures {
-    @JsonGetter
+import java.io.IOException;
+
+import static com.azure.ai.personalizer.TestUtils.deserializationHelper;
+
+public class CurrentFeatures implements JsonSerializable<CurrentFeatures> {
+    private String day;
+    private String weather;
+
     public String getDay() {
         return day;
     }
 
-    @JsonSetter
     public CurrentFeatures setDay(String day) {
         this.day = day;
         return this;
     }
 
-    @JsonGetter
     public String getWeather() {
         return weather;
     }
 
-    @JsonSetter
     public CurrentFeatures setWeather(String weather) {
         this.weather = weather;
         return this;
     }
 
-    @JsonProperty
-    private String day;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("day", day)
+            .writeStringField("weather", weather)
+            .writeEndObject();
+    }
 
-    @JsonProperty
-    private String weather;
+    public static CurrentFeatures fromJson(JsonReader jsonReader) throws IOException {
+        return deserializationHelper(jsonReader, CurrentFeatures::new, (reader, fieldName, currentFeatures) -> {
+            if ("day".equals(fieldName)) {
+                currentFeatures.day = reader.getString();
+            } else if ("weather".equals(fieldName)) {
+                currentFeatures.weather = reader.getString();
+            } else {
+                reader.skipChildren();
+            }
+        });
+    }
 }

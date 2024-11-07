@@ -5,28 +5,42 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PowerBIOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Describes a Power BI output data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("PowerBI")
 @Fluent
 public final class PowerBIOutputDataSource extends OutputDataSource {
     /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "PowerBI";
+
+    /*
      * The properties that are associated with a Power BI output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private PowerBIOutputDataSourceProperties innerProperties;
 
     /**
      * Creates an instance of PowerBIOutputDataSource class.
      */
     public PowerBIOutputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -162,8 +176,8 @@ public final class PowerBIOutputDataSource extends OutputDataSource {
      * Get the refreshToken property: A refresh token that can be used to obtain a valid access token that can then be
      * used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure
      * Portal. It is recommended to put a dummy string value here when creating the data source and then going to the
-     * Azure Portal to authenticate the data source which will update this property with a valid refresh token.
-     * Required on PUT (CreateOrReplace) requests.
+     * Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required
+     * on PUT (CreateOrReplace) requests.
      * 
      * @return the refreshToken value.
      */
@@ -175,8 +189,8 @@ public final class PowerBIOutputDataSource extends OutputDataSource {
      * Set the refreshToken property: A refresh token that can be used to obtain a valid access token that can then be
      * used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure
      * Portal. It is recommended to put a dummy string value here when creating the data source and then going to the
-     * Azure Portal to authenticate the data source which will update this property with a valid refresh token.
-     * Required on PUT (CreateOrReplace) requests.
+     * Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required
+     * on PUT (CreateOrReplace) requests.
      * 
      * @param refreshToken the refreshToken value to set.
      * @return the PowerBIOutputDataSource object itself.
@@ -246,9 +260,48 @@ public final class PowerBIOutputDataSource extends OutputDataSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PowerBIOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PowerBIOutputDataSource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PowerBIOutputDataSource.
+     */
+    public static PowerBIOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PowerBIOutputDataSource deserializedPowerBIOutputDataSource = new PowerBIOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedPowerBIOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPowerBIOutputDataSource.innerProperties
+                        = PowerBIOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPowerBIOutputDataSource;
+        });
     }
 }

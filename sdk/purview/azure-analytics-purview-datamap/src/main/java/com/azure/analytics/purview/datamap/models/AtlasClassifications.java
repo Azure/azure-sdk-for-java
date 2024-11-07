@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,7 +23,7 @@ public final class AtlasClassifications implements JsonSerializable<AtlasClassif
      * An array of objects.
      */
     @Generated
-    private List<Object> list;
+    private List<BinaryData> list;
 
     /*
      * The size of the page.
@@ -67,7 +68,7 @@ public final class AtlasClassifications implements JsonSerializable<AtlasClassif
      * @return the list value.
      */
     @Generated
-    public List<Object> getList() {
+    public List<BinaryData> getList() {
         return this.list;
     }
 
@@ -128,7 +129,8 @@ public final class AtlasClassifications implements JsonSerializable<AtlasClassif
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("list", this.list, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("list", this.list,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeNumberField("pageSize", this.pageSize);
         jsonWriter.writeStringField("sortBy", this.sortBy);
         jsonWriter.writeStringField("sortType", this.sortType == null ? null : this.sortType.toString());
@@ -154,7 +156,8 @@ public final class AtlasClassifications implements JsonSerializable<AtlasClassif
                 reader.nextToken();
 
                 if ("list".equals(fieldName)) {
-                    List<Object> list = reader.readArray(reader1 -> reader1.readUntyped());
+                    List<BinaryData> list = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAtlasClassifications.list = list;
                 } else if ("pageSize".equals(fieldName)) {
                     deserializedAtlasClassifications.pageSize = reader.getNullable(JsonReader::getInt);

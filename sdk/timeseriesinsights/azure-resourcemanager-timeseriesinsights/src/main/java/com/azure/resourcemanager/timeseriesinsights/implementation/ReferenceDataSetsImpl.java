@@ -22,22 +22,18 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    public ReferenceDataSetsImpl(
-        ReferenceDataSetsClient innerClient,
+    public ReferenceDataSetsImpl(ReferenceDataSetsClient innerClient,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ReferenceDataSetResource> getWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
-        Response<ReferenceDataSetResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, environmentName, referenceDataSetName, context);
+    public Response<ReferenceDataSetResource> getWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context) {
+        Response<ReferenceDataSetResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, environmentName, referenceDataSetName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReferenceDataSetResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -45,8 +41,8 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
     }
 
     public ReferenceDataSetResource get(String resourceGroupName, String environmentName, String referenceDataSetName) {
-        ReferenceDataSetResourceInner inner =
-            this.serviceClient().get(resourceGroupName, environmentName, referenceDataSetName);
+        ReferenceDataSetResourceInner inner
+            = this.serviceClient().get(resourceGroupName, environmentName, referenceDataSetName);
         if (inner != null) {
             return new ReferenceDataSetResourceImpl(inner, this.manager());
         } else {
@@ -54,10 +50,9 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, environmentName, referenceDataSetName, context);
     }
 
@@ -65,15 +60,12 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
         this.serviceClient().delete(resourceGroupName, environmentName, referenceDataSetName);
     }
 
-    public Response<ReferenceDataSetListResponse> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
-        Response<ReferenceDataSetListResponseInner> inner =
-            this.serviceClient().listByEnvironmentWithResponse(resourceGroupName, environmentName, context);
+    public Response<ReferenceDataSetListResponse> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context) {
+        Response<ReferenceDataSetListResponseInner> inner
+            = this.serviceClient().listByEnvironmentWithResponse(resourceGroupName, environmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReferenceDataSetListResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -81,8 +73,8 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
     }
 
     public ReferenceDataSetListResponse listByEnvironment(String resourceGroupName, String environmentName) {
-        ReferenceDataSetListResponseInner inner =
-            this.serviceClient().listByEnvironment(resourceGroupName, environmentName);
+        ReferenceDataSetListResponseInner inner
+            = this.serviceClient().listByEnvironment(resourceGroupName, environmentName);
         if (inner != null) {
             return new ReferenceDataSetListResponseImpl(inner, this.manager());
         } else {
@@ -91,113 +83,77 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
     }
 
     public ReferenceDataSetResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String referenceDataSetName = Utils.getValueFromIdByName(id, "referenceDataSets");
+        String referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(id, "referenceDataSets");
         if (referenceDataSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
         }
         return this.getWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE).getValue();
     }
 
     public Response<ReferenceDataSetResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String referenceDataSetName = Utils.getValueFromIdByName(id, "referenceDataSets");
+        String referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(id, "referenceDataSets");
         if (referenceDataSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
         }
         return this.getWithResponse(resourceGroupName, environmentName, referenceDataSetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String referenceDataSetName = Utils.getValueFromIdByName(id, "referenceDataSets");
+        String referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(id, "referenceDataSets");
         if (referenceDataSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String referenceDataSetName = Utils.getValueFromIdByName(id, "referenceDataSets");
+        String referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(id, "referenceDataSets");
         if (referenceDataSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, environmentName, referenceDataSetName, context);
     }

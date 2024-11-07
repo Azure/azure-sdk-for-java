@@ -12,6 +12,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
+import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
 
 public class MessagesSdkCustomization extends Customization {
@@ -25,26 +26,27 @@ public class MessagesSdkCustomization extends Customization {
         updateBuilderClass(packageCustomization, "MessageTemplateClientBuilder");
 
         PackageCustomization modelsPackage = libraryCustomization.getPackage("com.azure.communication.messages.models");
+        updateModelClassModifierToAbstract(modelsPackage, "NotificationContent");
+        updateModelClassModifierToAbstract(modelsPackage, "MessageTemplateValue");
+        updateModelClassModifierToAbstract(modelsPackage, "MessageTemplateItem");
         customizeMessageTemplateLocation(modelsPackage);
-        customizeNotificationContentModel(modelsPackage);
-        customizeMessageTemplateValueModel(modelsPackage);
         customizeMessageTemplateItemModel(modelsPackage);
 
         PackageCustomization channelsModelsPackage = libraryCustomization.getPackage(
             "com.azure.communication.messages.models.channels");
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(channelsModelsPackage);
+
+        AddDeprecateAnnotationToMediaNotificationContent(modelsPackage);
+
+        AddDeprecateAnnotationForImageV0CommunicationKind(modelsPackage);
     }
 
-    private void customizeNotificationContentModel(PackageCustomization modelsPackage) {
-        modelsPackage.getClass("NotificationContent")
-            .customizeAst(ast -> ast.getPrimaryType()
-                .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
-    }
-
-    private void customizeMessageTemplateValueModel(PackageCustomization modelsPackage) {
-        modelsPackage.getClass("MessageTemplateValue")
-            .customizeAst(ast -> ast.getPrimaryType()
-                .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
+    private void updateModelClassModifierToAbstract(PackageCustomization modelsPackage, String className) {
+        modelsPackage.getClass(className)
+            .customizeAst(ast ->  ast.getClassByName(className)
+                .ifPresent(clazz -> clazz.setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.ABSTRACT)
+                    .getConstructors().get(0).setModifiers(Modifier.Keyword.PROTECTED)));
+        removeJsonKnownDiscriminatorMethod(modelsPackage, className);
     }
 
     private void customizeMessageTemplateItemModel(PackageCustomization modelsPackage) {
@@ -174,20 +176,68 @@ public class MessagesSdkCustomization extends Customization {
 
     private void updateWhatsAppMessageTemplateItemWithBinaryDataContent(PackageCustomization channelsModelsPackage) {
         channelsModelsPackage.getClass("WhatsAppMessageTemplateItem").customizeAst(ast -> {
-            ast.addImport("com.azure.core.util.BinaryData");
+            // ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport(
                 "com.azure.communication.messages.implementation.accesshelpers.MessageTemplateItemAccessHelper");
             ast.getClassByName("WhatsAppMessageTemplateItem").ifPresent(clazz -> {
-                clazz.getMethodsByName("getContent")
-                    .get(0)
-                    .setType("BinaryData")
-                    .setBody(StaticJavaParser.parseBlock("{return BinaryData.fromObject(this.content);}"));
+                // clazz.getMethodsByName("getContent")
+                //     .get(0)
+                //     .setType("BinaryData")
+                //     .setBody(StaticJavaParser.parseBlock("{return BinaryData.fromObject(this.content);}"));
 
                 String fromJson = clazz.getMethodsByName("fromJson").get(0).getBody().get().toString()
                     .replace("deserializedWhatsAppMessageTemplateItem.setName(name);",
                         "MessageTemplateItemAccessHelper.setName(deserializedWhatsAppMessageTemplateItem, name);");
                 clazz.getMethodsByName("fromJson").get(0).setBody(StaticJavaParser.parseBlock(fromJson));
             });
+        });
+    }
+
+    private void removeJsonKnownDiscriminatorMethod(PackageCustomization modelPackage, String className) {
+        modelPackage.getClass(className).customizeAst(ast -> {
+            ast.getClassByName(className).ifPresent( clazz -> {
+                String fromJson = clazz.getMethodsByName("fromJson")
+                    .get(0).getBody().get().toString()
+                    .replace("return fromJsonKnownDiscriminator(readerToUse.reset());",
+                        "throw new IllegalStateException(\"Invalid Kind value - \"+discriminatorValue); ");
+                clazz.getMethodsByName("fromJson").get(0).setBody(StaticJavaParser.parseBlock(fromJson));
+                clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0).remove();
+            });
+        });
+    }
+
+    private void AddDeprecateAnnotationToMediaNotificationContent(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("MediaNotificationContent").customizeAst(ast -> {
+            ast.getClassByName("MediaNotificationContent").ifPresent(clazz -> {
+                clazz.addAnnotation(Deprecated.class);
+
+                // Remove the @deprecated comment as it cause special character and fails in style check
+                clazz.getJavadoc().ifPresent(doc -> {
+                    String description = doc.getDescription().getElements().get(0).toText()
+                        .replace("&#064;deprecated", "@deprecated");
+                    doc.getDescription().getElements().set(0, new JavadocSnippet(description));
+                    clazz.setJavadocComment(doc.toComment());
+                });
+            });
+        });
+    }
+
+    private  void AddDeprecateAnnotationForImageV0CommunicationKind(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("CommunicationMessageKind").customizeAst(ast -> {
+            ast.getClassByName("CommunicationMessageKind")
+                .flatMap(clazz -> clazz.getFieldByName("IMAGE_V0"))
+                .ifPresent(f -> {
+                    f.addAnnotation(Deprecated.class);
+                    f.getJavadocComment().ifPresent(comment -> {
+                        /*
+                            Reducing size comment by replacing with @deprecated since it doesn't fit single line
+                             and fails in style check
+                         */
+                        String content = comment.getContent()
+                            .replace("Image message type.", "@deprecated");
+                        f.setJavadocComment(content);
+                    });
+                });
         });
     }
 }

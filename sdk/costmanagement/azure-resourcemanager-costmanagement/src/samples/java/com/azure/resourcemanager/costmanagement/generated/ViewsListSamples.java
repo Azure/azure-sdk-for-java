@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Views List. */
+/**
+ * Samples for Views List.
+ */
 public final class ViewsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateViewList.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * PrivateViewList.json
      */
     /**
      * Sample code: PrivateViewList.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void privateViewList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {

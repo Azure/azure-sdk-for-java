@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dynatrace.fluent.models.DynatraceSingleSignOnProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of the Dynatrace environment. */
+/**
+ * Properties of the Dynatrace environment.
+ */
 @Fluent
-public final class DynatraceEnvironmentProperties {
+public final class DynatraceEnvironmentProperties implements JsonSerializable<DynatraceEnvironmentProperties> {
     /*
      * User id
      */
-    @JsonProperty(value = "userId")
     private String userId;
 
     /*
      * Dynatrace Account Information
      */
-    @JsonProperty(value = "accountInfo")
     private AccountInfo accountInfo;
 
     /*
      * Dynatrace Environment Information
      */
-    @JsonProperty(value = "environmentInfo")
     private EnvironmentInfo environmentInfo;
 
     /*
      * The details of a Dynatrace single sign-on.
      */
-    @JsonProperty(value = "singleSignOnProperties")
     private DynatraceSingleSignOnProperties singleSignOnProperties;
 
-    /** Creates an instance of DynatraceEnvironmentProperties class. */
+    /**
+     * Creates an instance of DynatraceEnvironmentProperties class.
+     */
     public DynatraceEnvironmentProperties() {
     }
 
     /**
      * Get the userId property: User id.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -50,7 +54,7 @@ public final class DynatraceEnvironmentProperties {
 
     /**
      * Set the userId property: User id.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the DynatraceEnvironmentProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class DynatraceEnvironmentProperties {
 
     /**
      * Get the accountInfo property: Dynatrace Account Information.
-     *
+     * 
      * @return the accountInfo value.
      */
     public AccountInfo accountInfo() {
@@ -70,7 +74,7 @@ public final class DynatraceEnvironmentProperties {
 
     /**
      * Set the accountInfo property: Dynatrace Account Information.
-     *
+     * 
      * @param accountInfo the accountInfo value to set.
      * @return the DynatraceEnvironmentProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class DynatraceEnvironmentProperties {
 
     /**
      * Get the environmentInfo property: Dynatrace Environment Information.
-     *
+     * 
      * @return the environmentInfo value.
      */
     public EnvironmentInfo environmentInfo() {
@@ -90,7 +94,7 @@ public final class DynatraceEnvironmentProperties {
 
     /**
      * Set the environmentInfo property: Dynatrace Environment Information.
-     *
+     * 
      * @param environmentInfo the environmentInfo value to set.
      * @return the DynatraceEnvironmentProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class DynatraceEnvironmentProperties {
 
     /**
      * Get the singleSignOnProperties property: The details of a Dynatrace single sign-on.
-     *
+     * 
      * @return the singleSignOnProperties value.
      */
     public DynatraceSingleSignOnProperties singleSignOnProperties() {
@@ -110,19 +114,19 @@ public final class DynatraceEnvironmentProperties {
 
     /**
      * Set the singleSignOnProperties property: The details of a Dynatrace single sign-on.
-     *
+     * 
      * @param singleSignOnProperties the singleSignOnProperties value to set.
      * @return the DynatraceEnvironmentProperties object itself.
      */
-    public DynatraceEnvironmentProperties withSingleSignOnProperties(
-        DynatraceSingleSignOnProperties singleSignOnProperties) {
+    public DynatraceEnvironmentProperties
+        withSingleSignOnProperties(DynatraceSingleSignOnProperties singleSignOnProperties) {
         this.singleSignOnProperties = singleSignOnProperties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -135,5 +139,52 @@ public final class DynatraceEnvironmentProperties {
         if (singleSignOnProperties() != null) {
             singleSignOnProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userId", this.userId);
+        jsonWriter.writeJsonField("accountInfo", this.accountInfo);
+        jsonWriter.writeJsonField("environmentInfo", this.environmentInfo);
+        jsonWriter.writeJsonField("singleSignOnProperties", this.singleSignOnProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynatraceEnvironmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynatraceEnvironmentProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DynatraceEnvironmentProperties.
+     */
+    public static DynatraceEnvironmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynatraceEnvironmentProperties deserializedDynatraceEnvironmentProperties
+                = new DynatraceEnvironmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userId".equals(fieldName)) {
+                    deserializedDynatraceEnvironmentProperties.userId = reader.getString();
+                } else if ("accountInfo".equals(fieldName)) {
+                    deserializedDynatraceEnvironmentProperties.accountInfo = AccountInfo.fromJson(reader);
+                } else if ("environmentInfo".equals(fieldName)) {
+                    deserializedDynatraceEnvironmentProperties.environmentInfo = EnvironmentInfo.fromJson(reader);
+                } else if ("singleSignOnProperties".equals(fieldName)) {
+                    deserializedDynatraceEnvironmentProperties.singleSignOnProperties
+                        = DynatraceSingleSignOnProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDynatraceEnvironmentProperties;
+        });
     }
 }

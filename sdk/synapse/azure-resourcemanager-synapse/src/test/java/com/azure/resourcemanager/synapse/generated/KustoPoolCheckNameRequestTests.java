@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class KustoPoolCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustoPoolCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"fiqgeaar\"}").toObject(KustoPoolCheckNameRequest.class);
-        Assertions.assertEquals("fiqgeaar", model.name());
+        KustoPoolCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"mjnlexwhcb\"}").toObject(KustoPoolCheckNameRequest.class);
+        Assertions.assertEquals("mjnlexwhcb", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KustoPoolCheckNameRequest model = new KustoPoolCheckNameRequest().withName("fiqgeaar");
+        KustoPoolCheckNameRequest model = new KustoPoolCheckNameRequest().withName("mjnlexwhcb");
         model = BinaryData.fromObject(model).toObject(KustoPoolCheckNameRequest.class);
-        Assertions.assertEquals("fiqgeaar", model.name());
+        Assertions.assertEquals("mjnlexwhcb", model.name());
     }
 }

@@ -5,33 +5,107 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base type for concrete track types. A derived type must be used to represent the Track. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata.type",
-    defaultImpl = TrackBase.class)
-@JsonTypeName("TrackBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Media.AudioTrack", value = AudioTrack.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoTrack", value = VideoTrack.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.TextTrack", value = TextTrack.class)
-})
+/**
+ * Base type for concrete track types. A derived type must be used to represent the Track.
+ */
 @Immutable
-public class TrackBase {
-    /** Creates an instance of TrackBase class. */
+public class TrackBase implements JsonSerializable<TrackBase> {
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "TrackBase";
+
+    /**
+     * Creates an instance of TrackBase class.
+     */
     public TrackBase() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackBase if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TrackBase.
+     */
+    public static TrackBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Media.AudioTrack".equals(discriminatorValue)) {
+                    return AudioTrack.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.VideoTrack".equals(discriminatorValue)) {
+                    return VideoTrack.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.TextTrack".equals(discriminatorValue)) {
+                    return TextTrack.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TrackBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackBase deserializedTrackBase = new TrackBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedTrackBase.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackBase;
+        });
     }
 }

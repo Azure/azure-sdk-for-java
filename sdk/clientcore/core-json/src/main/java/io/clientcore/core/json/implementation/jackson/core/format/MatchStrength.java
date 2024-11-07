@@ -8,8 +8,7 @@ package io.clientcore.core.json.implementation.jackson.core.format;
  * "strongest" value: that is, it should start with strongest match
  * criteria, and downgrading if criteria is not fulfilled.
  */
-public enum MatchStrength
-{
+public enum MatchStrength {
     /**
      * Value that indicates that given data can not be in given format.
      */
@@ -58,6 +57,5 @@ public enum MatchStrength
      * Not all data formats have unique leading identifiers to allow full matches; for example,
      * JSON only has heuristic matches and can have at most {@link #SOLID_MATCH}) match.
      */
-    FULL_MATCH
-    ;
+    FULL_MATCH;
 }

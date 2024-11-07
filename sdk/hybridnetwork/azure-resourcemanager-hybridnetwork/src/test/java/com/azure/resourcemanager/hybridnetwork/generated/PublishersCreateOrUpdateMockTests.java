@@ -51,11 +51,14 @@ public final class PublishersCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Publisher response = manager.publishers().define("jzcfyjzptwr").withRegion("gcm")
+        Publisher response = manager.publishers()
+            .define("jzcfyjzptwr")
+            .withRegion("gcm")
             .withExistingResourceGroup("ot")
             .withTags(mapOf("yvca", "jhhhqxu", "sjsz", "oyvivbsiz", "lzijiufehgmvflnw", "bscm"))
             .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.PRIVATE))

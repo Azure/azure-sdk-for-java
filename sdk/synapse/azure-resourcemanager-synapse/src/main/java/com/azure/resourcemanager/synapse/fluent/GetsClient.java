@@ -12,13 +12,15 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeEnablei
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOperationStatusInner;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStopOperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in GetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GetsClient.
+ */
 public interface GetsClient {
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -30,18 +32,14 @@ public interface GetsClient {
      * @return an integration runtime start operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeOperationStatusInner> integrationRuntimeStartWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+    Response<IntegrationRuntimeOperationStatusInner> integrationRuntimeStartWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -52,17 +50,14 @@ public interface GetsClient {
      * @return an integration runtime start operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeOperationStatusInner integrationRuntimeStart(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeOperationStatusInner integrationRuntimeStart(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String integrationRuntimeOperationId);
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -74,18 +69,14 @@ public interface GetsClient {
      * @return an integration runtime stop operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeStopOperationStatusInner> integrationRuntimeStopWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+    Response<IntegrationRuntimeStopOperationStatusInner> integrationRuntimeStopWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -96,17 +87,14 @@ public interface GetsClient {
      * @return an integration runtime stop operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStopOperationStatusInner integrationRuntimeStop(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeStopOperationStatusInner integrationRuntimeStop(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String integrationRuntimeOperationId);
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -119,17 +107,14 @@ public interface GetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeEnableinteractivequeryInner> integrationRuntimeEnableInteractivequeryWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+        String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -140,9 +125,6 @@ public interface GetsClient {
      * @return an integration runtime enable interactivequery operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeEnableinteractivequeryInner integrationRuntimeEnableInteractivequery(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeEnableinteractivequeryInner integrationRuntimeEnableInteractivequery(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId);
 }

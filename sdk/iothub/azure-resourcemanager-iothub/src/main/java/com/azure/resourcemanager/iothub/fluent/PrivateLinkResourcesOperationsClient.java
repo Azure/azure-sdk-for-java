@@ -28,8 +28,8 @@ public interface PrivateLinkResourcesOperationsClient {
      * @return the available private link resources for an IotHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourcesInner> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<PrivateLinkResourcesInner> listWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * List private link resources
@@ -63,8 +63,8 @@ public interface PrivateLinkResourcesOperationsClient {
      * @return the specified private link resource for the given IotHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GroupIdInformationInner> getWithResponse(
-        String resourceGroupName, String resourceName, String groupId, Context context);
+    Response<GroupIdInformationInner> getWithResponse(String resourceGroupName, String resourceName, String groupId,
+        Context context);
 
     /**
      * Get the specified private link resource

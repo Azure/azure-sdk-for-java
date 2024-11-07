@@ -54,12 +54,8 @@ public interface TagRulesClient {
      * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitoringTagRulesInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        String ruleSetName,
-        MonitoringTagRulesInner body,
-        Context context);
+    Response<MonitoringTagRulesInner> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
+        String ruleSetName, MonitoringTagRulesInner body, Context context);
 
     /**
      * Create or update a tag rule set for a given monitor resource.
@@ -88,8 +84,8 @@ public interface TagRulesClient {
      * @return a tag rule set for a given monitor resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitoringTagRulesInner> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
+    Response<MonitoringTagRulesInner> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
 
     /**
      * Get a tag rule set for a given monitor resource.

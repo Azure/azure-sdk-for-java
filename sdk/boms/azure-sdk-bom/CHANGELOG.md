@@ -1,5 +1,14 @@
 # Release History
 
+## 1.2.29 (2024-10-28)
+
+### Dependency Updates
+
+- Added new library entries to the BOM:
+  - `azure-ai-vision-imageanalysis`
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.28 (2024-09-30)
 
 ### Dependency Updates

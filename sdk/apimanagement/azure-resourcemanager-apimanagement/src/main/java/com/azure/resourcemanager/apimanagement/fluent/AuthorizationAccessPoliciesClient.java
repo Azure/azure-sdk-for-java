@@ -28,8 +28,8 @@ public interface AuthorizationAccessPoliciesClient {
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId);
+    PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId);
 
     /**
      * Lists a collection of authorization access policy defined within a authorization.
@@ -51,15 +51,9 @@ public interface AuthorizationAccessPoliciesClient {
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String filter, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the details of the authorization access policy specified by its identifier.
@@ -76,13 +70,8 @@ public interface AuthorizationAccessPoliciesClient {
      * @return the details of the authorization access policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationAccessPoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        Context context);
+    AuthorizationAccessPoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, Context context);
 
     /**
      * Gets the details of the authorization access policy specified by its identifier.
@@ -98,12 +87,8 @@ public interface AuthorizationAccessPoliciesClient {
      * @return the details of the authorization access policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationAccessPolicyContractInner get(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId);
+    AuthorizationAccessPolicyContractInner get(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId);
 
     /**
      * Creates or updates Authorization Access Policy.
@@ -122,15 +107,9 @@ public interface AuthorizationAccessPoliciesClient {
      * @return authorization access policy contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationAccessPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        AuthorizationAccessPolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    AuthorizationAccessPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId,
+        AuthorizationAccessPolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates Authorization Access Policy.
@@ -147,12 +126,8 @@ public interface AuthorizationAccessPoliciesClient {
      * @return authorization access policy contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationAccessPolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
+    AuthorizationAccessPolicyContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId,
         AuthorizationAccessPolicyContractInner parameters);
 
     /**
@@ -172,14 +147,8 @@ public interface AuthorizationAccessPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String authorizationAccessPolicyId, String ifMatch, Context context);
 
     /**
      * Deletes specific access policy from the Authorization.
@@ -196,11 +165,6 @@ public interface AuthorizationAccessPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch);
+    void delete(String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
+        String authorizationAccessPolicyId, String ifMatch);
 }

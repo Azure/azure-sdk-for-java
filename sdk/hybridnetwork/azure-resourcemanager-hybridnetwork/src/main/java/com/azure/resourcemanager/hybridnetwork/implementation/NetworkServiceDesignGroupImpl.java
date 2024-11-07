@@ -88,14 +88,18 @@ public final class NetworkServiceDesignGroupImpl
     }
 
     public NetworkServiceDesignGroup create() {
-        this.innerObject = serviceManager.serviceClient().getNetworkServiceDesignGroups().createOrUpdate(
-            resourceGroupName, publisherName, networkServiceDesignGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignGroups()
+            .createOrUpdate(resourceGroupName, publisherName, networkServiceDesignGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public NetworkServiceDesignGroup create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkServiceDesignGroups().createOrUpdate(
-            resourceGroupName, publisherName, networkServiceDesignGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignGroups()
+            .createOrUpdate(resourceGroupName, publisherName, networkServiceDesignGroupName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -112,16 +116,20 @@ public final class NetworkServiceDesignGroupImpl
     }
 
     public NetworkServiceDesignGroup apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getNetworkServiceDesignGroups().updateWithResponse(resourceGroupName,
-                publisherName, networkServiceDesignGroupName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignGroups()
+            .updateWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkServiceDesignGroup apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getNetworkServiceDesignGroups().updateWithResponse(resourceGroupName,
-                publisherName, networkServiceDesignGroupName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignGroups()
+            .updateWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -135,14 +143,18 @@ public final class NetworkServiceDesignGroupImpl
     }
 
     public NetworkServiceDesignGroup refresh() {
-        this.innerObject = serviceManager.serviceClient().getNetworkServiceDesignGroups()
-            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignGroups()
+            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkServiceDesignGroup refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkServiceDesignGroups()
-            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignGroups()
+            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName, context)
+            .getValue();
         return this;
     }
 

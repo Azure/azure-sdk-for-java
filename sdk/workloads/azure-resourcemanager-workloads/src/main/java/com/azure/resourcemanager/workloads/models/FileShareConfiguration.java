@@ -22,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Skip", value = SkipFileShareConfiguration.class),
     @JsonSubTypes.Type(name = "CreateAndMount", value = CreateAndMountFileShareConfiguration.class),
-    @JsonSubTypes.Type(name = "Mount", value = MountFileShareConfiguration.class)
-})
+    @JsonSubTypes.Type(name = "Mount", value = MountFileShareConfiguration.class) })
 @Immutable
 public class FileShareConfiguration {
     /** Creates an instance of FileShareConfiguration class. */

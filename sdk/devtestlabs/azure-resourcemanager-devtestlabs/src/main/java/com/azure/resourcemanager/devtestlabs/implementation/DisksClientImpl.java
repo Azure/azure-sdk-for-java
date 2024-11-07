@@ -68,135 +68,91 @@ public final class DisksClientImpl implements DisksClient {
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientDis")
     public interface DisksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiskList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("userName") String username,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("userName") String username, @QueryParam("$expand") String expand,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiskInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("userName") String username,
-            @PathParam("name") String name,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("userName") String username, @PathParam("name") String name,
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("userName") String username,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DiskInner disk,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("userName") String username, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DiskInner disk,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("userName") String username,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("userName") String username, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiskInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("userName") String username,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DiskFragment disk,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("userName") String username, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DiskFragment disk,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}/attach")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}/attach")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> attach(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> attach(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("userName") String username,
-            @PathParam("name") String name,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("userName") String username, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AttachDiskProperties attachDiskProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}/detach")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}/detach")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> detach(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> detach(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("userName") String username,
-            @PathParam("name") String name,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("userName") String username, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DetachDiskProperties detachDiskProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiskList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DiskList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -216,25 +172,15 @@ public final class DisksClientImpl implements DisksClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiskInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby) {
+    private Mono<PagedResponse<DiskInner>> listSinglePageAsync(String resourceGroupName, String labName,
+        String username, String expand, String filter, Integer top, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -249,30 +195,10 @@ public final class DisksClientImpl implements DisksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            username,
-                            expand,
-                            filter,
-                            top,
-                            orderby,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DiskInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    labName, username, expand, filter, top, orderby, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DiskInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -294,26 +220,15 @@ public final class DisksClientImpl implements DisksClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiskInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<DiskInner>> listSinglePageAsync(String resourceGroupName, String labName,
+        String username, String expand, String filter, Integer top, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -328,28 +243,10 @@ public final class DisksClientImpl implements DisksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                username,
-                expand,
-                filter,
-                top,
-                orderby,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName, username,
+                expand, filter, top, orderby, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -368,14 +265,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DiskInner> listAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby) {
+    private PagedFlux<DiskInner> listAsync(String resourceGroupName, String labName, String username, String expand,
+        String filter, Integer top, String orderby) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, labName, username, expand, filter, top, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -420,15 +311,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DiskInner> listAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    private PagedFlux<DiskInner> listAsync(String resourceGroupName, String labName, String username, String expand,
+        String filter, Integer top, String orderby, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, labName, username, expand, filter, top, orderby, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -471,15 +355,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiskInner> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    public PagedIterable<DiskInner> list(String resourceGroupName, String labName, String username, String expand,
+        String filter, Integer top, String orderby, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, labName, username, expand, filter, top, orderby, context));
     }
@@ -498,19 +375,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return disk along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiskInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String username, String name, String expand) {
+    private Mono<Response<DiskInner>> getWithResponseAsync(String resourceGroupName, String labName, String username,
+        String name, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -527,20 +400,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            username,
-                            name,
-                            expand,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, username, name, expand, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -559,19 +420,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return disk along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiskInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context) {
+    private Mono<Response<DiskInner>> getWithResponseAsync(String resourceGroupName, String labName, String username,
+        String name, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -588,18 +445,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                username,
-                name,
-                expand,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            username, name, expand, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -636,8 +483,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return disk along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiskInner> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context) {
+    public Response<DiskInner> getWithResponse(String resourceGroupName, String labName, String username, String name,
+        String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, labName, username, name, expand, context).block();
     }
 
@@ -673,19 +520,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String username, String name, DiskInner disk) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -707,20 +550,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            username,
-                            name,
-                            this.client.getApiVersion(),
-                            disk,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, username, name, this.client.getApiVersion(), disk, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -739,19 +570,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String username, String name, DiskInner disk, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -773,18 +600,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                username,
-                name,
-                this.client.getApiVersion(),
-                disk,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            labName, username, name, this.client.getApiVersion(), disk, accept, context);
     }
 
     /**
@@ -801,14 +618,12 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link PollerFlux} for polling of a Disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, labName, username, name, disk);
-        return this
-            .client
-            .<DiskInner, DiskInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, this.client.getContext());
+    private PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String labName, String username, String name, DiskInner disk) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, labName, username, name, disk);
+        return this.client.<DiskInner, DiskInner>getLroResult(mono, this.client.getHttpPipeline(), DiskInner.class,
+            DiskInner.class, this.client.getContext());
     }
 
     /**
@@ -826,15 +641,13 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link PollerFlux} for polling of a Disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context) {
+    private PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String labName, String username, String name, DiskInner disk, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, labName, username, name, disk, context);
-        return this
-            .client
-            .<DiskInner, DiskInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskInner.class, DiskInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, labName, username, name, disk, context);
+        return this.client.<DiskInner, DiskInner>getLroResult(mono, this.client.getHttpPipeline(), DiskInner.class,
+            DiskInner.class, context);
     }
 
     /**
@@ -851,8 +664,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link SyncPoller} for polling of a Disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk) {
+    public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String username, String name, DiskInner disk) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, disk).getSyncPoller();
     }
 
@@ -871,8 +684,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link SyncPoller} for polling of a Disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context) {
+    public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String username, String name, DiskInner disk, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, disk, context).getSyncPoller();
     }
 
@@ -890,10 +703,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiskInner> createOrUpdateAsync(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk) {
-        return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, disk)
-            .last()
+    private Mono<DiskInner> createOrUpdateAsync(String resourceGroupName, String labName, String username, String name,
+        DiskInner disk) {
+        return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, disk).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -912,10 +724,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiskInner> createOrUpdateAsync(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, disk, context)
-            .last()
+    private Mono<DiskInner> createOrUpdateAsync(String resourceGroupName, String labName, String username, String name,
+        DiskInner disk, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, disk, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -933,8 +744,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskInner createOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk) {
+    public DiskInner createOrUpdate(String resourceGroupName, String labName, String username, String name,
+        DiskInner disk) {
         return createOrUpdateAsync(resourceGroupName, labName, username, name, disk).block();
     }
 
@@ -953,8 +764,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskInner createOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context) {
+    public DiskInner createOrUpdate(String resourceGroupName, String labName, String username, String name,
+        DiskInner disk, Context context) {
         return createOrUpdateAsync(resourceGroupName, labName, username, name, disk, context).block();
     }
 
@@ -971,19 +782,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String labName, String username, String name) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String labName,
+        String username, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1000,19 +807,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            username,
-                            name,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, username, name, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1030,19 +826,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String labName, String username, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String labName,
+        String username, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1059,17 +851,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                username,
-                name,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            username, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1085,13 +868,11 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String labName, String username, String name) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String labName,
+        String username, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, username, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1108,14 +889,13 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String labName, String username, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String labName,
+        String username, String name, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, labName, username, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, labName, username, name, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1131,8 +911,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String username, String name) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String username,
+        String name) {
         return this.beginDeleteAsync(resourceGroupName, labName, username, name).getSyncPoller();
     }
 
@@ -1150,8 +930,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String username, String name, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String username,
+        String name, Context context) {
         return this.beginDeleteAsync(resourceGroupName, labName, username, name, context).getSyncPoller();
     }
 
@@ -1169,8 +949,7 @@ public final class DisksClientImpl implements DisksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String labName, String username, String name) {
-        return beginDeleteAsync(resourceGroupName, labName, username, name)
-            .last()
+        return beginDeleteAsync(resourceGroupName, labName, username, name).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1188,10 +967,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String labName, String username, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, labName, username, name, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String labName, String username, String name,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, labName, username, name, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1242,19 +1020,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiskInner>> updateWithResponseAsync(
-        String resourceGroupName, String labName, String username, String name, DiskFragment disk) {
+    private Mono<Response<DiskInner>> updateWithResponseAsync(String resourceGroupName, String labName, String username,
+        String name, DiskFragment disk) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1276,20 +1050,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            username,
-                            name,
-                            this.client.getApiVersion(),
-                            disk,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, username, name, this.client.getApiVersion(), disk, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1308,19 +1070,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiskInner>> updateWithResponseAsync(
-        String resourceGroupName, String labName, String username, String name, DiskFragment disk, Context context) {
+    private Mono<Response<DiskInner>> updateWithResponseAsync(String resourceGroupName, String labName, String username,
+        String name, DiskFragment disk, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1342,18 +1100,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                username,
-                name,
-                this.client.getApiVersion(),
-                disk,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            username, name, this.client.getApiVersion(), disk, accept, context);
     }
 
     /**
@@ -1370,8 +1118,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiskInner> updateAsync(
-        String resourceGroupName, String labName, String username, String name, DiskFragment disk) {
+    private Mono<DiskInner> updateAsync(String resourceGroupName, String labName, String username, String name,
+        DiskFragment disk) {
         return updateWithResponseAsync(resourceGroupName, labName, username, name, disk)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1391,8 +1139,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return a Disk along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiskInner> updateWithResponse(
-        String resourceGroupName, String labName, String username, String name, DiskFragment disk, Context context) {
+    public Response<DiskInner> updateWithResponse(String resourceGroupName, String labName, String username,
+        String name, DiskFragment disk, Context context) {
         return updateWithResponseAsync(resourceGroupName, labName, username, name, disk, context).block();
     }
 
@@ -1428,23 +1176,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> attachWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties) {
+    private Mono<Response<Flux<ByteBuffer>>> attachWithResponseAsync(String resourceGroupName, String labName,
+        String username, String name, AttachDiskProperties attachDiskProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1468,19 +1208,8 @@ public final class DisksClientImpl implements DisksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .attach(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            username,
-                            name,
-                            this.client.getApiVersion(),
-                            attachDiskProperties,
-                            accept,
-                            context))
+                context -> service.attach(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    labName, username, name, this.client.getApiVersion(), attachDiskProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1499,24 +1228,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> attachWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> attachWithResponseAsync(String resourceGroupName, String labName,
+        String username, String name, AttachDiskProperties attachDiskProperties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1539,18 +1259,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .attach(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                username,
-                name,
-                this.client.getApiVersion(),
-                attachDiskProperties,
-                accept,
-                context);
+        return service.attach(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            username, name, this.client.getApiVersion(), attachDiskProperties, accept, context);
     }
 
     /**
@@ -1567,18 +1277,12 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAttachAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            attachWithResponseAsync(resourceGroupName, labName, username, name, attachDiskProperties);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginAttachAsync(String resourceGroupName, String labName,
+        String username, String name, AttachDiskProperties attachDiskProperties) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = attachWithResponseAsync(resourceGroupName, labName, username, name, attachDiskProperties);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1596,19 +1300,13 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAttachAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginAttachAsync(String resourceGroupName, String labName,
+        String username, String name, AttachDiskProperties attachDiskProperties, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            attachWithResponseAsync(resourceGroupName, labName, username, name, attachDiskProperties, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = attachWithResponseAsync(resourceGroupName, labName, username, name, attachDiskProperties, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1625,12 +1323,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAttach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties) {
+    public SyncPoller<PollResult<Void>, Void> beginAttach(String resourceGroupName, String labName, String username,
+        String name, AttachDiskProperties attachDiskProperties) {
         return this.beginAttachAsync(resourceGroupName, labName, username, name, attachDiskProperties).getSyncPoller();
     }
 
@@ -1649,15 +1343,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAttach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context) {
-        return this
-            .beginAttachAsync(resourceGroupName, labName, username, name, attachDiskProperties, context)
+    public SyncPoller<PollResult<Void>, Void> beginAttach(String resourceGroupName, String labName, String username,
+        String name, AttachDiskProperties attachDiskProperties, Context context) {
+        return this.beginAttachAsync(resourceGroupName, labName, username, name, attachDiskProperties, context)
             .getSyncPoller();
     }
 
@@ -1675,14 +1363,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> attachAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    private Mono<Void> attachAsync(String resourceGroupName, String labName, String username, String name,
         AttachDiskProperties attachDiskProperties) {
-        return beginAttachAsync(resourceGroupName, labName, username, name, attachDiskProperties)
-            .last()
+        return beginAttachAsync(resourceGroupName, labName, username, name, attachDiskProperties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1701,15 +1384,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> attachAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context) {
-        return beginAttachAsync(resourceGroupName, labName, username, name, attachDiskProperties, context)
-            .last()
+    private Mono<Void> attachAsync(String resourceGroupName, String labName, String username, String name,
+        AttachDiskProperties attachDiskProperties, Context context) {
+        return beginAttachAsync(resourceGroupName, labName, username, name, attachDiskProperties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1726,11 +1403,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void attach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    public void attach(String resourceGroupName, String labName, String username, String name,
         AttachDiskProperties attachDiskProperties) {
         attachAsync(resourceGroupName, labName, username, name, attachDiskProperties).block();
     }
@@ -1749,13 +1422,8 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void attach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context) {
+    public void attach(String resourceGroupName, String labName, String username, String name,
+        AttachDiskProperties attachDiskProperties, Context context) {
         attachAsync(resourceGroupName, labName, username, name, attachDiskProperties, context).block();
     }
 
@@ -1774,23 +1442,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> detachWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties) {
+    private Mono<Response<Flux<ByteBuffer>>> detachWithResponseAsync(String resourceGroupName, String labName,
+        String username, String name, DetachDiskProperties detachDiskProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1814,19 +1474,8 @@ public final class DisksClientImpl implements DisksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .detach(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            username,
-                            name,
-                            this.client.getApiVersion(),
-                            detachDiskProperties,
-                            accept,
-                            context))
+                context -> service.detach(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    labName, username, name, this.client.getApiVersion(), detachDiskProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1846,24 +1495,15 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> detachWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> detachWithResponseAsync(String resourceGroupName, String labName,
+        String username, String name, DetachDiskProperties detachDiskProperties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1886,18 +1526,8 @@ public final class DisksClientImpl implements DisksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .detach(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                username,
-                name,
-                this.client.getApiVersion(),
-                detachDiskProperties,
-                accept,
-                context);
+        return service.detach(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            username, name, this.client.getApiVersion(), detachDiskProperties, accept, context);
     }
 
     /**
@@ -1915,18 +1545,12 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDetachAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            detachWithResponseAsync(resourceGroupName, labName, username, name, detachDiskProperties);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDetachAsync(String resourceGroupName, String labName,
+        String username, String name, DetachDiskProperties detachDiskProperties) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = detachWithResponseAsync(resourceGroupName, labName, username, name, detachDiskProperties);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1945,19 +1569,13 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDetachAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDetachAsync(String resourceGroupName, String labName,
+        String username, String name, DetachDiskProperties detachDiskProperties, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            detachWithResponseAsync(resourceGroupName, labName, username, name, detachDiskProperties, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = detachWithResponseAsync(resourceGroupName, labName, username, name, detachDiskProperties, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1975,12 +1593,8 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDetach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties) {
+    public SyncPoller<PollResult<Void>, Void> beginDetach(String resourceGroupName, String labName, String username,
+        String name, DetachDiskProperties detachDiskProperties) {
         return this.beginDetachAsync(resourceGroupName, labName, username, name, detachDiskProperties).getSyncPoller();
     }
 
@@ -2000,15 +1614,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDetach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context) {
-        return this
-            .beginDetachAsync(resourceGroupName, labName, username, name, detachDiskProperties, context)
+    public SyncPoller<PollResult<Void>, Void> beginDetach(String resourceGroupName, String labName, String username,
+        String name, DetachDiskProperties detachDiskProperties, Context context) {
+        return this.beginDetachAsync(resourceGroupName, labName, username, name, detachDiskProperties, context)
             .getSyncPoller();
     }
 
@@ -2027,14 +1635,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> detachAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    private Mono<Void> detachAsync(String resourceGroupName, String labName, String username, String name,
         DetachDiskProperties detachDiskProperties) {
-        return beginDetachAsync(resourceGroupName, labName, username, name, detachDiskProperties)
-            .last()
+        return beginDetachAsync(resourceGroupName, labName, username, name, detachDiskProperties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2054,15 +1657,9 @@ public final class DisksClientImpl implements DisksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> detachAsync(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context) {
-        return beginDetachAsync(resourceGroupName, labName, username, name, detachDiskProperties, context)
-            .last()
+    private Mono<Void> detachAsync(String resourceGroupName, String labName, String username, String name,
+        DetachDiskProperties detachDiskProperties, Context context) {
+        return beginDetachAsync(resourceGroupName, labName, username, name, detachDiskProperties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2080,11 +1677,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    public void detach(String resourceGroupName, String labName, String username, String name,
         DetachDiskProperties detachDiskProperties) {
         detachAsync(resourceGroupName, labName, username, name, detachDiskProperties).block();
     }
@@ -2104,13 +1697,8 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context) {
+    public void detach(String resourceGroupName, String labName, String username, String name,
+        DetachDiskProperties detachDiskProperties, Context context) {
         detachAsync(resourceGroupName, labName, username, name, detachDiskProperties, context).block();
     }
 
@@ -2131,23 +1719,13 @@ public final class DisksClientImpl implements DisksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DiskInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DiskInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2169,23 +1747,13 @@ public final class DisksClientImpl implements DisksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

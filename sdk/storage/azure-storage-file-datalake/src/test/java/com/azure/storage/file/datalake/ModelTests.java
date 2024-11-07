@@ -28,7 +28,7 @@ public class ModelTests {
     }
 
     @ParameterizedTest
-    @CsvSource({"--x,1", "-w-,2", "r--,4"})
+    @CsvSource({ "--x,1", "-w-,2", "r--,4" })
     public void rolePermissionsParseSymbolic(String symbol, int permission) {
         assertEquals(String.valueOf(permission), RolePermissions.parseSymbolic(symbol, false).toOctal());
     }
@@ -56,8 +56,10 @@ public class ModelTests {
     }
 
     @ParameterizedTest
-    @CsvSource({"rwxrwxrwT,false,true,true,true,false", "rwxrwxrwx,true,true,true,false,false",
-        "rwxrwxrw-,false,true,true,false,false"})
+    @CsvSource({
+        "rwxrwxrwT,false,true,true,true,false",
+        "rwxrwxrwx,true,true,true,false,false",
+        "rwxrwxrw-,false,true,true,false,false" })
     public void pathPermissionsParse(String symbol, boolean execute, boolean read, boolean write, boolean stickyBit,
         boolean extendedInfoInAcl) {
         PathPermissions permissions = PathPermissions.parseSymbolic(symbol);
@@ -95,14 +97,12 @@ public class ModelTests {
             // octal, owner, group, other, stickyBit
             Arguments.of("1421", RolePermissions.parseOctal(4), RolePermissions.parseOctal(2),
                 RolePermissions.parseOctal(1), true),
-            Arguments.of("0123", null, null, null, false)
-        );
+            Arguments.of("0123", null, null, null, false));
     }
 
     @Test
     public void pathAccessControlEntry() {
-        PathAccessControlEntry entry = new PathAccessControlEntry()
-            .setAccessControlType(AccessControlType.GROUP)
+        PathAccessControlEntry entry = new PathAccessControlEntry().setAccessControlType(AccessControlType.GROUP)
             .setPermissions(RolePermissions.parseOctal(0))
             .setDefaultScope(true)
             .setEntityId("a");
@@ -115,8 +115,7 @@ public class ModelTests {
         assertEquals("default:group:a:---", entry.toString());
         assertEquals(fromStr, entry);
 
-        entry = new PathAccessControlEntry()
-            .setAccessControlType(AccessControlType.MASK)
+        entry = new PathAccessControlEntry().setAccessControlType(AccessControlType.MASK)
             .setPermissions(RolePermissions.parseOctal(4))
             .setDefaultScope(false)
             .setEntityId(null);
@@ -125,8 +124,7 @@ public class ModelTests {
         assertEquals("mask::r--", entry.toString());
         assertEquals(fromStr, entry);
 
-        entry = new PathAccessControlEntry()
-            .setAccessControlType(AccessControlType.USER)
+        entry = new PathAccessControlEntry().setAccessControlType(AccessControlType.USER)
             .setPermissions(RolePermissions.parseOctal(2))
             .setDefaultScope(false)
             .setEntityId("b");
@@ -137,13 +135,11 @@ public class ModelTests {
     @Test
     public void pathAccessControlEntryList() {
         List<PathAccessControlEntry> acl = new ArrayList<>();
-        acl.add(new PathAccessControlEntry()
-            .setAccessControlType(AccessControlType.USER)
+        acl.add(new PathAccessControlEntry().setAccessControlType(AccessControlType.USER)
             .setPermissions(RolePermissions.parseOctal(1))
             .setDefaultScope(true)
             .setEntityId("c"));
-        acl.add(new PathAccessControlEntry()
-            .setAccessControlType(AccessControlType.OTHER)
+        acl.add(new PathAccessControlEntry().setAccessControlType(AccessControlType.OTHER)
             .setPermissions(RolePermissions.parseOctal(7))
             .setDefaultScope(false)
             .setEntityId(null));

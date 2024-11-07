@@ -26,8 +26,10 @@ public final class EndpointDependencyTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointDependency model = new EndpointDependency().withDomainName("czelpcirel")
-            .withEndpointDetails(Arrays.asList(new EndpointDetail().withIpAddress("enwabfatk").withPort(1305337055)
-                .withProtocol("bjhwuaan").withDescription("jos")));
+            .withEndpointDetails(Arrays.asList(new EndpointDetail().withIpAddress("enwabfatk")
+                .withPort(1305337055)
+                .withProtocol("bjhwuaan")
+                .withDescription("jos")));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
         Assertions.assertEquals("czelpcirel", model.domainName());
         Assertions.assertEquals("enwabfatk", model.endpointDetails().get(0).ipAddress());

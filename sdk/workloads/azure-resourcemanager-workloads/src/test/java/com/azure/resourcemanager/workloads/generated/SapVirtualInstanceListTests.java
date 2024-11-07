@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapVirtualInstanceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapVirtualInstanceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"ECC\",\"status\":\"Stopping\",\"health\":\"Unknown\",\"state\":\"DiscoveryInProgress\",\"provisioningState\":\"Failed\"},\"location\":\"jaeq\",\"tags\":{\"tnb\":\"jbasvmsmjqulngs\",\"wrljdouskc\":\"bkzgcwrwclx\"},\"id\":\"vkocrcjdkwtn\",\"name\":\"xbnjbiksq\",\"type\":\"gls\"},{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"Prod\",\"sapProduct\":\"S4HANA\",\"status\":\"SoftShutdown\",\"health\":\"Unhealthy\",\"state\":\"RegistrationComplete\",\"provisioningState\":\"Failed\"},\"location\":\"eebvmgxsab\",\"tags\":{\"c\":\"duuji\",\"dhkrwpdappdsbdk\":\"czdzev\",\"nhutjeltmrldhugj\":\"wrwjfeu\",\"ablgphuticndvk\":\"zdatqxhocdg\"},\"id\":\"ozwyiftyhxhuro\",\"name\":\"ftyxolniw\",\"type\":\"wcukjfkgiawxk\"},{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"Prod\",\"sapProduct\":\"ECC\",\"status\":\"Starting\",\"health\":\"Unknown\",\"state\":\"InfrastructureDeploymentFailed\",\"provisioningState\":\"Updating\"},\"location\":\"hsgcbacphejkot\",\"tags\":{\"zndlikwy\":\"gou\",\"bmadgak\":\"kgfg\"},\"id\":\"qsrxybzqqed\",\"name\":\"ytb\",\"type\":\"iqfouflmmnkz\"}],\"nextLink\":\"odmgl\"}")
-                .toObject(SapVirtualInstanceList.class);
+        SapVirtualInstanceList model = BinaryData.fromString(
+            "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"ECC\",\"status\":\"Stopping\",\"health\":\"Unknown\",\"state\":\"DiscoveryInProgress\",\"provisioningState\":\"Failed\"},\"location\":\"jaeq\",\"tags\":{\"tnb\":\"jbasvmsmjqulngs\",\"wrljdouskc\":\"bkzgcwrwclx\"},\"id\":\"vkocrcjdkwtn\",\"name\":\"xbnjbiksq\",\"type\":\"gls\"},{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"Prod\",\"sapProduct\":\"S4HANA\",\"status\":\"SoftShutdown\",\"health\":\"Unhealthy\",\"state\":\"RegistrationComplete\",\"provisioningState\":\"Failed\"},\"location\":\"eebvmgxsab\",\"tags\":{\"c\":\"duuji\",\"dhkrwpdappdsbdk\":\"czdzev\",\"nhutjeltmrldhugj\":\"wrwjfeu\",\"ablgphuticndvk\":\"zdatqxhocdg\"},\"id\":\"ozwyiftyhxhuro\",\"name\":\"ftyxolniw\",\"type\":\"wcukjfkgiawxk\"},{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"Prod\",\"sapProduct\":\"ECC\",\"status\":\"Starting\",\"health\":\"Unknown\",\"state\":\"InfrastructureDeploymentFailed\",\"provisioningState\":\"Updating\"},\"location\":\"hsgcbacphejkot\",\"tags\":{\"zndlikwy\":\"gou\",\"bmadgak\":\"kgfg\"},\"id\":\"qsrxybzqqed\",\"name\":\"ytb\",\"type\":\"iqfouflmmnkz\"}],\"nextLink\":\"odmgl\"}")
+            .toObject(SapVirtualInstanceList.class);
         Assertions.assertEquals("jaeq", model.value().get(0).location());
         Assertions.assertEquals("jbasvmsmjqulngs", model.value().get(0).tags().get("tnb"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
@@ -34,48 +32,27 @@ public final class SapVirtualInstanceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapVirtualInstanceList model =
-            new SapVirtualInstanceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SapVirtualInstanceInner()
-                                .withLocation("jaeq")
-                                .withTags(mapOf("tnb", "jbasvmsmjqulngs", "wrljdouskc", "bkzgcwrwclx"))
-                                .withIdentity(
-                                    new UserAssignedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withEnvironment(SapEnvironmentType.NON_PROD)
-                                .withSapProduct(SapProductType.ECC),
-                            new SapVirtualInstanceInner()
-                                .withLocation("eebvmgxsab")
-                                .withTags(
-                                    mapOf(
-                                        "c",
-                                        "duuji",
-                                        "dhkrwpdappdsbdk",
-                                        "czdzev",
-                                        "nhutjeltmrldhugj",
-                                        "wrwjfeu",
-                                        "ablgphuticndvk",
-                                        "zdatqxhocdg"))
-                                .withIdentity(
-                                    new UserAssignedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withEnvironment(SapEnvironmentType.PROD)
-                                .withSapProduct(SapProductType.S4HANA),
-                            new SapVirtualInstanceInner()
-                                .withLocation("hsgcbacphejkot")
-                                .withTags(mapOf("zndlikwy", "gou", "bmadgak", "kgfg"))
-                                .withIdentity(
-                                    new UserAssignedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withEnvironment(SapEnvironmentType.PROD)
-                                .withSapProduct(SapProductType.ECC)))
-                .withNextLink("odmgl");
+        SapVirtualInstanceList model = new SapVirtualInstanceList().withValue(Arrays.asList(
+            new SapVirtualInstanceInner().withLocation("jaeq")
+                .withTags(mapOf("tnb", "jbasvmsmjqulngs", "wrljdouskc", "bkzgcwrwclx"))
+                .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf()))
+                .withEnvironment(SapEnvironmentType.NON_PROD)
+                .withSapProduct(SapProductType.ECC),
+            new SapVirtualInstanceInner().withLocation("eebvmgxsab")
+                .withTags(mapOf("c", "duuji", "dhkrwpdappdsbdk", "czdzev", "nhutjeltmrldhugj", "wrwjfeu",
+                    "ablgphuticndvk", "zdatqxhocdg"))
+                .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf()))
+                .withEnvironment(SapEnvironmentType.PROD)
+                .withSapProduct(SapProductType.S4HANA),
+            new SapVirtualInstanceInner().withLocation("hsgcbacphejkot")
+                .withTags(mapOf("zndlikwy", "gou", "bmadgak", "kgfg"))
+                .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf()))
+                .withEnvironment(SapEnvironmentType.PROD)
+                .withSapProduct(SapProductType.ECC)))
+            .withNextLink("odmgl");
         model = BinaryData.fromObject(model).toObject(SapVirtualInstanceList.class);
         Assertions.assertEquals("jaeq", model.value().get(0).location());
         Assertions.assertEquals("jbasvmsmjqulngs", model.value().get(0).tags().get("tnb"));

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Update settings of OneAgent. */
+/**
+ * Update settings of OneAgent.
+ */
 public final class AutoUpdateSetting extends ExpandableStringEnum<AutoUpdateSetting> {
-    /** Static value ENABLED for AutoUpdateSetting. */
+    /**
+     * Static value ENABLED for AutoUpdateSetting.
+     */
     public static final AutoUpdateSetting ENABLED = fromString("ENABLED");
 
-    /** Static value DISABLED for AutoUpdateSetting. */
+    /**
+     * Static value DISABLED for AutoUpdateSetting.
+     */
     public static final AutoUpdateSetting DISABLED = fromString("DISABLED");
 
     /**
      * Creates a new instance of AutoUpdateSetting value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AutoUpdateSetting extends ExpandableStringEnum<AutoUpdateSett
 
     /**
      * Creates or finds a AutoUpdateSetting from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutoUpdateSetting.
      */
-    @JsonCreator
     public static AutoUpdateSetting fromString(String name) {
         return fromString(name, AutoUpdateSetting.class);
     }
 
     /**
      * Gets known AutoUpdateSetting values.
-     *
+     * 
      * @return known AutoUpdateSetting values.
      */
     public static Collection<AutoUpdateSetting> values() {

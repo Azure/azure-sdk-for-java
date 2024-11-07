@@ -47,10 +47,8 @@ public class ResourceIdentity {
      */
     public void validate() {
         if (userAssignedIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userAssignedIdentity in model ResourceIdentity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property userAssignedIdentity in model ResourceIdentity"));
         }
     }
 

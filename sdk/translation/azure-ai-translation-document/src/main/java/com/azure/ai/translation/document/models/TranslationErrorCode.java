@@ -5,7 +5,6 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class TranslationErrorCode extends ExpandableStringEnum<Translation
      * @return the corresponding TranslationErrorCode.
      */
     @Generated
-    @JsonCreator
     public static TranslationErrorCode fromString(String name) {
         return fromString(name, TranslationErrorCode.class);
     }

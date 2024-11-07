@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicableScheduleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicableScheduleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"denxau\",\"weeklyRecurrence\":{\"weekdays\":[\"kdk\",\"fmjnnawtqa\",\"pxuckpggq\",\"wey\"],\"time\":\"dhlisngwflqqmpi\"},\"dailyRecurrence\":{\"time\":\"w\"},\"hourlyRecurrence\":{\"minute\":578532092},\"timeZoneId\":\"xiw\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":975807918,\"webhookUrl\":\"asi\",\"emailRecipient\":\"tmkzjvkviirhgfgr\",\"notificationLocale\":\"dpgra\"},\"createdDate\":\"2021-03-02T16:22:17Z\",\"targetResourceId\":\"bglbyvict\",\"provisioningState\":\"brxkjzwr\",\"uniqueIdentifier\":\"ffm\"},\"location\":\"hkwfbkgozxwop\",\"tags\":{\"clnapxbiygnugjkn\":\"dpizq\"},\"id\":\"smfcttuxuuyilfl\",\"name\":\"oiquvrehmrnjhvs\",\"type\":\"jztczytqj\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"unfprnjletlxs\",\"weeklyRecurrence\":{\"weekdays\":[\"do\",\"ifamowazi\"],\"time\":\"knlqwzdvpiwhxqsz\"},\"dailyRecurrence\":{\"time\":\"aajquhuxylrj\"},\"hourlyRecurrence\":{\"minute\":1469986611},\"timeZoneId\":\"jbmzyospspsh\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":1546796808,\"webhookUrl\":\"mspbpssdfpp\",\"emailRecipient\":\"gt\",\"notificationLocale\":\"yujtvczkcnyx\"},\"createdDate\":\"2021-12-03T00:27:17Z\",\"targetResourceId\":\"njdxvglnkvxl\",\"provisioningState\":\"aglqivbgkcvkh\",\"uniqueIdentifier\":\"vuqd\"},\"location\":\"lvoniy\",\"tags\":{\"hjknidibg\":\"ubcpzgpxti\",\"ik\":\"jxgpnrhgovfg\",\"wjrmzvuporqzd\":\"mhha\",\"vxcnqmxqps\":\"uydzvk\"},\"id\":\"okmvkhlggd\",\"name\":\"bemzqkzszuwi\",\"type\":\"tglxx\"}},\"location\":\"ljfp\",\"tags\":{\"vpqcb\":\"crmnzhrgmqgjs\",\"s\":\"rmbodt\"},\"id\":\"qgvriibakcla\",\"name\":\"jfrnxousxauzlwv\",\"type\":\"gmwohqfzizvu\"}")
-                .toObject(ApplicableScheduleInner.class);
+        ApplicableScheduleInner model = BinaryData.fromString(
+            "{\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"denxau\",\"weeklyRecurrence\":{\"weekdays\":[\"kdk\",\"fmjnnawtqa\",\"pxuckpggq\",\"wey\"],\"time\":\"dhlisngwflqqmpi\"},\"dailyRecurrence\":{\"time\":\"w\"},\"hourlyRecurrence\":{\"minute\":578532092},\"timeZoneId\":\"xiw\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":975807918,\"webhookUrl\":\"asi\",\"emailRecipient\":\"tmkzjvkviirhgfgr\",\"notificationLocale\":\"dpgra\"},\"createdDate\":\"2021-03-02T16:22:17Z\",\"targetResourceId\":\"bglbyvict\",\"provisioningState\":\"brxkjzwr\",\"uniqueIdentifier\":\"ffm\"},\"location\":\"hkwfbkgozxwop\",\"tags\":{\"clnapxbiygnugjkn\":\"dpizq\"},\"id\":\"smfcttuxuuyilfl\",\"name\":\"oiquvrehmrnjhvs\",\"type\":\"jztczytqj\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"unfprnjletlxs\",\"weeklyRecurrence\":{\"weekdays\":[\"do\",\"ifamowazi\"],\"time\":\"knlqwzdvpiwhxqsz\"},\"dailyRecurrence\":{\"time\":\"aajquhuxylrj\"},\"hourlyRecurrence\":{\"minute\":1469986611},\"timeZoneId\":\"jbmzyospspsh\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":1546796808,\"webhookUrl\":\"mspbpssdfpp\",\"emailRecipient\":\"gt\",\"notificationLocale\":\"yujtvczkcnyx\"},\"createdDate\":\"2021-12-03T00:27:17Z\",\"targetResourceId\":\"njdxvglnkvxl\",\"provisioningState\":\"aglqivbgkcvkh\",\"uniqueIdentifier\":\"vuqd\"},\"location\":\"lvoniy\",\"tags\":{\"hjknidibg\":\"ubcpzgpxti\",\"ik\":\"jxgpnrhgovfg\",\"wjrmzvuporqzd\":\"mhha\",\"vxcnqmxqps\":\"uydzvk\"},\"id\":\"okmvkhlggd\",\"name\":\"bemzqkzszuwi\",\"type\":\"tglxx\"}},\"location\":\"ljfp\",\"tags\":{\"vpqcb\":\"crmnzhrgmqgjs\",\"s\":\"rmbodt\"},\"id\":\"qgvriibakcla\",\"name\":\"jfrnxousxauzlwv\",\"type\":\"gmwohqfzizvu\"}")
+            .toObject(ApplicableScheduleInner.class);
         Assertions.assertEquals("ljfp", model.location());
         Assertions.assertEquals("crmnzhrgmqgjs", model.tags().get("vpqcb"));
         Assertions.assertEquals("hkwfbkgozxwop", model.labVmsShutdown().location());
@@ -61,61 +59,40 @@ public final class ApplicableScheduleInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicableScheduleInner model =
-            new ApplicableScheduleInner()
-                .withLocation("ljfp")
-                .withTags(mapOf("vpqcb", "crmnzhrgmqgjs", "s", "rmbodt"))
-                .withLabVmsShutdown(
-                    new ScheduleInner()
-                        .withLocation("hkwfbkgozxwop")
-                        .withTags(mapOf("clnapxbiygnugjkn", "dpizq"))
-                        .withStatus(EnableStatus.ENABLED)
-                        .withTaskType("denxau")
-                        .withWeeklyRecurrence(
-                            new WeekDetails()
-                                .withWeekdays(Arrays.asList("kdk", "fmjnnawtqa", "pxuckpggq", "wey"))
-                                .withTime("dhlisngwflqqmpi"))
-                        .withDailyRecurrence(new DayDetails().withTime("w"))
-                        .withHourlyRecurrence(new HourDetails().withMinute(578532092))
-                        .withTimeZoneId("xiw")
-                        .withNotificationSettings(
-                            new NotificationSettings()
-                                .withStatus(EnableStatus.DISABLED)
-                                .withTimeInMinutes(975807918)
-                                .withWebhookUrl("asi")
-                                .withEmailRecipient("tmkzjvkviirhgfgr")
-                                .withNotificationLocale("dpgra"))
-                        .withTargetResourceId("bglbyvict"))
-                .withLabVmsStartup(
-                    new ScheduleInner()
-                        .withLocation("lvoniy")
-                        .withTags(
-                            mapOf(
-                                "hjknidibg",
-                                "ubcpzgpxti",
-                                "ik",
-                                "jxgpnrhgovfg",
-                                "wjrmzvuporqzd",
-                                "mhha",
-                                "vxcnqmxqps",
-                                "uydzvk"))
-                        .withStatus(EnableStatus.DISABLED)
-                        .withTaskType("unfprnjletlxs")
-                        .withWeeklyRecurrence(
-                            new WeekDetails()
-                                .withWeekdays(Arrays.asList("do", "ifamowazi"))
-                                .withTime("knlqwzdvpiwhxqsz"))
-                        .withDailyRecurrence(new DayDetails().withTime("aajquhuxylrj"))
-                        .withHourlyRecurrence(new HourDetails().withMinute(1469986611))
-                        .withTimeZoneId("jbmzyospspsh")
-                        .withNotificationSettings(
-                            new NotificationSettings()
-                                .withStatus(EnableStatus.DISABLED)
-                                .withTimeInMinutes(1546796808)
-                                .withWebhookUrl("mspbpssdfpp")
-                                .withEmailRecipient("gt")
-                                .withNotificationLocale("yujtvczkcnyx"))
-                        .withTargetResourceId("njdxvglnkvxl"));
+        ApplicableScheduleInner model = new ApplicableScheduleInner().withLocation("ljfp")
+            .withTags(mapOf("vpqcb", "crmnzhrgmqgjs", "s", "rmbodt"))
+            .withLabVmsShutdown(new ScheduleInner().withLocation("hkwfbkgozxwop")
+                .withTags(mapOf("clnapxbiygnugjkn", "dpizq"))
+                .withStatus(EnableStatus.ENABLED)
+                .withTaskType("denxau")
+                .withWeeklyRecurrence(
+                    new WeekDetails().withWeekdays(Arrays.asList("kdk", "fmjnnawtqa", "pxuckpggq", "wey"))
+                        .withTime("dhlisngwflqqmpi"))
+                .withDailyRecurrence(new DayDetails().withTime("w"))
+                .withHourlyRecurrence(new HourDetails().withMinute(578532092))
+                .withTimeZoneId("xiw")
+                .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.DISABLED)
+                    .withTimeInMinutes(975807918)
+                    .withWebhookUrl("asi")
+                    .withEmailRecipient("tmkzjvkviirhgfgr")
+                    .withNotificationLocale("dpgra"))
+                .withTargetResourceId("bglbyvict"))
+            .withLabVmsStartup(new ScheduleInner().withLocation("lvoniy")
+                .withTags(mapOf("hjknidibg", "ubcpzgpxti", "ik", "jxgpnrhgovfg", "wjrmzvuporqzd", "mhha", "vxcnqmxqps",
+                    "uydzvk"))
+                .withStatus(EnableStatus.DISABLED)
+                .withTaskType("unfprnjletlxs")
+                .withWeeklyRecurrence(
+                    new WeekDetails().withWeekdays(Arrays.asList("do", "ifamowazi")).withTime("knlqwzdvpiwhxqsz"))
+                .withDailyRecurrence(new DayDetails().withTime("aajquhuxylrj"))
+                .withHourlyRecurrence(new HourDetails().withMinute(1469986611))
+                .withTimeZoneId("jbmzyospspsh")
+                .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.DISABLED)
+                    .withTimeInMinutes(1546796808)
+                    .withWebhookUrl("mspbpssdfpp")
+                    .withEmailRecipient("gt")
+                    .withNotificationLocale("yujtvczkcnyx"))
+                .withTargetResourceId("njdxvglnkvxl"));
         model = BinaryData.fromObject(model).toObject(ApplicableScheduleInner.class);
         Assertions.assertEquals("ljfp", model.location());
         Assertions.assertEquals("crmnzhrgmqgjs", model.tags().get("vpqcb"));

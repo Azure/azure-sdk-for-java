@@ -21,7 +21,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = CollectionsClientBuilder.class)
 public final class CollectionsClient {
-    @Generated private final CollectionsImpl serviceClient;
+    @Generated
+    private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of CollectionsClient class.
@@ -133,8 +134,8 @@ public final class CollectionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateCollectionWithResponse(
-            String collectionName, BinaryData collection, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateCollectionWithResponse(String collectionName, BinaryData collection,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateCollectionWithResponse(collectionName, collection, requestOptions);
     }
 

@@ -13,11 +13,13 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuAvailability
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Check available SKUs.
-     *
+     * 
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
      * @param context The context to associate with this operation.
@@ -27,12 +29,12 @@ public interface ResourceProvidersClient {
      * @return check SKU availability result list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
-        String location, CheckSkuAvailabilityParameter parameters, Context context);
+    Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(String location,
+        CheckSkuAvailabilityParameter parameters, Context context);
 
     /**
      * Check available SKUs.
-     *
+     * 
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Check whether a domain is available.
-     *
+     * 
      * @param parameters Check Domain Availability parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,12 +56,12 @@ public interface ResourceProvidersClient {
      * @return domain availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
-        CheckDomainAvailabilityParameter parameters, Context context);
+    Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(CheckDomainAvailabilityParameter parameters,
+        Context context);
 
     /**
      * Check whether a domain is available.
-     *
+     * 
      * @param parameters Check Domain Availability parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

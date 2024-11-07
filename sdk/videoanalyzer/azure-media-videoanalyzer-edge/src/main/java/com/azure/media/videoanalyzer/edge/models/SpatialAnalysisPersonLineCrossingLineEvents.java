@@ -5,39 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SpatialAnalysisPersonLineCrossingLineEvents model. */
+/**
+ * The SpatialAnalysisPersonLineCrossingLineEvents model.
+ */
 @Fluent
-public final class SpatialAnalysisPersonLineCrossingLineEvents {
+public final class SpatialAnalysisPersonLineCrossingLineEvents
+    implements JsonSerializable<SpatialAnalysisPersonLineCrossingLineEvents> {
     /*
      * The named line.
      */
-    @JsonProperty(value = "line", required = true)
-    private NamedLineBase line;
+    private final NamedLineBase line;
 
     /*
      * The event configuration.
      */
-    @JsonProperty(value = "events")
     private List<SpatialAnalysisPersonLineCrossingEvent> events;
 
     /**
      * Creates an instance of SpatialAnalysisPersonLineCrossingLineEvents class.
-     *
+     * 
      * @param line the line value to set.
      */
-    @JsonCreator
-    public SpatialAnalysisPersonLineCrossingLineEvents(
-            @JsonProperty(value = "line", required = true) NamedLineBase line) {
+    public SpatialAnalysisPersonLineCrossingLineEvents(NamedLineBase line) {
         this.line = line;
     }
 
     /**
      * Get the line property: The named line.
-     *
+     * 
      * @return the line value.
      */
     public NamedLineBase getLine() {
@@ -46,7 +48,7 @@ public final class SpatialAnalysisPersonLineCrossingLineEvents {
 
     /**
      * Get the events property: The event configuration.
-     *
+     * 
      * @return the events value.
      */
     public List<SpatialAnalysisPersonLineCrossingEvent> getEvents() {
@@ -55,12 +57,61 @@ public final class SpatialAnalysisPersonLineCrossingLineEvents {
 
     /**
      * Set the events property: The event configuration.
-     *
+     * 
      * @param events the events value to set.
      * @return the SpatialAnalysisPersonLineCrossingLineEvents object itself.
      */
     public SpatialAnalysisPersonLineCrossingLineEvents setEvents(List<SpatialAnalysisPersonLineCrossingEvent> events) {
         this.events = events;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("line", this.line);
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisPersonLineCrossingLineEvents from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisPersonLineCrossingLineEvents if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisPersonLineCrossingLineEvents.
+     */
+    public static SpatialAnalysisPersonLineCrossingLineEvents fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean lineFound = false;
+            NamedLineBase line = null;
+            List<SpatialAnalysisPersonLineCrossingEvent> events = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("line".equals(fieldName)) {
+                    line = NamedLineBase.fromJson(reader);
+                    lineFound = true;
+                } else if ("events".equals(fieldName)) {
+                    events = reader.readArray(reader1 -> SpatialAnalysisPersonLineCrossingEvent.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (lineFound) {
+                SpatialAnalysisPersonLineCrossingLineEvents deserializedSpatialAnalysisPersonLineCrossingLineEvents
+                    = new SpatialAnalysisPersonLineCrossingLineEvents(line);
+                deserializedSpatialAnalysisPersonLineCrossingLineEvents.events = events;
+
+                return deserializedSpatialAnalysisPersonLineCrossingLineEvents;
+            }
+            throw new IllegalStateException("Missing required property: line");
+        });
     }
 }
