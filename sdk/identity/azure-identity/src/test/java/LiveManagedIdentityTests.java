@@ -2,21 +2,25 @@
 // Licensed under the MIT License.
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
 
 public class LiveManagedIdentityTests extends TestProxyTestBase {
 
@@ -70,9 +73,9 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String spClientId = configuration.get("IDENTITY_CLIENT_ID");
-        String secret = configuration.get("IDENTITY_CLIENT_SECRET");
-        String tenantId = configuration.get("IDENTITY_TENANT_ID");
+        String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String oidc = configuration.get("AZURE_OIDC_TOKEN");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String aksCluster = configuration.get("IDENTITY_AKS_CLUSTER_NAME");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
@@ -82,7 +85,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String azPath = runCommand(pathCommand, "az").trim();
         String kubectlPath = runCommand(pathCommand, "kubectl").trim();
 
-        runCommand(azPath, "login",  "--service-principal", "-u", spClientId, "-p", secret, "--tenant", tenantId);
+        runCommand(azPath, "login", "--federated-token", oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
         runCommand(azPath, "aks", "get-credentials", "--resource-group", resourceGroup, "--name", aksCluster,
             "--overwrite-existing");
@@ -91,7 +94,38 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         assertTrue(podOutput.contains(podName), "Pod name not found in the output");
 
         String output = runCommand(kubectlPath, "exec", "-it", podName, "--", "java", "-jar", "/identity-test.jar");
-        assertTrue(output.contains("Successfully retrieved managed identity tokens"), "Failed to get response from AKS");
+        assertTrue(output.contains("Successfully retrieved managed identity tokens"),
+            "Failed to get response from AKS");
+    }
+
+
+    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        }
+
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            AzurePipelinesCredential azurePipelinesCredential = new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build();
+
+            return trc -> azurePipelinesCredential.getToken(trc).subscribeOn(Schedulers.boundedElastic());
+        }
+        return null;
     }
 
     @Test
@@ -105,9 +139,9 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String spClientId = configuration.get("IDENTITY_CLIENT_ID");
-        String secret = configuration.get("IDENTITY_CLIENT_SECRET");
-        String tenantId = configuration.get("IDENTITY_TENANT_ID");
+        String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String oidc = configuration.get("AZURE_OIDC_TOKEN");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
         String vmName = configuration.get("IDENTITY_VM_NAME");
@@ -118,19 +152,19 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String azPath = runCommand(isWindows ? "where" : "which", "az").trim();
         azPath = isWindows ? extractAzCmdPath(azPath) : azPath;
 
-        runCommand(azPath, "login",  "--service-principal", "-u", spClientId, "-p", secret, "--tenant", tenantId);
+        runCommand(azPath, "login", "--federated-token", oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
 
-
-        String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name", storageAcccountName,
-            "--resource-group", resourceGroup, "--query", "[0].value", "--output", "tsv").trim();
+        String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name",
+            storageAcccountName, "--resource-group", resourceGroup, "--query", "[0].value", "--output", "tsv").trim();
 
         String expiry = LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String sasToken = runCommand(azPath, "storage", "blob", "generate-sas", "--account-name", storageAcccountName,
-            "--account-key", "\"" + storageKey + "\"", "--container-name", "vmcontainer", "--name", "testfile.jar", "--permissions", "r",
-            "--expiry", expiry, "--https-only", "--output", "tsv").trim();
+            "--account-key", "\"" + storageKey + "\"", "--container-name", "vmcontainer", "--name", "testfile.jar",
+            "--permissions", "r", "--expiry", expiry, "--https-only", "--output", "tsv").trim();
 
-        String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s", storageAcccountName, sasToken);
+        String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s",
+            storageAcccountName, sasToken);
         String script = String.format("curl \'%s\' -o ./testfile.jar && java -jar ./testfile.jar", vmBlob);
 
         System.out.println("Script: " + script);
@@ -138,8 +172,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String output = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script);
 
-        assertTrue(output.contains("Successfully retrieved managed identity tokens"),
-            "Failed to get response from VM");
+        assertTrue(output.contains("Successfully retrieved managed identity tokens"), "Failed to get response from VM");
     }
 
     @Test
@@ -151,15 +184,13 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String multiClientId = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_ID");
         String multiClientSecret = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET");
 
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .tenantId(multiTenantId)
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(multiTenantId)
             .clientId(multiClientId)
             .clientSecret(multiClientSecret)
             .build();
 
-
-        AccessToken accessToken = credential
-            .getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
+        AccessToken accessToken
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
 
         assertTrue(accessToken != null, "Failed to get access token");
     }
@@ -190,7 +221,6 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
             throw new RuntimeException(e);
         }
     }
-
 
     private String extractAzCmdPath(String output) {
         String[] lines = output.split("\\r?\\n");
