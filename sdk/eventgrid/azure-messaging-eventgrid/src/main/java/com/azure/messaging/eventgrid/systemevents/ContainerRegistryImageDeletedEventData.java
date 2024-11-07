@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -105,6 +106,9 @@ public final class ContainerRegistryImageDeletedEventData extends ContainerRegis
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -140,8 +144,8 @@ public final class ContainerRegistryImageDeletedEventData extends ContainerRegis
                 if ("id".equals(fieldName)) {
                     deserializedContainerRegistryImageDeletedEventData.setId(reader.getString());
                 } else if ("timestamp".equals(fieldName)) {
-                    deserializedContainerRegistryImageDeletedEventData.setTimestamp(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedContainerRegistryImageDeletedEventData.setTimestamp(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("action".equals(fieldName)) {
                     deserializedContainerRegistryImageDeletedEventData.setAction(reader.getString());
                 } else if ("location".equals(fieldName)) {

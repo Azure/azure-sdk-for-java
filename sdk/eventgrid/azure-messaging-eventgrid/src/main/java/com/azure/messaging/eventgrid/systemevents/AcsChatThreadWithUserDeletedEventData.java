@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -122,6 +123,9 @@ public final class AcsChatThreadWithUserDeletedEventData extends AcsChatThreadEv
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -161,8 +165,8 @@ public final class AcsChatThreadWithUserDeletedEventData extends AcsChatThreadEv
                 } else if ("threadId".equals(fieldName)) {
                     deserializedAcsChatThreadWithUserDeletedEventData.setThreadId(reader.getString());
                 } else if ("createTime".equals(fieldName)) {
-                    deserializedAcsChatThreadWithUserDeletedEventData.setCreateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsChatThreadWithUserDeletedEventData.setCreateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatThreadWithUserDeletedEventData
                         .setVersion(reader.getNullable(JsonReader::getLong));
@@ -170,8 +174,8 @@ public final class AcsChatThreadWithUserDeletedEventData extends AcsChatThreadEv
                     deserializedAcsChatThreadWithUserDeletedEventData.deletedByCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("deleteTime".equals(fieldName)) {
-                    deserializedAcsChatThreadWithUserDeletedEventData.deleteTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsChatThreadWithUserDeletedEventData.deleteTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

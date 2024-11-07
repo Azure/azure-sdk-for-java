@@ -16,6 +16,11 @@ import java.io.IOException;
 @Fluent
 public final class MediaJobOutputAsset extends MediaJobOutput {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.JobOutputAsset";
+
+    /*
      * Gets the Job output asset name.
      */
     private String assetName;
@@ -24,6 +29,16 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
      * Creates an instance of MediaJobOutputAsset class.
      */
     public MediaJobOutputAsset() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -82,14 +97,17 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Media.JobOutputAsset");
         jsonWriter.writeLongField("progress", getProgress());
         jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("label", getLabel());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeStringField("assetName", this.assetName);
         return jsonWriter.writeEndObject();
     }
@@ -100,8 +118,7 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MediaJobOutputAsset if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaJobOutputAsset.
      */
     public static MediaJobOutputAsset fromJson(JsonReader jsonReader) throws IOException {
@@ -111,14 +128,7 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Media.JobOutputAsset".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Media.JobOutputAsset'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("progress".equals(fieldName)) {
+                if ("progress".equals(fieldName)) {
                     deserializedMediaJobOutputAsset.setProgress(reader.getLong());
                 } else if ("state".equals(fieldName)) {
                     deserializedMediaJobOutputAsset.setState(MediaJobState.fromString(reader.getString()));
@@ -126,6 +136,8 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
                     deserializedMediaJobOutputAsset.setError(MediaJobError.fromJson(reader));
                 } else if ("label".equals(fieldName)) {
                     deserializedMediaJobOutputAsset.setLabel(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedMediaJobOutputAsset.odataType = reader.getString();
                 } else if ("assetName".equals(fieldName)) {
                     deserializedMediaJobOutputAsset.assetName = reader.getString();
                 } else {
