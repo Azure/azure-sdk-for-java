@@ -14,14 +14,15 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Vector Indexes spec for Azure CosmosDB service.
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class CosmosVectorIndexSpec {
 
-    private final JsonSerializable jsonSerializable;
     private String type;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(Constants.Properties.VECTOR_QUANTIZATION_SIZE_IN_BYTES)
     private Integer quantizationSizeInBytes;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer indexingSearchListSize;
+    private final JsonSerializable jsonSerializable;
 
     /**
      * Constructor
