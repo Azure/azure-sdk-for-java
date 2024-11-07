@@ -289,7 +289,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         CosmosVectorEmbedding embedding = new CosmosVectorEmbedding();
         embedding.setPath("/embedding");
         embedding.setDataType(CosmosVectorDataType.FLOAT32);
-        embedding.setDimensions(dimensions);
+        embedding.setEmbeddingDimensions(dimensions);
         embedding.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
         policy.setCosmosVectorEmbeddings(Collections.singletonList(embedding));
         return policy;
