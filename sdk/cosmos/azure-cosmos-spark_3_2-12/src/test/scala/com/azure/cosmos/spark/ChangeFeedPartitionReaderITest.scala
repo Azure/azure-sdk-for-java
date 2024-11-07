@@ -169,11 +169,14 @@ class ChangeFeedPartitionReaderITest
    "spark.cosmos.container" -> sourceContainer.getId(),
    "spark.cosmos.read.inferSchema.enabled" -> "false",
   )
-  val inputtedDocuments = 20
-  var lsn = 0L
+  var inputtedDocuments = 10
+  var lsn1 = 0L
+  var lsn2 = 0L
   for (_ <- 0 until inputtedDocuments) {
-   lsn = Math.max(ingestTestDocuments(sourceContainer, Random.nextInt()), lsn)
+   lsn1 = ingestTestDocuments(sourceContainer, 1)
+   lsn2 = ingestTestDocuments(sourceContainer, 2)
   }
+  inputtedDocuments *= 2
 
   val structs = Array(
    StructField("_rawBody", StringType, false),
@@ -187,8 +190,7 @@ class ChangeFeedPartitionReaderITest
   val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
   val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
   val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
-  val documentsAdded = 3
-  val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(lsn + documentsAdded)
+  val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(Math.max(lsn1, lsn2) + 1)
    , Some(continuationStateEncoded))
   val changeFeedPartitionReader = new ChangeFeedPartitionReader(
    cosmosInputPartition,
@@ -199,18 +201,29 @@ class ChangeFeedPartitionReaderITest
    diagnosticsConfig,
    ""
   )
+  var count = 0
   implicit val ec: ExecutionContext = ExecutionContext.global
   val future = Future {
    while (changeFeedPartitionReader.next()) {
     changeFeedPartitionReader.get()
+    count += 1
    }
   }
   sleep(2000)
   future.isCompleted shouldEqual false
-  for (_ <- 0 until 600) {
-   lsn = Math.max(ingestTestDocuments(sourceContainer, Random.nextInt()), lsn)
+  while (lsn1 != lsn2) {
+   if (lsn1 < lsn2) {
+    lsn1 = ingestTestDocuments(sourceContainer, 1)
+   } else {
+    lsn2 = ingestTestDocuments(sourceContainer, 2)
+   }
+   inputtedDocuments += 1
+  }
+  for (_ <- 0 until 15) {
+   ingestTestDocuments(sourceContainer, Random.nextInt())
   }
   future.isCompleted shouldEqual true
+  count shouldEqual inputtedDocuments + 2
 
  }
 
