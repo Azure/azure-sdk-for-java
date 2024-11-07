@@ -24,8 +24,7 @@ public final class StackFrameBuilder {
     }
 
     public void setAssembly(String assembly) {
-        data.setAssembly(
-            truncateTelemetry(assembly, MAX_ASSEMBLY_NAME_LENGTH, "StackFrame.assembly"));
+        data.setAssembly(truncateTelemetry(assembly, MAX_ASSEMBLY_NAME_LENGTH, "StackFrame.assembly"));
     }
 
     public void setFileName(String fileName) {
