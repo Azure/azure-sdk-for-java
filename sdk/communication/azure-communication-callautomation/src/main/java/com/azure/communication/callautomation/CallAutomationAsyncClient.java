@@ -202,7 +202,8 @@ public final class CallAutomationAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
             return azureCommunicationCallAutomationServiceInternal
-                .createCallWithResponseAsync(createCallRequestInternal, UUID.fromString(resourceUrl), OffsetDateTime.MAX )
+                .createCallWithResponseAsync(createCallRequestInternal, UUID.fromString(resourceUrl),
+                    OffsetDateTime.MAX)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync
@@ -314,29 +315,25 @@ public final class CallAutomationAsyncClient {
         return request;
     }
 
-    private com.azure.communication.callautomation.implementation.models.MediaStreamingOptions getMediaStreamingOptionsInternal(
-        MediaStreamingOptions mediaStreamingOptions) {
+    private com.azure.communication.callautomation.implementation.models.MediaStreamingOptions
+        getMediaStreamingOptionsInternal(MediaStreamingOptions mediaStreamingOptions) {
         return new com.azure.communication.callautomation.implementation.models.MediaStreamingOptions()
             .setTransportUrl(mediaStreamingOptions.getTransportUrl())
-            .setAudioChannelType(
-                MediaStreamingAudioChannelTypeInternal.fromString(
-                    mediaStreamingOptions.getAudioChannelType().toString()))
+            .setAudioChannelType(MediaStreamingAudioChannelTypeInternal
+                .fromString(mediaStreamingOptions.getAudioChannelType().toString()))
             .setContentType(
-                MediaStreamingContentTypeInternal.fromString(
-                    mediaStreamingOptions.getContentType().toString()))
+                MediaStreamingContentTypeInternal.fromString(mediaStreamingOptions.getContentType().toString()))
             .setTransportType(
-                MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingOptions.getTransportType().toString()))
+                MediaStreamingTransportTypeInternal.fromString(mediaStreamingOptions.getTransportType().toString()))
             .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled());
     }
 
-    private com.azure.communication.callautomation.implementation.models.TranscriptionOptions getTranscriptionOptionsInternal(
-        TranscriptionOptions transcriptionOptions) {
+    private com.azure.communication.callautomation.implementation.models.TranscriptionOptions
+        getTranscriptionOptionsInternal(TranscriptionOptions transcriptionOptions) {
         return new com.azure.communication.callautomation.implementation.models.TranscriptionOptions()
             .setTransportUrl(transcriptionOptions.getTransportUrl())
             .setTransportType(
-                TranscriptionTransportTypeInternal.fromString(
-                    transcriptionOptions.getTransportType().toString()))
+                TranscriptionTransportTypeInternal.fromString(transcriptionOptions.getTransportType().toString()))
             .setLocale(transcriptionOptions.getLocale())
             .setStartTranscription(transcriptionOptions.getStartTranscription())
             .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
@@ -396,13 +393,14 @@ public final class CallAutomationAsyncClient {
                 request.setMediaStreamingOptions(mediaStreamingConfigurationInternal);
             }
 
-            if (answerCallOptions.getTranscriptionOptions()!= null) {
+            if (answerCallOptions.getTranscriptionOptions() != null) {
                 com.azure.communication.callautomation.implementation.models.TranscriptionOptions transcriptionConfigurationInternal
                     = getTranscriptionOptionsInternal(answerCallOptions.getTranscriptionOptions());
                 request.setTranscriptionOptions(transcriptionConfigurationInternal);
             }
 
-            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, UUID.fromString(resourceUrl),OffsetDateTime.MAX )
+            return azureCommunicationCallAutomationServiceInternal
+                .answerCallWithResponseAsync(request, UUID.fromString(resourceUrl), OffsetDateTime.MAX)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync
@@ -470,7 +468,8 @@ public final class CallAutomationAsyncClient {
                 request.setCustomCallingContext(customContext);
             }
 
-            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request, UUID.fromString(resourceUrl), OffsetDateTime.MAX);
+            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
+                UUID.fromString(resourceUrl), OffsetDateTime.MAX);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -514,88 +513,91 @@ public final class CallAutomationAsyncClient {
                     CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
             }
 
-            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,UUID.fromString(resourceUrl), OffsetDateTime.MAX);
+            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,
+                UUID.fromString(resourceUrl), OffsetDateTime.MAX);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
+
     /**
- * Create a connect request.
- *
- * @param callLocator Call locator.
- * @param callbackUrl The call back url.
- * @throws HttpResponseException thrown if the request is rejected by server.
- * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
- * @return Result of connect request.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<ConnectCallResult> connectCall(CallLocator callLocator, String callbackUrl) {
-    return connectCallWithResponse(new ConnectCallOptions(callLocator, callbackUrl))
-        .flatMap(FluxUtil::toMono);
-}
-
-/**
- * Create a connect request.
- *
- * @param connectCallOptions Options for connect request.
- * @throws HttpResponseException thrown if the request is rejected by server.
- * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
- * @return Response with result of connect.
- */
-@ServiceMethod(returns = ReturnType.SINGLE)
-public Mono<Response<ConnectCallResult>> connectCallWithResponse(ConnectCallOptions connectCallOptions) {
-    return withContext(context -> connectCallWithResponseInternal(connectCallOptions, context));
-}
-
-Mono<Response<ConnectCallResult>> connectCallWithResponseInternal(ConnectCallOptions connectCallOptions,
-                                                                Context context) {
-    try {
-        context = context == null ? Context.NONE : context;
-
-        CallLocator callLocator = connectCallOptions.getCallLocator();
-        CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
-            .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
-
-        if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
-            callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
-        } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
-            callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
-        } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
-            callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
-        } else {
-            throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
-        }
-
-        ConnectRequest request = new ConnectRequest()
-            .setCallbackUri(connectCallOptions.getCallbackUrl())
-            .setCallLocator(callLocatorInternal);
-
-        if (connectCallOptions.getOperationContext() != null) {
-            request.setOperationContext(connectCallOptions.getOperationContext());
-        }
-
-        if (connectCallOptions.getCallIntelligenceOptions() != null && connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
-            CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
-            callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
-            request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
-        }
-
-        return azureCommunicationCallAutomationServiceInternal.connectWithResponseAsync(
-                request,UUID.fromString(resourceUrl),OffsetDateTime.MAX)
-            .map(response -> {
-                try {
-                    CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-                    return new SimpleResponse<>(response,
-                        new ConnectCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                            new CallConnection(callConnectionAsync), callConnectionAsync));
-                } catch (URISyntaxException e) {
-                    throw logger.logExceptionAsError(new RuntimeException(e));
-                }
-            });
-    } catch (RuntimeException ex) {
-        return monoError(logger, ex);
+    * Create a connect request.
+    *
+    * @param callLocator Call locator.
+    * @param callbackUrl The call back url.
+    * @throws HttpResponseException thrown if the request is rejected by server.
+    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+    * @return Result of connect request.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectCallResult> connectCall(CallLocator callLocator, String callbackUrl) {
+        return connectCallWithResponse(new ConnectCallOptions(callLocator, callbackUrl)).flatMap(FluxUtil::toMono);
     }
-}
+
+    /**
+     * Create a connect request.
+     *
+     * @param connectCallOptions Options for connect request.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConnectCallResult>> connectCallWithResponse(ConnectCallOptions connectCallOptions) {
+        return withContext(context -> connectCallWithResponseInternal(connectCallOptions, context));
+    }
+
+    Mono<Response<ConnectCallResult>> connectCallWithResponseInternal(ConnectCallOptions connectCallOptions,
+        Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            CallLocator callLocator = connectCallOptions.getCallLocator();
+            CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
+                .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
+
+            if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
+                callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
+                callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
+                callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
+            } else {
+                throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            }
+
+            ConnectRequest request = new ConnectRequest().setCallbackUri(connectCallOptions.getCallbackUrl())
+                .setCallLocator(callLocatorInternal);
+
+            if (connectCallOptions.getOperationContext() != null) {
+                request.setOperationContext(connectCallOptions.getOperationContext());
+            }
+
+            if (connectCallOptions.getCallIntelligenceOptions() != null
+                && connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+                CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
+                callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
+                    connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+                request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
+            }
+
+            return azureCommunicationCallAutomationServiceInternal
+                .connectWithResponseAsync(request, UUID.fromString(resourceUrl), OffsetDateTime.MAX)
+                .map(response -> {
+                    try {
+                        CallConnectionAsync callConnectionAsync
+                            = getCallConnectionAsync(response.getValue().getCallConnectionId());
+                        return new SimpleResponse<>(response,
+                            new ConnectCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                    } catch (URISyntaxException e) {
+                        throw logger.logExceptionAsError(new RuntimeException(e));
+                    }
+                });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
     //endregion
 
     //region Mid-call Actions

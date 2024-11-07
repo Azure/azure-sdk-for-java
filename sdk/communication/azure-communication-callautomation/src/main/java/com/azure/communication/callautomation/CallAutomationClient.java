@@ -3,12 +3,17 @@
 
 package com.azure.communication.callautomation;
 
+import java.util.List;
+
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
+import com.azure.communication.callautomation.models.CallLocator;
+import com.azure.communication.callautomation.models.ConnectCallOptions;
+import com.azure.communication.callautomation.models.ConnectCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
-import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -16,11 +21,9 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.exception.HttpResponseException;
-
-import java.util.List;
 
 /**
  * Synchronous client that supports calling server operations.
@@ -193,6 +196,35 @@ public final class CallAutomationClient {
     public Response<Void> rejectCallWithResponse(RejectCallOptions rejectCallOptions, Context context) {
         return callAutomationAsyncClient.rejectCallWithResponseInternal(rejectCallOptions, context).block();
     }
+
+    /**
+    * Create a connect request
+    *
+    * @param callLocator call locator.
+    * @param callbackUrl The call back url for receiving events.
+    * @throws HttpResponseException thrown if the request is rejected by server.
+    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+    * @return Result of connect.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectCallResult connectCall(CallLocator callLocator, String callbackUrl) {
+        return callAutomationAsyncClient.connectCall(callLocator, callbackUrl).block();
+    }
+
+    /**
+     * Create a connect request.
+     *
+     * @param connectCallOptions Options for connect request.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectCallResult> connectCallWithResponse(ConnectCallOptions connectCallOptions, Context context) {
+        return callAutomationAsyncClient.connectCallWithResponseInternal(connectCallOptions, context).block();
+    }
+
     //endregion
 
     //region Mid-call Actions

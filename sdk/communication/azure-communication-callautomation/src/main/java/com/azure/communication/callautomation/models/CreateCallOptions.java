@@ -30,7 +30,7 @@ public final class CreateCallOptions {
      */
     private String operationContext;
 
-   /**
+    /**
      * Media Streaming Configuration.
      */
     private MediaStreamingOptions mediaStreamingOptions;
@@ -67,7 +67,6 @@ public final class CreateCallOptions {
     public TranscriptionOptions getTranscriptionOptions() {
         return transcriptionOptions;
     }
-
 
     /**
      * Set the operationContext: A customer set value used to track the answering of a call.

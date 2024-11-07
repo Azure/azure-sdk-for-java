@@ -3,6 +3,13 @@
 
 package com.azure.communication.callautomation;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.SendDtmfTonesResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
@@ -23,8 +30,10 @@ import com.azure.communication.callautomation.implementation.models.SendDtmfTone
 import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
 import com.azure.communication.callautomation.implementation.models.StartHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StartMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
@@ -47,7 +56,9 @@ import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
+import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -58,16 +69,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
-
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.core.util.logging.ClientLogger;
+
+import reactor.core.publisher.Mono;
 
 /**
  * CallContent.
@@ -625,7 +631,9 @@ public final class CallMediaAsync {
                 .setOperationContext(options.getOperationContext())
                 .setOperationCallbackUri(options.getOperationCallbackUrl());
 
-            return contentsInternal.sendDtmfTonesWithResponseAsync(callConnectionId, requestInternal, context)
+            return contentsInternal
+                .sendDtmfTonesWithResponseAsync(callConnectionId, requestInternal, UUID.fromString(callConnectionId),
+                    OffsetDateTime.now())
                 .map(response -> new SimpleResponse<>(response,
                     SendDtmfTonesResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException e) {
@@ -947,4 +955,72 @@ public final class CallMediaAsync {
         }
     }
 
+    /**
+     * Starts media streaming in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startMediaStreaming() {
+        return startMediaStreamingWithResponse(null).then();
+    }
+
+    /**
+     * Starts media streaming in the call with options.
+     *
+     * @param options Options for the Start media streaming operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startMediaStreamingWithResponse(StartMediaStreamingOptions options) {
+        return withContext(context -> startMediaStreamingWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> startMediaStreamingWithResponseInternal(StartMediaStreamingOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StartMediaStreamingRequest request = new StartMediaStreamingRequest();
+            if (options != null) {
+                request.setOperationCallbackUri(options.getOperationCallbackUrl());
+                request.setOperationContext(options.getOperationContext());
+            }
+            return contentsInternal.startMediaStreamingWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Stops media streaming in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopMediaStreaming() {
+        return stopMediaStreamingWithResponse(null).then();
+    }
+
+    /**
+     * Stops media streaming in the call with options.
+     *
+     * @param options Options for the Stop media streaming operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopMediaStreamingWithResponse(StopMediaStreamingOptions options) {
+        return withContext(context -> stopMediaStreamingWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> stopMediaStreamingWithResponseInternal(StopMediaStreamingOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StopMediaStreamingRequest request = new StopMediaStreamingRequest();
+            if (options != null) {
+                request.setOperationCallbackUri(options.getOperationCallbackUrl());
+            }
+            return contentsInternal.stopMediaStreamingWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 }

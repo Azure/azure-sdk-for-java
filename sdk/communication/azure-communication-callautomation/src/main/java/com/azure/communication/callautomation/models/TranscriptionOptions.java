@@ -94,7 +94,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     public boolean getStartTranscription() {
         return this.startTranscription;
     }
-    
+
     /**
      * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
      * 

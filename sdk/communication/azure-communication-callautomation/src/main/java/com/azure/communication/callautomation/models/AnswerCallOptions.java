@@ -87,12 +87,12 @@ public final class AnswerCallOptions {
         return operationContext;
     }
 
-     /**
-     * Set the transcription configuration.
-     *
-     * @param transcriptionOptions The transcription options.
-     * @return the AnswerCallOptions object itself.
-     */
+    /**
+    * Set the transcription configuration.
+    *
+    * @param transcriptionOptions The transcription options.
+    * @return the AnswerCallOptions object itself.
+    */
     public AnswerCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;

@@ -3,26 +3,28 @@
 
 package com.azure.communication.callautomation;
 
+import java.util.List;
+
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.HoldOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
+import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
-import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.exception.HttpResponseException;
-
-import java.util.List;
 
 /**
  * CallContent.
@@ -374,5 +376,45 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateTranscriptionWithResponse(String locale, Context context) {
         return callMediaAsync.updateTranscriptionWithResponseInternal(locale, context).block();
+    }
+
+    /**
+    * Starts media streaming in the call.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startMediaStreaming() {
+        callMediaAsync.startMediaStreaming().block();
+    }
+
+    /**
+     * Starts media streaming in the call.
+     *
+     * @param options Options for the start media streaming operation.
+     * @param context Context
+     * @return Response for successful start transcription request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startMediaStreamingWithResponse(StartMediaStreamingOptions options, Context context) {
+        return callMediaAsync.startMediaStreamingWithResponseInternal(options, context).block();
+    }
+
+    /**
+    * Stop media streaming in the call.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopMediaStreaming() {
+        callMediaAsync.stopMediaStreaming().block();
+    }
+
+    /**
+     * Stop media streaming in the call.
+     *
+     * @param options Options for the stop media streaming operation.
+     * @param context Context
+     * @return Response for successful stop transcription request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopMediaStreamingWithResponse(StopMediaStreamingOptions options, Context context) {
+        return callMediaAsync.stopMediaStreamingWithResponseInternal(options, context).block();
     }
 }
