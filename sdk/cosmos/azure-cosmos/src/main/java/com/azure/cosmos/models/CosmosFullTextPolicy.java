@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Full Text Search Policy
  */
+@Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class CosmosFullTextPolicy {
     @JsonProperty(Constants.Properties.DEFAULT_LANGUAGE)
@@ -22,6 +24,7 @@ public final class CosmosFullTextPolicy {
     /**
      * Constructor
      */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosFullTextPolicy() {
     }
 
@@ -30,6 +33,7 @@ public final class CosmosFullTextPolicy {
      *
      * @return the default language for cosmosFullText.
      */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -39,6 +43,7 @@ public final class CosmosFullTextPolicy {
      * @param defaultLanguage the default language for cosmosFullText.
      * @return CosmosFullTextPolicy
      */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosFullTextPolicy setDefaultLanguage(String defaultLanguage) {
         this.defaultLanguage = defaultLanguage;
         return this;
@@ -48,6 +53,7 @@ public final class CosmosFullTextPolicy {
      * Gets the paths for cosmosFulltext.
      * @return the paths for cosmosFulltext.
      */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<CosmosFullTextPath> getPaths() {
         return paths;
     }
@@ -57,6 +63,7 @@ public final class CosmosFullTextPolicy {
      * @param paths the paths for cosmosFulltext.
      * @return CosmosFullTextPolicy
      */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosFullTextPolicy setPaths(List<CosmosFullTextPath> paths) {
         for (CosmosFullTextPath cosmosFullTextPath : paths) {
             if (cosmosFullTextPath.getLanguage().isEmpty()) {
