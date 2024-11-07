@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 /**
  * Represents cosmos full text index of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-public class CosmosFullTextIndex {
+public final class CosmosFullTextIndex {
     private final JsonSerializable jsonSerializable;
 
     /**

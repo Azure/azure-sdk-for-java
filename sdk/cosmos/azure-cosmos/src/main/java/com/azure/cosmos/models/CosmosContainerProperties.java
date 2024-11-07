@@ -370,7 +370,7 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Gets the Full Test Policy containing paths for full text search and the language specification for each path.
+     * Gets the Full Text Policy containing paths for full text search and the language specification for each path.
      * It also contains the default language to be used.
      *
      * @return the FullTextPolicy
@@ -380,7 +380,7 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Gets the Full Test Policy containing paths for full text search and the language specification for each path.
+     * Gets the Full Text Policy containing paths for full text search and the language specification for each path.
      * It also contains the default language to be used.
      *
      * @param value the FullTextPolicy.

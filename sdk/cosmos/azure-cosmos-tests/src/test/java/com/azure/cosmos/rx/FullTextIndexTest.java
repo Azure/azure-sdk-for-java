@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ConsistencyLevel;
@@ -35,7 +38,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
-@Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
+@Ignore("TODO: Ignore these test cases until the public emulator with full text is released.")
 public class FullTextIndexTest extends TestSuiteBase{
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
@@ -46,14 +49,14 @@ public class FullTextIndexTest extends TestSuiteBase{
     private static final String DEFAULT_LANGUAGE = "en-US";
 
 
-    protected static Logger logger = LoggerFactory.getLogger(VectorIndexTest.class.getSimpleName());
+    protected static Logger logger = LoggerFactory.getLogger(FullTextIndexTest.class);
     private final ObjectMapper simpleObjectMapper = Utils.getSimpleObjectMapper();
     private final String databaseId = CosmosDatabaseForTest.generateId();
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
-    public void before_VectorIndexTest() {
+    public void before_FullTextIndexTest() {
         // set up the client
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)

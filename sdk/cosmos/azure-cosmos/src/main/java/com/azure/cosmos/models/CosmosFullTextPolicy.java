@@ -13,12 +13,11 @@ import java.util.List;
  * Full Text Search Policy
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CosmosFullTextPolicy {
+public final class CosmosFullTextPolicy {
     @JsonProperty(Constants.Properties.DEFAULT_LANGUAGE)
     private String defaultLanguage;
     @JsonProperty(Constants.Properties.FULL_TEXT_PATHS)
     private List<CosmosFullTextPath> paths;
-//    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor

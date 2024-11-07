@@ -319,7 +319,7 @@ public final class IndexingPolicy {
      */
     public List<CosmosFullTextIndex> getCosmosFullTextIndexes() {
         if (this.cosmosFullTextIndexes == null) {
-            this.cosmosFullTextIndexes = this.jsonSerializable.getList(Constants.Properties.FULL_TEXT_SEARCH_PATHS, CosmosFullTextIndex.class);
+            this.cosmosFullTextIndexes = this.jsonSerializable.getList(Constants.Properties.FULL_TEXT_INDEXES, CosmosFullTextIndex.class);
 
             if (this.cosmosFullTextIndexes == null) {
                 this.cosmosFullTextIndexes = new ArrayList<CosmosFullTextIndex>();
@@ -337,7 +337,7 @@ public final class IndexingPolicy {
      */
     public IndexingPolicy setCosmosFullTextIndexes(List<CosmosFullTextIndex> cosmosFullTextIndexes) {
         this.cosmosFullTextIndexes = cosmosFullTextIndexes;
-        this.jsonSerializable.set(Constants.Properties.FULL_TEXT_SEARCH_PATHS, cosmosFullTextIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.FULL_TEXT_INDEXES, cosmosFullTextIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 

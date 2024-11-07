@@ -121,7 +121,7 @@ public final class Constants {
         public static final String TYPES = "types";
 
         // Full text search
-        public static final String FULL_TEXT_SEARCH_PATHS = "fullTextIndexes";
+        public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
         public static final String DEFAULT_LANGUAGE = "defaultLanguage";
         public static final String LANGUAGE = "language";
         public static final String FULL_TEXT_POLICY = "fullTextPolicy";

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Path settings within {@link CosmosFullTextPolicy}
  */
-public class CosmosFullTextPath {
+public final class CosmosFullTextPath {
     @JsonProperty(Constants.Properties.PATH)
     private String path;
     @JsonProperty(Constants.Properties.LANGUAGE)
