@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
@@ -204,7 +207,7 @@ class ChangeFeedPartitionReaderITest
   }
   sleep(2000)
   future.isCompleted shouldEqual false
-  for (_ <- 0 until 25) {
+  for (_ <- 0 until 600) {
    lsn = Math.max(ingestTestDocuments(sourceContainer, Random.nextInt()), lsn)
   }
   future.isCompleted shouldEqual true

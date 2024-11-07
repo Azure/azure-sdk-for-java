@@ -69,6 +69,7 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                         databaseAccountName,
                         databaseName,
                         new SqlDatabaseCreateUpdateParameters()
+                            .withLocation("")
                             .withResource(new SqlDatabaseResource().withId(databaseName))
                             .withOptions(getThroughputCreateUpdateOption(metaData))
                     ).asScala
@@ -436,9 +437,11 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                 .equalsIgnoreCase(finalThroughputProperty.property())) {
 
                 new ThroughputSettingsUpdateParameters()
+                  .withLocation("")
                   .withResource(new ThroughputSettingsResource().withThroughput(finalThroughputProperty.value().toInt))
               } else {
                 new ThroughputSettingsUpdateParameters()
+                  .withLocation("")
                   .withResource(new ThroughputSettingsResource()
                     .withAutoscaleSettings(
                       new AutoscaleSettingsResource()
@@ -486,9 +489,11 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
           .equalsIgnoreCase(finalThroughputProperty.property())) {
 
           new ThroughputSettingsUpdateParameters()
+            .withLocation("")
             .withResource(new ThroughputSettingsResource().withThroughput(finalThroughputProperty.value().toInt))
         } else {
           new ThroughputSettingsUpdateParameters()
+            .withLocation("")
             .withResource(new ThroughputSettingsResource()
               .withAutoscaleSettings(
                 new AutoscaleSettingsResource()
