@@ -181,7 +181,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [log4j]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/blob/9a7344eeb44525dfc83df3a1bd59460b8a7d93c6/opentelemetry-api/exporter/TrackTrace/Log4j2/src/main/resources/log4j2.xml#L16
 [logback]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/blob/9a7344eeb44525dfc83df3a1bd59460b8a7d93c6/opentelemetry-api/exporter/TrackTrace/Logback/src/main/resources/logback.xml#L22
-logging_otel_sdk]: https://opentelemetry.io/docs/languages/java/sdk/#internal-logging
+[logging_otel_sdk]: https://opentelemetry.io/docs/languages/java/sdk/#internal-logging
 [opentelemetry_specification]: https://github.com/open-telemetry/opentelemetry-specification
 [application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
 [application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
