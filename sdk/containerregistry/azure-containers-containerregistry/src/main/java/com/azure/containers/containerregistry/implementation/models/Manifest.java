@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Returns the requested manifest file. */
+/**
+ * Returns the requested manifest file.
+ */
 @Fluent
 public class Manifest implements JsonSerializable<Manifest> {
     /*
@@ -19,13 +21,15 @@ public class Manifest implements JsonSerializable<Manifest> {
      */
     private Integer schemaVersion;
 
-    /** Creates an instance of Manifest class. */
+    /**
+     * Creates an instance of Manifest class.
+     */
     public Manifest() {
     }
 
     /**
      * Get the schemaVersion property: Schema version.
-     *
+     * 
      * @return the schemaVersion value.
      */
     public Integer getSchemaVersion() {
@@ -34,7 +38,7 @@ public class Manifest implements JsonSerializable<Manifest> {
 
     /**
      * Set the schemaVersion property: Schema version.
-     *
+     * 
      * @param schemaVersion the schemaVersion value to set.
      * @return the Manifest object itself.
      */
@@ -43,6 +47,9 @@ public class Manifest implements JsonSerializable<Manifest> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -52,10 +59,10 @@ public class Manifest implements JsonSerializable<Manifest> {
 
     /**
      * Reads an instance of Manifest from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Manifest if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the Manifest.
      */
     public static Manifest fromJson(JsonReader jsonReader) throws IOException {

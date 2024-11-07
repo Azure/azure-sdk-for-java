@@ -1,20 +1,30 @@
-# Microsoft.Azure.Attestation
+# Azure Attestation for Java
 
-## Local copy of the swagger document
+> see https://aka.ms/autorest
 
-A local copy of the official swagger documents are stored in this directory for convenience and testing purposes. Please make sure that you do not use these swagger documents for official code generation purposes.
+This is the AutoRest configuration file for Attestation.
 
-## Official swagger document
+---
+## Getting Started
+To build the SDK for Attestation, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
 
-The official swagger specification for Microsoft Azure Attestation can be found [here](https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/attestation/data-plane/Microsoft.Attestation/stable/2020-10-01/attestation.json).
+> `autorest`
 
-## Code generation
+To see additional help and options, run:
 
-Run `generate.ps1` in this directory to generate the code.
+> `autorest --help`
 
-## AutoRest Configuration
+### Setup
+```ps
+npm install -g autorest
+```
 
-> see <https://aka.ms/autorest>
+### Generation
+```ps
+cd <swagger-folder>
+autorest
+```
 
 ### Code generation settings
 
@@ -23,7 +33,7 @@ tag: package-2020-10-01
 require:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/attestation/data-plane/readme.md
 java: true
-use: '@autorest/java@4.1.27'
+use: '@autorest/java@4.1.39'
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.security.attestation

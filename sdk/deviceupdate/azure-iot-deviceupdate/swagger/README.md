@@ -2,25 +2,33 @@
 
 > see https://aka.ms/autorest
 
+This is the AutoRest configuration file for Device Update for IoT Hub.
+
+---
+## Getting Started
+To build the SDK for Device Update for IoT Hub, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --java --use=C:/work/autorest.java
+autorest
 ```
 
 ## Generate autorest code
 ```yaml
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.39'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/stable/2022-10-01/deviceupdate.json
 java: true
 output-folder: ./

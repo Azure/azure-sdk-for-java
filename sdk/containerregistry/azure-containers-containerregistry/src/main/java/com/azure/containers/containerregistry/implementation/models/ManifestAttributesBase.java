@@ -8,16 +8,19 @@ import com.azure.containers.containerregistry.models.ArtifactArchitecture;
 import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
-/** Manifest details. */
+/**
+ * Manifest details.
+ */
 @Fluent
 public class ManifestAttributesBase implements JsonSerializable<ManifestAttributesBase> {
     /*
@@ -81,13 +84,15 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      */
     private Boolean readEnabled;
 
-    /** Creates an instance of ManifestAttributesBase class. */
+    /**
+     * Creates an instance of ManifestAttributesBase class.
+     */
     public ManifestAttributesBase() {
     }
 
     /**
      * Get the digest property: Manifest.
-     *
+     * 
      * @return the digest value.
      */
     public String getDigest() {
@@ -96,7 +101,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the digest property: Manifest.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -107,7 +112,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the sizeInBytes property: Image size.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long getSizeInBytes() {
@@ -116,7 +121,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the sizeInBytes property: Image size.
-     *
+     * 
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -127,7 +132,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the createdOn property: Created time.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
@@ -136,7 +141,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the createdOn property: Created time.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -147,7 +152,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the lastUpdatedOn property: Last update time.
-     *
+     * 
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime getLastUpdatedOn() {
@@ -156,7 +161,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the lastUpdatedOn property: Last update time.
-     *
+     * 
      * @param lastUpdatedOn the lastUpdatedOn value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -167,7 +172,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the architecture property: CPU architecture.
-     *
+     * 
      * @return the architecture value.
      */
     public ArtifactArchitecture getArchitecture() {
@@ -176,7 +181,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the architecture property: CPU architecture.
-     *
+     * 
      * @param architecture the architecture value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -187,7 +192,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the operatingSystem property: Operating system.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public ArtifactOperatingSystem getOperatingSystem() {
@@ -196,7 +201,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the operatingSystem property: Operating system.
-     *
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -208,7 +213,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
     /**
      * Get the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
      * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
-     *
+     * 
      * @return the relatedArtifacts value.
      */
     public List<ArtifactManifestPlatform> getRelatedArtifacts() {
@@ -218,7 +223,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
     /**
      * Set the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
      * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
-     *
+     * 
      * @param relatedArtifacts the relatedArtifacts value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -229,7 +234,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the tags property: List of tags.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> getTags() {
@@ -238,7 +243,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the tags property: List of tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -249,7 +254,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the deleteEnabled property: Delete enabled.
-     *
+     * 
      * @return the deleteEnabled value.
      */
     public Boolean isDeleteEnabled() {
@@ -258,7 +263,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the deleteEnabled property: Delete enabled.
-     *
+     * 
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -269,7 +274,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the writeEnabled property: Write enabled.
-     *
+     * 
      * @return the writeEnabled value.
      */
     public Boolean isWriteEnabled() {
@@ -278,7 +283,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the writeEnabled property: Write enabled.
-     *
+     * 
      * @param writeEnabled the writeEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -289,7 +294,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the listEnabled property: List enabled.
-     *
+     * 
      * @return the listEnabled value.
      */
     public Boolean isListEnabled() {
@@ -298,7 +303,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the listEnabled property: List enabled.
-     *
+     * 
      * @param listEnabled the listEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -309,7 +314,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Get the readEnabled property: Read enabled.
-     *
+     * 
      * @return the readEnabled value.
      */
     public Boolean isReadEnabled() {
@@ -318,7 +323,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Set the readEnabled property: Read enabled.
-     *
+     * 
      * @param readEnabled the readEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
@@ -327,15 +332,20 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("digest", this.digest);
-        jsonWriter.writeStringField("createdTime", Objects.toString(this.createdOn, null));
-        jsonWriter.writeStringField("lastUpdateTime", Objects.toString(this.lastUpdatedOn, null));
+        jsonWriter.writeStringField("createdTime",
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeStringField("lastUpdateTime",
+            this.lastUpdatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedOn));
         jsonWriter.writeNumberField("imageSize", this.sizeInBytes);
-        jsonWriter.writeStringField("architecture", Objects.toString(this.architecture, null));
-        jsonWriter.writeStringField("os", Objects.toString(this.operatingSystem, null));
+        jsonWriter.writeStringField("architecture", this.architecture == null ? null : this.architecture.toString());
+        jsonWriter.writeStringField("os", this.operatingSystem == null ? null : this.operatingSystem.toString());
         jsonWriter.writeArrayField("references", this.relatedArtifacts, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeString(element));
         if (deleteEnabled != null || writeEnabled != null || listEnabled != null || readEnabled != null) {
@@ -351,10 +361,10 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
 
     /**
      * Reads an instance of ManifestAttributesBase from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ManifestAttributesBase if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ManifestAttributesBase.
      */
@@ -368,11 +378,11 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
                 if ("digest".equals(fieldName)) {
                     deserializedManifestAttributesBase.digest = reader.getString();
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedManifestAttributesBase.createdOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedManifestAttributesBase.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    deserializedManifestAttributesBase.lastUpdatedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedManifestAttributesBase.lastUpdatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("imageSize".equals(fieldName)) {
                     deserializedManifestAttributesBase.sizeInBytes = reader.getNullable(JsonReader::getLong);
                 } else if ("architecture".equals(fieldName)) {
