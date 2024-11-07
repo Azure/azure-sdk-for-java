@@ -195,7 +195,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets The ID of the target subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -213,7 +213,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -231,7 +231,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -249,7 +249,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -267,7 +267,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -279,12 +279,11 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Builds an instance of AzureMonitorMetricsDataAPI with the provided parameters.
-     * 
+     *
      * @return an instance of AzureMonitorMetricsDataAPI.
      */
     @Generated
     public MonitorManagementClientImpl buildClient() {
-        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
         String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
@@ -293,13 +292,6 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
         MonitorManagementClientImpl client = new MonitorManagementClientImpl(localPipeline, localSerializerAdapter,
             this.subscriptionId, localHost, localApiVersion);
         return client;
-    }
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(subscriptionId, "'subscriptionId' cannot be null.");
     }
 
     @Generated
