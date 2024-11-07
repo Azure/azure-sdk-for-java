@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -84,7 +85,9 @@ public final class CosmosVectorEmbedding {
      *
      * @return dimensions
      */
-    public Integer getDimensions() {
+    //  Added this because JsonSerializer was serializing both dimensions and embeddingDimensions
+    @JsonIgnore
+    public Integer getEmbeddingDimensions() {
         return dimensions;
     }
 
@@ -94,14 +97,33 @@ public final class CosmosVectorEmbedding {
      * @param dimensions the dimensions for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
-    public CosmosVectorEmbedding setDimensions(Integer dimensions) {
+    //  Added this because JsonSerializer was serializing both dimensions and embeddingDimensions
+    @JsonIgnore
+    public CosmosVectorEmbedding setEmbeddingDimensions(Integer dimensions) {
+        checkNotNull(dimensions, "dimensions cannot be null");
+        if (dimensions < 1) {
+            throw new IllegalArgumentException("Dimensions for the embedding has to be a int value greater than 0 " +
+                "for the vector embedding policy");
+        }
+
+        this.dimensions = dimensions;
+        return this;
+    }
+
+    @Deprecated
+    public Long getDimensions() {
+        return Long.valueOf(dimensions);
+    }
+
+    @Deprecated
+    public CosmosVectorEmbedding setDimensions(Long dimensions) {
         checkNotNull(dimensions, "dimensions cannot be null");
         if (dimensions < 1) {
             throw new IllegalArgumentException("Dimensions for the embedding has to be a long value greater than 0 " +
                 "for the vector embedding policy");
         }
 
-        this.dimensions = dimensions;
+        this.dimensions = Math.toIntExact(dimensions);
         return this;
     }
 

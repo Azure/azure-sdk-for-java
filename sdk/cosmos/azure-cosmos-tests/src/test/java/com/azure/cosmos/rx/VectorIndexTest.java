@@ -250,17 +250,17 @@ public class VectorIndexTest extends TestSuiteBase {
         }
 
         try {
-            embedding.setDimensions(null);
+            embedding.setEmbeddingDimensions(null);
             fail("Embedding creation failed because dimensions argument is null");
         } catch (NullPointerException ex) {
             assertThat(ex.getMessage()).isEqualTo("dimensions cannot be null");
         }
 
         try {
-            embedding.setDimensions(-1);
+            embedding.setEmbeddingDimensions(-1);
             fail("Vector Embedding policy creation will fail for negative dimensions being passed");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Dimensions for the embedding has to be a long value greater than 0 for the vector embedding policy");
+            assertThat(ex.getMessage()).isEqualTo("Dimensions for the embedding has to be a int value greater than 0 for the vector embedding policy");
         }
     }
 
@@ -340,19 +340,19 @@ public class VectorIndexTest extends TestSuiteBase {
         CosmosVectorEmbedding embedding1 = new CosmosVectorEmbedding();
         embedding1.setPath("/vector1");
         embedding1.setDataType(CosmosVectorDataType.INT8);
-        embedding1.setDimensions(3);
+        embedding1.setEmbeddingDimensions(3);
         embedding1.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
 
         CosmosVectorEmbedding embedding2 = new CosmosVectorEmbedding();
         embedding2.setPath("/vector2");
         embedding2.setDataType(CosmosVectorDataType.FLOAT32);
-        embedding2.setDimensions(3);
+        embedding2.setEmbeddingDimensions(3);
         embedding2.setDistanceFunction(CosmosVectorDistanceFunction.DOT_PRODUCT);
 
         CosmosVectorEmbedding embedding3 = new CosmosVectorEmbedding();
         embedding3.setPath("/vector3");
         embedding3.setDataType(CosmosVectorDataType.UINT8);
-        embedding3.setDimensions(3);
+        embedding3.setEmbeddingDimensions(3);
         embedding3.setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
         return Arrays.asList(embedding1, embedding2, embedding3);
     }
