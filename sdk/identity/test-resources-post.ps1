@@ -42,19 +42,15 @@ $azBuildToolsRootPom = "$PSScriptRoot/../../eng/code-quality-reports/pom.xml" | 
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
 $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path
 
-# az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
-
-
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azBuildToolsRootPom | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-json/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-xml/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-experimental/pom.xml" | Write-Host
 
-$tokenResponse = az account get-access-token --resource "https://management.azure.com/" --query accessToken -o tsv
-
-[System.Environment]::SetEnvironmentVariable("AZURE_OIDC_TOKEN", $tokenResponse, [System.EnvironmentVariableTarget]::Machine)
-
+Write-Host "Fetching a new federated token for Azure Resource Manager..."
+$ARM_OIDC_TOKEN = az account get-access-token --resource "https://management.azure.com/" --query accessToken -o tsv
+Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN]$ARM_OIDC_TOKEN"
 
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-okhttp/pom.xml" | Write-Host
@@ -66,10 +62,9 @@ mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true"
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-internal-avro/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-blob/pom.xml" | Write-Host
 
-$tokenResponse = az account get-access-token --resource "https://management.azure.com/" --query accessToken -o tsv
-
-[System.Environment]::SetEnvironmentVariable("AZURE_OIDC_TOKEN", $tokenResponse, [System.EnvironmentVariableTarget]::Machine)
-
+Write-Host "Fetching a new federated token for Azure Resource Manager..."
+$ARM_OIDC_TOKEN = az account get-access-token --resource "https://management.azure.com/" --query accessToken -o tsv
+Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN]$ARM_OIDC_TOKEN"
 
 mvn -ntp clean install -DskipTests -f $webappRootPom | Write-Host
 az webapp deploy --resource-group $(getVariable('IDENTITY_RESOURCE_GROUP')) --name $(getVariable('IDENTITY_WEBAPP_NAME')) --src-path "$webappRoot/target/identity-test-webapp-1.0.0-beta.1.jar" --type jar
