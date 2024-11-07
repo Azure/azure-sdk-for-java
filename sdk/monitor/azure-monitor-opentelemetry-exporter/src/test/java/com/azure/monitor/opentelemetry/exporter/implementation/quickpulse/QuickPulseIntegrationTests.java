@@ -10,10 +10,10 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptio
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKs;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.IsSubscribedHeaders;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.MonitoringDataPoint;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

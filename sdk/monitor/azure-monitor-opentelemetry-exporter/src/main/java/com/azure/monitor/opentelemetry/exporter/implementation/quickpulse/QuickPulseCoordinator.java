@@ -4,7 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.IsSubscribedHeaders;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;

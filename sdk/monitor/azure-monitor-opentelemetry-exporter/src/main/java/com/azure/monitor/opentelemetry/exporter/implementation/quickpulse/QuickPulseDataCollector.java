@@ -10,8 +10,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestDat
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.*;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.Exception;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.*;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.Exception;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
