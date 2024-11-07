@@ -34,6 +34,8 @@ import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.*;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.MappingType.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
@@ -62,7 +64,7 @@ public final class SpanDataMapper {
     private static final ContextTagKeys AI_DEVICE_OS = ContextTagKeys.fromString("ai.device.os");
 
     static {
-        MappingsBuilder mappingsBuilder = new MappingsBuilder(MappingsBuilder.MappingType.SPAN)
+        MappingsBuilder mappingsBuilder = new MappingsBuilder(SPAN)
             // these are from azure SDK (AZURE_SDK_PEER_ADDRESS gets filtered out automatically
             // since it uses the otel "peer." prefix)
             .ignoreExact(AiSemanticAttributes.AZURE_SDK_NAMESPACE.getKey())

@@ -12,6 +12,7 @@ import io.opentelemetry.api.common.AttributeKey;
 
 import java.util.List;
 
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.AttributeKeyTemplate.*;
 import static io.opentelemetry.api.common.AttributeKey.booleanKey;
 import static io.opentelemetry.api.common.AttributeKey.doubleKey;
 import static io.opentelemetry.api.common.AttributeKey.longKey;
@@ -1707,7 +1708,7 @@ public final class SemanticAttributes {
      * </ul>
      */
     public static final AttributeKeyTemplate<List<String>> HTTP_REQUEST_HEADER
-        = AttributeKeyTemplate.stringArrayKeyTemplate("http.request.header");
+        = stringArrayKeyTemplate("http.request.header");
 
     /**
      * HTTP response headers, {@code <key>} being the normalized HTTP Header name (lowercase), the
@@ -1726,7 +1727,7 @@ public final class SemanticAttributes {
      * </ul>
      */
     public static final AttributeKeyTemplate<List<String>> HTTP_RESPONSE_HEADER
-        = AttributeKeyTemplate.stringArrayKeyTemplate("http.response.header");
+        = stringArrayKeyTemplate("http.response.header");
 
     /**
      * Connect request metadata, {@code <key>} being the normalized Connect Metadata key (lowercase),
@@ -1741,7 +1742,7 @@ public final class SemanticAttributes {
      * </ul>
      */
     public static final AttributeKeyTemplate<List<String>> RPC_CONNECT_RPC_REQUEST_METADATA
-        = AttributeKeyTemplate.stringArrayKeyTemplate("rpc.connect_rpc.request.metadata");
+        = stringArrayKeyTemplate("rpc.connect_rpc.request.metadata");
 
     /**
      * Connect response metadata, {@code <key>} being the normalized Connect Metadata key (lowercase),
@@ -1756,7 +1757,7 @@ public final class SemanticAttributes {
      * </ul>
      */
     public static final AttributeKeyTemplate<List<String>> RPC_CONNECT_RPC_RESPONSE_METADATA
-        = AttributeKeyTemplate.stringArrayKeyTemplate("rpc.connect_rpc.response.metadata");
+        = stringArrayKeyTemplate("rpc.connect_rpc.response.metadata");
 
     /**
      * gRPC request metadata, {@code <key>} being the normalized gRPC Metadata key (lowercase), the
@@ -1771,7 +1772,7 @@ public final class SemanticAttributes {
      * </ul>
      */
     public static final AttributeKeyTemplate<List<String>> RPC_GRPC_REQUEST_METADATA
-        = AttributeKeyTemplate.stringArrayKeyTemplate("rpc.grpc.request.metadata");
+        = stringArrayKeyTemplate("rpc.grpc.request.metadata");
 
     /**
      * gRPC response metadata, {@code <key>} being the normalized gRPC Metadata key (lowercase), the
@@ -1786,7 +1787,7 @@ public final class SemanticAttributes {
      * </ul>
      */
     public static final AttributeKeyTemplate<List<String>> RPC_GRPC_RESPONSE_METADATA
-        = AttributeKeyTemplate.stringArrayKeyTemplate("rpc.grpc.response.metadata");
+        = stringArrayKeyTemplate("rpc.grpc.response.metadata");
 
     /**
      * A dynamic value in the url path.
@@ -1802,7 +1803,7 @@ public final class SemanticAttributes {
      * </ul>
      */
     public static final AttributeKeyTemplate<String> DB_ELASTICSEARCH_PATH_PARTS
-        = AttributeKeyTemplate.stringKeyTemplate("db.elasticsearch.path_parts");
+        = stringKeyTemplate("db.elasticsearch.path_parts");
 
     // Enum definitions
     public static final class ErrorTypeValues {

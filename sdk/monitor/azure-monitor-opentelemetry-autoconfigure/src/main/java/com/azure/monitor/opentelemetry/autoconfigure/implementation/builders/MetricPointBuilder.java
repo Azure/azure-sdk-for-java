@@ -5,6 +5,8 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.builders;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricDataPoint;
 
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.*;
+
 public final class MetricPointBuilder {
 
     private static final int MAX_METRIC_NAME_SPACE_LENGTH = 256;
@@ -14,11 +16,11 @@ public final class MetricPointBuilder {
 
     public void setNamespace(String namespace) {
         data.setNamespace(
-            TelemetryTruncation.truncateTelemetry(namespace, MAX_METRIC_NAME_SPACE_LENGTH, "MetricPoint.namespace"));
+            truncateTelemetry(namespace, MAX_METRIC_NAME_SPACE_LENGTH, "MetricPoint.namespace"));
     }
 
     public void setName(String name) {
-        data.setName(TelemetryTruncation.truncateTelemetry(name, MAX_NAME_LENGTH, "MetricPoint.name"));
+        data.setName(truncateTelemetry(name, MAX_NAME_LENGTH, "MetricPoint.name"));
     }
 
     public void setValue(double value) {

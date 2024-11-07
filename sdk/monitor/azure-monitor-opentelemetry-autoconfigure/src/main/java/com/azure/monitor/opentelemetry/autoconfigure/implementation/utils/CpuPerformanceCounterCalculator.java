@@ -13,6 +13,8 @@ import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.*;
+
 public final class CpuPerformanceCounterCalculator {
 
     private static final Logger logger = LoggerFactory.getLogger(CpuPerformanceCounterCalculator.class);
@@ -45,7 +47,7 @@ public final class CpuPerformanceCounterCalculator {
             prevProcessCpuTime = processCpuTime;
             return null;
         } catch (Exception e) {
-            try (MDC.MDCCloseable ignored = AzureMonitorMsgId.CPU_METRIC_ERROR.makeActive()) {
+            try (MDC.MDCCloseable ignored = CPU_METRIC_ERROR.makeActive()) {
                 logger.error("Error in getProcessCPUUsage");
             }
             logger.trace("Error in getProcessCPUUsage", e);

@@ -11,6 +11,8 @@ import io.opentelemetry.sdk.trace.data.SpanData;
 
 import java.util.function.Function;
 
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.AiSemanticAttributes.*;
+
 public final class RequestChecker {
 
     private RequestChecker() {
@@ -28,7 +30,7 @@ public final class RequestChecker {
         Function<AttributeKey<String>, String> attrFn) {
         if (kind == SpanKind.INTERNAL) {
             // INTERNAL scheduled job spans with no parent are mapped to requests
-            return attrFn.apply(AiSemanticAttributes.JOB_SYSTEM) != null && !parentSpanContext.isValid();
+            return attrFn.apply(JOB_SYSTEM) != null && !parentSpanContext.isValid();
         } else if (kind == SpanKind.CLIENT || kind == SpanKind.PRODUCER) {
             return false;
         } else if (kind == SpanKind.CONSUMER

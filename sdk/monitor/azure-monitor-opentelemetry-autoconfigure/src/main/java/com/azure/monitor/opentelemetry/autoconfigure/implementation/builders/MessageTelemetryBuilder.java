@@ -10,6 +10,8 @@ import reactor.util.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.*;
+
 public final class MessageTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private static final int MAX_MESSAGE_LENGTH = 32768;
@@ -30,7 +32,7 @@ public final class MessageTelemetryBuilder extends AbstractTelemetryBuilder {
             // breeze doesn't accept message that is empty after trimming
             message = "n/a";
         }
-        data.setMessage(TelemetryTruncation.truncateTelemetry(message, MAX_MESSAGE_LENGTH, "Message.message"));
+        data.setMessage(truncateTelemetry(message, MAX_MESSAGE_LENGTH, "Message.message"));
     }
 
     public void setSeverityLevel(SeverityLevel severityLevel) {
