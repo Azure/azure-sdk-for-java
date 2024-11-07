@@ -73,26 +73,6 @@ extends:
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
-          PostSteps:
-            - task: AzureCLI@2
-              displayName: Refresh OIDC Token
-              env:
-                ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
-                ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-                ARM_TENANT_ID: $(ARM_TENANT_ID)
-              inputs:
-                scriptLocation: inlineScript
-                addSpnToEnvironment: true
-                azureSubscription: $(AZURE_SUBSCRIPTION)  # Reference your service connection here
-                scriptType: bash  # or PowerShell if running on Windows agents
-                script: |
-                  echo "Logging in to Azure with service principal..."
-                  az login --service-principal -u $(SP_CLIENT_ID) -p $(SP_CLIENT_SECRET) --tenant $(TENANT_ID)
-
-                  echo "Fetching a new federated token for Azure Resource Manager..."
-                  ARM_OIDC_TOKEN=$(az account get-access-token --resource "https://management.azure.com/" --query accessToken -o tsv)
-
-                  echo "##vso[task.setvariable variable=ARM_OIDC_TOKEN]$ARM_OIDC_TOKEN"
           PersistOidcToken: true
           Location: 'westus2'
           CalledFromClient: true
