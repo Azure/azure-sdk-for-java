@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 2.44.1 (2024-11-07)
+
+### Bugs Fixed
+
+- Removed wrong validation on non-required `location` property for some classes.
+
 ## 2.44.0 (2024-10-25)
 
 ### Other Changes
