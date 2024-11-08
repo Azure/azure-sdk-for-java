@@ -3,19 +3,18 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.NetworkFriendlyExceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.MonitoringDataPoint;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import reactor.util.annotation.Nullable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,7 +23,6 @@ import java.util.function.Supplier;
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
 
 class QuickPulsePingSender {
-    private static final long TICKS_AT_EPOCH = 621355968000000000L;
 
     private static final ClientLogger logger = new ClientLogger(QuickPulsePingSender.class);
 
@@ -35,11 +33,9 @@ class QuickPulsePingSender {
     //  operationLogger?
     private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();
 
-    // TODO: remove httpPipeline if not needed
-    //private final HttpPipeline httpPipeline;
-    private final LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs;
-    //private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    // private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
+    private final HttpPipeline httpPipeline;
+    private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
 
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
@@ -47,17 +43,12 @@ class QuickPulsePingSender {
     private final String instanceName;
     private final String machineName;
     private final String quickPulseId;
-    private long lastValidRequestTimeNs = System.nanoTime();
+    private long lastValidTransmission = 0;
     private final String sdkVersion;
 
-    private IsSubscribedHeaders responseHeaders;
-
-    private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
-
-    QuickPulsePingSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey, String roleName, String instanceName, String machineName,
-        String quickPulseId, String sdkVersion) {
-        this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
+    QuickPulsePingSender(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
+        String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion) {
+        this.httpPipeline = httpPipeline;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
         this.roleName = roleName;
@@ -65,97 +56,99 @@ class QuickPulsePingSender {
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
         this.sdkVersion = sdkVersion;
-        this.responseHeaders = null;
     }
 
-    IsSubscribedHeaders ping(String redirectedEndpoint) {
+    QuickPulseHeaderInfo ping(String redirectedEndpoint) {
         String instrumentationKey = getInstrumentationKey();
         if (Strings.isNullOrEmpty(instrumentationKey)) {
             // Quick Pulse Ping uri will be null when the instrumentation key is null. When that happens,
             // turn off quick pulse.
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(QPS_STATUS_HEADER, "false");
-            return new IsSubscribedHeaders(headers);
+            return new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF);
         }
 
         Date currentDate = new Date();
-        long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
         String endpointPrefix
             = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
+        HttpRequest request = networkHelper.buildPingRequest(currentDate, getQuickPulsePingUri(endpointPrefix),
+            quickPulseId, machineName, roleName, instanceName);
 
         long sendTime = System.nanoTime();
-
+        HttpResponse response = null;
         try {
-            Response<CollectionConfigurationInfo> responseMono
-                = liveMetricsRestAPIsForClientSDKs
-                    .isSubscribedNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey,
-                        transmissionTimeInTicks, machineName, instanceName, quickPulseId, roleName,
-                        String.valueOf(QuickPulse.QP_INVARIANT_VERSION), "", buildMonitoringDataPoint())
-                    .block();
-            if (responseMono == null) {
+            request.setBody(buildPingEntity(currentDate.getTime()));
+            response = httpPipeline.sendSync(request, Context.NONE);
+            if (response == null) {
                 // this shouldn't happen, the mono should complete with a response or a failure
                 throw new AssertionError("http response mono returned empty");
             }
 
-            // If we get to this point the api returned http 200
-            responseHeaders = new IsSubscribedHeaders(responseMono.getHeaders());
-            String isSubscribed = responseHeaders.getXMsQpsSubscribed();
-            if (!Strings.isNullOrEmpty(isSubscribed)) {
-                operationLogger.recordSuccess(); // when does this need to be called
-                lastValidRequestTimeNs = sendTime;
-            }
+            if (networkHelper.isSuccess(response)) {
+                QuickPulseHeaderInfo quickPulseHeaderInfo = networkHelper.getQuickPulseHeaderInfo(response);
+                switch (quickPulseHeaderInfo.getQuickPulseStatus()) {
+                    case QP_IS_OFF:
+                    case QP_IS_ON:
+                        lastValidTransmission = sendTime;
+                        operationLogger.recordSuccess();
+                        return quickPulseHeaderInfo;
 
-            return responseHeaders;
-        } catch (RuntimeException e) {
-            // 404 landed here
-            Throwable t = e.getCause();
+                    default:
+                        break;
+                }
+            }
+        } catch (Throwable t) {
             if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(t, getQuickPulseEndpoint(),
                 friendlyExceptionThrown, logger)) {
                 operationLogger.recordFailure(t.getMessage() + " (" + endpointPrefix + ")", t, QUICK_PULSE_PING_ERROR);
+            }
+        } finally {
+            if (response != null) {
+                // need to consume the body or close the response, otherwise get netty ByteBuf leak
+                // warnings:
+                // io.netty.util.ResourceLeakDetector - LEAK: ByteBuf.release() was not called before
+                // it's garbage-collected (see https://github.com/Azure/azure-sdk-for-java/issues/10467)
+                response.close();
             }
         }
         return onPingError(sendTime);
     }
 
-    @Nullable
     // visible for testing
-    public String getInstrumentationKey() {
+    String getQuickPulsePingUri(String endpointPrefix) {
+        return endpointPrefix + "/ping?ikey=" + getInstrumentationKey();
+    }
+
+    @Nullable
+    private String getInstrumentationKey() {
         return instrumentationKey.get();
     }
 
     // visible for testing
     String getQuickPulseEndpoint() {
-        return endpointUrl.get().toString();
+        return endpointUrl.get().toString() + "QuickPulseService.svc";
     }
 
-    private MonitoringDataPoint buildMonitoringDataPoint() {
-        MonitoringDataPoint dataPoint = new MonitoringDataPoint();
-        dataPoint.setInstance(instanceName);
-        dataPoint.setInvariantVersion(QuickPulse.QP_INVARIANT_VERSION);
-        dataPoint.setMachineName(machineName);
-        dataPoint.setRoleName(roleName);
-        dataPoint.setStreamId(quickPulseId);
-        dataPoint.setVersion(sdkVersion);
-
-        return dataPoint;
-    }
-
-    private IsSubscribedHeaders onPingError(long sendTime) {
-        HttpHeaders headers = new HttpHeaders();
-
-        double timeFromlastValidRequestTimeNs = (sendTime - lastValidRequestTimeNs) / 1000000000.0;
-        if (timeFromlastValidRequestTimeNs >= 60.0) {
-            return new IsSubscribedHeaders(headers); // all headers null
+    private String buildPingEntity(long timeInMillis) throws IOException {
+        if (pingEnvelope == null) {
+            pingEnvelope = new QuickPulseEnvelope();
+            pingEnvelope.setInstance(instanceName);
+            pingEnvelope.setInvariantVersion(QuickPulse.QP_INVARIANT_VERSION);
+            pingEnvelope.setMachineName(machineName);
+            pingEnvelope.setRoleName(roleName);
+            pingEnvelope.setStreamId(quickPulseId);
+            pingEnvelope.setVersion(sdkVersion);
         }
-        headers.add(QPS_STATUS_HEADER, "false");
-        return new IsSubscribedHeaders(headers); // status header set to false
+        pingEnvelope.setTimeStamp("/Date(" + timeInMillis + ")/");
+
+        // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
+        return pingEnvelope.toJsonString().replace("/", "\\/");
     }
 
-    public long getLastValidPingTransmissionNs() {
-        return this.lastValidRequestTimeNs;
-    }
+    private QuickPulseHeaderInfo onPingError(long sendTime) {
+        double timeFromLastValidTransmission = (sendTime - lastValidTransmission) / 1000000000.0;
+        if (timeFromLastValidTransmission >= 60.0) {
+            return new QuickPulseHeaderInfo(QuickPulseStatus.ERROR);
+        }
 
-    public void resetLastValidRequestTimeNs(long lastValidPostTrasmission) {
-        this.lastValidRequestTimeNs = lastValidPostTrasmission;
+        return new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF);
     }
 }
