@@ -1,20 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.feature.management.implementation.models;
+package com.azure.spring.cloud.feature.management.models;
 
 import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Conditions {
     @JsonProperty("client_filters")
-    private List<FeatureFilterEvaluationContext> clientFilters;
+    private List<FeatureFilterEvaluationContext> clientFilters = new ArrayList<>();
 
     @JsonProperty("requirement_type")
     private String requirementType = DEFAULT_REQUIREMENT_TYPE;

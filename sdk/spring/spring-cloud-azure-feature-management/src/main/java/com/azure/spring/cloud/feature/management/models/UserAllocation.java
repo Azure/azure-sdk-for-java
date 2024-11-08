@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.management.implementation.models;
+package com.azure.spring.cloud.feature.management.models;
 
-import java.util.Map;
+import java.util.List;
 
-public class GroupAllocation {
+public class UserAllocation {
 
     private String variant;
 
-    private Map<String, String> groups;
+    private List<String> users;
 
     /**
      * @return the variant
@@ -25,17 +25,17 @@ public class GroupAllocation {
     }
 
     /**
-     * @return the groups
+     * @return the users
      */
-    public Map<String, String> getGroups() {
-        return groups;
+    public List<String> getUsers() {
+        return users;
     }
 
     /**
-     * @param groups the groups to set
+     * @param users the users to set
      */
-    public void setGroups(Map<String, String> groups) {
-        this.groups = groups;
+    public void setUsers(List<String> users) {
+        this.users = users;
     }
 
 }

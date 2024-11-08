@@ -37,7 +37,6 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
     @Bean
     FeatureManager featureManager(FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties,
-        ObjectProvider<VariantProperties> propertiesProvider,
         ObjectProvider<TargetingContextAccessor> contextAccessorProvider,
         ObjectProvider<ContextualTargetingContextAccessor> contextualAccessorProvider,
         ObjectProvider<TargetingEvaluationOptions> evaluationOptionsProvider) {
@@ -49,7 +48,7 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
             .getIfAvailable(() -> new TargetingEvaluationOptions());
 
         return new FeatureManager(appContext, featureManagementConfigurations, properties, contextAccessor,
-            contextualTargetingContextAccessor, evaluationOptions, propertiesProvider);
+            contextualTargetingContextAccessor, evaluationOptions);
     }
 
     @Override

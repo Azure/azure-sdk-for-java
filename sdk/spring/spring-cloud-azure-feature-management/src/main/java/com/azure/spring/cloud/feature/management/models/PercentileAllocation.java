@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.management.implementation.models;
+package com.azure.spring.cloud.feature.management.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

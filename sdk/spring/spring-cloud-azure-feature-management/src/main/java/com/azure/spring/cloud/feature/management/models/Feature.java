@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.feature.management.implementation.models;
+package com.azure.spring.cloud.feature.management.models;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class Feature {
     private boolean enabled;
 
     @JsonProperty("conditions")
-    private Conditions conditions;
+    private Conditions conditions = new Conditions();
     
     @JsonProperty("allocation")
     private Allocation allocation;

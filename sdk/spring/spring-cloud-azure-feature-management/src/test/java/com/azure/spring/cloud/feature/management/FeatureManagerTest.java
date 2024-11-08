@@ -29,8 +29,8 @@ import com.azure.spring.cloud.feature.management.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
-import com.azure.spring.cloud.feature.management.implementation.models.Conditions;
-import com.azure.spring.cloud.feature.management.implementation.models.Feature;
+import com.azure.spring.cloud.feature.management.models.Conditions;
+import com.azure.spring.cloud.feature.management.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
 import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
@@ -60,8 +60,7 @@ public class FeatureManagerTest {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
 
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null,
-            null);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null);
     }
 
     @AfterEach
@@ -72,7 +71,7 @@ public class FeatureManagerTest {
     @Test
     public void isEnabledFeatureNotFound() {
         assertFalse(featureManager.isEnabledAsync("Non Existed Feature").block());
-        verify(featureManagementPropertiesMock, times(2)).getFeatureFlags();
+        verify(featureManagementPropertiesMock, times(1)).getFeatureFlags();
     }
 
     @Test
@@ -81,7 +80,7 @@ public class FeatureManagerTest {
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertFalse(featureManager.isEnabledAsync("Off").block());
-        verify(featureManagementPropertiesMock, times(2)).getFeatureFlags();
+        verify(featureManagementPropertiesMock, times(1)).getFeatureFlags();
     }
 
     @Test
@@ -91,7 +90,7 @@ public class FeatureManagerTest {
 
         assertTrue(featureManager.isEnabled("On"));
         assertTrue(featureManager.isEnabledAsync("On").block());
-        verify(featureManagementPropertiesMock, times(4)).getFeatureFlags();
+        verify(featureManagementPropertiesMock, times(2)).getFeatureFlags();
     }
 
     @Test
@@ -207,7 +206,8 @@ public class FeatureManagerTest {
         weeklyAlwaysOn.setParameters(parameters);
 
         List<Feature> features = List
-            .of(new Feature().setId("Alpha").setEnabled(true).setConditions(new Conditions().setClientFilters(List.of(weeklyAlwaysOn))));
+            .of(new Feature().setId("Alpha").setEnabled(true)
+                .setConditions(new Conditions().setClientFilters(List.of(weeklyAlwaysOn))));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
         when(context.getBean(Mockito.matches("TimeWindowFilter"))).thenReturn(new TimeWindowFilter());

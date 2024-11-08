@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import com.azure.spring.cloud.feature.management.implementation.models.Feature;
+import com.azure.spring.cloud.feature.management.models.Feature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
