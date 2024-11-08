@@ -236,15 +236,14 @@ public final class DocumentTranslationClient {
      *     lastActionDateTimeUtc: OffsetDateTime (Required)
      *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
      *     error (Optional): {
-     *         code: String (Required)
+     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
      *         message: String (Required)
      *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         innerError (Optional): {
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
      *     }
      *     summary (Required): {
@@ -290,15 +289,14 @@ public final class DocumentTranslationClient {
      *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
      *     to: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
+     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
      *         message: String (Required)
      *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         innerError (Optional): {
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
      *     }
      *     progress: double (Required)
@@ -341,15 +339,14 @@ public final class DocumentTranslationClient {
      *     lastActionDateTimeUtc: OffsetDateTime (Required)
      *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
      *     error (Optional): {
-     *         code: String (Required)
+     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
      *         message: String (Required)
      *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         innerError (Optional): {
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
      *     }
      *     summary (Required): {
@@ -400,15 +397,14 @@ public final class DocumentTranslationClient {
      *     lastActionDateTimeUtc: OffsetDateTime (Required)
      *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
      *     error (Optional): {
-     *         code: String (Required)
+     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
      *         message: String (Required)
      *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         innerError (Optional): {
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
      *     }
      *     summary (Required): {
@@ -548,15 +544,14 @@ public final class DocumentTranslationClient {
      *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
      *     to: String (Required)
      *     error (Optional): {
-     *         code: String (Required)
+     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
      *         message: String (Required)
      *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         innerError (Optional): {
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
      *     }
      *     progress: double (Required)
