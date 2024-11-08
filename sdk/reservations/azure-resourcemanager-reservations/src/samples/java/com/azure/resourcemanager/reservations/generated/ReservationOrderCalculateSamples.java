@@ -13,33 +13,32 @@ import com.azure.resourcemanager.reservations.models.ReservationTerm;
 import com.azure.resourcemanager.reservations.models.ReservedResourceType;
 import com.azure.resourcemanager.reservations.models.SkuName;
 
-/** Samples for ReservationOrder Calculate. */
+/**
+ * Samples for ReservationOrder Calculate.
+ */
 public final class ReservationOrderCalculateSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/CalculateReservationOrder.json
+     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
+     * CalculateReservationOrder.json
      */
     /**
      * Sample code: CalculatePrice.
-     *
+     * 
      * @param manager Entry point to ReservationsManager.
      */
     public static void calculatePrice(com.azure.resourcemanager.reservations.ReservationsManager manager) {
-        manager
-            .reservationOrders()
-            .calculateWithResponse(
-                new PurchaseRequest()
-                    .withSku(new SkuName().withName("standard_D1"))
-                    .withLocation("westus")
-                    .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINES)
-                    .withBillingScopeId("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83")
-                    .withTerm(ReservationTerm.P1Y)
-                    .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                    .withQuantity(1)
-                    .withDisplayName("TestReservationOrder")
-                    .withAppliedScopeType(AppliedScopeType.SHARED)
-                    .withReservedResourceProperties(
-                        new PurchaseRequestPropertiesReservedResourceProperties()
-                            .withInstanceFlexibility(InstanceFlexibility.ON)),
+        manager.reservationOrders()
+            .calculateWithResponse(new PurchaseRequest().withSku(new SkuName().withName("standard_D1"))
+                .withLocation("westus")
+                .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINES)
+                .withBillingScopeId("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83")
+                .withTerm(ReservationTerm.P1Y)
+                .withBillingPlan(ReservationBillingPlan.MONTHLY)
+                .withQuantity(1)
+                .withDisplayName("TestReservationOrder")
+                .withAppliedScopeType(AppliedScopeType.SHARED)
+                .withReservedResourceProperties(new PurchaseRequestPropertiesReservedResourceProperties()
+                    .withInstanceFlexibility(InstanceFlexibility.ON)),
                 com.azure.core.util.Context.NONE);
     }
 }

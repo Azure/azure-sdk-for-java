@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-service</artifactId>
-  <version>5.18.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+  <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
 
   <name>Spring Cloud Azure Service</name>
   <description>Spring Cloud Azure Service</description>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-core</artifactId>
-      <version>5.18.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+      <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
     </dependency>
 
     <!-- Azure SDKs-->
@@ -145,13 +145,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.10.3</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.10.5</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.1.13</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.1.14</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

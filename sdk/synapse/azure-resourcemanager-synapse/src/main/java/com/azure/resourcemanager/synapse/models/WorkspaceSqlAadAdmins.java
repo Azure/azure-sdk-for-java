@@ -8,11 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInner;
 
-/** Resource collection API of WorkspaceSqlAadAdmins. */
+/**
+ * Resource collection API of WorkspaceSqlAadAdmins.
+ */
 public interface WorkspaceSqlAadAdmins {
     /**
      * Gets a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -25,7 +27,7 @@ public interface WorkspaceSqlAadAdmins {
 
     /**
      * Gets a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface WorkspaceSqlAadAdmins {
 
     /**
      * Creates or updates a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -51,7 +53,7 @@ public interface WorkspaceSqlAadAdmins {
 
     /**
      * Creates or updates a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -66,7 +68,7 @@ public interface WorkspaceSqlAadAdmins {
 
     /**
      * Deletes a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +79,7 @@ public interface WorkspaceSqlAadAdmins {
 
     /**
      * Deletes a workspace SQL active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

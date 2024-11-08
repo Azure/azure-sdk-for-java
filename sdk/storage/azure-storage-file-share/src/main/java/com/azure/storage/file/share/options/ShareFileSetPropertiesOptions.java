@@ -8,7 +8,6 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
-
 /**
  * Extended options that may be passed when setting properties of a file.
  */

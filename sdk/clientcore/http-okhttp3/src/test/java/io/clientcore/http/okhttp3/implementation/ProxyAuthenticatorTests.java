@@ -3,6 +3,10 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
+import io.clientcore.core.util.auth.BasicChallengeHandler;
+import io.clientcore.core.util.auth.AuthUtils;
+import io.clientcore.core.util.auth.ChallengeHandler;
+import io.clientcore.core.util.auth.DigestChallengeHandler;
 import okhttp3.Address;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
@@ -29,7 +33,7 @@ import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -57,7 +61,7 @@ public class ProxyAuthenticatorTests {
         = new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build();
 
     private static final Predicate<String> BASIC_PREDICATE = "Basic MTox"::equals;
-    private static final Predicate<String> DIGEST_PREDICATE = (authHeader) -> authHeader.startsWith("Digest");
+    private static final Predicate<String> DIGEST_PREDICATE = (authHeader) -> authHeader.startsWith("Digest ");
 
     private static final String ORIGINAL_NONCE = "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v";
     private static final String UPDATED_NONCE = "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS";
@@ -73,7 +77,8 @@ public class ProxyAuthenticatorTests {
      */
     @Test
     public void preemptiveChallengesAreIgnored() {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator("1", "1");
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse(PREEMPTIVE_AUTHENTICATE, new Headers.Builder().build());
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -81,7 +86,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertNull(authenticateRequest.header(PROXY_AUTHORIZATION));
+        assertNull(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()));
     }
 
     /**
@@ -91,7 +96,8 @@ public class ProxyAuthenticatorTests {
     @ParameterizedTest
     @MethodSource("authorizationIsAppliedSupplier")
     public void authorizationIsApplied(Headers challengeHeaders, Predicate<String> expectedPredicate) {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator("1", "1");
+        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(
+            ChallengeHandler.of(new DigestChallengeHandler("1", "1"), new BasicChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", challengeHeaders);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -99,13 +105,13 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
     }
 
     public static Stream<Arguments> authorizationIsAppliedSupplier() {
         return Stream.of(
             // ChallengeHolder only containing Basic challenge.
-            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic").build(), BASIC_PREDICATE),
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic ").build(), BASIC_PREDICATE),
 
             // ChallengeHolder only containing Digest challenge.
             Arguments.of(new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build(),
@@ -118,13 +124,14 @@ public class ProxyAuthenticatorTests {
     }
 
     /**
-     * Tests that when the {@link AuthorizationChallengeHandler} has already handled a {@code Proxy-Authenticate}
+     * Tests that when the {@link ChallengeHandler} has already handled a {@code Proxy-Authenticate}
      * challenge it is capable of pipelining subsequent requests.
      */
     @ParameterizedTest
     @MethodSource("authorizationCanBePipelinedSupplier")
     public void authorizationCanBePipelined(Headers challengeHeaders, Predicate<String> expectedPredicate) {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator("1", "1");
+        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(
+            ChallengeHandler.of(new DigestChallengeHandler("1", "1"), new BasicChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", challengeHeaders);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -132,7 +139,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         /*
          * Now that a request challenge has been handled we should apply a preemptive Proxy-Authorization header to
@@ -141,7 +148,7 @@ public class ProxyAuthenticatorTests {
         response = mockResponse(PREEMPTIVE_AUTHENTICATE, new Headers.Builder().build());
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
     }
 
     public static Stream<Arguments> authorizationCanBePipelinedSupplier() {
@@ -156,11 +163,12 @@ public class ProxyAuthenticatorTests {
 
     /**
      * Tests that receiving a successful response without {@code Proxy-Authenticate-Info} doesn't validate the sent
-     * {@code Proxy-Authorization} header or update the {@link AuthorizationChallengeHandler}.
+     * {@code Proxy-Authorization} header or update the {@link ChallengeHandler}.
      */
     @Test
     public void nullOrEmptyProxyAuthenticateInfoIsIgnored() throws IOException {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator("1", "1");
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", DIGEST_CHALLENGE_HEADERS);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -168,7 +176,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
@@ -180,19 +188,22 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthorizationChallengeHandler
-            .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
-            .get("nonce");
+        String nonce
+            = AuthUtils
+                .parseAuthenticationOrAuthorizationHeader(
+                    authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()))
+                .get("nonce");
         assertEquals(ORIGINAL_NONCE, nonce);
     }
 
     /**
      * Tests that receiving a successful response with a {@code Proxy-Authenticate-Info} validates the {@code
-     * Proxy-Authorization} header sent to the server but doesn't update the {@link AuthorizationChallengeHandler}.
+     * Proxy-Authorization} header sent to the server but doesn't update the {@link ChallengeHandler}.
      */
     @Test
     public void proxyAuthenticateInfoValidatesProxyAuthorization() throws IOException {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator("1", "1");
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", DIGEST_CHALLENGE_HEADERS);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -200,11 +211,13 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
-        String cnonce = AuthorizationChallengeHandler
-            .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
-            .get("cnonce");
+        String cnonce
+            = AuthUtils
+                .parseAuthenticationOrAuthorizationHeader(
+                    authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()))
+                .get("cnonce");
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
@@ -218,9 +231,11 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthorizationChallengeHandler
-            .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
-            .get("nonce");
+        String nonce
+            = AuthUtils
+                .parseAuthenticationOrAuthorizationHeader(
+                    authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()))
+                .get("nonce");
         assertEquals(ORIGINAL_NONCE, nonce);
     }
 
@@ -230,7 +245,8 @@ public class ProxyAuthenticatorTests {
      */
     @Test
     public void proxyAuthenticateInfoFailsValidation() throws IOException {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator("1", "1");
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", DIGEST_CHALLENGE_HEADERS);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -238,7 +254,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
@@ -252,11 +268,12 @@ public class ProxyAuthenticatorTests {
 
     /**
      * Tests that receiving a successful response with a {@code Proxy-Authenticate-Info} that contains a {@code
-     * nextnonce} value will update the {@link AuthorizationChallengeHandler}.
+     * nextnonce} value will update the {@link ChallengeHandler}.
      */
     @Test
     public void proxyAuthenticateInfoUpdatesNonce() throws IOException {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator("1", "1");
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", DIGEST_CHALLENGE_HEADERS);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -264,7 +281,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
@@ -278,9 +295,11 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthorizationChallengeHandler
-            .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
-            .get("nonce");
+        String nonce
+            = AuthUtils
+                .parseAuthenticationOrAuthorizationHeader(
+                    authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()))
+                .get("nonce");
         assertEquals(UPDATED_NONCE, nonce);
     }
 

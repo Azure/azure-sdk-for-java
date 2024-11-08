@@ -121,9 +121,11 @@ public class ServiceBusBinderConfiguration {
     ServiceBusProducerFactoryCustomizer defaultServiceBusProducerFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
 
         return new DefaultProducerFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver,
+            clientBuilderCustomizers,
             senderClientBuilderCustomizers);
     }
 
@@ -149,13 +151,16 @@ public class ServiceBusBinderConfiguration {
 
         private final TokenCredential defaultCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
+        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers;
 
         DefaultProducerFactoryCustomizer(TokenCredential defaultCredential,
                                          AzureTokenCredentialResolver azureTokenCredentialResolver,
+                                         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
                                          ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
             this.defaultCredential = defaultCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
+            this.clientBuilderCustomizers = clientBuilderCustomizers;
             this.senderClientBuilderCustomizers = senderClientBuilderCustomizers;
         }
 
@@ -167,8 +172,13 @@ public class ServiceBusBinderConfiguration {
 
                 defaultFactory.setDefaultCredential(defaultCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
+                clientBuilderCustomizers.orderedStream().forEach(defaultFactory::addServiceBusClientBuilderCustomizer);
                 senderClientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
             }
+        }
+
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> getClientBuilderCustomizers() {
+            return clientBuilderCustomizers;
         }
 
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> getSenderClientBuilderCustomizers() {

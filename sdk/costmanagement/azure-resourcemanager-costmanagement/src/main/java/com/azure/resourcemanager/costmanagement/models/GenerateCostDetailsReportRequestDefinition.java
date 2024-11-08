@@ -5,15 +5,21 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The definition of a cost detailed report. */
+/**
+ * The definition of a cost detailed report.
+ */
 @Fluent
-public final class GenerateCostDetailsReportRequestDefinition {
+public final class GenerateCostDetailsReportRequestDefinition
+    implements JsonSerializable<GenerateCostDetailsReportRequestDefinition> {
     /*
      * The type of the detailed report. By default ActualCost is provided
      */
-    @JsonProperty(value = "metric")
     private CostDetailsMetricType metric;
 
     /*
@@ -23,7 +29,6 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * or less and no older than 13 months. If no timePeriod or billingPeriod or invoiceId is provided the API defaults
      * to the open month time period
      */
-    @JsonProperty(value = "timePeriod")
     private CostDetailsTimePeriod timePeriod;
 
     /*
@@ -31,7 +36,6 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * parameter cannot be used alongside either the invoiceId or timePeriod parameters. If a timePeriod, invoiceId or
      * billingPeriod parameter is not provided in the request body the API will return the current month's cost.
      */
-    @JsonProperty(value = "billingPeriod")
     private String billingPeriod;
 
     /*
@@ -40,16 +44,17 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * timePeriod parameters. If a timePeriod, invoiceId or billingPeriod parameter is not provided in the request body
      * the API will return the current month's cost.
      */
-    @JsonProperty(value = "invoiceId")
     private String invoiceId;
 
-    /** Creates an instance of GenerateCostDetailsReportRequestDefinition class. */
+    /**
+     * Creates an instance of GenerateCostDetailsReportRequestDefinition class.
+     */
     public GenerateCostDetailsReportRequestDefinition() {
     }
 
     /**
      * Get the metric property: The type of the detailed report. By default ActualCost is provided.
-     *
+     * 
      * @return the metric value.
      */
     public CostDetailsMetricType metric() {
@@ -58,7 +63,7 @@ public final class GenerateCostDetailsReportRequestDefinition {
 
     /**
      * Set the metric property: The type of the detailed report. By default ActualCost is provided.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the GenerateCostDetailsReportRequestDefinition object itself.
      */
@@ -73,7 +78,7 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * billingPeriod parameter is not provided in the request body the API will return the current month's cost. API
      * only allows data to be pulled for 1 month or less and no older than 13 months. If no timePeriod or billingPeriod
      * or invoiceId is provided the API defaults to the open month time period.
-     *
+     * 
      * @return the timePeriod value.
      */
     public CostDetailsTimePeriod timePeriod() {
@@ -86,7 +91,7 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * billingPeriod parameter is not provided in the request body the API will return the current month's cost. API
      * only allows data to be pulled for 1 month or less and no older than 13 months. If no timePeriod or billingPeriod
      * or invoiceId is provided the API defaults to the open month time period.
-     *
+     * 
      * @param timePeriod the timePeriod value to set.
      * @return the GenerateCostDetailsReportRequestDefinition object itself.
      */
@@ -100,7 +105,7 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * YearMonth(e.g. 202008) format. This parameter cannot be used alongside either the invoiceId or timePeriod
      * parameters. If a timePeriod, invoiceId or billingPeriod parameter is not provided in the request body the API
      * will return the current month's cost.
-     *
+     * 
      * @return the billingPeriod value.
      */
     public String billingPeriod() {
@@ -112,7 +117,7 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * YearMonth(e.g. 202008) format. This parameter cannot be used alongside either the invoiceId or timePeriod
      * parameters. If a timePeriod, invoiceId or billingPeriod parameter is not provided in the request body the API
      * will return the current month's cost.
-     *
+     * 
      * @param billingPeriod the billingPeriod value to set.
      * @return the GenerateCostDetailsReportRequestDefinition object itself.
      */
@@ -126,7 +131,7 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * Additionally, it can only be used at the Billing Profile or Customer scope. This parameter cannot be used
      * alongside either the billingPeriod or timePeriod parameters. If a timePeriod, invoiceId or billingPeriod
      * parameter is not provided in the request body the API will return the current month's cost.
-     *
+     * 
      * @return the invoiceId value.
      */
     public String invoiceId() {
@@ -138,7 +143,7 @@ public final class GenerateCostDetailsReportRequestDefinition {
      * Additionally, it can only be used at the Billing Profile or Customer scope. This parameter cannot be used
      * alongside either the billingPeriod or timePeriod parameters. If a timePeriod, invoiceId or billingPeriod
      * parameter is not provided in the request body the API will return the current month's cost.
-     *
+     * 
      * @param invoiceId the invoiceId value to set.
      * @return the GenerateCostDetailsReportRequestDefinition object itself.
      */
@@ -149,12 +154,60 @@ public final class GenerateCostDetailsReportRequestDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timePeriod() != null) {
             timePeriod().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metric", this.metric == null ? null : this.metric.toString());
+        jsonWriter.writeJsonField("timePeriod", this.timePeriod);
+        jsonWriter.writeStringField("billingPeriod", this.billingPeriod);
+        jsonWriter.writeStringField("invoiceId", this.invoiceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateCostDetailsReportRequestDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateCostDetailsReportRequestDefinition if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateCostDetailsReportRequestDefinition.
+     */
+    public static GenerateCostDetailsReportRequestDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateCostDetailsReportRequestDefinition deserializedGenerateCostDetailsReportRequestDefinition
+                = new GenerateCostDetailsReportRequestDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metric".equals(fieldName)) {
+                    deserializedGenerateCostDetailsReportRequestDefinition.metric
+                        = CostDetailsMetricType.fromString(reader.getString());
+                } else if ("timePeriod".equals(fieldName)) {
+                    deserializedGenerateCostDetailsReportRequestDefinition.timePeriod
+                        = CostDetailsTimePeriod.fromJson(reader);
+                } else if ("billingPeriod".equals(fieldName)) {
+                    deserializedGenerateCostDetailsReportRequestDefinition.billingPeriod = reader.getString();
+                } else if ("invoiceId".equals(fieldName)) {
+                    deserializedGenerateCostDetailsReportRequestDefinition.invoiceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateCostDetailsReportRequestDefinition;
+        });
     }
 }

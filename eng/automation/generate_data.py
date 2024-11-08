@@ -34,6 +34,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     repo_url: str = config["repoHttpsUrl"]
     breaking: bool = False
     changelog: str = ""
+    breaking_change_items = []
     clean_sdk_folder_succeeded = False
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
@@ -61,7 +62,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # compile
         succeeded = compile_package(sdk_root, GROUP_ID, module)
         if succeeded:
-            breaking, changelog = compare_with_maven_package(
+            breaking, changelog, breaking_change_items = compare_with_maven_package(
                 sdk_root,
                 GROUP_ID,
                 service,
@@ -85,7 +86,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 # compile
                 succeeded = compile_package(sdk_root, GROUP_ID, module)
                 if succeeded:
-                    breaking, changelog = compare_with_maven_package(
+                    breaking, changelog, breaking_change_items = compare_with_maven_package(
                         sdk_root,
                         GROUP_ID,
                         service,
@@ -115,7 +116,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
-            "changelog": {"content": changelog, "hasBreakingChange": breaking},
+            "changelog": {"content": changelog, "hasBreakingChange": breaking, "breakingChangeItems": breaking_change_items},
         }
     else:
         # no info about package, abort with result=failed
@@ -252,12 +253,13 @@ def sdk_automation_readme(readme_file_abspath: str, packages: List[dict], sdk_ro
 
         breaking = False
         changelog = ""
+        breaking_change_items = []
 
         if succeeded:
             stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
             succeeded = compile_package(sdk_root, GROUP_ID, module)
             if succeeded:
-                breaking, changelog = compare_with_maven_package(
+                breaking, changelog, breaking_change_items = compare_with_maven_package(
                     sdk_root,
                     GROUP_ID,
                     service,
@@ -284,7 +286,7 @@ def sdk_automation_readme(readme_file_abspath: str, packages: List[dict], sdk_ro
                 "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(generated_folder))), None),
                 "language": "Java",
                 "result": result,
-                "changelog": {"content": changelog, "hasBreakingChange": breaking},
+                "changelog": {"content": changelog, "hasBreakingChange": breaking, "breakingChangeItems": breaking_change_items},
             }
         )
 

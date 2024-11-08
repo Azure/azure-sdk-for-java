@@ -47,18 +47,28 @@ public final class StreamingJobsCreateOrReplaceSamples {
     public static void
         createAStreamingJobShellAStreamingJobWithNoInputsOutputsTransformationOrFunctionsWithUserAssignedIdentity(
             com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) throws IOException {
-        manager.streamingJobs().define("sjName").withRegion("West US").withExistingResourceGroup("sjrg")
+        manager.streamingJobs()
+            .define("sjName")
+            .withRegion("West US")
+            .withExistingResourceGroup("sjrg")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
                 "fakeTokenPlaceholder"))
-            .withIdentity(new Identity().withType("UserAssigned").withUserAssignedIdentities(mapOf(
-                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity",
-                SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("{}", Object.class,
-                    SerializerEncoding.JSON))))
+            .withIdentity(new Identity().withType("UserAssigned")
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))))
             .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
-            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP).withOutputErrorPolicy(OutputErrorPolicy.DROP)
-            .withEventsOutOfOrderMaxDelayInSeconds(5).withEventsLateArrivalMaxDelayInSeconds(16).withDataLocale("en-US")
-            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO).withInputs(Arrays.asList())
-            .withOutputs(Arrays.asList()).withFunctions(Arrays.asList()).create();
+            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
+            .withOutputErrorPolicy(OutputErrorPolicy.DROP)
+            .withEventsOutOfOrderMaxDelayInSeconds(5)
+            .withEventsLateArrivalMaxDelayInSeconds(16)
+            .withDataLocale("en-US")
+            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO)
+            .withInputs(Arrays.asList())
+            .withOutputs(Arrays.asList())
+            .withFunctions(Arrays.asList())
+            .create();
     }
 
     /*
@@ -74,14 +84,23 @@ public final class StreamingJobsCreateOrReplaceSamples {
      */
     public static void createAStreamingJobShellAStreamingJobWithNoInputsOutputsTransformationOrFunctions(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().define("sj59").withRegion("West US").withExistingResourceGroup("sjrg6936")
+        manager.streamingJobs()
+            .define("sj59")
+            .withRegion("West US")
+            .withExistingResourceGroup("sjrg6936")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
                 "fakeTokenPlaceholder"))
             .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
-            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP).withOutputErrorPolicy(OutputErrorPolicy.DROP)
-            .withEventsOutOfOrderMaxDelayInSeconds(5).withEventsLateArrivalMaxDelayInSeconds(16).withDataLocale("en-US")
-            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO).withInputs(Arrays.asList())
-            .withOutputs(Arrays.asList()).withFunctions(Arrays.asList()).create();
+            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
+            .withOutputErrorPolicy(OutputErrorPolicy.DROP)
+            .withEventsOutOfOrderMaxDelayInSeconds(5)
+            .withEventsLateArrivalMaxDelayInSeconds(16)
+            .withDataLocale("en-US")
+            .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO)
+            .withInputs(Arrays.asList())
+            .withOutputs(Arrays.asList())
+            .withFunctions(Arrays.asList())
+            .create();
     }
 
     /*
@@ -97,33 +116,51 @@ public final class StreamingJobsCreateOrReplaceSamples {
      */
     public static void createACompleteStreamingJobAStreamingJobWithATransformationAtLeast1InputAndAtLeast1Output(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().define("sj7804").withRegion("West US").withExistingResourceGroup("sjrg3276")
+        manager.streamingJobs()
+            .define("sj7804")
+            .withRegion("West US")
+            .withExistingResourceGroup("sjrg3276")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
                 "fakeTokenPlaceholder"))
             .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
-            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP).withOutputErrorPolicy(OutputErrorPolicy.DROP)
-            .withEventsOutOfOrderMaxDelayInSeconds(0).withEventsLateArrivalMaxDelayInSeconds(5).withDataLocale(
-                "en-US")
+            .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
+            .withOutputErrorPolicy(OutputErrorPolicy.DROP)
+            .withEventsOutOfOrderMaxDelayInSeconds(0)
+            .withEventsLateArrivalMaxDelayInSeconds(5)
+            .withDataLocale("en-US")
             .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO)
-            .withInputs(Arrays.asList(new InputInner().withProperties(new StreamInputProperties()
-                .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
-                .withDatasource(new BlobStreamInputDataSource()
-                    .withStorageAccounts(Arrays.asList(
-                        new StorageAccount().withAccountName("yourAccountName").withAccountKey("fakeTokenPlaceholder")))
-                    .withContainer("containerName").withPathPattern("")))
-                .withName("inputtest")))
-            .withTransformation(new TransformationInner().withName("transformationtest").withStreamingUnits(1)
+            .withInputs(
+                Arrays
+                    .asList(
+                        new InputInner()
+                            .withProperties(new StreamInputProperties()
+                                .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
+                                .withDatasource(new BlobStreamInputDataSource()
+                                    .withStorageAccounts(
+                                        Arrays.asList(new StorageAccount().withAccountName("yourAccountName")
+                                            .withAccountKey("fakeTokenPlaceholder")))
+                                    .withContainer("containerName")
+                                    .withPathPattern("")))
+                            .withName("inputtest")))
+            .withTransformation(new TransformationInner().withName("transformationtest")
+                .withStreamingUnits(1)
                 .withQuery("Select Id, Name from inputtest"))
-            .withOutputs(Arrays.asList(new OutputInner().withName("outputtest").withDatasource(
-                new AzureSqlDatabaseOutputDataSource().withServer("serverName").withDatabase("databaseName")
-                    .withUser("<user>").withPassword("fakeTokenPlaceholder").withTable("tableName"))))
+            .withOutputs(Arrays.asList(new OutputInner().withName("outputtest")
+                .withDatasource(new AzureSqlDatabaseOutputDataSource().withServer("serverName")
+                    .withDatabase("databaseName")
+                    .withUser("<user>")
+                    .withPassword("fakeTokenPlaceholder")
+                    .withTable("tableName"))))
             .withFunctions(Arrays.asList())
             .withExternals(new External()
                 .withStorageAccount(
                     new StorageAccount().withAccountName("mystorageaccount").withAccountKey("fakeTokenPlaceholder"))
-                .withContainer("mycontainer").withPath("UserCustomCode.zip")
+                .withContainer("mycontainer")
+                .withPath("UserCustomCode.zip")
                 .withRefreshConfiguration(new RefreshConfiguration().withPathPattern("{date}\\\\{time}")
-                    .withDateFormat("yyyy-dd-MM").withTimeFormat("HH").withRefreshInterval("00:01:00")
+                    .withDateFormat("yyyy-dd-MM")
+                    .withTimeFormat("HH")
+                    .withRefreshInterval("00:01:00")
                     .withRefreshType(UpdatableUdfRefreshType.NONBLOCKING)))
             .create();
     }

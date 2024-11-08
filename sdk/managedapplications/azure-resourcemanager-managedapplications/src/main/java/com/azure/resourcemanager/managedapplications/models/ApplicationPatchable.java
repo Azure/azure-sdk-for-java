@@ -9,95 +9,97 @@ import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationPa
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of ApplicationPatchable. */
+/**
+ * An immutable client-side representation of ApplicationPatchable.
+ */
 public interface ApplicationPatchable {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the managedBy property: ID of the resource that manages this resource.
-     *
+     * 
      * @return the managedBy value.
      */
     String managedBy();
 
     /**
      * Gets the sku property: The SKU of the resource.
-     *
+     * 
      * @return the sku value.
      */
     Sku sku();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the plan property: The plan information.
-     *
+     * 
      * @return the plan value.
      */
     PlanPatchable plan();
 
     /**
      * Gets the kind property: The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
-     *
+     * 
      * @return the kind value.
      */
     String kind();
 
     /**
      * Gets the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     Identity identity();
 
     /**
      * Gets the managedResourceGroupId property: The managed resource group Id.
-     *
+     * 
      * @return the managedResourceGroupId value.
      */
     String managedResourceGroupId();
 
     /**
      * Gets the applicationDefinitionId property: The fully qualified path of managed application definition Id.
-     *
+     * 
      * @return the applicationDefinitionId value.
      */
     String applicationDefinitionId();
@@ -105,42 +107,42 @@ public interface ApplicationPatchable {
     /**
      * Gets the parameters property: Name and value pairs that define the managed application parameters. It can be a
      * JObject or a well formed JSON string.
-     *
+     * 
      * @return the parameters value.
      */
     Object parameters();
 
     /**
      * Gets the outputs property: Name and value pairs that define the managed application outputs.
-     *
+     * 
      * @return the outputs value.
      */
     Object outputs();
 
     /**
      * Gets the provisioningState property: The managed application provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the billingDetails property: The managed application billing details.
-     *
+     * 
      * @return the billingDetails value.
      */
     ApplicationBillingDetailsDefinition billingDetails();
 
     /**
      * Gets the jitAccessPolicy property: The managed application Jit access policy.
-     *
+     * 
      * @return the jitAccessPolicy value.
      */
     ApplicationJitAccessPolicy jitAccessPolicy();
 
     /**
      * Gets the publisherTenantId property: The publisher tenant Id.
-     *
+     * 
      * @return the publisherTenantId value.
      */
     String publisherTenantId();
@@ -148,14 +150,14 @@ public interface ApplicationPatchable {
     /**
      * Gets the authorizations property: The read-only authorizations property that is retrieved from the application
      * package.
-     *
+     * 
      * @return the authorizations value.
      */
     List<ApplicationAuthorization> authorizations();
 
     /**
      * Gets the managementMode property: The managed application management mode.
-     *
+     * 
      * @return the managementMode value.
      */
     ApplicationManagementMode managementMode();
@@ -163,7 +165,7 @@ public interface ApplicationPatchable {
     /**
      * Gets the customerSupport property: The read-only customer support property that is retrieved from the application
      * package.
-     *
+     * 
      * @return the customerSupport value.
      */
     ApplicationPackageContact customerSupport();
@@ -171,35 +173,35 @@ public interface ApplicationPatchable {
     /**
      * Gets the supportUrls property: The read-only support URLs property that is retrieved from the application
      * package.
-     *
+     * 
      * @return the supportUrls value.
      */
     ApplicationPackageSupportUrls supportUrls();
 
     /**
      * Gets the artifacts property: The collection of managed application artifacts.
-     *
+     * 
      * @return the artifacts value.
      */
     List<ApplicationArtifact> artifacts();
 
     /**
      * Gets the createdBy property: The client entity that created the JIT request.
-     *
+     * 
      * @return the createdBy value.
      */
     ApplicationClientDetails createdBy();
 
     /**
      * Gets the updatedBy property: The client entity that last updated the JIT request.
-     *
+     * 
      * @return the updatedBy value.
      */
     ApplicationClientDetails updatedBy();
 
     /**
      * Gets the inner com.azure.resourcemanager.managedapplications.fluent.models.ApplicationPatchableInner object.
-     *
+     * 
      * @return the inner object.
      */
     ApplicationPatchableInner innerModel();

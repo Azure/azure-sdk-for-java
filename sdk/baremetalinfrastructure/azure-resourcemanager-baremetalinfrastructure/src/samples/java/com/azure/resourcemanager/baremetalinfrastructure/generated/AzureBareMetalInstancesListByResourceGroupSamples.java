@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.baremetalinfrastructure.generated;
 
-/** Samples for AzureBareMetalInstances ListByResourceGroup. */
+/**
+ * Samples for AzureBareMetalInstances ListByResourceGroup.
+ */
 public final class AzureBareMetalInstancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-
+     * preview/examples/AzureBareMetalInstances_ListByResourceGroup.json
      */
     /**
      * Sample code: List all Azure Bare Metal Instances in a resource group.
-     *
+     * 
      * @param manager Entry point to BareMetalInfrastructureManager.
      */
     public static void listAllAzureBareMetalInstancesInAResourceGroup(

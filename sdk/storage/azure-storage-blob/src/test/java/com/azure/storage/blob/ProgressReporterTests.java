@@ -86,7 +86,10 @@ public class ProgressReporterTests extends BlobTestBase {
 
         // a dummy value to avoid compiler warning
         int count = 0;
-        while (!(disposable1.isDisposed() && disposable2.isDisposed() && disposable3.isDisposed() && disposable4.isDisposed())) {
+        while (!(disposable1.isDisposed()
+            && disposable2.isDisposed()
+            && disposable3.isDisposed()
+            && disposable4.isDisposed())) {
             // Busy-wait loop; be cautious about potential for high CPU usage
             count++;
         }
@@ -128,13 +131,13 @@ public class ProgressReporterTests extends BlobTestBase {
         blobReceiver.handleProgress(3L);
         blobReceiver.handleProgress(5L);
 
-        assertArrayEquals(new Long[]{1L, 3L, 5L}, blobReceiver.progresses.toArray());
+        assertArrayEquals(new Long[] { 1L, 3L, 5L }, blobReceiver.progresses.toArray());
 
         commonReceiver.handleProgress(1L);
         commonReceiver.handleProgress(3L);
         commonReceiver.handleProgress(5L);
 
-        assertArrayEquals(new Long[]{1L, 3L, 5L}, commonReceiver.progresses.toArray());
+        assertArrayEquals(new Long[] { 1L, 3L, 5L }, commonReceiver.progresses.toArray());
     }
 
     private static class TestBlobProgressReceiver implements ProgressReceiver {

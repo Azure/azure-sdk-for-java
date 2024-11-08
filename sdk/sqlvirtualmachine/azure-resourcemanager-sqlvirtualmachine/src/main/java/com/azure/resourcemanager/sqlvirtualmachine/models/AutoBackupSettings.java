@@ -5,103 +5,97 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Configure backups for databases in your SQL virtual machine. */
+/**
+ * Configure backups for databases in your SQL virtual machine.
+ */
 @Fluent
-public final class AutoBackupSettings {
+public final class AutoBackupSettings implements JsonSerializable<AutoBackupSettings> {
     /*
      * Enable or disable autobackup on SQL virtual machine.
      */
-    @JsonProperty(value = "enable")
     private Boolean enable;
 
     /*
      * Enable or disable encryption for backup on SQL virtual machine.
      */
-    @JsonProperty(value = "enableEncryption")
     private Boolean enableEncryption;
 
     /*
      * Retention period of backup: 1-90 days.
      */
-    @JsonProperty(value = "retentionPeriod")
     private Integer retentionPeriod;
 
     /*
      * Storage account url where backup will be taken to.
      */
-    @JsonProperty(value = "storageAccountUrl")
     private String storageAccountUrl;
 
     /*
      * Storage container name where backup will be taken to.
      */
-    @JsonProperty(value = "storageContainerName")
     private String storageContainerName;
 
     /*
      * Storage account key where backup will be taken to.
      */
-    @JsonProperty(value = "storageAccessKey")
     private String storageAccessKey;
 
     /*
      * Password for encryption on backup.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Include or exclude system databases from auto backup.
      */
-    @JsonProperty(value = "backupSystemDbs")
     private Boolean backupSystemDbs;
 
     /*
      * Backup schedule type.
      */
-    @JsonProperty(value = "backupScheduleType")
     private BackupScheduleType backupScheduleType;
 
     /*
      * Frequency of full backups. In both cases, full backups begin during the next scheduled time window.
      */
-    @JsonProperty(value = "fullBackupFrequency")
     private FullBackupFrequencyType fullBackupFrequency;
 
     /*
      * Days of the week for the backups when FullBackupFrequency is set to Weekly.
      */
-    @JsonProperty(value = "daysOfWeek")
     private List<AutoBackupDaysOfWeek> daysOfWeek;
 
     /*
      * Start time of a given day during which full backups can take place. 0-23 hours.
      */
-    @JsonProperty(value = "fullBackupStartTime")
     private Integer fullBackupStartTime;
 
     /*
      * Duration of the time window of a given day during which full backups can take place. 1-23 hours.
      */
-    @JsonProperty(value = "fullBackupWindowHours")
     private Integer fullBackupWindowHours;
 
     /*
      * Frequency of log backups. 5-60 minutes.
      */
-    @JsonProperty(value = "logBackupFrequency")
     private Integer logBackupFrequency;
 
-    /** Creates an instance of AutoBackupSettings class. */
+    /**
+     * Creates an instance of AutoBackupSettings class.
+     */
     public AutoBackupSettings() {
     }
 
     /**
      * Get the enable property: Enable or disable autobackup on SQL virtual machine.
-     *
+     * 
      * @return the enable value.
      */
     public Boolean enable() {
@@ -110,7 +104,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the enable property: Enable or disable autobackup on SQL virtual machine.
-     *
+     * 
      * @param enable the enable value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -121,7 +115,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the enableEncryption property: Enable or disable encryption for backup on SQL virtual machine.
-     *
+     * 
      * @return the enableEncryption value.
      */
     public Boolean enableEncryption() {
@@ -130,7 +124,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the enableEncryption property: Enable or disable encryption for backup on SQL virtual machine.
-     *
+     * 
      * @param enableEncryption the enableEncryption value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -141,7 +135,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the retentionPeriod property: Retention period of backup: 1-90 days.
-     *
+     * 
      * @return the retentionPeriod value.
      */
     public Integer retentionPeriod() {
@@ -150,7 +144,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the retentionPeriod property: Retention period of backup: 1-90 days.
-     *
+     * 
      * @param retentionPeriod the retentionPeriod value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -161,7 +155,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the storageAccountUrl property: Storage account url where backup will be taken to.
-     *
+     * 
      * @return the storageAccountUrl value.
      */
     public String storageAccountUrl() {
@@ -170,7 +164,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the storageAccountUrl property: Storage account url where backup will be taken to.
-     *
+     * 
      * @param storageAccountUrl the storageAccountUrl value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -181,7 +175,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the storageContainerName property: Storage container name where backup will be taken to.
-     *
+     * 
      * @return the storageContainerName value.
      */
     public String storageContainerName() {
@@ -190,7 +184,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the storageContainerName property: Storage container name where backup will be taken to.
-     *
+     * 
      * @param storageContainerName the storageContainerName value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -201,7 +195,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the storageAccessKey property: Storage account key where backup will be taken to.
-     *
+     * 
      * @return the storageAccessKey value.
      */
     public String storageAccessKey() {
@@ -210,7 +204,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the storageAccessKey property: Storage account key where backup will be taken to.
-     *
+     * 
      * @param storageAccessKey the storageAccessKey value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -221,7 +215,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the password property: Password for encryption on backup.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -230,7 +224,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the password property: Password for encryption on backup.
-     *
+     * 
      * @param password the password value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -241,7 +235,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the backupSystemDbs property: Include or exclude system databases from auto backup.
-     *
+     * 
      * @return the backupSystemDbs value.
      */
     public Boolean backupSystemDbs() {
@@ -250,7 +244,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the backupSystemDbs property: Include or exclude system databases from auto backup.
-     *
+     * 
      * @param backupSystemDbs the backupSystemDbs value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -261,7 +255,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the backupScheduleType property: Backup schedule type.
-     *
+     * 
      * @return the backupScheduleType value.
      */
     public BackupScheduleType backupScheduleType() {
@@ -270,7 +264,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the backupScheduleType property: Backup schedule type.
-     *
+     * 
      * @param backupScheduleType the backupScheduleType value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -282,7 +276,7 @@ public final class AutoBackupSettings {
     /**
      * Get the fullBackupFrequency property: Frequency of full backups. In both cases, full backups begin during the
      * next scheduled time window.
-     *
+     * 
      * @return the fullBackupFrequency value.
      */
     public FullBackupFrequencyType fullBackupFrequency() {
@@ -292,7 +286,7 @@ public final class AutoBackupSettings {
     /**
      * Set the fullBackupFrequency property: Frequency of full backups. In both cases, full backups begin during the
      * next scheduled time window.
-     *
+     * 
      * @param fullBackupFrequency the fullBackupFrequency value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -303,7 +297,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the daysOfWeek property: Days of the week for the backups when FullBackupFrequency is set to Weekly.
-     *
+     * 
      * @return the daysOfWeek value.
      */
     public List<AutoBackupDaysOfWeek> daysOfWeek() {
@@ -312,7 +306,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the daysOfWeek property: Days of the week for the backups when FullBackupFrequency is set to Weekly.
-     *
+     * 
      * @param daysOfWeek the daysOfWeek value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -324,7 +318,7 @@ public final class AutoBackupSettings {
     /**
      * Get the fullBackupStartTime property: Start time of a given day during which full backups can take place. 0-23
      * hours.
-     *
+     * 
      * @return the fullBackupStartTime value.
      */
     public Integer fullBackupStartTime() {
@@ -334,7 +328,7 @@ public final class AutoBackupSettings {
     /**
      * Set the fullBackupStartTime property: Start time of a given day during which full backups can take place. 0-23
      * hours.
-     *
+     * 
      * @param fullBackupStartTime the fullBackupStartTime value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -346,7 +340,7 @@ public final class AutoBackupSettings {
     /**
      * Get the fullBackupWindowHours property: Duration of the time window of a given day during which full backups can
      * take place. 1-23 hours.
-     *
+     * 
      * @return the fullBackupWindowHours value.
      */
     public Integer fullBackupWindowHours() {
@@ -356,7 +350,7 @@ public final class AutoBackupSettings {
     /**
      * Set the fullBackupWindowHours property: Duration of the time window of a given day during which full backups can
      * take place. 1-23 hours.
-     *
+     * 
      * @param fullBackupWindowHours the fullBackupWindowHours value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -367,7 +361,7 @@ public final class AutoBackupSettings {
 
     /**
      * Get the logBackupFrequency property: Frequency of log backups. 5-60 minutes.
-     *
+     * 
      * @return the logBackupFrequency value.
      */
     public Integer logBackupFrequency() {
@@ -376,7 +370,7 @@ public final class AutoBackupSettings {
 
     /**
      * Set the logBackupFrequency property: Frequency of log backups. 5-60 minutes.
-     *
+     * 
      * @param logBackupFrequency the logBackupFrequency value to set.
      * @return the AutoBackupSettings object itself.
      */
@@ -387,9 +381,91 @@ public final class AutoBackupSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enable", this.enable);
+        jsonWriter.writeBooleanField("enableEncryption", this.enableEncryption);
+        jsonWriter.writeNumberField("retentionPeriod", this.retentionPeriod);
+        jsonWriter.writeStringField("storageAccountUrl", this.storageAccountUrl);
+        jsonWriter.writeStringField("storageContainerName", this.storageContainerName);
+        jsonWriter.writeStringField("storageAccessKey", this.storageAccessKey);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeBooleanField("backupSystemDbs", this.backupSystemDbs);
+        jsonWriter.writeStringField("backupScheduleType",
+            this.backupScheduleType == null ? null : this.backupScheduleType.toString());
+        jsonWriter.writeStringField("fullBackupFrequency",
+            this.fullBackupFrequency == null ? null : this.fullBackupFrequency.toString());
+        jsonWriter.writeArrayField("daysOfWeek", this.daysOfWeek,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeNumberField("fullBackupStartTime", this.fullBackupStartTime);
+        jsonWriter.writeNumberField("fullBackupWindowHours", this.fullBackupWindowHours);
+        jsonWriter.writeNumberField("logBackupFrequency", this.logBackupFrequency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoBackupSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoBackupSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoBackupSettings.
+     */
+    public static AutoBackupSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoBackupSettings deserializedAutoBackupSettings = new AutoBackupSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enable".equals(fieldName)) {
+                    deserializedAutoBackupSettings.enable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableEncryption".equals(fieldName)) {
+                    deserializedAutoBackupSettings.enableEncryption = reader.getNullable(JsonReader::getBoolean);
+                } else if ("retentionPeriod".equals(fieldName)) {
+                    deserializedAutoBackupSettings.retentionPeriod = reader.getNullable(JsonReader::getInt);
+                } else if ("storageAccountUrl".equals(fieldName)) {
+                    deserializedAutoBackupSettings.storageAccountUrl = reader.getString();
+                } else if ("storageContainerName".equals(fieldName)) {
+                    deserializedAutoBackupSettings.storageContainerName = reader.getString();
+                } else if ("storageAccessKey".equals(fieldName)) {
+                    deserializedAutoBackupSettings.storageAccessKey = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAutoBackupSettings.password = reader.getString();
+                } else if ("backupSystemDbs".equals(fieldName)) {
+                    deserializedAutoBackupSettings.backupSystemDbs = reader.getNullable(JsonReader::getBoolean);
+                } else if ("backupScheduleType".equals(fieldName)) {
+                    deserializedAutoBackupSettings.backupScheduleType
+                        = BackupScheduleType.fromString(reader.getString());
+                } else if ("fullBackupFrequency".equals(fieldName)) {
+                    deserializedAutoBackupSettings.fullBackupFrequency
+                        = FullBackupFrequencyType.fromString(reader.getString());
+                } else if ("daysOfWeek".equals(fieldName)) {
+                    List<AutoBackupDaysOfWeek> daysOfWeek
+                        = reader.readArray(reader1 -> AutoBackupDaysOfWeek.fromString(reader1.getString()));
+                    deserializedAutoBackupSettings.daysOfWeek = daysOfWeek;
+                } else if ("fullBackupStartTime".equals(fieldName)) {
+                    deserializedAutoBackupSettings.fullBackupStartTime = reader.getNullable(JsonReader::getInt);
+                } else if ("fullBackupWindowHours".equals(fieldName)) {
+                    deserializedAutoBackupSettings.fullBackupWindowHours = reader.getNullable(JsonReader::getInt);
+                } else if ("logBackupFrequency".equals(fieldName)) {
+                    deserializedAutoBackupSettings.logBackupFrequency = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoBackupSettings;
+        });
     }
 }

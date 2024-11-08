@@ -7,9 +7,8 @@ package com.azure.analytics.purview.datamap.generated;
 import com.azure.analytics.purview.datamap.models.AtlasObjectId;
 import com.azure.analytics.purview.datamap.models.AtlasRelationship;
 import com.azure.analytics.purview.datamap.models.StatusAtlasRelationship;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -20,16 +19,14 @@ import org.junit.jupiter.api.Test;
 public final class RelationshipUpdateTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testRelationshipUpdateTests() throws IOException {
+    public void testRelationshipUpdateTests() {
         // method invocation
         AtlasRelationship response = relationshipClient.update(new AtlasRelationship()
-            .setAttributes(mapOf("expression", "Example Expression", "steward", "Example Steward", "description",
-                "Example Description", "source",
-                JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize("null", Object.class, SerializerEncoding.JSON),
-                "status",
-                JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize("null", Object.class, SerializerEncoding.JSON)))
+            .setAttributes(
+                mapOf("expression", BinaryData.fromBytes("Example Expression".getBytes(StandardCharsets.UTF_8)),
+                    "steward", BinaryData.fromBytes("Example Steward".getBytes(StandardCharsets.UTF_8)), "description",
+                    BinaryData.fromBytes("Example Description".getBytes(StandardCharsets.UTF_8)), "source", null,
+                    "status", null))
             .setTypeName("AtlasGlossarySynonym")
             .setCreatedBy("ExampleCreator")
             .setEnd1(

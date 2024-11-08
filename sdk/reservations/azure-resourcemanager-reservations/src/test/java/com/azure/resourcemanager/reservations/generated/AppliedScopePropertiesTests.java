@@ -12,27 +12,27 @@ public final class AppliedScopePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppliedScopeProperties model = BinaryData.fromString(
-            "{\"tenantId\":\"qsrxybzqqed\",\"managementGroupId\":\"tbciqfouflmm\",\"subscriptionId\":\"zsm\",\"resourceGroupId\":\"mglougpbkw\",\"displayName\":\"utduqktapspwgcu\"}")
+            "{\"tenantId\":\"p\",\"managementGroupId\":\"bdkvwrwjf\",\"subscriptionId\":\"snhu\",\"resourceGroupId\":\"eltmrldhugjzzdat\",\"displayName\":\"hocdgeab\"}")
             .toObject(AppliedScopeProperties.class);
-        Assertions.assertEquals("qsrxybzqqed", model.tenantId());
-        Assertions.assertEquals("tbciqfouflmm", model.managementGroupId());
-        Assertions.assertEquals("zsm", model.subscriptionId());
-        Assertions.assertEquals("mglougpbkw", model.resourceGroupId());
-        Assertions.assertEquals("utduqktapspwgcu", model.displayName());
+        Assertions.assertEquals("p", model.tenantId());
+        Assertions.assertEquals("bdkvwrwjf", model.managementGroupId());
+        Assertions.assertEquals("snhu", model.subscriptionId());
+        Assertions.assertEquals("eltmrldhugjzzdat", model.resourceGroupId());
+        Assertions.assertEquals("hocdgeab", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppliedScopeProperties model = new AppliedScopeProperties().withTenantId("qsrxybzqqed")
-            .withManagementGroupId("tbciqfouflmm")
-            .withSubscriptionId("zsm")
-            .withResourceGroupId("mglougpbkw")
-            .withDisplayName("utduqktapspwgcu");
+        AppliedScopeProperties model = new AppliedScopeProperties().withTenantId("p")
+            .withManagementGroupId("bdkvwrwjf")
+            .withSubscriptionId("snhu")
+            .withResourceGroupId("eltmrldhugjzzdat")
+            .withDisplayName("hocdgeab");
         model = BinaryData.fromObject(model).toObject(AppliedScopeProperties.class);
-        Assertions.assertEquals("qsrxybzqqed", model.tenantId());
-        Assertions.assertEquals("tbciqfouflmm", model.managementGroupId());
-        Assertions.assertEquals("zsm", model.subscriptionId());
-        Assertions.assertEquals("mglougpbkw", model.resourceGroupId());
-        Assertions.assertEquals("utduqktapspwgcu", model.displayName());
+        Assertions.assertEquals("p", model.tenantId());
+        Assertions.assertEquals("bdkvwrwjf", model.managementGroupId());
+        Assertions.assertEquals("snhu", model.subscriptionId());
+        Assertions.assertEquals("eltmrldhugjzzdat", model.resourceGroupId());
+        Assertions.assertEquals("hocdgeab", model.displayName());
     }
 }

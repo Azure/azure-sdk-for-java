@@ -65,7 +65,18 @@ foreach($packageInfoFile in $packageInfoFiles) {
     if ($packageInfo.DevVersion) {
       $version = $packageInfo.DevVersion
     }
+    # This is a workaround until https://github.com/Azure/azure-sdk-for-java/issues/42701
+    # has been fixed. Before checking the javadoc jar and reporting an error, check the
+    # if the library's jar file exists. If the jar doesn't exist then skip this library.
     # From the $packageInfo piece together the path to the javadoc jar file
+    # BEGIN-GreedyPackageInfoSkip
+    $jarFile = Join-Path $ArtifactStagingDirectory $packageInfo.Group $packageInfo.Name "$($packageInfo.Name)-$($version).jar"
+    if (!(Test-Path $jarFile -PathType Leaf)) {
+        Write-Host "Jar $jarFile doesn't exist, skipping..."
+        continue
+    }
+    # END-GreedyPackageInfoSkip
+
     $javadocJar = Join-Path $ArtifactStagingDirectory $packageInfo.Group $packageInfo.Name "$($packageInfo.Name)-$($version)-javadoc.jar"
     if (!(Test-Path $javadocJar -PathType Leaf)) {
         LogError "Javadoc Jar file, $javadocJar, was not found. Please ensure that a Javadoc jar is being created for the library."

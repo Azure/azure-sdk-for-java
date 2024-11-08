@@ -115,10 +115,10 @@ import java.util.stream.Collectors;
 class Transforms {
 
     private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
-    private static final String SERIALIZATION_MESSAGE = String.format("'serialization' must be one of %s, %s, %s or "
-            + "%s.", FileQueryJsonSerialization.class.getSimpleName(),
-        FileQueryDelimitedSerialization.class.getSimpleName(), FileQueryArrowSerialization.class.getSimpleName(),
-        FileQueryParquetSerialization.class.getSimpleName());
+    private static final String SERIALIZATION_MESSAGE
+        = String.format("'serialization' must be one of %s, %s, %s or " + "%s.",
+            FileQueryJsonSerialization.class.getSimpleName(), FileQueryDelimitedSerialization.class.getSimpleName(),
+            FileQueryArrowSerialization.class.getSimpleName(), FileQueryParquetSerialization.class.getSimpleName());
 
     private static final long EPOCH_CONVERSION;
 
@@ -143,56 +143,56 @@ class Transforms {
         EPOCH_CONVERSION = unixEpoch.getTimeInMillis() - windowsEpoch.getTimeInMillis();
     }
 
-    static com.azure.storage.blob.models.PublicAccessType toBlobPublicAccessType(PublicAccessType
-        fileSystemPublicAccessType) {
+    static com.azure.storage.blob.models.PublicAccessType
+        toBlobPublicAccessType(PublicAccessType fileSystemPublicAccessType) {
         if (fileSystemPublicAccessType == null) {
             return null;
         }
         return com.azure.storage.blob.models.PublicAccessType.fromString(fileSystemPublicAccessType.toString());
     }
 
-    private static LeaseDurationType toDataLakeLeaseDurationType(com.azure.storage.blob.models.LeaseDurationType
-        blobLeaseDurationType) {
+    private static LeaseDurationType
+        toDataLakeLeaseDurationType(com.azure.storage.blob.models.LeaseDurationType blobLeaseDurationType) {
         if (blobLeaseDurationType == null) {
             return null;
         }
         return LeaseDurationType.fromString(blobLeaseDurationType.toString());
     }
 
-    private static LeaseStateType toDataLakeLeaseStateType(com.azure.storage.blob.models.LeaseStateType
-        blobLeaseStateType) {
+    private static LeaseStateType
+        toDataLakeLeaseStateType(com.azure.storage.blob.models.LeaseStateType blobLeaseStateType) {
         if (blobLeaseStateType == null) {
             return null;
         }
         return LeaseStateType.fromString(blobLeaseStateType.toString());
     }
 
-    private static LeaseStatusType toDataLakeLeaseStatusType(com.azure.storage.blob.models.LeaseStatusType
-        blobLeaseStatusType) {
+    private static LeaseStatusType
+        toDataLakeLeaseStatusType(com.azure.storage.blob.models.LeaseStatusType blobLeaseStatusType) {
         if (blobLeaseStatusType == null) {
             return null;
         }
         return LeaseStatusType.fromString(blobLeaseStatusType.toString());
     }
 
-    private static PublicAccessType toDataLakePublicAccessType(com.azure.storage.blob.models.PublicAccessType
-        blobPublicAccessType) {
+    private static PublicAccessType
+        toDataLakePublicAccessType(com.azure.storage.blob.models.PublicAccessType blobPublicAccessType) {
         if (blobPublicAccessType == null) {
             return null;
         }
         return PublicAccessType.fromString(blobPublicAccessType.toString());
     }
 
-    private static CopyStatusType toDataLakeCopyStatusType(
-        com.azure.storage.blob.models.CopyStatusType blobCopyStatus) {
+    private static CopyStatusType
+        toDataLakeCopyStatusType(com.azure.storage.blob.models.CopyStatusType blobCopyStatus) {
         if (blobCopyStatus == null) {
             return null;
         }
         return CopyStatusType.fromString(blobCopyStatus.toString());
     }
 
-    private static ArchiveStatus toDataLakeArchiveStatus(
-        com.azure.storage.blob.models.ArchiveStatus blobArchiveStatus) {
+    private static ArchiveStatus
+        toDataLakeArchiveStatus(com.azure.storage.blob.models.ArchiveStatus blobArchiveStatus) {
         if (blobArchiveStatus == null) {
             return null;
         }
@@ -210,8 +210,8 @@ class Transforms {
         if (blobContainerProperties == null) {
             return null;
         }
-        FileSystemProperties fileSystemProperties = new FileSystemProperties(blobContainerProperties.getMetadata(), blobContainerProperties.getETag(),
-            blobContainerProperties.getLastModified(),
+        FileSystemProperties fileSystemProperties = new FileSystemProperties(blobContainerProperties.getMetadata(),
+            blobContainerProperties.getETag(), blobContainerProperties.getLastModified(),
             Transforms.toDataLakeLeaseDurationType(blobContainerProperties.getLeaseDuration()),
             Transforms.toDataLakeLeaseStateType(blobContainerProperties.getLeaseState()),
             Transforms.toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus()),
@@ -226,8 +226,7 @@ class Transforms {
         if (fileSystemListDetails == null) {
             return null;
         }
-        return new BlobContainerListDetails()
-            .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata())
+        return new BlobContainerListDetails().setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata())
             .setRetrieveDeleted(fileSystemListDetails.getRetrieveDeleted())
             .setRetrieveSystemContainers(fileSystemListDetails.getRetrieveSystemFileSystems());
     }
@@ -242,13 +241,12 @@ class Transforms {
             .setPrefix(listFileSystemsOptions.getPrefix());
     }
 
-    static UserDelegationKey toDataLakeUserDelegationKey(com.azure.storage.blob.models.UserDelegationKey
-        blobUserDelegationKey) {
+    static UserDelegationKey
+        toDataLakeUserDelegationKey(com.azure.storage.blob.models.UserDelegationKey blobUserDelegationKey) {
         if (blobUserDelegationKey == null) {
             return null;
         }
-        return new UserDelegationKey()
-            .setSignedExpiry(blobUserDelegationKey.getSignedExpiry())
+        return new UserDelegationKey().setSignedExpiry(blobUserDelegationKey.getSignedExpiry())
             .setSignedObjectId(blobUserDelegationKey.getSignedObjectId())
             .setSignedTenantId(blobUserDelegationKey.getSignedTenantId())
             .setSignedService(blobUserDelegationKey.getSignedService())
@@ -261,8 +259,7 @@ class Transforms {
         if (pathHTTPHeaders == null) {
             return null;
         }
-        return new BlobHttpHeaders()
-            .setCacheControl(pathHTTPHeaders.getCacheControl())
+        return new BlobHttpHeaders().setCacheControl(pathHTTPHeaders.getCacheControl())
             .setContentDisposition(pathHTTPHeaders.getContentDisposition())
             .setContentEncoding(pathHTTPHeaders.getContentEncoding())
             .setContentLanguage(pathHTTPHeaders.getContentLanguage())
@@ -274,8 +271,7 @@ class Transforms {
         if (options == null) {
             return null;
         }
-        return new BlobInputStreamOptions()
-            .setBlockSize(options.getBlockSize())
+        return new BlobInputStreamOptions().setBlockSize(options.getBlockSize())
             .setRange(toBlobRange(options.getRange()))
             .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
             .setConsistentReadControl(toBlobConsistentReadControl(options.getConsistentReadControl()));
@@ -289,8 +285,10 @@ class Transforms {
         switch (datalakeConsistentReadControl) {
             case NONE:
                 return ConsistentReadControl.NONE;
+
             case ETAG:
                 return ConsistentReadControl.ETAG;
+
             default:
                 throw new IllegalArgumentException("Could not convert ConsistentReadControl");
         }
@@ -303,8 +301,8 @@ class Transforms {
         return new BlobRange(fileRange.getOffset(), fileRange.getCount());
     }
 
-    static com.azure.storage.blob.models.DownloadRetryOptions toBlobDownloadRetryOptions(
-        DownloadRetryOptions dataLakeOptions) {
+    static com.azure.storage.blob.models.DownloadRetryOptions
+        toBlobDownloadRetryOptions(DownloadRetryOptions dataLakeOptions) {
         if (dataLakeOptions == null) {
             return null;
         }
@@ -320,10 +318,11 @@ class Transforms {
         if (properties == null) {
             return null;
         } else {
-            PathProperties pathProperties = new PathProperties(properties.getCreationTime(), properties.getLastModified(),
-                properties.getETag(), properties.getBlobSize(), properties.getContentType(), properties.getContentMd5(),
-                properties.getContentEncoding(), properties.getContentDisposition(), properties.getContentLanguage(),
-                properties.getCacheControl(), Transforms.toDataLakeLeaseStatusType(properties.getLeaseStatus()),
+            PathProperties pathProperties = new PathProperties(properties.getCreationTime(),
+                properties.getLastModified(), properties.getETag(), properties.getBlobSize(),
+                properties.getContentType(), properties.getContentMd5(), properties.getContentEncoding(),
+                properties.getContentDisposition(), properties.getContentLanguage(), properties.getCacheControl(),
+                Transforms.toDataLakeLeaseStatusType(properties.getLeaseStatus()),
                 Transforms.toDataLakeLeaseStateType(properties.getLeaseState()),
                 Transforms.toDataLakeLeaseDurationType(properties.getLeaseDuration()), properties.getCopyId(),
                 Transforms.toDataLakeCopyStatusType(properties.getCopyStatus()), properties.getCopySource(),
@@ -342,8 +341,9 @@ class Transforms {
                 String permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
                 String acl = r.getHeaders().getValue(X_MS_ACL);
 
-                return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties,
-                    properties.getEncryptionScope(), encryptionContext, owner, group, permissions, acl);
+                return AccessorUtility.getPathPropertiesAccessor()
+                    .setPathProperties(pathProperties, properties.getEncryptionScope(), encryptionContext, owner, group,
+                        permissions, acl);
             }
         }
     }
@@ -352,21 +352,19 @@ class Transforms {
         if (blobContainerItem == null) {
             return null;
         }
-        return new FileSystemItem()
-            .setName(blobContainerItem.getName())
+        return new FileSystemItem().setName(blobContainerItem.getName())
             .setDeleted(blobContainerItem.isDeleted())
             .setVersion(blobContainerItem.getVersion())
             .setMetadata(blobContainerItem.getMetadata())
             .setProperties(Transforms.toFileSystemItemProperties(blobContainerItem.getProperties()));
     }
 
-    private static FileSystemItemProperties toFileSystemItemProperties(
-        BlobContainerItemProperties blobContainerItemProperties) {
+    private static FileSystemItemProperties
+        toFileSystemItemProperties(BlobContainerItemProperties blobContainerItemProperties) {
         if (blobContainerItemProperties == null) {
             return null;
         }
-        return new FileSystemItemProperties()
-            .setETag(blobContainerItemProperties.getETag())
+        return new FileSystemItemProperties().setETag(blobContainerItemProperties.getETag())
             .setLastModified(blobContainerItemProperties.getLastModified())
             .setLeaseStatus(toDataLakeLeaseStatusType(blobContainerItemProperties.getLeaseStatus()))
             .setLeaseState(toDataLakeLeaseStateType(blobContainerItemProperties.getLeaseState()))
@@ -382,14 +380,14 @@ class Transforms {
         if (path == null) {
             return null;
         }
-        PathItem pathItem = new PathItem(path.getETag(),
-            parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
-            path.getGroup(), path.isDirectory() != null && path.isDirectory(), path.getName(), path.getOwner(),
-            path.getPermissions(),
+        PathItem pathItem = new PathItem(path.getETag(), parseDateOrNull(path.getLastModified()),
+            path.getContentLength() == null ? 0 : path.getContentLength(), path.getGroup(),
+            path.isDirectory() != null && path.isDirectory(), path.getName(), path.getOwner(), path.getPermissions(),
             parseWindowsFileTimeOrDateString(path.getCreationTime()),
             parseWindowsFileTimeOrDateString(path.getExpiryTime()));
 
-        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope(), path.getEncryptionContext());
+        return AccessorUtility.getPathItemAccessor()
+            .setPathItemProperties(pathItem, path.getEncryptionScope(), path.getEncryptionContext());
     }
 
     static OffsetDateTime parseWindowsFileTimeOrDateString(String date) {
@@ -428,13 +426,11 @@ class Transforms {
         return Instant.ofEpochMilli(fileTimeUnixEpoch).atOffset(ZoneOffset.UTC);
     }
 
-
     static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {
         if (requestConditions == null) {
             return null;
         }
-        return new BlobRequestConditions()
-            .setLeaseId(requestConditions.getLeaseId())
+        return new BlobRequestConditions().setLeaseId(requestConditions.getLeaseId())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfMatch(requestConditions.getIfMatch())
@@ -456,15 +452,14 @@ class Transforms {
         }
         return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
             Transforms.toPathReadHeaders(r.getDeserializedHeaders(), r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT),
-            r.getHeaders().getValue(X_MS_ACL)));
+                r.getHeaders().getValue(X_MS_ACL)));
     }
 
     private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext, String acl) {
         if (h == null) {
             return null;
         }
-        return new FileReadHeaders()
-            .setLastModified(h.getLastModified())
+        return new FileReadHeaders().setLastModified(h.getLastModified())
             .setMetadata(h.getMetadata())
             .setContentLength(h.getContentLength())
             .setContentType(h.getContentType())
@@ -514,8 +509,7 @@ class Transforms {
         if (identifier == null) {
             return null;
         }
-        return new BlobSignedIdentifier()
-            .setId(identifier.getId())
+        return new BlobSignedIdentifier().setId(identifier.getId())
             .setAccessPolicy(Transforms.toBlobAccessPolicy(identifier.getAccessPolicy()));
     }
 
@@ -523,8 +517,7 @@ class Transforms {
         if (accessPolicy == null) {
             return null;
         }
-        return new BlobAccessPolicy()
-            .setExpiresOn(accessPolicy.getExpiresOn())
+        return new BlobAccessPolicy().setExpiresOn(accessPolicy.getExpiresOn())
             .setStartsOn(accessPolicy.getStartsOn())
             .setPermissions(accessPolicy.getPermissions());
     }
@@ -552,8 +545,7 @@ class Transforms {
         if (identifier == null) {
             return null;
         }
-        return new DataLakeSignedIdentifier()
-            .setId(identifier.getId())
+        return new DataLakeSignedIdentifier().setId(identifier.getId())
             .setAccessPolicy(Transforms.toDataLakeAccessPolicy(identifier.getAccessPolicy()));
     }
 
@@ -561,8 +553,7 @@ class Transforms {
         if (accessPolicy == null) {
             return null;
         }
-        return new DataLakeAccessPolicy()
-            .setExpiresOn(accessPolicy.getExpiresOn())
+        return new DataLakeAccessPolicy().setExpiresOn(accessPolicy.getExpiresOn())
             .setStartsOn(accessPolicy.getStartsOn())
             .setPermissions(accessPolicy.getPermissions());
     }
@@ -576,8 +567,7 @@ class Transforms {
             return new BlobQueryJsonSerialization().setRecordSeparator(jsonSer.getRecordSeparator());
         } else if (ser instanceof FileQueryDelimitedSerialization) {
             FileQueryDelimitedSerialization delSer = (FileQueryDelimitedSerialization) ser;
-            return new BlobQueryDelimitedSerialization()
-                .setColumnSeparator(delSer.getColumnSeparator())
+            return new BlobQueryDelimitedSerialization().setColumnSeparator(delSer.getColumnSeparator())
                 .setEscapeChar(delSer.getEscapeChar())
                 .setFieldQuote(delSer.getFieldQuote())
                 .setHeadersPresent(delSer.isHeadersPresent())
@@ -661,8 +651,7 @@ class Transforms {
         if (h == null) {
             return null;
         }
-        return new FileQueryHeaders()
-            .setLastModified(h.getLastModified())
+        return new FileQueryHeaders().setLastModified(h.getLastModified())
             .setMetadata(h.getMetadata())
             .setContentLength(h.getContentLength())
             .setContentType(h.getContentType())
@@ -716,13 +705,13 @@ class Transforms {
 
     }
 
-//    static BlobContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
-//        if (options == null) {
-//            return null;
-//        }
-//        return new BlobContainerRenameOptions(options.getDestinationFileSystemName())
-//            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
-//    }
+    //    static BlobContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
+    //        if (options == null) {
+    //            return null;
+    //        }
+    //        return new BlobContainerRenameOptions(options.getDestinationFileSystemName())
+    //            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
+    //    }
 
     static UndeleteBlobContainerOptions toBlobContainerUndeleteOptions(FileSystemUndeleteOptions options) {
         if (options == null) {
@@ -737,8 +726,7 @@ class Transforms {
             return null;
         }
 
-        return new DataLakeServiceProperties()
-            .setDefaultServiceVersion(blobProps.getDefaultServiceVersion())
+        return new DataLakeServiceProperties().setDefaultServiceVersion(blobProps.getDefaultServiceVersion())
             .setCors(blobProps.getCors().stream().map(Transforms::toDataLakeCorsRule).collect(Collectors.toList()))
             .setDeleteRetentionPolicy(toDataLakeRetentionPolicy(blobProps.getDeleteRetentionPolicy()))
             .setHourMetrics(toDataLakeMetrics(blobProps.getHourMetrics()))
@@ -752,8 +740,7 @@ class Transforms {
             return null;
         }
 
-        return new DataLakeStaticWebsite()
-            .setDefaultIndexDocumentPath(staticWebsite.getDefaultIndexDocumentPath())
+        return new DataLakeStaticWebsite().setDefaultIndexDocumentPath(staticWebsite.getDefaultIndexDocumentPath())
             .setEnabled(staticWebsite.isEnabled())
             .setErrorDocument404Path(staticWebsite.getErrorDocument404Path())
             .setIndexDocument(staticWebsite.getIndexDocument());
@@ -764,8 +751,7 @@ class Transforms {
             return null;
         }
 
-        return new DataLakeAnalyticsLogging()
-            .setDelete(blobLogging.isDelete())
+        return new DataLakeAnalyticsLogging().setDelete(blobLogging.isDelete())
             .setRead(blobLogging.isRead())
             .setWrite(blobLogging.isWrite())
             .setRetentionPolicy(toDataLakeRetentionPolicy(blobLogging.getRetentionPolicy()))
@@ -777,8 +763,7 @@ class Transforms {
             return null;
         }
 
-        return new DataLakeCorsRule()
-            .setAllowedHeaders(blobRule.getAllowedHeaders())
+        return new DataLakeCorsRule().setAllowedHeaders(blobRule.getAllowedHeaders())
             .setAllowedMethods(blobRule.getAllowedMethods())
             .setAllowedOrigins(blobRule.getAllowedOrigins())
             .setExposedHeaders(blobRule.getExposedHeaders())
@@ -790,8 +775,7 @@ class Transforms {
             return null;
         }
 
-        return new DataLakeMetrics()
-            .setEnabled(blobMetrics.isEnabled())
+        return new DataLakeMetrics().setEnabled(blobMetrics.isEnabled())
             .setIncludeApis(blobMetrics.isIncludeApis())
             .setVersion(blobMetrics.getVersion())
             .setRetentionPolicy(toDataLakeRetentionPolicy(blobMetrics.getRetentionPolicy()));
@@ -802,9 +786,7 @@ class Transforms {
             return null;
         }
 
-        return new DataLakeRetentionPolicy()
-            .setDays(blobPolicy.getDays())
-            .setEnabled(blobPolicy.isEnabled());
+        return new DataLakeRetentionPolicy().setDays(blobPolicy.getDays()).setEnabled(blobPolicy.isEnabled());
     }
 
     static BlobServiceProperties toBlobServiceProperties(DataLakeServiceProperties datalakeProperties) {
@@ -812,8 +794,7 @@ class Transforms {
             return null;
         }
 
-        return new BlobServiceProperties()
-            .setDefaultServiceVersion(datalakeProperties.getDefaultServiceVersion())
+        return new BlobServiceProperties().setDefaultServiceVersion(datalakeProperties.getDefaultServiceVersion())
             .setCors(datalakeProperties.getCors().stream().map(Transforms::toBlobCorsRule).collect(Collectors.toList()))
             .setDeleteRetentionPolicy(toBlobRetentionPolicy(datalakeProperties.getDeleteRetentionPolicy()))
             .setHourMetrics(toBlobMetrics(datalakeProperties.getHourMetrics()))
@@ -827,8 +808,7 @@ class Transforms {
             return null;
         }
 
-        return new StaticWebsite()
-            .setDefaultIndexDocumentPath(staticWebsite.getDefaultIndexDocumentPath())
+        return new StaticWebsite().setDefaultIndexDocumentPath(staticWebsite.getDefaultIndexDocumentPath())
             .setEnabled(staticWebsite.isEnabled())
             .setErrorDocument404Path(staticWebsite.getErrorDocument404Path())
             .setIndexDocument(staticWebsite.getIndexDocument());
@@ -839,8 +819,7 @@ class Transforms {
             return null;
         }
 
-        return new BlobAnalyticsLogging()
-            .setDelete(datalakeLogging.isDelete())
+        return new BlobAnalyticsLogging().setDelete(datalakeLogging.isDelete())
             .setRead(datalakeLogging.isRead())
             .setWrite(datalakeLogging.isWrite())
             .setRetentionPolicy(toBlobRetentionPolicy(datalakeLogging.getRetentionPolicy()))
@@ -852,8 +831,7 @@ class Transforms {
             return null;
         }
 
-        return new BlobCorsRule()
-            .setAllowedHeaders(datalakeRule.getAllowedHeaders())
+        return new BlobCorsRule().setAllowedHeaders(datalakeRule.getAllowedHeaders())
             .setAllowedMethods(datalakeRule.getAllowedMethods())
             .setAllowedOrigins(datalakeRule.getAllowedOrigins())
             .setExposedHeaders(datalakeRule.getExposedHeaders())
@@ -865,8 +843,7 @@ class Transforms {
             return null;
         }
 
-        return new BlobMetrics()
-            .setEnabled(datalakeMetrics.isEnabled())
+        return new BlobMetrics().setEnabled(datalakeMetrics.isEnabled())
             .setIncludeApis(datalakeMetrics.isIncludeApis())
             .setVersion(datalakeMetrics.getVersion())
             .setRetentionPolicy(toBlobRetentionPolicy(datalakeMetrics.getRetentionPolicy()));
@@ -877,9 +854,7 @@ class Transforms {
             return null;
         }
 
-        return new BlobRetentionPolicy()
-            .setDays(datalakePolicy.getDays())
-            .setEnabled(datalakePolicy.isEnabled());
+        return new BlobRetentionPolicy().setDays(datalakePolicy.getDays()).setEnabled(datalakePolicy.isEnabled());
     }
 
     static PathDeletedItem toPathDeletedItem(BlobItemInternal blobItem) {
@@ -894,8 +869,8 @@ class Transforms {
         return new PathDeletedItem(blobPrefix.getName(), true, null, null, null);
     }
 
-    static CustomerProvidedKey toBlobCustomerProvidedKey(
-        com.azure.storage.file.datalake.models.CustomerProvidedKey key) {
+    static CustomerProvidedKey
+        toBlobCustomerProvidedKey(com.azure.storage.file.datalake.models.CustomerProvidedKey key) {
         if (key == null) {
             return null;
         }
@@ -906,14 +881,14 @@ class Transforms {
         if (info == null) {
             return null;
         }
-        return new CpkInfo()
-            .setEncryptionKey(info.getEncryptionKey())
-            .setEncryptionAlgorithm(com.azure.storage.file.datalake.models.EncryptionAlgorithmType.fromString(
-                info.getEncryptionAlgorithm().toString()))
+        return new CpkInfo().setEncryptionKey(info.getEncryptionKey())
+            .setEncryptionAlgorithm(com.azure.storage.file.datalake.models.EncryptionAlgorithmType
+                .fromString(info.getEncryptionAlgorithm().toString()))
             .setEncryptionKeySha256(info.getEncryptionKeySha256());
     }
 
-    static BlobContainerEncryptionScope toBlobContainerEncryptionScope(FileSystemEncryptionScopeOptions fileSystemEncryptionScope) {
+    static BlobContainerEncryptionScope
+        toBlobContainerEncryptionScope(FileSystemEncryptionScopeOptions fileSystemEncryptionScope) {
         if (fileSystemEncryptionScope == null) {
             return null;
         }
@@ -926,8 +901,7 @@ class Transforms {
         if (options == null) {
             return null;
         }
-        return new BlockBlobOutputStreamOptions()
-            .setParallelTransferOptions(options.getParallelTransferOptions())
+        return new BlockBlobOutputStreamOptions().setParallelTransferOptions(options.getParallelTransferOptions())
             .setHeaders(toBlobHttpHeaders(options.getHeaders()))
             .setMetadata(options.getMetadata())
             .setTags(options.getTags())

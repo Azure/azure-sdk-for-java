@@ -74,7 +74,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
 
     private static CharsetDecoder getFallbackCharsetDecoder() {
         if (StringUtil.isNullOrEmpty(Configs.getCharsetDecoderErrorActionOnMalformedInput())
-         && StringUtil.isNullOrEmpty(Configs.getCharsetDecoderErrorActionOnMalformedInput())) {
+         && StringUtil.isNullOrEmpty(Configs.getCharsetDecoderErrorActionOnUnmappedCharacter())) {
             logger.debug("No fallback charset decoder is enabled");
             return null;
         }

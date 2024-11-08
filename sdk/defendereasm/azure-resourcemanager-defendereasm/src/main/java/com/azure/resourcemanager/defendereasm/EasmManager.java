@@ -40,7 +40,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to EasmManager. REST APIs for Easm. */
+/**
+ * Entry point to EasmManager.
+ * REST APIs for Easm.
+ */
 public final class EasmManager {
     private Workspaces workspaces;
 
@@ -64,7 +67,7 @@ public final class EasmManager {
 
     /**
      * Creates an instance of Easm service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Easm service API instance.
@@ -77,7 +80,7 @@ public final class EasmManager {
 
     /**
      * Creates an instance of Easm service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Easm service API instance.
@@ -90,14 +93,16 @@ public final class EasmManager {
 
     /**
      * Gets a Configurable instance that can be used to create EasmManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new EasmManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -169,8 +174,8 @@ public final class EasmManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -212,7 +217,7 @@ public final class EasmManager {
                 .append("-")
                 .append("com.azure.resourcemanager.defendereasm")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -260,7 +265,7 @@ public final class EasmManager {
 
     /**
      * Gets the resource collection API of Workspaces. It manages WorkspaceResource.
-     *
+     * 
      * @return Resource collection API of Workspaces.
      */
     public Workspaces workspaces() {
@@ -272,7 +277,7 @@ public final class EasmManager {
 
     /**
      * Gets the resource collection API of Labels.
-     *
+     * 
      * @return Resource collection API of Labels.
      */
     public Labels labels() {
@@ -284,7 +289,7 @@ public final class EasmManager {
 
     /**
      * Gets the resource collection API of Tasks.
-     *
+     * 
      * @return Resource collection API of Tasks.
      */
     public Tasks tasks() {
@@ -296,7 +301,7 @@ public final class EasmManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -309,7 +314,7 @@ public final class EasmManager {
     /**
      * Gets wrapped service client EasmMgmtClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client EasmMgmtClient.
      */
     public EasmMgmtClient serviceClient() {

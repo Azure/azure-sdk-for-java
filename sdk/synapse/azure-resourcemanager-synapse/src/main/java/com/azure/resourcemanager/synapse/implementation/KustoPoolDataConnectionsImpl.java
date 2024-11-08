@@ -84,14 +84,14 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         String kustoPoolName, String databaseName) {
         PagedIterable<DataConnectionInner> inner
             = this.serviceClient().listByDatabase(resourceGroupName, workspaceName, kustoPoolName, databaseName);
-        return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataConnection> listByDatabase(String resourceGroupName, String workspaceName,
         String kustoPoolName, String databaseName, Context context) {
         PagedIterable<DataConnectionInner> inner = this.serviceClient()
             .listByDatabase(resourceGroupName, workspaceName, kustoPoolName, databaseName, context);
-        return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
     public Response<DataConnection> getWithResponse(String resourceGroupName, String workspaceName,

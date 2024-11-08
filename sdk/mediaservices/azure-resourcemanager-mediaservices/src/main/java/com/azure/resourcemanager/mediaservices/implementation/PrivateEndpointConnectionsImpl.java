@@ -80,17 +80,17 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PrivateEndpointConnection getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaservices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "privateEndpointConnections");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
@@ -99,17 +99,17 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaservices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "privateEndpointConnections");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
@@ -118,17 +118,17 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaservices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "privateEndpointConnections");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
@@ -137,17 +137,17 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaservices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "privateEndpointConnections");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));

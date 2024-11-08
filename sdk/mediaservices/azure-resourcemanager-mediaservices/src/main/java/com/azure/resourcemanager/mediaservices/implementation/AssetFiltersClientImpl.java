@@ -34,17 +34,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.AssetFilterInner;
 import com.azure.resourcemanager.mediaservices.models.AssetFilterCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AssetFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AssetFiltersClient.
+ */
 public final class AssetFiltersClientImpl implements AssetFiltersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AssetFiltersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of AssetFiltersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AssetFiltersClientImpl(AzureMediaServicesImpl client) {
@@ -61,8 +67,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     @ServiceInterface(name = "AzureMediaServicesAs")
     public interface AssetFiltersService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/assetFilters")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetFilterCollection>> list(@HostParam("$host") String endpoint,
@@ -72,8 +77,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters/{filterName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetFilterInner>> get(@HostParam("$host") String endpoint,
@@ -83,8 +87,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters/{filterName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetFilterInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -95,8 +98,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters/{filterName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -106,8 +108,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/assetFilters/{filterName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/assetFilters/{filterName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetFilterInner>> update(@HostParam("$host") String endpoint,
@@ -127,17 +128,17 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * List Asset Filters
-     *
-     * <p>List Asset Filters associated with the specified Asset.
-     *
+     * 
+     * List Asset Filters associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AssetFilter items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of AssetFilter items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssetFilterInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -172,9 +173,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * List Asset Filters
-     *
-     * <p>List Asset Filters associated with the specified Asset.
-     *
+     * 
+     * List Asset Filters associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -182,8 +183,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AssetFilter items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of AssetFilter items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssetFilterInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -218,9 +219,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * List Asset Filters
-     *
-     * <p>List Asset Filters associated with the specified Asset.
-     *
+     * 
+     * List Asset Filters associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -237,9 +238,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * List Asset Filters
-     *
-     * <p>List Asset Filters associated with the specified Asset.
-     *
+     * 
+     * List Asset Filters associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -258,9 +259,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * List Asset Filters
-     *
-     * <p>List Asset Filters associated with the specified Asset.
-     *
+     * 
+     * List Asset Filters associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -276,9 +277,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * List Asset Filters
-     *
-     * <p>List Asset Filters associated with the specified Asset.
-     *
+     * 
+     * List Asset Filters associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -296,9 +297,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -307,7 +308,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Asset Filter associated with the specified Asset along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssetFilterInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -343,9 +344,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -355,7 +356,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Asset Filter associated with the specified Asset along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssetFilterInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -390,9 +391,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -400,8 +401,8 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Asset Filter associated with the specified Asset on successful completion of {@link
-     *     Mono}.
+     * @return the details of an Asset Filter associated with the specified Asset on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AssetFilterInner> getAsync(String resourceGroupName, String accountName, String assetName,
@@ -412,9 +413,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -433,9 +434,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Get the details of an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -452,9 +453,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Create or update an Asset Filter
-     *
-     * <p>Creates or updates an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Creates or updates an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -504,9 +505,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Create or update an Asset Filter
-     *
-     * <p>Creates or updates an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Creates or updates an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -556,9 +557,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Create or update an Asset Filter
-     *
-     * <p>Creates or updates an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Creates or updates an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -578,9 +579,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Create or update an Asset Filter
-     *
-     * <p>Creates or updates an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Creates or updates an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -601,9 +602,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Create or update an Asset Filter
-     *
-     * <p>Creates or updates an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Creates or updates an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -623,9 +624,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -669,9 +670,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -715,9 +716,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -735,9 +736,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -756,9 +757,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Delete an Asset Filter.
-     *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Deletes an Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -774,9 +775,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Update an Asset Filter
-     *
-     * <p>Updates an existing Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Updates an existing Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -826,9 +827,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Update an Asset Filter
-     *
-     * <p>Updates an existing Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Updates an existing Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -878,9 +879,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Update an Asset Filter
-     *
-     * <p>Updates an existing Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Updates an existing Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -900,9 +901,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Update an Asset Filter
-     *
-     * <p>Updates an existing Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Updates an existing Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -923,9 +924,9 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Update an Asset Filter
-     *
-     * <p>Updates an existing Asset Filter associated with the specified Asset.
-     *
+     * 
+     * Updates an existing Asset Filter associated with the specified Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -945,14 +946,13 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AssetFilter items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of AssetFilter items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssetFilterInner>> listNextSinglePageAsync(String nextLink) {
@@ -972,15 +972,14 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AssetFilter items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of AssetFilter items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssetFilterInner>> listNextSinglePageAsync(String nextLink, Context context) {

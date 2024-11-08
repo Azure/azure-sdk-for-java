@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolUsageInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolUsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolUsagesClient.
+ */
 public interface SqlPoolUsagesClient {
     /**
      * Gets SQL pool usages
-     *
-     * <p>Gets SQL pool usages.
-     *
+     * 
+     * Gets SQL pool usages.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -30,9 +32,9 @@ public interface SqlPoolUsagesClient {
 
     /**
      * Gets SQL pool usages
-     *
-     * <p>Gets SQL pool usages.
-     *
+     * 
+     * Gets SQL pool usages.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

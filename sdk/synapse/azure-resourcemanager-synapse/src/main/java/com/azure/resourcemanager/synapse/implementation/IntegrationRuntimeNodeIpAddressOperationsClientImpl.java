@@ -31,15 +31,19 @@ import reactor.core.publisher.Mono;
  */
 public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
     implements IntegrationRuntimeNodeIpAddressOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeNodeIpAddressOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeNodeIpAddressOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeNodeIpAddressOperationsClientImpl(SynapseManagementClientImpl client) {
@@ -56,8 +60,7 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeNodeIpAddressOperationsService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeNodeIpAddressInner>> get(@HostParam("$host") String endpoint,
@@ -69,9 +72,9 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -80,7 +83,7 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address of an integration runtime node along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getWithResponseAsync(String resourceGroupName,
@@ -117,9 +120,9 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -129,7 +132,7 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address of an integration runtime node along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getWithResponseAsync(String resourceGroupName,
@@ -165,9 +168,9 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -186,9 +189,9 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -208,9 +211,9 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

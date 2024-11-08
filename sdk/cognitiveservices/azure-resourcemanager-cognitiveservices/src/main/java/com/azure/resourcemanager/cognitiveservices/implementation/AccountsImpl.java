@@ -67,22 +67,22 @@ public final class AccountsImpl implements Accounts {
 
     public PagedIterable<Account> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Account> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<AccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Account> list() {
         PagedIterable<AccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Account> list(Context context) {
         PagedIterable<AccountInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     public Response<ApiKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
@@ -170,22 +170,22 @@ public final class AccountsImpl implements Accounts {
 
     public PagedIterable<AccountModel> listModels(String resourceGroupName, String accountName) {
         PagedIterable<AccountModelInner> inner = this.serviceClient().listModels(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccountModel> listModels(String resourceGroupName, String accountName, Context context) {
         PagedIterable<AccountModelInner> inner
             = this.serviceClient().listModels(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
     }
 
     public Account getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -194,12 +194,12 @@ public final class AccountsImpl implements Accounts {
     }
 
     public Response<Account> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -208,12 +208,12 @@ public final class AccountsImpl implements Accounts {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -222,12 +222,12 @@ public final class AccountsImpl implements Accounts {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));

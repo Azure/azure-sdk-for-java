@@ -41,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AzureBareMetalInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AzureBareMetalInstancesClient.
+ */
 public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalInstancesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AzureBareMetalInstancesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final BareMetalInfrastructureClientImpl client;
 
     /**
      * Initializes an instance of AzureBareMetalInstancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AzureBareMetalInstancesClientImpl(BareMetalInfrastructureClientImpl client) {
@@ -154,16 +160,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
@@ -193,9 +199,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -203,7 +209,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
@@ -232,16 +238,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginStartAsync(String resourceGroupName,
@@ -253,9 +259,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -263,7 +269,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginStartAsync(String resourceGroupName,
@@ -277,16 +283,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginStart(String resourceGroupName,
@@ -296,9 +302,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -306,7 +312,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginStart(String resourceGroupName,
@@ -316,16 +322,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> startAsync(String resourceGroupName, String azureBareMetalInstanceName) {
@@ -335,9 +341,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -345,7 +351,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> startAsync(String resourceGroupName, String azureBareMetalInstanceName,
@@ -356,9 +362,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -373,9 +379,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Start a Bare Metal Instance.
-     *
-     * <p>The operation to start an Azure Bare Metal instance.
-     *
+     * 
+     * The operation to start an Azure Bare Metal instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -391,18 +397,18 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     *     terminate and halt any existing processes that may be running on the server.
+     * terminate and halt any existing processes that may be running on the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
@@ -436,19 +442,19 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     *     terminate and halt any existing processes that may be running on the server.
+     * terminate and halt any existing processes that may be running on the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
@@ -480,18 +486,18 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     *     terminate and halt any existing processes that may be running on the server.
+     * terminate and halt any existing processes that may be running on the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
@@ -504,16 +510,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
@@ -527,19 +533,19 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     *     terminate and halt any existing processes that may be running on the server.
+     * terminate and halt any existing processes that may be running on the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginRestartAsync(
@@ -553,16 +559,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginRestart(String resourceGroupName,
@@ -573,19 +579,19 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     *     terminate and halt any existing processes that may be running on the server.
+     * terminate and halt any existing processes that may be running on the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginRestart(String resourceGroupName,
@@ -596,18 +602,18 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     *     terminate and halt any existing processes that may be running on the server.
+     * terminate and halt any existing processes that may be running on the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> restartAsync(String resourceGroupName, String azureBareMetalInstanceName,
@@ -618,16 +624,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> restartAsync(String resourceGroupName, String azureBareMetalInstanceName) {
@@ -638,19 +644,19 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     *     terminate and halt any existing processes that may be running on the server.
+     * terminate and halt any existing processes that may be running on the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> restartAsync(String resourceGroupName, String azureBareMetalInstanceName,
@@ -661,9 +667,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -679,13 +685,13 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Restart a Bare Metal Instance.
-     *
-     * <p>The operation to restart an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to restart an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param forceParameter When set to 'active', this parameter empowers the server with the ability to forcefully
-     *     terminate and halt any existing processes that may be running on the server.
+     * terminate and halt any existing processes that may be running on the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -700,16 +706,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> shutdownWithResponseAsync(String resourceGroupName,
@@ -739,9 +745,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -749,7 +755,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> shutdownWithResponseAsync(String resourceGroupName,
@@ -778,16 +784,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
@@ -800,9 +806,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -810,7 +816,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner>
@@ -824,16 +830,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginShutdown(String resourceGroupName,
@@ -843,9 +849,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -853,7 +859,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the OperationStatus object returns the state of an asynchronous
-     *     operation.
+     * operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginShutdown(String resourceGroupName,
@@ -863,16 +869,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> shutdownAsync(String resourceGroupName, String azureBareMetalInstanceName) {
@@ -882,9 +888,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -892,7 +898,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> shutdownAsync(String resourceGroupName, String azureBareMetalInstanceName,
@@ -903,9 +909,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -920,9 +926,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Shutdown a Bare Metal Instance.
-     *
-     * <p>The operation to shutdown an Azure Bare Metal Instance.
-     *
+     * 
+     * The operation to shutdown an Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -938,14 +944,14 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Returns a list of Azure Bare Metal Instances in the specified subscription.
-     *
-     * <p>Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
+     * 
+     * Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
      * properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Azure Bare Metal Instances operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalInstanceInner>> listSinglePageAsync() {
@@ -968,16 +974,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Returns a list of Azure Bare Metal Instances in the specified subscription.
-     *
-     * <p>Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
+     * 
+     * Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
      * properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Azure Bare Metal Instances operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalInstanceInner>> listSinglePageAsync(Context context) {
@@ -1000,14 +1006,14 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Returns a list of Azure Bare Metal Instances in the specified subscription.
-     *
-     * <p>Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
+     * 
+     * Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
      * properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Azure Bare Metal Instances operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response from the List Azure Bare Metal Instances operation as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBareMetalInstanceInner> listAsync() {
@@ -1017,16 +1023,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Returns a list of Azure Bare Metal Instances in the specified subscription.
-     *
-     * <p>Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
+     * 
+     * Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
      * properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Azure Bare Metal Instances operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response from the List Azure Bare Metal Instances operation as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBareMetalInstanceInner> listAsync(Context context) {
@@ -1036,14 +1042,14 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Returns a list of Azure Bare Metal Instances in the specified subscription.
-     *
-     * <p>Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
+     * 
+     * Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
      * properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Azure Bare Metal Instances operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response from the List Azure Bare Metal Instances operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBareMetalInstanceInner> list() {
@@ -1052,16 +1058,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Returns a list of Azure Bare Metal Instances in the specified subscription.
-     *
-     * <p>Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
+     * 
+     * Returns a list of Azure Bare Metal Instances in the specified subscription. The operations returns various
      * properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Azure Bare Metal Instances operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response from the List Azure Bare Metal Instances operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBareMetalInstanceInner> list(Context context) {
@@ -1070,16 +1076,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
+     * 
+     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
      * returns various properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Bare Metal Instances in the specified subscription and resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Azure Bare Metal Instances in the specified subscription and resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalInstanceInner>>
@@ -1107,17 +1113,17 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
+     * 
+     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
      * returns various properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Bare Metal Instances in the specified subscription and resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Azure Bare Metal Instances in the specified subscription and resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalInstanceInner>>
@@ -1145,16 +1151,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
+     * 
+     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
      * returns various properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Azure Bare Metal Instances in the specified subscription and resource group as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBareMetalInstanceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1164,17 +1170,17 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
+     * 
+     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
      * returns various properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Azure Bare Metal Instances in the specified subscription and resource group as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBareMetalInstanceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1184,16 +1190,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
+     * 
+     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
      * returns various properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Azure Bare Metal Instances in the specified subscription and resource group as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBareMetalInstanceInner> listByResourceGroup(String resourceGroupName) {
@@ -1202,17 +1208,17 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
+     * 
+     * Gets a list of Azure Bare Metal Instances in the specified subscription and resource group. The operations
      * returns various properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Azure Bare Metal Instances in the specified subscription and resource group as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBareMetalInstanceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1221,16 +1227,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets an Azure Bare Metal Instance.
-     *
-     * <p>Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Instance for the specified subscription, resource group, and instance name along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBareMetalInstanceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -1260,9 +1266,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets an Azure Bare Metal Instance.
-     *
-     * <p>Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -1270,7 +1276,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Instance for the specified subscription, resource group, and instance name along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBareMetalInstanceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -1299,16 +1305,16 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets an Azure Bare Metal Instance.
-     *
-     * <p>Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Instance for the specified subscription, resource group, and instance name on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureBareMetalInstanceInner> getByResourceGroupAsync(String resourceGroupName,
@@ -1319,9 +1325,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets an Azure Bare Metal Instance.
-     *
-     * <p>Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param context The context to associate with this operation.
@@ -1329,7 +1335,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Instance for the specified subscription, resource group, and instance name along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureBareMetalInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
@@ -1339,9 +1345,9 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Gets an Azure Bare Metal Instance.
-     *
-     * <p>Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1356,18 +1362,18 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Patches the Tags field of a Azure Bare Metal Instance.
-     *
-     * <p>Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
+     * 
+     * Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
      * instance name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param tagsParameter Request body that only contains the new Tags field.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBareMetalInstanceInner>> updateWithResponseAsync(String resourceGroupName,
@@ -1403,10 +1409,10 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Patches the Tags field of a Azure Bare Metal Instance.
-     *
-     * <p>Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
+     * 
+     * Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
      * instance name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param tagsParameter Request body that only contains the new Tags field.
@@ -1414,8 +1420,8 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBareMetalInstanceInner>> updateWithResponseAsync(String resourceGroupName,
@@ -1449,10 +1455,10 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Patches the Tags field of a Azure Bare Metal Instance.
-     *
-     * <p>Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
+     * 
+     * Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
      * instance name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param tagsParameter Request body that only contains the new Tags field.
@@ -1460,7 +1466,7 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureBareMetalInstanceInner> updateAsync(String resourceGroupName, String azureBareMetalInstanceName,
@@ -1471,10 +1477,10 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Patches the Tags field of a Azure Bare Metal Instance.
-     *
-     * <p>Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
+     * 
+     * Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
      * instance name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param tagsParameter Request body that only contains the new Tags field.
@@ -1482,8 +1488,8 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) along with {@link
-     *     Response}.
+     * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureBareMetalInstanceInner> updateWithResponse(String resourceGroupName,
@@ -1493,10 +1499,10 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Patches the Tags field of a Azure Bare Metal Instance.
-     *
-     * <p>Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
+     * 
+     * Patches the Tags field of a Azure Bare Metal Instance for the specified subscription, resource group, and
      * instance name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalInstanceName Name of the Azure Bare Metal Instance, also known as the ResourceName.
      * @param tagsParameter Request body that only contains the new Tags field.
@@ -1514,14 +1520,13 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Azure Bare Metal Instances operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalInstanceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1543,15 +1548,14 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Azure Bare Metal Instances operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalInstanceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1572,14 +1576,13 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Azure Bare Metal Instances operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1601,15 +1604,14 @@ public final class AzureBareMetalInstancesClientImpl implements AzureBareMetalIn
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Azure Bare Metal Instances operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

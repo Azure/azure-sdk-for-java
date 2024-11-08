@@ -81,14 +81,16 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl
     public PagedIterable<DedicatedSQLminimalTlsSettings> list(String resourceGroupName, String workspaceName) {
         PagedIterable<DedicatedSQLminimalTlsSettingsInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new DedicatedSQLminimalTlsSettingsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DedicatedSQLminimalTlsSettingsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedSQLminimalTlsSettings> list(String resourceGroupName, String workspaceName,
         Context context) {
         PagedIterable<DedicatedSQLminimalTlsSettingsInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedSQLminimalTlsSettingsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DedicatedSQLminimalTlsSettingsImpl(inner1, this.manager()));
     }
 
     private WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient serviceClient() {

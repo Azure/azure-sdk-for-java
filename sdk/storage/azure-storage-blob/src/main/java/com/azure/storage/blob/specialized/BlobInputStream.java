@@ -56,7 +56,8 @@ public final class BlobInputStream extends StorageInputStream {
         ByteBuffer initialBuffer, BlobRequestConditions accessCondition, BlobProperties blobProperties, Context context)
         throws BlobStorageException {
 
-        super(blobRangeOffset, blobRangeLength, chunkSize, adjustBlobLength(blobProperties.getBlobSize(), context), initialBuffer);
+        super(blobRangeOffset, blobRangeLength, chunkSize, adjustBlobLength(blobProperties.getBlobSize(), context),
+            initialBuffer);
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
@@ -74,8 +75,9 @@ public final class BlobInputStream extends StorageInputStream {
     @Override
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
-            ByteBuffer currentBuffer = this.blobClient.downloadContentWithResponse(null, accessCondition,
-                new BlobRange(offset, (long) readLength), false, null, context)
+            ByteBuffer currentBuffer = this.blobClient
+                .downloadContentWithResponse(null, accessCondition, new BlobRange(offset, (long) readLength), false,
+                    null, context)
                 .getValue()
                 .toByteBuffer();
 

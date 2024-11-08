@@ -19,12 +19,14 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentionPolicy> {
     /*
-     * Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and the user is responsible for deleting it.
+     * Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and the
+     * user is responsible for deleting it.
      */
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
+     * Indicates the number of days that metrics data should be retained. All data older than this value will be
+     * deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
      */
     private Integer days;
 
@@ -98,7 +100,6 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * @param xmlReader The XmlReader being read.
      * @return An instance of ShareRetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ShareRetentionPolicy.
      */
     public static ShareRetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -113,7 +114,6 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
      * cases where the model can deserialize from different root element names.
      * @return An instance of ShareRetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the ShareRetentionPolicy.
      */
     public static ShareRetentionPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

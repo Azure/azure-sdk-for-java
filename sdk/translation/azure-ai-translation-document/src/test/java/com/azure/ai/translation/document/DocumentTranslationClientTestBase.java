@@ -162,15 +162,13 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     String createSourceContainer(List<TestDocument> documents) {
         String containerName = testResourceNamer.randomName("source", 10);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
-        String containerUrl = blobContainerClient.getBlobContainerUrl();
-        return containerUrl;
+        return blobContainerClient.getBlobContainerUrl();
     }
 
     String createTargetContainer(List<TestDocument> documents) {
         String containerName = testResourceNamer.randomName("target", 10);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
-        String containerUrl = blobContainerClient.getBlobContainerUrl();
-        return containerUrl;
+        return blobContainerClient.getBlobContainerUrl();
     }
 
     Map<String, String> createTargetContainerWithClient(List<TestDocument> documents) {
@@ -192,8 +190,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         documents.add(document);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
         String containerUrl = blobContainerClient.getBlobContainerUrl();
-        String sasUri = containerUrl + "/" + document.getName();
-        return sasUri;
+        return containerUrl + "/" + document.getName();
     }
 
     BlobContainerClient createContainer(String containerName, List<TestDocument> documents) {
@@ -214,7 +211,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         for (TestDocument document : documents) {
             InputStream stream = new ByteArrayInputStream(document.getContent().getBytes());
             BlobClient blobClient = blobContainerClient.getBlobClient(document.getName());
-            blobClient.upload(stream);
+            blobClient.upload(stream, true);
         }
     }
 
@@ -239,8 +236,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
         InputStream blobIS = blobClient.openInputStream();
         try {
-            String content = readInputStreamToString(blobIS);
-            return content;
+            return readInputStreamToString(blobIS);
         } catch (IOException e) {
             e.printStackTrace();
         }

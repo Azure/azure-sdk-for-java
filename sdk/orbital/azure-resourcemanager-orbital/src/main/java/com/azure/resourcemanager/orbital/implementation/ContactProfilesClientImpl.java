@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContactProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContactProfilesClient.
+ */
 public final class ContactProfilesClientImpl implements ContactProfilesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContactProfilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureOrbitalImpl client;
 
     /**
      * Initializes an instance of ContactProfilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContactProfilesClientImpl(AzureOrbitalImpl client) {
@@ -144,14 +150,14 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Gets the specified contact Profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified contact Profile in a specified resource group along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContactProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -181,7 +187,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Gets the specified contact Profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -189,7 +195,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified contact Profile in a specified resource group along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContactProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -218,7 +224,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Gets the specified contact Profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,7 +240,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Gets the specified contact Profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -251,7 +257,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Gets the specified contact Profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,7 +272,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -274,7 +280,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
+     * scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -310,7 +316,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -319,7 +325,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
+     * scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -353,7 +359,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -361,7 +367,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner>
@@ -374,7 +380,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -383,7 +389,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdateAsync(
@@ -397,7 +403,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -405,7 +411,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner>
@@ -415,7 +421,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -424,7 +430,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
@@ -435,7 +441,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -443,7 +449,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact on successful completion of {@link Mono}.
+     * scheduling a contact on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ContactProfileInner> createOrUpdateAsync(String resourceGroupName, String contactProfileName,
@@ -454,7 +460,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -463,7 +469,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact on successful completion of {@link Mono}.
+     * scheduling a contact on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ContactProfileInner> createOrUpdateAsync(String resourceGroupName, String contactProfileName,
@@ -474,7 +480,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -482,7 +488,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact.
+     * scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContactProfileInner createOrUpdate(String resourceGroupName, String contactProfileName,
@@ -492,7 +498,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -501,7 +507,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact.
+     * scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContactProfileInner createOrUpdate(String resourceGroupName, String contactProfileName,
@@ -511,7 +517,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -547,7 +553,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -583,7 +589,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -600,7 +606,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -620,7 +626,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -635,7 +641,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -652,7 +658,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,7 +674,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -685,7 +691,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -699,7 +705,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -714,7 +720,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -722,7 +728,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
+     * scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName,
@@ -758,7 +764,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -767,7 +773,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
+     * scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName,
@@ -801,7 +807,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -809,7 +815,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner>
@@ -822,7 +828,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -831,7 +837,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTagsAsync(
@@ -845,7 +851,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -853,7 +859,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(String resourceGroupName,
@@ -863,7 +869,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -872,7 +878,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(String resourceGroupName,
@@ -882,7 +888,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -890,7 +896,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact on successful completion of {@link Mono}.
+     * scheduling a contact on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ContactProfileInner> updateTagsAsync(String resourceGroupName, String contactProfileName,
@@ -901,7 +907,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -910,7 +916,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact on successful completion of {@link Mono}.
+     * scheduling a contact on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ContactProfileInner> updateTagsAsync(String resourceGroupName, String contactProfileName,
@@ -921,7 +927,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -929,7 +935,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact.
+     * scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContactProfileInner updateTags(String resourceGroupName, String contactProfileName, TagsObject parameters) {
@@ -938,7 +944,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -947,7 +953,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact.
+     * scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContactProfileInner updateTags(String resourceGroupName, String contactProfileName, TagsObject parameters,
@@ -957,16 +963,16 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listSinglePageAsync(String skiptoken) {
@@ -989,17 +995,17 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listSinglePageAsync(String skiptoken, Context context) {
@@ -1022,11 +1028,11 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1040,7 +1046,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call as paginated response with {@link PagedFlux}.
@@ -1054,11 +1060,11 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1073,7 +1079,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call as paginated response with {@link PagedIterable}.
@@ -1086,11 +1092,11 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1104,17 +1110,17 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -1142,18 +1148,18 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -1181,12 +1187,12 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1200,7 +1206,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1216,12 +1222,12 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1237,7 +1243,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1252,12 +1258,12 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1272,14 +1278,13 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1301,15 +1306,14 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1330,14 +1334,13 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listNextSinglePageAsync(String nextLink) {
@@ -1357,15 +1360,14 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listNextSinglePageAsync(String nextLink, Context context) {

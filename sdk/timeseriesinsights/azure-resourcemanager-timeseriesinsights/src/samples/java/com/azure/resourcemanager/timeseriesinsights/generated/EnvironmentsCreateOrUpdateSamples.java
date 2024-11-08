@@ -12,25 +12,25 @@ import com.azure.resourcemanager.timeseriesinsights.models.TimeSeriesIdProperty;
 import java.time.Duration;
 import java.util.Arrays;
 
-/** Samples for Environments CreateOrUpdate. */
+/**
+ * Samples for Environments CreateOrUpdate.
+ */
 public final class EnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/EnvironmentsCreate.json
+     * x-ms-original-file:
+     * specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/
+     * EnvironmentsCreate.json
      */
     /**
      * Sample code: EnvironmentsCreate.
-     *
+     * 
      * @param manager Entry point to TimeSeriesInsightsManager.
      */
-    public static void environmentsCreate(
-        com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
-        manager
-            .environments()
-            .createOrUpdate(
-                "rg1",
-                "env1",
-                new Gen1EnvironmentCreateOrUpdateParameters()
-                    .withLocation("West US")
+    public static void
+        environmentsCreate(com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
+        manager.environments()
+            .createOrUpdate("rg1", "env1",
+                new Gen1EnvironmentCreateOrUpdateParameters().withLocation("West US")
                     .withSku(new Sku().withName(SkuName.S1).withCapacity(1))
                     .withDataRetentionTime(Duration.parse("P31D"))
                     .withPartitionKeyProperties(

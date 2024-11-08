@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolWorkloadClassifiers. */
+/**
+ * Resource collection API of SqlPoolWorkloadClassifiers.
+ */
 public interface SqlPoolWorkloadClassifiers {
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -31,9 +33,9 @@ public interface SqlPoolWorkloadClassifiers {
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -49,9 +51,9 @@ public interface SqlPoolWorkloadClassifiers {
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -66,9 +68,9 @@ public interface SqlPoolWorkloadClassifiers {
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -84,9 +86,9 @@ public interface SqlPoolWorkloadClassifiers {
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -94,17 +96,17 @@ public interface SqlPoolWorkloadClassifiers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of Sql pool's workload classifier for workload groups as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<WorkloadClassifier> list(String resourceGroupName, String workspaceName, String sqlPoolName,
         String workloadGroupName);
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -113,17 +115,17 @@ public interface SqlPoolWorkloadClassifiers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of Sql pool's workload classifier for workload groups as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<WorkloadClassifier> list(String resourceGroupName, String workspaceName, String sqlPoolName,
         String workloadGroupName, Context context);
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,9 +136,9 @@ public interface SqlPoolWorkloadClassifiers {
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,9 +150,9 @@ public interface SqlPoolWorkloadClassifiers {
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -160,9 +162,9 @@ public interface SqlPoolWorkloadClassifiers {
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +175,7 @@ public interface SqlPoolWorkloadClassifiers {
 
     /**
      * Begins definition for a new WorkloadClassifier resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new WorkloadClassifier definition.
      */

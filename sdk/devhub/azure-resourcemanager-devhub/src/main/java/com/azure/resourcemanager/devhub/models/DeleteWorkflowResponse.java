@@ -6,18 +6,20 @@ package com.azure.resourcemanager.devhub.models;
 
 import com.azure.resourcemanager.devhub.fluent.models.DeleteWorkflowResponseInner;
 
-/** An immutable client-side representation of DeleteWorkflowResponse. */
+/**
+ * An immutable client-side representation of DeleteWorkflowResponse.
+ */
 public interface DeleteWorkflowResponse {
     /**
      * Gets the status property: delete status message.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the inner com.azure.resourcemanager.devhub.fluent.models.DeleteWorkflowResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeleteWorkflowResponseInner innerModel();

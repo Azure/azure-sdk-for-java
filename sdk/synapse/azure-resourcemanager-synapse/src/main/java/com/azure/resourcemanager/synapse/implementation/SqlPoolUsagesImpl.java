@@ -28,14 +28,14 @@ public final class SqlPoolUsagesImpl implements SqlPoolUsages {
     public PagedIterable<SqlPoolUsage> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
         PagedIterable<SqlPoolUsageInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolUsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlPoolUsage> list(String resourceGroupName, String workspaceName, String sqlPoolName,
         Context context) {
         PagedIterable<SqlPoolUsageInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolUsageImpl(inner1, this.manager()));
     }
 
     private SqlPoolUsagesClient serviceClient() {

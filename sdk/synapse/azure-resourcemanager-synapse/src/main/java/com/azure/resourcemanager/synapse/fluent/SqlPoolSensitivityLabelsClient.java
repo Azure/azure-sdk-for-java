@@ -13,13 +13,15 @@ import com.azure.resourcemanager.synapse.fluent.models.SensitivityLabelInner;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelSource;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelUpdateList;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolSensitivityLabelsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolSensitivityLabelsClient.
+ */
 public interface SqlPoolSensitivityLabelsClient {
     /**
      * Gets SQL pool sensitivity labels
-     *
-     * <p>Gets SQL pool sensitivity labels.
-     *
+     * 
+     * Gets SQL pool sensitivity labels.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -34,9 +36,9 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Gets SQL pool sensitivity labels
-     *
-     * <p>Gets SQL pool sensitivity labels.
-     *
+     * 
+     * Gets SQL pool sensitivity labels.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -53,11 +55,11 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Update sensitivity labels of a given SQL Pool using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
-     * @param parameters A list of sensitivity label update operations.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,11 +72,11 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Update sensitivity labels of a given SQL Pool using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
-     * @param parameters A list of sensitivity label update operations.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -85,9 +87,9 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Gets sensitivity labels of a given SQL pool
-     *
-     * <p>Gets sensitivity labels of a given SQL pool.
-     *
+     * 
+     * Gets sensitivity labels of a given SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -102,9 +104,9 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Gets sensitivity labels of a given SQL pool
-     *
-     * <p>Gets sensitivity labels of a given SQL pool.
-     *
+     * 
+     * Gets sensitivity labels of a given SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -123,7 +125,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Creates or updates the sensitivity label of a given column in a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -144,7 +146,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Creates or updates the sensitivity label of a given column in a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -163,7 +165,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Deletes the sensitivity label of a given column in a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -182,7 +184,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Deletes the sensitivity label of a given column in a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -199,7 +201,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Gets the sensitivity label of a given column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -220,7 +222,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Gets the sensitivity label of a given column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -239,7 +241,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -258,7 +260,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -275,7 +277,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Disables sensitivity recommendations on a given column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -294,7 +296,7 @@ public interface SqlPoolSensitivityLabelsClient {
 
     /**
      * Disables sensitivity recommendations on a given column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

@@ -593,6 +593,9 @@
 # PRLabel:  %OpenTelemetry
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti @harsimar
 
+# PRLabel:  %OpenTelemetry
+/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/   @trask @ramthi @heyams @jeanbisutti @harsimar
+
 # ServiceLabel: %Network
 # ServiceOwners:                                     @aznetsuppgithub
 

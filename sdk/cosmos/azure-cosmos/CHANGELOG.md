@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed a Null Pointer Exception in `ContainerThroughputConrolGroupProperties` if defaultGroup is not set. - See [PR 42835](https://github.com/Azure/azure-sdk-for-java/pull/42835)
 
 #### Other Changes
 * Enable `JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS` by default for objectMapper. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
@@ -21,7 +22,8 @@
 * Fixed an issue where holding onto a `CosmosException` instance would hold a strong reference to a `RxDocumentClientImpl` instance preventing garbage collection of the `RxDocumentClientImpl` instance. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)
 
 ### 4.64.0 (2024-10-10)
-
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.64.0 and above.
 #### Features Added
 * Added an API to retrieve diagnostics from the change feed processor context. - See [PR 41738](https://github.com/Azure/azure-sdk-for-java/pull/41738)
 * Added support to allow `queryChangeFeed` to complete when all changes available when the query starts have been fetched. - See [PR 42160](https://github.com/Azure/azure-sdk-for-java/pull/42160)
@@ -319,8 +321,6 @@
 * Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
 
 ### 4.48.2 (2023-08-25)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.48.2 and above.
 #### Bugs Fixed
 * Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
 

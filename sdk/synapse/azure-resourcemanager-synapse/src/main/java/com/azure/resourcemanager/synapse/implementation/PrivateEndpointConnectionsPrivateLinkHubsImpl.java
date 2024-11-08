@@ -31,7 +31,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements Priv
         String privateLinkHubName) {
         PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> inner
             = this.serviceClient().list(resourceGroupName, privateLinkHubName);
-        return Utils.mapPage(inner,
+        return ResourceManagerUtils.mapPage(inner,
             inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
     }
 
@@ -39,7 +39,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements Priv
         String privateLinkHubName, Context context) {
         PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> inner
             = this.serviceClient().list(resourceGroupName, privateLinkHubName, context);
-        return Utils.mapPage(inner,
+        return ResourceManagerUtils.mapPage(inner,
             inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
     }
 

@@ -12,7 +12,7 @@ public final class TaskResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"startedAt\":\"rxybz\",\"completedAt\":\"e\",\"lastPolledAt\":\"ytb\",\"state\":\"qfou\",\"phase\":\"mmnkzsmodmgl\",\"reason\":\"gpbkwtmut\",\"metadata\":\"dataqktapspwgcuert\",\"provisioningState\":\"DeletingArtifacts\"},\"id\":\"dosvqwhbmdgbbjf\",\"name\":\"dgmb\",\"type\":\"bexppb\"}")
+            "{\"properties\":{\"startedAt\":\"rxybz\",\"completedAt\":\"e\",\"lastPolledAt\":\"ytb\",\"state\":\"qfou\",\"phase\":\"mmnkzsmodmgl\",\"reason\":\"gpbkwtmut\",\"metadata\":\"dataqktapspwgcuert\",\"provisioningState\":\"DeletingArtifacts\"},\"id\":\"o\",\"name\":\"vqwhbmdgbbjfd\",\"type\":\"gmbmbexppbh\"}")
             .toObject(TaskResourceInner.class);
         Assertions.assertEquals("rxybz", model.startedAt());
         Assertions.assertEquals("e", model.completedAt());

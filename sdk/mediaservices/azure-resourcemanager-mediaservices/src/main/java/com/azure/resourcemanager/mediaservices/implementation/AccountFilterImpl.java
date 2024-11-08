@@ -122,9 +122,9 @@ public final class AccountFilterImpl implements AccountFilter, AccountFilter.Def
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaServices");
-        this.filterName = Utils.getValueFromIdByName(innerObject.id(), "accountFilters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaServices");
+        this.filterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accountFilters");
     }
 
     public AccountFilter refresh() {

@@ -100,20 +100,28 @@ public abstract class AvroSchema {
         switch (type.getType()) {
             case NULL:
                 return new AvroNullSchema(state, onResult);
+
             case BOOLEAN:
                 return new AvroBooleanSchema(state, onResult);
+
             case INT:
                 return new AvroIntegerSchema(state, onResult);
+
             case LONG:
                 return new AvroLongSchema(state, onResult);
+
             case FLOAT:
                 return new AvroFloatSchema(state, onResult);
+
             case DOUBLE:
                 return new AvroDoubleSchema(state, onResult);
+
             case BYTES:
                 return new AvroBytesSchema(state, onResult);
+
             case STRING:
                 return new AvroStringSchema(state, onResult);
+
             case RECORD:
                 checkType("type", type, AvroType.AvroRecordType.class);
                 AvroType.AvroRecordType recordType = (AvroType.AvroRecordType) type;

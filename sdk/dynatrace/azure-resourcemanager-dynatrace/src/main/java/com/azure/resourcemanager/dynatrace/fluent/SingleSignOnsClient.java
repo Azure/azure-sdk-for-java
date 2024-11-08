@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dynatrace.fluent.models.DynatraceSingleSignOnResourceInner;
 
-/** An instance of this class provides access to all the operations defined in SingleSignOnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SingleSignOnsClient.
+ */
 public interface SingleSignOnsClient {
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -34,7 +36,7 @@ public interface SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -52,7 +54,7 @@ public interface SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -68,7 +70,7 @@ public interface SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -85,7 +87,7 @@ public interface SingleSignOnsClient {
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -101,7 +103,7 @@ public interface SingleSignOnsClient {
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -115,29 +117,29 @@ public interface SingleSignOnsClient {
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DynatraceSingleSignOnResourceInner> list(String resourceGroupName, String monitorName);
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DynatraceSingleSignOnResourceInner> list(String resourceGroupName, String monitorName,

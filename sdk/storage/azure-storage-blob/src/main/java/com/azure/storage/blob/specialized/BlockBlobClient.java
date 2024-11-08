@@ -102,9 +102,10 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param client the async block blob client
      */
     BlockBlobClient(BlockBlobAsyncClient client) {
-        this(client, client.getHttpPipeline(), client.getAccountUrl(), client.getServiceVersion(), client.getAccountName(),
-            client.getContainerName(), client.getBlobName(), client.getSnapshotId(), client.getCustomerProvidedKey(),
-            new EncryptionScope().setEncryptionScope(client.getEncryptionScope()), client.getVersionId());
+        this(client, client.getHttpPipeline(), client.getAccountUrl(), client.getServiceVersion(),
+            client.getAccountName(), client.getContainerName(), client.getBlobName(), client.getSnapshotId(),
+            client.getCustomerProvidedKey(), new EncryptionScope().setEncryptionScope(client.getEncryptionScope()),
+            client.getVersionId());
     }
 
     /**
@@ -159,8 +160,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public BlockBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
-            finalCustomerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -244,9 +244,12 @@ public final class BlockBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.getBlobOutputStream(new BlockBlobOutputStreamOptions()
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
-            .setRequestConditions(requestConditions));
+        return this
+            .getBlobOutputStream(new BlockBlobOutputStreamOptions().setParallelTransferOptions(parallelTransferOptions)
+                .setHeaders(headers)
+                .setMetadata(metadata)
+                .setTier(tier)
+                .setRequestConditions(requestConditions));
     }
 
     /**
@@ -303,8 +306,8 @@ public final class BlockBlobClient extends BlobClientBase {
         if (options.getWriteMode() == BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
             internalMode = StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE;
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Unsupported value for `options.getWriteMode()`."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Unsupported value for `options.getWriteMode()`."));
         }
 
         return new StorageSeekableByteChannel(
@@ -317,8 +320,7 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     private BlobClientBuilder prepareBuilder() {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .pipeline(getHttpPipeline())
+        BlobClientBuilder builder = new BlobClientBuilder().pipeline(getHttpPipeline())
             .endpoint(getBlobUrl())
             .snapshot(getSnapshotId())
             .serviceVersion(getServiceVersion());
@@ -451,11 +453,8 @@ public final class BlockBlobClient extends BlobClientBase {
         if (!overwrite) {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return uploadWithResponse(
-            new BlockBlobSimpleUploadOptions(data)
-                .setRequestConditions(blobRequestConditions),
-            null, Context.NONE)
-            .getValue();
+        return uploadWithResponse(new BlockBlobSimpleUploadOptions(data).setRequestConditions(blobRequestConditions),
+            null, Context.NONE).getValue();
     }
 
     /**
@@ -521,8 +520,10 @@ public final class BlockBlobClient extends BlobClientBase {
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
-            .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions),
-            timeout, context);
+            .setMetadata(metadata)
+            .setTier(tier)
+            .setContentMd5(contentMd5)
+            .setRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -638,9 +639,8 @@ public final class BlockBlobClient extends BlobClientBase {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return uploadFromUrlWithResponse(
-            new BlobUploadFromUrlOptions(sourceUrl).setDestinationRequestConditions(blobRequestConditions),
-            null, Context.NONE)
-            .getValue();
+            new BlobUploadFromUrlOptions(sourceUrl).setDestinationRequestConditions(blobRequestConditions), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -688,7 +688,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
-                                                             Context context) {
+        Context context) {
         StorageImplUtils.assertNotNull("options", options);
         Mono<Response<BlockBlobItem>> upload = client.uploadFromUrlWithResponse(options, context);
         try {
@@ -787,11 +787,11 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
+        Flux<ByteBuffer> fbb
+            = Utility.convertStreamToByteBuffer(data, length, BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
-        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId,
-            context);
+        Mono<Response<Void>> response
+            = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -824,10 +824,11 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws NullPointerException if the input options is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
+    public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout,
+        Context context) {
         Objects.requireNonNull(options, "options must not be null");
-        Mono<Response<Void>> response = client.stageBlockWithResponse(
-            options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(), context);
+        Mono<Response<Void>> response = client.stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
+            options.getContentMd5(), options.getLeaseId(), context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -898,11 +899,14 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
-            byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Duration timeout,
-            Context context) {
-        return stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
-            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
-            .setSourceRequestConditions(sourceRequestConditions), timeout, context);
+        byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Duration timeout,
+        Context context) {
+        return stageBlockFromUrlWithResponse(
+            new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl).setSourceRange(sourceRange)
+                .setSourceContentMd5(sourceContentMd5)
+                .setLeaseId(leaseId)
+                .setSourceRequestConditions(sourceRequestConditions),
+            timeout, context);
     }
 
     /**
@@ -1133,11 +1137,12 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIds, BlobHttpHeaders headers,
-            Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Duration timeout,
-            Context context) {
-        return this.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(base64BlockIds)
-                .setHeaders(headers).setMetadata(metadata).setTier(tier).setRequestConditions(requestConditions),
-                timeout, context);
+        Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        return this.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(base64BlockIds).setHeaders(headers)
+            .setMetadata(metadata)
+            .setTier(tier)
+            .setRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -1184,8 +1189,7 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Duration timeout, Context context) {
-        Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
-            options, context);
+        Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }

@@ -14,7 +14,7 @@ public final class ManagedIdentitySqlControlSettingsModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentitySqlControlSettingsModelInner model = BinaryData.fromString(
-            "{\"properties\":{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Disabling\"}},\"id\":\"nsiru\",\"name\":\"hzmme\",\"type\":\"ckdlpag\"}")
+            "{\"properties\":{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Enabled\"}},\"id\":\"hwtzolb\",\"name\":\"emwmdxmebwjs\",\"type\":\"jpahlxvea\"}")
             .toObject(ManagedIdentitySqlControlSettingsModelInner.class);
         Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
     }

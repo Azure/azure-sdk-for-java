@@ -38,7 +38,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to DevHubManager. The AKS Developer Hub Service Client. */
+/**
+ * Entry point to DevHubManager.
+ * The AKS Developer Hub Service Client.
+ */
 public final class DevHubManager {
     private Operations operations;
 
@@ -60,7 +63,7 @@ public final class DevHubManager {
 
     /**
      * Creates an instance of DevHub service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the DevHub service API instance.
@@ -73,7 +76,7 @@ public final class DevHubManager {
 
     /**
      * Creates an instance of DevHub service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the DevHub service API instance.
@@ -86,14 +89,16 @@ public final class DevHubManager {
 
     /**
      * Gets a Configurable instance that can be used to create DevHubManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new DevHubManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -165,8 +170,8 @@ public final class DevHubManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -208,7 +213,7 @@ public final class DevHubManager {
                 .append("-")
                 .append("com.azure.resourcemanager.devhub")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -256,7 +261,7 @@ public final class DevHubManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -268,7 +273,7 @@ public final class DevHubManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -280,7 +285,7 @@ public final class DevHubManager {
 
     /**
      * Gets the resource collection API of Workflows. It manages Workflow.
-     *
+     * 
      * @return Resource collection API of Workflows.
      */
     public Workflows workflows() {
@@ -291,8 +296,10 @@ public final class DevHubManager {
     }
 
     /**
-     * @return Wrapped service client DeveloperHubServiceClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client DeveloperHubServiceClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client DeveloperHubServiceClient.
      */
     public DeveloperHubServiceClient serviceClient() {
         return this.clientObject;

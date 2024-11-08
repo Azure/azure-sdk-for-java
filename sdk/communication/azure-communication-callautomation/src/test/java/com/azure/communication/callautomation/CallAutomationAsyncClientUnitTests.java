@@ -14,6 +14,8 @@ import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
@@ -50,6 +52,25 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CreateCallResult createCallResult
             = callAutomationAsyncClient.createGroupCall(targets, CALL_CALLBACK_URL).block();
         assertNotNull(createCallResult);
+    }
+
+    @Test
+    public void createOPSCall() {
+        CallAutomationAsyncClient callAutomationAsyncClient
+            = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateOPSCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    PHONE_NUMBER, CALL_CONNECTION_STATE, CALL_CALLBACK_URL, MICROSOFT_TEAMS_APP_ID), 201))));
+        List<CommunicationIdentifier> targets
+            = new ArrayList<>(Collections.singletonList(new PhoneNumberIdentifier(PHONE_NUMBER)));
+
+        CreateCallResult createCallResult
+            = callAutomationAsyncClient.createGroupCall(targets, CALL_CALLBACK_URL).block();
+        assertNotNull(createCallResult);
+        assertEquals(MICROSOFT_TEAMS_APP_ID,
+            ((MicrosoftTeamsAppIdentifier) createCallResult.getCallConnectionProperties().getSource()).getAppId());
+        assertEquals(PHONE_NUMBER,
+            ((PhoneNumberIdentifier) createCallResult.getCallConnectionProperties().getTargetParticipants().get(0))
+                .getPhoneNumber());
     }
 
     @Test

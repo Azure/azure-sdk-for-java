@@ -122,6 +122,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
      */
     @ParameterizedTest(name = TestUtils.DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void copyAuthorization(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdminAsyncClient(httpClient, serviceVersion);
         String modelId = "java_copy_model_test";

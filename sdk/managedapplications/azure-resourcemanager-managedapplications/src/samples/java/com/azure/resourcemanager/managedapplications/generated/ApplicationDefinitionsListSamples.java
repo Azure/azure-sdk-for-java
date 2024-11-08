@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.managedapplications.generated;
 
-/** Samples for ApplicationDefinitions List. */
+/**
+ * Samples for ApplicationDefinitions List.
+ */
 public final class ApplicationDefinitionsListSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listApplicationDefinitionsBySubscription.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/
+     * listApplicationDefinitionsBySubscription.json
      */
     /**
      * Sample code: Lists all the application definitions within a subscription.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
     public static void listsAllTheApplicationDefinitionsWithinASubscription(

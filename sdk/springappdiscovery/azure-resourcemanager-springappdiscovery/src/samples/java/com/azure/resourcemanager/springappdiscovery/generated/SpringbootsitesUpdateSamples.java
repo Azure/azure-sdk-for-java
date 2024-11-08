@@ -24,8 +24,10 @@ public final class SpringbootsitesUpdateSamples {
      */
     public static void springbootsitesUpdateMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        SpringbootsitesModel resource = manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites",
-            "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE).getValue();
+        SpringbootsitesModel resource = manager.springbootsites()
+            .getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("key9581", "fakeTokenPlaceholder")).apply();
     }
 
@@ -41,8 +43,10 @@ public final class SpringbootsitesUpdateSamples {
      */
     public static void springbootsitesUpdateMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        SpringbootsitesModel resource = manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites",
-            "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE).getValue();
+        SpringbootsitesModel resource = manager.springbootsites()
+            .getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 

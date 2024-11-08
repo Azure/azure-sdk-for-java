@@ -30,20 +30,16 @@ public class ScrubEtagPolicyTest {
         headers.set(HttpHeaderName.ETAG, ETAG_VALUE);
         HttpResponse mockResponse = new MockHttpResponse(null, 200, headers);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.just(mockResponse);
-                }
-            })
-            .policies(new ScrubEtagPolicy())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(mockResponse);
+            }
+        }).policies(new ScrubEtagPolicy()).build();
 
         HttpResponse response = SyncAsyncExtension.execute(
             () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), Context.NONE),
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")))
-        );
+            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))));
 
         assertEquals(ETAG_VALUE, response.getHeaderValue(HttpHeaderName.ETAG.toString()));
     }
@@ -54,20 +50,16 @@ public class ScrubEtagPolicyTest {
         headers.set(HttpHeaderName.ETAG, String.format("\"%s\"", ETAG_VALUE));
         HttpResponse mockResponse = new MockHttpResponse(null, 200, headers);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.just(mockResponse);
-                }
-            })
-            .policies(new ScrubEtagPolicy())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(mockResponse);
+            }
+        }).policies(new ScrubEtagPolicy()).build();
 
         HttpResponse response = SyncAsyncExtension.execute(
             () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), Context.NONE),
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")))
-        );
+            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))));
 
         assertEquals(ETAG_VALUE, response.getHeaderValue(HttpHeaderName.ETAG.toString()));
     }

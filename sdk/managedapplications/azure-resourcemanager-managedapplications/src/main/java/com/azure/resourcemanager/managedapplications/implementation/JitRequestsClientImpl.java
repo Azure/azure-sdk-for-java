@@ -36,17 +36,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JitRequestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JitRequestsClient.
+ */
 public final class JitRequestsClientImpl implements JitRequestsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JitRequestsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationClientImpl client;
 
     /**
      * Initializes an instance of JitRequestsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JitRequestsClientImpl(ApplicationClientImpl client) {
@@ -122,7 +128,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,7 +164,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -193,7 +199,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +215,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -226,7 +232,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Gets the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,15 +247,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about JIT request definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about JIT request definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -283,7 +289,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -291,8 +297,8 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about JIT request definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about JIT request definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -325,7 +331,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -346,7 +352,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -368,7 +374,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -385,7 +391,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -403,7 +409,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -421,7 +427,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -440,7 +446,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -457,7 +463,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Creates or updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -475,15 +481,15 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about JIT request definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about JIT request definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JitRequestDefinitionInner>> updateWithResponseAsync(String resourceGroupName,
@@ -517,7 +523,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -525,8 +531,8 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about JIT request definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about JIT request definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JitRequestDefinitionInner>> updateWithResponseAsync(String resourceGroupName,
@@ -559,7 +565,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -577,7 +583,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -595,7 +601,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Updates the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param parameters Parameters supplied to the update JIT request.
@@ -612,7 +618,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,7 +652,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -681,7 +687,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,7 +702,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @param context The context to associate with this operation.
@@ -712,7 +718,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Deletes the JIT request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jitRequestName The name of the JIT request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -726,7 +732,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of JIT requests along with {@link Response} on successful completion of {@link Mono}.
@@ -750,7 +756,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -775,7 +781,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of JIT requests on successful completion of {@link Mono}.
@@ -787,7 +793,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -801,7 +807,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of JIT requests.
@@ -813,7 +819,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -844,7 +850,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -875,7 +881,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -889,7 +895,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -905,7 +911,7 @@ public final class JitRequestsClientImpl implements JitRequestsClient {
 
     /**
      * Lists all JIT requests within the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

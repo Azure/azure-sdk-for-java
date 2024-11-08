@@ -73,16 +73,17 @@ class Segment {
         /* Iterate over each shard element. */
         for (Object shard : (List<Object>) node.get(CHUNK_FILE_PATHS)) {
             /* Strip out the changefeed container name and the subsequent / */
-            String shardPath = String.valueOf(shard)
-                .substring(BlobChangefeedClientBuilder.CHANGEFEED_CONTAINER_NAME.length() + 1);
+            String shardPath
+                = String.valueOf(shard).substring(BlobChangefeedClientBuilder.CHANGEFEED_CONTAINER_NAME.length() + 1);
 
             ShardCursor shardCursor = null; /* By default, read shard from the beginning. */
             if (userCursor != null) {
-                shardCursor = userCursor.getShardCursors().stream()
+                shardCursor = userCursor.getShardCursors()
+                    .stream()
                     .filter(sc -> sc.getCurrentChunkPath().contains(shardPath))
                     .findFirst()
                     .orElse(null); /* If this shard does not exist in the list of shard cursors,
-                    read shard from the beginning. */
+                                   read shard from the beginning. */
             }
             shards.add(shardFactory.getShard(shardPath, changefeedCursor.toShardCursor(shardPath), shardCursor));
         }

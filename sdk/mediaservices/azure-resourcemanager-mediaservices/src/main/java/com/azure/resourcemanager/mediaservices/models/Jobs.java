@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Jobs. */
+/**
+ * Resource collection API of Jobs.
+ */
 public interface Jobs {
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -27,9 +29,9 @@ public interface Jobs {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -46,9 +48,9 @@ public interface Jobs {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -64,9 +66,9 @@ public interface Jobs {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -80,9 +82,9 @@ public interface Jobs {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -98,9 +100,9 @@ public interface Jobs {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -113,9 +115,9 @@ public interface Jobs {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -131,9 +133,9 @@ public interface Jobs {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -146,9 +148,9 @@ public interface Jobs {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface Jobs {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,9 +175,9 @@ public interface Jobs {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,9 +187,9 @@ public interface Jobs {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,7 +201,7 @@ public interface Jobs {
 
     /**
      * Begins definition for a new Job resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Job definition.
      */

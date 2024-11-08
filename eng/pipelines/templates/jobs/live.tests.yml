@@ -24,6 +24,7 @@ parameters:
   UseHttpFaultInjector: false
   OSName:
   UseFederatedAuth: false
+  VersionOverride: $(VersionOverride)
 
 jobs:
   - job:
@@ -138,6 +139,7 @@ jobs:
               ${{ var.key }}: ${{ var.value }}
           UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
           ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+          VersionOverride: ${{ parameters.VersionOverride }}
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 

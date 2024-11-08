@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolRestorePoints. */
+/**
+ * Resource collection API of SqlPoolRestorePoints.
+ */
 public interface SqlPoolRestorePoints {
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -27,9 +29,9 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -44,7 +46,7 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -59,7 +61,7 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -75,7 +77,7 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -91,7 +93,7 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -105,7 +107,7 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -121,7 +123,7 @@ public interface SqlPoolRestorePoints {
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

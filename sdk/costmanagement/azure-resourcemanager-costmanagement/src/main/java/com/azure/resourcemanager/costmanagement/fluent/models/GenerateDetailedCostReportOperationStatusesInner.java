@@ -6,68 +6,69 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The status of the long running operation for cost detailed report. */
+/**
+ * The status of the long running operation for cost detailed report.
+ */
 @Fluent
-public final class GenerateDetailedCostReportOperationStatusesInner {
+public final class GenerateDetailedCostReportOperationStatusesInner
+    implements JsonSerializable<GenerateDetailedCostReportOperationStatusesInner> {
     /*
      * The ID of the long running operation.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the long running operation.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The status of the long running operation.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * The startTime of the operation.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * The endTime of the operation.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * The type of the long running operation.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The details of the error.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /*
      * The properties of the usage file generated.
      */
-    @JsonProperty(value = "properties")
     private DownloadUrlInner innerProperties;
 
-    /** Creates an instance of GenerateDetailedCostReportOperationStatusesInner class. */
+    /**
+     * Creates an instance of GenerateDetailedCostReportOperationStatusesInner class.
+     */
     public GenerateDetailedCostReportOperationStatusesInner() {
     }
 
     /**
      * Get the id property: The ID of the long running operation.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +77,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Set the id property: The ID of the long running operation.
-     *
+     * 
      * @param id the id value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -87,7 +88,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Get the name property: The name of the long running operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -96,7 +97,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Set the name property: The name of the long running operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -107,7 +108,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Get the status property: The status of the long running operation.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -116,7 +117,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Set the status property: The status of the long running operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -127,7 +128,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Get the startTime property: The startTime of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -136,7 +137,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Set the startTime property: The startTime of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -147,7 +148,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Get the endTime property: The endTime of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -156,7 +157,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Set the endTime property: The endTime of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -167,7 +168,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Get the type property: The type of the long running operation.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -176,7 +177,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Set the type property: The type of the long running operation.
-     *
+     * 
      * @param type the type value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -187,7 +188,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Get the error property: The details of the error.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -196,7 +197,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Set the error property: The details of the error.
-     *
+     * 
      * @param error the error value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -207,7 +208,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Get the innerProperties property: The properties of the usage file generated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DownloadUrlInner innerProperties() {
@@ -217,7 +218,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
     /**
      * Get the expiryTime property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -227,7 +228,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
     /**
      * Get the validTill property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the validTill value.
      */
     public OffsetDateTime validTill() {
@@ -237,7 +238,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
     /**
      * Set the validTill property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @param validTill the validTill value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -251,7 +252,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Get the downloadUrl property: The URL to download the generated report.
-     *
+     * 
      * @return the downloadUrl value.
      */
     public String downloadUrl() {
@@ -260,7 +261,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Set the downloadUrl property: The URL to download the generated report.
-     *
+     * 
      * @param downloadUrl the downloadUrl value to set.
      * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
      */
@@ -274,7 +275,7 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -284,5 +285,65 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("status", this.status);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateDetailedCostReportOperationStatusesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateDetailedCostReportOperationStatusesInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateDetailedCostReportOperationStatusesInner.
+     */
+    public static GenerateDetailedCostReportOperationStatusesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateDetailedCostReportOperationStatusesInner deserializedGenerateDetailedCostReportOperationStatusesInner
+                = new GenerateDetailedCostReportOperationStatusesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationStatusesInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationStatusesInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationStatusesInner.status = Status.fromJson(reader);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationStatusesInner.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationStatusesInner.endTime = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationStatusesInner.type = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationStatusesInner.error
+                        = ManagementError.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGenerateDetailedCostReportOperationStatusesInner.innerProperties
+                        = DownloadUrlInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateDetailedCostReportOperationStatusesInner;
+        });
     }
 }

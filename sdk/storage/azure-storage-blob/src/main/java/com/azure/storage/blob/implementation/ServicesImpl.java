@@ -41,6 +41,7 @@ import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSe
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentNextHeaders;
 import com.azure.storage.blob.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ServicesSubmitBatchHeaders;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
@@ -54,7 +55,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in Services.
@@ -460,12 +460,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>>
         setPropertiesWithResponseAsync(BlobServiceProperties blobServiceProperties, Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setProperties(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, blobServiceProperties, accept, context))
+            .withContext(context -> setPropertiesWithResponseAsync(blobServiceProperties, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -562,12 +558,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
         BlobServiceProperties blobServiceProperties, Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, blobServiceProperties, accept, context))
+            .withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(blobServiceProperties, timeout,
+                requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -696,12 +689,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties>>
         getPropertiesWithResponseAsync(Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -796,12 +784,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobServiceProperties>> getPropertiesNoCustomHeadersWithResponseAsync(Integer timeout,
         String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -934,12 +918,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesGetStatisticsHeaders, BlobServiceStatistics>>
         getStatisticsWithResponseAsync(Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getStatistics(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(context -> getStatisticsWithResponseAsync(timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1030,12 +1009,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobServiceStatistics>> getStatisticsNoCustomHeadersWithResponseAsync(Integer timeout,
         String requestId) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getStatisticsNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getStatisticsNoCustomHeadersWithResponseAsync(timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1834,12 +1809,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>>
         getUserDelegationKeyWithResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "userdelegationkey";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getUserDelegationKey(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, keyInfo, accept, context))
+            .withContext(context -> getUserDelegationKeyWithResponseAsync(keyInfo, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1935,12 +1906,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyNoCustomHeadersWithResponseAsync(KeyInfo keyInfo,
         Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "userdelegationkey";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getUserDelegationKeyNoCustomHeaders(this.client.getUrl(), restype, comp,
-                timeout, this.client.getVersion(), requestId, keyInfo, accept, context))
+            .withContext(
+                context -> getUserDelegationKeyNoCustomHeadersWithResponseAsync(keyInfo, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2072,12 +2040,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesGetAccountInfoHeaders, Void>> getAccountInfoWithResponseAsync(Integer timeout,
         String requestId) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getAccountInfo(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(context -> getAccountInfoWithResponseAsync(timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2163,12 +2126,8 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(Integer timeout, String requestId) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getAccountInfoNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getAccountInfoNoCustomHeadersWithResponseAsync(timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2291,11 +2250,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesSubmitBatchHeaders, Flux<ByteBuffer>>> submitBatchWithResponseAsync(
         long contentLength, String multipartContentType, Flux<ByteBuffer> body, Integer timeout, String requestId) {
-        final String comp = "batch";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.submitBatch(this.client.getUrl(), comp, contentLength, multipartContentType,
-                timeout, this.client.getVersion(), requestId, body, accept, context))
+            .withContext(context -> submitBatchWithResponseAsync(contentLength, multipartContentType, body, timeout,
+                requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2400,11 +2357,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> submitBatchNoCustomHeadersWithResponseAsync(long contentLength,
         String multipartContentType, Flux<ByteBuffer> body, Integer timeout, String requestId) {
-        final String comp = "batch";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.submitBatchNoCustomHeaders(this.client.getUrl(), comp, contentLength,
-                multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context))
+            .withContext(context -> submitBatchNoCustomHeadersWithResponseAsync(contentLength, multipartContentType,
+                body, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2457,11 +2412,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesSubmitBatchHeaders, Flux<ByteBuffer>>> submitBatchWithResponseAsync(
         long contentLength, String multipartContentType, BinaryData body, Integer timeout, String requestId) {
-        final String comp = "batch";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.submitBatch(this.client.getUrl(), comp, contentLength, multipartContentType,
-                timeout, this.client.getVersion(), requestId, body, accept, context))
+            .withContext(context -> submitBatchWithResponseAsync(contentLength, multipartContentType, body, timeout,
+                requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2566,11 +2519,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> submitBatchNoCustomHeadersWithResponseAsync(long contentLength,
         String multipartContentType, BinaryData body, Integer timeout, String requestId) {
-        final String comp = "batch";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.submitBatchNoCustomHeaders(this.client.getUrl(), comp, contentLength,
-                multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context))
+            .withContext(context -> submitBatchNoCustomHeadersWithResponseAsync(contentLength, multipartContentType,
+                body, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2725,16 +2676,8 @@ public final class ServicesImpl {
     public Mono<ResponseBase<ServicesFilterBlobsHeaders, FilterBlobSegment>> filterBlobsWithResponseAsync(
         Integer timeout, String requestId, String where, String marker, Integer maxresults,
         List<FilterBlobsIncludeItem> include) {
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.filterBlobs(this.client.getUrl(), comp, timeout, this.client.getVersion(),
-                requestId, where, marker, maxresults, includeConverted, accept, context))
+        return FluxUtil.withContext(
+            context -> filterBlobsWithResponseAsync(timeout, requestId, where, marker, maxresults, include, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2886,16 +2829,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FilterBlobSegment>> filterBlobsNoCustomHeadersWithResponseAsync(Integer timeout,
         String requestId, String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include) {
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(context -> service.filterBlobsNoCustomHeaders(this.client.getUrl(), comp, timeout,
-                this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context))
+            .withContext(context -> filterBlobsNoCustomHeadersWithResponseAsync(timeout, requestId, where, marker,
+                maxresults, include, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3079,9 +3015,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3104,9 +3038,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -3130,9 +3062,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3155,9 +3085,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -3181,9 +3109,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3208,9 +3134,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -3237,9 +3161,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3264,9 +3186,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.

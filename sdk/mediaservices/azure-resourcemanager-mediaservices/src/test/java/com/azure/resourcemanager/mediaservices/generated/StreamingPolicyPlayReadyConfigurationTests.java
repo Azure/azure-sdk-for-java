@@ -12,19 +12,20 @@ public final class StreamingPolicyPlayReadyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StreamingPolicyPlayReadyConfiguration model = BinaryData
-            .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"yhz\",\"playReadyCustomAttributes\":\"ss\"}")
+            .fromString(
+                "{\"customLicenseAcquisitionUrlTemplate\":\"ao\",\"playReadyCustomAttributes\":\"ulpqblylsyxkqjn\"}")
             .toObject(StreamingPolicyPlayReadyConfiguration.class);
-        Assertions.assertEquals("yhz", model.customLicenseAcquisitionUrlTemplate());
-        Assertions.assertEquals("ss", model.playReadyCustomAttributes());
+        Assertions.assertEquals("ao", model.customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals("ulpqblylsyxkqjn", model.playReadyCustomAttributes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StreamingPolicyPlayReadyConfiguration model
-            = new StreamingPolicyPlayReadyConfiguration().withCustomLicenseAcquisitionUrlTemplate("yhz")
-                .withPlayReadyCustomAttributes("ss");
+            = new StreamingPolicyPlayReadyConfiguration().withCustomLicenseAcquisitionUrlTemplate("ao")
+                .withPlayReadyCustomAttributes("ulpqblylsyxkqjn");
         model = BinaryData.fromObject(model).toObject(StreamingPolicyPlayReadyConfiguration.class);
-        Assertions.assertEquals("yhz", model.customLicenseAcquisitionUrlTemplate());
-        Assertions.assertEquals("ss", model.playReadyCustomAttributes());
+        Assertions.assertEquals("ao", model.customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals("ulpqblylsyxkqjn", model.playReadyCustomAttributes());
     }
 }

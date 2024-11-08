@@ -33,15 +33,19 @@ import reactor.core.publisher.Mono;
  */
 public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     implements IntegrationRuntimeAuthKeysOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeAuthKeysOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeAuthKeysOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeAuthKeysOperationsClientImpl(SynapseManagementClientImpl client) {
@@ -58,8 +62,7 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeAuthKeysOperationsService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/regenerateAuthKey")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/regenerateAuthKey")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerate(@HostParam("$host") String endpoint,
@@ -70,8 +73,7 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeAuthKeysInner>> list(@HostParam("$host") String endpoint,
@@ -83,9 +85,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -94,7 +96,7 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateWithResponseAsync(String resourceGroupName,
@@ -136,9 +138,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -148,7 +150,7 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateWithResponseAsync(String resourceGroupName,
@@ -188,9 +190,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -209,9 +211,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -232,9 +234,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -253,9 +255,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -263,7 +265,7 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeAuthKeysInner>> listWithResponseAsync(String resourceGroupName,
@@ -297,9 +299,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -308,7 +310,7 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeAuthKeysInner>> listWithResponseAsync(String resourceGroupName,
@@ -341,9 +343,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -361,9 +363,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -381,9 +383,9 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

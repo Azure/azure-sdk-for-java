@@ -212,7 +212,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     public void waitForJobCancellation(List<String> translationIds) {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         for (String translationId : translationIds) {
-            TranslationStatus translationStatus = null;
+            TranslationStatus translationStatus;
             do {
                 sleepIfRunningAgainstService(10000);
                 retryCount--;

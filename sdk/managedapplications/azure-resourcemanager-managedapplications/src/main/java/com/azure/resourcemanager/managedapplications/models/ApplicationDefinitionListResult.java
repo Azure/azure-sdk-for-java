@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of managed application definitions. */
+/**
+ * List of managed application definitions.
+ */
 @Fluent
-public final class ApplicationDefinitionListResult {
+public final class ApplicationDefinitionListResult implements JsonSerializable<ApplicationDefinitionListResult> {
     /*
      * The array of managed application definitions.
      */
-    @JsonProperty(value = "value")
     private List<ApplicationDefinitionInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ApplicationDefinitionListResult class. */
+    /**
+     * Creates an instance of ApplicationDefinitionListResult class.
+     */
     public ApplicationDefinitionListResult() {
     }
 
     /**
      * Get the value property: The array of managed application definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplicationDefinitionInner> value() {
@@ -39,7 +45,7 @@ public final class ApplicationDefinitionListResult {
 
     /**
      * Set the value property: The array of managed application definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApplicationDefinitionListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ApplicationDefinitionListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ApplicationDefinitionListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ApplicationDefinitionListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class ApplicationDefinitionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationDefinitionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationDefinitionListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationDefinitionListResult.
+     */
+    public static ApplicationDefinitionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationDefinitionListResult deserializedApplicationDefinitionListResult
+                = new ApplicationDefinitionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ApplicationDefinitionInner> value
+                        = reader.readArray(reader1 -> ApplicationDefinitionInner.fromJson(reader1));
+                    deserializedApplicationDefinitionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedApplicationDefinitionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationDefinitionListResult;
+        });
     }
 }

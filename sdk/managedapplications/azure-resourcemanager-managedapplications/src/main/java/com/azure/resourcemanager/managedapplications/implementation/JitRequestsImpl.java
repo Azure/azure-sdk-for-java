@@ -100,12 +100,12 @@ public final class JitRequestsImpl implements JitRequests {
     }
 
     public JitRequestDefinition getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String jitRequestName = Utils.getValueFromIdByName(id, "jitRequests");
+        String jitRequestName = ResourceManagerUtils.getValueFromIdByName(id, "jitRequests");
         if (jitRequestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
@@ -114,12 +114,12 @@ public final class JitRequestsImpl implements JitRequests {
     }
 
     public Response<JitRequestDefinition> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String jitRequestName = Utils.getValueFromIdByName(id, "jitRequests");
+        String jitRequestName = ResourceManagerUtils.getValueFromIdByName(id, "jitRequests");
         if (jitRequestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
@@ -128,12 +128,12 @@ public final class JitRequestsImpl implements JitRequests {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String jitRequestName = Utils.getValueFromIdByName(id, "jitRequests");
+        String jitRequestName = ResourceManagerUtils.getValueFromIdByName(id, "jitRequests");
         if (jitRequestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
@@ -142,12 +142,12 @@ public final class JitRequestsImpl implements JitRequests {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String jitRequestName = Utils.getValueFromIdByName(id, "jitRequests");
+        String jitRequestName = ResourceManagerUtils.getValueFromIdByName(id, "jitRequests");
         if (jitRequestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));

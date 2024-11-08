@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasClassifications;
 import com.azure.analytics.purview.datamap.models.SortType;
+import com.azure.core.util.BinaryData;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -22,7 +23,7 @@ public final class EntityGetClassificationsTests extends DataMapClientTestBase {
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "list"
-        List<Object> responseList = response.getList();
+        List<BinaryData> responseList = response.getList();
         Assertions.assertNotNull(responseList.iterator().next());
         // verify property "pageSize"
         Assertions.assertEquals(1, response.getPageSize());

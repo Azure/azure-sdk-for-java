@@ -50,8 +50,8 @@ public class LargeBlobTests extends BlobTestBase {
 
     @BeforeAll
     public static void setupSpec() {
-        BlobServiceClientBuilder blobServiceClientBuilder = new BlobServiceClientBuilder()
-            .connectionString("UseDevelopmentStorage=true");
+        BlobServiceClientBuilder blobServiceClientBuilder
+            = new BlobServiceClientBuilder().connectionString("UseDevelopmentStorage=true");
         blobServiceClient = blobServiceClientBuilder.buildClient();
         blobServiceAsyncClient = blobServiceClientBuilder.buildAsyncClient();
     }
@@ -60,8 +60,8 @@ public class LargeBlobTests extends BlobTestBase {
     public void setup() {
         String containerName = CoreUtils.randomUuid().toString();
         BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
-        BlobContainerAsyncClient blobContainerAsyncClient =
-            blobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+        BlobContainerAsyncClient blobContainerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         blobContainerClient.create();
         String blobName = CoreUtils.randomUuid().toString();
         blobClient = blobContainerClient.getBlobClient(blobName);
@@ -72,8 +72,8 @@ public class LargeBlobTests extends BlobTestBase {
     @Test
     public void stageRealLargeBlob() {
         InputStream stream = createLargeInputStream(LARGE_BLOCK_SIZE);
-        String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString()
-            .getBytes(StandardCharsets.UTF_8));
+        String blockId
+            = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(StandardCharsets.UTF_8));
 
         blobClient.getBlockBlobClient().stageBlock(blockId, stream, LARGE_BLOCK_SIZE);
         blobClient.getBlockBlobClient().commitBlockList(Collections.singletonList((blockId)));
@@ -88,8 +88,8 @@ public class LargeBlobTests extends BlobTestBase {
     public void uploadRealLargeBlobInSingleUpload() {
         long size = LARGE_BLOCK_SIZE;
         InputStream stream = createLargeInputStream(size);
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setMaxSingleUploadSizeLong(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setMaxSingleUploadSizeLong(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG);
 
         blobClient.uploadWithResponse(stream, size, parallelTransferOptions, null, null, null, null, null,
             Context.NONE);
@@ -103,8 +103,8 @@ public class LargeBlobTests extends BlobTestBase {
     public void uploadRealLargeBlobInSingleUploadAsync() {
         long size = LARGE_BLOCK_SIZE;
         Flux<ByteBuffer> flux = createLargeBuffer(size);
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setMaxSingleUploadSizeLong(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setMaxSingleUploadSizeLong(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG);
 
         blobAsyncClient.upload(flux, parallelTransferOptions).block();
         BlobProperties properties = blobClient.getProperties();
@@ -118,8 +118,8 @@ public class LargeBlobTests extends BlobTestBase {
         long tailSize = Constants.MB;
         long length = LARGE_BLOCK_SIZE + tailSize;
         Flux<ByteBuffer> flux = createLargeBuffer(length);
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(LARGE_BLOCK_SIZE);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE);
 
         blobAsyncClient.upload(flux, parallelTransferOptions).block();
         BlockList blockList = blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED).block();
@@ -135,8 +135,8 @@ public class LargeBlobTests extends BlobTestBase {
         long tailSize = Constants.MB;
         long length = LARGE_BLOCK_SIZE + tailSize;
         InputStream stream = createLargeInputStream(length, Constants.MB);
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(LARGE_BLOCK_SIZE);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE);
 
         blobClient.uploadWithResponse(stream, length, parallelTransferOptions, null, null, null, null, null,
             Context.NONE);
@@ -153,11 +153,12 @@ public class LargeBlobTests extends BlobTestBase {
         long tailSize = Constants.MB;
         long length = LARGE_BLOCK_SIZE + tailSize;
         InputStream stream = createLargeInputStream(length, Constants.MB);
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(LARGE_BLOCK_SIZE);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE);
 
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(stream)
-            .setParallelTransferOptions(parallelTransferOptions), null, Context.NONE);
+        blobClient.uploadWithResponse(
+            new BlobParallelUploadOptions(stream).setParallelTransferOptions(parallelTransferOptions), null,
+            Context.NONE);
         BlockList blockList = blobClient.getBlockBlobClient().listBlocks(BlockListType.COMMITTED);
 
         assertEquals(2, blockList.getCommittedBlocks().size());
@@ -170,8 +171,8 @@ public class LargeBlobTests extends BlobTestBase {
     public void uploadLargeFile() throws IOException {
         long tailSize = Constants.MB;
         File file = getRandomLargeFile(LARGE_BLOCK_SIZE + tailSize);
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(LARGE_BLOCK_SIZE);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE);
 
         blobClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions, null, null, null, null, null);
         BlockList blockList = blobClient.getBlockBlobClient().listBlocks(BlockListType.COMMITTED);
@@ -208,9 +209,8 @@ public class LargeBlobTests extends BlobTestBase {
         byte[] bytes = getRandomByteArray(bufferSize);
         long numberOfSubBuffers = size / bufferSize;
         int remainder = (int) (size - numberOfSubBuffers * bufferSize);
-        Flux<ByteBuffer> result =  Flux.just(ByteBuffer.wrap(bytes))
-            .map(ByteBuffer::duplicate)
-            .repeat(numberOfSubBuffers - 1);
+        Flux<ByteBuffer> result
+            = Flux.just(ByteBuffer.wrap(bytes)).map(ByteBuffer::duplicate).repeat(numberOfSubBuffers - 1);
         if (remainder > 0) {
             byte[] extraBytes = getRandomByteArray(remainder);
             result = Flux.concat(result, Flux.just(ByteBuffer.wrap(extraBytes)));

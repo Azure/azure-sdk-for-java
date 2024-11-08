@@ -24,7 +24,7 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
 
         String fileName = "randomfiletest-" + CoreUtils.randomUuid();
 
-        dataLakeFileClient =  dataLakeDirectoryClient.getFileClient(fileName);
+        dataLakeFileClient = dataLakeDirectoryClient.getFileClient(fileName);
         dataLakeFileAsyncClient = dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName);
     }
 

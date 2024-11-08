@@ -39,17 +39,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateEndpointConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionsClientImpl(SynapseManagementClientImpl client) {
@@ -66,8 +72,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceInterface(name = "SynapseManagementCli")
     public interface PrivateEndpointConnectionsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionInner>> get(@HostParam("$host") String endpoint,
@@ -77,8 +82,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
@@ -89,8 +93,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -100,8 +103,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/privateEndpointConnections")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateEndpointConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionList>> list(@HostParam("$host") String endpoint,
@@ -120,7 +122,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -161,7 +163,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -202,7 +204,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -220,7 +222,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -238,7 +240,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -256,7 +258,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -304,7 +306,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -351,7 +353,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -374,7 +376,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -399,7 +401,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -419,7 +421,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -440,7 +442,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -459,7 +461,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -480,7 +482,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -498,7 +500,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -517,7 +519,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -559,7 +561,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -600,7 +602,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -621,7 +623,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -643,7 +645,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -660,7 +662,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -679,7 +681,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -697,7 +699,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -716,7 +718,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -733,7 +735,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -751,14 +753,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Lists private endpoint connection in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(String resourceGroupName,
@@ -790,7 +792,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Lists private endpoint connection in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -798,7 +800,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(String resourceGroupName,
@@ -830,7 +832,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Lists private endpoint connection in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,7 +848,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Lists private endpoint connection in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -864,7 +866,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Lists private endpoint connection in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -879,7 +881,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Lists private endpoint connection in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -896,14 +898,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(String nextLink) {
@@ -923,15 +924,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(String nextLink,

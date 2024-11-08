@@ -32,17 +32,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GenerateDetailedCostReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GenerateDetailedCostReportsClient.
+ */
 public final class GenerateDetailedCostReportsClientImpl implements GenerateDetailedCostReportsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GenerateDetailedCostReportsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of GenerateDetailedCostReportsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GenerateDetailedCostReportsClientImpl(CostManagementClientImpl client) {
@@ -73,15 +79,15 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the long running operation for cost detailed report along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(String scope,
@@ -110,16 +116,16 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the long running operation for cost detailed report along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOperationWithResponseAsync(String scope,
@@ -147,9 +153,9 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -172,9 +178,9 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,9 +205,9 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -220,9 +226,9 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,15 +248,15 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the long running operation for cost detailed report on successful completion of {@link
-     *     Mono}.
+     * @return the result of the long running operation for cost detailed report on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GenerateDetailedCostReportOperationResultInner> createOperationAsync(String scope,
@@ -263,16 +269,16 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the long running operation for cost detailed report on successful completion of {@link
-     *     Mono}.
+     * @return the result of the long running operation for cost detailed report on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GenerateDetailedCostReportOperationResultInner> createOperationAsync(String scope,
@@ -286,9 +292,9 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,9 +312,9 @@ public final class GenerateDetailedCostReportsClientImpl implements GenerateDeta
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

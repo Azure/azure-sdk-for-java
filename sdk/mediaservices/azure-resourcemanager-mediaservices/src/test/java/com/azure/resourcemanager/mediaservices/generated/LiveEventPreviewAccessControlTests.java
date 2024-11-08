@@ -15,22 +15,21 @@ public final class LiveEventPreviewAccessControlTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LiveEventPreviewAccessControl model = BinaryData.fromString(
-            "{\"ip\":{\"allow\":[{\"name\":\"kzivgvvcnayrh\",\"address\":\"nxxmueedndrdv\",\"subnetPrefixLength\":928139019},{\"name\":\"qqtch\",\"address\":\"lmfmtdaay\",\"subnetPrefixLength\":76843266}]}}")
+            "{\"ip\":{\"allow\":[{\"name\":\"rcgp\",\"address\":\"pzimejzanlfzxi\",\"subnetPrefixLength\":1297052787}]}}")
             .toObject(LiveEventPreviewAccessControl.class);
-        Assertions.assertEquals("kzivgvvcnayrh", model.ip().allow().get(0).name());
-        Assertions.assertEquals("nxxmueedndrdv", model.ip().allow().get(0).address());
-        Assertions.assertEquals(928139019, model.ip().allow().get(0).subnetPrefixLength());
+        Assertions.assertEquals("rcgp", model.ip().allow().get(0).name());
+        Assertions.assertEquals("pzimejzanlfzxi", model.ip().allow().get(0).address());
+        Assertions.assertEquals(1297052787, model.ip().allow().get(0).subnetPrefixLength());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LiveEventPreviewAccessControl model
             = new LiveEventPreviewAccessControl().withIp(new IpAccessControl().withAllow(Arrays.asList(
-                new IpRange().withName("kzivgvvcnayrh").withAddress("nxxmueedndrdv").withSubnetPrefixLength(928139019),
-                new IpRange().withName("qqtch").withAddress("lmfmtdaay").withSubnetPrefixLength(76843266))));
+                new IpRange().withName("rcgp").withAddress("pzimejzanlfzxi").withSubnetPrefixLength(1297052787))));
         model = BinaryData.fromObject(model).toObject(LiveEventPreviewAccessControl.class);
-        Assertions.assertEquals("kzivgvvcnayrh", model.ip().allow().get(0).name());
-        Assertions.assertEquals("nxxmueedndrdv", model.ip().allow().get(0).address());
-        Assertions.assertEquals(928139019, model.ip().allow().get(0).subnetPrefixLength());
+        Assertions.assertEquals("rcgp", model.ip().allow().get(0).name());
+        Assertions.assertEquals("pzimejzanlfzxi", model.ip().allow().get(0).address());
+        Assertions.assertEquals(1297052787, model.ip().allow().get(0).subnetPrefixLength());
     }
 }

@@ -225,7 +225,7 @@ public final class SpringAppDiscoveryManager {
                 .append("-")
                 .append("com.azure.resourcemanager.springappdiscovery")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))

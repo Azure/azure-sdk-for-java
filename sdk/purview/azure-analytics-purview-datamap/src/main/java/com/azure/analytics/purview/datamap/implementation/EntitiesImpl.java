@@ -818,17 +818,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -872,7 +872,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -905,7 +905,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -915,7 +915,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1009,17 +1009,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1063,7 +1063,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1096,7 +1096,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1106,7 +1106,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1191,17 +1191,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1245,7 +1245,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1305,17 +1305,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1359,7 +1359,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1428,17 +1428,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1482,7 +1482,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1517,7 +1517,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1527,7 +1527,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1623,17 +1623,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1677,7 +1677,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1712,7 +1712,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1722,7 +1722,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1802,7 +1802,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1812,7 +1812,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1893,7 +1893,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1903,7 +1903,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1976,7 +1976,7 @@ public final class EntitiesImpl {
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -2023,7 +2023,7 @@ public final class EntitiesImpl {
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -2081,17 +2081,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2135,7 +2135,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -2192,17 +2192,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2246,7 +2246,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -2291,7 +2291,7 @@ public final class EntitiesImpl {
      * 
      * <pre>
      * {@code
-     * Object
+     * BinaryData
      * }
      * </pre>
      * 
@@ -2307,7 +2307,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2317,7 +2317,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2396,7 +2396,7 @@ public final class EntitiesImpl {
      * 
      * <pre>
      * {@code
-     * Object
+     * BinaryData
      * }
      * </pre>
      * 
@@ -2412,7 +2412,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2422,7 +2422,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2504,7 +2504,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2514,7 +2514,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2593,7 +2593,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2603,7 +2603,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2674,7 +2674,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -2718,7 +2718,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -2801,7 +2801,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     list (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     pageSize: Integer (Optional)
      *     sortBy: String (Optional)
@@ -2835,7 +2835,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     list (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     pageSize: Integer (Optional)
      *     sortBy: String (Optional)
@@ -2869,7 +2869,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -2915,7 +2915,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -2960,7 +2960,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -3006,7 +3006,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -3079,17 +3079,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -3133,7 +3133,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -3220,17 +3220,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -3274,7 +3274,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -3357,17 +3357,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -3411,7 +3411,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -3444,7 +3444,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3454,7 +3454,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3556,17 +3556,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -3610,7 +3610,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -3643,7 +3643,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3653,7 +3653,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3754,7 +3754,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3764,7 +3764,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3864,7 +3864,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3874,7 +3874,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -4016,7 +4016,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -4071,7 +4071,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -4126,7 +4126,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -4181,7 +4181,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -4228,7 +4228,7 @@ public final class EntitiesImpl {
      *     guidHeaderMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4238,7 +4238,7 @@ public final class EntitiesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4320,7 +4320,7 @@ public final class EntitiesImpl {
      *     guidHeaderMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4330,7 +4330,7 @@ public final class EntitiesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4442,17 +4442,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4496,7 +4496,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -4577,17 +4577,17 @@ public final class EntitiesImpl {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4631,7 +4631,7 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -4678,7 +4678,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -4688,7 +4688,7 @@ public final class EntitiesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4754,7 +4754,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -4764,7 +4764,7 @@ public final class EntitiesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4829,7 +4829,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     String (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -4861,7 +4861,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     String (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -4902,7 +4902,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     String (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -4943,7 +4943,7 @@ public final class EntitiesImpl {
      * {@code
      * {
      *     String (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -4974,7 +4974,7 @@ public final class EntitiesImpl {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *     String: BinaryData (Required)
      * }
      * }
      * </pre>
@@ -5005,7 +5005,7 @@ public final class EntitiesImpl {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *     String: BinaryData (Required)
      * }
      * }
      * </pre>
@@ -5036,7 +5036,7 @@ public final class EntitiesImpl {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *     String: BinaryData (Required)
      * }
      * }
      * </pre>
@@ -5067,7 +5067,7 @@ public final class EntitiesImpl {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *     String: BinaryData (Required)
      * }
      * }
      * </pre>
@@ -5868,7 +5868,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -5878,7 +5878,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -5973,7 +5973,7 @@ public final class EntitiesImpl {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -5983,7 +5983,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
