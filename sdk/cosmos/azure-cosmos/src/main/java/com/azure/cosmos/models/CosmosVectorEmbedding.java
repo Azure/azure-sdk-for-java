@@ -110,11 +110,24 @@ public final class CosmosVectorEmbedding {
         return this;
     }
 
-    @Deprecated
+    /**
+     * Gets the dimensions for the cosmosVectorEmbedding.
+     *
+     * @return dimensions
+     * @deprecated use {@link CosmosVectorEmbedding#getEmbeddingDimensions()} instead
+     */
+    @Deprecated()
     public Long getDimensions() {
         return Long.valueOf(dimensions);
     }
 
+    /**
+     * Sets the dimensions for the cosmosVectorEmbedding.
+     *
+     * @param dimensions the dimensions for the cosmosVectorEmbedding
+     * @return CosmosVectorEmbedding
+     * @deprecated use {@link CosmosVectorEmbedding#setEmbeddingDimensions(Integer dimensions)} instead
+     */
     @Deprecated
     public CosmosVectorEmbedding setDimensions(Long dimensions) {
         checkNotNull(dimensions, "dimensions cannot be null");

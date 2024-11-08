@@ -41,7 +41,7 @@ public enum CosmosVectorIndexType {
      * @param value the value of the index type
      * @return the true if accepted value or else false
      */
-    public static boolean isValidType(String value) {
+    static boolean isValidType(String value) {
         return Arrays.stream(CosmosVectorIndexType.values())
             .anyMatch(vectorIndexType -> vectorIndexType.toString().equalsIgnoreCase(value));
     }
