@@ -113,8 +113,10 @@ public final class TestUtils {
         testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
     }
 
-    public static void getBatchTrainingDataContainerHelper(BiConsumer<String, String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getBatchTrainingFilesContainerUrl(isPlaybackMode), getBatchTrainingFilesResultContainerUrl(isPlaybackMode));
+    public static void getBatchTrainingDataContainerHelper(BiConsumer<String, String> testRunner,
+        boolean isPlaybackMode) {
+        testRunner.accept(getBatchTrainingFilesContainerUrl(isPlaybackMode),
+            getBatchTrainingFilesResultContainerUrl(isPlaybackMode));
     }
 
     /**
