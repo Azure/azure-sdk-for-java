@@ -105,7 +105,7 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
     void getWeatherToolRunner(BiConsumer<RealtimeFunctionTool, RealtimeClientEventSessionUpdate> testRunner) {
         RealtimeFunctionTool weatherTool = new RealtimeFunctionTool("get_weather_for_location")
                 .setDescription("Get the weather for a location")
-                .setParameters(BinaryData.fromObject(new WeatherToolDescriptor()));
+                .setParameters(new WeatherToolDescriptor());
         RealtimeClientEventSessionUpdate sessionUpdate = new RealtimeClientEventSessionUpdate(
                 new RealtimeRequestSession()
                         .setTools(Arrays.asList(weatherTool))

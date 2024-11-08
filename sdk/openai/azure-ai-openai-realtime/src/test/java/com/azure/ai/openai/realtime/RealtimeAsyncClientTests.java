@@ -38,6 +38,7 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -237,20 +238,19 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                 .buildAsyncClient();
 
         client.start().block();
+
+        AtomicInteger responseDoneCount = new AtomicInteger(0);
         getWeatherToolRunner((weatherTool, sessionConfig) -> {
             client.sendMessage(sessionConfig).block();
             FileUtils.sendAudioFile(client,
                     FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).block();
             StepVerifier.create(client.getServerEvents())
                 .thenConsumeWhile(
-                    event -> true,
+                    event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE || responseDoneCount.get() < 1, // we break on the 2nd RESPONSE_DONE
                     event -> {
                         assertFalse(CoreUtils.isNullOrEmpty(event.getEventId()));
-                        System.out.println("event: " + toJson(event));
-
                         if(event instanceof RealtimeServerEventSessionUpdated) {
                             RealtimeServerEventSessionUpdated sessionUpdatedEvent = (RealtimeServerEventSessionUpdated) event;
-                            System.out.println("sessionUpdatedEvent: " + toJson(sessionUpdatedEvent));
                             assertNotNull(sessionUpdatedEvent.getSession());
                         } else if (event instanceof RealtimeServerEventResponseOutputItemDone) {
                             RealtimeServerEventResponseOutputItemDone outputItemDoneEvent = (RealtimeServerEventResponseOutputItemDone) event;
@@ -264,11 +264,14 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                                 client.sendMessage(new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse())).block();
                             }
                         } else if (event instanceof RealtimeServerEventResponseDone) {
-                            System.out.println("event: " + toJson(event));
+                            RealtimeServerEventResponseDone responseDoneEvent = (RealtimeServerEventResponseDone) event;
+                            assertTrue(responseDoneEvent.getResponse().getOutput().stream().anyMatch(outputItem ->
+                                    outputItem instanceof RealtimeResponseFunctionCallItem));
+                            responseDoneCount.incrementAndGet();
                         }
                     }
                 )
-//                .thenRequest(1)
+                .thenRequest(1)
                 .then(() -> client.stop().block())
                 .verifyComplete();
         });
