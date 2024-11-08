@@ -108,8 +108,6 @@ public final class RealtimeAsyncClient implements Closeable {
                 isClosedMono.emitEmpty(emitFailureHandler("Unable to emit Close"));
             })).block();
         }
-        // TODO jpalvarezl: should this be here? WebPubSubClient doesn't do it.
-        webSocketSession.close();
     }
 
     /**
@@ -207,6 +205,14 @@ public final class RealtimeAsyncClient implements Closeable {
      */
     public Flux<RealtimeServerEvent> getServerEvents() {
         return serverEvents.asFlux();
+        // TODO jpalvarezl do we propagate errors as a Flux error?
+//                .transform(event -> {
+//                    if (event instanceof RealtimeServerErrorEvent) {
+//                        return Flux.error(new RuntimeException("Received RealtimeServerErrorEvent: " + ((RealtimeServerErrorEvent) event).getErrorMessage()));
+//                    } else {
+//                        return Flux.just(event);
+//                    }
+//                });
     }
 
     Mono<Void>start(Runnable postStartTask) {

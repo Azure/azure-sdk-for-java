@@ -2616,7 +2616,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * byte[]

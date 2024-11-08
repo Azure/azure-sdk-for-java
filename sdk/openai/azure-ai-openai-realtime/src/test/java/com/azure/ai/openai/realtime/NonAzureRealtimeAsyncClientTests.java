@@ -45,4 +45,34 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
                 .then(() -> client.stop().block())
                 .verifyComplete();
     }
+
+    @Override
+    void canConfigureSession() {
+
+    }
+
+    @Override
+    void textOnly() {
+
+    }
+
+    @Override
+    void ItemManipulation() {
+
+    }
+
+    @Override
+    void AudioWithTool() {
+
+    }
+
+    @Override
+    void canDisableVoiceActivityDetection() {
+
+    }
+
+    @Override
+    void badCommandProvidesError() {
+
+    }
 }
