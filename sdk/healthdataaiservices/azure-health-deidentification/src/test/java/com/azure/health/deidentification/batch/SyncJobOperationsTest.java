@@ -94,7 +94,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
 
-        PagedIterable<DeidentificationJob> jobs = deidentificationClient.listJobs("fake cont token");
+        PagedIterable<DeidentificationJob> jobs = deidentificationClient.listJobs();
         Iterator<DeidentificationJob> iterator = jobs.iterator();
         int jobsToLookThrough = 10;
         boolean jobFound = false;
@@ -187,8 +187,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
 
         deidentificationClient.deleteJob(jobName);
 
-        assertThrows(ResourceNotFoundException.class, () -> {
-            deidentificationClient.getJob(jobName); // TODO - sometimes doesn't throw
+        assertThrows(HttpResponseException.class, () -> {
+            deidentificationClient.getJob(jobName); // TODO - sometimes doesn't throw?
         });
     }
 

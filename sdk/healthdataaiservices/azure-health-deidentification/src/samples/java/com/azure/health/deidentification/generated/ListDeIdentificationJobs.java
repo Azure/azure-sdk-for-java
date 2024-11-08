@@ -19,7 +19,7 @@ public class ListDeIdentificationJobs {
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.listjobs.listdeidentificationjobs
         PagedIterable<DeidentificationJob> response = deidentificationClient
-            .listJobs("K1JJRDpzOEtaQWZabUQrQUNBQUFBQUFBQUFBQT09I1JUOjEjVFJDOjEwI0ZQQzpBZ0VBQUFBTUFDUUFBQUFBQUE9PQ==");
+            .listJobs();
         // END:com.azure.health.deidentification.generated.listjobs.listdeidentificationjobs
     }
 }

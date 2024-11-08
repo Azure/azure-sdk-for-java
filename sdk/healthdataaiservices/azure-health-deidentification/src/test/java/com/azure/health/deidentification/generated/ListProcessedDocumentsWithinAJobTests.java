@@ -18,8 +18,7 @@ public final class ListProcessedDocumentsWithinAJobTests extends Deidentificatio
     @Disabled
     public void testListProcessedDocumentsWithinAJobTests() {
         // method invocation
-        PagedIterable<DocumentDetails> response = deidentificationClient.listJobDocuments("documents_smith_1",
-            "K1JJRDpzOEtaQWZabUQrQUNBQUFBQUFBQUFBQT09I1JUOjEjVFJDOjEwI0ZQQzpBZ0VBQUFBTUFDUUFBQUFBQUE9PQ==");
+        PagedIterable<DocumentDetails> response = deidentificationClient.listJobDocuments("documents_smith_1");
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

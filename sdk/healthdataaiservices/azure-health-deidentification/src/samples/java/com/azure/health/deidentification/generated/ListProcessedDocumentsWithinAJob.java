@@ -19,8 +19,7 @@ public class ListProcessedDocumentsWithinAJob {
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
         PagedIterable<DocumentDetails> response = deidentificationClient.listJobDocuments(
-            "Replace this value with a string matching RegExp ^[a-zA-Z0-9][a-zA-Z0-9-_]+[a-zA-Z0-9]$",
-            "K1JJRDpzOEtaQWZabUQrQUNBQUFBQUFBQUFBQT09I1JUOjEjVFJDOjEwI0ZQQzpBZ0VBQUFBTUFDUUFBQUFBQUE9PQ==");
+            "Replace this value with a string matching RegExp ^[a-zA-Z0-9][a-zA-Z0-9-_]+[a-zA-Z0-9]$");
         // END:com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
     }
 }

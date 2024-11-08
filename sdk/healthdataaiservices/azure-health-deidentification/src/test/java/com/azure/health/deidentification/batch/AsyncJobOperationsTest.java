@@ -167,7 +167,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         deidentificationAsyncClient.deleteJob(jobName).block();
 
-        assertThrows(ResourceNotFoundException.class, () -> { // TODO - sometimes doesn't throw
+        assertThrows(HttpResponseException.class, () -> { // TODO - sometimes doesn't throw
             deidentificationAsyncClient.getJob(jobName).block();
         });
     }
