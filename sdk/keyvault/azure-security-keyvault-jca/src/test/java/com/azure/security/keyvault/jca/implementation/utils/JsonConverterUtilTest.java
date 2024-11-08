@@ -88,8 +88,7 @@ public class JsonConverterUtilTest {
     private static String getAccessTokenBody(String filePath) {
         String accessTokenBody = null;
         try {
-            accessTokenBody = new String(Files.readAllBytes(
-                Paths.get(filePath)), StandardCharsets.UTF_8);
+            accessTokenBody = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
         } catch (IOException ignored) {
         }
         return accessTokenBody;
