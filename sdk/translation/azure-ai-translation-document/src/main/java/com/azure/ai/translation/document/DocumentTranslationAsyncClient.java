@@ -5,10 +5,8 @@ package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.implementation.DocumentTranslationClientImpl;
 import com.azure.ai.translation.document.models.DocumentStatus;
-import com.azure.ai.translation.document.models.FileFormatType;
-import com.azure.ai.translation.document.models.StartTranslationDetails;
-import com.azure.ai.translation.document.models.SupportedFileFormats;
-import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.ai.translation.document.models.TranslationBatch;
+import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -49,6 +47,304 @@ public final class DocumentTranslationAsyncClient {
     @Generated
     DocumentTranslationAsyncClient(DocumentTranslationClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Returns the status for a specific document
+     *
+     * Returns the translation status for a specific document based on the request Id
+     * and document Id.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     path: String (Optional)
+     *     sourcePath: String (Required)
+     *     createdDateTimeUtc: OffsetDateTime (Required)
+     *     lastActionDateTimeUtc: OffsetDateTime (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
+     *     to: String (Required)
+     *     error (Optional): {
+     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         innerError (Optional): {
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
+     *         }
+     *     }
+     *     progress: double (Required)
+     *     id: String (Required)
+     *     characterCharged: Integer (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param translationId Format - uuid. The batch id.
+     * @param documentId Format - uuid. The document id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return document Status Response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getDocumentStatusWithResponse(String translationId, String documentId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getDocumentStatusWithResponseAsync(translationId, documentId, requestOptions);
+    }
+
+    /**
+     * Returns the status for a document translation request
+     *
+     * Returns the status for a document translation request.
+     * The status includes the
+     * overall request status, as well as the status for documents that are being
+     * translated as part of that request.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     createdDateTimeUtc: OffsetDateTime (Required)
+     *     lastActionDateTimeUtc: OffsetDateTime (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
+     *     error (Optional): {
+     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         innerError (Optional): {
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
+     *         }
+     *     }
+     *     summary (Required): {
+     *         total: int (Required)
+     *         failed: int (Required)
+     *         success: int (Required)
+     *         inProgress: int (Required)
+     *         notYetStarted: int (Required)
+     *         cancelled: int (Required)
+     *         totalCharacterCharged: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param translationId Format - uuid. The operation id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return translation job status response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTranslationStatusWithResponse(String translationId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getTranslationStatusWithResponseAsync(translationId, requestOptions);
+    }
+
+    /**
+     * Cancel a currently processing or queued translation
+     *
+     * Cancel a currently processing or queued translation.
+     * A translation will not be
+     * cancelled if it is already completed or failed or cancelling. A bad request
+     * will be returned.
+     * All documents that have completed translation will not be
+     * cancelled and will be charged.
+     * All pending documents will be cancelled if
+     * possible.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     createdDateTimeUtc: OffsetDateTime (Required)
+     *     lastActionDateTimeUtc: OffsetDateTime (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
+     *     error (Optional): {
+     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         innerError (Optional): {
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
+     *         }
+     *     }
+     *     summary (Required): {
+     *         total: int (Required)
+     *         failed: int (Required)
+     *         success: int (Required)
+     *         inProgress: int (Required)
+     *         notYetStarted: int (Required)
+     *         cancelled: int (Required)
+     *         totalCharacterCharged: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param translationId Format - uuid. The operation-id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return translation job status response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelTranslationWithResponse(String translationId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.cancelTranslationWithResponseAsync(translationId, requestOptions);
+    }
+
+    /**
+     * Returns a list of supported document formats
+     *
+     * The list of supported formats supported by the Document Translation
+     * service.
+     * The list includes the common file extension, as well as the
+     * content-type if using the upload API.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>the type of format like document or glossary . Allowed values:
+     * "document", "glossary".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             format: String (Required)
+     *             fileExtensions (Required): [
+     *                 String (Required)
+     *             ]
+     *             contentTypes (Required): [
+     *                 String (Required)
+     *             ]
+     *             defaultVersion: String (Optional)
+     *             versions (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             type: String(document/glossary) (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of supported file formats along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getSupportedFormatsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getSupportedFormatsWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * Returns the status for a specific document
+     *
+     * Returns the translation status for a specific document based on the request Id
+     * and document Id.
+     *
+     * @param translationId Format - uuid. The batch id.
+     * @param documentId Format - uuid. The document id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return document Status Response on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DocumentStatus> getDocumentStatus(String translationId, String documentId) {
+        // Generated convenience method for getDocumentStatusWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getDocumentStatusWithResponse(translationId, documentId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DocumentStatus.class));
+    }
+
+    /**
+     * Returns the status for a document translation request
+     *
+     * Returns the status for a document translation request.
+     * The status includes the
+     * overall request status, as well as the status for documents that are being
+     * translated as part of that request.
+     *
+     * @param translationId Format - uuid. The operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return translation job status response on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TranslationStatusResult> getTranslationStatus(String translationId) {
+        // Generated convenience method for getTranslationStatusWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTranslationStatusWithResponse(translationId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TranslationStatusResult.class));
+    }
+
+    /**
+     * Cancel a currently processing or queued translation
+     *
+     * Cancel a currently processing or queued translation.
+     * A translation will not be
+     * cancelled if it is already completed or failed or cancelling. A bad request
+     * will be returned.
+     * All documents that have completed translation will not be
+     * cancelled and will be charged.
+     * All pending documents will be cancelled if
+     * possible.
+     *
+     * @param translationId Format - uuid. The operation-id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return translation job status response on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TranslationStatusResult> cancelTranslation(String translationId) {
+        // Generated convenience method for cancelTranslationWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return cancelTranslationWithResponse(translationId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TranslationStatusResult.class));
     }
 
     /**
@@ -112,7 +408,7 @@ public final class DocumentTranslationAsyncClient {
      * }
      * </pre>
      *
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -122,9 +418,8 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginStartTranslation(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginStartTranslationAsync(startTranslationDetails, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginTranslation(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.beginTranslationAsync(body, requestOptions);
     }
 
     /**
@@ -273,170 +568,8 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getTranslationsStatus(RequestOptions requestOptions) {
-        return this.serviceClient.getTranslationsStatusAsync(requestOptions);
-    }
-
-    /**
-     * Returns the status for a specific document
-     *
-     * Returns the translation status for a specific document based on the request Id
-     * and document Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     path: String (Optional)
-     *     sourcePath: String (Required)
-     *     createdDateTimeUtc: OffsetDateTime (Required)
-     *     lastActionDateTimeUtc: OffsetDateTime (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
-     *     to: String (Required)
-     *     error (Optional): {
-     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         innerError (Optional): {
-     *             code: String (Required)
-     *             message: String (Required)
-     *             target: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *     }
-     *     progress: double (Required)
-     *     id: String (Required)
-     *     characterCharged: Integer (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param id Format - uuid. The batch id.
-     * @param documentId Format - uuid. The document id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return document Status Response along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDocumentStatusWithResponse(String id, String documentId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentStatusWithResponseAsync(id, documentId, requestOptions);
-    }
-
-    /**
-     * Returns the status for a document translation request
-     *
-     * Returns the status for a document translation request.
-     * The status includes the
-     * overall request status, as well as the status for documents that are being
-     * translated as part of that request.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     createdDateTimeUtc: OffsetDateTime (Required)
-     *     lastActionDateTimeUtc: OffsetDateTime (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
-     *     error (Optional): {
-     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         innerError (Optional): {
-     *             code: String (Required)
-     *             message: String (Required)
-     *             target: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *     }
-     *     summary (Required): {
-     *         total: int (Required)
-     *         failed: int (Required)
-     *         success: int (Required)
-     *         inProgress: int (Required)
-     *         notYetStarted: int (Required)
-     *         cancelled: int (Required)
-     *         totalCharacterCharged: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param id Format - uuid. The operation id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return translation job status response along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTranslationStatusWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getTranslationStatusWithResponseAsync(id, requestOptions);
-    }
-
-    /**
-     * Cancel a currently processing or queued translation
-     *
-     * Cancel a currently processing or queued translation.
-     * A translation will not be
-     * cancelled if it is already completed or failed or cancelling. A bad request
-     * will be returned.
-     * All documents that have completed translation will not be
-     * cancelled and will be charged.
-     * All pending documents will be cancelled if
-     * possible.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     createdDateTimeUtc: OffsetDateTime (Required)
-     *     lastActionDateTimeUtc: OffsetDateTime (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Cancelled/Cancelling/ValidationFailed) (Required)
-     *     error (Optional): {
-     *         code: String(InvalidRequest/InvalidArgument/InternalServerError/ServiceUnavailable/ResourceNotFound/Unauthorized/RequestRateTooHigh) (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         innerError (Optional): {
-     *             code: String (Required)
-     *             message: String (Required)
-     *             target: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *     }
-     *     summary (Required): {
-     *         total: int (Required)
-     *         failed: int (Required)
-     *         success: int (Required)
-     *         inProgress: int (Required)
-     *         notYetStarted: int (Required)
-     *         cancelled: int (Required)
-     *         totalCharacterCharged: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param id Format - uuid. The operation-id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return translation job status response along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelTranslationWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.cancelTranslationWithResponseAsync(id, requestOptions);
+    public PagedFlux<BinaryData> listTranslationStatuses(RequestOptions requestOptions) {
+        return this.serviceClient.listTranslationStatusesAsync(requestOptions);
     }
 
     /**
@@ -566,7 +699,7 @@ public final class DocumentTranslationAsyncClient {
      * }
      * </pre>
      *
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -576,61 +709,8 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getDocumentsStatus(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentsStatusAsync(id, requestOptions);
-    }
-
-    /**
-     * Returns a list of supported document formats
-     *
-     * The list of supported formats supported by the Document Translation
-     * service.
-     * The list includes the common file extension, as well as the
-     * content-type if using the upload API.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>type</td><td>String</td><td>No</td><td>the type of format like document or glossary . Allowed values:
-     * "document", "glossary".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             format: String (Required)
-     *             fileExtensions (Required): [
-     *                 String (Required)
-     *             ]
-     *             contentTypes (Required): [
-     *                 String (Required)
-     *             ]
-     *             defaultVersion: String (Optional)
-     *             versions (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             type: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of supported file formats along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSupportedFormatsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getSupportedFormatsWithResponseAsync(requestOptions);
+    public PagedFlux<BinaryData> listDocumentStatuses(String translationId, RequestOptions requestOptions) {
+        return this.serviceClient.listDocumentStatusesAsync(translationId, requestOptions);
     }
 
     /**
@@ -656,7 +736,7 @@ public final class DocumentTranslationAsyncClient {
      * destination, it will be overwritten. The targetUrl for each target language
      * must be unique.
      *
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -667,12 +747,10 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<TranslationStatus, TranslationStatus>
-        beginStartTranslation(StartTranslationDetails startTranslationDetails) {
-        // Generated convenience method for beginStartTranslationWithModel
+    public PollerFlux<TranslationStatusResult, TranslationStatusResult> beginTranslation(TranslationBatch body) {
+        // Generated convenience method for beginTranslationWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginStartTranslationWithModelAsync(BinaryData.fromObject(startTranslationDetails),
-            requestOptions);
+        return serviceClient.beginTranslationWithModelAsync(BinaryData.fromObject(body), requestOptions);
     }
 
     /**
@@ -754,7 +832,7 @@ public final class DocumentTranslationAsyncClient {
      * Note: If the
      * server can't honor top and/or skip, the server MUST return an error to the
      * client informing about it instead of just ignoring the query options.
-     * @param ids Ids to use in filtering.
+     * @param translationIds Ids to use in filtering.
      * @param statuses Statuses to use in filtering.
      * @param createdDateTimeUtcStart the start datetime to get items after.
      * @param createdDateTimeUtcEnd the end datetime to get items before.
@@ -769,10 +847,10 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TranslationStatus> getTranslationsStatus(Integer top, Integer skip, List<String> ids,
-        List<String> statuses, OffsetDateTime createdDateTimeUtcStart, OffsetDateTime createdDateTimeUtcEnd,
-        List<String> orderBy) {
-        // Generated convenience method for getTranslationsStatus
+    public PagedFlux<TranslationStatusResult> listTranslationStatuses(Integer top, Integer skip,
+        List<String> translationIds, List<String> statuses, OffsetDateTime createdDateTimeUtcStart,
+        OffsetDateTime createdDateTimeUtcEnd, List<String> orderBy) {
+        // Generated convenience method for listTranslationStatuses
         RequestOptions requestOptions = new RequestOptions();
         if (top != null) {
             requestOptions.addQueryParam("top", String.valueOf(top), false);
@@ -780,9 +858,9 @@ public final class DocumentTranslationAsyncClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        if (ids != null) {
+        if (translationIds != null) {
             requestOptions.addQueryParam("ids",
-                ids.stream()
+                translationIds.stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
@@ -807,18 +885,19 @@ public final class DocumentTranslationAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = getTranslationsStatus(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTranslationStatuses(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, TranslationStatus>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(TranslationStatus.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, TranslationStatusResult>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(TranslationStatusResult.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
     }
 
@@ -885,103 +964,23 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TranslationStatus> getTranslationsStatus() {
-        // Generated convenience method for getTranslationsStatus
+    public PagedFlux<TranslationStatusResult> listTranslationStatuses() {
+        // Generated convenience method for listTranslationStatuses
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = getTranslationsStatus(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listTranslationStatuses(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, TranslationStatus>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(TranslationStatus.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, TranslationStatusResult>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(TranslationStatusResult.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Returns the status for a specific document
-     *
-     * Returns the translation status for a specific document based on the request Id
-     * and document Id.
-     *
-     * @param id Format - uuid. The batch id.
-     * @param documentId Format - uuid. The document id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return document Status Response on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentStatus> getDocumentStatus(String id, String documentId) {
-        // Generated convenience method for getDocumentStatusWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getDocumentStatusWithResponse(id, documentId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DocumentStatus.class));
-    }
-
-    /**
-     * Returns the status for a document translation request
-     *
-     * Returns the status for a document translation request.
-     * The status includes the
-     * overall request status, as well as the status for documents that are being
-     * translated as part of that request.
-     *
-     * @param id Format - uuid. The operation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return translation job status response on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TranslationStatus> getTranslationStatus(String id) {
-        // Generated convenience method for getTranslationStatusWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTranslationStatusWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TranslationStatus.class));
-    }
-
-    /**
-     * Cancel a currently processing or queued translation
-     *
-     * Cancel a currently processing or queued translation.
-     * A translation will not be
-     * cancelled if it is already completed or failed or cancelling. A bad request
-     * will be returned.
-     * All documents that have completed translation will not be
-     * cancelled and will be charged.
-     * All pending documents will be cancelled if
-     * possible.
-     *
-     * @param id Format - uuid. The operation-id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return translation job status response on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TranslationStatus> cancelTranslation(String id) {
-        // Generated convenience method for cancelTranslationWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return cancelTranslationWithResponse(id, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TranslationStatus.class));
     }
 
     /**
@@ -1032,7 +1031,7 @@ public final class DocumentTranslationAsyncClient {
      * This reduces the risk of the client making assumptions about
      * the data returned.
      *
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param top top indicates the total number of records the user wants to be returned across
      * all pages.
      *
@@ -1058,7 +1057,7 @@ public final class DocumentTranslationAsyncClient {
      * Note: If the
      * server can't honor top and/or skip, the server MUST return an error to the
      * client informing about it instead of just ignoring the query options.
-     * @param ids Ids to use in filtering.
+     * @param documentIds Ids to use in filtering.
      * @param statuses Statuses to use in filtering.
      * @param createdDateTimeUtcStart the start datetime to get items after.
      * @param createdDateTimeUtcEnd the end datetime to get items before.
@@ -1073,10 +1072,10 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DocumentStatus> getDocumentsStatus(String id, Integer top, Integer skip, List<String> ids,
-        List<String> statuses, OffsetDateTime createdDateTimeUtcStart, OffsetDateTime createdDateTimeUtcEnd,
-        List<String> orderBy) {
-        // Generated convenience method for getDocumentsStatus
+    public PagedFlux<DocumentStatus> listDocumentStatuses(String translationId, Integer top, Integer skip,
+        List<String> documentIds, List<String> statuses, OffsetDateTime createdDateTimeUtcStart,
+        OffsetDateTime createdDateTimeUtcEnd, List<String> orderBy) {
+        // Generated convenience method for listDocumentStatuses
         RequestOptions requestOptions = new RequestOptions();
         if (top != null) {
             requestOptions.addQueryParam("top", String.valueOf(top), false);
@@ -1084,9 +1083,9 @@ public final class DocumentTranslationAsyncClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        if (ids != null) {
+        if (documentIds != null) {
             requestOptions.addQueryParam("ids",
-                ids.stream()
+                documentIds.stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
@@ -1111,7 +1110,7 @@ public final class DocumentTranslationAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = getDocumentsStatus(id, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listDocumentStatuses(translationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1174,7 +1173,7 @@ public final class DocumentTranslationAsyncClient {
      * This reduces the risk of the client making assumptions about
      * the data returned.
      *
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1185,10 +1184,10 @@ public final class DocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DocumentStatus> getDocumentsStatus(String id) {
-        // Generated convenience method for getDocumentsStatus
+    public PagedFlux<DocumentStatus> listDocumentStatuses(String translationId) {
+        // Generated convenience method for listDocumentStatuses
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = getDocumentsStatus(id, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listDocumentStatuses(translationId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1201,58 +1200,5 @@ public final class DocumentTranslationAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Returns a list of supported document formats
-     *
-     * The list of supported formats supported by the Document Translation
-     * service.
-     * The list includes the common file extension, as well as the
-     * content-type if using the upload API.
-     *
-     * @param type the type of format like document or glossary.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of supported file formats on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SupportedFileFormats> getSupportedFormats(FileFormatType type) {
-        // Generated convenience method for getSupportedFormatsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (type != null) {
-            requestOptions.addQueryParam("type", type.toString(), false);
-        }
-        return getSupportedFormatsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SupportedFileFormats.class));
-    }
-
-    /**
-     * Returns a list of supported document formats
-     *
-     * The list of supported formats supported by the Document Translation
-     * service.
-     * The list includes the common file extension, as well as the
-     * content-type if using the upload API.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of supported file formats on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SupportedFileFormats> getSupportedFormats() {
-        // Generated convenience method for getSupportedFormatsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSupportedFormatsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SupportedFileFormats.class));
     }
 }

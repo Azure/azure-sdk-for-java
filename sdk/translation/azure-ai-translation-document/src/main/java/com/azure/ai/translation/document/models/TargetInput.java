@@ -46,7 +46,7 @@ public final class TargetInput implements JsonSerializable<TargetInput> {
      * Storage Source
      */
     @Generated
-    private StorageSource storageSource;
+    private TranslationStorageSource storageSource;
 
     /**
      * Creates an instance of TargetInput class.
@@ -130,20 +130,8 @@ public final class TargetInput implements JsonSerializable<TargetInput> {
      * @return the storageSource value.
      */
     @Generated
-    public StorageSource getStorageSource() {
+    public TranslationStorageSource getStorageSource() {
         return this.storageSource;
-    }
-
-    /**
-     * Set the storageSource property: Storage Source.
-     *
-     * @param storageSource the storageSource value to set.
-     * @return the TargetInput object itself.
-     */
-    @Generated
-    public TargetInput setStorageSource(StorageSource storageSource) {
-        this.storageSource = storageSource;
-        return this;
     }
 
     /**
@@ -177,7 +165,7 @@ public final class TargetInput implements JsonSerializable<TargetInput> {
             String language = null;
             String category = null;
             List<Glossary> glossaries = null;
-            StorageSource storageSource = null;
+            TranslationStorageSource storageSource = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -190,7 +178,7 @@ public final class TargetInput implements JsonSerializable<TargetInput> {
                 } else if ("glossaries".equals(fieldName)) {
                     glossaries = reader.readArray(reader1 -> Glossary.fromJson(reader1));
                 } else if ("storageSource".equals(fieldName)) {
-                    storageSource = StorageSource.fromString(reader.getString());
+                    storageSource = TranslationStorageSource.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -201,5 +189,17 @@ public final class TargetInput implements JsonSerializable<TargetInput> {
             deserializedTargetInput.storageSource = storageSource;
             return deserializedTargetInput;
         });
+    }
+
+    /**
+     * Set the storageSource property: Storage Source.
+     *
+     * @param storageSource the storageSource value to set.
+     * @return the TargetInput object itself.
+     */
+    @Generated
+    public TargetInput setStorageSource(TranslationStorageSource storageSource) {
+        this.storageSource = storageSource;
+        return this;
     }
 }

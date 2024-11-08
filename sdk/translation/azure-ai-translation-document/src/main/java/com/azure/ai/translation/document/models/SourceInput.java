@@ -40,7 +40,7 @@ public final class SourceInput implements JsonSerializable<SourceInput> {
      * Storage Source
      */
     @Generated
-    private StorageSource storageSource;
+    private TranslationStorageSource storageSource;
 
     /**
      * Creates an instance of SourceInput class.
@@ -114,20 +114,8 @@ public final class SourceInput implements JsonSerializable<SourceInput> {
      * @return the storageSource value.
      */
     @Generated
-    public StorageSource getStorageSource() {
+    public TranslationStorageSource getStorageSource() {
         return this.storageSource;
-    }
-
-    /**
-     * Set the storageSource property: Storage Source.
-     *
-     * @param storageSource the storageSource value to set.
-     * @return the SourceInput object itself.
-     */
-    @Generated
-    public SourceInput setStorageSource(StorageSource storageSource) {
-        this.storageSource = storageSource;
-        return this;
     }
 
     /**
@@ -159,7 +147,7 @@ public final class SourceInput implements JsonSerializable<SourceInput> {
             String sourceUrl = null;
             DocumentFilter filter = null;
             String language = null;
-            StorageSource storageSource = null;
+            TranslationStorageSource storageSource = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -170,7 +158,7 @@ public final class SourceInput implements JsonSerializable<SourceInput> {
                 } else if ("language".equals(fieldName)) {
                     language = reader.getString();
                 } else if ("storageSource".equals(fieldName)) {
-                    storageSource = StorageSource.fromString(reader.getString());
+                    storageSource = TranslationStorageSource.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -181,5 +169,17 @@ public final class SourceInput implements JsonSerializable<SourceInput> {
             deserializedSourceInput.storageSource = storageSource;
             return deserializedSourceInput;
         });
+    }
+
+    /**
+     * Set the storageSource property: Storage Source.
+     *
+     * @param storageSource the storageSource value to set.
+     * @return the SourceInput object itself.
+     */
+    @Generated
+    public SourceInput setStorageSource(TranslationStorageSource storageSource) {
+        this.storageSource = storageSource;
+        return this;
     }
 }
