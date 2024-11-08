@@ -121,7 +121,7 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      * Set the playPrompt property: The source of the audio to be played for recognition.
      *
      * @param playPrompt the playPrompt value to set.
-     * @deprecated Use the {@link #setPlayPrompts(List<PlaySource> playPrompts)} or {@link #setPlayPrompts(PlaySource... playPrompts)} method.
+     * @deprecated Use the {@link #setPlayPrompts(List)} or {@link #setPlayPrompts(PlaySource...)} method.
      * @return the RecognizeRequest object itself.
      */
     @Deprecated
