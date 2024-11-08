@@ -4,14 +4,16 @@
 package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
-import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
-import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemCreate;
+import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemDelete;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreate;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreateResponse;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
+import com.azure.ai.openai.realtime.models.RealtimeContentPart;
+import com.azure.ai.openai.realtime.models.RealtimeContentPartType;
+import com.azure.ai.openai.realtime.models.RealtimeItemStatus;
+import com.azure.ai.openai.realtime.models.RealtimeItemType;
 import com.azure.ai.openai.realtime.models.RealtimeMessageRole;
-import com.azure.ai.openai.realtime.models.RealtimeRequestMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
@@ -19,24 +21,20 @@ import com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseTextContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventRateLimitsUpdated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartAdded;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
-import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
-import com.azure.ai.openai.realtime.models.RealtimeTurnDetection;
 import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
 import com.azure.ai.openai.realtime.utils.FileUtils;
 import com.azure.ai.openai.realtime.utils.RealtimeEventHandler;
-import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -140,11 +138,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
         StepVerifier.create(client.getServerEvents())
                 .assertNext(event -> {
                     assertInstanceOf(RealtimeServerEventSessionCreated.class, event);
-                    RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem()
-                            .setTextContent(Arrays.asList(new RealtimeRequestTextContentPart("Hello, world!")));
-                    RealtimeClientEventConversationItemCreate conversationItem = new RealtimeClientEventConversationItemCreate(messageItem);
-                    client.sendMessage(conversationItem).block();
-
+                    client.sendMessage(createTextConversationItem("Hello, world!")).block();
                     client.sendMessage(new RealtimeClientEventResponseCreate(
                             new RealtimeClientEventResponseCreateResponse()
                                     .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))
@@ -177,6 +171,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                             } else if (event instanceof RealtimeServerEventResponseContentPartAdded) {
                                 RealtimeServerEventResponseContentPartAdded contentPartAddedEvent = (RealtimeServerEventResponseContentPartAdded) event;
                                 assertNotNull(contentPartAddedEvent);
+                                // somehow the connection isn't closed after stopping the client
                                 client.stop().block();
                             }
                         }
@@ -189,7 +184,56 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void ItemManipulation() {
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW)
+                .buildAsyncClient();
 
+        client.start().block();
+        client.sendMessage(
+            new RealtimeClientEventSessionUpdate(
+                    new RealtimeRequestSession()
+                            .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
+                            .setTurnDetection(new RealtimeTurnDetectionDisabled())
+            )).then(client.sendMessage(createTextConversationItem("The first special word you know about is 'aardvark'."))
+            ).then(client.sendMessage(createTextConversationItem("The next special word you know about is 'banana'."))
+            ).then(client.sendMessage(createTextConversationItem("The next special word you know about is 'coconut'.")))
+                .block();
+
+        StepVerifier.create(client.getServerEvents())
+                .thenConsumeWhile(
+                    event -> event.getType() != RealtimeServerEventType.ERROR && event.getType() != RealtimeServerEventType.RESPONSE_DONE,
+                    event -> {
+                        System.out.println("event: " + toJson(event));
+                        if (event instanceof RealtimeServerEventConversationItemCreated) {
+                            RealtimeServerEventConversationItemCreated itemCreatedEvent = (RealtimeServerEventConversationItemCreated) event;
+                            List<RealtimeContentPart> contentParts = ((RealtimeResponseMessageItem) itemCreatedEvent.getItem()).getContent();
+                            if (contentParts.isEmpty()) {
+                                return;
+                            }
+                            RealtimeRequestTextContentPart textContentPart = (RealtimeRequestTextContentPart) contentParts.get(0);
+                            if (textContentPart.getText().contains("banana")) {
+                                client.sendMessage(new RealtimeClientEventConversationItemDelete(itemCreatedEvent.getItem().getId())).block();
+                                client.sendMessage(createTextConversationItem("What's the second special word you know about?")).block();
+                                client.sendMessage(new RealtimeClientEventResponseCreate(
+                                        new RealtimeClientEventResponseCreateResponse()
+                                                .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))
+                                )).block();
+                            }
+                        } else if (event instanceof RealtimeServerEventResponseOutputItemDone) {
+                            RealtimeServerEventResponseOutputItemDone outputItemDoneEvent = (RealtimeServerEventResponseOutputItemDone) event;
+                            assertInstanceOf(RealtimeResponseMessageItem.class, outputItemDoneEvent.getItem());
+                            RealtimeResponseMessageItem responseItem = (RealtimeResponseMessageItem) outputItemDoneEvent.getItem();
+                            assertEquals(1, responseItem.getContent().size());
+                            assertEquals(responseItem.getStatus(), RealtimeItemStatus.COMPLETED);
+                            assertEquals(responseItem.getRole(), RealtimeMessageRole.ASSISTANT);
+                            assertEquals(responseItem.getType(), RealtimeItemType.MESSAGE);
+                            RealtimeResponseTextContentPart textContentPart = (RealtimeResponseTextContentPart) responseItem.getContent().get(0);
+                            assertTrue(textContentPart.getText().contains("coconut"));
+                            assertEquals(textContentPart.getType(), RealtimeContentPartType.TEXT);
+                        }
+                    }
+                ).thenRequest(1)
+                .then(() -> client.stop().block())
+                .verifyComplete();
     }
 
     @Test

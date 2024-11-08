@@ -3,14 +3,15 @@
 
 package com.azure.ai.openai.realtime;
 
-import com.azure.ai.openai.realtime.implementation.websocket.MessageDecoder;
 import com.azure.ai.openai.realtime.implementation.websocket.MessageEncoder;
 import com.azure.ai.openai.realtime.implementation.websocket.WebSocketClient;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
+import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemCreate;
+import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
+import com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
@@ -19,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.function.BiConsumer;
+import java.util.Arrays;
 
 public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
 
@@ -78,5 +79,11 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    protected RealtimeClientEventConversationItemCreate createTextConversationItem(String itemText) {
+        RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem()
+                .setTextContent(Arrays.asList(new RealtimeRequestTextContentPart(itemText)));
+        return new RealtimeClientEventConversationItemCreate(messageItem);
     }
 }
