@@ -348,21 +348,22 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
 
 
         AtomicInteger itemCreatedCount = new AtomicInteger(0);
+
         StepVerifier.create(client.getServerEvents())
-                .thenConsumeWhile(
-                        event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
-                        event -> {
-                            System.out.println("Event: " + toJson(event));
-                            if (event instanceof RealtimeServerEventError) {
-                                RealtimeServerEventError errorEvent = (RealtimeServerEventError) event;
-                                System.out.println("Error occurred: " + toJson(errorEvent));
-                                fail("Error occurred: " + errorEvent.getError().getMessage());
-                            }
-                            if (event instanceof RealtimeServerEventConversationItemCreated) {
-                                itemCreatedCount.incrementAndGet();
-                            }
-                        }
-                );
+            .thenConsumeWhile(
+                event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
+                event -> {
+                    System.out.println("Event: " + toJson(event));
+                    if (event instanceof RealtimeServerEventError) {
+                        RealtimeServerEventError errorEvent = (RealtimeServerEventError) event;
+                        System.out.println("Error occurred: " + toJson(errorEvent));
+                        fail("Error occurred: " + errorEvent.getError().getMessage());
+                    }
+                    if (event instanceof RealtimeServerEventConversationItemCreated) {
+                        itemCreatedCount.incrementAndGet();
+                    }
+                }
+            ).verifyComplete();
         client.stop().block();
 
         assert(itemCreatedCount.get() == conversationItems.size());
