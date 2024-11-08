@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.feature.management.implementation;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -74,9 +75,10 @@ public class FeatureFilterUtils {
 
     public static BigInteger fromLittleEndianByteArray(byte[] bytes) {
         byte[] reversedBytes = new byte[4];
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             reversedBytes[i] = bytes[3 - i];
         }
+
         return new BigInteger(1, reversedBytes);
     }
 
