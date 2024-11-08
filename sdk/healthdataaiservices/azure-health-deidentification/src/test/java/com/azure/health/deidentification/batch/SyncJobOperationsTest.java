@@ -94,7 +94,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
 
-        PagedIterable<DeidentificationJob> jobs = deidentificationClient.listJobs();
+        PagedIterable<DeidentificationJob> jobs = deidentificationClient.listJobs("fake cont token")
         Iterator<DeidentificationJob> iterator = jobs.iterator();
         int jobsToLookThrough = 10;
         boolean jobFound = false;
