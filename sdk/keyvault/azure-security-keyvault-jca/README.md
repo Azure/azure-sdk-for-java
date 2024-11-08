@@ -192,6 +192,18 @@ Please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_ID
 
 ## Troubleshooting
 
+### Debug Key Vault Provider
+
+Remote debugger can be used to troubleshoot complex issues, add below parameter for `jarsigner` command to enable remote debug:
+
+```shell
+-J-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=y
+```
+
+Create a Remote JVM Debug configuration in your IDE tool, such as in Intellij IDEA:
+
+![remote-jvm-debug.png](./resources/remote-jvm-debug.png.png)
+
 ## Configure logging
 This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
 
