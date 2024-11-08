@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.feature.management.filters;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,6 @@ import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import com.azure.spring.cloud.feature.management.implementation.targeting.Audience;
-import com.azure.spring.cloud.feature.management.implementation.targeting.Exclusion;
 import com.azure.spring.cloud.feature.management.implementation.targeting.GroupRollout;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
@@ -36,12 +36,12 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
     /**
      * users field in the filter
      */
-    protected static final String USERS = "users";
+    protected static final String USERS = "Users";
 
     /**
      * groups field in the filter
      */
-    protected static final String GROUPS = "groups";
+    protected static final String GROUPS = "Groups";
 
     /**
      * Audience in the filter
@@ -51,10 +51,8 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
     /**
      * Audience that always returns false
      */
-    protected static final String EXCLUSION = "exclusion";
-
     private static final String EXCLUSION_CAMEL = "Exclusion";
-
+    protected static final String EXCLUSION = "Exclusion";
     /**
      * Error message for when the total Audience value is greater than 100 percent.
      */
@@ -74,7 +72,7 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
     protected final TargetingContextAccessor contextAccessor;
 
     /**
-     * Accessor for identifying the current user/group when evaluating when providing context 
+     * Accessor for identifying the current user/group when evaluating when providing context
      */
     protected final ContextualTargetingContextAccessor contextualAccessor;
 
@@ -143,7 +141,7 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
         }
 
         TargetingFilterContext targetingContext = new TargetingFilterContext();
-        
+
         if (contextualAccessor != null && (appContext != null || contextAccessor == null)) {
             // Use this if, there is an appContext + the contextualAccessor, or there is no contextAccessor.
             contextualAccessor.configureTargetingContext(targetingContext, appContext);
@@ -165,8 +163,8 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
             parameters = (Map<String, Object>) audienceObject;
         }
 
-        FeatureFilterUtils.updateValueFromMapToList(parameters, USERS);
-        FeatureFilterUtils.updateValueFromMapToList(parameters, GROUPS);
+        FeatureFilterUtils.updateValueFromMapToList(parameters, USERS, true);
+        FeatureFilterUtils.updateValueFromMapToList(parameters, GROUPS, true);
 
         Audience audience;
         String exclusionValue = FeatureFilterUtils.getKeyCase(parameters, EXCLUSION_CAMEL);
@@ -182,20 +180,21 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
             if (exclusionMap == null) {
                 exclusionMap = new HashMap<>();
             }
-
-            audience = OBJECT_MAPPER.convertValue(parameters, Audience.class);
-
-            Exclusion exclusion = new Exclusion();
+            
             Object users = exclusionMap.get(exclusionUserValue);
             Object groups = exclusionMap.get(exclusionGroupsValue);
+            
+            Map<String, Object> exclusion = new HashMap<>();
 
             if (users instanceof Map) {
-                exclusion.setUsers(new ArrayList<>(((Map<String, String>) users).values()));
+                exclusion.put(USERS, new ArrayList<>(((Map<String, String>) users).values()));
             }
             if (groups instanceof Map) {
-                exclusion.setGroups(new ArrayList<>(((Map<String, String>) groups).values()));
+                exclusion.put(GROUPS, new ArrayList<>(((Map<String, String>) groups).values()));
             }
-            audience.setExclusion(exclusion);
+            parameters.put(exclusionValue, exclusion);
+
+            audience = OBJECT_MAPPER.convertValue(parameters, Audience.class);
         }
 
         validateSettings(audience);
@@ -233,8 +232,8 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
         return isTargeted(defaultContextId, audience.getDefaultRolloutPercentage());
     }
 
-    private boolean targetUser(String userId, List<String> users) {
-        return userId != null && users != null && users.stream().anyMatch(user -> equals(userId, user));
+    private boolean targetUser(String userId, Collection<String> collection) {
+        return userId != null && collection != null && collection.stream().anyMatch(user -> equals(userId, user));
     }
 
     private boolean targetGroup(Audience audience, TargetingFilterContext targetingContext,
@@ -243,7 +242,11 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
             .filter(g -> equals(g.getName(), group)).findFirst();
 
         if (groupRollout.isPresent()) {
-            String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;
+            String userId = "";
+            if (targetingContext.getUserId() != null) {
+                userId = targetingContext.getUserId();
+            }
+            String audienceContextId = userId + "\n" + context.getFeatureName() + "\n" + group;
 
             if (isTargeted(audienceContextId, groupRollout.get().getRolloutPercentage())) {
                 return true;
@@ -306,8 +309,8 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
             throw new TargetingException(paramName + " : " + reason);
         }
 
-        List<GroupRollout> groups = audience.getGroups();
-        if (groups != null) {
+        if (audience.getGroups() != null) {
+            List<GroupRollout> groups = new ArrayList<GroupRollout>(audience.getGroups());
             for (int index = 0; index < groups.size(); index++) {
                 GroupRollout groupRollout = groups.get(index);
                 if (groupRollout.getRolloutPercentage() < 0 || groupRollout.getRolloutPercentage() > 100) {

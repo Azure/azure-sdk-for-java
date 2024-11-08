@@ -361,7 +361,7 @@ public class FeatureManager {
             try {
 
                 Object filter = context.getBean(filterName);
-                featureFilter.setFeatureName(filterName);
+                featureFilter.setFeatureName(featureFlag.getId());
                 if (filter instanceof FeatureFilter) {
                     filterResults.add(Mono.just(((FeatureFilter) filter).evaluate(featureFilter)));
                 } else if (filter instanceof ContextualFeatureFilter) {
