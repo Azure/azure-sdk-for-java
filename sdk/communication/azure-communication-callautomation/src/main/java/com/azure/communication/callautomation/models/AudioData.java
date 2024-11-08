@@ -50,6 +50,18 @@ public final class AudioData extends StreamingData {
         this.silent = silent;
     }
 
+     /**
+     * The constructor
+     *
+     * @param data The audio data.
+     */
+    public AudioData(String data) {
+        this.data = data;
+        this.timestamp = null;
+        this.participant = null;
+        this.silent = false;
+    }
+
     /**
      * Get the data property.
      *

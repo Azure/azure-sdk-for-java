@@ -4,16 +4,10 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-
-/** The MediaStreamingConfigurationInternal model. */
+/** The MediaStreamingOptions model. */
 @Fluent
-public final class MediaStreamingOptions implements JsonSerializable<MediaStreamingOptions> {
+public final class MediaStreamingOptions {
     /*
      * Transport URL for media streaming
      */
@@ -38,6 +32,16 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
      * The type of transport to be used for media streaming, eg. Websocket
      */
     private final Boolean startMediaStreaming;
+
+    /*
+     * A value indicating whether bidirectional streaming is enabled.
+     */
+    private Boolean enableBidirectional;
+
+    /*
+     * Specifies the audio format used for encoding, including sample rate and channel type.
+     */
+    private AudioFormat audioFormat;
 
     /**
      * Creates a new instance of MediaStreamingConfiguration
@@ -100,50 +104,45 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
         return this.audioChannelType;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transportUrl", transportUrl);
-        jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
-        jsonWriter.writeStringField("contentType", contentType != null ? contentType.toString() : null);
-        jsonWriter.writeStringField("audioChannelType", audioChannelType != null ? audioChannelType.toString() : null);
-        jsonWriter.writeBooleanField("startMediaStreaming", startMediaStreaming);
-        return jsonWriter.writeEndObject();
+     /**
+     * Get the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
+     * 
+     * @return the enableBidirectional value.
+     */
+    public Boolean isEnableBidirectional() {
+        return this.enableBidirectional;
     }
 
     /**
-     * Reads an instance of MediaStreamingOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MediaStreamingOptions if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the MediaStreamingOptions.
+     * Set the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
+     * 
+     * @param enableBidirectional the enableBidirectional value to set.
+     * @return the MediaStreamingOptions object itself.
      */
-    public static MediaStreamingOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String transportUrl = null;
-            MediaStreamingTransport transportType = null;
-            MediaStreamingContent contentType = null;
-            MediaStreamingAudioChannel audioChannelType = null;
-            boolean startMediaStreaming = false;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("transportUrl".equals(fieldName)) {
-                    transportUrl = reader.getString();
-                } else if ("transportType".equals(fieldName)) {
-                    transportType = MediaStreamingTransport.fromString(reader.getString());
-                } else if ("contentType".equals(fieldName)) {
-                    contentType = MediaStreamingContent.fromString(reader.getString());
-                } else if ("audioChannelType".equals(fieldName)) {
-                    audioChannelType = MediaStreamingAudioChannel.fromString(reader.getString());
-                } else if ("startMediaStreaming".equals(fieldName)) {
-                    startMediaStreaming = reader.getBoolean();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new MediaStreamingOptions(transportUrl, transportType, contentType, audioChannelType, startMediaStreaming);
-        });
+    public MediaStreamingOptions setEnableBidirectional(Boolean enableBidirectional) {
+        this.enableBidirectional = enableBidirectional;
+        return this;
+    }
+
+    /**
+     * Get the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
+     * type.
+     * 
+     * @return the audioFormat value.
+     */
+    public AudioFormat getAudioFormat() {
+        return this.audioFormat;
+    }
+
+    /**
+     * Set the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
+     * type.
+     * 
+     * @param audioFormat the audioFormat value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setAudioFormat(AudioFormat audioFormat) {
+        this.audioFormat = audioFormat;
+        return this;
     }
 }

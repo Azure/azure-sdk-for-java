@@ -28,7 +28,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     private PlaySourceInternal playPrompt;
 
     /*
-     * The playPrompts property.
+     * The source of the audio to be played for recognition.
      */
     private List<PlaySourceInternal> playPrompts;
 
@@ -101,7 +101,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     }
 
     /**
-     * Get the playPrompts property: The playPrompts property.
+     * Get the playPrompts property: The source of the audio to be played for recognition.
      * 
      * @return the playPrompts value.
      */
@@ -110,7 +110,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     }
 
     /**
-     * Set the playPrompts property: The playPrompts property.
+     * Set the playPrompts property: The source of the audio to be played for recognition.
      * 
      * @param playPrompts the playPrompts value to set.
      * @return the RecognizeRequest object itself.

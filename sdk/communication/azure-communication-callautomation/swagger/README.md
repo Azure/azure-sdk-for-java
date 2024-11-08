@@ -29,9 +29,9 @@ autorest README.md --java --use=@autorest/java@4.1.27 --use=@autorest/modelerfou
 ### Code generation settings
 
 ``` yaml
-tag: package-2024-06-15-preview
+tag: package-2024-11-15-preview
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/6de4fd441872ef5a6d0cebf177988e8661410e04/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/869c0fbc0bf7e2fac75e6903bfe5ab3831f3169b/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -372,6 +372,16 @@ directive:
   where: $.definitions.MediaStreamingAudioChannelType["x-ms-enum"]
   transform: >
     $.name = "MediaStreamingAudioChannelTypeInternal";
+```
+
+### Rename AudioFormat to AudioFormatInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.AudioFormat["x-ms-enum"]
+  transform: >
+    $.name = "AudioFormatInternal";
 ```
 
 ### Rename MediaStreamingContentType to MediaStreamingContentTypeInternal
