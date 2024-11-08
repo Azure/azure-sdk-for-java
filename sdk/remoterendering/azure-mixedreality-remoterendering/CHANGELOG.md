@@ -1,14 +1,15 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.2.0 (2024-11-08)
 
 ### Other Changes
+
+- Removed `JsonCreator` and `JsonProperty` annotation and replaced them with new methods `toJson` and `fromJson` using stream-style serialization.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.0`.
+- Upgraded `azure-mixedreality-authentication` from `1.2.29` to version `1.2.30`.
 
 ## 1.1.34 (2024-10-27)
 
