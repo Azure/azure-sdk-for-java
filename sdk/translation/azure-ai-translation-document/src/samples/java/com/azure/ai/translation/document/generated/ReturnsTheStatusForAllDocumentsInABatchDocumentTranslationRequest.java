@@ -18,12 +18,12 @@ public class ReturnsTheStatusForAllDocumentsInABatchDocumentTranslationRequest {
             = new DocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.ai.translation.document.generated.listdocumentstatuses.returnsthestatusforalldocumentsinabatchdocumenttranslationrequest
+        // BEGIN:com.azure.ai.translation.document.generated.getdocumentsstatus.returnsthestatusforalldocumentsinabatchdocumenttranslationrequest
         PagedIterable<DocumentStatus> response
-            = documentTranslationClient.listDocumentStatuses("727BF148-F327-47A0-9481-ABAE6362F11E", 2, 0,
+            = documentTranslationClient.getDocumentsStatus("727BF148-F327-47A0-9481-ABAE6362F11E", 2, 0,
                 Arrays.asList("273622bd-835c-4946-9798-fd8f19f6bbf2", "511b6a66-a6f8-4640-83e1-48c325e9fa29"),
                 Arrays.asList("Succeeded"), OffsetDateTime.parse("2021-03-23T07:03:38.0136316Z"),
                 OffsetDateTime.parse("2021-03-25T07:03:38.0136316Z"), Arrays.asList("CreatedDateTimeUtc asc"));
-        // END:com.azure.ai.translation.document.generated.listdocumentstatuses.returnsthestatusforalldocumentsinabatchdocumenttranslationrequest
+        // END:com.azure.ai.translation.document.generated.getdocumentsstatus.returnsthestatusforalldocumentsinabatchdocumenttranslationrequest
     }
 }

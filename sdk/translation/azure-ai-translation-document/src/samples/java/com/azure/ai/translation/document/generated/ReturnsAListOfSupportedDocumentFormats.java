@@ -6,9 +6,8 @@ package com.azure.ai.translation.document.generated;
 
 import com.azure.ai.translation.document.DocumentTranslationClient;
 import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
+import com.azure.ai.translation.document.models.FileFormatType;
+import com.azure.ai.translation.document.models.SupportedFileFormats;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReturnsAListOfSupportedDocumentFormats {
@@ -18,8 +17,7 @@ public class ReturnsAListOfSupportedDocumentFormats {
                 .endpoint("{endpoint}")
                 .buildClient();
         // BEGIN:com.azure.ai.translation.document.generated.getsupportedformats.returnsalistofsupporteddocumentformats
-        RequestOptions requestOptions = new RequestOptions().addQueryParam("type", "document");
-        Response<BinaryData> response = documentTranslationClient.getSupportedFormatsWithResponse(requestOptions);
+        SupportedFileFormats response = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
         // END:com.azure.ai.translation.document.generated.getsupportedformats.returnsalistofsupporteddocumentformats
     }
 }

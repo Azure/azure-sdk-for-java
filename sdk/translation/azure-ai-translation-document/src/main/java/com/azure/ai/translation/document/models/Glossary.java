@@ -44,7 +44,7 @@ public final class Glossary implements JsonSerializable<Glossary> {
      * Storage Source
      */
     @Generated
-    private TranslationStorageSource storageSource;
+    private StorageSource storageSource;
 
     /**
      * Creates an instance of Glossary class.
@@ -111,8 +111,20 @@ public final class Glossary implements JsonSerializable<Glossary> {
      * @return the storageSource value.
      */
     @Generated
-    public TranslationStorageSource getStorageSource() {
+    public StorageSource getStorageSource() {
         return this.storageSource;
+    }
+
+    /**
+     * Set the storageSource property: Storage Source.
+     *
+     * @param storageSource the storageSource value to set.
+     * @return the Glossary object itself.
+     */
+    @Generated
+    public Glossary setStorageSource(StorageSource storageSource) {
+        this.storageSource = storageSource;
+        return this;
     }
 
     /**
@@ -144,7 +156,7 @@ public final class Glossary implements JsonSerializable<Glossary> {
             String glossaryUrl = null;
             String format = null;
             String version = null;
-            TranslationStorageSource storageSource = null;
+            StorageSource storageSource = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -155,7 +167,7 @@ public final class Glossary implements JsonSerializable<Glossary> {
                 } else if ("version".equals(fieldName)) {
                     version = reader.getString();
                 } else if ("storageSource".equals(fieldName)) {
-                    storageSource = TranslationStorageSource.fromString(reader.getString());
+                    storageSource = StorageSource.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -165,17 +177,5 @@ public final class Glossary implements JsonSerializable<Glossary> {
             deserializedGlossary.storageSource = storageSource;
             return deserializedGlossary;
         });
-    }
-
-    /**
-     * Set the storageSource property: Storage Source.
-     *
-     * @param storageSource the storageSource value to set.
-     * @return the Glossary object itself.
-     */
-    @Generated
-    public Glossary setStorageSource(TranslationStorageSource storageSource) {
-        this.storageSource = storageSource;
-        return this;
     }
 }

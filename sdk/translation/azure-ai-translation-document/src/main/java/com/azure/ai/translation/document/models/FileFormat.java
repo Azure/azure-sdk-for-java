@@ -52,7 +52,7 @@ public final class FileFormat implements JsonSerializable<FileFormat> {
      * Supported Type for this format
      */
     @Generated
-    private FileFormatType type;
+    private String type;
 
     /**
      * Creates an instance of FileFormat class.
@@ -124,7 +124,7 @@ public final class FileFormat implements JsonSerializable<FileFormat> {
      * @return the type value.
      */
     @Generated
-    public FileFormatType getType() {
+    public String getType() {
         return this.type;
     }
 
@@ -141,7 +141,7 @@ public final class FileFormat implements JsonSerializable<FileFormat> {
         jsonWriter.writeArrayField("contentTypes", this.contentTypes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("defaultVersion", this.defaultVersion);
         jsonWriter.writeArrayField("versions", this.versions, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -162,7 +162,7 @@ public final class FileFormat implements JsonSerializable<FileFormat> {
             List<String> contentTypes = null;
             String defaultVersion = null;
             List<String> versions = null;
-            FileFormatType type = null;
+            String type = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -177,7 +177,7 @@ public final class FileFormat implements JsonSerializable<FileFormat> {
                 } else if ("versions".equals(fieldName)) {
                     versions = reader.readArray(reader1 -> reader1.getString());
                 } else if ("type".equals(fieldName)) {
-                    type = FileFormatType.fromString(reader.getString());
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -48,7 +48,7 @@ public final class DocumentStatus implements JsonSerializable<DocumentStatus> {
      * List of possible statuses for job or document
      */
     @Generated
-    private final TranslationStatus status;
+    private final Status status;
 
     /*
      * To language
@@ -80,6 +80,29 @@ public final class DocumentStatus implements JsonSerializable<DocumentStatus> {
      */
     @Generated
     private Integer characterCharged;
+
+    /**
+     * Creates an instance of DocumentStatus class.
+     *
+     * @param sourcePath the sourcePath value to set.
+     * @param createdDateTimeUtc the createdDateTimeUtc value to set.
+     * @param lastActionDateTimeUtc the lastActionDateTimeUtc value to set.
+     * @param status the status value to set.
+     * @param to the to value to set.
+     * @param progress the progress value to set.
+     * @param id the id value to set.
+     */
+    @Generated
+    private DocumentStatus(String sourcePath, OffsetDateTime createdDateTimeUtc, OffsetDateTime lastActionDateTimeUtc,
+        Status status, String to, double progress, String id) {
+        this.sourcePath = sourcePath;
+        this.createdDateTimeUtc = createdDateTimeUtc;
+        this.lastActionDateTimeUtc = lastActionDateTimeUtc;
+        this.status = status;
+        this.to = to;
+        this.progress = progress;
+        this.id = id;
+    }
 
     /**
      * Get the path property: Location of the document or folder.
@@ -127,7 +150,7 @@ public final class DocumentStatus implements JsonSerializable<DocumentStatus> {
      * @return the status value.
      */
     @Generated
-    public TranslationStatus getStatus() {
+    public Status getStatus() {
         return this.status;
     }
 
@@ -223,7 +246,7 @@ public final class DocumentStatus implements JsonSerializable<DocumentStatus> {
             String sourcePath = null;
             OffsetDateTime createdDateTimeUtc = null;
             OffsetDateTime lastActionDateTimeUtc = null;
-            TranslationStatus status = null;
+            Status status = null;
             String to = null;
             double progress = 0.0;
             String id = null;
@@ -242,7 +265,7 @@ public final class DocumentStatus implements JsonSerializable<DocumentStatus> {
                     lastActionDateTimeUtc = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
-                    status = TranslationStatus.fromString(reader.getString());
+                    status = Status.fromString(reader.getString());
                 } else if ("to".equals(fieldName)) {
                     to = reader.getString();
                 } else if ("progress".equals(fieldName)) {
@@ -266,28 +289,5 @@ public final class DocumentStatus implements JsonSerializable<DocumentStatus> {
             deserializedDocumentStatus.characterCharged = characterCharged;
             return deserializedDocumentStatus;
         });
-    }
-
-    /**
-     * Creates an instance of DocumentStatus class.
-     *
-     * @param sourcePath the sourcePath value to set.
-     * @param createdDateTimeUtc the createdDateTimeUtc value to set.
-     * @param lastActionDateTimeUtc the lastActionDateTimeUtc value to set.
-     * @param status the status value to set.
-     * @param to the to value to set.
-     * @param progress the progress value to set.
-     * @param id the id value to set.
-     */
-    @Generated
-    private DocumentStatus(String sourcePath, OffsetDateTime createdDateTimeUtc, OffsetDateTime lastActionDateTimeUtc,
-        TranslationStatus status, String to, double progress, String id) {
-        this.sourcePath = sourcePath;
-        this.createdDateTimeUtc = createdDateTimeUtc;
-        this.lastActionDateTimeUtc = lastActionDateTimeUtc;
-        this.status = status;
-        this.to = to;
-        this.progress = progress;
-        this.id = id;
     }
 }
