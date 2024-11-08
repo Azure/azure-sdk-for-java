@@ -19,7 +19,6 @@ cd <repo-root>\sdk\monitor\azure-monitor-opentelemetry-autoconfigure\swagger
 autorest livemetrics_autorest.md
 ```
 This should generate the live metrics apis/classes in the swagger folder inside the quickpulse directory.
-The current version of the api we are using is 2024-04-01-preview.
 
 #### Generate other models relevant to the module
 
