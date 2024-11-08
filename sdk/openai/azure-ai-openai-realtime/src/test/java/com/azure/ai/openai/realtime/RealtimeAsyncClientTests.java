@@ -18,16 +18,20 @@ import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem;
+import com.azure.ai.openai.realtime.models.RealtimeResponseFunctionCallItem;
+import com.azure.ai.openai.realtime.models.RealtimeResponseItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseTextContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemCreated;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
 import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
-import com.azure.ai.openai.realtime.utils.FileUtils;
-import com.azure.ai.openai.realtime.utils.RealtimeEventHandler;
+import com.azure.ai.openai.realtime.implementation.FileUtils;
+import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -36,6 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -228,7 +233,45 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void AudioWithTool() {
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW)
+                .buildAsyncClient();
 
+        client.start().block();
+        getWeatherToolRunner((weatherTool, sessionConfig) -> {
+            client.sendMessage(sessionConfig).block();
+            FileUtils.sendAudioFile(client,
+                    FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).block();
+            StepVerifier.create(client.getServerEvents())
+                .thenConsumeWhile(
+                    event -> true,
+                    event -> {
+                        assertFalse(CoreUtils.isNullOrEmpty(event.getEventId()));
+                        System.out.println("event: " + toJson(event));
+
+                        if(event instanceof RealtimeServerEventSessionUpdated) {
+                            RealtimeServerEventSessionUpdated sessionUpdatedEvent = (RealtimeServerEventSessionUpdated) event;
+                            System.out.println("sessionUpdatedEvent: " + toJson(sessionUpdatedEvent));
+                            assertNotNull(sessionUpdatedEvent.getSession());
+                        } else if (event instanceof RealtimeServerEventResponseOutputItemDone) {
+                            RealtimeServerEventResponseOutputItemDone outputItemDoneEvent = (RealtimeServerEventResponseOutputItemDone) event;
+                            RealtimeResponseItem responseItem = outputItemDoneEvent.getItem();
+                            assertNotNull(responseItem);
+                            if (responseItem instanceof RealtimeResponseFunctionCallItem) {
+                                RealtimeResponseFunctionCallItem functionCallItem = (RealtimeResponseFunctionCallItem) outputItemDoneEvent.getItem();
+                                assertEquals(functionCallItem.getName(), weatherTool.getName());
+                                client.sendMessage(createFunctionOutputItem(functionCallItem.getCallId(),
+                                        "71 degrees Fahrenheit, sunny")).block();
+                                client.sendMessage(new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse())).block();
+                            }
+                        } else if (event instanceof RealtimeServerEventResponseDone) {
+                            System.out.println("event: " + toJson(event));
+                        }
+                    }
+                )
+//                .thenRequest(1)
+                .then(() -> client.stop().block())
+                .verifyComplete();
+        });
     }
 
     @Test

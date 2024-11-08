@@ -3,15 +3,25 @@
 
 package com.azure.ai.openai.realtime;
 
+import com.azure.ai.openai.realtime.implementation.WeatherToolDescriptor;
 import com.azure.ai.openai.realtime.implementation.websocket.MessageEncoder;
 import com.azure.ai.openai.realtime.implementation.websocket.WebSocketClient;
+import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
+import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemCreate;
+import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
+import com.azure.ai.openai.realtime.models.RealtimeFunctionTool;
+import com.azure.ai.openai.realtime.models.RealtimeRequestFunctionCallOutputItem;
+import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
+import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
+import com.azure.ai.openai.realtime.models.RealtimeVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
@@ -21,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
+import java.util.function.BiConsumer;
 
 public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
 
@@ -85,5 +96,27 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
         RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem()
                 .setTextContent(Arrays.asList(new RealtimeRequestTextContentPart(itemText)));
         return new RealtimeClientEventConversationItemCreate(messageItem);
+    }
+
+    protected RealtimeClientEventConversationItemCreate createFunctionOutputItem(String callId, String functionOutput) {
+        return new RealtimeClientEventConversationItemCreate(new RealtimeRequestFunctionCallOutputItem(callId, functionOutput));
+    }
+
+    void getWeatherToolRunner(BiConsumer<RealtimeFunctionTool, RealtimeClientEventSessionUpdate> testRunner) {
+        RealtimeFunctionTool weatherTool = new RealtimeFunctionTool("get_weather_for_location")
+                .setDescription("Get the weather for a location")
+                .setParameters(BinaryData.fromObject(new WeatherToolDescriptor()));
+        RealtimeClientEventSessionUpdate sessionUpdate = new RealtimeClientEventSessionUpdate(
+                new RealtimeRequestSession()
+                        .setTools(Arrays.asList(weatherTool))
+                        .setInstructions("Call provided tools if appropriate for the user's input")
+                        .setVoice(RealtimeVoice.ALLOY)
+                        .setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
+                        .setInputAudioTranscription(
+                                new RealtimeAudioInputTranscriptionSettings()
+                                        .setModel(RealtimeAudioInputTranscriptionModel.WHISPER_1)
+                        )
+        );
+        testRunner.accept(weatherTool, sessionUpdate);
     }
 }
