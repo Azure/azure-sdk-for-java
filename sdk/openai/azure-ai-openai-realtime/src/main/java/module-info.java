@@ -14,7 +14,9 @@ module com.azure.ai.openai.realtime {
 
     exports com.azure.ai.openai.realtime;
     exports com.azure.ai.openai.realtime.models;
+    exports com.azure.ai.openai.realtime.utils;
 
     opens com.azure.ai.openai.realtime.models to com.azure.core;
     opens com.azure.ai.openai.realtime.implementation to com.azure.core;
+    opens com.azure.ai.openai.realtime.utils to com.azure.core;
 }

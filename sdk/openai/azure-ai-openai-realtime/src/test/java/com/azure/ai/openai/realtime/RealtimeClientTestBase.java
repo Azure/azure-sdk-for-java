@@ -92,16 +92,6 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
         }
     }
 
-    protected RealtimeClientEventConversationItemCreate createTextConversationItem(String itemText) {
-        RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem()
-                .setTextContent(Arrays.asList(new RealtimeRequestTextContentPart(itemText)));
-        return new RealtimeClientEventConversationItemCreate(messageItem);
-    }
-
-    protected RealtimeClientEventConversationItemCreate createFunctionOutputItem(String callId, String functionOutput) {
-        return new RealtimeClientEventConversationItemCreate(new RealtimeRequestFunctionCallOutputItem(callId, functionOutput));
-    }
-
     void getWeatherToolRunner(BiConsumer<RealtimeFunctionTool, RealtimeClientEventSessionUpdate> testRunner) {
         RealtimeFunctionTool weatherTool = new RealtimeFunctionTool("get_weather_for_location")
                 .setDescription("Get the weather for a location")
