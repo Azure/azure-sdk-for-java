@@ -450,7 +450,6 @@ public final class DocumentCollection extends Resource {
      *
      * @return the FullTextPolicy
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosFullTextPolicy getFullTextPolicy() {
         if (this.cosmosFullTextPolicy == null) {
             if (super.has(Constants.Properties.FULL_TEXT_POLICY)) {
@@ -467,7 +466,6 @@ public final class DocumentCollection extends Resource {
      *
      * @param value the FullTextPolicy
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setFullTextPolicy(CosmosFullTextPolicy value) {
         checkNotNull(value, "cosmosFullTextPolicy cannot be null");
         this.set(Constants.Properties.FULL_TEXT_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
