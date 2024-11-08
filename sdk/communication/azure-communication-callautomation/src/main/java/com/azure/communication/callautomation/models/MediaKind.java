@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+/** Media kind for the outstreaming audio */
 public enum MediaKind {
     /** Audio data.*/
     AUDIODATA,

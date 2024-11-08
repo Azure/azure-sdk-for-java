@@ -1,5 +1,11 @@
-package com.azure.communication.callautomation.models;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.communication.callautomation.models;
+import com.azure.core.annotation.Fluent;
+
+/** The PlaySource model. */
+@Fluent
 public class OutStreamingData {
 
     /**
@@ -8,19 +14,32 @@ public class OutStreamingData {
     private final MediaKind kind;
 
     /**
-     * The operational context
+     * The audio data
      */
     private AudioData audioData;
 
     /**
-     * The operational context
+     * The stop audio
      */
     private StopAudio stopAudio;
 
+    /**
+     * Constructor
+     * 
+     * @param kind media kind type on the out streaming data
+     */
     public OutStreamingData(MediaKind kind)
     {
         this.kind = kind;
+    }
 
+     /**
+     * Get the out streaming media kind.
+     *
+     * @return the MediaKind
+     */
+    public MediaKind getKind() {
+        return kind;
     }
 
     /**
@@ -55,7 +74,7 @@ public class OutStreamingData {
     /**
      * Set the out streaming stop Audio.
      *
-     * @param audioData the stopAudio to set
+     * @param stopAudio the stopAudio to set
      * @return the OutStreamingData object itself.
      */
     public OutStreamingData setStopAudio(StopAudio stopAudio) {

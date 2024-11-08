@@ -12,6 +12,7 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.AudioFormatInternal;
 import com.azure.communication.callautomation.implementation.models.CallIntelligenceOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.CallRejectReasonInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
@@ -30,6 +31,7 @@ import com.azure.communication.callautomation.implementation.models.Transcriptio
 import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.AudioFormat;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
@@ -279,7 +281,11 @@ public final class CallAutomationAsyncClient {
             .setTransportType(
                 MediaStreamingTransportTypeInternal.fromString(
                     mediaStreamingOptions.getTransportType().toString()))
-            .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled());
+            .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled())
+            .setEnableBidirectional(mediaStreamingOptions.isEnableBidirectional())
+            .setAudioFormat(mediaStreamingOptions.getAudioFormat() != null ? 
+            AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat().toString())
+            :AudioFormatInternal.fromString(AudioFormat.PCM24KMONO.toString()));
     }
 
     private TranscriptionOptionsInternal getTranscriptionOptionsInternal(
