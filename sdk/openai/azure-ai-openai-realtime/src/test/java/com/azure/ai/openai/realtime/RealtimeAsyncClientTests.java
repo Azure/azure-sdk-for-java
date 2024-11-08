@@ -21,8 +21,6 @@ import com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseTextContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartAdded;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
@@ -30,6 +28,7 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
 import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
 import com.azure.ai.openai.realtime.utils.FileUtils;
 import com.azure.ai.openai.realtime.utils.RealtimeEventHandler;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -66,7 +65,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                 .then(() -> FileUtils.sendAudioFile(client, FileUtils.openResourceFile("audio_weather_alaw.wav")).block())
                 .thenConsumeWhile(
                     event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
-                    event -> System.out.println("event type: " + event.getType()))
+                    Assertions::assertNotNull)
                 .thenRequest(1) // Requesting the last expected element RESPONSE_DONE
                 .then(() -> client.stop().block())
                 .verifyComplete();
@@ -81,7 +80,6 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
         client.start().block();
         StepVerifier.create(client.getServerEvents())
             .assertNext(event -> {
-                System.out.println("event 0:" + toJson(event));
                 assertInstanceOf(RealtimeServerEventSessionCreated.class, event);
                 client.sendMessage(
                         new RealtimeClientEventSessionUpdate(
@@ -93,7 +91,6 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                         )
                 ).block();
             }).assertNext(event -> {
-                System.out.println("event 1:" + toJson(event));
                 assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
                 RealtimeClientEventSessionUpdate sessionUpdate = new RealtimeClientEventSessionUpdate(
                         new RealtimeRequestSession()
@@ -102,7 +99,6 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                 );
                     client.sendMessage(sessionUpdate).block();
             }).assertNext(event -> {
-                System.out.println("event 2:" + toJson(event));
                 assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
                 // send prompt
                 RealtimeRequestUserMessageItem messageItem = new
@@ -111,7 +107,6 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                                 new RealtimeRequestTextContentPart("Hello, assistant! Tell me a joke.")));
 
                 RealtimeClientEventConversationItemCreate conversationItem = new RealtimeClientEventConversationItemCreate(messageItem);
-                System.out.println("Request message: " + toJson(conversationItem));
                 client.sendMessage(conversationItem).block();
 
                 // starting conversation - needs to be submitted after the prompt, otherwise it will be ignored
@@ -122,7 +117,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                 client.sendMessage(conversation).block();
             }).thenConsumeWhile(
                 event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
-                event -> System.out.println("event:" + toJson(event)))
+                Assertions::assertNotNull)
             .thenRequest(1) // Requesting the last expected element RESPONSE_DONE
             .then(() -> client.stop().block())
             .verifyComplete();
@@ -135,6 +130,11 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                 .buildAsyncClient();
 
         client.start().block();
+        client.sendMessage(new RealtimeClientEventSessionUpdate(
+                new RealtimeRequestSession()
+                        .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
+                        .setTurnDetection(new RealtimeTurnDetectionDisabled())
+        )).block();
         StepVerifier.create(client.getServerEvents())
                 .assertNext(event -> {
                     assertInstanceOf(RealtimeServerEventSessionCreated.class, event);
@@ -145,12 +145,11 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                     )).block();
                 })
                 .thenConsumeWhile(
-                        event -> true,
+                        event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
                         event -> {
-                            System.out.println("event type: " + event.getType());
-                            System.out.println("event: " + toJson(event));
                             if (event instanceof RealtimeServerEventSessionUpdated) {
-                                System.out.println("Session updated: " + toJson(event));
+                                RealtimeServerEventSessionUpdated sessionUpdatedEvent = (RealtimeServerEventSessionUpdated) event;
+                                assertNotNull(sessionUpdatedEvent.getSession());
                             } else if (event instanceof RealtimeServerEventConversationItemCreated) {
                                 RealtimeServerEventConversationItemCreated itemCreatedEvent = (RealtimeServerEventConversationItemCreated) event;
                                 assertInstanceOf(RealtimeResponseMessageItem.class, itemCreatedEvent.getItem());
@@ -164,20 +163,11 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                                 } else {
                                     fail("Unexpected message role: " + responseItem.getRole());
                                 }
-                            } else if (event instanceof RealtimeServerEventResponseDone) {
-                                RealtimeServerEventResponseDone responseCreatedEvent = (RealtimeServerEventResponseDone) event;
-                                assertNotNull(responseCreatedEvent);
-                                client.stop().block();
-                            } else if (event instanceof RealtimeServerEventResponseContentPartAdded) {
-                                RealtimeServerEventResponseContentPartAdded contentPartAddedEvent = (RealtimeServerEventResponseContentPartAdded) event;
-                                assertNotNull(contentPartAddedEvent);
-                                // somehow the connection isn't closed after stopping the client
-                                client.stop().block();
                             }
                         }
                 )
-//                .thenRequest(1) // Requesting the last expected element RESPONSE_DONE
-//                .then(() -> client.stop().block())
+                .thenRequest(1) // Requesting the last expected element RESPONSE_DONE
+                .then(() -> client.stop().block())
                 .verifyComplete();
     }
 
@@ -202,7 +192,6 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                 .thenConsumeWhile(
                     event -> event.getType() != RealtimeServerEventType.ERROR && event.getType() != RealtimeServerEventType.RESPONSE_DONE,
                     event -> {
-                        System.out.println("event: " + toJson(event));
                         if (event instanceof RealtimeServerEventConversationItemCreated) {
                             RealtimeServerEventConversationItemCreated itemCreatedEvent = (RealtimeServerEventConversationItemCreated) event;
                             List<RealtimeContentPart> contentParts = ((RealtimeResponseMessageItem) itemCreatedEvent.getItem()).getContent();
