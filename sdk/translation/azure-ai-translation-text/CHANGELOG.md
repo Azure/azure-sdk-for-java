@@ -1,14 +1,15 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.0 (2024-11-11)
 
 ### Other Changes
+
+- Removed `JsonCreator` and `JsonProperty` annotation and replaced them with new methods `toJson` and `fromJson` using stream-style serialization.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.54.0`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.6`.
 
 ## 1.0.0 (2024-05-21)
 
