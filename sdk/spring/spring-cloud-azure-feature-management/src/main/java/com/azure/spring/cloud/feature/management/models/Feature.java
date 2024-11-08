@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.feature.management.implementation.models;
+package com.azure.spring.cloud.feature.management.models;
+
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,8 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * App Configuration Feature defines the feature name and a Map of FeatureFilterEvaluationContexts.
  */
+/**
+ * 
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ServerSideFeature {
+public class Feature {
     @JsonProperty("id")
     private String id;
 
@@ -21,7 +26,13 @@ public class ServerSideFeature {
     private boolean enabled;
 
     @JsonProperty("conditions")
-    private Conditions conditions;
+    private Conditions conditions = new Conditions();
+    
+    @JsonProperty("allocation")
+    private Allocation allocation;
+    
+    @JsonProperty("variants")
+    private List<VariantReference> variants;
 
     /**
      * @return the id
@@ -33,8 +44,9 @@ public class ServerSideFeature {
     /**
      * @param id the id to set
      */
-    public void setId(String id) {
+    public Feature setId(String id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -47,8 +59,9 @@ public class ServerSideFeature {
     /**
      * @param enabled the enabled to set
      */
-    public void setEnabled(boolean enabled) {
+    public Feature setEnabled(boolean enabled) {
         this.enabled = enabled;
+        return this;
     }
 
     /**
@@ -61,8 +74,9 @@ public class ServerSideFeature {
     /**
      * @param description the description to set
      * */
-    public void setDescription(String description) {
+    public Feature setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     /**
@@ -75,7 +89,40 @@ public class ServerSideFeature {
     /**
      * @param conditions the conditions to set
      * */
-    public void setConditions(Conditions conditions) {
+    public Feature setConditions(Conditions conditions) {
         this.conditions = conditions;
+        return this;
     }
+
+    /**
+     * @return the allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
+
+    /**
+     * @param allocation the allocation to set
+     */
+    public Feature setAllocation(Allocation allocation) {
+        this.allocation = allocation;
+        return this;
+    }
+
+    /**
+     * @return the variants
+     */
+    public List<VariantReference> getVariants() {
+        return variants;
+    }
+
+    /**
+     * @param variants the variants to set
+     */
+    public Feature setVariants(List<VariantReference> variants) {
+        this.variants = variants;
+        return this;
+    }
+    
+    
 }

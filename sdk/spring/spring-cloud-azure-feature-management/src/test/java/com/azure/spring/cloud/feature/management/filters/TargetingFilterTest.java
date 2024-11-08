@@ -15,14 +15,14 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.azure.spring.cloud.feature.management.implementation.TestConfiguration;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
+import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 
-@SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
+@SpringBootTest(classes = { SpringBootTest.class })
 public class TargetingFilterTest {
 
     private static final String USERS = "users";
@@ -60,6 +60,9 @@ public class TargetingFilterTest {
         TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", null));
 
         assertTrue(filter.evaluate(context));
+        
+        filter = new TargetingFilter(new TargetingFilterTestContextualAccessor("Doe", null));
+        assertFalse(filter.evaluate(context));
     }
 
     @Test
@@ -420,5 +423,24 @@ public class TargetingFilterTest {
             context.setGroups(groups);
         }
 
+    }
+    
+    class TargetingFilterTestContextualAccessor implements ContextualTargetingContextAccessor {
+
+        private String user;
+
+        private ArrayList<String> groups;
+
+        TargetingFilterTestContextualAccessor(String user, ArrayList<String> groups) {
+            this.user = user;
+            this.groups = groups;
+        }
+
+
+        @Override
+        public void configureTargetingContext(TargetingContext context, Object appContext) {
+            context.setUserId(user + "1");
+            context.setGroups(groups);
+        }
     }
 }
