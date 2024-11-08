@@ -9,53 +9,19 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
+
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class QuickPulseDataFetcherTests {
-
-    @Test
-    void testGetCurrentSdkVersion() {
-        ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
-        QuickPulseDataFetcher dataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null,
-            connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, null, null, null);
-        String sdkVersion = dataFetcher.getCurrentSdkVersion();
-        assertThat(sdkVersion).isNotNull();
-        assertThat(sdkVersion).isNotEqualTo("java:unknown");
-    }
-
-    @Test
-    void endpointIsFormattedCorrectlyWhenUsingConfig() throws URISyntaxException {
-        ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
-        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null,
-            connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, null, null, null);
-        String quickPulseEndpoint = quickPulseDataFetcher.getQuickPulseEndpoint();
-        String endpointUrl = quickPulseDataFetcher.getEndpointUrl(quickPulseEndpoint);
-        URI uri = new URI(endpointUrl);
-        assertThat(uri).isNotNull();
-        assertThat(endpointUrl)
-            .isEqualTo("https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=testing-123");
-    }
-
-    @Test
-    void endpointIsFormattedCorrectlyWhenConfigIsNull() throws URISyntaxException {
-        ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
-        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null,
-            connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, null, null, null);
-        String quickPulseEndpoint = quickPulseDataFetcher.getQuickPulseEndpoint();
-        String endpointUrl = quickPulseDataFetcher.getEndpointUrl(quickPulseEndpoint);
-        URI uri = new URI(endpointUrl);
-        assertThat(uri).isNotNull();
-        assertThat(endpointUrl)
-            .isEqualTo("https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=testing-123");
-    }
 
     @Test
     void endpointChangesWithRedirectHeaderAndGetNewPingInterval() {
@@ -69,12 +35,15 @@ class QuickPulseDataFetcherTests {
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, httpHeaders)))
             .tracer(new NoopTracer())
             .build();
+        LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
+            = builder.pipeline(httpPipeline).buildClient();
         QuickPulsePingSender quickPulsePingSender
-            = new QuickPulsePingSender(httpPipeline, connectionString::getLiveEndpoint,
+            = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
                 connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
-        QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
-        assertThat(QuickPulseStatus.QP_IS_ON).isEqualTo(quickPulseHeaderInfo.getQuickPulseStatus());
-        assertThat(1000).isEqualTo(quickPulseHeaderInfo.getQpsServicePollingInterval());
-        assertThat("https://new.endpoint.com").isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
+        IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
+        assertThat("true").isEqualTo(pingHeaders.getXMsQpsSubscribed());
+        assertThat("1000").isEqualTo(pingHeaders.getXMsQpsServicePollingIntervalHint());
+        assertThat("https://new.endpoint.com").isEqualTo(pingHeaders.getXMsQpsServiceEndpointRedirectV2());
     }
 }
