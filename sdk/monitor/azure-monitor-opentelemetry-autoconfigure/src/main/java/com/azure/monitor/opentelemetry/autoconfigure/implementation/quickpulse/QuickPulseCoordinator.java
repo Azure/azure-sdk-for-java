@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
@@ -67,18 +68,27 @@ final class QuickPulseCoordinator implements Runnable {
 
     @SuppressWarnings("try")
     private long sendData() {
-        dataFetcher.prepareQuickPulseDataForSend(qpsServiceRedirectedEndpoint);
-        QuickPulseHeaderInfo currentQuickPulseHeaderInfo = dataSender.getQuickPulseHeaderInfo();
+        dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
+        dataFetcher.prepareQuickPulseDataForSend();
 
-        this.handleReceivedHeaders(currentQuickPulseHeaderInfo);
-        collector.setQuickPulseStatus(currentQuickPulseHeaderInfo.getQuickPulseStatus());
-        switch (currentQuickPulseHeaderInfo.getQuickPulseStatus()) {
+        QuickPulseStatus qpStatus = dataSender.getQuickPulseStatus();
+        collector.setQuickPulseStatus(qpStatus);
+        switch (qpStatus) {
             case ERROR:
                 pingMode = true;
+                // Below line is necessary because there is a case where the last valid request is a post
+                // that came 20s before a failing ping, such as a network related error. In this case, if the
+                // network error continues, we would want pings to remain in backoff mode instead of pinging every
+                // 5 seconds. Subtracting the 40s ensures that the ping sender thinks requests have been failing long
+                // enough to stay in a backoff state if the next ping fails.
+                pingSender.resetLastValidRequestTimeNs((long) (dataSender.getLastValidPostRequestTimeNs() - 40 * 1e9));
                 return waitOnErrorInMillis;
 
             case QP_IS_OFF:
                 pingMode = true;
+                // Below line is necessary because there is a case where the last valid request is a post
+                // before a failing ping, such as a network related error.
+                pingSender.resetLastValidRequestTimeNs(dataSender.getLastValidPostRequestTimeNs());
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
@@ -97,15 +107,21 @@ final class QuickPulseCoordinator implements Runnable {
 
     @SuppressWarnings("try")
     private long ping() {
-        QuickPulseHeaderInfo pingResult = pingSender.ping(qpsServiceRedirectedEndpoint);
-        this.handleReceivedHeaders(pingResult);
-        collector.setQuickPulseStatus(pingResult.getQuickPulseStatus());
-        switch (pingResult.getQuickPulseStatus()) {
+        IsSubscribedHeaders pingResult = pingSender.ping(qpsServiceRedirectedEndpoint);
+        QuickPulseStatus qpStatus = this.handleReceivedPingHeaders(pingResult);
+        collector.setQuickPulseStatus(qpStatus);
+        switch (qpStatus) {
             case ERROR:
                 return waitOnErrorInMillis;
 
             case QP_IS_ON:
                 pingMode = false;
+                // Below two lines are necessary because there are cases where the last valid request is a ping
+                // before a failing post. This can happen in cases where authentication fails - pings would return
+                // http 200 but posts http 401. This is in line with .net behavior.
+                long lastValidRequestTransmission = pingSender.getLastValidPingTransmissionNs();
+                dataSender.resetLastValidRequestTimeNs(lastValidRequestTransmission);
+
                 dataSender.startSending();
                 return waitBetweenPostsInMillis;
 
@@ -123,15 +139,30 @@ final class QuickPulseCoordinator implements Runnable {
         return 0;
     }
 
-    private void handleReceivedHeaders(QuickPulseHeaderInfo currentQuickPulseHeaderInfo) {
-        String redirectLink = currentQuickPulseHeaderInfo.getQpsServiceEndpointRedirect();
+    private QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
+        String redirectLink = pingHeaders.getXMsQpsServiceEndpointRedirectV2();
         if (!Strings.isNullOrEmpty(redirectLink)) {
             qpsServiceRedirectedEndpoint = redirectLink;
         }
 
-        long newPollingInterval = currentQuickPulseHeaderInfo.getQpsServicePollingInterval();
-        if (newPollingInterval > 0) {
-            qpsServicePollingIntervalHintMillis = newPollingInterval;
+        String pollingIntervalHeader = pingHeaders.getXMsQpsServicePollingIntervalHint();
+        if (!Strings.isNullOrEmpty(pollingIntervalHeader)) {
+            long newPollingInterval = Long.getLong(pingHeaders.getXMsQpsServicePollingIntervalHint());
+            if (newPollingInterval > 0) {
+                qpsServicePollingIntervalHintMillis = newPollingInterval;
+            }
+        }
+
+        return getQuickPulseStatusFromHeader(pingHeaders.getXMsQpsSubscribed());
+    }
+
+    private QuickPulseStatus getQuickPulseStatusFromHeader(String headerValue) {
+        if (Strings.isNullOrEmpty(headerValue)) {
+            return QuickPulseStatus.ERROR;
+        } else if (headerValue.equalsIgnoreCase("true")) {
+            return QuickPulseStatus.QP_IS_ON;
+        } else {
+            return QuickPulseStatus.QP_IS_OFF;
         }
     }
 

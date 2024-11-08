@@ -4,10 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
@@ -69,11 +67,9 @@ public class QuickPulse {
         @Nullable String roleName, @Nullable String roleInstance, String sdkVersion) {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
-        ArrayBlockingQueue<MonitoringDataPoint> sendQueue = new ArrayBlockingQueue<>(256, true);
+        ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
 
-        LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
-            = builder.pipeline(httpPipeline).buildClient();
+        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue);
 
         String instanceName = roleInstance;
         String machineName = HostName.get();
@@ -87,12 +83,10 @@ public class QuickPulse {
 
         QuickPulseDataCollector collector = new QuickPulseDataCollector();
 
-        QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs,
-            endpointUrl, instrumentationKey, roleName, instanceName, machineName, quickPulseId, sdkVersion);
-        QuickPulseDataSender quickPulseDataSender
-            = new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs, sendQueue, endpointUrl, instrumentationKey);
-        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, roleName,
-            instanceName, machineName, quickPulseId, sdkVersion);
+        QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(httpPipeline, endpointUrl,
+            instrumentationKey, roleName, instanceName, machineName, quickPulseId, sdkVersion);
+        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, endpointUrl,
+            instrumentationKey, roleName, instanceName, machineName, quickPulseId);
 
         QuickPulseCoordinatorInitData coordinatorInitData
             = new QuickPulseCoordinatorInitDataBuilder().withPingSender(quickPulsePingSender)

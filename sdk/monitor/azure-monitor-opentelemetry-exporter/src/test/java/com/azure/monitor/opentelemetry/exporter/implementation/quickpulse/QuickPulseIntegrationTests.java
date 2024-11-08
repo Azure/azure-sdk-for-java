@@ -3,17 +3,12 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionDetailBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -31,57 +26,34 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     private static final String instrumentationKey = "ikey123";
 
     private QuickPulsePingSender getQuickPulsePingSender() {
-
-        LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
-        HttpPipeline httpPipeline = getHttpPipeline();
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
-            = builder.pipeline(httpPipeline).buildClient();
-        return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
+        return new QuickPulsePingSender(getHttpPipeline(), connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
     }
 
     private QuickPulsePingSender getQuickPulsePingSenderWithAuthentication() {
-        LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
-        HttpPipeline httpPipeline = getHttpPipelineWithAuthentication();
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
-            = builder.pipeline(httpPipeline).buildClient();
-        return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
+        return new QuickPulsePingSender(getHttpPipelineWithAuthentication(), connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
     }
 
     private QuickPulsePingSender getQuickPulsePingSenderWithValidator(HttpPipelinePolicy validator) {
-        LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
-        HttpPipeline httpPipeline = getHttpPipeline(validator);
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
-            = builder.pipeline(httpPipeline).buildClient();
-        return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
+        return new QuickPulsePingSender(getHttpPipeline(validator), connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
-    }
-
-    private QuickPulseDataSender getQuickPulseDataSenderWithValidator(HttpPipelinePolicy validator,
-        ArrayBlockingQueue<MonitoringDataPoint> sendQueue) {
-        LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
-        HttpPipeline httpPipeline = getHttpPipeline(validator);
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
-            = builder.pipeline(httpPipeline).buildClient();
-        return new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs, sendQueue, connectionString::getLiveEndpoint,
-            connectionString::getInstrumentationKey);
     }
 
     @Disabled
     @Test
     public void testPing() {
         QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSender();
-        IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
-        assertThat(pingHeaders.getXMsQpsSubscribed().equals("false"));
+        QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
+        assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
     }
 
     @Disabled
     @Test
     public void testPingWithAuthentication() {
         QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSenderWithAuthentication();
-        IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
-        assertThat(pingHeaders.getXMsQpsSubscribed().equals("false"));
+        QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
+        assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
     }
 
     @Disabled
@@ -92,15 +64,15 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             = "\\{\"Documents\":null,\"InstrumentationKey\":null,\"Metrics\":null,\"InvariantVersion\":1,\"Timestamp\":\"\\\\/Date\\(\\d+\\)\\\\/\",\"Version\":\"testSdkVersion\",\"StreamId\":\"qpid123\",\"MachineName\":\"machine1\",\"Instance\":\"instance1\",\"RoleName\":null\\}";
         QuickPulsePingSender quickPulsePingSender
             = getQuickPulsePingSenderWithValidator(new ValidationPolicy(pingCountDown, expectedRequestBody));
-        IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
-        assertThat(pingHeaders.getXMsQpsSubscribed().equals("false"));
+        QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
+        assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
         assertTrue(pingCountDown.await(60, TimeUnit.SECONDS));
     }
 
     @Disabled
     @Test
     public void testPostRequest() throws InterruptedException {
-        ArrayBlockingQueue<MonitoringDataPoint> sendQueue = new ArrayBlockingQueue<>(256, true);
+        ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
         CountDownLatch pingCountDown = new CountDownLatch(1);
         CountDownLatch postCountDown = new CountDownLatch(1);
         Date currDate = new Date();
@@ -112,13 +84,13 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
                 + "\",\"Metrics\":\\[\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Requests\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Request Duration\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Requests Failed\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Requests Succeeded\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Dependency Calls\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Dependency Call Duration\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Dependency Calls Failed\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Dependency Calls Succeeded\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\ApplicationInsights\\\\\\\\Exceptions\\\\\\/Sec\",\"Value\":[0-9.]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\Memory\\\\\\\\Committed Bytes\",\"Value\":[0-9.E]+,\"Weight\":\\d+\\},\\{\"Name\":\"\\\\\\\\Processor\\(_Total\\)\\\\\\\\% Processor Time\",\"Value\":-?[0-9.]+,\"Weight\":\\d+\\}\\],\"InvariantVersion\":1,\"Timestamp\":\"\\\\\\/Date\\(\\d+\\)\\\\\\/\",\"Version\":\"[^\"]*\",\"StreamId\":null,\"MachineName\":\"machine1\",\"Instance\":\"instance1\",\"RoleName\":null\\}\\]";
         QuickPulsePingSender pingSender
             = getQuickPulsePingSenderWithValidator(new ValidationPolicy(pingCountDown, expectedPingRequestBody));
-        IsSubscribedHeaders pingHeaders = pingSender.ping(null);
-
-        QuickPulseDataSender dataSender = getQuickPulseDataSenderWithValidator(
-            new ValidationPolicy(postCountDown, expectedPostRequestBody), sendQueue);
+        QuickPulseHeaderInfo quickPulseHeaderInfo = pingSender.ping(null);
+        QuickPulseDataSender dataSender = new QuickPulseDataSender(
+            getHttpPipeline(new ValidationPolicy(postCountDown, expectedPostRequestBody)), sendQueue);
         QuickPulseDataCollector collector = new QuickPulseDataCollector();
         QuickPulseDataFetcher dataFetcher
-            = new QuickPulseDataFetcher(collector, sendQueue, null, "instance1", "machine1", null, "testSdkVersion");
+            = new QuickPulseDataFetcher(collector, sendQueue, connectionString::getLiveEndpoint,
+                connectionString::getInstrumentationKey, null, "instance1", "machine1", null);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(connectionString::getInstrumentationKey);
@@ -160,7 +132,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         senderThread.start();
         Thread.sleep(50);
         assertTrue(pingCountDown.await(5, TimeUnit.SECONDS));
-        assertThat(pingHeaders.getXMsQpsSubscribed().equals("true")); // TODO: check if this actually works
+        assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
         assertTrue(postCountDown.await(5, TimeUnit.SECONDS));
         senderThread.interrupt();
