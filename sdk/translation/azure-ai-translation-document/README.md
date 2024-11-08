@@ -177,6 +177,7 @@ batchRequest.setStorageType(StorageInputType.FOLDER);
 
 SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
+TranslationStatusResult translationStatus = response.waitForCompletion().getValue();
 ```
 Please refer to the service documentation for a conceptual discussion of [batchTranslation][batchTranslation_doc].
 

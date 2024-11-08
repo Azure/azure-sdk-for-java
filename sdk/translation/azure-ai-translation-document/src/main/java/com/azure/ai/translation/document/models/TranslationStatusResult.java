@@ -54,6 +54,11 @@ public final class TranslationStatusResult implements JsonSerializable<Translati
     private TranslationError error;
 
     /*
+     * This contains error code and message
+     */
+    private ResponseError responseError;
+
+    /*
      * Status Summary
      */
     @Generated
@@ -124,7 +129,14 @@ public final class TranslationStatusResult implements JsonSerializable<Translati
      * @return the ResponseError value.
      */
     public ResponseError getError() {
-        return new ResponseError(this.error.getCode().toString(), this.error.getMessage());
+        if (this.responseError == null) {
+            if (this.error == null || this.error.getCode() == null || this.error.getMessage() == null) {
+                this.responseError = null;
+            } else {
+                this.responseError = new ResponseError(this.error.getCode().toString(), this.error.getMessage());
+            }
+        }
+        return this.responseError;
     }
 
     /**

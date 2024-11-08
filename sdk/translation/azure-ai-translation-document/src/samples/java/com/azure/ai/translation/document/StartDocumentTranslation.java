@@ -65,6 +65,7 @@ public class StartDocumentTranslation {
 
         SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
             .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
+        TranslationStatusResult translationStatus = response.waitForCompletion().getValue();
         // END:startDocumentTranslation
     }
 }
