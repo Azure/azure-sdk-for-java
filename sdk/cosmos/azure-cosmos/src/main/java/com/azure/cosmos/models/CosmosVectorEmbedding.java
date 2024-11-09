@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -18,7 +19,7 @@ public final class CosmosVectorEmbedding {
     @JsonProperty(Constants.Properties.VECTOR_DATA_TYPE)
     private String dataType;
     @JsonProperty(Constants.Properties.VECTOR_DIMENSIONS)
-    private Long dimensions;
+    private Integer dimensions;
     @JsonProperty(Constants.Properties.DISTANCE_FUNCTION)
     private String distanceFunction;
     private JsonSerializable jsonSerializable;
@@ -84,7 +85,9 @@ public final class CosmosVectorEmbedding {
      *
      * @return dimensions
      */
-    public Long getDimensions() {
+    //  Added this because JsonSerializer was serializing both dimensions and embeddingDimensions
+    @JsonIgnore
+    public Integer getEmbeddingDimensions() {
         return dimensions;
     }
 
@@ -94,6 +97,38 @@ public final class CosmosVectorEmbedding {
      * @param dimensions the dimensions for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
+    //  Added this because JsonSerializer was serializing both dimensions and embeddingDimensions
+    @JsonIgnore
+    public CosmosVectorEmbedding setEmbeddingDimensions(Integer dimensions) {
+        checkNotNull(dimensions, "dimensions cannot be null");
+        if (dimensions < 1) {
+            throw new IllegalArgumentException("Dimensions for the embedding has to be a int value greater than 0 " +
+                "for the vector embedding policy");
+        }
+
+        this.dimensions = dimensions;
+        return this;
+    }
+
+    /**
+     * Gets the dimensions for the cosmosVectorEmbedding.
+     *
+     * @return dimensions
+     * @deprecated use {@link CosmosVectorEmbedding#getEmbeddingDimensions()} instead
+     */
+    @Deprecated()
+    public Long getDimensions() {
+        return Long.valueOf(dimensions);
+    }
+
+    /**
+     * Sets the dimensions for the cosmosVectorEmbedding.
+     *
+     * @param dimensions the dimensions for the cosmosVectorEmbedding
+     * @return CosmosVectorEmbedding
+     * @deprecated use {@link CosmosVectorEmbedding#setEmbeddingDimensions(Integer dimensions)} instead
+     */
+    @Deprecated
     public CosmosVectorEmbedding setDimensions(Long dimensions) {
         checkNotNull(dimensions, "dimensions cannot be null");
         if (dimensions < 1) {
@@ -101,7 +136,7 @@ public final class CosmosVectorEmbedding {
                 "for the vector embedding policy");
         }
 
-        this.dimensions = dimensions;
+        this.dimensions = Math.toIntExact(dimensions);
         return this;
     }
 
