@@ -12,44 +12,40 @@ import org.junit.jupiter.api.Assertions;
 public final class WaitStatisticInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WaitStatisticInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"startTime\":\"2020-12-23T12:41:55Z\",\"endTime\":\"2021-11-22T00:13:21Z\",\"eventName\":\"oqnermclfpl\",\"eventTypeName\":\"oxuscrpabgyepsbj\",\"queryId\":1292231161047660234,\"databaseName\":\"gxywpmue\",\"userId\":4342383129018744659,\"count\":6619797185475635506,\"totalTimeInMs\":4.5201340432621695},\"id\":\"jidsuyonobglaoc\",\"name\":\"xtccmg\",\"type\":\"udxytlmoyrx\"}")
-                .toObject(WaitStatisticInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T12:41:55Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T00:13:21Z"), model.endTime());
-        Assertions.assertEquals("oqnermclfpl", model.eventName());
-        Assertions.assertEquals("oxuscrpabgyepsbj", model.eventTypeName());
-        Assertions.assertEquals(1292231161047660234L, model.queryId());
-        Assertions.assertEquals("gxywpmue", model.databaseName());
-        Assertions.assertEquals(4342383129018744659L, model.userId());
-        Assertions.assertEquals(6619797185475635506L, model.count());
-        Assertions.assertEquals(4.5201340432621695D, model.totalTimeInMs());
+        WaitStatisticInner model = BinaryData.fromString(
+            "{\"properties\":{\"startTime\":\"2021-01-31T22:27:42Z\",\"endTime\":\"2021-08-14T16:13:22Z\",\"eventName\":\"xotogtwrupqsxv\",\"eventTypeName\":\"i\",\"queryId\":8129000076742915216,\"databaseName\":\"eoveilovnotyf\",\"userId\":4491439225933409580,\"count\":2684528222905611090,\"totalTimeInMs\":33.81111028392475},\"id\":\"dhbt\",\"name\":\"kphywpnvjto\",\"type\":\"nermcl\"}")
+            .toObject(WaitStatisticInner.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T22:27:42Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T16:13:22Z"), model.endTime());
+        Assertions.assertEquals("xotogtwrupqsxv", model.eventName());
+        Assertions.assertEquals("i", model.eventTypeName());
+        Assertions.assertEquals(8129000076742915216L, model.queryId());
+        Assertions.assertEquals("eoveilovnotyf", model.databaseName());
+        Assertions.assertEquals(4491439225933409580L, model.userId());
+        Assertions.assertEquals(2684528222905611090L, model.count());
+        Assertions.assertEquals(33.81111028392475D, model.totalTimeInMs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WaitStatisticInner model =
-            new WaitStatisticInner()
-                .withStartTime(OffsetDateTime.parse("2020-12-23T12:41:55Z"))
-                .withEndTime(OffsetDateTime.parse("2021-11-22T00:13:21Z"))
-                .withEventName("oqnermclfpl")
-                .withEventTypeName("oxuscrpabgyepsbj")
-                .withQueryId(1292231161047660234L)
-                .withDatabaseName("gxywpmue")
-                .withUserId(4342383129018744659L)
-                .withCount(6619797185475635506L)
-                .withTotalTimeInMs(4.5201340432621695D);
+        WaitStatisticInner model = new WaitStatisticInner().withStartTime(OffsetDateTime.parse("2021-01-31T22:27:42Z"))
+            .withEndTime(OffsetDateTime.parse("2021-08-14T16:13:22Z"))
+            .withEventName("xotogtwrupqsxv")
+            .withEventTypeName("i")
+            .withQueryId(8129000076742915216L)
+            .withDatabaseName("eoveilovnotyf")
+            .withUserId(4491439225933409580L)
+            .withCount(2684528222905611090L)
+            .withTotalTimeInMs(33.81111028392475D);
         model = BinaryData.fromObject(model).toObject(WaitStatisticInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T12:41:55Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T00:13:21Z"), model.endTime());
-        Assertions.assertEquals("oqnermclfpl", model.eventName());
-        Assertions.assertEquals("oxuscrpabgyepsbj", model.eventTypeName());
-        Assertions.assertEquals(1292231161047660234L, model.queryId());
-        Assertions.assertEquals("gxywpmue", model.databaseName());
-        Assertions.assertEquals(4342383129018744659L, model.userId());
-        Assertions.assertEquals(6619797185475635506L, model.count());
-        Assertions.assertEquals(4.5201340432621695D, model.totalTimeInMs());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T22:27:42Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T16:13:22Z"), model.endTime());
+        Assertions.assertEquals("xotogtwrupqsxv", model.eventName());
+        Assertions.assertEquals("i", model.eventTypeName());
+        Assertions.assertEquals(8129000076742915216L, model.queryId());
+        Assertions.assertEquals("eoveilovnotyf", model.databaseName());
+        Assertions.assertEquals(4491439225933409580L, model.userId());
+        Assertions.assertEquals(2684528222905611090L, model.count());
+        Assertions.assertEquals(33.81111028392475D, model.totalTimeInMs());
     }
 }

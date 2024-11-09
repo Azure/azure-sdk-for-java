@@ -65,8 +65,8 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
 
             // First check if the name has whitespace.
             // Do not validate the name for being empty, that is left to the service to handle.
-            boolean hasWhitespace = name.length() > X_MS_META_LENGTH && checkWhitespace(name, X_MS_META_LENGTH,
-                name.length() - 1);
+            boolean hasWhitespace
+                = name.length() > X_MS_META_LENGTH && checkWhitespace(name, X_MS_META_LENGTH, name.length() - 1);
 
             // Then check if the value is not null or empty and has whitespace.
             String value = header.getValue();

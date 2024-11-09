@@ -53,8 +53,8 @@ public interface PrivateLinkResourcesClient {
      * @return a private link resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String clusterName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String clusterName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Gets a private link resource.

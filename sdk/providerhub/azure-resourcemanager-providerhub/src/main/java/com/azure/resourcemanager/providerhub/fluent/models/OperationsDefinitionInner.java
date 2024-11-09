@@ -181,15 +181,12 @@ public final class OperationsDefinitionInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model OperationsDefinitionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model OperationsDefinitionInner"));
         }
         if (display() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property display in model OperationsDefinitionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property display in model OperationsDefinitionInner"));
         } else {
             display().validate();
         }

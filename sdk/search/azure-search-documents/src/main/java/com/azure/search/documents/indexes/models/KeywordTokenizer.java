@@ -46,6 +46,7 @@ public final class KeywordTokenizer extends LexicalTokenizer {
         this.v1Tokenizer = null;
         this.v2Tokenizer = new KeywordTokenizerV2(name);
     }
+
     /**
      * Get the maxTokenLength property: The maximum token length. Default is
      * 256. Tokens longer than the maximum length are split. The maximum token

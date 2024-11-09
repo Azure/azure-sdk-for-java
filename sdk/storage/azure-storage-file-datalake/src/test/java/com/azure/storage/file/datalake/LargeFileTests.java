@@ -99,7 +99,8 @@ public class LargeFileTests extends DataLakeTestBase {
         long tail = Constants.MB;
         Flux<ByteBuffer> data = createLargeBuffer(LARGE_BLOCK_SIZE + tail);
 
-        StepVerifier.create(fcAsync.upload(data, new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE), true))
+        StepVerifier
+            .create(fcAsync.upload(data, new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE), true))
             .expectNextCount(1)
             .verifyComplete();
 
@@ -137,9 +138,7 @@ public class LargeFileTests extends DataLakeTestBase {
     private static Stream<Arguments> shouldHonorDefaultSingleUploadThresholdSupplier() {
         return Stream.of(
             // dataSize, expectedAppendRequests
-            Arguments.of(DEFAULT_SINGLE_UPLOAD_THRESHOLD, 1),
-            Arguments.of(DEFAULT_SINGLE_UPLOAD_THRESHOLD + 1, 11)
-        );
+            Arguments.of(DEFAULT_SINGLE_UPLOAD_THRESHOLD, 1), Arguments.of(DEFAULT_SINGLE_UPLOAD_THRESHOLD + 1, 11));
     }
 
     private Flux<ByteBuffer> createLargeBuffer(long size) {
@@ -151,9 +150,8 @@ public class LargeFileTests extends DataLakeTestBase {
         long numberOfSubBuffers = size / bufferSize;
         int remainder = (int) (size - numberOfSubBuffers * bufferSize);
 
-        Flux<ByteBuffer> result =  Flux.just(ByteBuffer.wrap(bytes))
-            .map(ByteBuffer::duplicate)
-            .repeat(numberOfSubBuffers - 1);
+        Flux<ByteBuffer> result
+            = Flux.just(ByteBuffer.wrap(bytes)).map(ByteBuffer::duplicate).repeat(numberOfSubBuffers - 1);
 
         if (remainder > 0) {
             byte[] extraBytes = getRandomByteArray(remainder);
@@ -228,12 +226,10 @@ public class LargeFileTests extends DataLakeTestBase {
                 count.incrementAndGet();
 
                 AtomicLong size = new AtomicLong();
-                request.setBody(request.getBody()
-                    .map(buffer -> {
-                        size.addAndGet(buffer.remaining());
-                        return buffer;
-                    })
-                    .doOnComplete(() -> appendPayloadSizes.add(size.get())));
+                request.setBody(request.getBody().map(buffer -> {
+                    size.addAndGet(buffer.remaining());
+                    return buffer;
+                }).doOnComplete(() -> appendPayloadSizes.add(size.get())));
             }
 
             return httpPipelineNextPolicy.process();

@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.fluent.models.PolicyMetadataSlimProperties;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyMetadataSlimPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        PolicyMetadataSlimProperties model =
-            BinaryData
-                .fromString(
-                    "{\"metadataId\":\"yiba\",\"category\":\"fluszdtm\",\"title\":\"kwofyyvoq\",\"owner\":\"piexpbtgiw\",\"additionalContentUrl\":\"oenwashr\"}")
-                .toObject(PolicyMetadataSlimProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyMetadataSlimProperties model = BinaryData.fromString(
+            "{\"metadataId\":\"gpr\",\"category\":\"tillucbiqtg\",\"title\":\"ohmcwsld\",\"owner\":\"zetpwbra\",\"additionalContentUrl\":\"libph\",\"metadata\":\"datazmizakakan\"}")
+            .toObject(PolicyMetadataSlimProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PolicyMetadataSlimProperties model = new PolicyMetadataSlimProperties();
         model = BinaryData.fromObject(model).toObject(PolicyMetadataSlimProperties.class);
     }

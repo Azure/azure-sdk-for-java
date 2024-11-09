@@ -10,13 +10,11 @@ import com.azure.resourcemanager.iothub.fluent.models.JobResponseInner;
 public final class JobResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"jobId\":\"begibtnmxiebwwa\",\"startTimeUtc\":\"Mon, 12 Apr 2021 02:20:56"
-                        + " GMT\",\"endTimeUtc\":\"Mon, 26 Apr 2021 15:42:40"
-                        + " GMT\",\"type\":\"factoryResetDevice\",\"status\":\"unknown\",\"failureReason\":\"zjuzgwyz\",\"statusMessage\":\"txon\",\"parentJobId\":\"ts\"}")
-                .toObject(JobResponseInner.class);
+        JobResponseInner model = BinaryData
+            .fromString("{\"jobId\":\"begibtnmxiebwwa\",\"startTimeUtc\":\"Mon, 12 Apr 2021 02:20:56"
+                + " GMT\",\"endTimeUtc\":\"Mon, 26 Apr 2021 15:42:40"
+                + " GMT\",\"type\":\"factoryResetDevice\",\"status\":\"unknown\",\"failureReason\":\"zjuzgwyz\",\"statusMessage\":\"txon\",\"parentJobId\":\"ts\"}")
+            .toObject(JobResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

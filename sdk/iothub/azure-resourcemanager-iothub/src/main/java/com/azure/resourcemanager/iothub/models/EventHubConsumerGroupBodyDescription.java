@@ -48,10 +48,8 @@ public final class EventHubConsumerGroupBodyDescription {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model EventHubConsumerGroupBodyDescription"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model EventHubConsumerGroupBodyDescription"));
         } else {
             properties().validate();
         }

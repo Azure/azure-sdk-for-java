@@ -115,8 +115,8 @@ public final class StorageSharedKeyCredential {
      * @return a SharedKey credential converted from {@link AzureNamedKeyCredential}
      * @throws NullPointerException If {@code azureNamedKeyCredential} is null.
      */
-    public static StorageSharedKeyCredential fromAzureNamedKeyCredential(
-        AzureNamedKeyCredential azureNamedKeyCredential) {
+    public static StorageSharedKeyCredential
+        fromAzureNamedKeyCredential(AzureNamedKeyCredential azureNamedKeyCredential) {
         return new StorageSharedKeyCredential(azureNamedKeyCredential);
     }
 
@@ -181,31 +181,26 @@ public final class StorageSharedKeyCredential {
         return StorageImplUtils.computeHMac256(azureNamedKeyCredential.getAzureNamedKey().getKey(), stringToSign);
     }
 
-    private String buildStringToSign(URL requestURL, String httpMethod, HttpHeaders headers,
-        boolean logStringToSign) {
+    private String buildStringToSign(URL requestURL, String httpMethod, HttpHeaders headers, boolean logStringToSign) {
         String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
         contentLength = "0".equals(contentLength) ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.getValue(X_MS_DATE) != null)
-            ? "" : getStandardHeaderValue(headers, HttpHeaderName.DATE);
+        String dateHeader
+            = (headers.getValue(X_MS_DATE) != null) ? "" : getStandardHeaderValue(headers, HttpHeaderName.DATE);
 
         Collator collator = THREAD_LOCAL_COLLATOR.get();
-        String stringToSign =  String.join("\n",
-            httpMethod,
-            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_ENCODING),
-            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_LANGUAGE),
-            contentLength,
-            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_MD5),
-            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_TYPE),
-            dateHeader,
-            getStandardHeaderValue(headers, HttpHeaderName.IF_MODIFIED_SINCE),
-            getStandardHeaderValue(headers, HttpHeaderName.IF_MATCH),
-            getStandardHeaderValue(headers, HttpHeaderName.IF_NONE_MATCH),
-            getStandardHeaderValue(headers, HttpHeaderName.IF_UNMODIFIED_SINCE),
-            getStandardHeaderValue(headers, HttpHeaderName.RANGE),
-            getAdditionalXmsHeaders(headers, collator),
-            getCanonicalizedResource(requestURL, collator));
+        String stringToSign
+            = String.join("\n", httpMethod, getStandardHeaderValue(headers, HttpHeaderName.CONTENT_ENCODING),
+                getStandardHeaderValue(headers, HttpHeaderName.CONTENT_LANGUAGE), contentLength,
+                getStandardHeaderValue(headers, HttpHeaderName.CONTENT_MD5),
+                getStandardHeaderValue(headers, HttpHeaderName.CONTENT_TYPE), dateHeader,
+                getStandardHeaderValue(headers, HttpHeaderName.IF_MODIFIED_SINCE),
+                getStandardHeaderValue(headers, HttpHeaderName.IF_MATCH),
+                getStandardHeaderValue(headers, HttpHeaderName.IF_NONE_MATCH),
+                getStandardHeaderValue(headers, HttpHeaderName.IF_UNMODIFIED_SINCE),
+                getStandardHeaderValue(headers, HttpHeaderName.RANGE), getAdditionalXmsHeaders(headers, collator),
+                getCanonicalizedResource(requestURL, collator));
 
         if (logStringToSign) {
             StorageImplUtils.logStringToSign(LOGGER, stringToSign, LOG_STRING_TO_SIGN_CONTEXT);
@@ -242,8 +237,7 @@ public final class StorageSharedKeyCredential {
             return "";
         }
 
-        final StringBuilder canonicalizedHeaders = new StringBuilder(
-            stringBuilderSize + (2 * xmsHeaders.size()) - 1);
+        final StringBuilder canonicalizedHeaders = new StringBuilder(stringBuilderSize + (2 * xmsHeaders.size()) - 1);
 
         xmsHeaders.sort((o1, o2) -> collator.compare(o1.getName(), o2.getName()));
 
@@ -303,8 +297,8 @@ public final class StorageSharedKeyCredential {
 
         stringBuilderSize += pieces.size();
 
-        StringBuilder canonicalizedResource = new StringBuilder(stringBuilderSize)
-            .append('/').append(resourcePath).append(absolutePath);
+        StringBuilder canonicalizedResource
+            = new StringBuilder(stringBuilderSize).append('/').append(resourcePath).append(absolutePath);
 
         for (Map.Entry<String, List<String>> queryParam : pieces.entrySet()) {
             List<String> queryParamValues = queryParam.getValue();
@@ -336,8 +330,8 @@ public final class StorageSharedKeyCredential {
         for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
             if (httpPipelinePolicy instanceof StorageSharedKeyCredentialPolicy) {
-                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy =
-                    (StorageSharedKeyCredentialPolicy) httpPipelinePolicy;
+                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy
+                    = (StorageSharedKeyCredentialPolicy) httpPipelinePolicy;
                 return storageSharedKeyCredentialPolicy.sharedKeyCredential();
             }
         }

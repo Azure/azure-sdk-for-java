@@ -37,33 +37,33 @@ public class LivenessSessionTest extends FaceClientTestBase {
     @ParameterizedTest
     @MethodSource("getTestCommands")
     public void testCreateSession(String httpClientName, FaceServiceVersion serviceVersion,
-            Supplier<ILivenessSessionSyncCommands> commandProvider) {
+        Supplier<ILivenessSessionSyncCommands> commandProvider) {
         String uuid = UUID.randomUUID().toString();
-        CreateLivenessSessionContent content = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
-            .setDeviceCorrelationId(uuid);
+        CreateLivenessSessionContent content
+            = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE).setDeviceCorrelationId(uuid);
         createSessionAndVerify(commandProvider.get(), content);
     }
 
     @ParameterizedTest
     @MethodSource("getTestCommands")
     public void testCreateSessionDeviceIdOptional(String httpClientName, FaceServiceVersion serviceVersion,
-            Supplier<ILivenessSessionSyncCommands> commandProvider) {
-        CreateLivenessSessionContent content = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
-            .setDeviceCorrelationIdSetInClient(true);
+        Supplier<ILivenessSessionSyncCommands> commandProvider) {
+        CreateLivenessSessionContent content
+            = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE).setDeviceCorrelationIdSetInClient(true);
         createSessionAndVerify(commandProvider.get(), content);
     }
 
     @ParameterizedTest
     @MethodSource("getTestCommands")
-    public void testCreateSessionWithTokenTTL(
-            String httpClientName, FaceServiceVersion serviceVersion, Supplier<ILivenessSessionSyncCommands> commandProvider) {
+    public void testCreateSessionWithTokenTTL(String httpClientName, FaceServiceVersion serviceVersion,
+        Supplier<ILivenessSessionSyncCommands> commandProvider) {
         ILivenessSessionSyncCommands livenessCommands = commandProvider.get();
 
         int authTokenTimeToLiveInSeconds = 60;
         String uuid = UUID.randomUUID().toString();
-        CreateLivenessSessionContent content = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
-            .setDeviceCorrelationId(uuid)
-            .setAuthTokenTimeToLiveInSeconds(authTokenTimeToLiveInSeconds);
+        CreateLivenessSessionContent content
+            = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE).setDeviceCorrelationId(uuid)
+                .setAuthTokenTimeToLiveInSeconds(authTokenTimeToLiveInSeconds);
 
         CreateLivenessSessionResult result = createSessionAndVerify(livenessCommands, content);
         LivenessSession livenessSession = livenessCommands.getLivenessSessionResultSync(result.getSessionId());
@@ -86,16 +86,16 @@ public class LivenessSessionTest extends FaceClientTestBase {
     }
 
     private Stream<Arguments> getTestCommands() {
-        LivenessSessionCommandsProvider[] providers =  LivenessSessionCommandsProvider.getFunctionProviders();
+        LivenessSessionCommandsProvider[] providers = LivenessSessionCommandsProvider.getFunctionProviders();
 
-        Stream<Tuple3<String, FaceServiceVersion, Supplier<ILivenessSessionSyncCommands>>> clientArumentStream =
-                createClientArgumentStream(FaceSessionClient.class, FaceSessionAsyncClient.class, providers);
+        Stream<Tuple3<String, FaceServiceVersion, Supplier<ILivenessSessionSyncCommands>>> clientArumentStream
+            = createClientArgumentStream(FaceSessionClient.class, FaceSessionAsyncClient.class, providers);
 
         return TestUtils.createCombinationWithClientArguments(clientArumentStream);
     }
 
-    private CreateLivenessSessionResult createSessionAndVerify(
-            ILivenessSessionSyncCommands livenessCommands, CreateLivenessSessionContent content) {
+    private CreateLivenessSessionResult createSessionAndVerify(ILivenessSessionSyncCommands livenessCommands,
+        CreateLivenessSessionContent content) {
         CreateLivenessSessionResult result = livenessCommands.createLivenessSessionSync(content);
 
         mCurrentCommand = livenessCommands;

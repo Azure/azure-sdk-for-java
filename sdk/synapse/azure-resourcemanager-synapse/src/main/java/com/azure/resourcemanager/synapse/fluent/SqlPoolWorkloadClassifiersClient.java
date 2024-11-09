@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.WorkloadClassifierInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolWorkloadClassifiersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolWorkloadClassifiersClient.
+ */
 public interface SqlPoolWorkloadClassifiersClient {
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -32,19 +34,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return a workload classifier of Sql pool's workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkloadClassifierInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context);
+    Response<WorkloadClassifierInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName, Context context);
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -56,18 +53,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return a workload classifier of Sql pool's workload group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadClassifierInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName);
+    WorkloadClassifierInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName);
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -81,18 +74,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters);
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters);
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -107,19 +96,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context);
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters, Context context);
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -132,19 +116,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadClassifierInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters);
+    WorkloadClassifierInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters);
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -158,20 +137,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadClassifierInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context);
+    WorkloadClassifierInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters, Context context);
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -183,18 +156,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName);
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -207,19 +176,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, Context context);
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -230,18 +194,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
         String workloadClassifierName);
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -253,19 +213,14 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context);
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, Context context);
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -273,18 +228,18 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of Sql pool's workload classifier for workload groups as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadClassifierInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
+    PagedIterable<WorkloadClassifierInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName);
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -293,10 +248,10 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of Sql pool's workload classifier for workload groups as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadClassifierInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    PagedIterable<WorkloadClassifierInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
 }

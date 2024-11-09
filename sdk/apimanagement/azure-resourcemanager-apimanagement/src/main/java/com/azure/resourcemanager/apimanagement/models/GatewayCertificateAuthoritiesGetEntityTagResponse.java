@@ -20,12 +20,8 @@ public final class GatewayCertificateAuthoritiesGetEntityTagResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GatewayCertificateAuthoritiesGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        GatewayCertificateAuthoritiesGetEntityTagHeaders headers) {
+    public GatewayCertificateAuthoritiesGetEntityTagResponse(HttpRequest request, int statusCode,
+        HttpHeaders rawHeaders, Void value, GatewayCertificateAuthoritiesGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

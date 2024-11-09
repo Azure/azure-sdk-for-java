@@ -13,7 +13,8 @@ public final class ParticipantRoleConverter {
     /**
      * Maps from {com.azure.communication.rooms.implementation.models.Role} to {@link Role}.
      */
-    public static ParticipantRole convert(com.azure.communication.rooms.implementation.models.ParticipantRole roleType) {
+    public static ParticipantRole
+        convert(com.azure.communication.rooms.implementation.models.ParticipantRole roleType) {
         if (roleType == null) {
             return null;
         }
@@ -24,12 +25,15 @@ public final class ParticipantRoleConverter {
             case "Attendee":
                 role = ParticipantRole.ATTENDEE;
                 break;
+
             case "Consumer":
                 role = ParticipantRole.CONSUMER;
                 break;
+
             case "Presenter":
                 role = ParticipantRole.PRESENTER;
                 break;
+
             default:
                 role = ParticipantRole.ATTENDEE;
                 break;
@@ -40,23 +44,28 @@ public final class ParticipantRoleConverter {
     /**
      * Maps from {@link Role} to {com.azure.communication.rooms.implementation.models.ParticipantRole}.
     */
-    public static com.azure.communication.rooms.implementation.models.ParticipantRole convert(ParticipantRole roleType) {
+    public static com.azure.communication.rooms.implementation.models.ParticipantRole
+        convert(ParticipantRole roleType) {
         if (roleType == null) {
             return null;
         }
 
-        com.azure.communication.rooms.implementation.models.ParticipantRole role = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
+        com.azure.communication.rooms.implementation.models.ParticipantRole role
+            = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
 
         switch (roleType.toString()) {
             case "Attendee":
                 role = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
                 break;
+
             case "Consumer":
                 role = com.azure.communication.rooms.implementation.models.ParticipantRole.CONSUMER;
                 break;
+
             case "Presenter":
                 role = com.azure.communication.rooms.implementation.models.ParticipantRole.PRESENTER;
                 break;
+
             default:
                 role = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
                 break;

@@ -23,7 +23,8 @@ public final class MetadataAssignmentTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MetadataAssignment model = new MetadataAssignment().withEntity(MetadataAssignmentEntity.DEPLOYMENT)
-            .withRequired(true).withDeprecated(true);
+            .withRequired(true)
+            .withDeprecated(true);
         model = BinaryData.fromObject(model).toObject(MetadataAssignment.class);
         Assertions.assertEquals(MetadataAssignmentEntity.DEPLOYMENT, model.entity());
         Assertions.assertEquals(true, model.required());

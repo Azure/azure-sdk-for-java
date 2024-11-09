@@ -68,8 +68,8 @@ public class PageBlobItem {
      * @param versionId The version identifier of the page blob.
      */
     public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-                        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
-                        final Long blobSequenceNumber, final String versionId) {
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final Long blobSequenceNumber, final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);

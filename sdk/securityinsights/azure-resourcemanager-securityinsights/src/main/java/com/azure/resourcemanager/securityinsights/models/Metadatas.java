@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Metadatas. */
+/**
+ * Resource collection API of Metadatas.
+ */
 public interface Metadatas {
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,32 +26,41 @@ public interface Metadatas {
 
     /**
      * List of all metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter Filters the results, based on a Boolean condition. Optional.
      * @param orderby Sorts the results. Optional.
      * @param top Returns only the first n results. Optional.
      * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     *     if there are any left.
+     * if there are any left.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the metadata as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MetadataModel> list(
-        String resourceGroupName,
-        String workspaceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
+    PagedIterable<MetadataModel> list(String resourceGroupName, String workspaceName, String filter, String orderby,
+        Integer top, Integer skip, Context context);
+
+    /**
+     * Get a Metadata.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param metadataName The Metadata name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Metadata along with {@link Response}.
+     */
+    Response<MetadataModel> getWithResponse(String resourceGroupName, String workspaceName, String metadataName,
         Context context);
 
     /**
      * Get a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -61,8 +72,8 @@ public interface Metadatas {
     MetadataModel get(String resourceGroupName, String workspaceName, String metadataName);
 
     /**
-     * Get a Metadata.
-     *
+     * Delete a Metadata.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -70,14 +81,14 @@ public interface Metadatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Metadata along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<MetadataModel> getWithResponse(
-        String resourceGroupName, String workspaceName, String metadataName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String metadataName,
+        Context context);
 
     /**
      * Delete a Metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param metadataName The Metadata name.
@@ -88,23 +99,8 @@ public interface Metadatas {
     void delete(String resourceGroupName, String workspaceName, String metadataName);
 
     /**
-     * Delete a Metadata.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param metadataName The Metadata name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String metadataName, Context context);
-
-    /**
      * Get a Metadata.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +111,7 @@ public interface Metadatas {
 
     /**
      * Get a Metadata.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +123,7 @@ public interface Metadatas {
 
     /**
      * Delete a Metadata.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +133,7 @@ public interface Metadatas {
 
     /**
      * Delete a Metadata.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +145,7 @@ public interface Metadatas {
 
     /**
      * Begins definition for a new MetadataModel resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new MetadataModel definition.
      */

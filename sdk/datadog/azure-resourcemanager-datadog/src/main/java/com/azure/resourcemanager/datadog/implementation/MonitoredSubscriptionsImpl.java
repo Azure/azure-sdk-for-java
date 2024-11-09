@@ -21,35 +21,31 @@ public final class MonitoredSubscriptionsImpl implements MonitoredSubscriptions 
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    public MonitoredSubscriptionsImpl(
-        MonitoredSubscriptionsClient innerClient,
+    public MonitoredSubscriptionsImpl(MonitoredSubscriptionsClient innerClient,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<MonitoredSubscriptionProperties> list(String resourceGroupName, String monitorName) {
-        PagedIterable<MonitoredSubscriptionPropertiesInner> inner =
-            this.serviceClient().list(resourceGroupName, monitorName);
+        PagedIterable<MonitoredSubscriptionPropertiesInner> inner
+            = this.serviceClient().list(resourceGroupName, monitorName);
         return Utils.mapPage(inner, inner1 -> new MonitoredSubscriptionPropertiesImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<MonitoredSubscriptionProperties> list(
-        String resourceGroupName, String monitorName, Context context) {
-        PagedIterable<MonitoredSubscriptionPropertiesInner> inner =
-            this.serviceClient().list(resourceGroupName, monitorName, context);
+    public PagedIterable<MonitoredSubscriptionProperties> list(String resourceGroupName, String monitorName,
+        Context context) {
+        PagedIterable<MonitoredSubscriptionPropertiesInner> inner
+            = this.serviceClient().list(resourceGroupName, monitorName, context);
         return Utils.mapPage(inner, inner1 -> new MonitoredSubscriptionPropertiesImpl(inner1, this.manager()));
     }
 
-    public Response<MonitoredSubscriptionProperties> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
-        Response<MonitoredSubscriptionPropertiesInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, monitorName, configurationName, context);
+    public Response<MonitoredSubscriptionProperties> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context) {
+        Response<MonitoredSubscriptionPropertiesInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, monitorName, configurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MonitoredSubscriptionPropertiesImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -57,8 +53,8 @@ public final class MonitoredSubscriptionsImpl implements MonitoredSubscriptions 
     }
 
     public MonitoredSubscriptionProperties get(String resourceGroupName, String monitorName, String configurationName) {
-        MonitoredSubscriptionPropertiesInner inner =
-            this.serviceClient().get(resourceGroupName, monitorName, configurationName);
+        MonitoredSubscriptionPropertiesInner inner
+            = this.serviceClient().get(resourceGroupName, monitorName, configurationName);
         if (inner != null) {
             return new MonitoredSubscriptionPropertiesImpl(inner, this.manager());
         } else {
@@ -77,28 +73,18 @@ public final class MonitoredSubscriptionsImpl implements MonitoredSubscriptions 
     public MonitoredSubscriptionProperties getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "monitoredSubscriptions");
         if (configurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'monitoredSubscriptions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'monitoredSubscriptions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE).getValue();
     }
@@ -106,28 +92,18 @@ public final class MonitoredSubscriptionsImpl implements MonitoredSubscriptions 
     public Response<MonitoredSubscriptionProperties> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "monitoredSubscriptions");
         if (configurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'monitoredSubscriptions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'monitoredSubscriptions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, monitorName, configurationName, context);
     }
@@ -135,28 +111,18 @@ public final class MonitoredSubscriptionsImpl implements MonitoredSubscriptions 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "monitoredSubscriptions");
         if (configurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'monitoredSubscriptions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'monitoredSubscriptions'.", id)));
         }
         this.delete(resourceGroupName, monitorName, configurationName, Context.NONE);
     }
@@ -164,28 +130,18 @@ public final class MonitoredSubscriptionsImpl implements MonitoredSubscriptions 
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "monitoredSubscriptions");
         if (configurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'monitoredSubscriptions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'monitoredSubscriptions'.", id)));
         }
         this.delete(resourceGroupName, monitorName, configurationName, context);
     }

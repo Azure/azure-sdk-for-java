@@ -89,11 +89,9 @@ import java.util.Map;
  * @see KeyVaultBackupClient
  * @see KeyVaultBackupAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class})
-public final class KeyVaultBackupClientBuilder implements
-    TokenCredentialTrait<KeyVaultBackupClientBuilder>,
-    HttpTrait<KeyVaultBackupClientBuilder>,
-    ConfigurationTrait<KeyVaultBackupClientBuilder> {
+@ServiceClientBuilder(serviceClients = { KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class })
+public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<KeyVaultBackupClientBuilder>,
+    HttpTrait<KeyVaultBackupClientBuilder>, ConfigurationTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
@@ -146,7 +144,7 @@ public final class KeyVaultBackupClientBuilder implements
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public KeyVaultBackupClient  buildClient() {
+    public KeyVaultBackupClient buildClient() {
         Configuration buildConfiguration = validateEndpointAndGetBuildConfiguration();
         serviceVersion = getServiceVersion();
         if (pipeline != null) {
@@ -181,15 +179,14 @@ public final class KeyVaultBackupClientBuilder implements
     }
 
     private Configuration validateEndpointAndGetBuildConfiguration() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
         return buildConfiguration;
     }
@@ -214,8 +211,8 @@ public final class KeyVaultBackupClientBuilder implements
             clientVersion, buildConfiguration));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders()
+            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
         policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
@@ -237,8 +234,7 @@ public final class KeyVaultBackupClientBuilder implements
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
             .tracer(tracer)
@@ -265,8 +261,7 @@ public final class KeyVaultBackupClientBuilder implements
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
         return this;

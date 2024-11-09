@@ -6,45 +6,49 @@ package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managedapplications.models.JitRequestMetadata;
 import com.azure.resourcemanager.managedapplications.models.Status;
 import com.azure.resourcemanager.managedapplications.models.Substatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Update access request definition. */
+/**
+ * Update access request definition.
+ */
 @Fluent
-public final class UpdateAccessDefinitionInner {
+public final class UpdateAccessDefinitionInner implements JsonSerializable<UpdateAccessDefinitionInner> {
     /*
      * The approver name.
      */
-    @JsonProperty(value = "approver")
     private String approver;
 
     /*
      * The JIT request metadata.
      */
-    @JsonProperty(value = "metadata", required = true)
     private JitRequestMetadata metadata;
 
     /*
      * The JIT status.
      */
-    @JsonProperty(value = "status", required = true)
     private Status status;
 
     /*
      * The JIT status.
      */
-    @JsonProperty(value = "subStatus", required = true)
     private Substatus subStatus;
 
-    /** Creates an instance of UpdateAccessDefinitionInner class. */
+    /**
+     * Creates an instance of UpdateAccessDefinitionInner class.
+     */
     public UpdateAccessDefinitionInner() {
     }
 
     /**
      * Get the approver property: The approver name.
-     *
+     * 
      * @return the approver value.
      */
     public String approver() {
@@ -53,7 +57,7 @@ public final class UpdateAccessDefinitionInner {
 
     /**
      * Set the approver property: The approver name.
-     *
+     * 
      * @param approver the approver value to set.
      * @return the UpdateAccessDefinitionInner object itself.
      */
@@ -64,7 +68,7 @@ public final class UpdateAccessDefinitionInner {
 
     /**
      * Get the metadata property: The JIT request metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public JitRequestMetadata metadata() {
@@ -73,7 +77,7 @@ public final class UpdateAccessDefinitionInner {
 
     /**
      * Set the metadata property: The JIT request metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the UpdateAccessDefinitionInner object itself.
      */
@@ -84,7 +88,7 @@ public final class UpdateAccessDefinitionInner {
 
     /**
      * Get the status property: The JIT status.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -93,7 +97,7 @@ public final class UpdateAccessDefinitionInner {
 
     /**
      * Set the status property: The JIT status.
-     *
+     * 
      * @param status the status value to set.
      * @return the UpdateAccessDefinitionInner object itself.
      */
@@ -104,7 +108,7 @@ public final class UpdateAccessDefinitionInner {
 
     /**
      * Get the subStatus property: The JIT status.
-     *
+     * 
      * @return the subStatus value.
      */
     public Substatus subStatus() {
@@ -113,7 +117,7 @@ public final class UpdateAccessDefinitionInner {
 
     /**
      * Set the subStatus property: The JIT status.
-     *
+     * 
      * @param subStatus the subStatus value to set.
      * @return the UpdateAccessDefinitionInner object itself.
      */
@@ -124,31 +128,74 @@ public final class UpdateAccessDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (metadata() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property metadata in model UpdateAccessDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property metadata in model UpdateAccessDefinitionInner"));
         } else {
             metadata().validate();
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model UpdateAccessDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model UpdateAccessDefinitionInner"));
         }
         if (subStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subStatus in model UpdateAccessDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subStatus in model UpdateAccessDefinitionInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateAccessDefinitionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("subStatus", this.subStatus == null ? null : this.subStatus.toString());
+        jsonWriter.writeStringField("approver", this.approver);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateAccessDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateAccessDefinitionInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateAccessDefinitionInner.
+     */
+    public static UpdateAccessDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateAccessDefinitionInner deserializedUpdateAccessDefinitionInner = new UpdateAccessDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    deserializedUpdateAccessDefinitionInner.metadata = JitRequestMetadata.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedUpdateAccessDefinitionInner.status = Status.fromString(reader.getString());
+                } else if ("subStatus".equals(fieldName)) {
+                    deserializedUpdateAccessDefinitionInner.subStatus = Substatus.fromString(reader.getString());
+                } else if ("approver".equals(fieldName)) {
+                    deserializedUpdateAccessDefinitionInner.approver = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateAccessDefinitionInner;
+        });
+    }
 }

@@ -21,8 +21,7 @@ public final class GitHubConnectorsImpl implements GitHubConnectors {
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    public GitHubConnectorsImpl(
-        GitHubConnectorsClient innerClient,
+    public GitHubConnectorsImpl(GitHubConnectorsClient innerClient,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,20 +33,17 @@ public final class GitHubConnectorsImpl implements GitHubConnectors {
     }
 
     public PagedIterable<GitHubConnector> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<GitHubConnectorInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<GitHubConnectorInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new GitHubConnectorImpl(inner1, this.manager()));
     }
 
-    public Response<GitHubConnector> getByResourceGroupWithResponse(
-        String resourceGroupName, String gitHubConnectorName, Context context) {
-        Response<GitHubConnectorInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, gitHubConnectorName, context);
+    public Response<GitHubConnector> getByResourceGroupWithResponse(String resourceGroupName,
+        String gitHubConnectorName, Context context) {
+        Response<GitHubConnectorInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, gitHubConnectorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GitHubConnectorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -84,20 +80,13 @@ public final class GitHubConnectorsImpl implements GitHubConnectors {
     public GitHubConnector getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String gitHubConnectorName = Utils.getValueFromIdByName(id, "gitHubConnectors");
         if (gitHubConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, gitHubConnectorName, Context.NONE).getValue();
     }
@@ -105,20 +94,13 @@ public final class GitHubConnectorsImpl implements GitHubConnectors {
     public Response<GitHubConnector> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String gitHubConnectorName = Utils.getValueFromIdByName(id, "gitHubConnectors");
         if (gitHubConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, gitHubConnectorName, context);
     }
@@ -126,20 +108,13 @@ public final class GitHubConnectorsImpl implements GitHubConnectors {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String gitHubConnectorName = Utils.getValueFromIdByName(id, "gitHubConnectors");
         if (gitHubConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
         }
         this.delete(resourceGroupName, gitHubConnectorName, Context.NONE);
     }
@@ -147,20 +122,13 @@ public final class GitHubConnectorsImpl implements GitHubConnectors {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String gitHubConnectorName = Utils.getValueFromIdByName(id, "gitHubConnectors");
         if (gitHubConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gitHubConnectors'.", id)));
         }
         this.delete(resourceGroupName, gitHubConnectorName, context);
     }

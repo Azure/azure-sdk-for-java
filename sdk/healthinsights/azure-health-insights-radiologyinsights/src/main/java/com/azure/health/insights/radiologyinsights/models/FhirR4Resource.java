@@ -52,7 +52,9 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
     private String language;
 
     /*
-     * Additional properties
+     * Resource is the ancestor of DomainResource from which most resources are derived. Bundle, Parameters, and Binary
+     * extend Resource directly.
+     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html
      */
     @Generated
     private Map<String, Object> additionalProperties;
@@ -166,7 +168,9 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
     }
 
     /**
-     * Get the additionalProperties property: Additional properties.
+     * Get the additionalProperties property: Resource is the ancestor of DomainResource from which most resources are
+     * derived. Bundle, Parameters, and Binary extend Resource directly.
+     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
      *
      * @return the additionalProperties value.
      */
@@ -176,7 +180,9 @@ public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
     }
 
     /**
-     * Set the additionalProperties property: Additional properties.
+     * Set the additionalProperties property: Resource is the ancestor of DomainResource from which most resources are
+     * derived. Bundle, Parameters, and Binary extend Resource directly.
+     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the FhirR4Resource object itself.

@@ -33,14 +33,13 @@ public final class ManageFunctionAppBasic {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
-        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
-        final String rg1Name        = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
-        final String rg2Name        = Utils.randomResourceName(azureResourceManager, "rg2NEMV_", 24);
+        final String app1Name = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String rg1Name = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String rg2Name = Utils.randomResourceName(azureResourceManager, "rg2NEMV_", 24);
 
         try {
-
 
             //============================================================
             // Create a function app with a new app service plan
@@ -48,10 +47,10 @@ public final class ManageFunctionAppBasic {
             System.out.println("Creating function app " + app1Name + " in resource group " + rg1Name + "...");
 
             FunctionApp app1 = azureResourceManager.functionApps()
-                    .define(app1Name)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rg1Name)
-                    .create();
+                .define(app1Name)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rg1Name)
+                .create();
 
             System.out.println("Created function app " + app1.name());
             Utils.print(app1);
@@ -62,11 +61,11 @@ public final class ManageFunctionAppBasic {
             System.out.println("Creating another function app " + app2Name + " in resource group " + rg1Name + "...");
             AppServicePlan plan = azureResourceManager.appServicePlans().getById(app1.appServicePlanId());
             FunctionApp app2 = azureResourceManager.functionApps()
-                    .define(app2Name)
-                    .withRegion(Region.US_WEST)
-                    .withExistingResourceGroup(rg1Name)
-                    .withNewAppServicePlan(PricingTier.BASIC_B1)
-                    .create();
+                .define(app2Name)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rg1Name)
+                .withNewAppServicePlan(PricingTier.BASIC_B1)
+                .create();
 
             System.out.println("Created function app " + app2.name());
             Utils.print(app2);
@@ -77,10 +76,10 @@ public final class ManageFunctionAppBasic {
 
             System.out.println("Creating another function app " + app3Name + " in resource group " + rg2Name + "...");
             FunctionApp app3 = azureResourceManager.functionApps()
-                    .define(app3Name)
-                    .withExistingAppServicePlan(plan)
-                    .withNewResourceGroup(rg2Name)
-                    .create();
+                .define(app3Name)
+                .withExistingAppServicePlan(plan)
+                .withNewResourceGroup(rg2Name)
+                .create();
 
             System.out.println("Created function app " + app3.name());
             Utils.print(app3);
@@ -158,11 +157,10 @@ public final class ManageFunctionAppBasic {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                    .configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credential, profile)
-                    .withDefaultSubscription();
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());

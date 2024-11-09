@@ -636,8 +636,10 @@ public final class ProxyArtifactsClientImpl implements ProxyArtifactsClient {
     public SyncPoller<PollResult<ProxyArtifactVersionsListOverviewInner>, ProxyArtifactVersionsListOverviewInner>
         beginUpdateState(String resourceGroupName, String publisherName, String artifactStoreName, String artifactName,
             String artifactVersionName, ArtifactChangeState parameters) {
-        return this.beginUpdateStateAsync(resourceGroupName, publisherName, artifactStoreName, artifactName,
-            artifactVersionName, parameters).getSyncPoller();
+        return this
+            .beginUpdateStateAsync(resourceGroupName, publisherName, artifactStoreName, artifactName,
+                artifactVersionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -659,8 +661,10 @@ public final class ProxyArtifactsClientImpl implements ProxyArtifactsClient {
     public SyncPoller<PollResult<ProxyArtifactVersionsListOverviewInner>, ProxyArtifactVersionsListOverviewInner>
         beginUpdateState(String resourceGroupName, String publisherName, String artifactStoreName, String artifactName,
             String artifactVersionName, ArtifactChangeState parameters, Context context) {
-        return this.beginUpdateStateAsync(resourceGroupName, publisherName, artifactStoreName, artifactName,
-            artifactVersionName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateStateAsync(resourceGroupName, publisherName, artifactStoreName, artifactName,
+                artifactVersionName, parameters, context)
+            .getSyncPoller();
     }
 
     /**

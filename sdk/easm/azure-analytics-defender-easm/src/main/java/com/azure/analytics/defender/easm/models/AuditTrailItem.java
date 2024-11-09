@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class AuditTrailItem implements JsonSerializable<AuditTrailItem> {
 
     /*
-     * The system generated unique id for the resource.
+     * This is typically the same as the name but might be different for different models.
      */
     @Generated
     private String id;
@@ -55,7 +55,7 @@ public final class AuditTrailItem implements JsonSerializable<AuditTrailItem> {
     }
 
     /**
-     * Get the id property: The system generated unique id for the resource.
+     * Get the id property: This is typically the same as the name but might be different for different models.
      *
      * @return the id value.
      */

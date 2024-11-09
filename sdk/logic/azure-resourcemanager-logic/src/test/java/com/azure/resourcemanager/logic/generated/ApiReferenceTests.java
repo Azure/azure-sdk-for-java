@@ -13,39 +13,35 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiReference model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"jnhgwydyyn\",\"description\":\"vkh\",\"iconUri\":\"vqtanarfdlpuk\",\"swagger\":\"datayrneizjcpeo\",\"brandColor\":\"hnmgbroux\",\"category\":\"Premium\",\"integrationServiceEnvironment\":{\"id\":\"hpfpazjzoywjxhp\",\"name\":\"lontacnpq\",\"type\":\"ehtuevrhr\"},\"id\":\"yoogw\",\"name\":\"nsduugwbsre\",\"type\":\"fqkfuarenl\"}")
-                .toObject(ApiReference.class);
-        Assertions.assertEquals("yoogw", model.id());
-        Assertions.assertEquals("jnhgwydyyn", model.displayName());
-        Assertions.assertEquals("vkh", model.description());
-        Assertions.assertEquals("vqtanarfdlpuk", model.iconUri());
-        Assertions.assertEquals("hnmgbroux", model.brandColor());
-        Assertions.assertEquals(ApiTier.PREMIUM, model.category());
-        Assertions.assertEquals("hpfpazjzoywjxhp", model.integrationServiceEnvironment().id());
+        ApiReference model = BinaryData.fromString(
+            "{\"displayName\":\"ykzzugctygbb\",\"description\":\"mljvv\",\"iconUri\":\"smwojm\",\"swagger\":\"datac\",\"brandColor\":\"mnrut\",\"category\":\"Standard\",\"integrationServiceEnvironment\":{\"id\":\"jftvltj\",\"name\":\"ecvpkbzltno\",\"type\":\"ajfhxsmubbzadz\"},\"id\":\"muuzpsuhsypx\",\"name\":\"ldhfrerkqpyf\",\"type\":\"kbyws\"}")
+            .toObject(ApiReference.class);
+        Assertions.assertEquals("muuzpsuhsypx", model.id());
+        Assertions.assertEquals("ykzzugctygbb", model.displayName());
+        Assertions.assertEquals("mljvv", model.description());
+        Assertions.assertEquals("smwojm", model.iconUri());
+        Assertions.assertEquals("mnrut", model.brandColor());
+        Assertions.assertEquals(ApiTier.STANDARD, model.category());
+        Assertions.assertEquals("jftvltj", model.integrationServiceEnvironment().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiReference model =
-            new ApiReference()
-                .withId("yoogw")
-                .withDisplayName("jnhgwydyyn")
-                .withDescription("vkh")
-                .withIconUri("vqtanarfdlpuk")
-                .withSwagger("datayrneizjcpeo")
-                .withBrandColor("hnmgbroux")
-                .withCategory(ApiTier.PREMIUM)
-                .withIntegrationServiceEnvironment(new ResourceReference().withId("hpfpazjzoywjxhp"));
+        ApiReference model = new ApiReference().withId("muuzpsuhsypx")
+            .withDisplayName("ykzzugctygbb")
+            .withDescription("mljvv")
+            .withIconUri("smwojm")
+            .withSwagger("datac")
+            .withBrandColor("mnrut")
+            .withCategory(ApiTier.STANDARD)
+            .withIntegrationServiceEnvironment(new ResourceReference().withId("jftvltj"));
         model = BinaryData.fromObject(model).toObject(ApiReference.class);
-        Assertions.assertEquals("yoogw", model.id());
-        Assertions.assertEquals("jnhgwydyyn", model.displayName());
-        Assertions.assertEquals("vkh", model.description());
-        Assertions.assertEquals("vqtanarfdlpuk", model.iconUri());
-        Assertions.assertEquals("hnmgbroux", model.brandColor());
-        Assertions.assertEquals(ApiTier.PREMIUM, model.category());
-        Assertions.assertEquals("hpfpazjzoywjxhp", model.integrationServiceEnvironment().id());
+        Assertions.assertEquals("muuzpsuhsypx", model.id());
+        Assertions.assertEquals("ykzzugctygbb", model.displayName());
+        Assertions.assertEquals("mljvv", model.description());
+        Assertions.assertEquals("smwojm", model.iconUri());
+        Assertions.assertEquals("mnrut", model.brandColor());
+        Assertions.assertEquals(ApiTier.STANDARD, model.category());
+        Assertions.assertEquals("jftvltj", model.integrationServiceEnvironment().id());
     }
 }

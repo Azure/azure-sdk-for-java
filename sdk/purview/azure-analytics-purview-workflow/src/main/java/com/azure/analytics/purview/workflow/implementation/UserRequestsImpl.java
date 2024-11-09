@@ -41,8 +41,8 @@ public final class UserRequestsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     UserRequestsImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(UserRequestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(UserRequestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,44 +54,24 @@ public final class UserRequestsImpl {
     @ServiceInterface(name = "PurviewWorkflowUserR")
     public interface UserRequestsService {
         @Post("/userrequests")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> submit(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData userRequestsPayload,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> submit(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData userRequestsPayload,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/userrequests")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> submitSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData userRequestsPayload,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> submitSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData userRequestsPayload,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -142,18 +122,11 @@ public final class UserRequestsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> submitWithResponseAsync(
-            BinaryData userRequestsPayload, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> submitWithResponseAsync(BinaryData userRequestsPayload,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.submit(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                userRequestsPayload,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.submit(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), userRequestsPayload, accept, requestOptions, context));
     }
 
     /**
@@ -205,12 +178,7 @@ public final class UserRequestsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> submitWithResponse(BinaryData userRequestsPayload, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.submitSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                userRequestsPayload,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.submitSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            userRequestsPayload, accept, requestOptions, Context.NONE);
     }
 }

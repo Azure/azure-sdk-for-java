@@ -6,64 +6,38 @@ package com.azure.resourcemanager.powerbidedicated.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager;
+import com.azure.resourcemanager.powerbidedicated.models.CapacitySkuTier;
 import com.azure.resourcemanager.powerbidedicated.models.SkuEnumerationForExistingResourceResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class CapacitiesListSkusForCapacityWithResponseMockTests {
     @Test
     public void testListSkusForCapacityWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"resourceType\":\"uahaquhcdhmd\",\"sku\":{\"name\":\"laexqp\",\"tier\":\"PBIE_Azure\",\"capacity\":1087061022}},{\"resourceType\":\"sr\",\"sku\":{\"name\":\"gvxp\",\"tier\":\"Premium\",\"capacity\":1677729561}},{\"resourceType\":\"fmisg\",\"sku\":{\"name\":\"nbbelda\",\"tier\":\"PBIE_Azure\",\"capacity\":585337534}}]}";
 
-        String responseStr = "{\"value\":[{\"resourceType\":\"skrdqmhjj\"},{\"resourceType\":\"ldwkyzxuutkn\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PowerBIDedicatedManager manager = PowerBIDedicatedManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        SkuEnumerationForExistingResourceResult response = manager.capacities()
+            .listSkusForCapacityWithResponse("kv", "melmqkrha", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        PowerBIDedicatedManager manager =
-            PowerBIDedicatedManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        SkuEnumerationForExistingResourceResult response =
-            manager
-                .capacities()
-                .listSkusForCapacityWithResponse("eojnabc", "hsmtxpsiebtfhvp", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("skrdqmhjj", response.value().get(0).resourceType());
+        Assertions.assertEquals("uahaquhcdhmd", response.value().get(0).resourceType());
+        Assertions.assertEquals("laexqp", response.value().get(0).sku().name());
+        Assertions.assertEquals(CapacitySkuTier.PBIE_AZURE, response.value().get(0).sku().tier());
+        Assertions.assertEquals(1087061022, response.value().get(0).sku().capacity());
     }
 }

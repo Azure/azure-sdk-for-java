@@ -16,9 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * The implementation of Subscriptions.
  */
-public final class SubscriptionsImpl
-        extends SupportsGettingByIdImpl<Subscription>
-        implements Subscriptions {
+public final class SubscriptionsImpl extends SupportsGettingByIdImpl<Subscription> implements Subscriptions {
     private final SubscriptionsClient client;
 
     public SubscriptionsImpl(final SubscriptionsClient client) {
@@ -30,11 +28,9 @@ public final class SubscriptionsImpl
         return PagedConverter.mapPage(client.list(), inner -> wrapModel(inner));
     }
 
-
     @Override
     public Mono<Subscription> getByIdAsync(String id) {
-        return client.getAsync(id)
-                .map(inner -> wrapModel(inner));
+        return client.getAsync(id).map(inner -> wrapModel(inner));
     }
 
     @Override

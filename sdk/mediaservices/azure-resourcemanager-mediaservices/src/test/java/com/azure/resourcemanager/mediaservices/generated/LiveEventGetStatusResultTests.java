@@ -8,8 +8,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventStatusInner;
 import com.azure.resourcemanager.mediaservices.models.LiveEventGetStatusResult;
 import com.azure.resourcemanager.mediaservices.models.LiveEventHealthStatus;
+import com.azure.resourcemanager.mediaservices.models.LiveEventIngestInterruption;
 import com.azure.resourcemanager.mediaservices.models.LiveEventIngestion;
 import com.azure.resourcemanager.mediaservices.models.LiveEventState;
+import com.azure.resourcemanager.mediaservices.models.LiveEventTrackStatus;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,49 +20,208 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventGetStatusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventGetStatusResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"state\":\"Stopped\",\"healthStatus\":\"Poor\",\"healthDescriptions\":[\"osytxitcskfckt\",\"umiekkezzi\",\"hlyfjhdgqgg\"],\"lastUpdatedTime\":\"2021-09-22T21:29:13Z\",\"ingestion\":{\"streamName\":\"ygaeqidbqfatpxl\",\"begin\":\"2021-09-20T22:01:43Z\",\"end\":\"2021-08-27T05:14:18Z\",\"endReason\":\"moadsuvarmy\",\"ingestInterruptions\":[]},\"trackStatus\":[]}]}")
-                .toObject(LiveEventGetStatusResult.class);
+        LiveEventGetStatusResult model = BinaryData.fromString(
+            "{\"value\":[{\"state\":\"Stopped\",\"healthStatus\":\"Poor\",\"healthDescriptions\":[\"mvdk\",\"wynwcvtbvkayhm\",\"nvyq\",\"atkzwpcnpw\"],\"lastUpdatedTime\":\"2021-02-07T21:37:46Z\",\"ingestion\":{\"streamName\":\"sgvvsccyajguq\",\"begin\":\"2021-04-26T06:49:27Z\",\"end\":\"2021-07-19T23:39:28Z\",\"endReason\":\"lvdnkfx\",\"ingestInterruptions\":[{\"begin\":\"2021-03-12T00:04:56Z\",\"end\":\"2021-08-29T19:46:14Z\",\"duration\":\"PT200H57M23S\",\"reason\":\"hapfcqdpsqx\"},{\"begin\":\"2021-11-19T21:08:55Z\",\"end\":\"2021-06-15T01:28:22Z\",\"duration\":\"PT60H11M6S\",\"reason\":\"mgccelvezrypq\"},{\"begin\":\"2021-06-02T23:04:04Z\",\"end\":\"2021-09-01T12:22:40Z\",\"duration\":\"PT167H18M32S\",\"reason\":\"qwkyhkobop\"},{\"begin\":\"2021-07-02T06:13:59Z\",\"end\":\"2021-07-27T08:14:55Z\",\"duration\":\"PT215H23M58S\",\"reason\":\"pbqpcrfkbwccsn\"}]},\"trackStatus\":[{\"trackId\":\"wxlp\",\"expectedBitrate\":4298951756179003593,\"incomingBitrate\":2759135928647207794,\"ingestDrift\":\"tjsyin\",\"requestReceived\":1253785666463411270,\"requestSucceeded\":6141451154217364363},{\"trackId\":\"dhtmdvypgikd\",\"expectedBitrate\":5584752554873411259,\"incomingBitrate\":4158814597266036765,\"ingestDrift\":\"rryuzhlhkjo\",\"requestReceived\":4919183097301965754,\"requestSucceeded\":7625693079339079757}]},{\"state\":\"Running\",\"healthStatus\":\"Excellent\",\"healthDescriptions\":[\"goupmfiibfg\",\"jioolvrwxk\"],\"lastUpdatedTime\":\"2021-07-25T08:46:43Z\",\"ingestion\":{\"streamName\":\"llqwjygvjayvblmh\",\"begin\":\"2021-07-26T11:14:50Z\",\"end\":\"2021-12-10T06:42:49Z\",\"endReason\":\"vvyhg\",\"ingestInterruptions\":[{\"begin\":\"2020-12-29T01:37:17Z\",\"end\":\"2021-10-16T16:37:11Z\",\"duration\":\"PT120H6M10S\",\"reason\":\"g\"},{\"begin\":\"2021-08-31T05:13:54Z\",\"end\":\"2021-05-27T11:14:40Z\",\"duration\":\"PT119H49M31S\",\"reason\":\"hlmctlpdngitvgb\"},{\"begin\":\"2021-02-28T20:17:33Z\",\"end\":\"2021-11-01T19:35:32Z\",\"duration\":\"PT52M30S\",\"reason\":\"yijejvegrhbpnaix\"}]},\"trackStatus\":[{\"trackId\":\"b\",\"expectedBitrate\":8403368888072156144,\"incomingBitrate\":1689934225834062034,\"ingestDrift\":\"xdrrvqahqkghtp\",\"requestReceived\":8990861200523064830,\"requestSucceeded\":7281556032761439360},{\"trackId\":\"vfycxzb\",\"expectedBitrate\":6720131909300742836,\"incomingBitrate\":6150561313391577743,\"ingestDrift\":\"mtg\",\"requestReceived\":7544016699514237803,\"requestSucceeded\":7932136629726527025}]},{\"state\":\"Running\",\"healthStatus\":\"Good\",\"healthDescriptions\":[\"yhgfipnsx\",\"mcwaekrrjr\",\"afxtsgum\",\"jglikkxwslolb\"],\"lastUpdatedTime\":\"2021-11-05T04:06:51Z\",\"ingestion\":{\"streamName\":\"lmv\",\"begin\":\"2021-09-26T11:18:34Z\",\"end\":\"2021-02-14T03:18:31Z\",\"endReason\":\"gplcrpwjxeznoigb\",\"ingestInterruptions\":[{\"begin\":\"2021-03-28T01:41:30Z\",\"end\":\"2021-04-19T12:13:28Z\",\"duration\":\"PT50H28M23S\",\"reason\":\"saz\"},{\"begin\":\"2021-11-02T03:52:01Z\",\"end\":\"2021-11-25T01:25:04Z\",\"duration\":\"PT41H2M56S\",\"reason\":\"fhsxttaugz\"},{\"begin\":\"2021-09-02T06:20:49Z\",\"end\":\"2021-07-17T11:57:02Z\",\"duration\":\"PT107H50M19S\",\"reason\":\"dtnkdmkq\"}]},\"trackStatus\":[{\"trackId\":\"uenvrkp\",\"expectedBitrate\":4937898817473869392,\"incomingBitrate\":2507963657261590571,\"ingestDrift\":\"bqaays\",\"requestReceived\":4730808453835982164,\"requestSucceeded\":7140575270916874234},{\"trackId\":\"ttezlw\",\"expectedBitrate\":1628963835024142931,\"incomingBitrate\":3086933290402300840,\"ingestDrift\":\"pqqmted\",\"requestReceived\":4417313243230783512,\"requestSucceeded\":2185926262396381637},{\"trackId\":\"eozphv\",\"expectedBitrate\":7562585136473490528,\"incomingBitrate\":4404884666059686122,\"ingestDrift\":\"gupkvipmdscwxq\",\"requestReceived\":8585277570550493793,\"requestSucceeded\":8054236919267235387}]},{\"state\":\"Running\",\"healthStatus\":\"Poor\",\"healthDescriptions\":[\"ojujbyp\",\"lmcuvhixb\",\"xyfwnylrcool\",\"ttpkiwkkbnujrywv\"],\"lastUpdatedTime\":\"2021-04-08T10:27:26Z\",\"ingestion\":{\"streamName\":\"pncur\",\"begin\":\"2021-10-16T01:33:12Z\",\"end\":\"2021-04-03T12:46:32Z\",\"endReason\":\"thtywub\",\"ingestInterruptions\":[{\"begin\":\"2021-08-12T00:10:56Z\",\"end\":\"2021-06-22T16:42:48Z\",\"duration\":\"PT56H33M52S\",\"reason\":\"dntwjchrdgo\"},{\"begin\":\"2021-11-25T00:54:53Z\",\"end\":\"2021-10-03T14:03:48Z\",\"duration\":\"PT140H11M12S\",\"reason\":\"ond\"},{\"begin\":\"2021-03-20T06:57:53Z\",\"end\":\"2021-04-03T13:31:04Z\",\"duration\":\"PT222H38M19S\",\"reason\":\"lwg\"}]},\"trackStatus\":[{\"trackId\":\"bwtovvtgseinqf\",\"expectedBitrate\":6734659731435196078,\"incomingBitrate\":5253220351456231952,\"ingestDrift\":\"irgne\",\"requestReceived\":7308969915106347578,\"requestSucceeded\":7094966123838230661},{\"trackId\":\"iffcdmqnrojlpijn\",\"expectedBitrate\":4906118574644662043,\"incomingBitrate\":2669373350654837958,\"ingestDrift\":\"c\",\"requestReceived\":4111800259460709639,\"requestSucceeded\":1785138669938342162},{\"trackId\":\"nasx\",\"expectedBitrate\":6179205416301149482,\"incomingBitrate\":5181737987441817400,\"ingestDrift\":\"hftwesgog\",\"requestReceived\":7235552413935457839,\"requestSucceeded\":8192981272541420643}]}]}")
+            .toObject(LiveEventGetStatusResult.class);
         Assertions.assertEquals(LiveEventState.STOPPED, model.value().get(0).state());
         Assertions.assertEquals(LiveEventHealthStatus.POOR, model.value().get(0).healthStatus());
-        Assertions.assertEquals("osytxitcskfckt", model.value().get(0).healthDescriptions().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-22T21:29:13Z"), model.value().get(0).lastUpdatedTime());
-        Assertions.assertEquals("ygaeqidbqfatpxl", model.value().get(0).ingestion().streamName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T22:01:43Z"), model.value().get(0).ingestion().begin());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T05:14:18Z"), model.value().get(0).ingestion().end());
-        Assertions.assertEquals("moadsuvarmy", model.value().get(0).ingestion().endReason());
+        Assertions.assertEquals("mvdk", model.value().get(0).healthDescriptions().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T21:37:46Z"), model.value().get(0).lastUpdatedTime());
+        Assertions.assertEquals("sgvvsccyajguq", model.value().get(0).ingestion().streamName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T06:49:27Z"), model.value().get(0).ingestion().begin());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T23:39:28Z"), model.value().get(0).ingestion().end());
+        Assertions.assertEquals("lvdnkfx", model.value().get(0).ingestion().endReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T00:04:56Z"),
+            model.value().get(0).ingestion().ingestInterruptions().get(0).begin());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T19:46:14Z"),
+            model.value().get(0).ingestion().ingestInterruptions().get(0).end());
+        Assertions.assertEquals(Duration.parse("PT200H57M23S"),
+            model.value().get(0).ingestion().ingestInterruptions().get(0).duration());
+        Assertions.assertEquals("hapfcqdpsqx", model.value().get(0).ingestion().ingestInterruptions().get(0).reason());
+        Assertions.assertEquals("wxlp", model.value().get(0).trackStatus().get(0).trackId());
+        Assertions.assertEquals(4298951756179003593L, model.value().get(0).trackStatus().get(0).expectedBitrate());
+        Assertions.assertEquals(2759135928647207794L, model.value().get(0).trackStatus().get(0).incomingBitrate());
+        Assertions.assertEquals("tjsyin", model.value().get(0).trackStatus().get(0).ingestDrift());
+        Assertions.assertEquals(1253785666463411270L, model.value().get(0).trackStatus().get(0).requestReceived());
+        Assertions.assertEquals(6141451154217364363L, model.value().get(0).trackStatus().get(0).requestSucceeded());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventGetStatusResult model =
-            new LiveEventGetStatusResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LiveEventStatusInner()
-                                .withState(LiveEventState.STOPPED)
-                                .withHealthStatus(LiveEventHealthStatus.POOR)
-                                .withHealthDescriptions(Arrays.asList("osytxitcskfckt", "umiekkezzi", "hlyfjhdgqgg"))
-                                .withLastUpdatedTime(OffsetDateTime.parse("2021-09-22T21:29:13Z"))
-                                .withIngestion(
-                                    new LiveEventIngestion()
-                                        .withStreamName("ygaeqidbqfatpxl")
-                                        .withBegin(OffsetDateTime.parse("2021-09-20T22:01:43Z"))
-                                        .withEnd(OffsetDateTime.parse("2021-08-27T05:14:18Z"))
-                                        .withEndReason("moadsuvarmy")
-                                        .withIngestInterruptions(Arrays.asList()))
-                                .withTrackStatus(Arrays.asList())));
+        LiveEventGetStatusResult model = new LiveEventGetStatusResult().withValue(Arrays.asList(
+            new LiveEventStatusInner().withState(LiveEventState.STOPPED)
+                .withHealthStatus(LiveEventHealthStatus.POOR)
+                .withHealthDescriptions(Arrays.asList("mvdk", "wynwcvtbvkayhm", "nvyq", "atkzwpcnpw"))
+                .withLastUpdatedTime(OffsetDateTime.parse("2021-02-07T21:37:46Z"))
+                .withIngestion(new LiveEventIngestion().withStreamName("sgvvsccyajguq")
+                    .withBegin(OffsetDateTime.parse("2021-04-26T06:49:27Z"))
+                    .withEnd(OffsetDateTime.parse("2021-07-19T23:39:28Z"))
+                    .withEndReason("lvdnkfx")
+                    .withIngestInterruptions(Arrays.asList(
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-03-12T00:04:56Z"))
+                            .withEnd(OffsetDateTime.parse("2021-08-29T19:46:14Z"))
+                            .withDuration(Duration.parse("PT200H57M23S"))
+                            .withReason("hapfcqdpsqx"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-11-19T21:08:55Z"))
+                            .withEnd(OffsetDateTime.parse("2021-06-15T01:28:22Z"))
+                            .withDuration(Duration.parse("PT60H11M6S"))
+                            .withReason("mgccelvezrypq"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-06-02T23:04:04Z"))
+                            .withEnd(OffsetDateTime.parse("2021-09-01T12:22:40Z"))
+                            .withDuration(Duration.parse("PT167H18M32S"))
+                            .withReason("qwkyhkobop"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-07-02T06:13:59Z"))
+                            .withEnd(OffsetDateTime.parse("2021-07-27T08:14:55Z"))
+                            .withDuration(Duration.parse("PT215H23M58S"))
+                            .withReason("pbqpcrfkbwccsn"))))
+                .withTrackStatus(Arrays.asList(
+                    new LiveEventTrackStatus().withTrackId("wxlp")
+                        .withExpectedBitrate(4298951756179003593L)
+                        .withIncomingBitrate(2759135928647207794L)
+                        .withIngestDrift("tjsyin")
+                        .withRequestReceived(1253785666463411270L)
+                        .withRequestSucceeded(6141451154217364363L),
+                    new LiveEventTrackStatus().withTrackId("dhtmdvypgikd")
+                        .withExpectedBitrate(5584752554873411259L)
+                        .withIncomingBitrate(4158814597266036765L)
+                        .withIngestDrift("rryuzhlhkjo")
+                        .withRequestReceived(4919183097301965754L)
+                        .withRequestSucceeded(7625693079339079757L))),
+            new LiveEventStatusInner().withState(LiveEventState.RUNNING)
+                .withHealthStatus(LiveEventHealthStatus.EXCELLENT)
+                .withHealthDescriptions(Arrays.asList("goupmfiibfg", "jioolvrwxk"))
+                .withLastUpdatedTime(OffsetDateTime.parse("2021-07-25T08:46:43Z"))
+                .withIngestion(new LiveEventIngestion().withStreamName("llqwjygvjayvblmh")
+                    .withBegin(OffsetDateTime.parse("2021-07-26T11:14:50Z"))
+                    .withEnd(OffsetDateTime.parse("2021-12-10T06:42:49Z"))
+                    .withEndReason("vvyhg")
+                    .withIngestInterruptions(Arrays.asList(
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2020-12-29T01:37:17Z"))
+                            .withEnd(OffsetDateTime.parse("2021-10-16T16:37:11Z"))
+                            .withDuration(Duration.parse("PT120H6M10S"))
+                            .withReason("g"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-08-31T05:13:54Z"))
+                            .withEnd(OffsetDateTime.parse("2021-05-27T11:14:40Z"))
+                            .withDuration(Duration.parse("PT119H49M31S"))
+                            .withReason("hlmctlpdngitvgb"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-02-28T20:17:33Z"))
+                            .withEnd(OffsetDateTime.parse("2021-11-01T19:35:32Z"))
+                            .withDuration(Duration.parse("PT52M30S"))
+                            .withReason("yijejvegrhbpnaix"))))
+                .withTrackStatus(Arrays.asList(
+                    new LiveEventTrackStatus().withTrackId("b")
+                        .withExpectedBitrate(8403368888072156144L)
+                        .withIncomingBitrate(1689934225834062034L)
+                        .withIngestDrift("xdrrvqahqkghtp")
+                        .withRequestReceived(8990861200523064830L)
+                        .withRequestSucceeded(7281556032761439360L),
+                    new LiveEventTrackStatus().withTrackId("vfycxzb")
+                        .withExpectedBitrate(6720131909300742836L)
+                        .withIncomingBitrate(6150561313391577743L)
+                        .withIngestDrift("mtg")
+                        .withRequestReceived(7544016699514237803L)
+                        .withRequestSucceeded(7932136629726527025L))),
+            new LiveEventStatusInner().withState(LiveEventState.RUNNING)
+                .withHealthStatus(LiveEventHealthStatus.GOOD)
+                .withHealthDescriptions(Arrays.asList("yhgfipnsx", "mcwaekrrjr", "afxtsgum", "jglikkxwslolb"))
+                .withLastUpdatedTime(OffsetDateTime.parse("2021-11-05T04:06:51Z"))
+                .withIngestion(new LiveEventIngestion().withStreamName("lmv")
+                    .withBegin(OffsetDateTime.parse("2021-09-26T11:18:34Z"))
+                    .withEnd(OffsetDateTime.parse("2021-02-14T03:18:31Z"))
+                    .withEndReason("gplcrpwjxeznoigb")
+                    .withIngestInterruptions(Arrays.asList(
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-03-28T01:41:30Z"))
+                            .withEnd(OffsetDateTime.parse("2021-04-19T12:13:28Z"))
+                            .withDuration(Duration.parse("PT50H28M23S"))
+                            .withReason("saz"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-11-02T03:52:01Z"))
+                            .withEnd(OffsetDateTime.parse("2021-11-25T01:25:04Z"))
+                            .withDuration(Duration.parse("PT41H2M56S"))
+                            .withReason("fhsxttaugz"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-09-02T06:20:49Z"))
+                            .withEnd(OffsetDateTime.parse("2021-07-17T11:57:02Z"))
+                            .withDuration(Duration.parse("PT107H50M19S"))
+                            .withReason("dtnkdmkq"))))
+                .withTrackStatus(Arrays.asList(
+                    new LiveEventTrackStatus().withTrackId("uenvrkp")
+                        .withExpectedBitrate(4937898817473869392L)
+                        .withIncomingBitrate(2507963657261590571L)
+                        .withIngestDrift("bqaays")
+                        .withRequestReceived(4730808453835982164L)
+                        .withRequestSucceeded(7140575270916874234L),
+                    new LiveEventTrackStatus().withTrackId("ttezlw")
+                        .withExpectedBitrate(1628963835024142931L)
+                        .withIncomingBitrate(3086933290402300840L)
+                        .withIngestDrift("pqqmted")
+                        .withRequestReceived(4417313243230783512L)
+                        .withRequestSucceeded(2185926262396381637L),
+                    new LiveEventTrackStatus().withTrackId("eozphv")
+                        .withExpectedBitrate(7562585136473490528L)
+                        .withIncomingBitrate(4404884666059686122L)
+                        .withIngestDrift("gupkvipmdscwxq")
+                        .withRequestReceived(8585277570550493793L)
+                        .withRequestSucceeded(8054236919267235387L))),
+            new LiveEventStatusInner().withState(LiveEventState.RUNNING)
+                .withHealthStatus(LiveEventHealthStatus.POOR)
+                .withHealthDescriptions(Arrays.asList("ojujbyp", "lmcuvhixb", "xyfwnylrcool", "ttpkiwkkbnujrywv"))
+                .withLastUpdatedTime(OffsetDateTime.parse("2021-04-08T10:27:26Z"))
+                .withIngestion(new LiveEventIngestion().withStreamName("pncur")
+                    .withBegin(OffsetDateTime.parse("2021-10-16T01:33:12Z"))
+                    .withEnd(OffsetDateTime.parse("2021-04-03T12:46:32Z"))
+                    .withEndReason("thtywub")
+                    .withIngestInterruptions(Arrays.asList(
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-08-12T00:10:56Z"))
+                            .withEnd(OffsetDateTime.parse("2021-06-22T16:42:48Z"))
+                            .withDuration(Duration.parse("PT56H33M52S"))
+                            .withReason("dntwjchrdgo"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-11-25T00:54:53Z"))
+                            .withEnd(OffsetDateTime.parse("2021-10-03T14:03:48Z"))
+                            .withDuration(Duration.parse("PT140H11M12S"))
+                            .withReason("ond"),
+                        new LiveEventIngestInterruption().withBegin(OffsetDateTime.parse("2021-03-20T06:57:53Z"))
+                            .withEnd(OffsetDateTime.parse("2021-04-03T13:31:04Z"))
+                            .withDuration(Duration.parse("PT222H38M19S"))
+                            .withReason("lwg"))))
+                .withTrackStatus(Arrays.asList(
+                    new LiveEventTrackStatus().withTrackId("bwtovvtgseinqf")
+                        .withExpectedBitrate(6734659731435196078L)
+                        .withIncomingBitrate(5253220351456231952L)
+                        .withIngestDrift("irgne")
+                        .withRequestReceived(7308969915106347578L)
+                        .withRequestSucceeded(7094966123838230661L),
+                    new LiveEventTrackStatus().withTrackId("iffcdmqnrojlpijn")
+                        .withExpectedBitrate(4906118574644662043L)
+                        .withIncomingBitrate(2669373350654837958L)
+                        .withIngestDrift("c")
+                        .withRequestReceived(4111800259460709639L)
+                        .withRequestSucceeded(1785138669938342162L),
+                    new LiveEventTrackStatus().withTrackId("nasx")
+                        .withExpectedBitrate(6179205416301149482L)
+                        .withIncomingBitrate(5181737987441817400L)
+                        .withIngestDrift("hftwesgog")
+                        .withRequestReceived(7235552413935457839L)
+                        .withRequestSucceeded(8192981272541420643L)))));
         model = BinaryData.fromObject(model).toObject(LiveEventGetStatusResult.class);
         Assertions.assertEquals(LiveEventState.STOPPED, model.value().get(0).state());
         Assertions.assertEquals(LiveEventHealthStatus.POOR, model.value().get(0).healthStatus());
-        Assertions.assertEquals("osytxitcskfckt", model.value().get(0).healthDescriptions().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-22T21:29:13Z"), model.value().get(0).lastUpdatedTime());
-        Assertions.assertEquals("ygaeqidbqfatpxl", model.value().get(0).ingestion().streamName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-20T22:01:43Z"), model.value().get(0).ingestion().begin());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T05:14:18Z"), model.value().get(0).ingestion().end());
-        Assertions.assertEquals("moadsuvarmy", model.value().get(0).ingestion().endReason());
+        Assertions.assertEquals("mvdk", model.value().get(0).healthDescriptions().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T21:37:46Z"), model.value().get(0).lastUpdatedTime());
+        Assertions.assertEquals("sgvvsccyajguq", model.value().get(0).ingestion().streamName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T06:49:27Z"), model.value().get(0).ingestion().begin());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T23:39:28Z"), model.value().get(0).ingestion().end());
+        Assertions.assertEquals("lvdnkfx", model.value().get(0).ingestion().endReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T00:04:56Z"),
+            model.value().get(0).ingestion().ingestInterruptions().get(0).begin());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T19:46:14Z"),
+            model.value().get(0).ingestion().ingestInterruptions().get(0).end());
+        Assertions.assertEquals(Duration.parse("PT200H57M23S"),
+            model.value().get(0).ingestion().ingestInterruptions().get(0).duration());
+        Assertions.assertEquals("hapfcqdpsqx", model.value().get(0).ingestion().ingestInterruptions().get(0).reason());
+        Assertions.assertEquals("wxlp", model.value().get(0).trackStatus().get(0).trackId());
+        Assertions.assertEquals(4298951756179003593L, model.value().get(0).trackStatus().get(0).expectedBitrate());
+        Assertions.assertEquals(2759135928647207794L, model.value().get(0).trackStatus().get(0).incomingBitrate());
+        Assertions.assertEquals("tjsyin", model.value().get(0).trackStatus().get(0).ingestDrift());
+        Assertions.assertEquals(1253785666463411270L, model.value().get(0).trackStatus().get(0).requestReceived());
+        Assertions.assertEquals(6141451154217364363L, model.value().get(0).trackStatus().get(0).requestSucceeded());
     }
 }

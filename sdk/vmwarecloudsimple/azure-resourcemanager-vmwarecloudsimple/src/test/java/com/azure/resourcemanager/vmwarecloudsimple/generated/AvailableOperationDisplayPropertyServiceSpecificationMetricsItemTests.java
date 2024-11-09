@@ -12,35 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableOperationDisplayPropertyServiceSpecificationMetricsItem model =
-            BinaryData
-                .fromString(
-                    "{\"aggregationType\":\"Total\",\"displayDescription\":\"uxinpmqnjaq\",\"displayName\":\"ixjsprozvcputeg\",\"name\":\"vwmf\",\"unit\":\"atscmd\"}")
-                .toObject(AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.class);
+        AvailableOperationDisplayPropertyServiceSpecificationMetricsItem model = BinaryData.fromString(
+            "{\"aggregationType\":\"Total\",\"displayDescription\":\"qedqytbciqfoufl\",\"displayName\":\"mnkzsmod\",\"name\":\"glougpbk\",\"unit\":\"tmut\"}")
+            .toObject(AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.class);
         Assertions.assertEquals(AggregationType.TOTAL, model.aggregationType());
-        Assertions.assertEquals("uxinpmqnjaq", model.displayDescription());
-        Assertions.assertEquals("ixjsprozvcputeg", model.displayName());
-        Assertions.assertEquals("vwmf", model.name());
-        Assertions.assertEquals("atscmd", model.unit());
+        Assertions.assertEquals("qedqytbciqfoufl", model.displayDescription());
+        Assertions.assertEquals("mnkzsmod", model.displayName());
+        Assertions.assertEquals("glougpbk", model.name());
+        Assertions.assertEquals("tmut", model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableOperationDisplayPropertyServiceSpecificationMetricsItem model =
-            new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+        AvailableOperationDisplayPropertyServiceSpecificationMetricsItem model
+            = new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
                 .withAggregationType(AggregationType.TOTAL)
-                .withDisplayDescription("uxinpmqnjaq")
-                .withDisplayName("ixjsprozvcputeg")
-                .withName("vwmf")
-                .withUnit("atscmd");
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.class);
+                .withDisplayDescription("qedqytbciqfoufl")
+                .withDisplayName("mnkzsmod")
+                .withName("glougpbk")
+                .withUnit("tmut");
+        model = BinaryData.fromObject(model)
+            .toObject(AvailableOperationDisplayPropertyServiceSpecificationMetricsItem.class);
         Assertions.assertEquals(AggregationType.TOTAL, model.aggregationType());
-        Assertions.assertEquals("uxinpmqnjaq", model.displayDescription());
-        Assertions.assertEquals("ixjsprozvcputeg", model.displayName());
-        Assertions.assertEquals("vwmf", model.name());
-        Assertions.assertEquals("atscmd", model.unit());
+        Assertions.assertEquals("qedqytbciqfoufl", model.displayDescription());
+        Assertions.assertEquals("mnkzsmod", model.displayName());
+        Assertions.assertEquals("glougpbk", model.name());
+        Assertions.assertEquals("tmut", model.unit());
     }
 }

@@ -8,33 +8,35 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Workflows. */
+/**
+ * Resource collection API of Workflows.
+ */
 public interface Workflows {
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows associated with the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of workflows associated with the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Workflow> list();
 
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows associated with the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of workflows associated with the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Workflow> list(Context context);
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +47,7 @@ public interface Workflows {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedClusterResource The ManagedCluster resource associated with the workflows.
      * @param context The context to associate with this operation.
@@ -54,12 +56,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workflows within a resource group as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Workflow> listByResourceGroup(
-        String resourceGroupName, String managedClusterResource, Context context);
+    PagedIterable<Workflow> listByResourceGroup(String resourceGroupName, String managedClusterResource,
+        Context context);
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
@@ -72,7 +74,7 @@ public interface Workflows {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,7 +86,7 @@ public interface Workflows {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
@@ -93,12 +95,12 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return delete response if content must be provided on delete operation along with {@link Response}.
      */
-    Response<DeleteWorkflowResponse> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String workflowName, Context context);
+    Response<DeleteWorkflowResponse> deleteByResourceGroupWithResponse(String resourceGroupName, String workflowName,
+        Context context);
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +112,7 @@ public interface Workflows {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,7 +123,7 @@ public interface Workflows {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,7 +135,7 @@ public interface Workflows {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +146,7 @@ public interface Workflows {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface Workflows {
 
     /**
      * Begins definition for a new Workflow resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Workflow definition.
      */

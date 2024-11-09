@@ -6,89 +6,65 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfo;
 import com.azure.resourcemanager.synapse.models.ConfigurationType;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BigDataPoolsDeleteMockTests {
     @Test
     public void testDelete() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoScale\":{\"minNodeCount\":1798907732,\"enabled\":true,\"maxNodeCount\":1590703182},\"creationDate\":\"2021-05-21T09:36:31Z\",\"autoPause\":{\"delayInMinutes\":57018790,\"enabled\":true},\"isComputeIsolationEnabled\":true,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":276745194,\"dynamicExecutorAllocation\":{\"enabled\":false,\"minExecutors\":407535743,\"maxExecutors\":1195854621},\"sparkEventsFolder\":\"huy\",\"nodeCount\":263838368,\"libraryRequirements\":{\"time\":\"2021-04-28T19:41:23Z\",\"content\":\"lnrj\",\"filename\":\"zdbuzici\"},\"customLibraries\":[{\"name\":\"qvgpnewuh\",\"path\":\"wjnoxuo\",\"containerName\":\"fnres\",\"uploadedTimestamp\":\"2021-06-28T19:51:59Z\",\"type\":\"gckncjmg\",\"provisioningStatus\":\"nvbt\",\"creatorId\":\"xfmj\"},{\"name\":\"jnhj\",\"path\":\"qllbsupubdxc\",\"containerName\":\"lhzwh\",\"uploadedTimestamp\":\"2021-03-30T00:05:16Z\",\"type\":\"bosjjfd\",\"provisioningStatus\":\"hrjqfyaytvslyek\",\"creatorId\":\"niuarlcjiwgsxfai\"},{\"name\":\"wd\",\"path\":\"jjgnfgr\",\"containerName\":\"barc\",\"uploadedTimestamp\":\"2021-05-24T07:18:13Z\",\"type\":\"fzqsymjwenjcytes\",\"provisioningStatus\":\"u\",\"creatorId\":\"tfodq\"},{\"name\":\"auzmzivrtrfzhhe\",\"path\":\"hjud\",\"containerName\":\"yy\",\"uploadedTimestamp\":\"2021-07-24T23:50:14Z\",\"type\":\"ahswtvdkxb\",\"provisioningStatus\":\"sgfenffdxb\",\"creatorId\":\"fqjchivdrij\"}],\"sparkConfigProperties\":{\"time\":\"2021-10-08T10:49:37Z\",\"content\":\"muvardlmzjot\",\"filename\":\"rmuhcuhtuzlx\",\"configurationType\":\"File\"},\"sparkVersion\":\"pgarpfctw\",\"defaultSparkLogFolder\":\"pczdojqyvze\",\"nodeSize\":\"Small\",\"nodeSizeFamily\":\"HardwareAcceleratedFPGA\",\"lastSucceededTimestamp\":\"2021-06-13T05:52:12Z\"},\"location\":\"jqyowaadc\",\"tags\":{\"undtsew\":\"za\"},\"id\":\"aupwhlzyckrem\",\"name\":\"jlm\",\"type\":\"vdorsirx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoScale\":{\"minNodeCount\":1849214480,\"enabled\":false,\"maxNodeCount\":1305807197},\"creationDate\":\"2021-06-14T14:12:10Z\",\"autoPause\":{\"delayInMinutes\":722501870,\"enabled\":true},\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":false,\"cacheSize\":1339035720,\"dynamicExecutorAllocation\":{\"enabled\":false,\"minExecutors\":585595148,\"maxExecutors\":1104081037},\"sparkEventsFolder\":\"xrdfddtu\",\"nodeCount\":1027095078,\"libraryRequirements\":{\"time\":\"2021-10-02T21:47:41Z\",\"content\":\"czcxdfw\",\"filename\":\"pyfml\"},\"customLibraries\":[],\"sparkConfigProperties\":{\"time\":\"2021-11-16T18:58:57Z\",\"content\":\"aspiflei\",\"filename\":\"x\",\"configurationType\":\"Artifact\"},\"sparkVersion\":\"gicehfgsmdr\",\"defaultSparkLogFolder\":\"qbpxt\",\"nodeSize\":\"Small\",\"nodeSizeFamily\":\"HardwareAcceleratedGPU\",\"lastSucceededTimestamp\":\"2021-11-09T19:32:01Z\"},\"location\":\"np\",\"tags\":{\"tyyqiprcltungb\":\"f\",\"kmii\":\"olj\",\"iiqqcqikclsmalns\":\"zbkuckgkdsksw\"},\"id\":\"woykdnonaaxwm\",\"name\":\"zrujlqcwnyn\",\"type\":\"lei\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        BigDataPoolResourceInfo response
+            = manager.bigDataPools().delete("zkgtzqn", "qsttewuvcysjeuf", "x", com.azure.core.util.Context.NONE);
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        BigDataPoolResourceInfo response =
-            manager.bigDataPools().delete("kftbaewhte", "loamfmxtllfltym", "cn", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("np", response.location());
-        Assertions.assertEquals("f", response.tags().get("tyyqiprcltungb"));
+        Assertions.assertEquals("jqyowaadc", response.location());
+        Assertions.assertEquals("za", response.tags().get("undtsew"));
         Assertions.assertEquals("Succeeded", response.provisioningState());
-        Assertions.assertEquals(1849214480, response.autoScale().minNodeCount());
-        Assertions.assertEquals(false, response.autoScale().enabled());
-        Assertions.assertEquals(1305807197, response.autoScale().maxNodeCount());
-        Assertions.assertEquals(722501870, response.autoPause().delayInMinutes());
+        Assertions.assertEquals(1798907732, response.autoScale().minNodeCount());
+        Assertions.assertEquals(true, response.autoScale().enabled());
+        Assertions.assertEquals(1590703182, response.autoScale().maxNodeCount());
+        Assertions.assertEquals(57018790, response.autoPause().delayInMinutes());
         Assertions.assertEquals(true, response.autoPause().enabled());
-        Assertions.assertEquals(false, response.isComputeIsolationEnabled());
+        Assertions.assertEquals(true, response.isComputeIsolationEnabled());
         Assertions.assertEquals(false, response.isAutotuneEnabled());
-        Assertions.assertEquals(false, response.sessionLevelPackagesEnabled());
+        Assertions.assertEquals(true, response.sessionLevelPackagesEnabled());
+        Assertions.assertEquals(276745194, response.cacheSize());
         Assertions.assertEquals(false, response.dynamicExecutorAllocation().enabled());
-        Assertions.assertEquals(585595148, response.dynamicExecutorAllocation().minExecutors());
-        Assertions.assertEquals(1104081037, response.dynamicExecutorAllocation().maxExecutors());
-        Assertions.assertEquals("xrdfddtu", response.sparkEventsFolder());
-        Assertions.assertEquals(1027095078, response.nodeCount());
-        Assertions.assertEquals("czcxdfw", response.libraryRequirements().content());
-        Assertions.assertEquals("pyfml", response.libraryRequirements().filename());
-        Assertions.assertEquals("aspiflei", response.sparkConfigProperties().content());
-        Assertions.assertEquals("x", response.sparkConfigProperties().filename());
-        Assertions.assertEquals(ConfigurationType.ARTIFACT, response.sparkConfigProperties().configurationType());
-        Assertions.assertEquals("gicehfgsmdr", response.sparkVersion());
-        Assertions.assertEquals("qbpxt", response.defaultSparkLogFolder());
+        Assertions.assertEquals(407535743, response.dynamicExecutorAllocation().minExecutors());
+        Assertions.assertEquals(1195854621, response.dynamicExecutorAllocation().maxExecutors());
+        Assertions.assertEquals("huy", response.sparkEventsFolder());
+        Assertions.assertEquals(263838368, response.nodeCount());
+        Assertions.assertEquals("lnrj", response.libraryRequirements().content());
+        Assertions.assertEquals("zdbuzici", response.libraryRequirements().filename());
+        Assertions.assertEquals("qvgpnewuh", response.customLibraries().get(0).name());
+        Assertions.assertEquals("wjnoxuo", response.customLibraries().get(0).path());
+        Assertions.assertEquals("fnres", response.customLibraries().get(0).containerName());
+        Assertions.assertEquals("gckncjmg", response.customLibraries().get(0).type());
+        Assertions.assertEquals("muvardlmzjot", response.sparkConfigProperties().content());
+        Assertions.assertEquals("rmuhcuhtuzlx", response.sparkConfigProperties().filename());
+        Assertions.assertEquals(ConfigurationType.FILE, response.sparkConfigProperties().configurationType());
+        Assertions.assertEquals("pgarpfctw", response.sparkVersion());
+        Assertions.assertEquals("pczdojqyvze", response.defaultSparkLogFolder());
         Assertions.assertEquals(NodeSize.SMALL, response.nodeSize());
-        Assertions.assertEquals(NodeSizeFamily.HARDWARE_ACCELERATED_GPU, response.nodeSizeFamily());
+        Assertions.assertEquals(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA, response.nodeSizeFamily());
     }
 }

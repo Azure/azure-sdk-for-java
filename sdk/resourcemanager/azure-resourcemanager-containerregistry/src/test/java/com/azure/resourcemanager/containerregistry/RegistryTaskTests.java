@@ -42,43 +42,39 @@ public class RegistryTaskTests extends RegistryTest {
         final String acrName = generateRandomResourceName("acr", 10);
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
         String taskFilePath = "Path to your task file that is relative to the githubRepoUrl";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         String taskName = generateRandomResourceName("ft", 10);
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineFileTaskStep()
-                .withTaskPath(taskFilePath)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineFileTaskStep()
+            .withTaskPath(taskFilePath)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
         RegistryFileTaskStep registryFileTaskStep = (RegistryFileTaskStep) registryTask.registryTaskStep();
 
@@ -119,44 +115,40 @@ public class RegistryTaskTests extends RegistryTest {
         final String acrName = generateRandomResourceName("acr", 10);
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
         String taskFilePath = "Path to your task file that is relative to the githubRepoUrl";
         String taskFileUpdatePath = "Path to your update task file that is relative to the githubRepoUrl";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         String taskName = generateRandomResourceName("ft", 10);
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineFileTaskStep()
-                .withTaskPath(taskFilePath)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineFileTaskStep()
+            .withTaskPath(taskFilePath)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
         registryTask.update().updateFileTaskStep().withTaskPath(taskFileUpdatePath).parent().apply();
 
@@ -209,44 +201,40 @@ public class RegistryTaskTests extends RegistryTest {
         final String acrName = generateRandomResourceName("acr", 10);
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
         String encodedTaskContent = "Base64 encoded task content";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         String taskName = generateRandomResourceName("ft", 10);
 
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineEncodedTaskStep()
-                .withBase64EncodedTaskContent(encodedTaskContent)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineEncodedTaskStep()
+            .withBase64EncodedTaskContent(encodedTaskContent)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
         RegistryEncodedTaskStep registryEncodedTaskStep = (RegistryEncodedTaskStep) registryTask.registryTaskStep();
 
@@ -287,48 +275,43 @@ public class RegistryTaskTests extends RegistryTest {
         final String acrName = generateRandomResourceName("acr", 10);
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
         String encodedTaskContent = "Base64 encoded task content";
         String encodedTaskContentUpdate = "Base64 encoded task content that we want to update to";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         String taskName = generateRandomResourceName("ft", 10);
 
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineEncodedTaskStep()
-                .withBase64EncodedTaskContent(encodedTaskContent)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineEncodedTaskStep()
+            .withBase64EncodedTaskContent(encodedTaskContent)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
-        registryTask
-            .update()
+        registryTask.update()
             .updateEncodedTaskStep()
             .withBase64EncodedTaskContent(encodedTaskContentUpdate)
             .parent()
@@ -383,47 +366,43 @@ public class RegistryTaskTests extends RegistryTest {
         final String acrName = generateRandomResourceName("acr", 10);
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
         String dockerFilePath = "Replace with your docker file path relative to githubContext, eg: Dockerfile";
         String imageName = "Replace with the name of your image.";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         String taskName = generateRandomResourceName("ft", 10);
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineDockerTaskStep()
-                .withDockerFilePath(dockerFilePath)
-                .withImageNames(Arrays.asList(imageName))
-                .withCacheEnabled(true)
-                .withPushEnabled(true)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineDockerTaskStep()
+            .withDockerFilePath(dockerFilePath)
+            .withImageNames(Arrays.asList(imageName))
+            .withCacheEnabled(true)
+            .withPushEnabled(true)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
         RegistryDockerTaskStep registryDockerTaskStep = (RegistryDockerTaskStep) registryTask.registryTaskStep();
 
@@ -473,53 +452,48 @@ public class RegistryTaskTests extends RegistryTest {
         final String acrName = generateRandomResourceName("acr", 10);
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
         String dockerFilePath = "Replace with your docker file path relative to githubContext, eg: Dockerfile";
-        String dockerFilePathUpdate =
-            "Replace this with your docker file path that you updated your registryTask to, if you did update your"
+        String dockerFilePathUpdate
+            = "Replace this with your docker file path that you updated your registryTask to, if you did update your"
                 + " docker file path";
         String imageName = "Replace with the name of your image.";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         String taskName = generateRandomResourceName("ft", 10);
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineDockerTaskStep()
-                .withDockerFilePath(dockerFilePath)
-                .withImageNames(Arrays.asList(imageName))
-                .withCacheEnabled(true)
-                .withPushEnabled(true)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineDockerTaskStep()
+            .withDockerFilePath(dockerFilePath)
+            .withImageNames(Arrays.asList(imageName))
+            .withCacheEnabled(true)
+            .withPushEnabled(true)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
-        registryTask
-            .update()
+        registryTask.update()
             .updateDockerTaskStep()
             .withDockerFilePath(dockerFilePathUpdate)
             .withCacheEnabled(false)
@@ -582,28 +556,24 @@ public class RegistryTaskTests extends RegistryTest {
         String sourceLocation = "https://github.com/Azure/acr.git";
         String taskFilePath = "samples/java/task/acb.yaml";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registry
-                .scheduleRun()
-                .withWindows()
-                .withFileTaskRunRequest()
-                .defineFileTaskStep()
-                .withTaskPath(taskFilePath)
-                .attach()
-                .withSourceLocation(sourceLocation)
-                .withArchiveEnabled(true)
-                .execute();
+        RegistryTaskRun registryTaskRun = registry.scheduleRun()
+            .withWindows()
+            .withFileTaskRunRequest()
+            .defineFileTaskStep()
+            .withTaskPath(taskFilePath)
+            .attach()
+            .withSourceLocation(sourceLocation)
+            .withArchiveEnabled(true)
+            .execute();
 
         registryTaskRun.refresh();
         Assertions.assertEquals(registry.resourceGroupName(), registryTaskRun.resourceGroupName());
@@ -611,8 +581,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTaskRun.isArchiveEnabled());
         Assertions.assertEquals(OS.WINDOWS, registryTaskRun.platform().os());
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
         Assertions.assertNotNull(registryTaskRunFromList.status());
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
@@ -629,30 +599,26 @@ public class RegistryTaskTests extends RegistryTest {
         String sourceLocation = "https://github.com/Azure/acr.git";
         String taskFilePath = "samples/java/task/acb.yaml";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registryManager
-                .registryTaskRuns()
-                .scheduleRun()
-                .withExistingRegistry(rgName, acrName)
-                .withLinux()
-                .withFileTaskRunRequest()
-                .defineFileTaskStep()
-                .withTaskPath(taskFilePath)
-                .attach()
-                .withSourceLocation(sourceLocation)
-                .withArchiveEnabled(true)
-                .execute();
+        RegistryTaskRun registryTaskRun = registryManager.registryTaskRuns()
+            .scheduleRun()
+            .withExistingRegistry(rgName, acrName)
+            .withLinux()
+            .withFileTaskRunRequest()
+            .defineFileTaskStep()
+            .withTaskPath(taskFilePath)
+            .attach()
+            .withSourceLocation(sourceLocation)
+            .withArchiveEnabled(true)
+            .execute();
 
         registryTaskRun.refresh();
         Assertions.assertEquals(registry.resourceGroupName(), registryTaskRun.resourceGroupName());
@@ -660,8 +626,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTaskRun.isArchiveEnabled());
         Assertions.assertEquals(OS.LINUX, registryTaskRun.platform().os());
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
         Assertions.assertTrue(registryTaskRunFromList.status() != null);
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
@@ -676,28 +642,24 @@ public class RegistryTaskTests extends RegistryTest {
         String sourceLocation = "https://github.com/Azure/acr.git";
         String encodedTaskContent = Base64.getEncoder().encodeToString(readTaskYaml());
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registry
-                .scheduleRun()
-                .withLinux()
-                .withEncodedTaskRunRequest()
-                .defineEncodedTaskStep()
-                .withBase64EncodedTaskContent(encodedTaskContent)
-                .attach()
-                .withSourceLocation(sourceLocation)
-                .withArchiveEnabled(true)
-                .execute();
+        RegistryTaskRun registryTaskRun = registry.scheduleRun()
+            .withLinux()
+            .withEncodedTaskRunRequest()
+            .defineEncodedTaskStep()
+            .withBase64EncodedTaskContent(encodedTaskContent)
+            .attach()
+            .withSourceLocation(sourceLocation)
+            .withArchiveEnabled(true)
+            .execute();
 
         registryTaskRun.refresh();
 
@@ -706,8 +668,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTaskRun.isArchiveEnabled());
         Assertions.assertEquals(OS.LINUX, registryTaskRun.platform().os());
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
         Assertions.assertTrue(registryTaskRunFromList.status() != null);
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
@@ -722,30 +684,26 @@ public class RegistryTaskTests extends RegistryTest {
         String sourceLocation = "https://github.com/Azure/acr.git#master:samples/java/task";
         String encodedTaskContent = Base64.getEncoder().encodeToString(readTaskYaml());
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registryManager
-                .registryTaskRuns()
-                .scheduleRun()
-                .withExistingRegistry(rgName, acrName)
-                .withLinux()
-                .withEncodedTaskRunRequest()
-                .defineEncodedTaskStep()
-                .withBase64EncodedTaskContent(encodedTaskContent)
-                .attach()
-                .withSourceLocation(sourceLocation)
-                .withArchiveEnabled(true)
-                .execute();
+        RegistryTaskRun registryTaskRun = registryManager.registryTaskRuns()
+            .scheduleRun()
+            .withExistingRegistry(rgName, acrName)
+            .withLinux()
+            .withEncodedTaskRunRequest()
+            .defineEncodedTaskStep()
+            .withBase64EncodedTaskContent(encodedTaskContent)
+            .attach()
+            .withSourceLocation(sourceLocation)
+            .withArchiveEnabled(true)
+            .execute();
 
         registryTaskRun.refresh();
 
@@ -754,8 +712,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTaskRun.isArchiveEnabled());
         Assertions.assertEquals(OS.LINUX, registryTaskRun.platform().os());
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
         Assertions.assertTrue(registryTaskRunFromList.status() != null);
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
@@ -771,31 +729,27 @@ public class RegistryTaskTests extends RegistryTest {
         String imageName = "test";
         String sourceLocation = "https://github.com/Azure/acr.git#master:samples/java/task";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registry
-                .scheduleRun()
-                .withLinux()
-                .withDockerTaskRunRequest()
-                .defineDockerTaskStep()
-                .withDockerFilePath(dockerFilePath)
-                .withImageNames(Arrays.asList(imageName))
-                .withCacheEnabled(true)
-                .withPushEnabled(true)
-                .attach()
-                .withSourceLocation(sourceLocation)
-                .withArchiveEnabled(true)
-                .execute();
+        RegistryTaskRun registryTaskRun = registry.scheduleRun()
+            .withLinux()
+            .withDockerTaskRunRequest()
+            .defineDockerTaskStep()
+            .withDockerFilePath(dockerFilePath)
+            .withImageNames(Arrays.asList(imageName))
+            .withCacheEnabled(true)
+            .withPushEnabled(true)
+            .attach()
+            .withSourceLocation(sourceLocation)
+            .withArchiveEnabled(true)
+            .execute();
 
         registryTaskRun.refresh();
         Assertions.assertEquals(registry.resourceGroupName(), registryTaskRun.resourceGroupName());
@@ -803,8 +757,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTaskRun.isArchiveEnabled());
         Assertions.assertEquals(OS.LINUX, registryTaskRun.platform().os());
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
         Assertions.assertTrue(registryTaskRunFromList.status() != null);
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
@@ -820,33 +774,29 @@ public class RegistryTaskTests extends RegistryTest {
         String imageName = "test";
         String sourceLocation = "https://github.com/Azure/acr.git#master:samples/java/task";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registryManager
-                .registryTaskRuns()
-                .scheduleRun()
-                .withExistingRegistry(rgName, acrName)
-                .withLinux()
-                .withDockerTaskRunRequest()
-                .defineDockerTaskStep()
-                .withDockerFilePath(dockerFilePath)
-                .withImageNames(Arrays.asList(imageName))
-                .withCacheEnabled(true)
-                .withPushEnabled(true)
-                .attach()
-                .withSourceLocation(sourceLocation)
-                .withArchiveEnabled(true)
-                .execute();
+        RegistryTaskRun registryTaskRun = registryManager.registryTaskRuns()
+            .scheduleRun()
+            .withExistingRegistry(rgName, acrName)
+            .withLinux()
+            .withDockerTaskRunRequest()
+            .defineDockerTaskStep()
+            .withDockerFilePath(dockerFilePath)
+            .withImageNames(Arrays.asList(imageName))
+            .withCacheEnabled(true)
+            .withPushEnabled(true)
+            .attach()
+            .withSourceLocation(sourceLocation)
+            .withArchiveEnabled(true)
+            .execute();
 
         registryTaskRun.refresh();
         Assertions.assertEquals(registry.resourceGroupName(), registryTaskRun.resourceGroupName());
@@ -855,8 +805,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTaskRun.isArchiveEnabled());
         Assertions.assertEquals(OS.LINUX, registryTaskRun.platform().os());
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
         Assertions.assertTrue(registryTaskRunFromList.status() != null);
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
@@ -874,47 +824,43 @@ public class RegistryTaskTests extends RegistryTest {
         String dockerFilePath = "Replace with your docker file path relative to githubContext, eg: Dockerfile";
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineDockerTaskStep()
-                .withDockerFilePath(dockerFilePath)
-                .withImageNames(Arrays.asList(imageName))
-                .withCacheEnabled(true)
-                .withPushEnabled(true)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineDockerTaskStep()
+            .withDockerFilePath(dockerFilePath)
+            .withImageNames(Arrays.asList(imageName))
+            .withCacheEnabled(true)
+            .withPushEnabled(true)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registry.scheduleRun().withTaskRunRequest(taskName).withArchiveEnabled(true).execute();
+        RegistryTaskRun registryTaskRun
+            = registry.scheduleRun().withTaskRunRequest(taskName).withArchiveEnabled(true).execute();
 
         boolean stillQueued = true;
         while (stillQueued) {
@@ -923,8 +869,7 @@ public class RegistryTaskTests extends RegistryTest {
                 stillQueued = false;
             }
             if (registryTaskRun.status() == RunStatus.FAILED) {
-                System
-                    .out
+                System.out
                     .println(registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId()));
                 stillQueued = false;
             }
@@ -937,8 +882,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTaskRun.isArchiveEnabled());
         Assertions.assertEquals(OS.LINUX, registryTaskRun.platform().os());
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
         Assertions.assertTrue(registryTaskRunFromList.status() != null);
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
@@ -956,54 +901,48 @@ public class RegistryTaskTests extends RegistryTest {
         String taskName = generateRandomResourceName("ft", 10);
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
         String dockerFilePath = "Replace with your docker file path relative to githubContext, eg: Dockerfile";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineDockerTaskStep()
-                .withDockerFilePath(dockerFilePath)
-                .withImageNames(Arrays.asList(imageName))
-                .withCacheEnabled(true)
-                .withPushEnabled(true)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineDockerTaskStep()
+            .withDockerFilePath(dockerFilePath)
+            .withImageNames(Arrays.asList(imageName))
+            .withCacheEnabled(true)
+            .withPushEnabled(true)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registryManager
-                .registryTaskRuns()
-                .scheduleRun()
-                .withExistingRegistry(rgName, acrName)
-                .withTaskRunRequest(taskName)
-                .withArchiveEnabled(true)
-                .execute();
+        RegistryTaskRun registryTaskRun = registryManager.registryTaskRuns()
+            .scheduleRun()
+            .withExistingRegistry(rgName, acrName)
+            .withTaskRunRequest(taskName)
+            .withArchiveEnabled(true)
+            .execute();
 
         boolean stillQueued = true;
         while (stillQueued) {
@@ -1012,8 +951,7 @@ public class RegistryTaskTests extends RegistryTest {
                 stillQueued = false;
             }
             if (registryTaskRun.status() == RunStatus.FAILED) {
-                System
-                    .out
+                System.out
                     .println(registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId()));
                 stillQueued = false;
             }
@@ -1025,8 +963,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTaskRun.isArchiveEnabled());
         Assertions.assertEquals(OS.LINUX, registryTaskRun.platform().os());
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
         Assertions.assertTrue(registryTaskRunFromList.status() != null);
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
@@ -1040,16 +978,14 @@ public class RegistryTaskTests extends RegistryTest {
     public void getBuildSourceUploadUrlFromRegistryAndRegistries() {
         final String acrName = generateRandomResourceName("acr", 10);
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         // Calling getBuildSourceUploadUrl from Registry
         SourceUploadDefinition buildSourceUploadUrlRegistry = registry.getBuildSourceUploadUrl();
@@ -1057,8 +993,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertNotNull(buildSourceUploadUrlRegistry.uploadUrl());
 
         // Calling getBuildSourceUploadUrl from Registries
-        SourceUploadDefinition buildSourceUploadUrlRegistries =
-            registryManager.containerRegistries().getBuildSourceUploadUrl(rgName, acrName);
+        SourceUploadDefinition buildSourceUploadUrlRegistries
+            = registryManager.containerRegistries().getBuildSourceUploadUrl(rgName, acrName);
         Assertions.assertNotNull(buildSourceUploadUrlRegistries.relativePath());
         Assertions.assertNotNull(buildSourceUploadUrlRegistries.uploadUrl());
     }
@@ -1072,47 +1008,43 @@ public class RegistryTaskTests extends RegistryTest {
         String imageName = "Replace with the name of your image.";
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineDockerTaskStep()
-                .withDockerFilePath(dockerFilePath)
-                .withImageNames(Arrays.asList(imageName))
-                .withCacheEnabled(true)
-                .withPushEnabled(true)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineDockerTaskStep()
+            .withDockerFilePath(dockerFilePath)
+            .withImageNames(Arrays.asList(imageName))
+            .withCacheEnabled(true)
+            .withPushEnabled(true)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registry.scheduleRun().withTaskRunRequest(taskName).withArchiveEnabled(true).execute();
+        RegistryTaskRun registryTaskRun
+            = registry.scheduleRun().withTaskRunRequest(taskName).withArchiveEnabled(true).execute();
 
         boolean stillQueued = true;
         while (stillQueued) {
@@ -1121,8 +1053,7 @@ public class RegistryTaskTests extends RegistryTest {
                 stillQueued = false;
             }
             if (registryTaskRun.status() == RunStatus.FAILED) {
-                System
-                    .out
+                System.out
                     .println(registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId()));
                 Assertions.fail("Registry registryTask run failed");
             }
@@ -1141,16 +1072,15 @@ public class RegistryTaskTests extends RegistryTest {
                 notCanceled = false;
             }
             if (registryTaskRun.status() == RunStatus.FAILED) {
-                System
-                    .out
+                System.out
                     .println(registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId()));
                 Assertions.fail("Registry registryTask run failed");
             }
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
         }
 
-        PagedIterable<RegistryTaskRun> registryTaskRuns =
-            registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
+        PagedIterable<RegistryTaskRun> registryTaskRuns
+            = registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
 
         for (RegistryTaskRun rtr : registryTaskRuns) {
             Assertions.assertTrue(rtr.status() == RunStatus.CANCELED);
@@ -1175,33 +1105,29 @@ public class RegistryTaskTests extends RegistryTest {
         String imageName = "test";
         String sourceLocation = "https://github.com/Azure/acr.git#master:samples/java/task";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
-        RegistryTaskRun registryTaskRun =
-            registryManager
-                .registryTaskRuns()
-                .scheduleRun()
-                .withExistingRegistry(rgName, acrName)
-                .withLinux()
-                .withDockerTaskRunRequest()
-                .defineDockerTaskStep()
-                .withDockerFilePath(dockerFilePath)
-                .withImageNames(Arrays.asList(imageName))
-                .withCacheEnabled(true)
-                .withPushEnabled(true)
-                .attach()
-                .withSourceLocation(sourceLocation)
-                .withArchiveEnabled(true)
-                .execute();
+        RegistryTaskRun registryTaskRun = registryManager.registryTaskRuns()
+            .scheduleRun()
+            .withExistingRegistry(rgName, acrName)
+            .withLinux()
+            .withDockerTaskRunRequest()
+            .defineDockerTaskStep()
+            .withDockerFilePath(dockerFilePath)
+            .withImageNames(Arrays.asList(imageName))
+            .withCacheEnabled(true)
+            .withPushEnabled(true)
+            .attach()
+            .withSourceLocation(sourceLocation)
+            .withArchiveEnabled(true)
+            .execute();
 
         String sasUrl = registryManager.registryTaskRuns().getLogSasUrl(rgName, acrName, registryTaskRun.runId());
         Assertions.assertNotNull(sasUrl);
@@ -1214,60 +1140,53 @@ public class RegistryTaskTests extends RegistryTest {
         final String acrName = generateRandomResourceName("acr", 10);
         String githubRepoUrl = "Replace with your github repository url, eg: https://github.com/Azure/acr.git";
         String githubBranch = "Replace with your github repositoty branch, eg: master";
-        String githubPAT =
-            "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
+        String githubPAT
+            = "Replace with your github personal access token which should have the scopes: admin:repo_hook and repo";
         String taskFilePath = "Path to your task file that is relative to the githubRepoUrl";
-        String githubRepoUrlUpdate =
-            "Replace with your github repository url to update to, eg: https://github.com/Azure/acr.git";
+        String githubRepoUrlUpdate
+            = "Replace with your github repository url to update to, eg: https://github.com/Azure/acr.git";
 
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         String taskName = generateRandomResourceName("ft", 10);
-        RegistryTask registryTask =
-            registryManager
-                .containerRegistryTasks()
-                .define(taskName)
-                .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
-                .withLinux(Architecture.AMD64)
-                .defineFileTaskStep()
-                .withTaskPath(taskFilePath)
-                .attach()
-                .defineSourceTrigger("SampleSourceTrigger")
-                .withGithubAsSourceControl()
-                .withSourceControlRepositoryUrl(githubRepoUrl)
-                .withCommitTriggerEvent()
-                .withPullTriggerEvent()
-                .withRepositoryBranch(githubBranch)
-                .withRepositoryAuthentication(TokenType.PAT, githubPAT)
-                .withTriggerStatusEnabled()
-                .attach()
-                .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
-                .withCpuCount(2)
-                .create();
+        RegistryTask registryTask = registryManager.containerRegistryTasks()
+            .define(taskName)
+            .withExistingRegistry(rgName, acrName)
+            .withLocation(Region.US_WEST_CENTRAL.name())
+            .withLinux(Architecture.AMD64)
+            .defineFileTaskStep()
+            .withTaskPath(taskFilePath)
+            .attach()
+            .defineSourceTrigger("SampleSourceTrigger")
+            .withGithubAsSourceControl()
+            .withSourceControlRepositoryUrl(githubRepoUrl)
+            .withCommitTriggerEvent()
+            .withPullTriggerEvent()
+            .withRepositoryBranch(githubBranch)
+            .withRepositoryAuthentication(TokenType.PAT, githubPAT)
+            .withTriggerStatusEnabled()
+            .attach()
+            .withBaseImageTrigger("SampleBaseImageTrigger", BaseImageTriggerType.RUNTIME)
+            .withCpuCount(2)
+            .create();
 
         // Assert there is the correct number of source triggers
         Assertions.assertTrue(registryTask.trigger().sourceTriggers().size() == 1);
 
         // Assert source control is correct
-        Assertions
-            .assertEquals(
-                SourceControlType.GITHUB.toString(),
-                registryTask.trigger().sourceTriggers().get(0).sourceRepository().sourceControlType().toString());
+        Assertions.assertEquals(SourceControlType.GITHUB.toString(),
+            registryTask.trigger().sourceTriggers().get(0).sourceRepository().sourceControlType().toString());
 
         // Assert source control repository url is correct
-        Assertions
-            .assertEquals(
-                githubRepoUrl, registryTask.trigger().sourceTriggers().get(0).sourceRepository().repositoryUrl());
+        Assertions.assertEquals(githubRepoUrl,
+            registryTask.trigger().sourceTriggers().get(0).sourceRepository().repositoryUrl());
 
         // Ignore because of server-side error regarding pull request
         // Assert source control source trigger event list is of correct size
@@ -1279,39 +1198,29 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryTask.trigger().sourceTriggers().get(0).sourceTriggerEvents().size() == 1);
 
         // Assert source trigger event list contains commit
-        Assertions
-            .assertTrue(
-                registryTask
-                    .trigger()
-                    .sourceTriggers()
-                    .get(0)
-                    .sourceTriggerEvents()
-                    .contains(SourceTriggerEvent.COMMIT));
+        Assertions.assertTrue(
+            registryTask.trigger().sourceTriggers().get(0).sourceTriggerEvents().contains(SourceTriggerEvent.COMMIT));
         //
         //        //Assert source trigger event list contains pull request
         //
         // Assertions.assertTrue(registryTask.trigger().sourceTriggers().get(0).sourceTriggerEvents().contains(SourceTriggerEvent.PULLREQUEST));
 
         // Assert source control repository branch is correct
-        Assertions
-            .assertEquals(githubBranch, registryTask.trigger().sourceTriggers().get(0).sourceRepository().branch());
+        Assertions.assertEquals(githubBranch,
+            registryTask.trigger().sourceTriggers().get(0).sourceRepository().branch());
 
         // Assert trigger status is correct
-        Assertions
-            .assertEquals(
-                TriggerStatus.ENABLED.toString(), registryTask.trigger().sourceTriggers().get(0).status().toString());
+        Assertions.assertEquals(TriggerStatus.ENABLED.toString(),
+            registryTask.trigger().sourceTriggers().get(0).status().toString());
 
         // Assert name of the base image trigger is correct
         Assertions.assertEquals("SampleBaseImageTrigger", registryTask.trigger().baseImageTrigger().name());
 
         // Assert that the base image trigger type is correct
-        Assertions
-            .assertEquals(
-                BaseImageTriggerType.RUNTIME.toString(),
-                registryTask.trigger().baseImageTrigger().baseImageTriggerType().toString());
+        Assertions.assertEquals(BaseImageTriggerType.RUNTIME.toString(),
+            registryTask.trigger().baseImageTrigger().baseImageTriggerType().toString());
 
-        registryTask
-            .update()
+        registryTask.update()
             .updateSourceTrigger("SampleSourceTrigger")
             .withGithubAsSourceControl()
             .withSourceControlRepositoryUrl(githubRepoUrlUpdate)
@@ -1326,42 +1235,30 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals("SampleSourceTrigger", registryTask.trigger().sourceTriggers().get(0).name());
 
         // Assert source control is correct
-        Assertions
-            .assertEquals(
-                SourceControlType.GITHUB.toString(),
-                registryTask.trigger().sourceTriggers().get(0).sourceRepository().sourceControlType().toString());
+        Assertions.assertEquals(SourceControlType.GITHUB.toString(),
+            registryTask.trigger().sourceTriggers().get(0).sourceRepository().sourceControlType().toString());
 
         // Assert source control repository url is correct
-        Assertions
-            .assertEquals(
-                githubRepoUrlUpdate, registryTask.trigger().sourceTriggers().get(0).sourceRepository().repositoryUrl());
+        Assertions.assertEquals(githubRepoUrlUpdate,
+            registryTask.trigger().sourceTriggers().get(0).sourceRepository().repositoryUrl());
 
         // Assert source trigger has correct number of trigger events
         Assertions.assertTrue(registryTask.trigger().sourceTriggers().size() == 1);
 
         // Assert source trigger event list contains commit
-        Assertions
-            .assertTrue(
-                registryTask
-                    .trigger()
-                    .sourceTriggers()
-                    .get(0)
-                    .sourceTriggerEvents()
-                    .contains(SourceTriggerEvent.COMMIT));
+        Assertions.assertTrue(
+            registryTask.trigger().sourceTriggers().get(0).sourceTriggerEvents().contains(SourceTriggerEvent.COMMIT));
 
         // Assert trigger status is correct
-        Assertions
-            .assertEquals(
-                TriggerStatus.DISABLED.toString(), registryTask.trigger().sourceTriggers().get(0).status().toString());
+        Assertions.assertEquals(TriggerStatus.DISABLED.toString(),
+            registryTask.trigger().sourceTriggers().get(0).status().toString());
 
         // Assert name of the base image trigger is correct
         Assertions.assertEquals("SampleBaseImageTriggerUpdate", registryTask.trigger().baseImageTrigger().name());
 
         // Assert that the base image trigger type is correct
-        Assertions
-            .assertEquals(
-                BaseImageTriggerType.ALL.toString(),
-                registryTask.trigger().baseImageTrigger().baseImageTriggerType().toString());
+        Assertions.assertEquals(BaseImageTriggerType.ALL.toString(),
+            registryTask.trigger().baseImageTrigger().baseImageTriggerType().toString());
     }
 
     @Test
@@ -1380,9 +1277,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(SkuTier.PREMIUM, registry.sku().tier());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, registry.publicNetworkAccess());
 
-        registry.update()
-            .enablePublicNetworkAccess()
-            .apply();
+        registry.update().enablePublicNetworkAccess().apply();
 
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, registry.publicNetworkAccess());
     }
@@ -1406,9 +1301,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertFalse(registryWithDefaultNetworkRules.isDedicatedDataEndpointsEnabled());
         Assertions.assertEquals(0, registryWithDefaultNetworkRules.dedicatedDataEndpointsHostNames().size());
 
-        registryWithDefaultNetworkRules.update()
-            .disablePublicNetworkAccess()
-            .apply();
+        registryWithDefaultNetworkRules.update().disablePublicNetworkAccess().apply();
 
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, registryWithDefaultNetworkRules.publicNetworkAccess());
         Assertions.assertTrue(registryWithDefaultNetworkRules.canAccessFromTrustedServices());
@@ -1447,36 +1340,26 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(2, networkRuleSet.ipRules().size());
 
         // revoke access from a certain IP
-        registry.update()
-            .withoutAccessFromIpAddress(ipAddress)
-            .apply();
+        registry.update().withoutAccessFromIpAddress(ipAddress).apply();
         networkRuleSet = registry.networkRuleSet();
         Assertions.assertEquals(1, networkRuleSet.ipRules().size());
 
         // disable dedicated endpoint
-        registry.update()
-            .disableDedicatedDataEndpoints()
-            .apply();
+        registry.update().disableDedicatedDataEndpoints().apply();
         Assertions.assertFalse(registry.isDedicatedDataEndpointsEnabled());
         Assertions.assertEquals(0, registry.dedicatedDataEndpointsHostNames().size());
 
         // deny access from trusted services
-        registry.update()
-            .withoutAccessFromTrustedServices()
-            .apply();
+        registry.update().withoutAccessFromTrustedServices().apply();
         Assertions.assertFalse(registry.canAccessFromTrustedServices());
 
         // restore access to public network
-        registry.update()
-            .withAccessFromAllNetworks()
-            .apply();
+        registry.update().withAccessFromAllNetworks().apply();
         networkRuleSet = registry.networkRuleSet();
         Assertions.assertEquals(DefaultAction.ALLOW, networkRuleSet.defaultAction());
 
         // disable public network access
-        registry.update()
-            .disablePublicNetworkAccess()
-            .apply();
+        registry.update().disablePublicNetworkAccess().apply();
 
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, registry.publicNetworkAccess());
     }

@@ -62,15 +62,11 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {BlobServiceClient.class, BlobServiceAsyncClient.class})
-public final class BlobServiceClientBuilder implements
-    TokenCredentialTrait<BlobServiceClientBuilder>,
-    ConnectionStringTrait<BlobServiceClientBuilder>,
-    AzureNamedKeyCredentialTrait<BlobServiceClientBuilder>,
-    AzureSasCredentialTrait<BlobServiceClientBuilder>,
-    HttpTrait<BlobServiceClientBuilder>,
-    ConfigurationTrait<BlobServiceClientBuilder>,
-    EndpointTrait<BlobServiceClientBuilder> {
+@ServiceClientBuilder(serviceClients = { BlobServiceClient.class, BlobServiceAsyncClient.class })
+public final class BlobServiceClientBuilder implements TokenCredentialTrait<BlobServiceClientBuilder>,
+    ConnectionStringTrait<BlobServiceClientBuilder>, AzureNamedKeyCredentialTrait<BlobServiceClientBuilder>,
+    AzureSasCredentialTrait<BlobServiceClientBuilder>, HttpTrait<BlobServiceClientBuilder>,
+    ConfigurationTrait<BlobServiceClientBuilder>, EndpointTrait<BlobServiceClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(BlobServiceClientBuilder.class);
 
     private String endpoint;
@@ -96,6 +92,7 @@ public final class BlobServiceClientBuilder implements
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
+    private boolean anonymousAccess;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
@@ -113,7 +110,45 @@ public final class BlobServiceClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobServiceClient buildClient() {
-        return new BlobServiceClient(buildAsyncClient());
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
+
+        anonymousAccess = false;
+
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
+        }
+
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
+        HttpPipeline pipeline = constructPipeline();
+
+        boolean foundCredential = false;
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i) instanceof StorageSharedKeyCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (pipeline.getPolicy(i) instanceof BearerTokenAuthenticationPolicy) {
+                foundCredential = true;
+                break;
+            }
+            if (pipeline.getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                foundCredential = true;
+                break;
+            }
+        }
+        anonymousAccess = !foundCredential;
+
+        return new BlobServiceClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
+    }
+
+    private HttpPipeline constructPipeline() {
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
@@ -126,18 +161,15 @@ public final class BlobServiceClientBuilder implements
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
 
-        boolean anonymousAccess = false;
+        anonymousAccess = false;
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
-                + "scope cannot both be set"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+        HttpPipeline pipeline = constructPipeline();
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -180,8 +212,8 @@ public final class BlobServiceClientBuilder implements
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage endpoint url is malformed.", ex));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("The Azure Storage endpoint url is malformed.", ex));
         }
 
         return this;
@@ -197,8 +229,7 @@ public final class BlobServiceClientBuilder implements
         if (customerProvidedKey == null) {
             this.customerProvidedKey = null;
         } else {
-            this.customerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            this.customerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -229,8 +260,8 @@ public final class BlobServiceClientBuilder implements
      * @param blobContainerEncryptionScope Encryption scope containing the encryption key information.
      * @return the updated BlobServiceClientBuilder object
      */
-    public BlobServiceClientBuilder blobContainerEncryptionScope(
-        BlobContainerEncryptionScope blobContainerEncryptionScope) {
+    public BlobServiceClientBuilder
+        blobContainerEncryptionScope(BlobContainerEncryptionScope blobContainerEncryptionScope) {
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         return this;
     }
@@ -288,8 +319,7 @@ public final class BlobServiceClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public BlobServiceClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -304,8 +334,7 @@ public final class BlobServiceClientBuilder implements
      */
     @Override
     public BlobServiceClientBuilder credential(AzureSasCredential credential) {
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -319,13 +348,11 @@ public final class BlobServiceClientBuilder implements
      */
     @Override
     public BlobServiceClientBuilder connectionString(String connectionString) {
-        StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, LOGGER);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException(
-                            "connectionString missing required settings to derive blob service endpoint."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "connectionString missing required settings to derive blob service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
@@ -334,7 +361,7 @@ public final class BlobServiceClientBuilder implements
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
             this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
-                    authSettings.getAccount().getAccessKey()));
+                authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
         }

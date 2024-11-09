@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The type of managed identity for the resource.
  */
@@ -46,7 +43,6 @@ public enum ManagedIdentityType {
      * @param value the serialized value to parse.
      * @return the parsed ManagedIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ManagedIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +59,6 @@ public enum ManagedIdentityType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

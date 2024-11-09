@@ -21,12 +21,8 @@ public final class ApiVersionSetsGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiVersionSetsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        ApiVersionSetContractInner value,
-        ApiVersionSetsGetHeaders headers) {
+    public ApiVersionSetsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        ApiVersionSetContractInner value, ApiVersionSetsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

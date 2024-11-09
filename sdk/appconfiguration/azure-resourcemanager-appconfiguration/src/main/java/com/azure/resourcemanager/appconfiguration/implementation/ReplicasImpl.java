@@ -21,34 +21,31 @@ public final class ReplicasImpl implements Replicas {
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    public ReplicasImpl(
-        ReplicasClient innerClient, com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
+    public ReplicasImpl(ReplicasClient innerClient,
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Replica> listByConfigurationStore(String resourceGroupName, String configStoreName) {
-        PagedIterable<ReplicaInner> inner =
-            this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName);
+        PagedIterable<ReplicaInner> inner
+            = this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName);
         return Utils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Replica> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
-        PagedIterable<ReplicaInner> inner =
-            this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName, skipToken, context);
+    public PagedIterable<Replica> listByConfigurationStore(String resourceGroupName, String configStoreName,
+        String skipToken, Context context) {
+        PagedIterable<ReplicaInner> inner
+            = this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName, skipToken, context);
         return Utils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
     }
 
-    public Response<Replica> getWithResponse(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        Response<ReplicaInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, configStoreName, replicaName, context);
+    public Response<Replica> getWithResponse(String resourceGroupName, String configStoreName, String replicaName,
+        Context context) {
+        Response<ReplicaInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, configStoreName, replicaName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicaImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -75,27 +72,18 @@ public final class ReplicasImpl implements Replicas {
     public Replica getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
         String replicaName = Utils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
         }
         return this.getWithResponse(resourceGroupName, configStoreName, replicaName, Context.NONE).getValue();
     }
@@ -103,27 +91,18 @@ public final class ReplicasImpl implements Replicas {
     public Response<Replica> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
         String replicaName = Utils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
         }
         return this.getWithResponse(resourceGroupName, configStoreName, replicaName, context);
     }
@@ -131,27 +110,18 @@ public final class ReplicasImpl implements Replicas {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
         String replicaName = Utils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
         }
         this.delete(resourceGroupName, configStoreName, replicaName, Context.NONE);
     }
@@ -159,27 +129,18 @@ public final class ReplicasImpl implements Replicas {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
         String replicaName = Utils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
         }
         this.delete(resourceGroupName, configStoreName, replicaName, context);
     }

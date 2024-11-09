@@ -5,18 +5,34 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The PermissionsCustomsItem model. */
+/**
+ * The PermissionsCustomsItem model.
+ */
 @Fluent
 public final class PermissionsCustomsItem extends Customs {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of PermissionsCustomsItem class.
+     */
+    public PermissionsCustomsItem() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PermissionsCustomsItem withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PermissionsCustomsItem withDescription(String description) {
         super.withDescription(description);
@@ -25,11 +41,49 @@ public final class PermissionsCustomsItem extends Customs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PermissionsCustomsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PermissionsCustomsItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PermissionsCustomsItem.
+     */
+    public static PermissionsCustomsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PermissionsCustomsItem deserializedPermissionsCustomsItem = new PermissionsCustomsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPermissionsCustomsItem.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedPermissionsCustomsItem.withDescription(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPermissionsCustomsItem;
+        });
     }
 }

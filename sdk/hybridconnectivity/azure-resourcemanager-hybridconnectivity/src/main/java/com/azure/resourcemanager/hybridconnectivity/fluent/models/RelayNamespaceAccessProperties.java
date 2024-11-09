@@ -167,22 +167,16 @@ public final class RelayNamespaceAccessProperties {
      */
     public void validate() {
         if (namespaceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property namespaceName in model RelayNamespaceAccessProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property namespaceName in model RelayNamespaceAccessProperties"));
         }
         if (namespaceNameSuffix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property namespaceNameSuffix in model RelayNamespaceAccessProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property namespaceNameSuffix in model RelayNamespaceAccessProperties"));
         }
         if (hybridConnectionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hybridConnectionName in model RelayNamespaceAccessProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property hybridConnectionName in model RelayNamespaceAccessProperties"));
         }
     }
 

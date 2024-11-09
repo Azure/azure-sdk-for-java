@@ -87,24 +87,19 @@ public final class LivePipelineImpl implements LivePipeline, LivePipeline.Defini
     }
 
     public LivePipeline create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLivePipelines()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, livePipelineName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLivePipelines()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, livePipelineName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public LivePipeline create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLivePipelines()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, livePipelineName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLivePipelines()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, livePipelineName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -120,27 +115,23 @@ public final class LivePipelineImpl implements LivePipeline, LivePipeline.Defini
     }
 
     public LivePipeline apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLivePipelines()
-                .updateWithResponse(resourceGroupName, accountName, livePipelineName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLivePipelines()
+            .updateWithResponse(resourceGroupName, accountName, livePipelineName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LivePipeline apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLivePipelines()
-                .updateWithResponse(resourceGroupName, accountName, livePipelineName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLivePipelines()
+            .updateWithResponse(resourceGroupName, accountName, livePipelineName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    LivePipelineImpl(
-        LivePipelineInner innerObject, com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
+    LivePipelineImpl(LivePipelineInner innerObject,
+        com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -149,22 +140,18 @@ public final class LivePipelineImpl implements LivePipeline, LivePipeline.Defini
     }
 
     public LivePipeline refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLivePipelines()
-                .getWithResponse(resourceGroupName, accountName, livePipelineName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLivePipelines()
+            .getWithResponse(resourceGroupName, accountName, livePipelineName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LivePipeline refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLivePipelines()
-                .getWithResponse(resourceGroupName, accountName, livePipelineName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLivePipelines()
+            .getWithResponse(resourceGroupName, accountName, livePipelineName, context)
+            .getValue();
         return this;
     }
 

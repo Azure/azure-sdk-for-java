@@ -65,8 +65,8 @@ public class TwinTests extends TwinTestBase {
             assertEquals(createdRoomTwin.getId(), roomTwinId);
 
             // Get Twin.
-            DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, String.class,
-                Context.NONE);
+            DigitalTwinsResponse<String> getTwinResponse
+                = client.getDigitalTwinWithResponse(roomTwinId, String.class, Context.NONE);
             assertEquals(getTwinResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update Twin.
@@ -128,9 +128,9 @@ public class TwinTests extends TwinTestBase {
 
             client.createOrReplaceDigitalTwin(roomTwinId, twin, BasicDigitalTwin.class);
 
-            assertRestException(
-                () -> client.createOrReplaceDigitalTwinWithResponse(roomTwinId, twin, BasicDigitalTwin.class,
-                    new CreateOrReplaceDigitalTwinOptions().setIfNoneMatch("*"), Context.NONE), HTTP_PRECON_FAILED);
+            assertRestException(() -> client.createOrReplaceDigitalTwinWithResponse(roomTwinId, twin,
+                BasicDigitalTwin.class, new CreateOrReplaceDigitalTwinOptions().setIfNoneMatch("*"), Context.NONE),
+                HTTP_PRECON_FAILED);
         } finally {
             if (roomTwinId != null) {
                 client.deleteDigitalTwin(roomTwinId);
@@ -432,8 +432,8 @@ public class TwinTests extends TwinTestBase {
             floorTwinToCreate.addToContents("name", "1234");
             floorTwinToCreate.addToContents("roomType", "1234 spacious");
 
-            BasicDigitalTwin createdFloorTwin = client.createOrReplaceDigitalTwin(floorTwinId, floorTwinToCreate,
-                BasicDigitalTwin.class);
+            BasicDigitalTwin createdFloorTwin
+                = client.createOrReplaceDigitalTwin(floorTwinId, floorTwinToCreate, BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdFloorTwin.getId());
             assertEquals(createdFloorTwin.getId(), floorTwinId);

@@ -14,19 +14,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Kpi CreateOrUpdate. */
+/**
+ * Samples for Kpi CreateOrUpdate.
+ */
 public final class KpiCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/KpiCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * KpiCreateOrUpdate.json
      */
     /**
      * Sample code: Kpi_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void kpiCreateOrUpdate(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
-        manager
-            .kpis()
+        manager.kpis()
             .define("kpiTest45453647")
             .withExistingHub("TestHubRG", "sdkTestHub")
             .withEntityType(EntityTypes.PROFILE)
@@ -38,15 +41,14 @@ public final class KpiCreateOrUpdateSamples {
             .withExpression("SavingAccountBalance")
             .withUnit("unit")
             .withGroupBy(Arrays.asList("SavingAccountBalance"))
-            .withThresHolds(
-                new KpiThresholds()
-                    .withLowerLimit(new BigDecimal("5"))
-                    .withUpperLimit(new BigDecimal("50"))
-                    .withIncreasingKpi(true))
+            .withThresHolds(new KpiThresholds().withLowerLimit(new BigDecimal("5"))
+                .withUpperLimit(new BigDecimal("50"))
+                .withIncreasingKpi(true))
             .withAliases(Arrays.asList(new KpiAlias().withAliasName("alias").withExpression("Id+4")))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

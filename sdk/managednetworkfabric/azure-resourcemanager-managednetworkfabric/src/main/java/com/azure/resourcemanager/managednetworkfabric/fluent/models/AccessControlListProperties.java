@@ -162,8 +162,8 @@ public final class AccessControlListProperties extends AnnotationResource {
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the AccessControlListProperties object itself.
      */
-    public AccessControlListProperties withMatchConfigurations(
-        List<AccessControlListMatchConfiguration> matchConfigurations) {
+    public AccessControlListProperties
+        withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
         this.matchConfigurations = matchConfigurations;
         return this;
     }
@@ -183,8 +183,8 @@ public final class AccessControlListProperties extends AnnotationResource {
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the AccessControlListProperties object itself.
      */
-    public AccessControlListProperties withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public AccessControlListProperties
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         this.dynamicMatchConfigurations = dynamicMatchConfigurations;
         return this;
     }

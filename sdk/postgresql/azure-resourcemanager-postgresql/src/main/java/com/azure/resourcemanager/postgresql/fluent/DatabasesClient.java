@@ -29,8 +29,8 @@ public interface DatabasesClient {
      * @return represents a Database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
@@ -46,8 +46,8 @@ public interface DatabasesClient {
      * @return represents a Database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, DatabaseInner parameters, Context context);
 
     /**
      * Creates a new database or updates an existing database.
@@ -62,8 +62,8 @@ public interface DatabasesClient {
      * @return represents a Database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
@@ -79,8 +79,8 @@ public interface DatabasesClient {
      * @return represents a Database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context);
+    DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        DatabaseInner parameters, Context context);
 
     /**
      * Deletes a database.
@@ -109,8 +109,8 @@ public interface DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 
     /**
      * Deletes a database.
@@ -166,8 +166,8 @@ public interface DatabasesClient {
      * @return information about a database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    Response<DatabaseInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 
     /**
      * List all the databases in a given server.

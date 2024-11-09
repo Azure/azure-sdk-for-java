@@ -17,8 +17,8 @@ public final class GrantDetailsImpl implements GrantDetails {
 
     private final com.azure.resourcemanager.education.EducationManager serviceManager;
 
-    GrantDetailsImpl(
-        GrantDetailsInner innerObject, com.azure.resourcemanager.education.EducationManager serviceManager) {
+    GrantDetailsImpl(GrantDetailsInner innerObject,
+        com.azure.resourcemanager.education.EducationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

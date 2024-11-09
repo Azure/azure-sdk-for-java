@@ -93,11 +93,8 @@ public interface PolicyFragmentContract {
          * The stage of the PolicyFragmentContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithValue,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithFormat,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithValue, DefinitionStages.WithDescription,
+            DefinitionStages.WithFormat, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -169,11 +166,8 @@ public interface PolicyFragmentContract {
     PolicyFragmentContract.Update update();
 
     /** The template for PolicyFragmentContract update. */
-    interface Update
-        extends UpdateStages.WithValue,
-            UpdateStages.WithDescription,
-            UpdateStages.WithFormat,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithValue, UpdateStages.WithDescription, UpdateStages.WithFormat,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

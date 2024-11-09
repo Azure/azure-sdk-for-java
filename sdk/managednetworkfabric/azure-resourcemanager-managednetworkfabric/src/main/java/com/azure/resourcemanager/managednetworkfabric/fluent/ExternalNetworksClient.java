@@ -33,8 +33,8 @@ public interface ExternalNetworksClient {
      * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body);
+    SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body);
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
@@ -52,12 +52,8 @@ public interface ExternalNetworksClient {
      * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkInner body,
-        Context context);
+    SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body, Context context);
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
@@ -74,8 +70,8 @@ public interface ExternalNetworksClient {
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExternalNetworkInner create(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkInner body);
+    ExternalNetworkInner create(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
+        ExternalNetworkInner body);
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
@@ -93,12 +89,8 @@ public interface ExternalNetworksClient {
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExternalNetworkInner create(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkInner body,
-        Context context);
+    ExternalNetworkInner create(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
+        ExternalNetworkInner body, Context context);
 
     /**
      * Retrieves details of ExternalNetwork.
@@ -115,8 +107,8 @@ public interface ExternalNetworksClient {
      * @return defines the External Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExternalNetworkInner> getWithResponse(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context);
+    Response<ExternalNetworkInner> getWithResponse(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, Context context);
 
     /**
      * Retrieves details of ExternalNetwork.
@@ -149,8 +141,8 @@ public interface ExternalNetworksClient {
      * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body);
+    SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body);
 
     /**
      * Updates a External Networks.
@@ -168,12 +160,8 @@ public interface ExternalNetworksClient {
      * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkPatch body,
-        Context context);
+    SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body, Context context);
 
     /**
      * Updates a External Networks.
@@ -190,8 +178,8 @@ public interface ExternalNetworksClient {
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExternalNetworkInner update(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body);
+    ExternalNetworkInner update(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
+        ExternalNetworkPatch body);
 
     /**
      * Updates a External Networks.
@@ -209,12 +197,8 @@ public interface ExternalNetworksClient {
      * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExternalNetworkInner update(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        ExternalNetworkPatch body,
-        Context context);
+    ExternalNetworkInner update(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName,
+        ExternalNetworkPatch body, Context context);
 
     /**
      * Deletes a ExternalNetworks.
@@ -230,8 +214,8 @@ public interface ExternalNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName);
 
     /**
      * Deletes a ExternalNetworks.
@@ -248,8 +232,8 @@ public interface ExternalNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
+        String externalNetworkName, Context context);
 
     /**
      * Deletes a ExternalNetworks.
@@ -311,100 +295,86 @@ public interface ExternalNetworksClient {
      * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExternalNetworkInner> listByL3IsolationDomain(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param externalNetworkName Name of the External Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param externalNetworkName Name of the External Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body,
-            Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param externalNetworkName Name of the External Network.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
-     * @param externalNetworkName Name of the External Network.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
+    PagedIterable<ExternalNetworkInner> listByL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName,
         Context context);
 
     /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context);
+
+    /**
      * Executes Static Route BFD state update operation to the underlying resources.
      *
      * <p>Update Static Route BFD for external Network.
@@ -420,11 +390,8 @@ public interface ExternalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateStaticRouteBfdAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body);
+        beginUpdateStaticRouteBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
@@ -443,12 +410,8 @@ public interface ExternalNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateStaticRouteBfdAdministrativeState(
-            String resourceGroupName,
-            String l3IsolationDomainName,
-            String externalNetworkName,
-            UpdateAdministrativeState body,
-            Context context);
+        beginUpdateStaticRouteBfdAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            String externalNetworkName, UpdateAdministrativeState body, Context context);
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
@@ -465,11 +428,8 @@ public interface ExternalNetworksClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body);
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
@@ -487,10 +447,6 @@ public interface ExternalNetworksClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
+    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context);
 }

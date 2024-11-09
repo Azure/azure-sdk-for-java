@@ -22,8 +22,8 @@ public final class IssuesImpl implements Issues {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public IssuesImpl(
-        IssuesClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public IssuesImpl(IssuesClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,22 +33,19 @@ public final class IssuesImpl implements Issues {
         return Utils.mapPage(inner, inner1 -> new IssueContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IssueContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
-        PagedIterable<IssueContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
+    public PagedIterable<IssueContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context) {
+        PagedIterable<IssueContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new IssueContractImpl(inner1, this.manager()));
     }
 
-    public Response<IssueContract> getWithResponse(
-        String resourceGroupName, String serviceName, String issueId, Context context) {
-        IssuesGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, issueId, context);
+    public Response<IssueContract> getWithResponse(String resourceGroupName, String serviceName, String issueId,
+        Context context) {
+        IssuesGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, issueId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IssueContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;

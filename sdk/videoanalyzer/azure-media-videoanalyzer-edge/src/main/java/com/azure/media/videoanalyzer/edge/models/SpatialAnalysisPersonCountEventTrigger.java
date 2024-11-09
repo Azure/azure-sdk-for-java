@@ -5,30 +5,47 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpatialAnalysisPersonCountEventTrigger. */
+/**
+ * The event trigger type.
+ */
 public final class SpatialAnalysisPersonCountEventTrigger
-        extends ExpandableStringEnum<SpatialAnalysisPersonCountEventTrigger> {
-    /** Static value event for SpatialAnalysisPersonCountEventTrigger. */
+    extends ExpandableStringEnum<SpatialAnalysisPersonCountEventTrigger> {
+    /**
+     * Event trigger.
+     */
     public static final SpatialAnalysisPersonCountEventTrigger EVENT = fromString("event");
 
-    /** Static value interval for SpatialAnalysisPersonCountEventTrigger. */
+    /**
+     * Interval trigger.
+     */
     public static final SpatialAnalysisPersonCountEventTrigger INTERVAL = fromString("interval");
 
     /**
+     * Creates a new instance of SpatialAnalysisPersonCountEventTrigger value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SpatialAnalysisPersonCountEventTrigger() {
+    }
+
+    /**
      * Creates or finds a SpatialAnalysisPersonCountEventTrigger from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SpatialAnalysisPersonCountEventTrigger.
      */
-    @JsonCreator
     public static SpatialAnalysisPersonCountEventTrigger fromString(String name) {
         return fromString(name, SpatialAnalysisPersonCountEventTrigger.class);
     }
 
-    /** @return known SpatialAnalysisPersonCountEventTrigger values. */
+    /**
+     * Gets known SpatialAnalysisPersonCountEventTrigger values.
+     * 
+     * @return known SpatialAnalysisPersonCountEventTrigger values.
+     */
     public static Collection<SpatialAnalysisPersonCountEventTrigger> values() {
         return values(SpatialAnalysisPersonCountEventTrigger.class);
     }

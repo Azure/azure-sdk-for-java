@@ -52,8 +52,7 @@ public final class CallDialogAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DialogStateResult> startDialog(StartDialogOptions startDialogOptions) {
-        return startDialogWithResponse(startDialogOptions)
-            .flatMap(response -> Mono.just(response.getValue()));
+        return startDialogWithResponse(startDialogOptions).flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
@@ -68,26 +67,27 @@ public final class CallDialogAsync {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DialogStateResult>> startDialogWithResponseInternal(StartDialogOptions startDialogOptions, Context context) {
+    Mono<Response<DialogStateResult>> startDialogWithResponseInternal(StartDialogOptions startDialogOptions,
+        Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             BaseDialog baseDialog = null;
             if (startDialogOptions.getDialogInputType() == DialogInputType.POWER_VIRTUAL_AGENTS) {
-                baseDialog = new PowerVirtualAgentsDialog()
-                    .setBotAppId(startDialogOptions.getBotId())
+                baseDialog = new PowerVirtualAgentsDialog().setBotAppId(startDialogOptions.getBotId())
                     .setContext(startDialogOptions.getDialogContext());
             } else if (startDialogOptions.getDialogInputType() == DialogInputType.AZURE_OPEN_AI) {
-                baseDialog = new AzureOpenAIDialog()
-                    .setContext(startDialogOptions.getDialogContext());
+                baseDialog = new AzureOpenAIDialog().setContext(startDialogOptions.getDialogContext());
             }
 
-            StartDialogRequestInternal requestInternal = new StartDialogRequestInternal()
-                .setDialog(baseDialog)
+            StartDialogRequestInternal requestInternal = new StartDialogRequestInternal().setDialog(baseDialog)
                 .setOperationContext(startDialogOptions.getOperationContext());
 
-            return dialogsInternal.startDialogWithResponseAsync(callConnectionId, startDialogOptions.getDialogId(), requestInternal, context).
-                map(response -> new SimpleResponse<>(response, DialogStateResponseConstructorProxy.create(response.getValue())));
+            return dialogsInternal
+                .startDialogWithResponseAsync(callConnectionId, startDialogOptions.getDialogId(), requestInternal,
+                    context)
+                .map(response -> new SimpleResponse<>(response,
+                    DialogStateResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

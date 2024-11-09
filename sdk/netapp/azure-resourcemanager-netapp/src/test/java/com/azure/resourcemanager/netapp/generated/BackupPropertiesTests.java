@@ -12,24 +12,24 @@ public final class BackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupProperties model = BinaryData.fromString(
-            "{\"backupId\":\"wcfzqljyxgt\",\"creationDate\":\"2021-11-26T00:09:31Z\",\"provisioningState\":\"ydbsd\",\"size\":156216941630787820,\"label\":\"maehvbbxurip\",\"backupType\":\"Scheduled\",\"failureReason\":\"htba\",\"volumeResourceId\":\"kgxywr\",\"useExistingSnapshot\":true,\"snapshotName\":\"kl\",\"backupPolicyResourceId\":\"pluodpv\"}")
+            "{\"backupId\":\"rr\",\"creationDate\":\"2021-01-30T15:44:05Z\",\"provisioningState\":\"lydzgk\",\"size\":4622170098850979496,\"label\":\"vtoepryutnw\",\"backupType\":\"Manual\",\"failureReason\":\"dmovzvfva\",\"volumeResourceId\":\"wzqa\",\"useExistingSnapshot\":false,\"snapshotName\":\"z\",\"backupPolicyResourceId\":\"iglaecx\"}")
             .toObject(BackupProperties.class);
-        Assertions.assertEquals("maehvbbxurip", model.label());
-        Assertions.assertEquals("kgxywr", model.volumeResourceId());
-        Assertions.assertEquals(true, model.useExistingSnapshot());
-        Assertions.assertEquals("kl", model.snapshotName());
+        Assertions.assertEquals("vtoepryutnw", model.label());
+        Assertions.assertEquals("wzqa", model.volumeResourceId());
+        Assertions.assertEquals(false, model.useExistingSnapshot());
+        Assertions.assertEquals("z", model.snapshotName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupProperties model = new BackupProperties().withLabel("maehvbbxurip")
-            .withVolumeResourceId("kgxywr")
-            .withUseExistingSnapshot(true)
-            .withSnapshotName("kl");
+        BackupProperties model = new BackupProperties().withLabel("vtoepryutnw")
+            .withVolumeResourceId("wzqa")
+            .withUseExistingSnapshot(false)
+            .withSnapshotName("z");
         model = BinaryData.fromObject(model).toObject(BackupProperties.class);
-        Assertions.assertEquals("maehvbbxurip", model.label());
-        Assertions.assertEquals("kgxywr", model.volumeResourceId());
-        Assertions.assertEquals(true, model.useExistingSnapshot());
-        Assertions.assertEquals("kl", model.snapshotName());
+        Assertions.assertEquals("vtoepryutnw", model.label());
+        Assertions.assertEquals("wzqa", model.volumeResourceId());
+        Assertions.assertEquals(false, model.useExistingSnapshot());
+        Assertions.assertEquals("z", model.snapshotName());
     }
 }

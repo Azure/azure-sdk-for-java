@@ -8,19 +8,14 @@ import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceRegistry;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
-public class SpringServiceRegistriesImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        SpringServiceRegistryImpl, SpringServiceRegistry, ServiceRegistryResourceInner, SpringServiceImpl, SpringService
-    > {
+public class SpringServiceRegistriesImpl extends
+    ExternalChildResourcesNonCachedImpl<SpringServiceRegistryImpl, SpringServiceRegistry, ServiceRegistryResourceInner, SpringServiceImpl, SpringService> {
     public SpringServiceRegistriesImpl(SpringServiceImpl parentImpl) {
         super(parentImpl, parentImpl.taskGroup(), "SpringServiceRegistry");
     }
 
     public void prepareCreate() {
-        prepareInlineDefine(new SpringServiceRegistryImpl(
-            Constants.DEFAULT_TANZU_COMPONENT_NAME,
-            getParent(),
-            new ServiceRegistryResourceInner()
-        ));
+        prepareInlineDefine(new SpringServiceRegistryImpl(Constants.DEFAULT_TANZU_COMPONENT_NAME, getParent(),
+            new ServiceRegistryResourceInner()));
     }
 }

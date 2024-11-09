@@ -24,8 +24,7 @@ class AaaaRecordSetsImpl extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecord
 
     @Override
     public Mono<AaaaRecordSet> getByNameAsync(String name) {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getRecordSets()
@@ -40,18 +39,12 @@ class AaaaRecordSetsImpl extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecord
 
     @Override
     protected PagedFlux<AaaaRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
-        return wrapPageAsync(
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getRecordSets()
-                .listByTypeAsync(
-                    this.dnsZone.resourceGroupName(),
-                    this.dnsZone.name(),
-                    this.recordType,
-                    pageSize,
-                    recordSetNameSuffix));
+        return wrapPageAsync(this.parent()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType, pageSize,
+                recordSetNameSuffix));
     }
 
     @Override

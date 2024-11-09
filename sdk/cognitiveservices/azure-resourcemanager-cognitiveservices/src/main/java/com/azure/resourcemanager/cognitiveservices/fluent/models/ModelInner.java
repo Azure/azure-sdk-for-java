@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cognitive Services Model. */
+/**
+ * Cognitive Services Model.
+ */
 @Fluent
-public final class ModelInner {
+public final class ModelInner implements JsonSerializable<ModelInner> {
     /*
      * Model Metadata.
      */
-    @JsonProperty(value = "model")
     private AccountModelInner model;
 
     /*
      * The Kind of the Model.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * The SKU of the Model.
      */
-    @JsonProperty(value = "skuName")
     private String skuName;
 
-    /** Creates an instance of ModelInner class. */
+    /**
+     * Creates an instance of ModelInner class.
+     */
     public ModelInner() {
     }
 
     /**
      * Get the model property: Model Metadata.
-     *
+     * 
      * @return the model value.
      */
     public AccountModelInner model() {
@@ -43,7 +48,7 @@ public final class ModelInner {
 
     /**
      * Set the model property: Model Metadata.
-     *
+     * 
      * @param model the model value to set.
      * @return the ModelInner object itself.
      */
@@ -54,7 +59,7 @@ public final class ModelInner {
 
     /**
      * Get the kind property: The Kind of the Model.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -63,7 +68,7 @@ public final class ModelInner {
 
     /**
      * Set the kind property: The Kind of the Model.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ModelInner object itself.
      */
@@ -74,7 +79,7 @@ public final class ModelInner {
 
     /**
      * Get the skuName property: The SKU of the Model.
-     *
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -83,7 +88,7 @@ public final class ModelInner {
 
     /**
      * Set the skuName property: The SKU of the Model.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the ModelInner object itself.
      */
@@ -94,12 +99,54 @@ public final class ModelInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (model() != null) {
             model().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("model", this.model);
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("skuName", this.skuName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ModelInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ModelInner.
+     */
+    public static ModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModelInner deserializedModelInner = new ModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("model".equals(fieldName)) {
+                    deserializedModelInner.model = AccountModelInner.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedModelInner.kind = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedModelInner.skuName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModelInner;
+        });
     }
 }

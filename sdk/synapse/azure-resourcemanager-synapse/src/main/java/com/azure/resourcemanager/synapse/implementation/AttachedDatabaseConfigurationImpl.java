@@ -15,10 +15,8 @@ import com.azure.resourcemanager.synapse.models.TableLevelSharingProperties;
 import java.util.Collections;
 import java.util.List;
 
-public final class AttachedDatabaseConfigurationImpl
-    implements AttachedDatabaseConfiguration,
-        AttachedDatabaseConfiguration.Definition,
-        AttachedDatabaseConfiguration.Update {
+public final class AttachedDatabaseConfigurationImpl implements AttachedDatabaseConfiguration,
+    AttachedDatabaseConfiguration.Definition, AttachedDatabaseConfiguration.Update {
     private AttachedDatabaseConfigurationInner innerObject;
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
@@ -100,8 +98,8 @@ public final class AttachedDatabaseConfigurationImpl
 
     private String resourceGroupName;
 
-    public AttachedDatabaseConfigurationImpl withExistingKustoPool(
-        String workspaceName, String kustoPoolName, String resourceGroupName) {
+    public AttachedDatabaseConfigurationImpl withExistingKustoPool(String workspaceName, String kustoPoolName,
+        String resourceGroupName) {
         this.workspaceName = workspaceName;
         this.kustoPoolName = kustoPoolName;
         this.resourceGroupName = resourceGroupName;
@@ -109,32 +107,18 @@ public final class AttachedDatabaseConfigurationImpl
     }
 
     public AttachedDatabaseConfiguration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolAttachedDatabaseConfigurations()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    attachedDatabaseConfigurationName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolAttachedDatabaseConfigurations()
+            .createOrUpdate(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public AttachedDatabaseConfiguration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolAttachedDatabaseConfigurations()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    attachedDatabaseConfigurationName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolAttachedDatabaseConfigurations()
+            .createOrUpdate(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName,
+                this.innerModel(), context);
         return this;
     }
 
@@ -149,66 +133,47 @@ public final class AttachedDatabaseConfigurationImpl
     }
 
     public AttachedDatabaseConfiguration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolAttachedDatabaseConfigurations()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    attachedDatabaseConfigurationName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolAttachedDatabaseConfigurations()
+            .createOrUpdate(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public AttachedDatabaseConfiguration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolAttachedDatabaseConfigurations()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    attachedDatabaseConfigurationName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolAttachedDatabaseConfigurations()
+            .createOrUpdate(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName,
+                this.innerModel(), context);
         return this;
     }
 
-    AttachedDatabaseConfigurationImpl(
-        AttachedDatabaseConfigurationInner innerObject,
+    AttachedDatabaseConfigurationImpl(AttachedDatabaseConfigurationInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.kustoPoolName = Utils.getValueFromIdByName(innerObject.id(), "kustoPools");
-        this.attachedDatabaseConfigurationName =
-            Utils.getValueFromIdByName(innerObject.id(), "attachedDatabaseConfigurations");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.kustoPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kustoPools");
+        this.attachedDatabaseConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "attachedDatabaseConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public AttachedDatabaseConfiguration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolAttachedDatabaseConfigurations()
-                .getWithResponse(
-                    workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolAttachedDatabaseConfigurations()
+            .getWithResponse(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AttachedDatabaseConfiguration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolAttachedDatabaseConfigurations()
-                .getWithResponse(
-                    workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolAttachedDatabaseConfigurations()
+            .getWithResponse(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName,
+                context)
+            .getValue();
         return this;
     }
 
@@ -232,14 +197,14 @@ public final class AttachedDatabaseConfigurationImpl
         return this;
     }
 
-    public AttachedDatabaseConfigurationImpl withDefaultPrincipalsModificationKind(
-        DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
+    public AttachedDatabaseConfigurationImpl
+        withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
         this.innerModel().withDefaultPrincipalsModificationKind(defaultPrincipalsModificationKind);
         return this;
     }
 
-    public AttachedDatabaseConfigurationImpl withTableLevelSharingProperties(
-        TableLevelSharingProperties tableLevelSharingProperties) {
+    public AttachedDatabaseConfigurationImpl
+        withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties) {
         this.innerModel().withTableLevelSharingProperties(tableLevelSharingProperties);
         return this;
     }

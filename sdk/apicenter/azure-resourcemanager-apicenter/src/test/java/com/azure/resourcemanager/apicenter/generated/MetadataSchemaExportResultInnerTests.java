@@ -21,8 +21,9 @@ public final class MetadataSchemaExportResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataSchemaExportResultInner model = new MetadataSchemaExportResultInner()
-            .withFormat(MetadataSchemaExportFormat.INLINE).withValue("cwrwclxxwrljdous");
+        MetadataSchemaExportResultInner model
+            = new MetadataSchemaExportResultInner().withFormat(MetadataSchemaExportFormat.INLINE)
+                .withValue("cwrwclxxwrljdous");
         model = BinaryData.fromObject(model).toObject(MetadataSchemaExportResultInner.class);
         Assertions.assertEquals(MetadataSchemaExportFormat.INLINE, model.format());
         Assertions.assertEquals("cwrwclxxwrljdous", model.value());

@@ -363,25 +363,20 @@ public final class WebTestProperties {
      */
     public void validate() {
         if (syntheticMonitorId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property syntheticMonitorId in model WebTestProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property syntheticMonitorId in model WebTestProperties"));
         }
         if (webTestName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property webTestName in model WebTestProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property webTestName in model WebTestProperties"));
         }
         if (webTestKind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property webTestKind in model WebTestProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property webTestKind in model WebTestProperties"));
         }
         if (locations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property locations in model WebTestProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property locations in model WebTestProperties"));
         } else {
             locations().forEach(e -> e.validate());
         }

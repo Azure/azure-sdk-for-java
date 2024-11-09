@@ -6,30 +6,36 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the data to be used for importing data to azure. */
+/**
+ * Details of the data to be used for importing data to azure.
+ */
 @Fluent
-public final class DataImportDetails {
+public final class DataImportDetails implements JsonSerializable<DataImportDetails> {
     /*
      * Account details of the data to be transferred
      */
-    @JsonProperty(value = "accountDetails", required = true)
     private DataAccountDetails accountDetails;
 
     /*
      * Level of the logs to be collected.
      */
-    @JsonProperty(value = "logCollectionLevel")
     private LogCollectionLevel logCollectionLevel;
 
-    /** Creates an instance of DataImportDetails class. */
+    /**
+     * Creates an instance of DataImportDetails class.
+     */
     public DataImportDetails() {
     }
 
     /**
      * Get the accountDetails property: Account details of the data to be transferred.
-     *
+     * 
      * @return the accountDetails value.
      */
     public DataAccountDetails accountDetails() {
@@ -38,7 +44,7 @@ public final class DataImportDetails {
 
     /**
      * Set the accountDetails property: Account details of the data to be transferred.
-     *
+     * 
      * @param accountDetails the accountDetails value to set.
      * @return the DataImportDetails object itself.
      */
@@ -49,7 +55,7 @@ public final class DataImportDetails {
 
     /**
      * Get the logCollectionLevel property: Level of the logs to be collected.
-     *
+     * 
      * @return the logCollectionLevel value.
      */
     public LogCollectionLevel logCollectionLevel() {
@@ -58,7 +64,7 @@ public final class DataImportDetails {
 
     /**
      * Set the logCollectionLevel property: Level of the logs to be collected.
-     *
+     * 
      * @param logCollectionLevel the logCollectionLevel value to set.
      * @return the DataImportDetails object itself.
      */
@@ -69,19 +75,60 @@ public final class DataImportDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (accountDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accountDetails in model DataImportDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountDetails in model DataImportDetails"));
         } else {
             accountDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataImportDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("accountDetails", this.accountDetails);
+        jsonWriter.writeStringField("logCollectionLevel",
+            this.logCollectionLevel == null ? null : this.logCollectionLevel.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataImportDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataImportDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataImportDetails.
+     */
+    public static DataImportDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataImportDetails deserializedDataImportDetails = new DataImportDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountDetails".equals(fieldName)) {
+                    deserializedDataImportDetails.accountDetails = DataAccountDetails.fromJson(reader);
+                } else if ("logCollectionLevel".equals(fieldName)) {
+                    deserializedDataImportDetails.logCollectionLevel
+                        = LogCollectionLevel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataImportDetails;
+        });
+    }
 }

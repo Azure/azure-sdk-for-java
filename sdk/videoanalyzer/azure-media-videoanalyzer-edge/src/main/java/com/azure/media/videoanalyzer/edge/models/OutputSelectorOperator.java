@@ -5,29 +5,46 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OutputSelectorOperator. */
+/**
+ * The operator to compare properties by.
+ */
 public final class OutputSelectorOperator extends ExpandableStringEnum<OutputSelectorOperator> {
-    /** Static value is for OutputSelectorOperator. */
+    /**
+     * The property is of the type defined by value.
+     */
     public static final OutputSelectorOperator IS = fromString("is");
 
-    /** Static value isNot for OutputSelectorOperator. */
+    /**
+     * The property is not of the type defined by value.
+     */
     public static final OutputSelectorOperator IS_NOT = fromString("isNot");
 
     /**
+     * Creates a new instance of OutputSelectorOperator value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OutputSelectorOperator() {
+    }
+
+    /**
      * Creates or finds a OutputSelectorOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OutputSelectorOperator.
      */
-    @JsonCreator
     public static OutputSelectorOperator fromString(String name) {
         return fromString(name, OutputSelectorOperator.class);
     }
 
-    /** @return known OutputSelectorOperator values. */
+    /**
+     * Gets known OutputSelectorOperator values.
+     * 
+     * @return known OutputSelectorOperator values.
+     */
     public static Collection<OutputSelectorOperator> values() {
         return values(OutputSelectorOperator.class);
     }

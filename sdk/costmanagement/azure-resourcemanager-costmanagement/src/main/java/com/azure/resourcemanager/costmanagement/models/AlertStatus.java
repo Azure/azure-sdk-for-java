@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** alert status. */
+/**
+ * alert status.
+ */
 public final class AlertStatus extends ExpandableStringEnum<AlertStatus> {
-    /** Static value None for AlertStatus. */
+    /**
+     * Static value None for AlertStatus.
+     */
     public static final AlertStatus NONE = fromString("None");
 
-    /** Static value Active for AlertStatus. */
+    /**
+     * Static value Active for AlertStatus.
+     */
     public static final AlertStatus ACTIVE = fromString("Active");
 
-    /** Static value Overridden for AlertStatus. */
+    /**
+     * Static value Overridden for AlertStatus.
+     */
     public static final AlertStatus OVERRIDDEN = fromString("Overridden");
 
-    /** Static value Resolved for AlertStatus. */
+    /**
+     * Static value Resolved for AlertStatus.
+     */
     public static final AlertStatus RESOLVED = fromString("Resolved");
 
-    /** Static value Dismissed for AlertStatus. */
+    /**
+     * Static value Dismissed for AlertStatus.
+     */
     public static final AlertStatus DISMISSED = fromString("Dismissed");
 
     /**
      * Creates a new instance of AlertStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class AlertStatus extends ExpandableStringEnum<AlertStatus> {
 
     /**
      * Creates or finds a AlertStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertStatus.
      */
-    @JsonCreator
     public static AlertStatus fromString(String name) {
         return fromString(name, AlertStatus.class);
     }
 
     /**
      * Gets known AlertStatus values.
-     *
+     * 
      * @return known AlertStatus values.
      */
     public static Collection<AlertStatus> values() {

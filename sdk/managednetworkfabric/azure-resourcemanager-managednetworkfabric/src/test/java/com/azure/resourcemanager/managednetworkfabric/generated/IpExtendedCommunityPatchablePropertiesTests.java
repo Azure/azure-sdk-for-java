@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunityPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunityPatchableProperties model =
-            BinaryData
-                .fromString(
-                    "{\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":7966062914032266112,\"routeTargets\":[\"wsocnequygdjbo\",\"grmtqjk\",\"evadrmmwiu\",\"wvcmj\"]},{\"action\":\"Deny\",\"sequenceNumber\":3681628322400604286,\"routeTargets\":[\"disczskos\",\"oqiqazugamx\",\"krrcoiisbamnpp\"]},{\"action\":\"Permit\",\"sequenceNumber\":331720497172605252,\"routeTargets\":[\"ztdsbeza\"]},{\"action\":\"Deny\",\"sequenceNumber\":613655016592782503,\"routeTargets\":[\"zxuizhyhnepkpe\",\"iarxqiubxdukec\"]}]}")
-                .toObject(IpExtendedCommunityPatchableProperties.class);
+        IpExtendedCommunityPatchableProperties model = BinaryData.fromString(
+            "{\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":7966062914032266112,\"routeTargets\":[\"wsocnequygdjbo\",\"grmtqjk\",\"evadrmmwiu\",\"wvcmj\"]},{\"action\":\"Deny\",\"sequenceNumber\":3681628322400604286,\"routeTargets\":[\"disczskos\",\"oqiqazugamx\",\"krrcoiisbamnpp\"]},{\"action\":\"Permit\",\"sequenceNumber\":331720497172605252,\"routeTargets\":[\"ztdsbeza\"]},{\"action\":\"Deny\",\"sequenceNumber\":613655016592782503,\"routeTargets\":[\"zxuizhyhnepkpe\",\"iarxqiubxdukec\"]}]}")
+            .toObject(IpExtendedCommunityPatchableProperties.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
         Assertions.assertEquals(7966062914032266112L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
         Assertions.assertEquals("wsocnequygdjbo", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
@@ -26,27 +24,20 @@ public final class IpExtendedCommunityPatchablePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityPatchableProperties model =
-            new IpExtendedCommunityPatchableProperties()
-                .withIpExtendedCommunityRules(
-                    Arrays
-                        .asList(
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(7966062914032266112L)
-                                .withRouteTargets(Arrays.asList("wsocnequygdjbo", "grmtqjk", "evadrmmwiu", "wvcmj")),
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(3681628322400604286L)
-                                .withRouteTargets(Arrays.asList("disczskos", "oqiqazugamx", "krrcoiisbamnpp")),
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(331720497172605252L)
-                                .withRouteTargets(Arrays.asList("ztdsbeza")),
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.DENY)
-                                .withSequenceNumber(613655016592782503L)
-                                .withRouteTargets(Arrays.asList("zxuizhyhnepkpe", "iarxqiubxdukec"))));
+        IpExtendedCommunityPatchableProperties model
+            = new IpExtendedCommunityPatchableProperties().withIpExtendedCommunityRules(Arrays.asList(
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(7966062914032266112L)
+                    .withRouteTargets(Arrays.asList("wsocnequygdjbo", "grmtqjk", "evadrmmwiu", "wvcmj")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(3681628322400604286L)
+                    .withRouteTargets(Arrays.asList("disczskos", "oqiqazugamx", "krrcoiisbamnpp")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(331720497172605252L)
+                    .withRouteTargets(Arrays.asList("ztdsbeza")),
+                new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(613655016592782503L)
+                    .withRouteTargets(Arrays.asList("zxuizhyhnepkpe", "iarxqiubxdukec"))));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityPatchableProperties.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
         Assertions.assertEquals(7966062914032266112L, model.ipExtendedCommunityRules().get(0).sequenceNumber());

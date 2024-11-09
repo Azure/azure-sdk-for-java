@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogAnalyticsQueryPackQueryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogAnalyticsQueryPackQueryProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"s\",\"displayName\":\"sycbkbfk\",\"timeCreated\":\"2021-04-13T09:52:22Z\",\"timeModified\":\"2021-02-11T20:09:09Z\",\"author\":\"xxppofm\",\"description\":\"x\",\"body\":\"fjpgddtocjjxhvp\",\"related\":{\"categories\":[\"xhdzxibqeojnx\"],\"resourceTypes\":[\"vddntwn\",\"eic\",\"twnpzaoqvuhrhcf\",\"cyddglmjthjqk\"],\"solutions\":[\"eicxmqciwqvhkhi\",\"uigdtopbobjog\",\"m\",\"w\"]},\"tags\":{\"gvdfgiotkftutq\":[\"uhrzayvvt\"]},\"properties\":\"datangxlefgugnxkrxdq\"}")
-                .toObject(LogAnalyticsQueryPackQueryProperties.class);
+        LogAnalyticsQueryPackQueryProperties model = BinaryData.fromString(
+            "{\"id\":\"s\",\"displayName\":\"sycbkbfk\",\"timeCreated\":\"2021-04-13T09:52:22Z\",\"timeModified\":\"2021-02-11T20:09:09Z\",\"author\":\"xxppofm\",\"description\":\"x\",\"body\":\"fjpgddtocjjxhvp\",\"related\":{\"categories\":[\"xhdzxibqeojnx\"],\"resourceTypes\":[\"vddntwn\",\"eic\",\"twnpzaoqvuhrhcf\",\"cyddglmjthjqk\"],\"solutions\":[\"eicxmqciwqvhkhi\",\"uigdtopbobjog\",\"m\",\"w\"]},\"tags\":{\"gvdfgiotkftutq\":[\"uhrzayvvt\"]},\"properties\":\"datangxlefgugnxkrxdq\"}")
+            .toObject(LogAnalyticsQueryPackQueryProperties.class);
         Assertions.assertEquals("sycbkbfk", model.displayName());
         Assertions.assertEquals("x", model.description());
         Assertions.assertEquals("fjpgddtocjjxhvp", model.body());
@@ -31,14 +29,12 @@ public final class LogAnalyticsQueryPackQueryPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackQueryProperties model =
-            new LogAnalyticsQueryPackQueryProperties()
-                .withDisplayName("sycbkbfk")
+        LogAnalyticsQueryPackQueryProperties model
+            = new LogAnalyticsQueryPackQueryProperties().withDisplayName("sycbkbfk")
                 .withDescription("x")
                 .withBody("fjpgddtocjjxhvp")
                 .withRelated(
-                    new LogAnalyticsQueryPackQueryPropertiesRelated()
-                        .withCategories(Arrays.asList("xhdzxibqeojnx"))
+                    new LogAnalyticsQueryPackQueryPropertiesRelated().withCategories(Arrays.asList("xhdzxibqeojnx"))
                         .withResourceTypes(Arrays.asList("vddntwn", "eic", "twnpzaoqvuhrhcf", "cyddglmjthjqk"))
                         .withSolutions(Arrays.asList("eicxmqciwqvhkhi", "uigdtopbobjog", "m", "w")))
                 .withTags(mapOf("gvdfgiotkftutq", Arrays.asList("uhrzayvvt")))

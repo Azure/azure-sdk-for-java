@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
@@ -36,24 +35,28 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <p>
  * The shared access key can be obtained by creating a <i>shared access policy</i> for the Service Bus namespace or for
  * a specific Service Bus instance. See
- * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/
+ * <a href="https://learn.microsoft.com/azure/event-hubs/
  * authorize-access-shared-access-signature#shared-access-authorization-policies">Shared access authorization policies
  * </a> for more information.
  * </p>
  *
- * @see <a href="https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-shared-access-signature">Authorize
+ * @see <a href="https://learn.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature">Authorize
  *     access with shared access signature.</a>
  */
 @Immutable
 public class ServiceBusSharedKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
+    private static final String NO_HASH_ALGORITHM_ERROR_MESSAGE
+        = "Unable to create hashing algorithm '" + HASH_ALGORITHM + "'";
+    private static final String INVALID_SHARED_ACCESS_KEY
+        = "'sharedAccessKey' is an invalid value for the hashing algorithm.";
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSharedKeyCredential.class);
 
     private final String policyName;
-    private final Mac hmac;
     private final Duration tokenValidity;
+    private final SecretKeySpec secretKeySpec;
     private final String sharedAccessSignature;
 
     /**
@@ -100,21 +103,8 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
             throw new IllegalArgumentException("'tokenTimeToLive' has to positive and in the order-of seconds");
         }
 
-        try {
-            hmac = Mac.getInstance(HASH_ALGORITHM);
-        } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                String.format("Unable to create hashing algorithm '%s'", HASH_ALGORITHM), e));
-        }
-
         final byte[] sasKeyBytes = sharedAccessKey.getBytes(UTF_8);
-        final SecretKeySpec finalKey = new SecretKeySpec(sasKeyBytes, HASH_ALGORITHM);
-        try {
-            hmac.init(finalKey);
-        } catch (InvalidKeyException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'sharedAccessKey' is an invalid value for the hashing algorithm.", e));
-        }
+        this.secretKeySpec = new SecretKeySpec(sasKeyBytes, HASH_ALGORITHM);
         this.sharedAccessSignature = null;
     }
 
@@ -130,10 +120,10 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
      * @throws NullPointerException if {@code sharedAccessSignature} is null.
      */
     public ServiceBusSharedKeyCredential(String sharedAccessSignature) {
-        this.sharedAccessSignature = Objects.requireNonNull(sharedAccessSignature,
-            "'sharedAccessSignature' cannot be null");
+        this.sharedAccessSignature
+            = Objects.requireNonNull(sharedAccessSignature, "'sharedAccessSignature' cannot be null");
         this.policyName = null;
-        this.hmac = null;
+        this.secretKeySpec = null;
         this.tokenValidity = null;
     }
 
@@ -148,12 +138,21 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
      */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
+        return Mono.fromCallable(() -> getTokenSync(request));
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
         if (request.getScopes().size() != 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'scopes' should only contain a single argument that is the token audience or resource name."));
         }
 
-        return Mono.fromCallable(() -> generateSharedAccessSignature(request.getScopes().get(0)));
+        try {
+            return generateSharedAccessSignature(request.getScopes().get(0));
+        } catch (UnsupportedEncodingException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 
     private AccessToken generateSharedAccessSignature(final String resource) throws UnsupportedEncodingException {
@@ -165,6 +164,16 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
             return new AccessToken(sharedAccessSignature, getExpirationTime(sharedAccessSignature));
         }
 
+        final Mac hmac;
+        try {
+            hmac = Mac.getInstance(HASH_ALGORITHM);
+            hmac.init(secretKeySpec);
+        } catch (NoSuchAlgorithmException e) {
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(NO_HASH_ALGORITHM_ERROR_MESSAGE, e));
+        } catch (InvalidKeyException e) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_SHARED_ACCESS_KEY, e));
+        }
+
         final String utf8Encoding = UTF_8.name();
         final OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(tokenValidity);
         final String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
@@ -174,10 +183,8 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
         final byte[] signatureBytes = hmac.doFinal(secretToSign.getBytes(utf8Encoding));
         final String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
-        final String token = String.format(Locale.US, SHARED_ACCESS_SIGNATURE_FORMAT,
-            audienceUri,
-            URLEncoder.encode(signature, utf8Encoding),
-            URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+        final String token = String.format(Locale.US, SHARED_ACCESS_SIGNATURE_FORMAT, audienceUri,
+            URLEncoder.encode(signature, utf8Encoding), URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
             URLEncoder.encode(policyName, utf8Encoding));
 
         return new AccessToken(token, expiresOn);
@@ -187,7 +194,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
         String[] parts = sharedAccessSignature.split("&");
         return Arrays.stream(parts)
             .map(part -> part.split("="))
-            .filter(pair -> pair.length == 2 && pair[0].equalsIgnoreCase("se"))
+            .filter(pair -> pair.length == 2 && "se".equalsIgnoreCase(pair[0]))
             .findFirst()
             .map(pair -> pair[1])
             .map(expirationTimeStr -> {

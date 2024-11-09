@@ -6,35 +6,41 @@ package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.DataStringComparisonBehavior;
 import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetKeyProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties used to create a reference data set. */
+/**
+ * Properties used to create a reference data set.
+ */
 @Fluent
-public class ReferenceDataSetCreationProperties {
+public class ReferenceDataSetCreationProperties implements JsonSerializable<ReferenceDataSetCreationProperties> {
     /*
      * The list of key properties for the reference data set.
      */
-    @JsonProperty(value = "keyProperties", required = true)
     private List<ReferenceDataSetKeyProperty> keyProperties;
 
     /*
-     * The reference data set key comparison behavior can be set using this property. By default, the value is
-     * 'Ordinal' - which means case sensitive key comparison will be performed while joining reference data with events
-     * or while adding new reference data. When 'OrdinalIgnoreCase' is set, case insensitive comparison will be used.
+     * The reference data set key comparison behavior can be set using this property. By default, the value is 'Ordinal'
+     * - which means case sensitive key comparison will be performed while joining reference data with events or while
+     * adding new reference data. When 'OrdinalIgnoreCase' is set, case insensitive comparison will be used.
      */
-    @JsonProperty(value = "dataStringComparisonBehavior")
     private DataStringComparisonBehavior dataStringComparisonBehavior;
 
-    /** Creates an instance of ReferenceDataSetCreationProperties class. */
+    /**
+     * Creates an instance of ReferenceDataSetCreationProperties class.
+     */
     public ReferenceDataSetCreationProperties() {
     }
 
     /**
      * Get the keyProperties property: The list of key properties for the reference data set.
-     *
+     * 
      * @return the keyProperties value.
      */
     public List<ReferenceDataSetKeyProperty> keyProperties() {
@@ -43,7 +49,7 @@ public class ReferenceDataSetCreationProperties {
 
     /**
      * Set the keyProperties property: The list of key properties for the reference data set.
-     *
+     * 
      * @param keyProperties the keyProperties value to set.
      * @return the ReferenceDataSetCreationProperties object itself.
      */
@@ -57,7 +63,7 @@ public class ReferenceDataSetCreationProperties {
      * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
      * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
      * case insensitive comparison will be used.
-     *
+     * 
      * @return the dataStringComparisonBehavior value.
      */
     public DataStringComparisonBehavior dataStringComparisonBehavior() {
@@ -69,31 +75,75 @@ public class ReferenceDataSetCreationProperties {
      * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
      * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
      * case insensitive comparison will be used.
-     *
+     * 
      * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
      * @return the ReferenceDataSetCreationProperties object itself.
      */
-    public ReferenceDataSetCreationProperties withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
+    public ReferenceDataSetCreationProperties
+        withDataStringComparisonBehavior(DataStringComparisonBehavior dataStringComparisonBehavior) {
         this.dataStringComparisonBehavior = dataStringComparisonBehavior;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyProperties in model ReferenceDataSetCreationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyProperties in model ReferenceDataSetCreationProperties"));
         } else {
             keyProperties().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReferenceDataSetCreationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("keyProperties", this.keyProperties, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("dataStringComparisonBehavior",
+            this.dataStringComparisonBehavior == null ? null : this.dataStringComparisonBehavior.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReferenceDataSetCreationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReferenceDataSetCreationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReferenceDataSetCreationProperties.
+     */
+    public static ReferenceDataSetCreationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReferenceDataSetCreationProperties deserializedReferenceDataSetCreationProperties
+                = new ReferenceDataSetCreationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyProperties".equals(fieldName)) {
+                    List<ReferenceDataSetKeyProperty> keyProperties
+                        = reader.readArray(reader1 -> ReferenceDataSetKeyProperty.fromJson(reader1));
+                    deserializedReferenceDataSetCreationProperties.keyProperties = keyProperties;
+                } else if ("dataStringComparisonBehavior".equals(fieldName)) {
+                    deserializedReferenceDataSetCreationProperties.dataStringComparisonBehavior
+                        = DataStringComparisonBehavior.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReferenceDataSetCreationProperties;
+        });
+    }
 }

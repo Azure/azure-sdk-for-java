@@ -120,24 +120,20 @@ public final class DataMaskingRuleImpl implements DataMaskingRule, DataMaskingRu
     }
 
     public DataMaskingRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataMaskingRules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataMaskingRules()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataMaskingRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataMaskingRules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataMaskingRules()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -152,54 +148,46 @@ public final class DataMaskingRuleImpl implements DataMaskingRule, DataMaskingRu
     }
 
     public DataMaskingRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataMaskingRules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataMaskingRules()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataMaskingRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataMaskingRules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataMaskingRules()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    DataMaskingRuleImpl(
-        DataMaskingRuleInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    DataMaskingRuleImpl(DataMaskingRuleInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
-        this.dataMaskingRuleName = Utils.getValueFromIdByName(innerObject.id(), "rules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.dataMaskingRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "rules");
     }
 
     public DataMaskingRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataMaskingRules()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataMaskingRules()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataMaskingRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataMaskingRules()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataMaskingRules()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, context)
+            .getValue();
         return this;
     }
 

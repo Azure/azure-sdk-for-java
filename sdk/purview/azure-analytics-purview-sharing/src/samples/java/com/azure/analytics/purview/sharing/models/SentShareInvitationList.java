@@ -4,26 +4,28 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.List;
-
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * List of the sent share invitations.
  */
 @Fluent
-public final class SentShareInvitationList {
+public final class SentShareInvitationList implements JsonSerializable<SentShareInvitationList> {
     /*
      * The Url of next result page.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Collection of items of type SentShareInvitation
      */
-    @JsonProperty(value = "value", required = true)
     private List<SentShareInvitation> value;
 
     /**
@@ -34,7 +36,7 @@ public final class SentShareInvitationList {
 
     /**
      * Get the nextLink property: The Url of next result page.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -43,7 +45,7 @@ public final class SentShareInvitationList {
 
     /**
      * Set the nextLink property: The Url of next result page.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the SentShareInvitationList object itself.
      */
@@ -54,7 +56,7 @@ public final class SentShareInvitationList {
 
     /**
      * Get the value property: Collection of items of type SentShareInvitation.
-     * 
+     *
      * @return the value value.
      */
     public List<SentShareInvitation> getValue() {
@@ -63,12 +65,54 @@ public final class SentShareInvitationList {
 
     /**
      * Set the value property: Collection of items of type SentShareInvitation.
-     * 
+     *
      * @param value the value value to set.
      * @return the SentShareInvitationList object itself.
      */
     public SentShareInvitationList setValue(List<SentShareInvitation> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SentShareInvitationList from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SentShareInvitationList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SentShareInvitationList.
+     */
+    public static SentShareInvitationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SentShareInvitationList deserializedSentShareInvitationList = new SentShareInvitationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SentShareInvitation> value
+                        = reader.readArray(reader1 -> SentShareInvitation.fromJson(reader1));
+                    deserializedSentShareInvitationList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSentShareInvitationList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSentShareInvitationList;
+        });
     }
 }

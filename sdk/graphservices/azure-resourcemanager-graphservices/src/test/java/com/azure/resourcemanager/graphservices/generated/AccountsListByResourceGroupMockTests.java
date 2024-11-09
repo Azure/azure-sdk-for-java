@@ -31,37 +31,27 @@ public final class AccountsListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"systemData\":{\"createdByType\":\"Key\",\"createdAt\":\"2021-04-13T11:18:15Z\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-04-21T04:18:16Z\"},\"properties\":{\"provisioningState\":\"Failed\",\"appId\":\"rl\",\"billingPlanId\":\"ugjzzdatqxhocdge\"},\"location\":\"blgphuticn\",\"tags\":{\"okftyxolniwpwcuk\":\"aozwyiftyhxhu\"},\"id\":\"fkgiawxk\",\"name\":\"ryplwckbasyypn\",\"type\":\"dhsgcba\"}]}";
+        String responseStr
+            = "{\"value\":[{\"systemData\":{\"createdByType\":\"Key\",\"createdAt\":\"2021-04-13T11:18:15Z\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-04-21T04:18:16Z\"},\"properties\":{\"provisioningState\":\"Failed\",\"appId\":\"rl\",\"billingPlanId\":\"ugjzzdatqxhocdge\"},\"location\":\"blgphuticn\",\"tags\":{\"okftyxolniwpwcuk\":\"aozwyiftyhxhu\"},\"id\":\"fkgiawxk\",\"name\":\"ryplwckbasyypn\",\"type\":\"dhsgcba\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        GraphServicesManager manager =
-            GraphServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        GraphServicesManager manager = GraphServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AccountResource> response =
-            manager.accounts().listByResourceGroup("bdkvwrwjf", com.azure.core.util.Context.NONE);
+        PagedIterable<AccountResource> response
+            = manager.accounts().listByResourceGroup("bdkvwrwjf", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("blgphuticn", response.iterator().next().location());
         Assertions.assertEquals("aozwyiftyhxhu", response.iterator().next().tags().get("okftyxolniwpwcuk"));

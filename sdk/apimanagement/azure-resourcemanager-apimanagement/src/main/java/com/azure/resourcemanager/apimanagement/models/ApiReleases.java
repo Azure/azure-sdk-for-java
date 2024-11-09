@@ -44,14 +44,8 @@ public interface ApiReleases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged ApiRelease list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiReleaseContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ApiReleaseContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Returns the etag of an API release.
@@ -66,8 +60,8 @@ public interface ApiReleases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
+    ApiReleasesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, Context context);
 
     /**
      * Returns the etag of an API release.
@@ -95,8 +89,8 @@ public interface ApiReleases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return apiRelease details.
      */
-    Response<ApiReleaseContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
+    Response<ApiReleaseContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, Context context);
 
     /**
      * Returns the details of an API release.
@@ -127,8 +121,8 @@ public interface ApiReleases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String releaseId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified release in the API.

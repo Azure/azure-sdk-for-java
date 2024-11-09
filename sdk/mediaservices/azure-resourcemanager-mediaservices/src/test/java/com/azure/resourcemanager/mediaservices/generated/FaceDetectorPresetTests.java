@@ -16,32 +16,29 @@ import org.junit.jupiter.api.Assertions;
 public final class FaceDetectorPresetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FaceDetectorPreset model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.FaceDetectorPreset\",\"resolution\":\"SourceResolution\",\"mode\":\"Combined\",\"blurType\":\"Box\",\"experimentalOptions\":{\"eoybfhjxakvvjgs\":\"oorb\",\"dabg\":\"ordilmywwtkgkxny\"}}")
-                .toObject(FaceDetectorPreset.class);
+        FaceDetectorPreset model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.FaceDetectorPreset\",\"resolution\":\"SourceResolution\",\"mode\":\"Redact\",\"blurType\":\"High\",\"experimentalOptions\":{\"ftjuh\":\"cja\",\"mtggu\":\"qaz\",\"fiwrxgkn\":\"pijrajcivmmghf\"}}")
+            .toObject(FaceDetectorPreset.class);
         Assertions.assertEquals(AnalysisResolution.SOURCE_RESOLUTION, model.resolution());
-        Assertions.assertEquals(FaceRedactorMode.COMBINED, model.mode());
-        Assertions.assertEquals(BlurType.BOX, model.blurType());
-        Assertions.assertEquals("oorb", model.experimentalOptions().get("eoybfhjxakvvjgs"));
+        Assertions.assertEquals(FaceRedactorMode.REDACT, model.mode());
+        Assertions.assertEquals(BlurType.HIGH, model.blurType());
+        Assertions.assertEquals("cja", model.experimentalOptions().get("ftjuh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FaceDetectorPreset model =
-            new FaceDetectorPreset()
-                .withResolution(AnalysisResolution.SOURCE_RESOLUTION)
-                .withMode(FaceRedactorMode.COMBINED)
-                .withBlurType(BlurType.BOX)
-                .withExperimentalOptions(mapOf("eoybfhjxakvvjgs", "oorb", "dabg", "ordilmywwtkgkxny"));
+        FaceDetectorPreset model = new FaceDetectorPreset().withResolution(AnalysisResolution.SOURCE_RESOLUTION)
+            .withMode(FaceRedactorMode.REDACT)
+            .withBlurType(BlurType.HIGH)
+            .withExperimentalOptions(mapOf("ftjuh", "cja", "mtggu", "qaz", "fiwrxgkn", "pijrajcivmmghf"));
         model = BinaryData.fromObject(model).toObject(FaceDetectorPreset.class);
         Assertions.assertEquals(AnalysisResolution.SOURCE_RESOLUTION, model.resolution());
-        Assertions.assertEquals(FaceRedactorMode.COMBINED, model.mode());
-        Assertions.assertEquals(BlurType.BOX, model.blurType());
-        Assertions.assertEquals("oorb", model.experimentalOptions().get("eoybfhjxakvvjgs"));
+        Assertions.assertEquals(FaceRedactorMode.REDACT, model.mode());
+        Assertions.assertEquals(BlurType.HIGH, model.blurType());
+        Assertions.assertEquals("cja", model.experimentalOptions().get("ftjuh"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

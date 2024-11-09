@@ -129,8 +129,8 @@ public final class InternalNetworkPatchProperties extends AnnotationResource {
      * @param staticRouteConfiguration the staticRouteConfiguration value to set.
      * @return the InternalNetworkPatchProperties object itself.
      */
-    public InternalNetworkPatchProperties withStaticRouteConfiguration(
-        StaticRouteConfiguration staticRouteConfiguration) {
+    public InternalNetworkPatchProperties
+        withStaticRouteConfiguration(StaticRouteConfiguration staticRouteConfiguration) {
         this.staticRouteConfiguration = staticRouteConfiguration;
         return this;
     }

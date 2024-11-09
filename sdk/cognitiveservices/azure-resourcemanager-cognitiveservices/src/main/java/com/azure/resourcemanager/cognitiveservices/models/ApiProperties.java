@@ -5,88 +5,83 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** The api properties for special APIs. */
+/**
+ * The api properties for special APIs.
+ */
 @Fluent
-public final class ApiProperties {
+public final class ApiProperties implements JsonSerializable<ApiProperties> {
     /*
      * (QnAMaker Only) The runtime endpoint of QnAMaker.
      */
-    @JsonProperty(value = "qnaRuntimeEndpoint")
     private String qnaRuntimeEndpoint;
 
     /*
      * (QnAMaker Only) The Azure Search endpoint key of QnAMaker.
      */
-    @JsonProperty(value = "qnaAzureSearchEndpointKey")
     private String qnaAzureSearchEndpointKey;
 
     /*
      * (QnAMaker Only) The Azure Search endpoint id of QnAMaker.
      */
-    @JsonProperty(value = "qnaAzureSearchEndpointId")
     private String qnaAzureSearchEndpointId;
 
     /*
      * (Bing Search Only) The flag to enable statistics of Bing Search.
      */
-    @JsonProperty(value = "statisticsEnabled")
     private Boolean statisticsEnabled;
 
     /*
      * (Personalization Only) The flag to enable statistics of Bing Search.
      */
-    @JsonProperty(value = "eventHubConnectionString")
     private String eventHubConnectionString;
 
     /*
      * (Personalization Only) The storage account connection string.
      */
-    @JsonProperty(value = "storageAccountConnectionString")
     private String storageAccountConnectionString;
 
     /*
      * (Metrics Advisor Only) The Azure AD Client Id (Application Id).
      */
-    @JsonProperty(value = "aadClientId")
     private String aadClientId;
 
     /*
      * (Metrics Advisor Only) The Azure AD Tenant Id.
      */
-    @JsonProperty(value = "aadTenantId")
     private String aadTenantId;
 
     /*
      * (Metrics Advisor Only) The super user of Metrics Advisor.
      */
-    @JsonProperty(value = "superUser")
     private String superUser;
 
     /*
      * (Metrics Advisor Only) The website name of Metrics Advisor.
      */
-    @JsonProperty(value = "websiteName")
     private String websiteName;
 
     /*
      * The api properties for special APIs.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ApiProperties class. */
+    /**
+     * Creates an instance of ApiProperties class.
+     */
     public ApiProperties() {
     }
 
     /**
      * Get the qnaRuntimeEndpoint property: (QnAMaker Only) The runtime endpoint of QnAMaker.
-     *
+     * 
      * @return the qnaRuntimeEndpoint value.
      */
     public String qnaRuntimeEndpoint() {
@@ -95,7 +90,7 @@ public final class ApiProperties {
 
     /**
      * Set the qnaRuntimeEndpoint property: (QnAMaker Only) The runtime endpoint of QnAMaker.
-     *
+     * 
      * @param qnaRuntimeEndpoint the qnaRuntimeEndpoint value to set.
      * @return the ApiProperties object itself.
      */
@@ -106,7 +101,7 @@ public final class ApiProperties {
 
     /**
      * Get the qnaAzureSearchEndpointKey property: (QnAMaker Only) The Azure Search endpoint key of QnAMaker.
-     *
+     * 
      * @return the qnaAzureSearchEndpointKey value.
      */
     public String qnaAzureSearchEndpointKey() {
@@ -115,7 +110,7 @@ public final class ApiProperties {
 
     /**
      * Set the qnaAzureSearchEndpointKey property: (QnAMaker Only) The Azure Search endpoint key of QnAMaker.
-     *
+     * 
      * @param qnaAzureSearchEndpointKey the qnaAzureSearchEndpointKey value to set.
      * @return the ApiProperties object itself.
      */
@@ -126,7 +121,7 @@ public final class ApiProperties {
 
     /**
      * Get the qnaAzureSearchEndpointId property: (QnAMaker Only) The Azure Search endpoint id of QnAMaker.
-     *
+     * 
      * @return the qnaAzureSearchEndpointId value.
      */
     public String qnaAzureSearchEndpointId() {
@@ -135,7 +130,7 @@ public final class ApiProperties {
 
     /**
      * Set the qnaAzureSearchEndpointId property: (QnAMaker Only) The Azure Search endpoint id of QnAMaker.
-     *
+     * 
      * @param qnaAzureSearchEndpointId the qnaAzureSearchEndpointId value to set.
      * @return the ApiProperties object itself.
      */
@@ -146,7 +141,7 @@ public final class ApiProperties {
 
     /**
      * Get the statisticsEnabled property: (Bing Search Only) The flag to enable statistics of Bing Search.
-     *
+     * 
      * @return the statisticsEnabled value.
      */
     public Boolean statisticsEnabled() {
@@ -155,7 +150,7 @@ public final class ApiProperties {
 
     /**
      * Set the statisticsEnabled property: (Bing Search Only) The flag to enable statistics of Bing Search.
-     *
+     * 
      * @param statisticsEnabled the statisticsEnabled value to set.
      * @return the ApiProperties object itself.
      */
@@ -166,7 +161,7 @@ public final class ApiProperties {
 
     /**
      * Get the eventHubConnectionString property: (Personalization Only) The flag to enable statistics of Bing Search.
-     *
+     * 
      * @return the eventHubConnectionString value.
      */
     public String eventHubConnectionString() {
@@ -175,7 +170,7 @@ public final class ApiProperties {
 
     /**
      * Set the eventHubConnectionString property: (Personalization Only) The flag to enable statistics of Bing Search.
-     *
+     * 
      * @param eventHubConnectionString the eventHubConnectionString value to set.
      * @return the ApiProperties object itself.
      */
@@ -186,7 +181,7 @@ public final class ApiProperties {
 
     /**
      * Get the storageAccountConnectionString property: (Personalization Only) The storage account connection string.
-     *
+     * 
      * @return the storageAccountConnectionString value.
      */
     public String storageAccountConnectionString() {
@@ -195,7 +190,7 @@ public final class ApiProperties {
 
     /**
      * Set the storageAccountConnectionString property: (Personalization Only) The storage account connection string.
-     *
+     * 
      * @param storageAccountConnectionString the storageAccountConnectionString value to set.
      * @return the ApiProperties object itself.
      */
@@ -206,7 +201,7 @@ public final class ApiProperties {
 
     /**
      * Get the aadClientId property: (Metrics Advisor Only) The Azure AD Client Id (Application Id).
-     *
+     * 
      * @return the aadClientId value.
      */
     public String aadClientId() {
@@ -215,7 +210,7 @@ public final class ApiProperties {
 
     /**
      * Set the aadClientId property: (Metrics Advisor Only) The Azure AD Client Id (Application Id).
-     *
+     * 
      * @param aadClientId the aadClientId value to set.
      * @return the ApiProperties object itself.
      */
@@ -226,7 +221,7 @@ public final class ApiProperties {
 
     /**
      * Get the aadTenantId property: (Metrics Advisor Only) The Azure AD Tenant Id.
-     *
+     * 
      * @return the aadTenantId value.
      */
     public String aadTenantId() {
@@ -235,7 +230,7 @@ public final class ApiProperties {
 
     /**
      * Set the aadTenantId property: (Metrics Advisor Only) The Azure AD Tenant Id.
-     *
+     * 
      * @param aadTenantId the aadTenantId value to set.
      * @return the ApiProperties object itself.
      */
@@ -246,7 +241,7 @@ public final class ApiProperties {
 
     /**
      * Get the superUser property: (Metrics Advisor Only) The super user of Metrics Advisor.
-     *
+     * 
      * @return the superUser value.
      */
     public String superUser() {
@@ -255,7 +250,7 @@ public final class ApiProperties {
 
     /**
      * Set the superUser property: (Metrics Advisor Only) The super user of Metrics Advisor.
-     *
+     * 
      * @param superUser the superUser value to set.
      * @return the ApiProperties object itself.
      */
@@ -266,7 +261,7 @@ public final class ApiProperties {
 
     /**
      * Get the websiteName property: (Metrics Advisor Only) The website name of Metrics Advisor.
-     *
+     * 
      * @return the websiteName value.
      */
     public String websiteName() {
@@ -275,7 +270,7 @@ public final class ApiProperties {
 
     /**
      * Set the websiteName property: (Metrics Advisor Only) The website name of Metrics Advisor.
-     *
+     * 
      * @param websiteName the websiteName value to set.
      * @return the ApiProperties object itself.
      */
@@ -286,17 +281,16 @@ public final class ApiProperties {
 
     /**
      * Get the additionalProperties property: The api properties for special APIs.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: The api properties for special APIs.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ApiProperties object itself.
      */
@@ -305,19 +299,85 @@ public final class ApiProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("qnaRuntimeEndpoint", this.qnaRuntimeEndpoint);
+        jsonWriter.writeStringField("qnaAzureSearchEndpointKey", this.qnaAzureSearchEndpointKey);
+        jsonWriter.writeStringField("qnaAzureSearchEndpointId", this.qnaAzureSearchEndpointId);
+        jsonWriter.writeBooleanField("statisticsEnabled", this.statisticsEnabled);
+        jsonWriter.writeStringField("eventHubConnectionString", this.eventHubConnectionString);
+        jsonWriter.writeStringField("storageAccountConnectionString", this.storageAccountConnectionString);
+        jsonWriter.writeStringField("aadClientId", this.aadClientId);
+        jsonWriter.writeStringField("aadTenantId", this.aadTenantId);
+        jsonWriter.writeStringField("superUser", this.superUser);
+        jsonWriter.writeStringField("websiteName", this.websiteName);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiProperties.
+     */
+    public static ApiProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiProperties deserializedApiProperties = new ApiProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("qnaRuntimeEndpoint".equals(fieldName)) {
+                    deserializedApiProperties.qnaRuntimeEndpoint = reader.getString();
+                } else if ("qnaAzureSearchEndpointKey".equals(fieldName)) {
+                    deserializedApiProperties.qnaAzureSearchEndpointKey = reader.getString();
+                } else if ("qnaAzureSearchEndpointId".equals(fieldName)) {
+                    deserializedApiProperties.qnaAzureSearchEndpointId = reader.getString();
+                } else if ("statisticsEnabled".equals(fieldName)) {
+                    deserializedApiProperties.statisticsEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("eventHubConnectionString".equals(fieldName)) {
+                    deserializedApiProperties.eventHubConnectionString = reader.getString();
+                } else if ("storageAccountConnectionString".equals(fieldName)) {
+                    deserializedApiProperties.storageAccountConnectionString = reader.getString();
+                } else if ("aadClientId".equals(fieldName)) {
+                    deserializedApiProperties.aadClientId = reader.getString();
+                } else if ("aadTenantId".equals(fieldName)) {
+                    deserializedApiProperties.aadTenantId = reader.getString();
+                } else if ("superUser".equals(fieldName)) {
+                    deserializedApiProperties.superUser = reader.getString();
+                } else if ("websiteName".equals(fieldName)) {
+                    deserializedApiProperties.websiteName = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedApiProperties.additionalProperties = additionalProperties;
+
+            return deserializedApiProperties;
+        });
     }
 }

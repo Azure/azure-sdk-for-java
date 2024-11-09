@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentLicenseRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentLicenseRequest model =
-            BinaryData.fromString("{\"verificationVersion\":\"wby\"}").toObject(DeploymentLicenseRequest.class);
+        DeploymentLicenseRequest model
+            = BinaryData.fromString("{\"verificationVersion\":\"wby\"}").toObject(DeploymentLicenseRequest.class);
         Assertions.assertEquals("wby", model.verificationVersion());
     }
 

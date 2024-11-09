@@ -20,31 +20,28 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<QueryPerformanceInsightResetDataResult> resetQueryPerformanceInsightDataWithResponse(
-        String resourceGroupName, String serverName, Context context) {
-        Response<QueryPerformanceInsightResetDataResultInner> inner =
-            this.serviceClient().resetQueryPerformanceInsightDataWithResponse(resourceGroupName, serverName, context);
+    public Response<QueryPerformanceInsightResetDataResult>
+        resetQueryPerformanceInsightDataWithResponse(String resourceGroupName, String serverName, Context context) {
+        Response<QueryPerformanceInsightResetDataResultInner> inner
+            = this.serviceClient().resetQueryPerformanceInsightDataWithResponse(resourceGroupName, serverName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QueryPerformanceInsightResetDataResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public QueryPerformanceInsightResetDataResult resetQueryPerformanceInsightData(
-        String resourceGroupName, String serverName) {
-        QueryPerformanceInsightResetDataResultInner inner =
-            this.serviceClient().resetQueryPerformanceInsightData(resourceGroupName, serverName);
+    public QueryPerformanceInsightResetDataResult resetQueryPerformanceInsightData(String resourceGroupName,
+        String serverName) {
+        QueryPerformanceInsightResetDataResultInner inner
+            = this.serviceClient().resetQueryPerformanceInsightData(resourceGroupName, serverName);
         if (inner != null) {
             return new QueryPerformanceInsightResetDataResultImpl(inner, this.manager());
         } else {
@@ -52,15 +49,14 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public void createRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName) {
+    public void createRecommendedActionSession(String resourceGroupName, String serverName, String advisorName,
+        String databaseName) {
         this.serviceClient().createRecommendedActionSession(resourceGroupName, serverName, advisorName, databaseName);
     }
 
-    public void createRecommendedActionSession(
-        String resourceGroupName, String serverName, String advisorName, String databaseName, Context context) {
-        this
-            .serviceClient()
+    public void createRecommendedActionSession(String resourceGroupName, String serverName, String advisorName,
+        String databaseName, Context context) {
+        this.serviceClient()
             .createRecommendedActionSession(resourceGroupName, serverName, advisorName, databaseName, context);
     }
 

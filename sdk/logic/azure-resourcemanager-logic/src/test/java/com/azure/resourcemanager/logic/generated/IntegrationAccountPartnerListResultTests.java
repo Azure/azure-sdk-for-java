@@ -6,7 +6,10 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountPartnerInner;
+import com.azure.resourcemanager.logic.models.B2BPartnerContent;
+import com.azure.resourcemanager.logic.models.BusinessIdentity;
 import com.azure.resourcemanager.logic.models.IntegrationAccountPartnerListResult;
+import com.azure.resourcemanager.logic.models.PartnerContent;
 import com.azure.resourcemanager.logic.models.PartnerType;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,61 +19,60 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountPartnerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountPartnerListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"partnerType\":\"NotSpecified\",\"createdTime\":\"2021-01-20T09:00:38Z\",\"changedTime\":\"2021-10-18T04:08:09Z\",\"metadata\":\"datapevzhfst\"},\"location\":\"txhojujb\",\"tags\":{\"xyfwnylrcool\":\"lmcuvhixb\",\"y\":\"ttpkiwkkbnujrywv\",\"wiithtywub\":\"bfpncurdo\",\"fdntwjchrdgoih\":\"cbihwqk\"},\"id\":\"umwctondz\",\"name\":\"luudfdlwggytsb\",\"type\":\"tov\"},{\"properties\":{\"partnerType\":\"B2B\",\"createdTime\":\"2021-01-15T08:24:44Z\",\"changedTime\":\"2021-01-20T04:42:22Z\",\"metadata\":\"dataqfi\"},\"location\":\"fxqknpirgneptt\",\"tags\":{\"mqnrojlpijnkr\":\"sniffc\",\"zronasxift\":\"frddhcrati\"},\"id\":\"zq\",\"name\":\"zh\",\"type\":\"tw\"},{\"properties\":{\"partnerType\":\"B2B\",\"createdTime\":\"2021-09-16T17:45:36Z\",\"changedTime\":\"2021-06-13T10:36:32Z\",\"metadata\":\"datahonnxkrlgnyhmos\"},\"location\":\"xkk\",\"tags\":{\"pdso\":\"rrghxjbdhqxvcxgf\"},\"id\":\"bshrnsvbuswd\",\"name\":\"z\",\"type\":\"ybycnunvj\"},{\"properties\":{\"partnerType\":\"B2B\",\"createdTime\":\"2021-08-13T04:34:19Z\",\"changedTime\":\"2021-04-02T14:41:37Z\",\"metadata\":\"datanopqgikyzirtx\"},\"location\":\"yuxzejntpsewgi\",\"tags\":{\"mieoxorgguf\":\"qukrydxt\"},\"id\":\"yaomtb\",\"name\":\"hhavgrvkffovjz\",\"type\":\"pjbi\"}],\"nextLink\":\"jmfxumvf\"}")
-                .toObject(IntegrationAccountPartnerListResult.class);
-        Assertions.assertEquals("txhojujb", model.value().get(0).location());
-        Assertions.assertEquals("lmcuvhixb", model.value().get(0).tags().get("xyfwnylrcool"));
+        IntegrationAccountPartnerListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"partnerType\":\"NotSpecified\",\"createdTime\":\"2021-08-09T04:53:10Z\",\"changedTime\":\"2021-04-13T22:37:48Z\",\"metadata\":\"datajqnv\",\"content\":{\"b2b\":{\"businessIdentities\":[{\"qualifier\":\"laxxulc\",\"value\":\"isdos\"},{\"qualifier\":\"jbjsvgjrwh\",\"value\":\"yvycytdclxgcckn\"},{\"qualifier\":\"nwm\",\"value\":\"tmvpdvjdhtt\"}]}}},\"location\":\"a\",\"tags\":{\"rphkmcrjdqnsdfz\":\"dxihc\",\"gkylkdghr\":\"bg\",\"kvbwnhhtqlgeh\":\"euutlwxezwzh\",\"vgcxtx\":\"ppipifhpfeoa\"},\"id\":\"csheafidltugsr\",\"name\":\"smkss\",\"type\":\"h\"},{\"properties\":{\"partnerType\":\"NotSpecified\",\"createdTime\":\"2021-07-25T12:58:41Z\",\"changedTime\":\"2021-05-04T10:42:41Z\",\"metadata\":\"datafwegprhptillu\",\"content\":{\"b2b\":{\"businessIdentities\":[{\"qualifier\":\"tgdqohmcwsldriz\",\"value\":\"tpwb\"},{\"qualifier\":\"a\",\"value\":\"llibphbqzmizak\"},{\"qualifier\":\"kan\",\"value\":\"jpdn\"}]}}},\"location\":\"zhajoylhjlmuo\",\"tags\":{\"pteecjme\":\"rimrs\",\"wxdzaumweoohgu\":\"slstvasy\"},\"id\":\"fuzboyjathwtzolb\",\"name\":\"emwmdxmebwjs\",\"type\":\"jpahlxvea\"},{\"properties\":{\"partnerType\":\"NotSpecified\",\"createdTime\":\"2020-12-26T12:19:36Z\",\"changedTime\":\"2021-11-17T22:25:05Z\",\"metadata\":\"datamqt\",\"content\":{\"b2b\":{\"businessIdentities\":[{\"qualifier\":\"ijddtvqc\",\"value\":\"tad\"},{\"qualifier\":\"jaeukmrsieekpn\",\"value\":\"zaapmudqmeqwi\"},{\"qualifier\":\"pibudqwyxebeybpm\",\"value\":\"znrtffyaqit\"},{\"qualifier\":\"hheioqaqhvseuf\",\"value\":\"qyrxp\"}]}}},\"location\":\"lcgqlsismj\",\"tags\":{\"ju\":\"ddgamquhiosr\",\"zhczexrxzbujrtrh\":\"vfcdisyirn\"},\"id\":\"vwrevkhgnlnzon\",\"name\":\"lrpiqywnc\",\"type\":\"jtszcof\"}],\"nextLink\":\"e\"}")
+            .toObject(IntegrationAccountPartnerListResult.class);
+        Assertions.assertEquals("a", model.value().get(0).location());
+        Assertions.assertEquals("dxihc", model.value().get(0).tags().get("rphkmcrjdqnsdfz"));
         Assertions.assertEquals(PartnerType.NOT_SPECIFIED, model.value().get(0).partnerType());
-        Assertions.assertEquals("jmfxumvf", model.nextLink());
+        Assertions.assertEquals("laxxulc",
+            model.value().get(0).content().b2B().businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("isdos", model.value().get(0).content().b2B().businessIdentities().get(0).value());
+        Assertions.assertEquals("e", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountPartnerListResult model =
-            new IntegrationAccountPartnerListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IntegrationAccountPartnerInner()
-                                .withLocation("txhojujb")
-                                .withTags(
-                                    mapOf(
-                                        "xyfwnylrcool",
-                                        "lmcuvhixb",
-                                        "y",
-                                        "ttpkiwkkbnujrywv",
-                                        "wiithtywub",
-                                        "bfpncurdo",
-                                        "fdntwjchrdgoih",
-                                        "cbihwqk"))
-                                .withPartnerType(PartnerType.NOT_SPECIFIED)
-                                .withMetadata("datapevzhfst"),
-                            new IntegrationAccountPartnerInner()
-                                .withLocation("fxqknpirgneptt")
-                                .withTags(mapOf("mqnrojlpijnkr", "sniffc", "zronasxift", "frddhcrati"))
-                                .withPartnerType(PartnerType.B2B)
-                                .withMetadata("dataqfi"),
-                            new IntegrationAccountPartnerInner()
-                                .withLocation("xkk")
-                                .withTags(mapOf("pdso", "rrghxjbdhqxvcxgf"))
-                                .withPartnerType(PartnerType.B2B)
-                                .withMetadata("datahonnxkrlgnyhmos"),
-                            new IntegrationAccountPartnerInner()
-                                .withLocation("yuxzejntpsewgi")
-                                .withTags(mapOf("mieoxorgguf", "qukrydxt"))
-                                .withPartnerType(PartnerType.B2B)
-                                .withMetadata("datanopqgikyzirtx")))
-                .withNextLink("jmfxumvf");
+        IntegrationAccountPartnerListResult model = new IntegrationAccountPartnerListResult()
+            .withValue(Arrays.asList(
+                new IntegrationAccountPartnerInner().withLocation("a")
+                    .withTags(mapOf("rphkmcrjdqnsdfz", "dxihc", "gkylkdghr", "bg", "kvbwnhhtqlgeh", "euutlwxezwzh",
+                        "vgcxtx", "ppipifhpfeoa"))
+                    .withPartnerType(PartnerType.NOT_SPECIFIED)
+                    .withMetadata("datajqnv")
+                    .withContent(new PartnerContent().withB2B(new B2BPartnerContent().withBusinessIdentities(
+                        Arrays.asList(new BusinessIdentity().withQualifier("laxxulc").withValue("isdos"),
+                            new BusinessIdentity().withQualifier("jbjsvgjrwh").withValue("yvycytdclxgcckn"),
+                            new BusinessIdentity().withQualifier("nwm").withValue("tmvpdvjdhtt"))))),
+                new IntegrationAccountPartnerInner().withLocation("zhajoylhjlmuo")
+                    .withTags(mapOf("pteecjme", "rimrs", "wxdzaumweoohgu", "slstvasy"))
+                    .withPartnerType(PartnerType.NOT_SPECIFIED)
+                    .withMetadata("datafwegprhptillu")
+                    .withContent(new PartnerContent().withB2B(new B2BPartnerContent().withBusinessIdentities(
+                        Arrays.asList(new BusinessIdentity().withQualifier("tgdqohmcwsldriz").withValue("tpwb"),
+                            new BusinessIdentity().withQualifier("a").withValue("llibphbqzmizak"),
+                            new BusinessIdentity().withQualifier("kan").withValue("jpdn"))))),
+                new IntegrationAccountPartnerInner().withLocation("lcgqlsismj")
+                    .withTags(mapOf("ju", "ddgamquhiosr", "zhczexrxzbujrtrh", "vfcdisyirn"))
+                    .withPartnerType(PartnerType.NOT_SPECIFIED)
+                    .withMetadata("datamqt")
+                    .withContent(new PartnerContent().withB2B(new B2BPartnerContent().withBusinessIdentities(
+                        Arrays.asList(new BusinessIdentity().withQualifier("ijddtvqc").withValue("tad"),
+                            new BusinessIdentity().withQualifier("jaeukmrsieekpn").withValue("zaapmudqmeqwi"),
+                            new BusinessIdentity().withQualifier("pibudqwyxebeybpm").withValue("znrtffyaqit"),
+                            new BusinessIdentity().withQualifier("hheioqaqhvseuf").withValue("qyrxp")))))))
+            .withNextLink("e");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountPartnerListResult.class);
-        Assertions.assertEquals("txhojujb", model.value().get(0).location());
-        Assertions.assertEquals("lmcuvhixb", model.value().get(0).tags().get("xyfwnylrcool"));
+        Assertions.assertEquals("a", model.value().get(0).location());
+        Assertions.assertEquals("dxihc", model.value().get(0).tags().get("rphkmcrjdqnsdfz"));
         Assertions.assertEquals(PartnerType.NOT_SPECIFIED, model.value().get(0).partnerType());
-        Assertions.assertEquals("jmfxumvf", model.nextLink());
+        Assertions.assertEquals("laxxulc",
+            model.value().get(0).content().b2B().businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("isdos", model.value().get(0).content().b2B().businessIdentities().get(0).value());
+        Assertions.assertEquals("e", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

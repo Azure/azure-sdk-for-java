@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.CodelessUiConnectorConfigProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents Codeless UI data connector. */
+/**
+ * Represents Codeless UI data connector.
+ */
 @Fluent
-public final class CodelessParameters {
+public final class CodelessParameters implements JsonSerializable<CodelessParameters> {
     /*
      * Config to describe the instructions blade
      */
-    @JsonProperty(value = "connectorUiConfig")
     private CodelessUiConnectorConfigProperties connectorUiConfig;
 
     /**
+     * Creates an instance of CodelessParameters class.
+     */
+    public CodelessParameters() {
+    }
+
+    /**
      * Get the connectorUiConfig property: Config to describe the instructions blade.
-     *
+     * 
      * @return the connectorUiConfig value.
      */
     public CodelessUiConnectorConfigProperties connectorUiConfig() {
@@ -28,7 +39,7 @@ public final class CodelessParameters {
 
     /**
      * Set the connectorUiConfig property: Config to describe the instructions blade.
-     *
+     * 
      * @param connectorUiConfig the connectorUiConfig value to set.
      * @return the CodelessParameters object itself.
      */
@@ -39,12 +50,49 @@ public final class CodelessParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectorUiConfig() != null) {
             connectorUiConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectorUiConfig", this.connectorUiConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CodelessParameters.
+     */
+    public static CodelessParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessParameters deserializedCodelessParameters = new CodelessParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectorUiConfig".equals(fieldName)) {
+                    deserializedCodelessParameters.connectorUiConfig
+                        = CodelessUiConnectorConfigProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessParameters;
+        });
     }
 }

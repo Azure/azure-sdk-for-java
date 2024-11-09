@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SapSizingRecommendationResult")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SingleServer", value = SingleServerRecommendationResult.class),
-    @JsonSubTypes.Type(name = "ThreeTier", value = ThreeTierRecommendationResult.class)
-})
+    @JsonSubTypes.Type(name = "ThreeTier", value = ThreeTierRecommendationResult.class) })
 @Immutable
 public class SapSizingRecommendationResultInner {
     /** Creates an instance of SapSizingRecommendationResultInner class. */

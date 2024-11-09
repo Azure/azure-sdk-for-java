@@ -115,29 +115,25 @@ public final class IdentityProviderContractImpl
     }
 
     public IdentityProviderContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIdentityProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, identityProviderName, createParameters, createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIdentityProviders()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, identityProviderName, createParameters,
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IdentityProviderContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIdentityProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, identityProviderName, createParameters, createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIdentityProviders()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, identityProviderName, createParameters,
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    IdentityProviderContractImpl(
-        IdentityProviderType name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    IdentityProviderContractImpl(IdentityProviderType name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new IdentityProviderContractInner();
         this.serviceManager = serviceManager;
         this.identityProviderName = name;
@@ -152,61 +148,51 @@ public final class IdentityProviderContractImpl
     }
 
     public IdentityProviderContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIdentityProviders()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, identityProviderName, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIdentityProviders()
+            .updateWithResponse(resourceGroupName, serviceName, identityProviderName, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IdentityProviderContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIdentityProviders()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, identityProviderName, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIdentityProviders()
+            .updateWithResponse(resourceGroupName, serviceName, identityProviderName, updateIfMatch, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    IdentityProviderContractImpl(
-        IdentityProviderContractInner innerObject,
+    IdentityProviderContractImpl(IdentityProviderContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.identityProviderName =
-            IdentityProviderType.fromString(Utils.getValueFromIdByName(innerObject.id(), "identityProviders"));
+        this.identityProviderName
+            = IdentityProviderType.fromString(Utils.getValueFromIdByName(innerObject.id(), "identityProviders"));
     }
 
     public IdentityProviderContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIdentityProviders()
-                .getWithResponse(resourceGroupName, serviceName, identityProviderName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIdentityProviders()
+            .getWithResponse(resourceGroupName, serviceName, identityProviderName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IdentityProviderContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIdentityProviders()
-                .getWithResponse(resourceGroupName, serviceName, identityProviderName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIdentityProviders()
+            .getWithResponse(resourceGroupName, serviceName, identityProviderName, context)
+            .getValue();
         return this;
     }
 
     public Response<ClientSecretContract> listSecretsWithResponse(Context context) {
-        return serviceManager
-            .identityProviders()
+        return serviceManager.identityProviders()
             .listSecretsWithResponse(resourceGroupName, serviceName, identityProviderName, context);
     }
 

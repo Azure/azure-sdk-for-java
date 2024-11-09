@@ -14,8 +14,7 @@ import java.util.List;
  * An immutable client-side representation of an Azure deployment What-if operation result.
  */
 @Fluent
-public interface WhatIfOperationResult extends
-        HasInnerModel<WhatIfOperationResultInner> {
+public interface WhatIfOperationResult extends HasInnerModel<WhatIfOperationResultInner> {
 
     /**
      * @return status of the What-If operation.

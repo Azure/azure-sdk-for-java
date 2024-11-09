@@ -27,23 +27,28 @@ import com.azure.resourcemanager.synapse.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.synapse.models.DatabaseCheckNameRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolChildResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolChildResourcesClient.
+ */
 public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolChildResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolChildResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolChildResourcesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(KustoPoolChildResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(KustoPoolChildResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,27 +59,21 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolChildResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("workspaceName") String workspaceName, @PathParam("kustoPoolName") String kustoPoolName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DatabaseCheckNameRequest resourceName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DatabaseCheckNameRequest resourceName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -83,16 +82,14 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String workspaceName,
+        String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -101,10 +98,8 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -119,24 +114,14 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            workspaceName,
-                            kustoPoolName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            resourceName,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), workspaceName, kustoPoolName,
+                    this.client.getSubscriptionId(), resourceGroupName, apiVersion, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -146,20 +131,14 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        DatabaseCheckNameRequest resourceName,
-        Context context) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String workspaceName,
+        String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -168,10 +147,8 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,22 +162,13 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                workspaceName,
-                kustoPoolName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                resourceName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), workspaceName, kustoPoolName,
+            this.client.getSubscriptionId(), resourceGroupName, apiVersion, resourceName, accept, context);
     }
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -211,15 +179,15 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String workspaceName, String kustoPoolName,
+        String resourceGroupName, DatabaseCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(workspaceName, kustoPoolName, resourceGroupName, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -231,20 +199,15 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        DatabaseCheckNameRequest resourceName,
-        Context context) {
-        return checkNameAvailabilityWithResponseAsync(
-                workspaceName, kustoPoolName, resourceGroupName, resourceName, context)
-            .block();
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String resourceGroupName, DatabaseCheckNameRequest resourceName, Context context) {
+        return checkNameAvailabilityWithResponseAsync(workspaceName, kustoPoolName, resourceGroupName, resourceName,
+            context).block();
     }
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -255,10 +218,9 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
-        return checkNameAvailabilityWithResponse(
-                workspaceName, kustoPoolName, resourceGroupName, resourceName, Context.NONE)
-            .getValue();
+    public CheckNameResultInner checkNameAvailability(String workspaceName, String kustoPoolName,
+        String resourceGroupName, DatabaseCheckNameRequest resourceName) {
+        return checkNameAvailabilityWithResponse(workspaceName, kustoPoolName, resourceGroupName, resourceName,
+            Context.NONE).getValue();
     }
 }

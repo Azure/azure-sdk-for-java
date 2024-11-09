@@ -43,8 +43,8 @@ public interface TimeSeriesDatabaseConnectionsClient {
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TimeSeriesDatabaseConnectionInner> list(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<TimeSeriesDatabaseConnectionInner> list(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the description of an existing time series database connection.
@@ -59,8 +59,8 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @return the description of an existing time series database connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TimeSeriesDatabaseConnectionInner> getWithResponse(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context);
+    Response<TimeSeriesDatabaseConnectionInner> getWithResponse(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, Context context);
 
     /**
      * Get the description of an existing time series database connection.
@@ -74,8 +74,8 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @return the description of an existing time series database connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TimeSeriesDatabaseConnectionInner get(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName);
+    TimeSeriesDatabaseConnectionInner get(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName);
 
     /**
      * Create or update a time series database connection.
@@ -91,9 +91,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
+        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
         TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription);
 
     /**
@@ -111,11 +109,8 @@ public interface TimeSeriesDatabaseConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription,
-        Context context);
+        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
+        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription, Context context);
 
     /**
      * Create or update a time series database connection.
@@ -130,9 +125,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @return describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TimeSeriesDatabaseConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
+    TimeSeriesDatabaseConnectionInner createOrUpdate(String resourceGroupName, String resourceName,
         String timeSeriesDatabaseConnectionName,
         TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription);
 
@@ -150,12 +143,9 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @return describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TimeSeriesDatabaseConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
+    TimeSeriesDatabaseConnectionInner createOrUpdate(String resourceGroupName, String resourceName,
         String timeSeriesDatabaseConnectionName,
-        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription,
-        Context context);
+        TimeSeriesDatabaseConnectionInner timeSeriesDatabaseConnectionDescription, Context context);
 
     /**
      * Delete a time series database connection.
@@ -169,8 +159,8 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @return the {@link SyncPoller} for polling of describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner> beginDelete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName);
+    SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner>
+        beginDelete(String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName);
 
     /**
      * Delete a time series database connection.
@@ -189,11 +179,8 @@ public interface TimeSeriesDatabaseConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TimeSeriesDatabaseConnectionInner>, TimeSeriesDatabaseConnectionInner> beginDelete(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts,
-        Context context);
+        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName,
+        CleanupConnectionArtifacts cleanupConnectionArtifacts, Context context);
 
     /**
      * Delete a time series database connection.
@@ -207,8 +194,8 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @return describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TimeSeriesDatabaseConnectionInner delete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName);
+    TimeSeriesDatabaseConnectionInner delete(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName);
 
     /**
      * Delete a time series database connection.
@@ -226,10 +213,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @return describes a time series database connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TimeSeriesDatabaseConnectionInner delete(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+    TimeSeriesDatabaseConnectionInner delete(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, CleanupConnectionArtifacts cleanupConnectionArtifacts,
         Context context);
 }

@@ -37,24 +37,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in SqlPoolTransparentDataEncryptionsClient.
  */
 public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoolTransparentDataEncryptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolTransparentDataEncryptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolTransparentDataEncryptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolTransparentDataEncryptionsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SqlPoolTransparentDataEncryptionsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolTransparentDataEncryptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,73 +65,52 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolTransparentDataEncryptionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TransparentDataEncryptionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<TransparentDataEncryptionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @PathParam("transparentDataEncryptionName") TransparentDataEncryptionName transparentDataEncryptionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TransparentDataEncryptionInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<TransparentDataEncryptionInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @PathParam("transparentDataEncryptionName") TransparentDataEncryptionName transparentDataEncryptionName,
             @BodyParam("application/json") TransparentDataEncryptionInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TransparentDataEncryptionListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TransparentDataEncryptionListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TransparentDataEncryptionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a SQL pool's transparent data encryption configuration
-     *
-     * <p>Get a SQL pool's transparent data encryption configuration.
-     *
+     * 
+     * Get a SQL pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -140,25 +119,18 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL pool's transparent data encryption configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName) {
+    private Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -171,35 +143,22 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (transparentDataEncryptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter transparentDataEncryptionName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            transparentDataEncryptionName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a SQL pool's transparent data encryption configuration
-     *
-     * <p>Get a SQL pool's transparent data encryption configuration.
-     *
+     * 
+     * Get a SQL pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -209,26 +168,19 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL pool's transparent data encryption configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
+    private Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -241,32 +193,21 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (transparentDataEncryptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter transparentDataEncryptionName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                transparentDataEncryptionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, transparentDataEncryptionName, accept, context);
     }
 
     /**
      * Get a SQL pool's transparent data encryption configuration
-     *
-     * <p>Get a SQL pool's transparent data encryption configuration.
-     *
+     * 
+     * Get a SQL pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -277,20 +218,17 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @return a SQL pool's transparent data encryption configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TransparentDataEncryptionInner> getAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName) {
+    private Mono<TransparentDataEncryptionInner> getAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a SQL pool's transparent data encryption configuration
-     *
-     * <p>Get a SQL pool's transparent data encryption configuration.
-     *
+     * 
+     * Get a SQL pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -302,22 +240,17 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @return a SQL pool's transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransparentDataEncryptionInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, context)
-            .block();
+    public Response<TransparentDataEncryptionInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName,
+            context).block();
     }
 
     /**
      * Get a SQL pool's transparent data encryption configuration
-     *
-     * <p>Get a SQL pool's transparent data encryption configuration.
-     *
+     * 
+     * Get a SQL pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -328,21 +261,17 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @return a SQL pool's transparent data encryption configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransparentDataEncryptionInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    public TransparentDataEncryptionInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
         TransparentDataEncryptionName transparentDataEncryptionName) {
-        return getWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, Context.NONE)
-            .getValue();
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName,
+            Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a Sql pool's transparent data encryption configuration
-     *
-     * <p>Creates or updates a Sql pool's transparent data encryption configuration.
-     *
+     * 
+     * Creates or updates a Sql pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -352,26 +281,19 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Sql pool transparent data encryption configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
+    private Mono<Response<TransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName,
         TransparentDataEncryptionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -384,10 +306,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (transparentDataEncryptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter transparentDataEncryptionName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -397,28 +317,17 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            transparentDataEncryptionName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName,
+                transparentDataEncryptionName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Sql pool's transparent data encryption configuration
-     *
-     * <p>Creates or updates a Sql pool's transparent data encryption configuration.
-     *
+     * 
+     * Creates or updates a Sql pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -429,27 +338,19 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Sql pool transparent data encryption configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
-        TransparentDataEncryptionInner parameters,
-        Context context) {
+    private Mono<Response<TransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName,
+        TransparentDataEncryptionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -462,10 +363,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (transparentDataEncryptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter transparentDataEncryptionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter transparentDataEncryptionName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -475,25 +374,15 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                transparentDataEncryptionName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, parameters, accept, context);
     }
 
     /**
      * Creates or updates a Sql pool's transparent data encryption configuration
-     *
-     * <p>Creates or updates a Sql pool's transparent data encryption configuration.
-     *
+     * 
+     * Creates or updates a Sql pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -505,22 +394,18 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @return represents a Sql pool transparent data encryption configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TransparentDataEncryptionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
+    private Mono<TransparentDataEncryptionInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName,
         TransparentDataEncryptionInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName,
+            transparentDataEncryptionName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a Sql pool's transparent data encryption configuration
-     *
-     * <p>Creates or updates a Sql pool's transparent data encryption configuration.
-     *
+     * 
+     * Creates or updates a Sql pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -533,23 +418,18 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @return represents a Sql pool transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransparentDataEncryptionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
-        TransparentDataEncryptionInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, parameters, context)
-            .block();
+    public Response<TransparentDataEncryptionInner> createOrUpdateWithResponse(String resourceGroupName,
+        String workspaceName, String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName,
+        TransparentDataEncryptionInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName,
+            transparentDataEncryptionName, parameters, context).block();
     }
 
     /**
      * Creates or updates a Sql pool's transparent data encryption configuration
-     *
-     * <p>Creates or updates a Sql pool's transparent data encryption configuration.
-     *
+     * 
+     * Creates or updates a Sql pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -561,22 +441,18 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @return represents a Sql pool transparent data encryption configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransparentDataEncryptionInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
+    public TransparentDataEncryptionInner createOrUpdate(String resourceGroupName, String workspaceName,
+        String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName,
         TransparentDataEncryptionInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, parameters, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName,
+            parameters, Context.NONE).getValue();
     }
 
     /**
      * SQL pool's transparent data encryption configurations
-     *
-     * <p>Get list of SQL pool's transparent data encryption configurations.
-     *
+     * 
+     * Get list of SQL pool's transparent data encryption configurations.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -584,22 +460,18 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool's transparent data encryption configurations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TransparentDataEncryptionInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<PagedResponse<TransparentDataEncryptionInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -614,35 +486,18 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
-            .<PagedResponse<TransparentDataEncryptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, accept, context))
+            .<PagedResponse<TransparentDataEncryptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * SQL pool's transparent data encryption configurations
-     *
-     * <p>Get list of SQL pool's transparent data encryption configurations.
-     *
+     * 
+     * Get list of SQL pool's transparent data encryption configurations.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -651,22 +506,18 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool's transparent data encryption configurations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TransparentDataEncryptionInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<PagedResponse<TransparentDataEncryptionInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -682,53 +533,38 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * SQL pool's transparent data encryption configurations
-     *
-     * <p>Get list of SQL pool's transparent data encryption configurations.
-     *
+     * 
+     * Get list of SQL pool's transparent data encryption configurations.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
-     *     PagedFlux}.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TransparentDataEncryptionInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
+    private PagedFlux<TransparentDataEncryptionInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * SQL pool's transparent data encryption configurations
-     *
-     * <p>Get list of SQL pool's transparent data encryption configurations.
-     *
+     * 
+     * Get list of SQL pool's transparent data encryption configurations.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -736,42 +572,41 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
-     *     PagedFlux}.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TransparentDataEncryptionInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context),
+    private PagedFlux<TransparentDataEncryptionInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * SQL pool's transparent data encryption configurations
-     *
-     * <p>Get list of SQL pool's transparent data encryption configurations.
-     *
+     * 
+     * Get list of SQL pool's transparent data encryption configurations.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TransparentDataEncryptionInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public PagedIterable<TransparentDataEncryptionInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName));
     }
 
     /**
      * SQL pool's transparent data encryption configurations
-     *
-     * <p>Get list of SQL pool's transparent data encryption configurations.
-     *
+     * 
+     * Get list of SQL pool's transparent data encryption configurations.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -779,25 +614,24 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TransparentDataEncryptionInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public PagedIterable<TransparentDataEncryptionInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of transparent data encryption configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransparentDataEncryptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -805,62 +639,41 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TransparentDataEncryptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TransparentDataEncryptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of transparent data encryption configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TransparentDataEncryptionInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TransparentDataEncryptionInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

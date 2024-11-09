@@ -6,71 +6,71 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.synapse.models.PrincipalType;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A class representing cluster principal property. */
+/**
+ * A class representing cluster principal property.
+ */
 @Fluent
-public final class ClusterPrincipalProperties {
+public final class ClusterPrincipalProperties implements JsonSerializable<ClusterPrincipalProperties> {
     /*
      * The principal ID assigned to the cluster principal. It can be a user email, application ID, or security group
      * name.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * Cluster principal role.
      */
-    @JsonProperty(value = "role", required = true)
     private ClusterPrincipalRole role;
 
     /*
      * The tenant id of the principal
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * Principal type.
      */
-    @JsonProperty(value = "principalType", required = true)
     private PrincipalType principalType;
 
     /*
      * The tenant name of the principal
      */
-    @JsonProperty(value = "tenantName", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantName;
 
     /*
      * The principal name
      */
-    @JsonProperty(value = "principalName", access = JsonProperty.Access.WRITE_ONLY)
     private String principalName;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * The service principal object id in AAD (Azure active directory)
      */
-    @JsonProperty(value = "aadObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String aadObjectId;
 
-    /** Creates an instance of ClusterPrincipalProperties class. */
+    /**
+     * Creates an instance of ClusterPrincipalProperties class.
+     */
     public ClusterPrincipalProperties() {
     }
 
     /**
      * Get the principalId property: The principal ID assigned to the cluster principal. It can be a user email,
      * application ID, or security group name.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -80,7 +80,7 @@ public final class ClusterPrincipalProperties {
     /**
      * Set the principalId property: The principal ID assigned to the cluster principal. It can be a user email,
      * application ID, or security group name.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the ClusterPrincipalProperties object itself.
      */
@@ -91,7 +91,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Get the role property: Cluster principal role.
-     *
+     * 
      * @return the role value.
      */
     public ClusterPrincipalRole role() {
@@ -100,7 +100,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Set the role property: Cluster principal role.
-     *
+     * 
      * @param role the role value to set.
      * @return the ClusterPrincipalProperties object itself.
      */
@@ -111,7 +111,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Get the tenantId property: The tenant id of the principal.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -120,7 +120,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Set the tenantId property: The tenant id of the principal.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ClusterPrincipalProperties object itself.
      */
@@ -131,7 +131,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Get the principalType property: Principal type.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -140,7 +140,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Set the principalType property: Principal type.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the ClusterPrincipalProperties object itself.
      */
@@ -151,7 +151,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Get the tenantName property: The tenant name of the principal.
-     *
+     * 
      * @return the tenantName value.
      */
     public String tenantName() {
@@ -160,7 +160,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Get the principalName property: The principal name.
-     *
+     * 
      * @return the principalName value.
      */
     public String principalName() {
@@ -169,7 +169,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -178,7 +178,7 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Get the aadObjectId property: The service principal object id in AAD (Azure active directory).
-     *
+     * 
      * @return the aadObjectId value.
      */
     public String aadObjectId() {
@@ -187,28 +187,81 @@ public final class ClusterPrincipalProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model ClusterPrincipalProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model ClusterPrincipalProperties"));
         }
         if (role() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property role in model ClusterPrincipalProperties"));
         }
         if (principalType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalType in model ClusterPrincipalProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalType in model ClusterPrincipalProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterPrincipalProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("principalType", this.principalType == null ? null : this.principalType.toString());
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPrincipalProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPrincipalProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterPrincipalProperties.
+     */
+    public static ClusterPrincipalProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPrincipalProperties deserializedClusterPrincipalProperties = new ClusterPrincipalProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedClusterPrincipalProperties.principalId = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedClusterPrincipalProperties.role = ClusterPrincipalRole.fromString(reader.getString());
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedClusterPrincipalProperties.principalType = PrincipalType.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedClusterPrincipalProperties.tenantId = reader.getString();
+                } else if ("tenantName".equals(fieldName)) {
+                    deserializedClusterPrincipalProperties.tenantName = reader.getString();
+                } else if ("principalName".equals(fieldName)) {
+                    deserializedClusterPrincipalProperties.principalName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterPrincipalProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("aadObjectId".equals(fieldName)) {
+                    deserializedClusterPrincipalProperties.aadObjectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPrincipalProperties;
+        });
+    }
 }

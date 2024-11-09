@@ -30,8 +30,8 @@ public interface DigitalTwinsClient {
      * @return digitalTwinsInstances resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DigitalTwinsDescriptionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<DigitalTwinsDescriptionInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get DigitalTwinsInstances resource.
@@ -79,9 +79,7 @@ public interface DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsDescriptionInner digitalTwinsCreate,
+        String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate,
         Context context);
 
     /**
@@ -98,8 +96,8 @@ public interface DigitalTwinsClient {
      * @return the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsDescriptionInner createOrUpdate(
-        String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate);
+    DigitalTwinsDescriptionInner createOrUpdate(String resourceGroupName, String resourceName,
+        DigitalTwinsDescriptionInner digitalTwinsCreate);
 
     /**
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
@@ -116,11 +114,8 @@ public interface DigitalTwinsClient {
      * @return the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsDescriptionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsDescriptionInner digitalTwinsCreate,
-        Context context);
+    DigitalTwinsDescriptionInner createOrUpdate(String resourceGroupName, String resourceName,
+        DigitalTwinsDescriptionInner digitalTwinsCreate, Context context);
 
     /**
      * Update metadata of DigitalTwinsInstance.
@@ -151,9 +146,7 @@ public interface DigitalTwinsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdate(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsPatchDescription digitalTwinsPatchDescription,
+        String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription,
         Context context);
 
     /**
@@ -168,8 +161,8 @@ public interface DigitalTwinsClient {
      * @return the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsDescriptionInner update(
-        String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription);
+    DigitalTwinsDescriptionInner update(String resourceGroupName, String resourceName,
+        DigitalTwinsPatchDescription digitalTwinsPatchDescription);
 
     /**
      * Update metadata of DigitalTwinsInstance.
@@ -184,11 +177,8 @@ public interface DigitalTwinsClient {
      * @return the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsDescriptionInner update(
-        String resourceGroupName,
-        String resourceName,
-        DigitalTwinsPatchDescription digitalTwinsPatchDescription,
-        Context context);
+    DigitalTwinsDescriptionInner update(String resourceGroupName, String resourceName,
+        DigitalTwinsPatchDescription digitalTwinsPatchDescription, Context context);
 
     /**
      * Delete a DigitalTwinsInstance.
@@ -201,8 +191,8 @@ public interface DigitalTwinsClient {
      * @return the {@link SyncPoller} for polling of the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
-        String resourceGroupName, String resourceName);
+    SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner>
+        beginDelete(String resourceGroupName, String resourceName);
 
     /**
      * Delete a DigitalTwinsInstance.
@@ -216,8 +206,8 @@ public interface DigitalTwinsClient {
      * @return the {@link SyncPoller} for polling of the description of the DigitalTwins service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
-        String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner>
+        beginDelete(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Delete a DigitalTwinsInstance.
@@ -306,8 +296,8 @@ public interface DigitalTwinsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String location, CheckNameRequest digitalTwinsInstanceCheckName, Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String location,
+        CheckNameRequest digitalTwinsInstanceCheckName, Context context);
 
     /**
      * Check if a DigitalTwinsInstance name is available.

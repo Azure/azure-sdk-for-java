@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class WarmStoragePropertiesUsageStateDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WarmStoragePropertiesUsageStateDetails model =
-            BinaryData
-                .fromString("{\"currentCount\":127337486,\"maxCount\":2024670267}")
+        WarmStoragePropertiesUsageStateDetails model
+            = BinaryData.fromString("{\"currentCount\":1339093969,\"maxCount\":745513484}")
                 .toObject(WarmStoragePropertiesUsageStateDetails.class);
-        Assertions.assertEquals(127337486, model.currentCount());
-        Assertions.assertEquals(2024670267, model.maxCount());
+        Assertions.assertEquals(1339093969, model.currentCount());
+        Assertions.assertEquals(745513484, model.maxCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WarmStoragePropertiesUsageStateDetails model =
-            new WarmStoragePropertiesUsageStateDetails().withCurrentCount(127337486).withMaxCount(2024670267);
+        WarmStoragePropertiesUsageStateDetails model
+            = new WarmStoragePropertiesUsageStateDetails().withCurrentCount(1339093969).withMaxCount(745513484);
         model = BinaryData.fromObject(model).toObject(WarmStoragePropertiesUsageStateDetails.class);
-        Assertions.assertEquals(127337486, model.currentCount());
-        Assertions.assertEquals(2024670267, model.maxCount());
+        Assertions.assertEquals(1339093969, model.currentCount());
+        Assertions.assertEquals(745513484, model.maxCount());
     }
 }

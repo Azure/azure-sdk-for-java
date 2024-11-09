@@ -53,19 +53,9 @@ public interface MachineLearningServicesClient {
      * @return services in specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServiceResourceInner> listByWorkspace(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String modelId,
-        String modelName,
-        String tag,
-        String tags,
-        String properties,
-        String runId,
-        Boolean expand,
-        OrderString orderby,
-        Context context);
+    PagedIterable<ServiceResourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String skip,
+        String modelId, String modelName, String tag, String tags, String properties, String runId, Boolean expand,
+        OrderString orderby, Context context);
 
     /**
      * Get a Service by name.
@@ -95,8 +85,8 @@ public interface MachineLearningServicesClient {
      * @return a Service by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceResourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String serviceName, Boolean expand, Context context);
+    Response<ServiceResourceInner> getWithResponse(String resourceGroupName, String workspaceName, String serviceName,
+        Boolean expand, Context context);
 
     /**
      * Delete a specific Service..
@@ -124,46 +114,7 @@ public interface MachineLearningServicesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String serviceName, Context context);
-
-    /**
-     * Creates or updates service. This call will update a service if it exists. This is a nonrecoverable operation. If
-     * your intent is to create a new service, do a GET first to verify that it does not exist yet.
-     *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param serviceName Name of the Azure Machine Learning service.
-     * @param properties The payload that is used to create or update the Service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning service object wrapped into ARM resource envelope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String serviceName, CreateServiceRequest properties);
-
-    /**
-     * Creates or updates service. This call will update a service if it exists. This is a nonrecoverable operation. If
-     * your intent is to create a new service, do a GET first to verify that it does not exist yet.
-     *
-     * @param resourceGroupName Name of the resource group in which workspace is located.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param serviceName Name of the Azure Machine Learning service.
-     * @param properties The payload that is used to create or update the Service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning service object wrapped into ARM resource envelope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String serviceName,
-        CreateServiceRequest properties,
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String serviceName,
         Context context);
 
     /**
@@ -180,8 +131,8 @@ public interface MachineLearningServicesClient {
      * @return machine Learning service object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String serviceName, CreateServiceRequest properties);
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String serviceName, CreateServiceRequest properties);
 
     /**
      * Creates or updates service. This call will update a service if it exists. This is a nonrecoverable operation. If
@@ -198,10 +149,41 @@ public interface MachineLearningServicesClient {
      * @return machine Learning service object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String serviceName,
-        CreateServiceRequest properties,
-        Context context);
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String serviceName, CreateServiceRequest properties, Context context);
+
+    /**
+     * Creates or updates service. This call will update a service if it exists. This is a nonrecoverable operation. If
+     * your intent is to create a new service, do a GET first to verify that it does not exist yet.
+     *
+     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param serviceName Name of the Azure Machine Learning service.
+     * @param properties The payload that is used to create or update the Service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return machine Learning service object wrapped into ARM resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String serviceName,
+        CreateServiceRequest properties);
+
+    /**
+     * Creates or updates service. This call will update a service if it exists. This is a nonrecoverable operation. If
+     * your intent is to create a new service, do a GET first to verify that it does not exist yet.
+     *
+     * @param resourceGroupName Name of the resource group in which workspace is located.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param serviceName Name of the Azure Machine Learning service.
+     * @param properties The payload that is used to create or update the Service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return machine Learning service object wrapped into ARM resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String serviceName,
+        CreateServiceRequest properties, Context context);
 }

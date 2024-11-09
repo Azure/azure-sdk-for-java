@@ -28,15 +28,13 @@ public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, L
     @Override
     public LocalNetworkGateway createResource(LocalNetworkGateways localNetworkGateways) throws Exception {
         initializeResourceNames(localNetworkGateways.manager().resourceManager().internalContext());
-        LocalNetworkGateway gateway =
-            localNetworkGateways
-                .define(lngwName)
-                .withRegion(REGION)
-                .withNewResourceGroup(groupName)
-                .withIPAddress("40.71.184.214")
-                .withAddressSpace("192.168.3.0/24")
-                .withAddressSpace("192.168.4.0/27")
-                .create();
+        LocalNetworkGateway gateway = localNetworkGateways.define(lngwName)
+            .withRegion(REGION)
+            .withNewResourceGroup(groupName)
+            .withIPAddress("40.71.184.214")
+            .withAddressSpace("192.168.3.0/24")
+            .withAddressSpace("192.168.4.0/27")
+            .create();
         Assertions.assertEquals("40.71.184.214", gateway.ipAddress());
         Assertions.assertEquals(2, gateway.addressSpaces().size());
         Assertions.assertTrue(gateway.addressSpaces().contains("192.168.4.0/27"));
@@ -45,8 +43,7 @@ public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, L
 
     @Override
     public LocalNetworkGateway updateResource(LocalNetworkGateway gateway) throws Exception {
-        gateway
-            .update()
+        gateway.update()
             .withoutAddressSpace("192.168.3.0/24")
             .withIPAddress("40.71.184.216")
             .withTag("tag2", "value2")
@@ -65,8 +62,7 @@ public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, L
     @Override
     public void print(LocalNetworkGateway gateway) {
         StringBuilder info = new StringBuilder();
-        info
-            .append("Local Network Gateway: ")
+        info.append("Local Network Gateway: ")
             .append(gateway.id())
             .append("\n\tName: ")
             .append(gateway.name())

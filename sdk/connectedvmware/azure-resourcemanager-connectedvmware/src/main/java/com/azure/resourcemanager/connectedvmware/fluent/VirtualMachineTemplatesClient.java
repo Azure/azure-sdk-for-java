@@ -29,8 +29,8 @@ public interface VirtualMachineTemplatesClient {
      * @return the {@link SyncPoller} for polling of define the virtualMachineTemplate.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualMachineTemplateInner>, VirtualMachineTemplateInner> beginCreate(
-        String resourceGroupName, String virtualMachineTemplateName);
+    SyncPoller<PollResult<VirtualMachineTemplateInner>, VirtualMachineTemplateInner>
+        beginCreate(String resourceGroupName, String virtualMachineTemplateName);
 
     /**
      * Implements virtual machine template PUT method.
@@ -80,8 +80,8 @@ public interface VirtualMachineTemplatesClient {
      * @return define the virtualMachineTemplate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineTemplateInner create(
-        String resourceGroupName, String virtualMachineTemplateName, VirtualMachineTemplateInner body, Context context);
+    VirtualMachineTemplateInner create(String resourceGroupName, String virtualMachineTemplateName,
+        VirtualMachineTemplateInner body, Context context);
 
     /**
      * Gets a virtual machine template.
@@ -97,8 +97,8 @@ public interface VirtualMachineTemplatesClient {
      * @return define the virtualMachineTemplate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineTemplateInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineTemplateName, Context context);
+    Response<VirtualMachineTemplateInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String virtualMachineTemplateName, Context context);
 
     /**
      * Gets a virtual machine template.
@@ -130,8 +130,8 @@ public interface VirtualMachineTemplatesClient {
      * @return define the virtualMachineTemplate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineTemplateInner> updateWithResponse(
-        String resourceGroupName, String virtualMachineTemplateName, ResourcePatch body, Context context);
+    Response<VirtualMachineTemplateInner> updateWithResponse(String resourceGroupName,
+        String virtualMachineTemplateName, ResourcePatch body, Context context);
 
     /**
      * Updates a virtual machine template.
@@ -178,8 +178,8 @@ public interface VirtualMachineTemplatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineTemplateName,
+        Boolean force, Context context);
 
     /**
      * Deletes an virtual machine template.

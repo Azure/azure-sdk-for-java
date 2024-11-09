@@ -20,8 +20,7 @@ public final class SourceControlConfigurationImpl implements SourceControlConfig
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    SourceControlConfigurationImpl(
-        SourceControlConfigurationInner innerObject,
+    SourceControlConfigurationImpl(SourceControlConfigurationInner innerObject,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

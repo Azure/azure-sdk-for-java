@@ -375,12 +375,8 @@ public interface Key extends Indexable, HasInnerModel<KeyProperties>, HasId, Has
     }
 
     /** The template for a key update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<Key>,
-            UpdateStages.WithKey,
-            UpdateStages.WithKeyOperations,
-            UpdateStages.WithAttributes,
-            UpdateStages.WithTags {
+    interface Update extends Appliable<Key>, UpdateStages.WithKey, UpdateStages.WithKeyOperations,
+        UpdateStages.WithAttributes, UpdateStages.WithTags {
     }
 
     /** The template for a key vault update operation, with a new key version to be created. */

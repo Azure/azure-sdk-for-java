@@ -74,10 +74,8 @@ public final class ConnectivityCheckRequestSource {
      */
     public void validate() {
         if (region() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property region in model ConnectivityCheckRequestSource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property region in model ConnectivityCheckRequestSource"));
         }
     }
 

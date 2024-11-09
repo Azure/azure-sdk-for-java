@@ -4,23 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for IntegrationRuntimes Upgrade. */
+/**
+ * Samples for IntegrationRuntimes Upgrade.
+ */
 public final class IntegrationRuntimesUpgradeSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Upgrade.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * IntegrationRuntimes_Upgrade.json
      */
     /**
      * Sample code: Upgrade integration runtime.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void upgradeIntegrationRuntime(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .integrationRuntimes()
-            .upgradeWithResponse(
-                "exampleResourceGroup",
-                "exampleWorkspace",
-                "exampleIntegrationRuntime",
+        manager.integrationRuntimes()
+            .upgradeWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime",
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** SKU size. */
+/**
+ * SKU size.
+ */
 public final class SkuSize extends ExpandableStringEnum<SkuSize> {
-    /** Static value Extra small for SkuSize. */
+    /**
+     * Static value Extra small for SkuSize.
+     */
     public static final SkuSize EXTRA_SMALL = fromString("Extra small");
 
-    /** Static value Small for SkuSize. */
+    /**
+     * Static value Small for SkuSize.
+     */
     public static final SkuSize SMALL = fromString("Small");
 
-    /** Static value Medium for SkuSize. */
+    /**
+     * Static value Medium for SkuSize.
+     */
     public static final SkuSize MEDIUM = fromString("Medium");
 
-    /** Static value Large for SkuSize. */
+    /**
+     * Static value Large for SkuSize.
+     */
     public static final SkuSize LARGE = fromString("Large");
 
     /**
      * Creates a new instance of SkuSize value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class SkuSize extends ExpandableStringEnum<SkuSize> {
 
     /**
      * Creates or finds a SkuSize from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuSize.
      */
-    @JsonCreator
     public static SkuSize fromString(String name) {
         return fromString(name, SkuSize.class);
     }
 
     /**
      * Gets known SkuSize values.
-     *
+     * 
      * @return known SkuSize values.
      */
     public static Collection<SkuSize> values() {

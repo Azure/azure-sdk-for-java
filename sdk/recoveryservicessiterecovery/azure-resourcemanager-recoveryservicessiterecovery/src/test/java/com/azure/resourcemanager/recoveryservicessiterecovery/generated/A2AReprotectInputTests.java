@@ -30,14 +30,19 @@ public final class A2AReprotectInputTests {
     public void testSerialize() throws Exception {
         A2AReprotectInput model = new A2AReprotectInput().withRecoveryContainerId("uhvajmailfemjjza")
             .withVmDisks(Arrays.asList(
-                new A2AVmDiskInputDetails().withDiskUri("jiqul").withRecoveryAzureStorageAccountId("qx")
+                new A2AVmDiskInputDetails().withDiskUri("jiqul")
+                    .withRecoveryAzureStorageAccountId("qx")
                     .withPrimaryStagingAzureStorageAccountId("dmvr"),
-                new A2AVmDiskInputDetails().withDiskUri("cm").withRecoveryAzureStorageAccountId("erndbrnyeofltfnn")
+                new A2AVmDiskInputDetails().withDiskUri("cm")
+                    .withRecoveryAzureStorageAccountId("erndbrnyeofltfnn")
                     .withPrimaryStagingAzureStorageAccountId("rkadjfynnfmuiiir"),
-                new A2AVmDiskInputDetails().withDiskUri("pfoh").withRecoveryAzureStorageAccountId("kfkxbbcbrwjiut")
+                new A2AVmDiskInputDetails().withDiskUri("pfoh")
+                    .withRecoveryAzureStorageAccountId("kfkxbbcbrwjiut")
                     .withPrimaryStagingAzureStorageAccountId("njizb")))
-            .withRecoveryResourceGroupId("woiymrvz").withRecoveryCloudServiceId("uyrsrziuctix")
-            .withRecoveryAvailabilitySetId("d").withPolicyId("ifrevk");
+            .withRecoveryResourceGroupId("woiymrvz")
+            .withRecoveryCloudServiceId("uyrsrziuctix")
+            .withRecoveryAvailabilitySetId("d")
+            .withPolicyId("ifrevk");
         model = BinaryData.fromObject(model).toObject(A2AReprotectInput.class);
         Assertions.assertEquals("uhvajmailfemjjza", model.recoveryContainerId());
         Assertions.assertEquals("jiqul", model.vmDisks().get(0).diskUri());

@@ -6,44 +6,52 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Config to describe the polling config for API poller connector. */
+/**
+ * Config to describe the polling config for API poller connector.
+ */
 @Fluent
-public final class CodelessConnectorPollingConfigProperties {
+public final class CodelessConnectorPollingConfigProperties
+    implements JsonSerializable<CodelessConnectorPollingConfigProperties> {
     /*
      * The poller active status
      */
-    @JsonProperty(value = "isActive")
     private Boolean isActive;
 
     /*
      * Describe the authentication type of the poller
      */
-    @JsonProperty(value = "auth", required = true)
     private CodelessConnectorPollingAuthProperties auth;
 
     /*
      * Describe the poll request config parameters of the poller
      */
-    @JsonProperty(value = "request", required = true)
     private CodelessConnectorPollingRequestProperties request;
 
     /*
      * Describe the poll request paging config of the poller
      */
-    @JsonProperty(value = "paging")
     private CodelessConnectorPollingPagingProperties paging;
 
     /*
      * Describe the response config parameters of the poller
      */
-    @JsonProperty(value = "response")
     private CodelessConnectorPollingResponseProperties response;
 
     /**
+     * Creates an instance of CodelessConnectorPollingConfigProperties class.
+     */
+    public CodelessConnectorPollingConfigProperties() {
+    }
+
+    /**
      * Get the isActive property: The poller active status.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -52,7 +60,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Set the isActive property: The poller active status.
-     *
+     * 
      * @param isActive the isActive value to set.
      * @return the CodelessConnectorPollingConfigProperties object itself.
      */
@@ -63,7 +71,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Get the auth property: Describe the authentication type of the poller.
-     *
+     * 
      * @return the auth value.
      */
     public CodelessConnectorPollingAuthProperties auth() {
@@ -72,7 +80,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Set the auth property: Describe the authentication type of the poller.
-     *
+     * 
      * @param auth the auth value to set.
      * @return the CodelessConnectorPollingConfigProperties object itself.
      */
@@ -83,7 +91,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Get the request property: Describe the poll request config parameters of the poller.
-     *
+     * 
      * @return the request value.
      */
     public CodelessConnectorPollingRequestProperties request() {
@@ -92,7 +100,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Set the request property: Describe the poll request config parameters of the poller.
-     *
+     * 
      * @param request the request value to set.
      * @return the CodelessConnectorPollingConfigProperties object itself.
      */
@@ -103,7 +111,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Get the paging property: Describe the poll request paging config of the poller.
-     *
+     * 
      * @return the paging value.
      */
     public CodelessConnectorPollingPagingProperties paging() {
@@ -112,7 +120,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Set the paging property: Describe the poll request paging config of the poller.
-     *
+     * 
      * @param paging the paging value to set.
      * @return the CodelessConnectorPollingConfigProperties object itself.
      */
@@ -123,7 +131,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Get the response property: Describe the response config parameters of the poller.
-     *
+     * 
      * @return the response value.
      */
     public CodelessConnectorPollingResponseProperties response() {
@@ -132,7 +140,7 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Set the response property: Describe the response config parameters of the poller.
-     *
+     * 
      * @param response the response value to set.
      * @return the CodelessConnectorPollingConfigProperties object itself.
      */
@@ -143,23 +151,21 @@ public final class CodelessConnectorPollingConfigProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (auth() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property auth in model CodelessConnectorPollingConfigProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property auth in model CodelessConnectorPollingConfigProperties"));
         } else {
             auth().validate();
         }
         if (request() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property request in model CodelessConnectorPollingConfigProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property request in model CodelessConnectorPollingConfigProperties"));
         } else {
             request().validate();
         }
@@ -172,4 +178,59 @@ public final class CodelessConnectorPollingConfigProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CodelessConnectorPollingConfigProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("auth", this.auth);
+        jsonWriter.writeJsonField("request", this.request);
+        jsonWriter.writeBooleanField("isActive", this.isActive);
+        jsonWriter.writeJsonField("paging", this.paging);
+        jsonWriter.writeJsonField("response", this.response);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessConnectorPollingConfigProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessConnectorPollingConfigProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CodelessConnectorPollingConfigProperties.
+     */
+    public static CodelessConnectorPollingConfigProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessConnectorPollingConfigProperties deserializedCodelessConnectorPollingConfigProperties
+                = new CodelessConnectorPollingConfigProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("auth".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingConfigProperties.auth
+                        = CodelessConnectorPollingAuthProperties.fromJson(reader);
+                } else if ("request".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingConfigProperties.request
+                        = CodelessConnectorPollingRequestProperties.fromJson(reader);
+                } else if ("isActive".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingConfigProperties.isActive
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("paging".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingConfigProperties.paging
+                        = CodelessConnectorPollingPagingProperties.fromJson(reader);
+                } else if ("response".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingConfigProperties.response
+                        = CodelessConnectorPollingResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessConnectorPollingConfigProperties;
+        });
+    }
 }

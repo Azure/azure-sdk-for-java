@@ -15,26 +15,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DigitalTwinsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DigitalTwinsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"createdTime\":\"2021-04-18T10:51:52Z\",\"lastUpdatedTime\":\"2021-11-11T02:33:36Z\",\"provisioningState\":\"Restoring\",\"hostName\":\"eitjz\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Approved\",\"groupIds\":[]},\"id\":\"ofcqhsm\",\"name\":\"urkdtmlx\",\"type\":\"ekuksjtx\"},{\"properties\":{\"provisioningState\":\"Pending\",\"groupIds\":[]},\"id\":\"rcryuanzwuxzdxta\",\"name\":\"rlhm\",\"type\":\"hfpmrqobmtukknr\"}],\"publicNetworkAccess\":\"Enabled\"}")
-                .toObject(DigitalTwinsProperties.class);
+        DigitalTwinsProperties model = BinaryData.fromString(
+            "{\"createdTime\":\"2021-04-18T10:51:52Z\",\"lastUpdatedTime\":\"2021-11-11T02:33:36Z\",\"provisioningState\":\"Restoring\",\"hostName\":\"eitjz\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Approved\",\"groupIds\":[]},\"id\":\"ofcqhsm\",\"name\":\"urkdtmlx\",\"type\":\"ekuksjtx\"},{\"properties\":{\"provisioningState\":\"Pending\",\"groupIds\":[]},\"id\":\"rcryuanzwuxzdxta\",\"name\":\"rlhm\",\"type\":\"hfpmrqobmtukknr\"}],\"publicNetworkAccess\":\"Enabled\"}")
+            .toObject(DigitalTwinsProperties.class);
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DigitalTwinsProperties model =
-            new DigitalTwinsProperties()
-                .withPrivateEndpointConnections(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointConnectionInner()
-                                .withProperties(new ConnectionProperties().withGroupIds(Arrays.asList())),
-                            new PrivateEndpointConnectionInner()
-                                .withProperties(new ConnectionProperties().withGroupIds(Arrays.asList()))))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        DigitalTwinsProperties model = new DigitalTwinsProperties()
+            .withPrivateEndpointConnections(Arrays.asList(
+                new PrivateEndpointConnectionInner()
+                    .withProperties(new ConnectionProperties().withGroupIds(Arrays.asList())),
+                new PrivateEndpointConnectionInner()
+                    .withProperties(new ConnectionProperties().withGroupIds(Arrays.asList()))))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(DigitalTwinsProperties.class);
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }

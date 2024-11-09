@@ -15,36 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubInfoListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubInfoListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"aamdect\",\"value\":[{\"properties\":{\"provisioningState\":\"scjeypv\",\"privateEndpointConnections\":[]},\"location\":\"zrkgqhcjrefovg\",\"tags\":{\"yvxyqjp\":\"sle\"},\"id\":\"cattpngjcrcczsq\",\"name\":\"jh\",\"type\":\"mdajv\"}]}")
-                .toObject(PrivateLinkHubInfoListResult.class);
-        Assertions.assertEquals("aamdect", model.nextLink());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.value().get(0).location());
-        Assertions.assertEquals("sle", model.value().get(0).tags().get("yvxyqjp"));
-        Assertions.assertEquals("scjeypv", model.value().get(0).provisioningState());
+        PrivateLinkHubInfoListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"hxepcyvahfnlj\",\"value\":[{\"properties\":{\"provisioningState\":\"vuujq\",\"privateEndpointConnections\":[{\"id\":\"kgj\",\"properties\":{}},{\"id\":\"oxgvclt\",\"properties\":{}}]},\"location\":\"sncghkjeszz\",\"tags\":{\"mpvecxgodebfqk\":\"jhtxfvgxbfsmxne\",\"flz\":\"rbmpukgri\"},\"id\":\"fbxzpuzycisp\",\"name\":\"qzahmgkbrp\",\"type\":\"y\"}]}")
+            .toObject(PrivateLinkHubInfoListResult.class);
+        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
+        Assertions.assertEquals("sncghkjeszz", model.value().get(0).location());
+        Assertions.assertEquals("jhtxfvgxbfsmxne", model.value().get(0).tags().get("mpvecxgodebfqk"));
+        Assertions.assertEquals("vuujq", model.value().get(0).provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubInfoListResult model =
-            new PrivateLinkHubInfoListResult()
-                .withNextLink("aamdect")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateLinkHubInner()
-                                .withLocation("zrkgqhcjrefovg")
-                                .withTags(mapOf("yvxyqjp", "sle"))
-                                .withProvisioningState("scjeypv")));
+        PrivateLinkHubInfoListResult model = new PrivateLinkHubInfoListResult().withNextLink("hxepcyvahfnlj")
+            .withValue(Arrays.asList(new PrivateLinkHubInner().withLocation("sncghkjeszz")
+                .withTags(mapOf("mpvecxgodebfqk", "jhtxfvgxbfsmxne", "flz", "rbmpukgri"))
+                .withProvisioningState("vuujq")));
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubInfoListResult.class);
-        Assertions.assertEquals("aamdect", model.nextLink());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.value().get(0).location());
-        Assertions.assertEquals("sle", model.value().get(0).tags().get("yvxyqjp"));
-        Assertions.assertEquals("scjeypv", model.value().get(0).provisioningState());
+        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
+        Assertions.assertEquals("sncghkjeszz", model.value().get(0).location());
+        Assertions.assertEquals("jhtxfvgxbfsmxne", model.value().get(0).tags().get("mpvecxgodebfqk"));
+        Assertions.assertEquals("vuujq", model.value().get(0).provisioningState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

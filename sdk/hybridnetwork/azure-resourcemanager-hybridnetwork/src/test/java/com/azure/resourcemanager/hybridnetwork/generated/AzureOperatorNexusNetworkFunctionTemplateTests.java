@@ -29,15 +29,19 @@ public final class AzureOperatorNexusNetworkFunctionTemplateTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureOperatorNexusNetworkFunctionTemplate model
-            = new AzureOperatorNexusNetworkFunctionTemplate().withNetworkFunctionApplications(Arrays.asList(
-                new AzureOperatorNexusNetworkFunctionApplication().withName("nmwmqtibx").withDependsOnProfile(
-                    new DependsOnProfile().withInstallDependsOn(Arrays.asList("dt", "qcttadijaeukmrsi"))
-                        .withUninstallDependsOn(Arrays.asList("pndzaapmudqmeq"))
-                        .withUpdateDependsOn(Arrays.asList("pibudqwyxebeybpm"))),
-                new AzureOperatorNexusNetworkFunctionApplication().withName("nrtffyaqi").withDependsOnProfile(
-                    new DependsOnProfile().withInstallDependsOn(Arrays.asList("eioqaqhvse", "fuqyrxpdlcgqlsi"))
-                        .withUninstallDependsOn(Arrays.asList("qfrddgam", "uhiosrsju", "vfcdisyirn"))
-                        .withUpdateDependsOn(Arrays.asList("czexrxzbujrtrhqv")))));
+            = new AzureOperatorNexusNetworkFunctionTemplate()
+                .withNetworkFunctionApplications(
+                    Arrays.asList(
+                        new AzureOperatorNexusNetworkFunctionApplication().withName("nmwmqtibx")
+                            .withDependsOnProfile(
+                                new DependsOnProfile().withInstallDependsOn(Arrays.asList("dt", "qcttadijaeukmrsi"))
+                                    .withUninstallDependsOn(Arrays.asList("pndzaapmudqmeq"))
+                                    .withUpdateDependsOn(Arrays.asList("pibudqwyxebeybpm"))),
+                        new AzureOperatorNexusNetworkFunctionApplication().withName("nrtffyaqi")
+                            .withDependsOnProfile(new DependsOnProfile()
+                                .withInstallDependsOn(Arrays.asList("eioqaqhvse", "fuqyrxpdlcgqlsi"))
+                                .withUninstallDependsOn(Arrays.asList("qfrddgam", "uhiosrsju", "vfcdisyirn"))
+                                .withUpdateDependsOn(Arrays.asList("czexrxzbujrtrhqv")))));
         model = BinaryData.fromObject(model).toObject(AzureOperatorNexusNetworkFunctionTemplate.class);
         Assertions.assertEquals("nmwmqtibx", model.networkFunctionApplications().get(0).name());
         Assertions.assertEquals("dt",

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Disk model = BinaryData.fromString("{\"id\":\"rlkhbzhfepgzgq\"}").toObject(Disk.class);
-        Assertions.assertEquals("rlkhbzhfepgzgq", model.id());
+        Disk model = BinaryData.fromString("{\"id\":\"qsycbkbfkgu\"}").toObject(Disk.class);
+        Assertions.assertEquals("qsycbkbfkgu", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Disk model = new Disk().withId("rlkhbzhfepgzgq");
+        Disk model = new Disk().withId("qsycbkbfkgu");
         model = BinaryData.fromObject(model).toObject(Disk.class);
-        Assertions.assertEquals("rlkhbzhfepgzgq", model.id());
+        Assertions.assertEquals("qsycbkbfkgu", model.id());
     }
 }

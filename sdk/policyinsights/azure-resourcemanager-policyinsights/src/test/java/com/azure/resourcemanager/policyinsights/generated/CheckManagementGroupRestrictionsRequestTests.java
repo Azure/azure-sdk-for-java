@@ -10,38 +10,34 @@ import com.azure.resourcemanager.policyinsights.models.CheckRestrictionsResource
 import com.azure.resourcemanager.policyinsights.models.PendingField;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckManagementGroupRestrictionsRequestTests {
-    @Test
-    public void testDeserialize() {
-        CheckManagementGroupRestrictionsRequest model =
-            BinaryData
-                .fromString(
-                    "{\"resourceDetails\":{\"apiVersion\":\"ezkojvdcp\",\"scope\":\"oqouicybxarzgszu\"},\"pendingFields\":[{\"field\":\"ciqopidoa\",\"values\":[\"odhkha\",\"xkhnzbonlwnto\",\"gokdwbwhks\",\"zcmrvexztvb\"]}]}")
-                .toObject(CheckManagementGroupRestrictionsRequest.class);
-        Assertions.assertEquals("ezkojvdcp", model.resourceDetails().apiVersion());
-        Assertions.assertEquals("oqouicybxarzgszu", model.resourceDetails().scope());
-        Assertions.assertEquals("ciqopidoa", model.pendingFields().get(0).field());
-        Assertions.assertEquals("odhkha", model.pendingFields().get(0).values().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CheckManagementGroupRestrictionsRequest model = BinaryData.fromString(
+            "{\"resourceDetails\":{\"resourceContent\":\"datajtwhauunf\",\"apiVersion\":\"njle\",\"scope\":\"xsmrpddouifamow\"},\"pendingFields\":[{\"field\":\"yn\",\"values\":[\"qwzdvpiwhxq\",\"zdtmaajquhuxylrj\",\"m\",\"ygjbmzyospspsh\"]},{\"field\":\"kfkyjp\",\"values\":[\"bpssdfp\",\"yogtieyujtvczkcn\",\"xrx\"]}]}")
+            .toObject(CheckManagementGroupRestrictionsRequest.class);
+        Assertions.assertEquals("njle", model.resourceDetails().apiVersion());
+        Assertions.assertEquals("xsmrpddouifamow", model.resourceDetails().scope());
+        Assertions.assertEquals("yn", model.pendingFields().get(0).field());
+        Assertions.assertEquals("qwzdvpiwhxq", model.pendingFields().get(0).values().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        CheckManagementGroupRestrictionsRequest model =
-            new CheckManagementGroupRestrictionsRequest()
-                .withResourceDetails(
-                    new CheckRestrictionsResourceDetails().withApiVersion("ezkojvdcp").withScope("oqouicybxarzgszu"))
-                .withPendingFields(
-                    Arrays
-                        .asList(
-                            new PendingField()
-                                .withField("ciqopidoa")
-                                .withValues(Arrays.asList("odhkha", "xkhnzbonlwnto", "gokdwbwhks", "zcmrvexztvb"))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CheckManagementGroupRestrictionsRequest model = new CheckManagementGroupRestrictionsRequest()
+            .withResourceDetails(new CheckRestrictionsResourceDetails().withResourceContent("datajtwhauunf")
+                .withApiVersion("njle")
+                .withScope("xsmrpddouifamow"))
+            .withPendingFields(Arrays.asList(
+                new PendingField().withField("yn")
+                    .withValues(Arrays.asList("qwzdvpiwhxq", "zdtmaajquhuxylrj", "m", "ygjbmzyospspsh")),
+                new PendingField().withField("kfkyjp")
+                    .withValues(Arrays.asList("bpssdfp", "yogtieyujtvczkcn", "xrx"))));
         model = BinaryData.fromObject(model).toObject(CheckManagementGroupRestrictionsRequest.class);
-        Assertions.assertEquals("ezkojvdcp", model.resourceDetails().apiVersion());
-        Assertions.assertEquals("oqouicybxarzgszu", model.resourceDetails().scope());
-        Assertions.assertEquals("ciqopidoa", model.pendingFields().get(0).field());
-        Assertions.assertEquals("odhkha", model.pendingFields().get(0).values().get(0));
+        Assertions.assertEquals("njle", model.resourceDetails().apiVersion());
+        Assertions.assertEquals("xsmrpddouifamow", model.resourceDetails().scope());
+        Assertions.assertEquals("yn", model.pendingFields().get(0).field());
+        Assertions.assertEquals("qwzdvpiwhxq", model.pendingFields().get(0).values().get(0));
     }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents severity configurations available for a source subtype consumed in Fusion detection. */
+/**
+ * Represents severity configurations available for a source subtype consumed in Fusion detection.
+ */
 @Fluent
-public final class FusionTemplateSubTypeSeverityFilter {
+public final class FusionTemplateSubTypeSeverityFilter
+    implements JsonSerializable<FusionTemplateSubTypeSeverityFilter> {
     /*
      * Determines whether severity configuration is supported for this source subtype consumed in Fusion detection.
      */
-    @JsonProperty(value = "isSupported", required = true)
     private boolean isSupported;
 
     /*
      * List of all supported severities for this source subtype consumed in Fusion detection.
      */
-    @JsonProperty(value = "severityFilters")
     private List<AlertSeverity> severityFilters;
+
+    /**
+     * Creates an instance of FusionTemplateSubTypeSeverityFilter class.
+     */
+    public FusionTemplateSubTypeSeverityFilter() {
+    }
 
     /**
      * Get the isSupported property: Determines whether severity configuration is supported for this source subtype
      * consumed in Fusion detection.
-     *
+     * 
      * @return the isSupported value.
      */
     public boolean isSupported() {
@@ -36,7 +47,7 @@ public final class FusionTemplateSubTypeSeverityFilter {
     /**
      * Set the isSupported property: Determines whether severity configuration is supported for this source subtype
      * consumed in Fusion detection.
-     *
+     * 
      * @param isSupported the isSupported value to set.
      * @return the FusionTemplateSubTypeSeverityFilter object itself.
      */
@@ -48,7 +59,7 @@ public final class FusionTemplateSubTypeSeverityFilter {
     /**
      * Get the severityFilters property: List of all supported severities for this source subtype consumed in Fusion
      * detection.
-     *
+     * 
      * @return the severityFilters value.
      */
     public List<AlertSeverity> severityFilters() {
@@ -58,7 +69,7 @@ public final class FusionTemplateSubTypeSeverityFilter {
     /**
      * Set the severityFilters property: List of all supported severities for this source subtype consumed in Fusion
      * detection.
-     *
+     * 
      * @param severityFilters the severityFilters value to set.
      * @return the FusionTemplateSubTypeSeverityFilter object itself.
      */
@@ -69,9 +80,53 @@ public final class FusionTemplateSubTypeSeverityFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isSupported", this.isSupported);
+        jsonWriter.writeArrayField("severityFilters", this.severityFilters,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FusionTemplateSubTypeSeverityFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FusionTemplateSubTypeSeverityFilter if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FusionTemplateSubTypeSeverityFilter.
+     */
+    public static FusionTemplateSubTypeSeverityFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FusionTemplateSubTypeSeverityFilter deserializedFusionTemplateSubTypeSeverityFilter
+                = new FusionTemplateSubTypeSeverityFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isSupported".equals(fieldName)) {
+                    deserializedFusionTemplateSubTypeSeverityFilter.isSupported = reader.getBoolean();
+                } else if ("severityFilters".equals(fieldName)) {
+                    List<AlertSeverity> severityFilters
+                        = reader.readArray(reader1 -> AlertSeverity.fromString(reader1.getString()));
+                    deserializedFusionTemplateSubTypeSeverityFilter.severityFilters = severityFilters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFusionTemplateSubTypeSeverityFilter;
+        });
     }
 }

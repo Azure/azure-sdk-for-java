@@ -77,8 +77,8 @@ public class IntelliJCredential implements TokenCredential {
      */
     IntelliJCredential(String tenantId, IdentityClientOptions identityClientOptions) {
 
-        IdentityClientOptions options =
-                identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions;
+        IdentityClientOptions options
+            = identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions;
 
         String tenant = tenantId;
 
@@ -86,11 +86,10 @@ public class IntelliJCredential implements TokenCredential {
             tenant = "common";
         }
 
-        identityClient = new IdentityClientBuilder()
-                             .identityClientOptions(options)
-                             .tenantId(tenant)
-                             .clientId(IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID)
-                             .build();
+        identityClient = new IdentityClientBuilder().identityClientOptions(options)
+            .tenantId(tenant)
+            .clientId(IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID)
+            .build();
 
         this.cachedToken = new AtomicReference<>();
     }
@@ -100,19 +99,17 @@ public class IntelliJCredential implements TokenCredential {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
                 return identityClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount())
-                           .onErrorResume(t -> Mono.empty());
+                    .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(
-            Mono.defer(() -> identityClient.authenticateWithIntelliJ(request)))
-                   .map(msalToken -> {
-                       cachedToken.set(msalToken);
-                       return (AccessToken) msalToken;
-                   })
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithIntelliJ(request))).map(msalToken -> {
+            cachedToken.set(msalToken);
+            return (AccessToken) msalToken;
+        })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error))
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error))
             .onErrorMap(error -> {
                 if (identityClient.getIdentityClientOptions().isChained()) {
                     return new CredentialUnavailableException(error.getMessage(), error);

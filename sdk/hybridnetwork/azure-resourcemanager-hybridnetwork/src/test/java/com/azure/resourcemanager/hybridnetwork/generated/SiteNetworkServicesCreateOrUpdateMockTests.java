@@ -55,25 +55,29 @@ public final class SiteNetworkServicesCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SiteNetworkService response
-            = manager.siteNetworkServices().define("xpvelszerqzevxo").withRegion("ka").withExistingResourceGroup("y")
-                .withTags(mapOf("lwfgziiu", "sxtlg", "lijjjrtvam", "ijjcea", "zknxkv", "a", "k", "cxetyvkunmignoh"))
-                .withProperties(new SiteNetworkServicePropertiesFormat()
-                    .withManagedResourceGroupConfiguration(
-                        new ManagedResourceGroupConfiguration().withName("waljglzoblqwaaf").withLocation("ulhmzyq"))
-                    .withSiteReference(new ReferencedResource().withId("vafjrqpjiyrqj"))
-                    .withNetworkServiceDesignVersionResourceReference(new DeploymentResourceIdReference())
-                    .withDesiredStateConfigurationGroupValueReferences(
-                        mapOf("ucaifpaurwwgilf", new ReferencedResource().withId("edxn"), "iakeciqc",
-                            new ReferencedResource().withId("qacdmkxwxdcvjwcy"))))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf("lamgglvlmfejdo", new UserAssignedIdentity(), "kgltyg", new UserAssignedIdentity())))
-                .withSku(new Sku().withName(SkuName.STANDARD)).create();
+        SiteNetworkService response = manager.siteNetworkServices()
+            .define("xpvelszerqzevxo")
+            .withRegion("ka")
+            .withExistingResourceGroup("y")
+            .withTags(mapOf("lwfgziiu", "sxtlg", "lijjjrtvam", "ijjcea", "zknxkv", "a", "k", "cxetyvkunmignoh"))
+            .withProperties(new SiteNetworkServicePropertiesFormat()
+                .withManagedResourceGroupConfiguration(
+                    new ManagedResourceGroupConfiguration().withName("waljglzoblqwaaf").withLocation("ulhmzyq"))
+                .withSiteReference(new ReferencedResource().withId("vafjrqpjiyrqj"))
+                .withNetworkServiceDesignVersionResourceReference(new DeploymentResourceIdReference())
+                .withDesiredStateConfigurationGroupValueReferences(
+                    mapOf("ucaifpaurwwgilf", new ReferencedResource().withId("edxn"), "iakeciqc",
+                        new ReferencedResource().withId("qacdmkxwxdcvjwcy"))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("lamgglvlmfejdo", new UserAssignedIdentity(), "kgltyg", new UserAssignedIdentity())))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
 
         Assertions.assertEquals("vabm", response.location());
         Assertions.assertEquals("xbaevwjcnkot", response.tags().get("lwuhvajmailfe"));

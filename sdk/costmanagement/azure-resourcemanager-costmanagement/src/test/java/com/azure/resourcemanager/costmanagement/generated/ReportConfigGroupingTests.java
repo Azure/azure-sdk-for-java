@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigGroupingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigGrouping model =
-            BinaryData
-                .fromString("{\"type\":\"TagKey\",\"name\":\"rzafbljjgpbtoqcj\"}")
-                .toObject(ReportConfigGrouping.class);
-        Assertions.assertEquals(QueryColumnType.TAG_KEY, model.type());
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.name());
+        ReportConfigGrouping model = BinaryData.fromString("{\"type\":\"Dimension\",\"name\":\"touwaboekqv\"}")
+            .toObject(ReportConfigGrouping.class);
+        Assertions.assertEquals(QueryColumnType.DIMENSION, model.type());
+        Assertions.assertEquals("touwaboekqv", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigGrouping model =
-            new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("rzafbljjgpbtoqcj");
+        ReportConfigGrouping model
+            = new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("touwaboekqv");
         model = BinaryData.fromObject(model).toObject(ReportConfigGrouping.class);
-        Assertions.assertEquals(QueryColumnType.TAG_KEY, model.type());
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.name());
+        Assertions.assertEquals(QueryColumnType.DIMENSION, model.type());
+        Assertions.assertEquals("touwaboekqv", model.name());
     }
 }

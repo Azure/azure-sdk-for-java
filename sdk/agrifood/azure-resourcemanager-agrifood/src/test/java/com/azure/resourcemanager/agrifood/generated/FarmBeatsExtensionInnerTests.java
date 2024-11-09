@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class FarmBeatsExtensionInnerTests {
     @Test
     public void testDeserialize() {
-        FarmBeatsExtensionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"targetResourceType\":\"wfndiodjpsl\",\"farmBeatsExtensionId\":\"jdpvwryo\",\"farmBeatsExtensionName\":\"soacctazakl\",\"farmBeatsExtensionVersion\":\"ahbc\",\"publisherId\":\"ffdfdosygexpa\",\"description\":\"akhmsbzjhcrz\",\"extensionCategory\":\"dphlxaolt\",\"extensionAuthLink\":\"trg\",\"extensionApiDocsLink\":\"bpf\",\"detailedInformation\":[{\"apiName\":\"n\",\"customParameters\":[],\"platformParameters\":[],\"apiInputParameters\":[]}]},\"id\":\"rwzoxxjtfelluwf\",\"name\":\"it\",\"type\":\"np\"}")
-                .toObject(FarmBeatsExtensionInner.class);
+        FarmBeatsExtensionInner model = BinaryData.fromString(
+            "{\"properties\":{\"targetResourceType\":\"wfndiodjpsl\",\"farmBeatsExtensionId\":\"jdpvwryo\",\"farmBeatsExtensionName\":\"soacctazakl\",\"farmBeatsExtensionVersion\":\"ahbc\",\"publisherId\":\"ffdfdosygexpa\",\"description\":\"akhmsbzjhcrz\",\"extensionCategory\":\"dphlxaolt\",\"extensionAuthLink\":\"trg\",\"extensionApiDocsLink\":\"bpf\",\"detailedInformation\":[{\"apiName\":\"n\",\"customParameters\":[],\"platformParameters\":[],\"apiInputParameters\":[]}]},\"id\":\"rwzoxxjtfelluwf\",\"name\":\"it\",\"type\":\"np\"}")
+            .toObject(FarmBeatsExtensionInner.class);
     }
 
     @Test

@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cognitive Services account commitment period. */
+/**
+ * Cognitive Services account commitment period.
+ */
 @Fluent
-public final class CommitmentPeriod {
+public final class CommitmentPeriod implements JsonSerializable<CommitmentPeriod> {
     /*
      * Commitment period commitment tier.
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * Commitment period commitment count.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * Cognitive Services account commitment quota.
      */
-    @JsonProperty(value = "quota", access = JsonProperty.Access.WRITE_ONLY)
     private CommitmentQuota quota;
 
     /*
      * Commitment period start date.
      */
-    @JsonProperty(value = "startDate", access = JsonProperty.Access.WRITE_ONLY)
     private String startDate;
 
     /*
      * Commitment period end date.
      */
-    @JsonProperty(value = "endDate", access = JsonProperty.Access.WRITE_ONLY)
     private String endDate;
 
-    /** Creates an instance of CommitmentPeriod class. */
+    /**
+     * Creates an instance of CommitmentPeriod class.
+     */
     public CommitmentPeriod() {
     }
 
     /**
      * Get the tier property: Commitment period commitment tier.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -55,7 +58,7 @@ public final class CommitmentPeriod {
 
     /**
      * Set the tier property: Commitment period commitment tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the CommitmentPeriod object itself.
      */
@@ -66,7 +69,7 @@ public final class CommitmentPeriod {
 
     /**
      * Get the count property: Commitment period commitment count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -75,7 +78,7 @@ public final class CommitmentPeriod {
 
     /**
      * Set the count property: Commitment period commitment count.
-     *
+     * 
      * @param count the count value to set.
      * @return the CommitmentPeriod object itself.
      */
@@ -86,7 +89,7 @@ public final class CommitmentPeriod {
 
     /**
      * Get the quota property: Cognitive Services account commitment quota.
-     *
+     * 
      * @return the quota value.
      */
     public CommitmentQuota quota() {
@@ -95,7 +98,7 @@ public final class CommitmentPeriod {
 
     /**
      * Get the startDate property: Commitment period start date.
-     *
+     * 
      * @return the startDate value.
      */
     public String startDate() {
@@ -104,7 +107,7 @@ public final class CommitmentPeriod {
 
     /**
      * Get the endDate property: Commitment period end date.
-     *
+     * 
      * @return the endDate value.
      */
     public String endDate() {
@@ -113,12 +116,57 @@ public final class CommitmentPeriod {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (quota() != null) {
             quota().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommitmentPeriod from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommitmentPeriod if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommitmentPeriod.
+     */
+    public static CommitmentPeriod fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommitmentPeriod deserializedCommitmentPeriod = new CommitmentPeriod();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tier".equals(fieldName)) {
+                    deserializedCommitmentPeriod.tier = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedCommitmentPeriod.count = reader.getNullable(JsonReader::getInt);
+                } else if ("quota".equals(fieldName)) {
+                    deserializedCommitmentPeriod.quota = CommitmentQuota.fromJson(reader);
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedCommitmentPeriod.startDate = reader.getString();
+                } else if ("endDate".equals(fieldName)) {
+                    deserializedCommitmentPeriod.endDate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommitmentPeriod;
+        });
     }
 }

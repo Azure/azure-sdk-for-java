@@ -20,12 +20,8 @@ public final class GlobalSchemasGetResponse extends ResponseBase<GlobalSchemasGe
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GlobalSchemasGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        GlobalSchemaContractInner value,
-        GlobalSchemasGetHeaders headers) {
+    public GlobalSchemasGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        GlobalSchemaContractInner value, GlobalSchemasGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

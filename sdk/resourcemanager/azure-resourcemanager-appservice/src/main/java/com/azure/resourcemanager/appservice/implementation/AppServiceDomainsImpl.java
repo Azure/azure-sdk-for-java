@@ -15,9 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for AppServiceDomains. */
-public class AppServiceDomainsImpl
-    extends TopLevelModifiableResourcesImpl<
-        AppServiceDomain, AppServiceDomainImpl, DomainInner, DomainsClient, AppServiceManager>
+public class AppServiceDomainsImpl extends
+    TopLevelModifiableResourcesImpl<AppServiceDomain, AppServiceDomainImpl, DomainInner, DomainsClient, AppServiceManager>
     implements AppServiceDomains {
 
     public AppServiceDomainsImpl(AppServiceManager manager) {
@@ -44,11 +43,9 @@ public class AppServiceDomainsImpl
 
     @Override
     public PagedIterable<DomainLegalAgreement> listAgreements(String topLevelExtension) {
-        return PagedConverter.mapPage(this
-            .manager()
+        return PagedConverter.mapPage(this.manager()
             .serviceClient()
             .getTopLevelDomains()
-            .listAgreements(topLevelExtension, new TopLevelDomainAgreementOption()),
-            DomainLegalAgreementImpl::new);
+            .listAgreements(topLevelExtension, new TopLevelDomainAgreementOption()), DomainLegalAgreementImpl::new);
     }
 }

@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Managed application billing details definition. */
+/**
+ * Managed application billing details definition.
+ */
 @Fluent
-public final class ApplicationBillingDetailsDefinition {
+public final class ApplicationBillingDetailsDefinition
+    implements JsonSerializable<ApplicationBillingDetailsDefinition> {
     /*
      * The managed application resource usage Id.
      */
-    @JsonProperty(value = "resourceUsageId")
     private String resourceUsageId;
 
-    /** Creates an instance of ApplicationBillingDetailsDefinition class. */
+    /**
+     * Creates an instance of ApplicationBillingDetailsDefinition class.
+     */
     public ApplicationBillingDetailsDefinition() {
     }
 
     /**
      * Get the resourceUsageId property: The managed application resource usage Id.
-     *
+     * 
      * @return the resourceUsageId value.
      */
     public String resourceUsageId() {
@@ -31,7 +39,7 @@ public final class ApplicationBillingDetailsDefinition {
 
     /**
      * Set the resourceUsageId property: The managed application resource usage Id.
-     *
+     * 
      * @param resourceUsageId the resourceUsageId value to set.
      * @return the ApplicationBillingDetailsDefinition object itself.
      */
@@ -42,9 +50,46 @@ public final class ApplicationBillingDetailsDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUsageId", this.resourceUsageId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationBillingDetailsDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationBillingDetailsDefinition if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationBillingDetailsDefinition.
+     */
+    public static ApplicationBillingDetailsDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationBillingDetailsDefinition deserializedApplicationBillingDetailsDefinition
+                = new ApplicationBillingDetailsDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceUsageId".equals(fieldName)) {
+                    deserializedApplicationBillingDetailsDefinition.resourceUsageId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationBillingDetailsDefinition;
+        });
     }
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.ContainerList;
 public final class ContainerListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"containerStatus\":\"OK\",\"dataFormat\":\"AzureFile\",\"createdDateTime\":\"2021-01-12T19:16:50Z\"},\"id\":\"evseotgqrlltmuwl\",\"name\":\"uwz\",\"type\":\"zxb\"},{\"properties\":{\"containerStatus\":\"Updating\",\"dataFormat\":\"AzureFile\",\"createdDateTime\":\"2021-07-22T16:26:04Z\"},\"id\":\"u\",\"name\":\"muvp\",\"type\":\"ttdumorppxebmnzb\"}],\"nextLink\":\"hjpglkf\"}")
-                .toObject(ContainerList.class);
+        ContainerList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"containerStatus\":\"Offline\",\"dataFormat\":\"PageBlob\",\"refreshDetails\":{\"inProgressRefreshJobId\":\"iwbwoenwashrtdtk\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-03-26T12:56:23Z\",\"errorManifestFile\":\"wbpokulpiujwaasi\",\"lastJob\":\"i\"},\"createdDateTime\":\"2021-09-26T03:40:24Z\"},\"id\":\"yuq\",\"name\":\"rpqlp\",\"type\":\"wcciuqgbdbu\"},{\"properties\":{\"containerStatus\":\"Updating\",\"dataFormat\":\"AzureFile\",\"refreshDetails\":{\"inProgressRefreshJobId\":\"tkuwhhmhykojo\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-10-11T05:43:38Z\",\"errorManifestFile\":\"nd\",\"lastJob\":\"ichkoymkcdyhb\"},\"createdDateTime\":\"2021-01-04T13:26:20Z\"},\"id\":\"pwdreqnovvqf\",\"name\":\"vljxywsu\",\"type\":\"syrsndsytgadgvra\"}],\"nextLink\":\"en\"}")
+            .toObject(ContainerList.class);
     }
 
     @org.junit.jupiter.api.Test

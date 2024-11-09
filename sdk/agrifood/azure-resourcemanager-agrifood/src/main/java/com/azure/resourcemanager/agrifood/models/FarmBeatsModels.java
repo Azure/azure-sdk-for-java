@@ -33,8 +33,8 @@ public interface FarmBeatsModels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return farmBeats resource along with {@link Response}.
      */
-    Response<FarmBeats> getByResourceGroupWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, Context context);
+    Response<FarmBeats> getByResourceGroupWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        Context context);
 
     /**
      * Delete a FarmBeats resource.
@@ -109,8 +109,8 @@ public interface FarmBeatsModels {
      * @return paged response contains list of requested objects and a URL link to get the next set of results as
      *     paginated response with {@link PagedIterable}.
      */
-    PagedIterable<FarmBeats> listByResourceGroup(
-        String resourceGroupName, Integer maxPageSize, String skipToken, Context context);
+    PagedIterable<FarmBeats> listByResourceGroup(String resourceGroupName, Integer maxPageSize, String skipToken,
+        Context context);
 
     /**
      * Get operationResults for a FarmBeats resource.
@@ -123,8 +123,8 @@ public interface FarmBeatsModels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationResults for a FarmBeats resource.
      */
-    ArmAsyncOperation getOperationResult(
-        String resourceGroupName, String farmBeatsResourceName, String operationResultsId);
+    ArmAsyncOperation getOperationResult(String resourceGroupName, String farmBeatsResourceName,
+        String operationResultsId);
 
     /**
      * Get operationResults for a FarmBeats resource.
@@ -138,8 +138,8 @@ public interface FarmBeatsModels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationResults for a FarmBeats resource along with {@link Response}.
      */
-    Response<ArmAsyncOperation> getOperationResultWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String operationResultsId, Context context);
+    Response<ArmAsyncOperation> getOperationResultWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String operationResultsId, Context context);
 
     /**
      * Get FarmBeats resource.

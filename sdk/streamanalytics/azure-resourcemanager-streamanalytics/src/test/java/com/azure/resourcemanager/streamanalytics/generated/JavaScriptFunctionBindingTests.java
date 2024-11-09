@@ -12,15 +12,16 @@ public final class JavaScriptFunctionBindingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaScriptFunctionBinding model = BinaryData
-            .fromString("{\"type\":\"Microsoft.StreamAnalytics/JavascriptUdf\",\"properties\":{\"script\":\"fovasr\"}}")
+            .fromString(
+                "{\"type\":\"Microsoft.StreamAnalytics/JavascriptUdf\",\"properties\":{\"script\":\"uoujmkcjhwqy\"}}")
             .toObject(JavaScriptFunctionBinding.class);
-        Assertions.assertEquals("fovasr", model.script());
+        Assertions.assertEquals("uoujmkcjhwqy", model.script());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JavaScriptFunctionBinding model = new JavaScriptFunctionBinding().withScript("fovasr");
+        JavaScriptFunctionBinding model = new JavaScriptFunctionBinding().withScript("uoujmkcjhwqy");
         model = BinaryData.fromObject(model).toObject(JavaScriptFunctionBinding.class);
-        Assertions.assertEquals("fovasr", model.script());
+        Assertions.assertEquals("uoujmkcjhwqy", model.script());
     }
 }

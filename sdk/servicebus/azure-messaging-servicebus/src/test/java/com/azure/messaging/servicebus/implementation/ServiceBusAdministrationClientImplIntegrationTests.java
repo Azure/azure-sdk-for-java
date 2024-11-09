@@ -46,7 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration tests for {@link ServiceBusManagementClientImpl}.
  */
 class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
     private final Duration timeout = Duration.ofSeconds(30);
@@ -63,18 +64,15 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         final String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 0);
 
         // Act & Assert
-        StepVerifier.create(entityClient.getWithResponseAsync(queueName, true, Context.NONE))
-            .assertNext(response -> {
-                final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl.class);
-                assertNotNull(deserialize);
-                assertNotNull(deserialize.getContent());
+        StepVerifier.create(entityClient.getWithResponseAsync(queueName, true, Context.NONE)).assertNext(response -> {
+            final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl.class);
+            assertNotNull(deserialize);
+            assertNotNull(deserialize.getContent());
 
-                final QueueDescriptionImpl properties = deserialize.getContent().getQueueDescription();
-                assertNotNull(properties);
-                assertFalse(properties.getLockDuration().isZero());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            final QueueDescriptionImpl properties = deserialize.getContent().getQueueDescription();
+            assertNotNull(properties);
+            assertFalse(properties.getLockDuration().isZero());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -88,13 +86,11 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         final EntitiesImpl entityClient = managementClient.getEntities();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final CreateQueueOptions options = new CreateQueueOptions()
-            .setMaxDeliveryCount(15);
+        final CreateQueueOptions options = new CreateQueueOptions().setMaxDeliveryCount(15);
         final QueueDescriptionImpl queueProperties = EntityHelper.getQueueDescription(options);
         final CreateQueueBodyImpl createEntity = new CreateQueueBodyImpl();
-        final CreateQueueBodyContentImpl content = new CreateQueueBodyContentImpl()
-            .setType("application/xml")
-            .setQueueDescription(queueProperties);
+        final CreateQueueBodyContentImpl content
+            = new CreateQueueBodyContentImpl().setType("application/xml").setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
         LOGGER.info("Creating queue: {}", queueName);
@@ -122,20 +118,18 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         final EntitiesImpl entityClient = managementClient.getEntities();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final CreateQueueOptions description = new CreateQueueOptions()
-            .setMaxDeliveryCount(15);
+        final CreateQueueOptions description = new CreateQueueOptions().setMaxDeliveryCount(15);
         final QueueDescriptionImpl queueProperties = EntityHelper.getQueueDescription(description);
         final CreateQueueBodyImpl createEntity = new CreateQueueBodyImpl();
-        final CreateQueueBodyContentImpl content = new CreateQueueBodyContentImpl()
-            .setType("application/xml")
-            .setQueueDescription(queueProperties);
+        final CreateQueueBodyContentImpl content
+            = new CreateQueueBodyContentImpl().setType("application/xml").setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
         LOGGER.info("Creating queue: {}", queueName);
 
         // This is not part of the scenario. We'll ensure it is created.
-        Response<Object> response = entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE)
-            .block(timeout);
+        Response<Object> response
+            = entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE).block(timeout);
         assertNotNull(response);
 
         // Act & Assert
@@ -156,8 +150,8 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         final EntitiesImpl entityClient = managementClient.getEntities();
 
         final String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
-        final Response<Object> response = entityClient.getWithResponseAsync(queueName, true, Context.NONE)
-            .block(Duration.ofSeconds(30));
+        final Response<Object> response
+            = entityClient.getWithResponseAsync(queueName, true, Context.NONE).block(Duration.ofSeconds(30));
         assertNotNull(response);
         final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl.class);
         final QueueDescriptionImpl properties = deserialize.getContent().getQueueDescription();
@@ -174,14 +168,13 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         properties.setAutoDeleteOnIdle(autoDeleteOnIdle);
 
         CreateQueueBodyImpl updated = new CreateQueueBodyImpl()
-            .setContent(new CreateQueueBodyContentImpl()
-                .setQueueDescription(properties)
-                .setType("application/xml"));
+            .setContent(new CreateQueueBodyContentImpl().setQueueDescription(properties).setType("application/xml"));
 
         // Act & Assert
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, updated, "*", Context.NONE))
             .assertNext(update -> {
-                final QueueDescriptionEntryImpl updatedProperties = deserialize(update, QueueDescriptionEntryImpl.class);
+                final QueueDescriptionEntryImpl updatedProperties
+                    = deserialize(update, QueueDescriptionEntryImpl.class);
                 assertNotNull(updatedProperties);
             })
             .expectComplete()
@@ -213,11 +206,12 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
 
     private ServiceBusManagementClientImpl createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=sb://foo" + TestUtils.getEndpoint() + ";SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+            ? "Endpoint=sb://foo" + TestUtils.getEndpoint()
+                + ";SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
             : TestUtils.getConnectionString(false);
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final ServiceBusSharedKeyCredential credential = new ServiceBusSharedKeyCredential(
-            properties.getSharedAccessKeyName(), properties.getSharedAccessKey());
+        final ServiceBusSharedKeyCredential credential
+            = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(), properties.getSharedAccessKey());
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy());
         policies.add(new ServiceBusTokenCredentialHttpPolicy(credential));
@@ -233,8 +227,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(httpClientToUse)
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClientToUse)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
@@ -249,13 +242,13 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         try {
             deserialize = SERIALIZER.deserialize(contents, clazz);
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                String.format("Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
         }
 
         if (deserialize == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'deserialize' should not be null. Body: [%s]. Class: [%s]", contents, clazz)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("'deserialize' should not be null. Body: [%s]. Class: [%s]", contents, clazz)));
         }
 
         return deserialize;

@@ -4,23 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for IntegrationRuntimes ListOutboundNetworkDependenciesEndpoints. */
+/**
+ * Samples for IntegrationRuntimes ListOutboundNetworkDependenciesEndpoints.
+ */
 public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: Get outbound network dependency endpoints.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void getOutboundNetworkDependencyEndpoints(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .integrationRuntimes()
-            .listOutboundNetworkDependenciesEndpointsWithResponse(
-                "exampleResourceGroup",
-                "exampleWorkspace",
-                "exampleIntegrationRuntime",
-                com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .listOutboundNetworkDependenciesEndpointsWithResponse("exampleResourceGroup", "exampleWorkspace",
+                "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
     }
 }

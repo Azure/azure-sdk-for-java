@@ -75,8 +75,8 @@ public final class NetworkInterfaceResourceSettings extends ResourceSettings {
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the NetworkInterfaceResourceSettings object itself.
      */
-    public NetworkInterfaceResourceSettings withIpConfigurations(
-        List<NicIpConfigurationResourceSettings> ipConfigurations) {
+    public NetworkInterfaceResourceSettings
+        withIpConfigurations(List<NicIpConfigurationResourceSettings> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }

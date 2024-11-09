@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The log files in each shardPath are guaranteed to contain mutually exclusive blobs, and can be consumed and
  * processed in parallel without violating the ordering of modifications per blob during the iteration.
  */
-class Shard  {
+class Shard {
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String shardPath; /* Shard virtual directory path/prefix. */
@@ -33,8 +33,8 @@ class Shard  {
     /**
      * Creates a new Shard.
      */
-    Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor changefeedCursor,
-        ShardCursor userCursor, ChunkFactory chunkFactory) {
+    Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor changefeedCursor, ShardCursor userCursor,
+        ChunkFactory chunkFactory) {
         this.client = client;
         this.shardPath = shardPath;
         this.changefeedCursor = changefeedCursor;
@@ -48,22 +48,21 @@ class Shard  {
      */
     Flux<BlobChangefeedEventWrapper> getEvents() {
         /* List relevant chunks. */
-        return listChunks()
-            .concatMap(tuple2 -> {
-                /* Defaults for blockOffset and eventIndex. */
-                long blockOffset = 0;
-                long eventIndex = 0;
-                /* If a user cursor was provided and it points to this chunk path, the chunk should get events based
-                   off the blockOffset and eventIndex.
-                   This just makes sure only the targeted chunkPath uses the blockOffset and eventIndex to
-                   read events. Any subsequent chunk will read all of its events (i.e. blockOffset = 0). */
-                if (userCursor != null && userCursor.getCurrentChunkPath().equals(tuple2.getT1())) {
-                    blockOffset = userCursor.getBlockOffset();
-                    eventIndex = userCursor.getEventIndex();
-                }
-                return chunkFactory.getChunk(tuple2.getT1(), tuple2.getT2(), changefeedCursor, blockOffset, eventIndex)
-                    .getEvents();
-            });
+        return listChunks().concatMap(tuple2 -> {
+            /* Defaults for blockOffset and eventIndex. */
+            long blockOffset = 0;
+            long eventIndex = 0;
+            /* If a user cursor was provided and it points to this chunk path, the chunk should get events based
+               off the blockOffset and eventIndex.
+               This just makes sure only the targeted chunkPath uses the blockOffset and eventIndex to
+               read events. Any subsequent chunk will read all of its events (i.e. blockOffset = 0). */
+            if (userCursor != null && userCursor.getCurrentChunkPath().equals(tuple2.getT1())) {
+                blockOffset = userCursor.getBlockOffset();
+                eventIndex = userCursor.getEventIndex();
+            }
+            return chunkFactory.getChunk(tuple2.getT1(), tuple2.getT2(), changefeedCursor, blockOffset, eventIndex)
+                .getEvents();
+        });
     }
 
     /**
@@ -76,7 +75,7 @@ class Shard  {
            $blobchangefeed/log/00/2020/03/25/0200/0000.avro,
            $blobchangefeed/log/00/2020/03/25/0200/0001.avro,
            $blobchangefeed/log/00/2020/03/25/0200/0002.avro
-
+        
            If the chunk indicated by the cursor is 0001.avro, we want the resulting flux to return
            $blobchangefeed/log/00/2020/03/25/0200/0001.avro,
            $blobchangefeed/log/00/2020/03/25/0200/0002.avro
@@ -86,7 +85,7 @@ class Shard  {
         /* If no user cursor was provided, just return all chunks without filtering. */
         if (userCursor == null) {
             return chunks;
-        /* If a user cursor was provided, filter out chunks that come before the chunk specified in the cursor. */
+            /* If a user cursor was provided, filter out chunks that come before the chunk specified in the cursor. */
         } else {
             return Flux.defer(() -> {
                 AtomicBoolean pass = new AtomicBoolean(); /* Whether or not to pass the event through. */
@@ -94,8 +93,8 @@ class Shard  {
                     if (pass.get()) {
                         return true;
                     } else {
-                    /* If we hit the chunk specified in the user cursor, set pass to true and pass this chunk
-                       and any subsequent chunks through. */
+                        /* If we hit the chunk specified in the user cursor, set pass to true and pass this chunk
+                           and any subsequent chunks through. */
                         if (userCursor.getCurrentChunkPath().equals(tuple2.getT1())) {
                             pass.set(true); /* This allows us to pass subsequent chunks through.*/
                             return true; /* This allows us to pass this chunk through. */

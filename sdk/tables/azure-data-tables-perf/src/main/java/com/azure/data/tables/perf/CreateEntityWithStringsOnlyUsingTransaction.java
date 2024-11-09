@@ -20,17 +20,15 @@ public class CreateEntityWithStringsOnlyUsingTransaction extends TableTestBase<P
 
         String partitionKey = UUID.randomUUID().toString();
         allTransactionActions = Flux.range(0, options.getCount())
-            .map(i ->
-                new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE,
-                    generateEntityWithAllTypes(partitionKey, Integer.toString(i))))
+            .map(i -> new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE,
+                generateEntityWithAllTypes(partitionKey, Integer.toString(i))))
             .buffer(100)
             .collectList()
             .block();
     }
 
     public Mono<Void> globalSetupAsync() {
-        return tableAsyncClient.createTable()
-            .then(super.globalSetupAsync());
+        return tableAsyncClient.createTable().then(super.globalSetupAsync());
     }
 
     @Override
@@ -40,8 +38,6 @@ public class CreateEntityWithStringsOnlyUsingTransaction extends TableTestBase<P
 
     @Override
     public Mono<Void> runAsync() {
-        return Flux.fromIterable(allTransactionActions)
-            .map(tableAsyncClient::submitTransaction)
-            .then();
+        return Flux.fromIterable(allTransactionActions).map(tableAsyncClient::submitTransaction).then();
     }
 }

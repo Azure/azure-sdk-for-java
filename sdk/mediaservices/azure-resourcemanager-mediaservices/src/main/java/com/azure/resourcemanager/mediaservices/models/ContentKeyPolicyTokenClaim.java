@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a token claim. */
+/**
+ * Represents a token claim.
+ */
 @Fluent
-public final class ContentKeyPolicyTokenClaim {
+public final class ContentKeyPolicyTokenClaim implements JsonSerializable<ContentKeyPolicyTokenClaim> {
     /*
      * Token claim type.
      */
-    @JsonProperty(value = "claimType")
     private String claimType;
 
     /*
      * Token claim value.
      */
-    @JsonProperty(value = "claimValue")
     private String claimValue;
 
-    /** Creates an instance of ContentKeyPolicyTokenClaim class. */
+    /**
+     * Creates an instance of ContentKeyPolicyTokenClaim class.
+     */
     public ContentKeyPolicyTokenClaim() {
     }
 
     /**
      * Get the claimType property: Token claim type.
-     *
+     * 
      * @return the claimType value.
      */
     public String claimType() {
@@ -37,7 +43,7 @@ public final class ContentKeyPolicyTokenClaim {
 
     /**
      * Set the claimType property: Token claim type.
-     *
+     * 
      * @param claimType the claimType value to set.
      * @return the ContentKeyPolicyTokenClaim object itself.
      */
@@ -48,7 +54,7 @@ public final class ContentKeyPolicyTokenClaim {
 
     /**
      * Get the claimValue property: Token claim value.
-     *
+     * 
      * @return the claimValue value.
      */
     public String claimValue() {
@@ -57,7 +63,7 @@ public final class ContentKeyPolicyTokenClaim {
 
     /**
      * Set the claimValue property: Token claim value.
-     *
+     * 
      * @param claimValue the claimValue value to set.
      * @return the ContentKeyPolicyTokenClaim object itself.
      */
@@ -68,9 +74,48 @@ public final class ContentKeyPolicyTokenClaim {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("claimType", this.claimType);
+        jsonWriter.writeStringField("claimValue", this.claimValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyTokenClaim from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyTokenClaim if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyTokenClaim.
+     */
+    public static ContentKeyPolicyTokenClaim fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyTokenClaim deserializedContentKeyPolicyTokenClaim = new ContentKeyPolicyTokenClaim();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("claimType".equals(fieldName)) {
+                    deserializedContentKeyPolicyTokenClaim.claimType = reader.getString();
+                } else if ("claimValue".equals(fieldName)) {
+                    deserializedContentKeyPolicyTokenClaim.claimValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyTokenClaim;
+        });
     }
 }

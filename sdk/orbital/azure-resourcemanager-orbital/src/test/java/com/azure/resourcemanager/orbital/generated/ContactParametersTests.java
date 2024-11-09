@@ -13,29 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactParameters model =
-            BinaryData
-                .fromString(
-                    "{\"contactProfile\":{\"id\":\"gr\"},\"groundStationName\":\"bznorcjxvsnby\",\"startTime\":\"2021-08-08T19:07:21Z\",\"endTime\":\"2021-06-02T22:09:38Z\"}")
-                .toObject(ContactParameters.class);
-        Assertions.assertEquals("gr", model.contactProfile().id());
-        Assertions.assertEquals("bznorcjxvsnby", model.groundStationName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T19:07:21Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T22:09:38Z"), model.endTime());
+        ContactParameters model = BinaryData.fromString(
+            "{\"contactProfile\":{\"id\":\"prwzwbnguitnwui\"},\"groundStationName\":\"gazxuf\",\"startTime\":\"2020-12-27T04:43:40Z\",\"endTime\":\"2021-07-01T16:43:11Z\"}")
+            .toObject(ContactParameters.class);
+        Assertions.assertEquals("prwzwbnguitnwui", model.contactProfile().id());
+        Assertions.assertEquals("gazxuf", model.groundStationName());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T04:43:40Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T16:43:11Z"), model.endTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactParameters model =
-            new ContactParameters()
-                .withContactProfile(new ContactParametersContactProfile().withId("gr"))
-                .withGroundStationName("bznorcjxvsnby")
-                .withStartTime(OffsetDateTime.parse("2021-08-08T19:07:21Z"))
-                .withEndTime(OffsetDateTime.parse("2021-06-02T22:09:38Z"));
+        ContactParameters model = new ContactParameters()
+            .withContactProfile(new ContactParametersContactProfile().withId("prwzwbnguitnwui"))
+            .withGroundStationName("gazxuf")
+            .withStartTime(OffsetDateTime.parse("2020-12-27T04:43:40Z"))
+            .withEndTime(OffsetDateTime.parse("2021-07-01T16:43:11Z"));
         model = BinaryData.fromObject(model).toObject(ContactParameters.class);
-        Assertions.assertEquals("gr", model.contactProfile().id());
-        Assertions.assertEquals("bznorcjxvsnby", model.groundStationName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T19:07:21Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T22:09:38Z"), model.endTime());
+        Assertions.assertEquals("prwzwbnguitnwui", model.contactProfile().id());
+        Assertions.assertEquals("gazxuf", model.groundStationName());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T04:43:40Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T16:43:11Z"), model.endTime());
     }
 }

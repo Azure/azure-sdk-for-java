@@ -17,8 +17,7 @@ public final class VideoAnalyzerCollectionImpl implements VideoAnalyzerCollectio
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    VideoAnalyzerCollectionImpl(
-        VideoAnalyzerCollectionInner innerObject,
+    VideoAnalyzerCollectionImpl(VideoAnalyzerCollectionInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class VideoAnalyzerCollectionImpl implements VideoAnalyzerCollectio
     public List<VideoAnalyzer> value() {
         List<VideoAnalyzerInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new VideoAnalyzerImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new VideoAnalyzerImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

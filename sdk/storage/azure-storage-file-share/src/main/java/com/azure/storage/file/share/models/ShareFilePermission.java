@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share.models;
 
-
 /**
  * Share File Permission.
  */

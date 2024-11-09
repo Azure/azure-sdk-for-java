@@ -7,57 +7,73 @@ package com.azure.resourcemanager.reservations.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.Kind;
 import com.azure.resourcemanager.reservations.models.ReservationsProperties;
 import com.azure.resourcemanager.reservations.models.SkuName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The definition of the reservation. */
+/**
+ * The definition of the reservation.
+ */
 @Fluent
 public final class ReservationResponseInner extends ProxyResource {
     /*
      * The Azure region where the reserved resource lives.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The etag property.
      */
-    @JsonProperty(value = "etag")
     private Integer etag;
 
     /*
      * The sku information associated to this reservation
      */
-    @JsonProperty(value = "sku")
     private SkuName sku;
 
     /*
      * The properties associated to this reservation
      */
-    @JsonProperty(value = "properties")
     private ReservationsProperties properties;
 
     /*
      * Resource Provider type to be reserved.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ReservationResponseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ReservationResponseInner class.
+     */
     public ReservationResponseInner() {
     }
 
     /**
      * Get the location property: The Azure region where the reserved resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -66,7 +82,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Set the location property: The Azure region where the reserved resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the ReservationResponseInner object itself.
      */
@@ -77,7 +93,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Get the etag property: The etag property.
-     *
+     * 
      * @return the etag value.
      */
     public Integer etag() {
@@ -86,7 +102,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Set the etag property: The etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ReservationResponseInner object itself.
      */
@@ -97,7 +113,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Get the sku property: The sku information associated to this reservation.
-     *
+     * 
      * @return the sku value.
      */
     public SkuName sku() {
@@ -106,7 +122,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Set the sku property: The sku information associated to this reservation.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ReservationResponseInner object itself.
      */
@@ -117,7 +133,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Get the properties property: The properties associated to this reservation.
-     *
+     * 
      * @return the properties value.
      */
     public ReservationsProperties properties() {
@@ -126,7 +142,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties associated to this reservation.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ReservationResponseInner object itself.
      */
@@ -137,7 +153,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Get the kind property: Resource Provider type to be reserved.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -146,7 +162,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Set the kind property: Resource Provider type to be reserved.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ReservationResponseInner object itself.
      */
@@ -157,7 +173,7 @@ public final class ReservationResponseInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -165,8 +181,38 @@ public final class ReservationResponseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -176,5 +222,62 @@ public final class ReservationResponseInner extends ProxyResource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeNumberField("etag", this.etag);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReservationResponseInner.
+     */
+    public static ReservationResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationResponseInner deserializedReservationResponseInner = new ReservationResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReservationResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedReservationResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReservationResponseInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedReservationResponseInner.location = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedReservationResponseInner.etag = reader.getNullable(JsonReader::getInt);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedReservationResponseInner.sku = SkuName.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReservationResponseInner.properties = ReservationsProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedReservationResponseInner.kind = Kind.fromString(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedReservationResponseInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationResponseInner;
+        });
     }
 }

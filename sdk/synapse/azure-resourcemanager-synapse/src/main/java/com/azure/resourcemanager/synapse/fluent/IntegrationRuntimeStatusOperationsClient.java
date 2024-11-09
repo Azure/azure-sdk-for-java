@@ -16,9 +16,9 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusR
 public interface IntegrationRuntimeStatusOperationsClient {
     /**
      * Get integration runtime status
-     *
-     * <p>Get the integration runtime status.
-     *
+     * 
+     * Get the integration runtime status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -29,14 +29,14 @@ public interface IntegrationRuntimeStatusOperationsClient {
      * @return the integration runtime status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeStatusResponseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeStatusResponseInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get integration runtime status
-     *
-     * <p>Get the integration runtime status.
-     *
+     * 
+     * Get the integration runtime status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -46,6 +46,6 @@ public interface IntegrationRuntimeStatusOperationsClient {
      * @return the integration runtime status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeStatusResponseInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 }

@@ -6,22 +6,34 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Action property bag base. */
+/**
+ * Action property bag base.
+ */
 @Fluent
-public class ActionPropertiesBase {
+public class ActionPropertiesBase implements JsonSerializable<ActionPropertiesBase> {
     /*
      * Logic App Resource Id,
-     * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
+     * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-
+     * workflow-id}.
      */
-    @JsonProperty(value = "logicAppResourceId", required = true)
     private String logicAppResourceId;
+
+    /**
+     * Creates an instance of ActionPropertiesBase class.
+     */
+    public ActionPropertiesBase() {
+    }
 
     /**
      * Get the logicAppResourceId property: Logic App Resource Id,
      * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-     *
+     * 
      * @return the logicAppResourceId value.
      */
     public String logicAppResourceId() {
@@ -31,7 +43,7 @@ public class ActionPropertiesBase {
     /**
      * Set the logicAppResourceId property: Logic App Resource Id,
      * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-     *
+     * 
      * @param logicAppResourceId the logicAppResourceId value to set.
      * @return the ActionPropertiesBase object itself.
      */
@@ -42,17 +54,53 @@ public class ActionPropertiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logicAppResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property logicAppResourceId in model ActionPropertiesBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logicAppResourceId in model ActionPropertiesBase"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ActionPropertiesBase.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("logicAppResourceId", this.logicAppResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionPropertiesBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionPropertiesBase if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActionPropertiesBase.
+     */
+    public static ActionPropertiesBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionPropertiesBase deserializedActionPropertiesBase = new ActionPropertiesBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logicAppResourceId".equals(fieldName)) {
+                    deserializedActionPropertiesBase.logicAppResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionPropertiesBase;
+        });
+    }
 }

@@ -62,8 +62,8 @@ public class CheckNameAvailabilitySpecifications {
      * @param resourceTypesWithCustomValidation the resourceTypesWithCustomValidation value to set.
      * @return the CheckNameAvailabilitySpecifications object itself.
      */
-    public CheckNameAvailabilitySpecifications withResourceTypesWithCustomValidation(
-        List<String> resourceTypesWithCustomValidation) {
+    public CheckNameAvailabilitySpecifications
+        withResourceTypesWithCustomValidation(List<String> resourceTypesWithCustomValidation) {
         this.resourceTypesWithCustomValidation = resourceTypesWithCustomValidation;
         return this;
     }

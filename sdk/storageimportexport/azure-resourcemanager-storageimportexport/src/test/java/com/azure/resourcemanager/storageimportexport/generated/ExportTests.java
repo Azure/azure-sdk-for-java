@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Export model =
-            BinaryData
-                .fromString(
-                    "{\"blobList\":{\"blobPath\":[\"byxqabn\"],\"blobPathPrefix\":[\"pcyshu\"]},\"blobListBlobPath\":\"afbljjgpbtoqcjmk\"}")
-                .toObject(Export.class);
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.blobListBlobPath());
-        Assertions.assertEquals("byxqabn", model.blobPath().get(0));
-        Assertions.assertEquals("pcyshu", model.blobPathPrefix().get(0));
+        Export model = BinaryData.fromString(
+            "{\"blobList\":{\"blobPath\":[\"cciqihnhungbwjz\"],\"blobPathPrefix\":[\"ygxgispemvtz\",\"kufubljo\",\"xqeofjaeqjhqjba\",\"v\"]},\"blobListBlobPath\":\"mjqulngsn\"}")
+            .toObject(Export.class);
+        Assertions.assertEquals("mjqulngsn", model.blobListBlobPath());
+        Assertions.assertEquals("cciqihnhungbwjz", model.blobPath().get(0));
+        Assertions.assertEquals("ygxgispemvtz", model.blobPathPrefix().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Export model =
-            new Export()
-                .withBlobListBlobPath("afbljjgpbtoqcjmk")
-                .withBlobPath(Arrays.asList("byxqabn"))
-                .withBlobPathPrefix(Arrays.asList("pcyshu"));
+        Export model = new Export().withBlobListBlobPath("mjqulngsn")
+            .withBlobPath(Arrays.asList("cciqihnhungbwjz"))
+            .withBlobPathPrefix(Arrays.asList("ygxgispemvtz", "kufubljo", "xqeofjaeqjhqjba", "v"));
         model = BinaryData.fromObject(model).toObject(Export.class);
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.blobListBlobPath());
-        Assertions.assertEquals("byxqabn", model.blobPath().get(0));
-        Assertions.assertEquals("pcyshu", model.blobPathPrefix().get(0));
+        Assertions.assertEquals("mjqulngsn", model.blobListBlobPath());
+        Assertions.assertEquals("cciqihnhungbwjz", model.blobPath().get(0));
+        Assertions.assertEquals("ygxgispemvtz", model.blobPathPrefix().get(0));
     }
 }

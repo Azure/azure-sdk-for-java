@@ -32,7 +32,7 @@ public class GetTranslationStatus {
                 .buildClient();
         
         // BEGIN:GetTranslationStatus
-        SyncPoller<TranslationStatus, Void> response
+        SyncPoller<TranslationStatus, TranslationStatus> response
             = documentTranslationClient
                 .beginStartTranslation(
                     new StartTranslationDetails(Arrays.asList(new BatchRequest(

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties portion of the registration resource. */
+/**
+ * Properties portion of the registration resource.
+ */
 @Fluent
-public final class RegistrationProperties {
+public final class RegistrationProperties implements JsonSerializable<RegistrationProperties> {
     /*
      * The object identifier associated with the Azure Stack connecting to Azure.
      */
-    @JsonProperty(value = "objectId")
     private String objectId;
 
     /*
      * The identifier of the registered Azure Stack.
      */
-    @JsonProperty(value = "cloudId")
     private String cloudId;
 
     /*
      * Specifies the billing mode for the Azure Stack registration.
      */
-    @JsonProperty(value = "billingModel")
     private String billingModel;
 
-    /** Creates an instance of RegistrationProperties class. */
+    /**
+     * Creates an instance of RegistrationProperties class.
+     */
     public RegistrationProperties() {
     }
 
     /**
      * Get the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -43,7 +48,7 @@ public final class RegistrationProperties {
 
     /**
      * Set the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the RegistrationProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class RegistrationProperties {
 
     /**
      * Get the cloudId property: The identifier of the registered Azure Stack.
-     *
+     * 
      * @return the cloudId value.
      */
     public String cloudId() {
@@ -63,7 +68,7 @@ public final class RegistrationProperties {
 
     /**
      * Set the cloudId property: The identifier of the registered Azure Stack.
-     *
+     * 
      * @param cloudId the cloudId value to set.
      * @return the RegistrationProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class RegistrationProperties {
 
     /**
      * Get the billingModel property: Specifies the billing mode for the Azure Stack registration.
-     *
+     * 
      * @return the billingModel value.
      */
     public String billingModel() {
@@ -83,7 +88,7 @@ public final class RegistrationProperties {
 
     /**
      * Set the billingModel property: Specifies the billing mode for the Azure Stack registration.
-     *
+     * 
      * @param billingModel the billingModel value to set.
      * @return the RegistrationProperties object itself.
      */
@@ -94,9 +99,51 @@ public final class RegistrationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectId", this.objectId);
+        jsonWriter.writeStringField("cloudId", this.cloudId);
+        jsonWriter.writeStringField("billingModel", this.billingModel);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistrationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistrationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistrationProperties.
+     */
+    public static RegistrationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistrationProperties deserializedRegistrationProperties = new RegistrationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectId".equals(fieldName)) {
+                    deserializedRegistrationProperties.objectId = reader.getString();
+                } else if ("cloudId".equals(fieldName)) {
+                    deserializedRegistrationProperties.cloudId = reader.getString();
+                } else if ("billingModel".equals(fieldName)) {
+                    deserializedRegistrationProperties.billingModel = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistrationProperties;
+        });
     }
 }

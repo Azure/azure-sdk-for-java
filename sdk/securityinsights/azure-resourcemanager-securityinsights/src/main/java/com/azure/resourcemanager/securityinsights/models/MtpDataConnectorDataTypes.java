@@ -6,20 +6,31 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The available data types for Microsoft Threat Protection Platforms data connector. */
+/**
+ * The available data types for Microsoft Threat Protection Platforms data connector.
+ */
 @Fluent
-public final class MtpDataConnectorDataTypes {
+public final class MtpDataConnectorDataTypes implements JsonSerializable<MtpDataConnectorDataTypes> {
     /*
      * Data type for Microsoft Threat Protection Platforms data connector.
      */
-    @JsonProperty(value = "incidents", required = true)
     private MtpDataConnectorDataTypesIncidents incidents;
 
     /**
+     * Creates an instance of MtpDataConnectorDataTypes class.
+     */
+    public MtpDataConnectorDataTypes() {
+    }
+
+    /**
      * Get the incidents property: Data type for Microsoft Threat Protection Platforms data connector.
-     *
+     * 
      * @return the incidents value.
      */
     public MtpDataConnectorDataTypesIncidents incidents() {
@@ -28,7 +39,7 @@ public final class MtpDataConnectorDataTypes {
 
     /**
      * Set the incidents property: Data type for Microsoft Threat Protection Platforms data connector.
-     *
+     * 
      * @param incidents the incidents value to set.
      * @return the MtpDataConnectorDataTypes object itself.
      */
@@ -39,19 +50,56 @@ public final class MtpDataConnectorDataTypes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (incidents() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property incidents in model MtpDataConnectorDataTypes"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property incidents in model MtpDataConnectorDataTypes"));
         } else {
             incidents().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MtpDataConnectorDataTypes.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("incidents", this.incidents);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MtpDataConnectorDataTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MtpDataConnectorDataTypes if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MtpDataConnectorDataTypes.
+     */
+    public static MtpDataConnectorDataTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MtpDataConnectorDataTypes deserializedMtpDataConnectorDataTypes = new MtpDataConnectorDataTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("incidents".equals(fieldName)) {
+                    deserializedMtpDataConnectorDataTypes.incidents
+                        = MtpDataConnectorDataTypesIncidents.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMtpDataConnectorDataTypes;
+        });
+    }
 }

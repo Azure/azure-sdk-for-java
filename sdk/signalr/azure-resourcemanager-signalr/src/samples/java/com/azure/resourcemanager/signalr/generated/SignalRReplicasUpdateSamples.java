@@ -10,25 +10,26 @@ import com.azure.resourcemanager.signalr.models.SignalRSkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SignalRReplicas Update. */
+/**
+ * Samples for SignalRReplicas Update.
+ */
 public final class SignalRReplicasUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Update.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalRReplicas_Update.json
      */
     /**
      * Sample code: SignalRReplicas_Update.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRReplicasUpdate(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        Replica resource =
-            manager
-                .signalRReplicas()
-                .getWithResponse(
-                    "myResourceGroup", "mySignalRService", "mySignalRService-eastus", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Replica resource = manager.signalRReplicas()
+            .getWithResponse("myResourceGroup", "mySignalRService", "mySignalRService-eastus",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(SignalRSkuTier.PREMIUM).withCapacity(1))
             .withResourceStopped("false")

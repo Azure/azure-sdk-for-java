@@ -5,39 +5,47 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ONVIF device properties. */
+/**
+ * The ONVIF device properties.
+ */
 @Fluent
-public final class OnvifDevice {
+public final class OnvifDevice implements JsonSerializable<OnvifDevice> {
     /*
      * The hostname of the ONVIF device.
      */
-    @JsonProperty(value = "hostname")
     private OnvifHostName hostname;
 
     /*
      * The system date and time of the ONVIF device.
      */
-    @JsonProperty(value = "systemDateTime")
     private OnvifSystemDateTime systemDateTime;
 
     /*
      * The ONVIF device DNS properties.
      */
-    @JsonProperty(value = "dns")
     private OnvifDns dns;
 
     /*
      * An array of of ONVIF media profiles supported by the ONVIF device.
      */
-    @JsonProperty(value = "mediaProfiles")
     private List<MediaProfile> mediaProfiles;
 
     /**
+     * Creates an instance of OnvifDevice class.
+     */
+    public OnvifDevice() {
+    }
+
+    /**
      * Get the hostname property: The hostname of the ONVIF device.
-     *
+     * 
      * @return the hostname value.
      */
     public OnvifHostName getHostname() {
@@ -46,7 +54,7 @@ public final class OnvifDevice {
 
     /**
      * Set the hostname property: The hostname of the ONVIF device.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the OnvifDevice object itself.
      */
@@ -57,7 +65,7 @@ public final class OnvifDevice {
 
     /**
      * Get the systemDateTime property: The system date and time of the ONVIF device.
-     *
+     * 
      * @return the systemDateTime value.
      */
     public OnvifSystemDateTime getSystemDateTime() {
@@ -66,7 +74,7 @@ public final class OnvifDevice {
 
     /**
      * Set the systemDateTime property: The system date and time of the ONVIF device.
-     *
+     * 
      * @param systemDateTime the systemDateTime value to set.
      * @return the OnvifDevice object itself.
      */
@@ -77,7 +85,7 @@ public final class OnvifDevice {
 
     /**
      * Get the dns property: The ONVIF device DNS properties.
-     *
+     * 
      * @return the dns value.
      */
     public OnvifDns getDns() {
@@ -86,7 +94,7 @@ public final class OnvifDevice {
 
     /**
      * Set the dns property: The ONVIF device DNS properties.
-     *
+     * 
      * @param dns the dns value to set.
      * @return the OnvifDevice object itself.
      */
@@ -97,7 +105,7 @@ public final class OnvifDevice {
 
     /**
      * Get the mediaProfiles property: An array of of ONVIF media profiles supported by the ONVIF device.
-     *
+     * 
      * @return the mediaProfiles value.
      */
     public List<MediaProfile> getMediaProfiles() {
@@ -106,12 +114,58 @@ public final class OnvifDevice {
 
     /**
      * Set the mediaProfiles property: An array of of ONVIF media profiles supported by the ONVIF device.
-     *
+     * 
      * @param mediaProfiles the mediaProfiles value to set.
      * @return the OnvifDevice object itself.
      */
     public OnvifDevice setMediaProfiles(List<MediaProfile> mediaProfiles) {
         this.mediaProfiles = mediaProfiles;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hostname", this.hostname);
+        jsonWriter.writeJsonField("systemDateTime", this.systemDateTime);
+        jsonWriter.writeJsonField("dns", this.dns);
+        jsonWriter.writeArrayField("mediaProfiles", this.mediaProfiles, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnvifDevice from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnvifDevice if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OnvifDevice.
+     */
+    public static OnvifDevice fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OnvifDevice deserializedOnvifDevice = new OnvifDevice();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostname".equals(fieldName)) {
+                    deserializedOnvifDevice.hostname = OnvifHostName.fromJson(reader);
+                } else if ("systemDateTime".equals(fieldName)) {
+                    deserializedOnvifDevice.systemDateTime = OnvifSystemDateTime.fromJson(reader);
+                } else if ("dns".equals(fieldName)) {
+                    deserializedOnvifDevice.dns = OnvifDns.fromJson(reader);
+                } else if ("mediaProfiles".equals(fieldName)) {
+                    List<MediaProfile> mediaProfiles = reader.readArray(reader1 -> MediaProfile.fromJson(reader1));
+                    deserializedOnvifDevice.mediaProfiles = mediaProfiles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOnvifDevice;
+        });
     }
 }

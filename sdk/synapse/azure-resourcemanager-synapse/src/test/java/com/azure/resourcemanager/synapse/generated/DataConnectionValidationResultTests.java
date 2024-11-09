@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DataConnectionValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataConnectionValidationResult model =
-            BinaryData.fromString("{\"errorMessage\":\"ozkyewnfnzh\"}").toObject(DataConnectionValidationResult.class);
-        Assertions.assertEquals("ozkyewnfnzh", model.errorMessage());
+        DataConnectionValidationResult model = BinaryData.fromString("{\"errorMessage\":\"jbrzmqxucyc\"}")
+            .toObject(DataConnectionValidationResult.class);
+        Assertions.assertEquals("jbrzmqxucyc", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionValidationResult model = new DataConnectionValidationResult().withErrorMessage("ozkyewnfnzh");
+        DataConnectionValidationResult model = new DataConnectionValidationResult().withErrorMessage("jbrzmqxucyc");
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationResult.class);
-        Assertions.assertEquals("ozkyewnfnzh", model.errorMessage());
+        Assertions.assertEquals("jbrzmqxucyc", model.errorMessage());
     }
 }

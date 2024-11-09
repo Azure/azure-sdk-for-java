@@ -21,53 +21,42 @@ public final class WorkflowRunActionRequestHistoriesImpl implements WorkflowRunA
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowRunActionRequestHistoriesImpl(
-        WorkflowRunActionRequestHistoriesClient innerClient,
+    public WorkflowRunActionRequestHistoriesImpl(WorkflowRunActionRequestHistoriesClient innerClient,
         com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<RequestHistory> list(
-        String resourceGroupName, String workflowName, String runName, String actionName) {
-        PagedIterable<RequestHistoryInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, runName, actionName);
-        return Utils.mapPage(inner, inner1 -> new RequestHistoryImpl(inner1, this.manager()));
+    public PagedIterable<RequestHistory> list(String resourceGroupName, String workflowName, String runName,
+        String actionName) {
+        PagedIterable<RequestHistoryInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, runName, actionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RequestHistoryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RequestHistory> list(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
-        PagedIterable<RequestHistoryInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, runName, actionName, context);
-        return Utils.mapPage(inner, inner1 -> new RequestHistoryImpl(inner1, this.manager()));
+    public PagedIterable<RequestHistory> list(String resourceGroupName, String workflowName, String runName,
+        String actionName, Context context) {
+        PagedIterable<RequestHistoryInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, runName, actionName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RequestHistoryImpl(inner1, this.manager()));
     }
 
-    public Response<RequestHistory> getWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String requestHistoryName,
-        Context context) {
-        Response<RequestHistoryInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workflowName, runName, actionName, requestHistoryName, context);
+    public Response<RequestHistory> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String actionName, String requestHistoryName, Context context) {
+        Response<RequestHistoryInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workflowName, runName, actionName, requestHistoryName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RequestHistoryImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RequestHistory get(
-        String resourceGroupName, String workflowName, String runName, String actionName, String requestHistoryName) {
-        RequestHistoryInner inner =
-            this.serviceClient().get(resourceGroupName, workflowName, runName, actionName, requestHistoryName);
+    public RequestHistory get(String resourceGroupName, String workflowName, String runName, String actionName,
+        String requestHistoryName) {
+        RequestHistoryInner inner
+            = this.serviceClient().get(resourceGroupName, workflowName, runName, actionName, requestHistoryName);
         if (inner != null) {
             return new RequestHistoryImpl(inner, this.manager());
         } else {

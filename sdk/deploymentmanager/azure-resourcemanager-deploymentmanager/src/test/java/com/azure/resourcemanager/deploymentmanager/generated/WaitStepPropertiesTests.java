@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class WaitStepPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WaitStepProperties model =
-            BinaryData
-                .fromString("{\"stepType\":\"Wait\",\"attributes\":{\"duration\":\"sncghkjeszz\"}}")
+        WaitStepProperties model
+            = BinaryData.fromString("{\"stepType\":\"Wait\",\"attributes\":{\"duration\":\"sncghkjeszz\"}}")
                 .toObject(WaitStepProperties.class);
         Assertions.assertEquals("sncghkjeszz", model.attributes().duration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WaitStepProperties model =
-            new WaitStepProperties().withAttributes(new WaitStepAttributes().withDuration("sncghkjeszz"));
+        WaitStepProperties model
+            = new WaitStepProperties().withAttributes(new WaitStepAttributes().withDuration("sncghkjeszz"));
         model = BinaryData.fromObject(model).toObject(WaitStepProperties.class);
         Assertions.assertEquals("sncghkjeszz", model.attributes().duration());
     }

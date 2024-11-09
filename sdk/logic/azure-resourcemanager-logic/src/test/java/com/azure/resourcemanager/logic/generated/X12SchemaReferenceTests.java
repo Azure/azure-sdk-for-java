@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class X12SchemaReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        X12SchemaReference model =
-            BinaryData
-                .fromString(
-                    "{\"messageId\":\"jlxr\",\"senderApplicationId\":\"lozapeewchpxlk\",\"schemaVersion\":\"wk\",\"schemaName\":\"ziycslevufuztck\"}")
-                .toObject(X12SchemaReference.class);
-        Assertions.assertEquals("jlxr", model.messageId());
-        Assertions.assertEquals("lozapeewchpxlk", model.senderApplicationId());
-        Assertions.assertEquals("wk", model.schemaVersion());
-        Assertions.assertEquals("ziycslevufuztck", model.schemaName());
+        X12SchemaReference model = BinaryData.fromString(
+            "{\"messageId\":\"qonmpqoxwdof\",\"senderApplicationId\":\"xiqxeiiqbimh\",\"schemaVersion\":\"mwwinhehfqpofv\",\"schemaName\":\"bcblemb\"}")
+            .toObject(X12SchemaReference.class);
+        Assertions.assertEquals("qonmpqoxwdof", model.messageId());
+        Assertions.assertEquals("xiqxeiiqbimh", model.senderApplicationId());
+        Assertions.assertEquals("mwwinhehfqpofv", model.schemaVersion());
+        Assertions.assertEquals("bcblemb", model.schemaName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X12SchemaReference model =
-            new X12SchemaReference()
-                .withMessageId("jlxr")
-                .withSenderApplicationId("lozapeewchpxlk")
-                .withSchemaVersion("wk")
-                .withSchemaName("ziycslevufuztck");
+        X12SchemaReference model = new X12SchemaReference().withMessageId("qonmpqoxwdof")
+            .withSenderApplicationId("xiqxeiiqbimh")
+            .withSchemaVersion("mwwinhehfqpofv")
+            .withSchemaName("bcblemb");
         model = BinaryData.fromObject(model).toObject(X12SchemaReference.class);
-        Assertions.assertEquals("jlxr", model.messageId());
-        Assertions.assertEquals("lozapeewchpxlk", model.senderApplicationId());
-        Assertions.assertEquals("wk", model.schemaVersion());
-        Assertions.assertEquals("ziycslevufuztck", model.schemaName());
+        Assertions.assertEquals("qonmpqoxwdof", model.messageId());
+        Assertions.assertEquals("xiqxeiiqbimh", model.senderApplicationId());
+        Assertions.assertEquals("mwwinhehfqpofv", model.schemaVersion());
+        Assertions.assertEquals("bcblemb", model.schemaName());
     }
 }

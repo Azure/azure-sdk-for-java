@@ -24,7 +24,8 @@ public final class AzureOperatorNexusArmTemplateDeployMappingRuleProfileTests {
     public void testSerialize() throws Exception {
         AzureOperatorNexusArmTemplateDeployMappingRuleProfile model
             = new AzureOperatorNexusArmTemplateDeployMappingRuleProfile()
-                .withApplicationEnablement(ApplicationEnablement.ENABLED).withTemplateMappingRuleProfile(
+                .withApplicationEnablement(ApplicationEnablement.ENABLED)
+                .withTemplateMappingRuleProfile(
                     new ArmTemplateMappingRuleProfile().withTemplateParameters("pqxbkwvzgnzvdf"));
         model = BinaryData.fromObject(model).toObject(AzureOperatorNexusArmTemplateDeployMappingRuleProfile.class);
         Assertions.assertEquals(ApplicationEnablement.ENABLED, model.applicationEnablement());

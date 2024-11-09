@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for VirtualNetworkRules ListByServer. */
+/**
+ * Samples for VirtualNetworkRules ListByServer.
+ */
 public final class VirtualNetworkRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/VirtualNetworkRulesList.json
+     * x-ms-original-file:
+     * specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/VirtualNetworkRulesList.
+     * json
      */
     /**
      * Sample code: List virtual network rules.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void listVirtualNetworkRules(com.azure.resourcemanager.mariadb.MariaDBManager manager) {

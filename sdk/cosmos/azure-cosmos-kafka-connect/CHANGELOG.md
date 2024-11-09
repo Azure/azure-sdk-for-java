@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.5 (Unreleased)
+### 2.1.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,14 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.0.0 (2024-11-04)
+
+#### Features Added
+* General Availability release of the Source and Sink Kafka Connectors - See [PR 42785](https://github.com/Azure/azure-sdk-for-java/pull/42785)
+
+#### Other Changes
+* Improved error message when the database provided in the config does not exist - See [PR 42599](https://github.com/Azure/azure-sdk-for-java/pull/42599)
 
 ### 1.0.0-beta.4 (2024-07-26)
 

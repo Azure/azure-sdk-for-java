@@ -27,9 +27,8 @@ class EntityServiceBusExceptionTestHelperTest {
     @Test
     void createTopic() {
         // Arrange
-        final CreateTopicOptions expected = new CreateTopicOptions()
-            .setStatus(EntityStatus.RECEIVE_DISABLED)
-            .setUserMetadata("Test-topic-Metadata");
+        final CreateTopicOptions expected
+            = new CreateTopicOptions().setStatus(EntityStatus.RECEIVE_DISABLED).setUserMetadata("Test-topic-Metadata");
 
         // Act
         final TopicDescriptionImpl actual = EntityHelper.getTopicDescription(expected);
@@ -52,8 +51,7 @@ class EntityServiceBusExceptionTestHelperTest {
     @Test
     void createQueue() {
         // Arrange
-        final CreateQueueOptions expected = new CreateQueueOptions()
-            .setAutoDeleteOnIdle(Duration.ofSeconds(15))
+        final CreateQueueOptions expected = new CreateQueueOptions().setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDeadLetteringOnMessageExpiration(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))
@@ -76,7 +74,8 @@ class EntityServiceBusExceptionTestHelperTest {
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
         assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
-        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
+        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),
+            actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
         assertEquals(expected.isPartitioningEnabled(), actual.isEnablePartitioning());
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
@@ -119,19 +118,19 @@ class EntityServiceBusExceptionTestHelperTest {
     @Test
     void createSubscription() {
         // Arrange
-        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
-            .setAutoDeleteOnIdle(Duration.ofSeconds(15))
-            .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
-            .setDeadLetteringOnMessageExpiration(true)
-            .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
-            .setBatchedOperationsEnabled(false)
-            .setForwardTo("Forward-To-This-Queue")
-            .setForwardDeadLetteredMessagesTo("Dead-Lettered-Forward-To")
-            .setLockDuration(Duration.ofSeconds(120))
-            .setMaxDeliveryCount(15)
-            .setSessionRequired(true)
-            .setStatus(EntityStatus.RECEIVE_DISABLED)
-            .setUserMetadata("Test-topic-Metadata");
+        final CreateSubscriptionOptions expected
+            = new CreateSubscriptionOptions().setAutoDeleteOnIdle(Duration.ofSeconds(15))
+                .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
+                .setDeadLetteringOnMessageExpiration(true)
+                .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
+                .setBatchedOperationsEnabled(false)
+                .setForwardTo("Forward-To-This-Queue")
+                .setForwardDeadLetteredMessagesTo("Dead-Lettered-Forward-To")
+                .setLockDuration(Duration.ofSeconds(120))
+                .setMaxDeliveryCount(15)
+                .setSessionRequired(true)
+                .setStatus(EntityStatus.RECEIVE_DISABLED)
+                .setUserMetadata("Test-topic-Metadata");
 
         // Act
         final SubscriptionDescriptionImpl actual = EntityHelper.getSubscriptionDescription(expected);

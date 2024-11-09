@@ -6,6 +6,8 @@ package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -17,8 +19,8 @@ public final class EntityPartialUpdateAttributeByGuidTests extends DataMapClient
     @Disabled
     public void testEntityPartialUpdateAttributeByGuidTests() {
         // method invocation
-        EntityMutationResult response
-            = entityClient.updateAttributeById("394d9a03-912e-483b-bbd2-bedee1a69798", "ExampleName", "ExampleNewName");
+        EntityMutationResult response = entityClient.updateAttributeById("394d9a03-912e-483b-bbd2-bedee1a69798",
+            "ExampleName", BinaryData.fromBytes("ExampleNewName".getBytes(StandardCharsets.UTF_8)));
 
         // response assertion
         Assertions.assertNotNull(response);

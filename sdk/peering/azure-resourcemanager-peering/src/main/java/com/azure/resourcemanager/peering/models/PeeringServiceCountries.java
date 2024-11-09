@@ -7,11 +7,13 @@ package com.azure.resourcemanager.peering.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PeeringServiceCountries. */
+/**
+ * Resource collection API of PeeringServiceCountries.
+ */
 public interface PeeringServiceCountries {
     /**
      * Lists all of the available countries for peering service.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering service countries as paginated response with {@link PagedIterable}.
@@ -20,7 +22,7 @@ public interface PeeringServiceCountries {
 
     /**
      * Lists all of the available countries for peering service.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

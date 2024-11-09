@@ -30,8 +30,8 @@ public interface InternetGatewayRulesClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginCreate(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body);
+    SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginCreate(String resourceGroupName,
+        String internetGatewayRuleName, InternetGatewayRuleInner body);
 
     /**
      * Creates an Internet Gateway rule.
@@ -48,8 +48,8 @@ public interface InternetGatewayRulesClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginCreate(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body, Context context);
+    SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginCreate(String resourceGroupName,
+        String internetGatewayRuleName, InternetGatewayRuleInner body, Context context);
 
     /**
      * Creates an Internet Gateway rule.
@@ -65,8 +65,8 @@ public interface InternetGatewayRulesClient {
      * @return the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternetGatewayRuleInner create(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body);
+    InternetGatewayRuleInner create(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRuleInner body);
 
     /**
      * Creates an Internet Gateway rule.
@@ -83,8 +83,8 @@ public interface InternetGatewayRulesClient {
      * @return the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternetGatewayRuleInner create(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRuleInner body, Context context);
+    InternetGatewayRuleInner create(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRuleInner body, Context context);
 
     /**
      * Gets an Internet Gateway Rule.
@@ -100,8 +100,8 @@ public interface InternetGatewayRulesClient {
      * @return an Internet Gateway Rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InternetGatewayRuleInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayRuleName, Context context);
+    Response<InternetGatewayRuleInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String internetGatewayRuleName, Context context);
 
     /**
      * Gets an Internet Gateway Rule.
@@ -132,8 +132,8 @@ public interface InternetGatewayRulesClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginUpdate(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body);
+    SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginUpdate(String resourceGroupName,
+        String internetGatewayRuleName, InternetGatewayRulePatch body);
 
     /**
      * Updates an Internet Gateway Rule.
@@ -150,8 +150,8 @@ public interface InternetGatewayRulesClient {
      * @return the {@link SyncPoller} for polling of the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginUpdate(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body, Context context);
+    SyncPoller<PollResult<InternetGatewayRuleInner>, InternetGatewayRuleInner> beginUpdate(String resourceGroupName,
+        String internetGatewayRuleName, InternetGatewayRulePatch body, Context context);
 
     /**
      * Updates an Internet Gateway Rule.
@@ -167,8 +167,8 @@ public interface InternetGatewayRulesClient {
      * @return the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternetGatewayRuleInner update(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body);
+    InternetGatewayRuleInner update(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRulePatch body);
 
     /**
      * Updates an Internet Gateway Rule.
@@ -185,8 +185,8 @@ public interface InternetGatewayRulesClient {
      * @return the Internet Gateway Rule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InternetGatewayRuleInner update(
-        String resourceGroupName, String internetGatewayRuleName, InternetGatewayRulePatch body, Context context);
+    InternetGatewayRuleInner update(String resourceGroupName, String internetGatewayRuleName,
+        InternetGatewayRulePatch body, Context context);
 
     /**
      * Deletes an Internet Gateway Rule.
@@ -217,8 +217,8 @@ public interface InternetGatewayRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String internetGatewayRuleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String internetGatewayRuleName,
+        Context context);
 
     /**
      * Deletes an Internet Gateway Rule.

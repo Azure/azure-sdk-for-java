@@ -11,8 +11,7 @@ import io.clientcore.core.json.implementation.jackson.core.JsonPointer;
  *
  * @since 2.6
  */
-public class JsonPointerBasedFilter extends TokenFilter
-{
+public class JsonPointerBasedFilter extends TokenFilter {
     protected final JsonPointer _pathToMatch;
 
     public JsonPointerBasedFilter(String ptrExpr) {
@@ -65,6 +64,6 @@ public class JsonPointerBasedFilter extends TokenFilter
 
     @Override
     public String toString() {
-        return "[JsonPointerFilter at: "+_pathToMatch+"]";
+        return "[JsonPointerFilter at: " + _pathToMatch + "]";
     }
 }

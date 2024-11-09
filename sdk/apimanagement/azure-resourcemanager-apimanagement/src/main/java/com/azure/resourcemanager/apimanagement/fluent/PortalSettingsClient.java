@@ -24,8 +24,8 @@ public interface PortalSettingsClient {
      * @return descriptions of API Management policies along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalSettingsCollectionInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalSettingsCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Lists a collection of portalsettings defined within a service instance..

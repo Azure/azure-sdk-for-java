@@ -18,8 +18,8 @@ public final class PriceSheetsImpl implements PriceSheets {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public PriceSheetsImpl(
-        PriceSheetsClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    public PriceSheetsImpl(PriceSheetsClient innerClient,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,10 +33,10 @@ public final class PriceSheetsImpl implements PriceSheets {
         }
     }
 
-    public DownloadUrl download(
-        String billingAccountName, String billingProfileName, String invoiceName, Context context) {
-        DownloadUrlInner inner =
-            this.serviceClient().download(billingAccountName, billingProfileName, invoiceName, context);
+    public DownloadUrl download(String billingAccountName, String billingProfileName, String invoiceName,
+        Context context) {
+        DownloadUrlInner inner
+            = this.serviceClient().download(billingAccountName, billingProfileName, invoiceName, context);
         if (inner != null) {
             return new DownloadUrlImpl(inner, this.manager());
         } else {
@@ -54,8 +54,8 @@ public final class PriceSheetsImpl implements PriceSheets {
     }
 
     public DownloadUrl downloadByBillingProfile(String billingAccountName, String billingProfileName, Context context) {
-        DownloadUrlInner inner =
-            this.serviceClient().downloadByBillingProfile(billingAccountName, billingProfileName, context);
+        DownloadUrlInner inner
+            = this.serviceClient().downloadByBillingProfile(billingAccountName, billingProfileName, context);
         if (inner != null) {
             return new DownloadUrlImpl(inner, this.manager());
         } else {

@@ -461,9 +461,8 @@ public class ClientLogger {
                 message = "";
             }
 
-            int pairsCount = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null
-                                                                                       ? 0
-                                                                                       : globalPairs.size());
+            int pairsCount
+                = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());
             int speculatedSize = 20 + pairsCount * 20 + message.length();
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
                 JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
@@ -526,6 +525,7 @@ public class ClientLogger {
          * Indicates that log level is at error level.
          */
         ERROR(4, "4", "err", "error");
+
         private final int numericValue;
         private final String[] allowedLogLevelVariables;
         private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();

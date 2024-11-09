@@ -10,10 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.SkuCost;
 public final class SkuCostTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCost model =
-            BinaryData
-                .fromString("{\"meterId\":\"fltkacjv\",\"quantity\":6490344131392989957,\"extendedUnit\":\"foakgg\"}")
-                .toObject(SkuCost.class);
+        SkuCost model = BinaryData
+            .fromString("{\"meterId\":\"cywuggwol\",\"quantity\":5268045254317332957,\"extendedUnit\":\"wem\"}")
+            .toObject(SkuCost.class);
     }
 
     @org.junit.jupiter.api.Test

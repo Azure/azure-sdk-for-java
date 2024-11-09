@@ -39,7 +39,7 @@ public final class DevBoxAction implements JsonSerializable<DevBoxAction> {
     private final String sourceId;
 
     /*
-     * The earliest time that the action could occur (UTC).
+     * The earliest time that the action could occur (UTC), in RFC3339 format.
      */
     @Generated
     private OffsetDateTime suspendedUntil;
@@ -93,7 +93,7 @@ public final class DevBoxAction implements JsonSerializable<DevBoxAction> {
     }
 
     /**
-     * Get the suspendedUntil property: The earliest time that the action could occur (UTC).
+     * Get the suspendedUntil property: The earliest time that the action could occur (UTC), in RFC3339 format.
      *
      * @return the suspendedUntil value.
      */

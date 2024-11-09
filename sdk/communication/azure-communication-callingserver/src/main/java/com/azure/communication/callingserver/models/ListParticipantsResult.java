@@ -20,8 +20,8 @@ public final class ListParticipantsResult {
     private final List<CallParticipant> values;
 
     static {
-        ListParticipantsResponseConstructorProxy.setAccessor(
-            new ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor() {
+        ListParticipantsResponseConstructorProxy
+            .setAccessor(new ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor() {
                 @Override
                 public ListParticipantsResult create(GetParticipantsResponseInternal internalHeaders) {
                     return new ListParticipantsResult(internalHeaders);
@@ -45,10 +45,10 @@ public final class ListParticipantsResult {
     ListParticipantsResult(GetParticipantsResponseInternal getParticipantsResponseInternal) {
         Objects.requireNonNull(getParticipantsResponseInternal, "transferCallResponseInternal must not be null");
 
-        this.values = getParticipantsResponseInternal
-            .getValues()
+        this.values = getParticipantsResponseInternal.getValues()
             .stream()
-            .map(CallParticipantConverter::convert).collect(Collectors.toList());
+            .map(CallParticipantConverter::convert)
+            .collect(Collectors.toList());
     }
 
     /**

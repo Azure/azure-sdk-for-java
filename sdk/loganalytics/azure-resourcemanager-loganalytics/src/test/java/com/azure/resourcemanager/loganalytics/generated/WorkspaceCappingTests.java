@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceCappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceCapping model =
-            BinaryData
-                .fromString(
-                    "{\"dailyQuotaGb\":32.75563400908924,\"quotaNextResetTime\":\"w\",\"dataIngestionStatus\":\"SubscriptionSuspended\"}")
-                .toObject(WorkspaceCapping.class);
+        WorkspaceCapping model = BinaryData.fromString(
+            "{\"dailyQuotaGb\":32.75563400908924,\"quotaNextResetTime\":\"w\",\"dataIngestionStatus\":\"SubscriptionSuspended\"}")
+            .toObject(WorkspaceCapping.class);
         Assertions.assertEquals(32.75563400908924D, model.dailyQuotaGb());
     }
 

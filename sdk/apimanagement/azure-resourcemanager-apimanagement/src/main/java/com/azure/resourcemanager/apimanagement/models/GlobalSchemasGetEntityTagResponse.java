@@ -19,11 +19,7 @@ public final class GlobalSchemasGetEntityTagResponse extends ResponseBase<Global
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GlobalSchemasGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public GlobalSchemasGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         GlobalSchemasGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

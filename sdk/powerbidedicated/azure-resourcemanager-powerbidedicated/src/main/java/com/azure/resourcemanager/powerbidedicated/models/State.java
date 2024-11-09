@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,45 +12,69 @@ import java.util.Collection;
  * provisioning.
  */
 public final class State extends ExpandableStringEnum<State> {
-    /** Static value Deleting for State. */
+    /**
+     * Static value Deleting for State.
+     */
     public static final State DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for State. */
+    /**
+     * Static value Succeeded for State.
+     */
     public static final State SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for State. */
+    /**
+     * Static value Failed for State.
+     */
     public static final State FAILED = fromString("Failed");
 
-    /** Static value Paused for State. */
+    /**
+     * Static value Paused for State.
+     */
     public static final State PAUSED = fromString("Paused");
 
-    /** Static value Suspended for State. */
+    /**
+     * Static value Suspended for State.
+     */
     public static final State SUSPENDED = fromString("Suspended");
 
-    /** Static value Provisioning for State. */
+    /**
+     * Static value Provisioning for State.
+     */
     public static final State PROVISIONING = fromString("Provisioning");
 
-    /** Static value Updating for State. */
+    /**
+     * Static value Updating for State.
+     */
     public static final State UPDATING = fromString("Updating");
 
-    /** Static value Suspending for State. */
+    /**
+     * Static value Suspending for State.
+     */
     public static final State SUSPENDING = fromString("Suspending");
 
-    /** Static value Pausing for State. */
+    /**
+     * Static value Pausing for State.
+     */
     public static final State PAUSING = fromString("Pausing");
 
-    /** Static value Resuming for State. */
+    /**
+     * Static value Resuming for State.
+     */
     public static final State RESUMING = fromString("Resuming");
 
-    /** Static value Preparing for State. */
+    /**
+     * Static value Preparing for State.
+     */
     public static final State PREPARING = fromString("Preparing");
 
-    /** Static value Scaling for State. */
+    /**
+     * Static value Scaling for State.
+     */
     public static final State SCALING = fromString("Scaling");
 
     /**
      * Creates a new instance of State value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -60,18 +83,17 @@ public final class State extends ExpandableStringEnum<State> {
 
     /**
      * Creates or finds a State from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding State.
      */
-    @JsonCreator
     public static State fromString(String name) {
         return fromString(name, State.class);
     }
 
     /**
      * Gets known State values.
-     *
+     * 
      * @return known State values.
      */
     public static Collection<State> values() {

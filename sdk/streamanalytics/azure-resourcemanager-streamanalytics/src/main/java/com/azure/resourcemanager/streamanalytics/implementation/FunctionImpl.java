@@ -64,14 +64,20 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
     }
 
     public Function create() {
-        this.innerObject = serviceManager.serviceClient().getFunctions().createOrReplaceWithResponse(resourceGroupName,
-            jobName, functionName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFunctions()
+            .createOrReplaceWithResponse(resourceGroupName, jobName, functionName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Function create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFunctions().createOrReplaceWithResponse(resourceGroupName,
-            jobName, functionName, this.innerModel(), createIfMatch, createIfNoneMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFunctions()
+            .createOrReplaceWithResponse(resourceGroupName, jobName, functionName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
@@ -89,13 +95,17 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
     }
 
     public Function apply() {
-        this.innerObject = serviceManager.serviceClient().getFunctions().updateWithResponse(resourceGroupName, jobName,
-            functionName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFunctions()
+            .updateWithResponse(resourceGroupName, jobName, functionName, this.innerModel(), updateIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Function apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFunctions()
+        this.innerObject = serviceManager.serviceClient()
+            .getFunctions()
             .updateWithResponse(resourceGroupName, jobName, functionName, this.innerModel(), updateIfMatch, context)
             .getValue();
         return this;
@@ -111,14 +121,18 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
     }
 
     public Function refresh() {
-        this.innerObject = serviceManager.serviceClient().getFunctions()
-            .getWithResponse(resourceGroupName, jobName, functionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFunctions()
+            .getWithResponse(resourceGroupName, jobName, functionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Function refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFunctions()
-            .getWithResponse(resourceGroupName, jobName, functionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFunctions()
+            .getWithResponse(resourceGroupName, jobName, functionName, context)
+            .getValue();
         return this;
     }
 
@@ -132,8 +146,9 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
 
     public Response<Function> retrieveDefaultDefinitionWithResponse(
         FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters, Context context) {
-        return serviceManager.functions().retrieveDefaultDefinitionWithResponse(resourceGroupName, jobName,
-            functionName, functionRetrieveDefaultDefinitionParameters, context);
+        return serviceManager.functions()
+            .retrieveDefaultDefinitionWithResponse(resourceGroupName, jobName, functionName,
+                functionRetrieveDefaultDefinitionParameters, context);
     }
 
     public Function retrieveDefaultDefinition() {

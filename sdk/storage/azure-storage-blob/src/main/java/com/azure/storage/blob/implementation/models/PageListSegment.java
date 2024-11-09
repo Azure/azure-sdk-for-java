@@ -143,8 +143,7 @@ public final class PageListSegment implements XmlSerializable<BlobHierarchyListS
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the PageListSegment.
      */
-    public static PageListSegment fromXml(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
+    public static PageListSegment fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageListSegment" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             PageListSegment deserializedPageListSegment = new PageListSegment();

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.fluent.models.ManagementGroupInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the result of the request to list management groups. */
+/**
+ * Describes the result of the request to list management groups.
+ */
 @Fluent
-public final class ManagementGroupListResult {
+public final class ManagementGroupListResult implements JsonSerializable<ManagementGroupListResult> {
     /*
      * The list of management groups.
      */
-    @JsonProperty(value = "value")
     private List<ManagementGroupInfoInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagementGroupListResult class. */
+    /**
+     * Creates an instance of ManagementGroupListResult class.
+     */
     public ManagementGroupListResult() {
     }
 
     /**
      * Get the value property: The list of management groups.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagementGroupInfoInner> value() {
@@ -39,7 +45,7 @@ public final class ManagementGroupListResult {
 
     /**
      * Set the value property: The list of management groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagementGroupListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ManagementGroupListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,52 @@ public final class ManagementGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementGroupListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementGroupListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementGroupListResult.
+     */
+    public static ManagementGroupListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementGroupListResult deserializedManagementGroupListResult = new ManagementGroupListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagementGroupInfoInner> value
+                        = reader.readArray(reader1 -> ManagementGroupInfoInner.fromJson(reader1));
+                    deserializedManagementGroupListResult.value = value;
+                } else if ("@nextLink".equals(fieldName)) {
+                    deserializedManagementGroupListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementGroupListResult;
+        });
     }
 }

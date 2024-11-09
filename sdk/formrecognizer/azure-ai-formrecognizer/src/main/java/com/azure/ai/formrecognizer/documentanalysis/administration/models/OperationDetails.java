@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
-
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.OperationDetailsHelper;
 import com.azure.core.models.ResponseError;
 
@@ -32,7 +31,7 @@ public class OperationDetails {
     private Map<String, String> tags;
     private String serviceVersion;
 
-   /**
+    /**
      * Get the Date and time (UTC) when the analyze operation was submitted.
      *
      * @return the createdDateTime value.
@@ -44,6 +43,7 @@ public class OperationDetails {
     private void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
+
     private void setError(ResponseError error) {
         this.error = error;
     }
@@ -152,6 +152,7 @@ public class OperationDetails {
     private void setTags(Map<String, String> tags) {
         this.tags = tags;
     }
+
     /**
      * Get the Service version used to create this document classifier.
      *

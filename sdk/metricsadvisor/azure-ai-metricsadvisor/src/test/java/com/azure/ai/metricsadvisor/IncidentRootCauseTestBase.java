@@ -27,15 +27,15 @@ public abstract class IncidentRootCauseTestBase extends MetricsAdvisorClientTest
     }
 
     static IncidentRootCause getExpectedIncidentRootCause() {
-        RootCause innerRootCause = new RootCause()
-            .setRootCause(new DimensionGroupIdentity().setDimension(new HashMap<String, String>() {
+        RootCause innerRootCause
+            = new RootCause().setRootCause(new DimensionGroupIdentity().setDimension(new HashMap<String, String>() {
                 {
                     put("Dim1", "JPN");
                     put("Dim2", "JP");
                 }
             }))
-            .setPath(Arrays.asList("Dim1", "Dim2"))
-            .setDescription("Increase on Dim1 = JPN | Dim2 = JP contributes the most to current incident.");
+                .setPath(Arrays.asList("Dim1", "Dim2"))
+                .setDescription("Increase on Dim1 = JPN | Dim2 = JP contributes the most to current incident.");
         return IncidentRootCauseTransforms.fromInner(innerRootCause);
     }
 

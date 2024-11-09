@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An error produced by the compiler.
  */
 @Immutable
-public final class QueryCompilationError {
+public final class QueryCompilationError implements JsonSerializable<QueryCompilationError> {
     /*
      * The content of the error message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Describes the error location in the original query. Not set if isGlobal is true.
      */
-    @JsonProperty(value = "startLine", access = JsonProperty.Access.WRITE_ONLY)
     private Integer startLine;
 
     /*
      * Describes the error location in the original query. Not set if isGlobal is true.
      */
-    @JsonProperty(value = "startColumn", access = JsonProperty.Access.WRITE_ONLY)
     private Integer startColumn;
 
     /*
      * Describes the error location in the original query. Not set if isGlobal is true.
      */
-    @JsonProperty(value = "endLine", access = JsonProperty.Access.WRITE_ONLY)
     private Integer endLine;
 
     /*
      * Describes the error location in the original query. Not set if isGlobal is true.
      */
-    @JsonProperty(value = "endColumn", access = JsonProperty.Access.WRITE_ONLY)
     private Integer endColumn;
 
     /*
      * Whether the error is not for a specific part but for the entire query.
      */
-    @JsonProperty(value = "isGlobal", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isGlobal;
 
     /**
@@ -114,5 +112,50 @@ public final class QueryCompilationError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryCompilationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryCompilationError if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryCompilationError.
+     */
+    public static QueryCompilationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryCompilationError deserializedQueryCompilationError = new QueryCompilationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedQueryCompilationError.message = reader.getString();
+                } else if ("startLine".equals(fieldName)) {
+                    deserializedQueryCompilationError.startLine = reader.getNullable(JsonReader::getInt);
+                } else if ("startColumn".equals(fieldName)) {
+                    deserializedQueryCompilationError.startColumn = reader.getNullable(JsonReader::getInt);
+                } else if ("endLine".equals(fieldName)) {
+                    deserializedQueryCompilationError.endLine = reader.getNullable(JsonReader::getInt);
+                } else if ("endColumn".equals(fieldName)) {
+                    deserializedQueryCompilationError.endColumn = reader.getNullable(JsonReader::getInt);
+                } else if ("isGlobal".equals(fieldName)) {
+                    deserializedQueryCompilationError.isGlobal = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryCompilationError;
+        });
     }
 }

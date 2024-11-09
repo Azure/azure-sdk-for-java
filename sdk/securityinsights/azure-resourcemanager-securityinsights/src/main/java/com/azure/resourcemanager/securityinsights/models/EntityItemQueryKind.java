@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntityItemQueryKind. */
+/**
+ * Defines values for EntityItemQueryKind.
+ */
 public final class EntityItemQueryKind extends ExpandableStringEnum<EntityItemQueryKind> {
-    /** Static value Insight for EntityItemQueryKind. */
+    /**
+     * Static value Insight for EntityItemQueryKind.
+     */
     public static final EntityItemQueryKind INSIGHT = fromString("Insight");
 
     /**
+     * Creates a new instance of EntityItemQueryKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityItemQueryKind() {
+    }
+
+    /**
      * Creates or finds a EntityItemQueryKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntityItemQueryKind.
      */
-    @JsonCreator
     public static EntityItemQueryKind fromString(String name) {
         return fromString(name, EntityItemQueryKind.class);
     }
 
     /**
      * Gets known EntityItemQueryKind values.
-     *
+     * 
      * @return known EntityItemQueryKind values.
      */
     public static Collection<EntityItemQueryKind> values() {

@@ -181,16 +181,12 @@ public final class VMwareToAzStackHciDiskInput {
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskId in model VMwareToAzStackHciDiskInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskId in model VMwareToAzStackHciDiskInput"));
         }
         if (diskFileFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskFileFormat in model VMwareToAzStackHciDiskInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property diskFileFormat in model VMwareToAzStackHciDiskInput"));
         }
     }
 

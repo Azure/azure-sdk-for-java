@@ -18,55 +18,47 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces Update. */
+/**
+ * Samples for Workspaces Update.
+ */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateWorkspace.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateWorkspace.json
      */
     /**
      * Sample code: Update a workspace.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void updateAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        Workspace resource =
-            manager
-                .workspaces()
-                .getByResourceGroupWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("key", "value"))
+        Workspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .withIdentity(new ManagedIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .withSqlAdministratorLoginPassword("password")
-            .withManagedVirtualNetworkSettings(
-                new ManagedVirtualNetworkSettings()
-                    .withPreventDataExfiltration(false)
-                    .withLinkedAccessCheckOnTargetResource(false)
-                    .withAllowedAadTenantIdsForLinking(Arrays.asList("740239CE-A25B-485B-86A0-262F29F6EBDB")))
+            .withManagedVirtualNetworkSettings(new ManagedVirtualNetworkSettings().withPreventDataExfiltration(false)
+                .withLinkedAccessCheckOnTargetResource(false)
+                .withAllowedAadTenantIdsForLinking(Arrays.asList("740239CE-A25B-485B-86A0-262F29F6EBDB")))
             .withWorkspaceRepositoryConfiguration(
-                new WorkspaceRepositoryConfiguration()
-                    .withType("FactoryGitHubConfiguration")
+                new WorkspaceRepositoryConfiguration().withType("FactoryGitHubConfiguration")
                     .withHostname("")
                     .withAccountName("adifferentacount")
                     .withProjectName("myproject")
                     .withRepositoryName("myrepository")
                     .withCollaborationBranch("master")
                     .withRootFolder("/"))
-            .withPurviewConfiguration(
-                new PurviewConfiguration()
-                    .withPurviewResourceId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup1/providers/Microsoft.ProjectPurview/accounts/accountname1"))
-            .withEncryption(
-                new EncryptionDetails()
-                    .withCmk(
-                        new CustomerManagedKeyDetails()
-                            .withKey(
-                                new WorkspaceKeyDetails().withName("default").withKeyVaultUrl("fakeTokenPlaceholder"))))
+            .withPurviewConfiguration(new PurviewConfiguration().withPurviewResourceId(
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup1/providers/Microsoft.ProjectPurview/accounts/accountname1"))
+            .withEncryption(new EncryptionDetails().withCmk(new CustomerManagedKeyDetails()
+                .withKey(new WorkspaceKeyDetails().withName("default").withKeyVaultUrl("fakeTokenPlaceholder"))))
             .withPublicNetworkAccess(WorkspacePublicNetworkAccess.ENABLED)
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -122,6 +122,14 @@ public final class Constants {
         public static final String SPATIAL_INDEXES = "spatialIndexes";
         public static final String TYPES = "types";
 
+        // Full text search
+        public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
+        public static final String DEFAULT_LANGUAGE = "defaultLanguage";
+        public static final String LANGUAGE = "language";
+        public static final String FULL_TEXT_POLICY = "fullTextPolicy";
+        public static final String FULL_TEXT_PATHS = "fullTextPaths";
+
+
         // Vector Embedding Policy
         public static final String VECTOR_EMBEDDING_POLICY = "vectorEmbeddingPolicy";
         public static final String VECTOR_INDEXES = "vectorIndexes";

@@ -27,21 +27,18 @@ public final class PoliciesImpl implements Policies {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public PoliciesImpl(
-        PoliciesClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public PoliciesImpl(PoliciesClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PolicyCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        Response<PolicyCollectionInner> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
+    public Response<PolicyCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context) {
+        Response<PolicyCollectionInner> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -57,8 +54,8 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public PoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, Context context) {
+    public PoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        PolicyIdName policyId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, policyId, context);
     }
 
@@ -66,19 +63,12 @@ public final class PoliciesImpl implements Policies {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, policyId);
     }
 
-    public Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context) {
-        PoliciesGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, policyId, format, context);
+    public Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        PolicyExportFormat format, Context context) {
+        PoliciesGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, policyId, format, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -94,32 +84,22 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public Response<PolicyContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context) {
-        PoliciesCreateOrUpdateResponse inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, serviceName, policyId, parameters, ifMatch, context);
+    public Response<PolicyContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context) {
+        PoliciesCreateOrUpdateResponse inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, policyId, parameters, ifMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PolicyContract createOrUpdate(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, PolicyContractInner parameters) {
-        PolicyContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, policyId, parameters);
+    public PolicyContract createOrUpdate(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        PolicyContractInner parameters) {
+        PolicyContractInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, policyId, parameters);
         if (inner != null) {
             return new PolicyContractImpl(inner, this.manager());
         } else {
@@ -127,8 +107,8 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, policyId, ifMatch, context);
     }
 

@@ -130,22 +130,18 @@ public final class LabCostImpl implements LabCost, LabCost.Definition, LabCost.U
     }
 
     public LabCost create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCosts()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCosts()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public LabCost create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCosts()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCosts()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -160,22 +156,18 @@ public final class LabCostImpl implements LabCost, LabCost.Definition, LabCost.U
     }
 
     public LabCost apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCosts()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCosts()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public LabCost apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCosts()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCosts()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -189,23 +181,19 @@ public final class LabCostImpl implements LabCost, LabCost.Definition, LabCost.U
 
     public LabCost refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCosts()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCosts()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LabCost refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCosts()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCosts()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, context)
+            .getValue();
         return this;
     }
 

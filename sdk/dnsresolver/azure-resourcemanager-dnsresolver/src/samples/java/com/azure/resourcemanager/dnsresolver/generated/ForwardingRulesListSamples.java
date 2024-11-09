@@ -10,7 +10,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 public final class ForwardingRulesListSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_List.json
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * ForwardingRule_List.json
      */
     /**
      * Sample code: List forwarding rules in a DNS forwarding ruleset.

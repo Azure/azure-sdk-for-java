@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The Editable status for Reverse Transport preferences. */
+/**
+ * The Editable status for Reverse Transport preferences.
+ */
 public enum ReverseTransportPreferenceEditStatus {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value NotSupported. */
+    /**
+     * Enum value NotSupported.
+     */
     NOT_SUPPORTED("NotSupported");
 
-    /** The actual serialized value for a ReverseTransportPreferenceEditStatus instance. */
+    /**
+     * The actual serialized value for a ReverseTransportPreferenceEditStatus instance.
+     */
     private final String value;
 
     ReverseTransportPreferenceEditStatus(String value) {
@@ -27,11 +34,10 @@ public enum ReverseTransportPreferenceEditStatus {
 
     /**
      * Parses a serialized value to a ReverseTransportPreferenceEditStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ReverseTransportPreferenceEditStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static ReverseTransportPreferenceEditStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ReverseTransportPreferenceEditStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

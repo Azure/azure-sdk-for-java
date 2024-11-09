@@ -25,9 +25,7 @@ public class RequestOptionsTests {
     public void addQueryParam() {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions()
-            .addQueryParam("foo", "bar")
-            .addQueryParam("$skipToken", "1");
+        RequestOptions options = new RequestOptions().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
 
         options.getRequestCallback().accept(request);
 
@@ -38,8 +36,7 @@ public class RequestOptionsTests {
     public void addHeader() {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions()
-            .addHeader(new HttpHeader(X_MS_FOO, "bar"))
+        RequestOptions options = new RequestOptions().addHeader(new HttpHeader(X_MS_FOO, "bar"))
             .addHeader(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json"));
         options.getRequestCallback().accept(request);
 
@@ -55,8 +52,7 @@ public class RequestOptionsTests {
         String expected = "{\"id\":\"123\"}";
 
         BinaryData requestBody = BinaryData.fromString(expected);
-        RequestOptions options = new RequestOptions()
-            .setBody(requestBody);
+        RequestOptions options = new RequestOptions().setBody(requestBody);
         options.getRequestCallback().accept(request);
         BinaryData actual = request.getBody();
 
@@ -68,8 +64,7 @@ public class RequestOptionsTests {
     public void addRequestCallback() {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri"));
 
-        RequestOptions options = new RequestOptions()
-            .addHeader(new HttpHeader(X_MS_FOO, "bar"))
+        RequestOptions options = new RequestOptions().addHeader(new HttpHeader(X_MS_FOO, "bar"))
             .addRequestCallback(r -> r.setHttpMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUri("https://request.uri"))
             .addQueryParam("$skipToken", "1")

@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for LocationBasedRecommendedActionSessionsOperationStatus Get. */
+/**
+ * Samples for LocationBasedRecommendedActionSessionsOperationStatus Get.
+ */
 public final class LocationBasedRecommendedActionSessionsOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/RecommendedActionSessionOperationStatus.json
+     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/
+     * RecommendedActionSessionOperationStatus.json
      */
     /**
      * Sample code: RecommendedActionSessionOperationStatus.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
-    public static void recommendedActionSessionOperationStatus(
-        com.azure.resourcemanager.mariadb.MariaDBManager manager) {
-        manager
-            .locationBasedRecommendedActionSessionsOperationStatus()
+    public static void
+        recommendedActionSessionOperationStatus(com.azure.resourcemanager.mariadb.MariaDBManager manager) {
+        manager.locationBasedRecommendedActionSessionsOperationStatus()
             .getWithResponse("WestUS", "aaaabbbb-cccc-dddd-0000-111122223333", com.azure.core.util.Context.NONE);
     }
 }

@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DigitalTwinsDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DigitalTwinsDescriptionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"createdTime\":\"2021-11-25T12:23:30Z\",\"lastUpdatedTime\":\"2021-08-21T06:38:48Z\",\"provisioningState\":\"Moving\",\"hostName\":\"xpyb\",\"privateEndpointConnections\":[{\"id\":\"hmtzopbsphrup\",\"name\":\"dgs\",\"type\":\"bb\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"cmsxaobhdxbm\",\"tenantId\":\"ioq\",\"userAssignedIdentities\":{\"lrxybqsoq\":{\"clientId\":\"tbmufpo\",\"principalId\":\"oizh\"},\"nrbtcqqjnq\":{\"clientId\":\"gkdmb\",\"principalId\":\"zlobcufpd\"}}},\"location\":\"hqgnufooojywif\",\"tags\":{\"glzlhjxrifkwmrv\":\"saagdf\",\"psqucmpoyf\":\"tsizntocipaoua\"},\"id\":\"kfo\",\"name\":\"knygjofjddeq\",\"type\":\"rd\"}")
-                .toObject(DigitalTwinsDescriptionInner.class);
+        DigitalTwinsDescriptionInner model = BinaryData.fromString(
+            "{\"properties\":{\"createdTime\":\"2021-11-25T12:23:30Z\",\"lastUpdatedTime\":\"2021-08-21T06:38:48Z\",\"provisioningState\":\"Moving\",\"hostName\":\"xpyb\",\"privateEndpointConnections\":[{\"id\":\"hmtzopbsphrup\",\"name\":\"dgs\",\"type\":\"bb\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"cmsxaobhdxbm\",\"tenantId\":\"ioq\",\"userAssignedIdentities\":{\"lrxybqsoq\":{\"clientId\":\"tbmufpo\",\"principalId\":\"oizh\"},\"nrbtcqqjnq\":{\"clientId\":\"gkdmb\",\"principalId\":\"zlobcufpd\"}}},\"location\":\"hqgnufooojywif\",\"tags\":{\"glzlhjxrifkwmrv\":\"saagdf\",\"psqucmpoyf\":\"tsizntocipaoua\"},\"id\":\"kfo\",\"name\":\"knygjofjddeq\",\"type\":\"rd\"}")
+            .toObject(DigitalTwinsDescriptionInner.class);
         Assertions.assertEquals("hqgnufooojywif", model.location());
         Assertions.assertEquals("saagdf", model.tags().get("glzlhjxrifkwmrv"));
         Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
@@ -32,17 +30,13 @@ public final class DigitalTwinsDescriptionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DigitalTwinsDescriptionInner model =
-            new DigitalTwinsDescriptionInner()
-                .withLocation("hqgnufooojywif")
-                .withTags(mapOf("glzlhjxrifkwmrv", "saagdf", "psqucmpoyf", "tsizntocipaoua"))
-                .withIdentity(
-                    new DigitalTwinsIdentity()
-                        .withType(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf("lrxybqsoq", new UserAssignedIdentity(), "nrbtcqqjnq", new UserAssignedIdentity())))
-                .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner()))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        DigitalTwinsDescriptionInner model = new DigitalTwinsDescriptionInner().withLocation("hqgnufooojywif")
+            .withTags(mapOf("glzlhjxrifkwmrv", "saagdf", "psqucmpoyf", "tsizntocipaoua"))
+            .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("lrxybqsoq", new UserAssignedIdentity(), "nrbtcqqjnq", new UserAssignedIdentity())))
+            .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner()))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(DigitalTwinsDescriptionInner.class);
         Assertions.assertEquals("hqgnufooojywif", model.location());
         Assertions.assertEquals("saagdf", model.tags().get("glzlhjxrifkwmrv"));

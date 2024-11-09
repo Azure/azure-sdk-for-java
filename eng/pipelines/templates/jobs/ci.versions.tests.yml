@@ -113,6 +113,7 @@ jobs:
             TestParallelization: ${{ parameters.TestParallelization }}
             BuildParallelization: ${{ parameters.BuildParallelization }}
             VersionOverride: ${{ versionOverride }}
+            TestVersionSupport: 'true'
 
         - pwsh: |
             git checkout -- .

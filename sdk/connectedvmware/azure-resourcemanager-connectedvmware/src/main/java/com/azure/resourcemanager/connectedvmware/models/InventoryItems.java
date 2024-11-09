@@ -24,8 +24,8 @@ public interface InventoryItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the inventory item along with {@link Response}.
      */
-    Response<InventoryItem> getWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
+    Response<InventoryItem> getWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context);
 
     /**
      * Gets InventoryItem.
@@ -56,8 +56,8 @@ public interface InventoryItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context);
 
     /**
      * Deletes an inventoryItem.

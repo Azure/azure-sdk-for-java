@@ -14,26 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Completed\",\"properties\":{\"reportUrl\":\"Kind\",\"validUntil\":\"2021-02-19T20:13:34Z\"}}")
-                .toObject(OperationStatusInner.class);
-        Assertions.assertEquals(OperationStatusType.COMPLETED, model.status());
-        Assertions.assertEquals(ReservationReportSchema.KIND, model.reportUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-19T20:13:34Z"), model.validUntil());
+        OperationStatusInner model = BinaryData.fromString(
+            "{\"status\":\"Running\",\"properties\":{\"reportUrl\":\"UsedHours\",\"validUntil\":\"2021-08-16T16:07:55Z\"}}")
+            .toObject(OperationStatusInner.class);
+        Assertions.assertEquals(OperationStatusType.RUNNING, model.status());
+        Assertions.assertEquals(ReservationReportSchema.USED_HOURS, model.reportUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T16:07:55Z"), model.validUntil());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusInner model =
-            new OperationStatusInner()
-                .withStatus(OperationStatusType.COMPLETED)
-                .withReportUrl(ReservationReportSchema.KIND)
-                .withValidUntil(OffsetDateTime.parse("2021-02-19T20:13:34Z"));
+        OperationStatusInner model = new OperationStatusInner().withStatus(OperationStatusType.RUNNING)
+            .withReportUrl(ReservationReportSchema.USED_HOURS)
+            .withValidUntil(OffsetDateTime.parse("2021-08-16T16:07:55Z"));
         model = BinaryData.fromObject(model).toObject(OperationStatusInner.class);
-        Assertions.assertEquals(OperationStatusType.COMPLETED, model.status());
-        Assertions.assertEquals(ReservationReportSchema.KIND, model.reportUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-19T20:13:34Z"), model.validUntil());
+        Assertions.assertEquals(OperationStatusType.RUNNING, model.status());
+        Assertions.assertEquals(ReservationReportSchema.USED_HOURS, model.reportUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T16:07:55Z"), model.validUntil());
     }
 }

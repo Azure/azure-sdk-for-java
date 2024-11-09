@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfacePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterfacePatch model =
-            BinaryData
-                .fromString("{\"properties\":{\"annotation\":\"likyohz\"}}")
-                .toObject(NetworkInterfacePatch.class);
+        NetworkInterfacePatch model = BinaryData.fromString("{\"properties\":{\"annotation\":\"likyohz\"}}")
+            .toObject(NetworkInterfacePatch.class);
         Assertions.assertEquals("likyohz", model.annotation());
     }
 

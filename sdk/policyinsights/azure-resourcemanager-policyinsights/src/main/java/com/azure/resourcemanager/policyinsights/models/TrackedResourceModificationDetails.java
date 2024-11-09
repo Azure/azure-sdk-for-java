@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The details of the policy triggered deployment that created or modified the tracked resource. */
+/**
+ * The details of the policy triggered deployment that created or modified the tracked resource.
+ */
 @Immutable
-public final class TrackedResourceModificationDetails {
+public final class TrackedResourceModificationDetails implements JsonSerializable<TrackedResourceModificationDetails> {
     /*
      * The details of the policy that created or modified the tracked resource.
      */
-    @JsonProperty(value = "policyDetails", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyDetails policyDetails;
 
     /*
      * The ID of the deployment that created or modified the tracked resource.
      */
-    @JsonProperty(value = "deploymentId", access = JsonProperty.Access.WRITE_ONLY)
     private String deploymentId;
 
     /*
      * Timestamp of the deployment that created or modified the tracked resource.
      */
-    @JsonProperty(value = "deploymentTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deploymentTime;
 
-    /** Creates an instance of TrackedResourceModificationDetails class. */
+    /**
+     * Creates an instance of TrackedResourceModificationDetails class.
+     */
     public TrackedResourceModificationDetails() {
     }
 
     /**
      * Get the policyDetails property: The details of the policy that created or modified the tracked resource.
-     *
+     * 
      * @return the policyDetails value.
      */
     public PolicyDetails policyDetails() {
@@ -44,7 +50,7 @@ public final class TrackedResourceModificationDetails {
 
     /**
      * Get the deploymentId property: The ID of the deployment that created or modified the tracked resource.
-     *
+     * 
      * @return the deploymentId value.
      */
     public String deploymentId() {
@@ -53,7 +59,7 @@ public final class TrackedResourceModificationDetails {
 
     /**
      * Get the deploymentTime property: Timestamp of the deployment that created or modified the tracked resource.
-     *
+     * 
      * @return the deploymentTime value.
      */
     public OffsetDateTime deploymentTime() {
@@ -62,12 +68,53 @@ public final class TrackedResourceModificationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policyDetails() != null) {
             policyDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackedResourceModificationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackedResourceModificationDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrackedResourceModificationDetails.
+     */
+    public static TrackedResourceModificationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackedResourceModificationDetails deserializedTrackedResourceModificationDetails
+                = new TrackedResourceModificationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyDetails".equals(fieldName)) {
+                    deserializedTrackedResourceModificationDetails.policyDetails = PolicyDetails.fromJson(reader);
+                } else if ("deploymentId".equals(fieldName)) {
+                    deserializedTrackedResourceModificationDetails.deploymentId = reader.getString();
+                } else if ("deploymentTime".equals(fieldName)) {
+                    deserializedTrackedResourceModificationDetails.deploymentTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackedResourceModificationDetails;
+        });
     }
 }

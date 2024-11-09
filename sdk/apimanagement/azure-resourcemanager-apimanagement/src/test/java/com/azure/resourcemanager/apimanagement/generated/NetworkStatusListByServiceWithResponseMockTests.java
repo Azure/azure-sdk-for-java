@@ -32,57 +32,39 @@ public final class NetworkStatusListByServiceWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "[{\"location\":\"gpdqrjyl\",\"networkStatus\":{\"dnsServers\":[\"semjhhxlsu\"],\"connectivityStatus\":[{\"name\":\"hztb\",\"status\":\"initializing\",\"error\":\"dzwyktdpfzwu\",\"lastUpdated\":\"2021-02-10T12:07:01Z\",\"lastStatusChange\":\"2021-09-10T16:13:46Z\",\"resourceType\":\"n\",\"isOptional\":true},{\"name\":\"jhmjkykqflkmcy\",\"status\":\"initializing\",\"error\":\"ysmkbndnrihpja\",\"lastUpdated\":\"2021-08-29T03:40:19Z\",\"lastStatusChange\":\"2021-05-17T19:35:09Z\",\"resourceType\":\"be\",\"isOptional\":false},{\"name\":\"noignydlkrnpsb\",\"status\":\"success\",\"error\":\"mhkipjardv\",\"lastUpdated\":\"2021-05-08T21:22:39Z\",\"lastStatusChange\":\"2021-04-19T08:14:01Z\",\"resourceType\":\"gwdxmiael\",\"isOptional\":false}]}}]";
+        String responseStr
+            = "[{\"location\":\"gpdqrjyl\",\"networkStatus\":{\"dnsServers\":[\"semjhhxlsu\"],\"connectivityStatus\":[{\"name\":\"hztb\",\"status\":\"initializing\",\"error\":\"dzwyktdpfzwu\",\"lastUpdated\":\"2021-02-10T12:07:01Z\",\"lastStatusChange\":\"2021-09-10T16:13:46Z\",\"resourceType\":\"n\",\"isOptional\":true},{\"name\":\"jhmjkykqflkmcy\",\"status\":\"initializing\",\"error\":\"ysmkbndnrihpja\",\"lastUpdated\":\"2021-08-29T03:40:19Z\",\"lastStatusChange\":\"2021-05-17T19:35:09Z\",\"resourceType\":\"be\",\"isOptional\":false},{\"name\":\"noignydlkrnpsb\",\"status\":\"success\",\"error\":\"mhkipjardv\",\"lastUpdated\":\"2021-05-08T21:22:39Z\",\"lastStatusChange\":\"2021-04-19T08:14:01Z\",\"resourceType\":\"gwdxmiael\",\"isOptional\":false}]}}]";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        List<NetworkStatusContractByLocation> response =
-            manager
-                .networkStatus()
-                .listByServiceWithResponse("onxdwfcuhbgftfvq", "kkmvz", com.azure.core.util.Context.NONE)
-                .getValue();
+        List<NetworkStatusContractByLocation> response = manager.networkStatus()
+            .listByServiceWithResponse("onxdwfcuhbgftfvq", "kkmvz", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("gpdqrjyl", response.get(0).location());
         Assertions.assertEquals("semjhhxlsu", response.get(0).networkStatus().dnsServers().get(0));
         Assertions.assertEquals("hztb", response.get(0).networkStatus().connectivityStatus().get(0).name());
-        Assertions
-            .assertEquals(
-                ConnectivityStatusType.INITIALIZING,
-                response.get(0).networkStatus().connectivityStatus().get(0).status());
+        Assertions.assertEquals(ConnectivityStatusType.INITIALIZING,
+            response.get(0).networkStatus().connectivityStatus().get(0).status());
         Assertions.assertEquals("dzwyktdpfzwu", response.get(0).networkStatus().connectivityStatus().get(0).error());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-10T12:07:01Z"),
-                response.get(0).networkStatus().connectivityStatus().get(0).lastUpdated());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-09-10T16:13:46Z"),
-                response.get(0).networkStatus().connectivityStatus().get(0).lastStatusChange());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-10T12:07:01Z"),
+            response.get(0).networkStatus().connectivityStatus().get(0).lastUpdated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T16:13:46Z"),
+            response.get(0).networkStatus().connectivityStatus().get(0).lastStatusChange());
         Assertions.assertEquals("n", response.get(0).networkStatus().connectivityStatus().get(0).resourceType());
         Assertions.assertEquals(true, response.get(0).networkStatus().connectivityStatus().get(0).isOptional());
     }

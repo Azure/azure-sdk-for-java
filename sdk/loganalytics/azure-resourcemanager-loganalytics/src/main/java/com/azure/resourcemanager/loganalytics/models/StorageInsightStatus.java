@@ -74,9 +74,8 @@ public final class StorageInsightStatus {
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property state in model StorageInsightStatus"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property state in model StorageInsightStatus"));
         }
     }
 

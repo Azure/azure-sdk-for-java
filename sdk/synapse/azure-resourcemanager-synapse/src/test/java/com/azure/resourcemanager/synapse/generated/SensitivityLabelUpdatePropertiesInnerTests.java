@@ -14,46 +14,41 @@ import org.junit.jupiter.api.Assertions;
 public final class SensitivityLabelUpdatePropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabelUpdatePropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"op\":\"set\",\"schema\":\"ldsyuuximerqfob\",\"table\":\"yznkby\",\"column\":\"utwpfhp\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"r\",\"tableName\":\"dsnfdsdoakgtdl\",\"columnName\":\"kzevdlhewpusds\",\"labelName\":\"wvogvbbejdc\",\"labelId\":\"qqmoaku\",\"informationType\":\"m\",\"informationTypeId\":\"rwr\",\"isDisabled\":true,\"rank\":\"Critical\"},\"managedBy\":\"enuuzkopbm\",\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}}")
-                .toObject(SensitivityLabelUpdatePropertiesInner.class);
+        SensitivityLabelUpdatePropertiesInner model = BinaryData.fromString(
+            "{\"op\":\"set\",\"schema\":\"bopgxedkowepbqp\",\"table\":\"rfkbwccsnjvcdwxl\",\"column\":\"qek\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"htjsying\",\"tableName\":\"qatmtdhtmdvy\",\"columnName\":\"ikdgszywkbir\",\"labelName\":\"uzhlhkjoqrv\",\"labelId\":\"aatjinrvgoupmfi\",\"informationType\":\"fggjioolvr\",\"informationTypeId\":\"kvtkkg\",\"isDisabled\":false,\"rank\":\"Critical\"},\"managedBy\":\"gvjayvblmh\",\"id\":\"k\",\"name\":\"uhbxvvy\",\"type\":\"gsopbyrqufegxu\"}}")
+            .toObject(SensitivityLabelUpdatePropertiesInner.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.SET, model.op());
-        Assertions.assertEquals("ldsyuuximerqfob", model.schema());
-        Assertions.assertEquals("yznkby", model.table());
-        Assertions.assertEquals("utwpfhp", model.column());
-        Assertions.assertEquals("wvogvbbejdc", model.sensitivityLabel().labelName());
-        Assertions.assertEquals("qqmoaku", model.sensitivityLabel().labelId());
-        Assertions.assertEquals("m", model.sensitivityLabel().informationType());
-        Assertions.assertEquals("rwr", model.sensitivityLabel().informationTypeId());
+        Assertions.assertEquals("bopgxedkowepbqp", model.schema());
+        Assertions.assertEquals("rfkbwccsnjvcdwxl", model.table());
+        Assertions.assertEquals("qek", model.column());
+        Assertions.assertEquals("uzhlhkjoqrv", model.sensitivityLabel().labelName());
+        Assertions.assertEquals("aatjinrvgoupmfi", model.sensitivityLabel().labelId());
+        Assertions.assertEquals("fggjioolvr", model.sensitivityLabel().informationType());
+        Assertions.assertEquals("kvtkkg", model.sensitivityLabel().informationTypeId());
         Assertions.assertEquals(SensitivityLabelRank.CRITICAL, model.sensitivityLabel().rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabelUpdatePropertiesInner model =
-            new SensitivityLabelUpdatePropertiesInner()
-                .withOp(SensitivityLabelUpdateKind.SET)
-                .withSchema("ldsyuuximerqfob")
-                .withTable("yznkby")
-                .withColumn("utwpfhp")
-                .withSensitivityLabel(
-                    new SensitivityLabelInner()
-                        .withLabelName("wvogvbbejdc")
-                        .withLabelId("qqmoaku")
-                        .withInformationType("m")
-                        .withInformationTypeId("rwr")
-                        .withRank(SensitivityLabelRank.CRITICAL));
+        SensitivityLabelUpdatePropertiesInner model
+            = new SensitivityLabelUpdatePropertiesInner().withOp(SensitivityLabelUpdateKind.SET)
+                .withSchema("bopgxedkowepbqp")
+                .withTable("rfkbwccsnjvcdwxl")
+                .withColumn("qek")
+                .withSensitivityLabel(new SensitivityLabelInner().withLabelName("uzhlhkjoqrv")
+                    .withLabelId("aatjinrvgoupmfi")
+                    .withInformationType("fggjioolvr")
+                    .withInformationTypeId("kvtkkg")
+                    .withRank(SensitivityLabelRank.CRITICAL));
         model = BinaryData.fromObject(model).toObject(SensitivityLabelUpdatePropertiesInner.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.SET, model.op());
-        Assertions.assertEquals("ldsyuuximerqfob", model.schema());
-        Assertions.assertEquals("yznkby", model.table());
-        Assertions.assertEquals("utwpfhp", model.column());
-        Assertions.assertEquals("wvogvbbejdc", model.sensitivityLabel().labelName());
-        Assertions.assertEquals("qqmoaku", model.sensitivityLabel().labelId());
-        Assertions.assertEquals("m", model.sensitivityLabel().informationType());
-        Assertions.assertEquals("rwr", model.sensitivityLabel().informationTypeId());
+        Assertions.assertEquals("bopgxedkowepbqp", model.schema());
+        Assertions.assertEquals("rfkbwccsnjvcdwxl", model.table());
+        Assertions.assertEquals("qek", model.column());
+        Assertions.assertEquals("uzhlhkjoqrv", model.sensitivityLabel().labelName());
+        Assertions.assertEquals("aatjinrvgoupmfi", model.sensitivityLabel().labelId());
+        Assertions.assertEquals("fggjioolvr", model.sensitivityLabel().informationType());
+        Assertions.assertEquals("kvtkkg", model.sensitivityLabel().informationTypeId());
         Assertions.assertEquals(SensitivityLabelRank.CRITICAL, model.sensitivityLabel().rank());
     }
 }

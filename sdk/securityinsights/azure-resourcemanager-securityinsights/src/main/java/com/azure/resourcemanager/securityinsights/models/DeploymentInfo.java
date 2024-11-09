@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information regarding a deployment. */
+/**
+ * Information regarding a deployment.
+ */
 @Fluent
-public final class DeploymentInfo {
+public final class DeploymentInfo implements JsonSerializable<DeploymentInfo> {
     /*
      * Status while fetching the last deployment.
      */
-    @JsonProperty(value = "deploymentFetchStatus")
     private DeploymentFetchStatus deploymentFetchStatus;
 
     /*
      * Deployment information.
      */
-    @JsonProperty(value = "deployment")
     private Deployment deployment;
 
     /*
      * Additional details about the deployment that can be shown to the user.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
+     * Creates an instance of DeploymentInfo class.
+     */
+    public DeploymentInfo() {
+    }
+
+    /**
      * Get the deploymentFetchStatus property: Status while fetching the last deployment.
-     *
+     * 
      * @return the deploymentFetchStatus value.
      */
     public DeploymentFetchStatus deploymentFetchStatus() {
@@ -39,7 +48,7 @@ public final class DeploymentInfo {
 
     /**
      * Set the deploymentFetchStatus property: Status while fetching the last deployment.
-     *
+     * 
      * @param deploymentFetchStatus the deploymentFetchStatus value to set.
      * @return the DeploymentInfo object itself.
      */
@@ -50,7 +59,7 @@ public final class DeploymentInfo {
 
     /**
      * Get the deployment property: Deployment information.
-     *
+     * 
      * @return the deployment value.
      */
     public Deployment deployment() {
@@ -59,7 +68,7 @@ public final class DeploymentInfo {
 
     /**
      * Set the deployment property: Deployment information.
-     *
+     * 
      * @param deployment the deployment value to set.
      * @return the DeploymentInfo object itself.
      */
@@ -70,7 +79,7 @@ public final class DeploymentInfo {
 
     /**
      * Get the message property: Additional details about the deployment that can be shown to the user.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -79,7 +88,7 @@ public final class DeploymentInfo {
 
     /**
      * Set the message property: Additional details about the deployment that can be shown to the user.
-     *
+     * 
      * @param message the message value to set.
      * @return the DeploymentInfo object itself.
      */
@@ -90,12 +99,56 @@ public final class DeploymentInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deployment() != null) {
             deployment().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentFetchStatus",
+            this.deploymentFetchStatus == null ? null : this.deploymentFetchStatus.toString());
+        jsonWriter.writeJsonField("deployment", this.deployment);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentInfo.
+     */
+    public static DeploymentInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentInfo deserializedDeploymentInfo = new DeploymentInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentFetchStatus".equals(fieldName)) {
+                    deserializedDeploymentInfo.deploymentFetchStatus
+                        = DeploymentFetchStatus.fromString(reader.getString());
+                } else if ("deployment".equals(fieldName)) {
+                    deserializedDeploymentInfo.deployment = Deployment.fromJson(reader);
+                } else if ("message".equals(fieldName)) {
+                    deserializedDeploymentInfo.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentInfo;
+        });
     }
 }

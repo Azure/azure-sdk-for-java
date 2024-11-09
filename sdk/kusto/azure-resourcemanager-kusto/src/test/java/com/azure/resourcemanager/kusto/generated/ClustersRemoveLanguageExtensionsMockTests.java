@@ -37,51 +37,32 @@ public final class ClustersRemoveLanguageExtensionsMockTests {
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .clusters()
-            .removeLanguageExtensions(
-                "pbzpcpiljhahz",
-                "echndbnwieholew",
-                new LanguageExtensionsList()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.PYTHON)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8)
-                                    .withLanguageExtensionCustomImageName("fqsfa"),
-                                new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8_DL)
-                                    .withLanguageExtensionCustomImageName("rrqwexjk"),
-                                new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.PYTHON)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5)
-                                    .withLanguageExtensionCustomImageName("wogqqnobpudcdab"))),
+        manager.clusters()
+            .removeLanguageExtensions("pbzpcpiljhahz", "echndbnwieholew",
+                new LanguageExtensionsList().withValue(Arrays.asList(
+                    new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON)
+                        .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8)
+                        .withLanguageExtensionCustomImageName("fqsfa"),
+                    new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R)
+                        .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8_DL)
+                        .withLanguageExtensionCustomImageName("rrqwexjk"),
+                    new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON)
+                        .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5)
+                        .withLanguageExtensionCustomImageName("wogqqnobpudcdab"))),
                 com.azure.core.util.Context.NONE);
     }
 }

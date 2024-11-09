@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.managementgroups.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The users specific permissions to this item. */
+/**
+ * The users specific permissions to this item.
+ */
 public enum Permissions {
-    /** Enum value noaccess. */
+    /**
+     * Enum value noaccess.
+     */
     NOACCESS("noaccess"),
 
-    /** Enum value view. */
+    /**
+     * Enum value view.
+     */
     VIEW("view"),
 
-    /** Enum value edit. */
+    /**
+     * Enum value edit.
+     */
     EDIT("edit"),
 
-    /** Enum value delete. */
+    /**
+     * Enum value delete.
+     */
     DELETE("delete");
 
-    /** The actual serialized value for a Permissions instance. */
+    /**
+     * The actual serialized value for a Permissions instance.
+     */
     private final String value;
 
     Permissions(String value) {
@@ -30,11 +39,10 @@ public enum Permissions {
 
     /**
      * Parses a serialized value to a Permissions instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Permissions object, or null if unable to parse.
      */
-    @JsonCreator
     public static Permissions fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +56,9 @@ public enum Permissions {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

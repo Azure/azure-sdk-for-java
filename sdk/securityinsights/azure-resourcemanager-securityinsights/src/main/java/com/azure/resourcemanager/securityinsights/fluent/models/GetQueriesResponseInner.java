@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityQueryItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Retrieve queries for entity result operation response. */
+/**
+ * Retrieve queries for entity result operation response.
+ */
 @Fluent
-public final class GetQueriesResponseInner {
+public final class GetQueriesResponseInner implements JsonSerializable<GetQueriesResponseInner> {
     /*
      * The query result values.
      */
-    @JsonProperty(value = "value")
     private List<EntityQueryItem> value;
 
     /**
+     * Creates an instance of GetQueriesResponseInner class.
+     */
+    public GetQueriesResponseInner() {
+    }
+
+    /**
      * Get the value property: The query result values.
-     *
+     * 
      * @return the value value.
      */
     public List<EntityQueryItem> value() {
@@ -29,7 +40,7 @@ public final class GetQueriesResponseInner {
 
     /**
      * Set the value property: The query result values.
-     *
+     * 
      * @param value the value value to set.
      * @return the GetQueriesResponseInner object itself.
      */
@@ -40,12 +51,49 @@ public final class GetQueriesResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetQueriesResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetQueriesResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetQueriesResponseInner.
+     */
+    public static GetQueriesResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetQueriesResponseInner deserializedGetQueriesResponseInner = new GetQueriesResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EntityQueryItem> value = reader.readArray(reader1 -> EntityQueryItem.fromJson(reader1));
+                    deserializedGetQueriesResponseInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetQueriesResponseInner;
+        });
     }
 }

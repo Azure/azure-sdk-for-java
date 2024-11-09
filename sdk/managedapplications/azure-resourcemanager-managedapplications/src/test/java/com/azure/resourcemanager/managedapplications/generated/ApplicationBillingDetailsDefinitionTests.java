@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationBillingDetailsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationBillingDetailsDefinition model =
-            BinaryData
-                .fromString("{\"resourceUsageId\":\"wjzrnfygxgisp\"}")
-                .toObject(ApplicationBillingDetailsDefinition.class);
+        ApplicationBillingDetailsDefinition model = BinaryData.fromString("{\"resourceUsageId\":\"wjzrnfygxgisp\"}")
+            .toObject(ApplicationBillingDetailsDefinition.class);
         Assertions.assertEquals("wjzrnfygxgisp", model.resourceUsageId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationBillingDetailsDefinition model =
-            new ApplicationBillingDetailsDefinition().withResourceUsageId("wjzrnfygxgisp");
+        ApplicationBillingDetailsDefinition model
+            = new ApplicationBillingDetailsDefinition().withResourceUsageId("wjzrnfygxgisp");
         model = BinaryData.fromObject(model).toObject(ApplicationBillingDetailsDefinition.class);
         Assertions.assertEquals("wjzrnfygxgisp", model.resourceUsageId());
     }

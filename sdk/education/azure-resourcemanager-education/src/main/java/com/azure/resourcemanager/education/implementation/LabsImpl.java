@@ -29,57 +29,36 @@ public final class LabsImpl implements Labs {
 
     public PagedIterable<LabDetails> listAll(String billingAccountName, String billingProfileName) {
         PagedIterable<LabDetailsInner> inner = this.serviceClient().listAll(billingAccountName, billingProfileName);
-        return Utils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LabDetails> listAll(
-        String billingAccountName,
-        String billingProfileName,
-        Boolean includeBudget,
-        Boolean includeDeleted,
-        Context context) {
-        PagedIterable<LabDetailsInner> inner =
-            this
-                .serviceClient()
-                .listAll(billingAccountName, billingProfileName, includeBudget, includeDeleted, context);
-        return Utils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
+    public PagedIterable<LabDetails> listAll(String billingAccountName, String billingProfileName,
+        Boolean includeBudget, Boolean includeDeleted, Context context) {
+        PagedIterable<LabDetailsInner> inner = this.serviceClient()
+            .listAll(billingAccountName, billingProfileName, includeBudget, includeDeleted, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LabDetails> list(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        PagedIterable<LabDetailsInner> inner =
-            this.serviceClient().list(billingAccountName, billingProfileName, invoiceSectionName);
-        return Utils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
+    public PagedIterable<LabDetails> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
+        PagedIterable<LabDetailsInner> inner
+            = this.serviceClient().list(billingAccountName, billingProfileName, invoiceSectionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LabDetails> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context) {
-        PagedIterable<LabDetailsInner> inner =
-            this
-                .serviceClient()
-                .list(billingAccountName, billingProfileName, invoiceSectionName, includeBudget, context);
-        return Utils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
+    public PagedIterable<LabDetails> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget, Context context) {
+        PagedIterable<LabDetailsInner> inner = this.serviceClient()
+            .list(billingAccountName, billingProfileName, invoiceSectionName, includeBudget, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabDetailsImpl(inner1, this.manager()));
     }
 
-    public Response<LabDetails> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context) {
-        Response<LabDetailsInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, includeBudget, context);
+    public Response<LabDetails> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget, Context context) {
+        Response<LabDetailsInner> inner = this.serviceClient()
+            .getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, includeBudget, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LabDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -95,10 +74,9 @@ public final class LabsImpl implements Labs {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(billingAccountName, billingProfileName, invoiceSectionName, context);
     }
 
@@ -106,32 +84,23 @@ public final class LabsImpl implements Labs {
         this.serviceClient().delete(billingAccountName, billingProfileName, invoiceSectionName);
     }
 
-    public Response<LabDetails> createOrUpdateWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        LabDetailsInner parameters,
-        Context context) {
-        Response<LabDetailsInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    billingAccountName, billingProfileName, invoiceSectionName, parameters, context);
+    public Response<LabDetails> createOrUpdateWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LabDetailsInner parameters, Context context) {
+        Response<LabDetailsInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(billingAccountName, billingProfileName, invoiceSectionName, parameters,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LabDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public LabDetails createOrUpdate(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters) {
-        LabDetailsInner inner =
-            this.serviceClient().createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, parameters);
+    public LabDetails createOrUpdate(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        LabDetailsInner parameters) {
+        LabDetailsInner inner = this.serviceClient()
+            .createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, parameters);
         if (inner != null) {
             return new LabDetailsImpl(inner, this.manager());
         } else {
@@ -139,43 +108,24 @@ public final class LabsImpl implements Labs {
         }
     }
 
-    public Response<LabDetails> generateInviteCodeWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters,
-        Boolean onlyUpdateStudentCountParameter,
+    public Response<LabDetails> generateInviteCodeWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, InviteCodeGenerateRequest parameters, Boolean onlyUpdateStudentCountParameter,
         Context context) {
-        Response<LabDetailsInner> inner =
-            this
-                .serviceClient()
-                .generateInviteCodeWithResponse(
-                    billingAccountName,
-                    billingProfileName,
-                    invoiceSectionName,
-                    parameters,
-                    onlyUpdateStudentCountParameter,
-                    context);
+        Response<LabDetailsInner> inner = this.serviceClient()
+            .generateInviteCodeWithResponse(billingAccountName, billingProfileName, invoiceSectionName, parameters,
+                onlyUpdateStudentCountParameter, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LabDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public LabDetails generateInviteCode(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters) {
-        LabDetailsInner inner =
-            this
-                .serviceClient()
-                .generateInviteCode(billingAccountName, billingProfileName, invoiceSectionName, parameters);
+    public LabDetails generateInviteCode(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, InviteCodeGenerateRequest parameters) {
+        LabDetailsInner inner = this.serviceClient()
+            .generateInviteCode(billingAccountName, billingProfileName, invoiceSectionName, parameters);
         if (inner != null) {
             return new LabDetailsImpl(inner, this.manager());
         } else {

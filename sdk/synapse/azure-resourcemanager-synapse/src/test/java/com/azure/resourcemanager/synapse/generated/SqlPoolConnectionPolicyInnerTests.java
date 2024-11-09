@@ -11,38 +11,35 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolConnectionPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolConnectionPolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"botzingamvppho\",\"location\":\"qzudphq\",\"properties\":{\"securityEnabledAccess\":\"dkfw\",\"proxyDnsName\":\"wcvtbvkayhmtnvyq\",\"proxyPort\":\"tkzwpcnpwzc\",\"visibility\":\"esgvvsccyaj\",\"useServerDefault\":\"qfhwyg\",\"redirectionState\":\"vdnkfxusem\",\"state\":\"zrmuhapfcqdps\"},\"id\":\"xqv\",\"name\":\"svuo\",\"type\":\"mgccelvezrypq\"}")
-                .toObject(SqlPoolConnectionPolicyInner.class);
-        Assertions.assertEquals("dkfw", model.securityEnabledAccess());
-        Assertions.assertEquals("wcvtbvkayhmtnvyq", model.proxyDnsName());
-        Assertions.assertEquals("tkzwpcnpwzc", model.proxyPort());
-        Assertions.assertEquals("esgvvsccyaj", model.visibility());
-        Assertions.assertEquals("qfhwyg", model.useServerDefault());
-        Assertions.assertEquals("vdnkfxusem", model.redirectionState());
-        Assertions.assertEquals("zrmuhapfcqdps", model.state());
+        SqlPoolConnectionPolicyInner model = BinaryData.fromString(
+            "{\"kind\":\"wct\",\"location\":\"dzjlu\",\"properties\":{\"securityEnabledAccess\":\"dlwggytsbwtovv\",\"proxyDnsName\":\"seinqfiuf\",\"proxyPort\":\"knpirgnepttwq\",\"visibility\":\"niffcdmqnroj\",\"useServerDefault\":\"ijnkrxfrdd\",\"redirectionState\":\"ratiz\",\"state\":\"onasxifto\"},\"id\":\"qyzhf\",\"name\":\"wesgogczh\",\"type\":\"nnxk\"}")
+            .toObject(SqlPoolConnectionPolicyInner.class);
+        Assertions.assertEquals("dlwggytsbwtovv", model.securityEnabledAccess());
+        Assertions.assertEquals("seinqfiuf", model.proxyDnsName());
+        Assertions.assertEquals("knpirgnepttwq", model.proxyPort());
+        Assertions.assertEquals("niffcdmqnroj", model.visibility());
+        Assertions.assertEquals("ijnkrxfrdd", model.useServerDefault());
+        Assertions.assertEquals("ratiz", model.redirectionState());
+        Assertions.assertEquals("onasxifto", model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolConnectionPolicyInner model =
-            new SqlPoolConnectionPolicyInner()
-                .withSecurityEnabledAccess("dkfw")
-                .withProxyDnsName("wcvtbvkayhmtnvyq")
-                .withProxyPort("tkzwpcnpwzc")
-                .withVisibility("esgvvsccyaj")
-                .withUseServerDefault("qfhwyg")
-                .withRedirectionState("vdnkfxusem")
-                .withState("zrmuhapfcqdps");
+        SqlPoolConnectionPolicyInner model
+            = new SqlPoolConnectionPolicyInner().withSecurityEnabledAccess("dlwggytsbwtovv")
+                .withProxyDnsName("seinqfiuf")
+                .withProxyPort("knpirgnepttwq")
+                .withVisibility("niffcdmqnroj")
+                .withUseServerDefault("ijnkrxfrdd")
+                .withRedirectionState("ratiz")
+                .withState("onasxifto");
         model = BinaryData.fromObject(model).toObject(SqlPoolConnectionPolicyInner.class);
-        Assertions.assertEquals("dkfw", model.securityEnabledAccess());
-        Assertions.assertEquals("wcvtbvkayhmtnvyq", model.proxyDnsName());
-        Assertions.assertEquals("tkzwpcnpwzc", model.proxyPort());
-        Assertions.assertEquals("esgvvsccyaj", model.visibility());
-        Assertions.assertEquals("qfhwyg", model.useServerDefault());
-        Assertions.assertEquals("vdnkfxusem", model.redirectionState());
-        Assertions.assertEquals("zrmuhapfcqdps", model.state());
+        Assertions.assertEquals("dlwggytsbwtovv", model.securityEnabledAccess());
+        Assertions.assertEquals("seinqfiuf", model.proxyDnsName());
+        Assertions.assertEquals("knpirgnepttwq", model.proxyPort());
+        Assertions.assertEquals("niffcdmqnroj", model.visibility());
+        Assertions.assertEquals("ijnkrxfrdd", model.useServerDefault());
+        Assertions.assertEquals("ratiz", model.redirectionState());
+        Assertions.assertEquals("onasxifto", model.state());
     }
 }

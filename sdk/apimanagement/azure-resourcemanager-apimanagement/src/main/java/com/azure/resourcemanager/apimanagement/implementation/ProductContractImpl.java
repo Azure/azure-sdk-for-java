@@ -86,24 +86,20 @@ public final class ProductContractImpl implements ProductContract, ProductContra
     }
 
     public ProductContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, productId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProducts()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, productId, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProductContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, productId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProducts()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, productId, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -121,28 +117,24 @@ public final class ProductContractImpl implements ProductContract, ProductContra
     }
 
     public ProductContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, productId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProducts()
+            .updateWithResponse(resourceGroupName, serviceName, productId, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProductContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .updateWithResponse(resourceGroupName, serviceName, productId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProducts()
+            .updateWithResponse(resourceGroupName, serviceName, productId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ProductContractImpl(
-        ProductContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    ProductContractImpl(ProductContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -151,22 +143,18 @@ public final class ProductContractImpl implements ProductContract, ProductContra
     }
 
     public ProductContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .getWithResponse(resourceGroupName, serviceName, productId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProducts()
+            .getWithResponse(resourceGroupName, serviceName, productId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProductContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .getWithResponse(resourceGroupName, serviceName, productId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProducts()
+            .getWithResponse(resourceGroupName, serviceName, productId, context)
+            .getValue();
         return this;
     }
 

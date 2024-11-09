@@ -58,6 +58,9 @@ public final class SelectiveKeyRestoreOperationParameters
         return this.folder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,10 +99,7 @@ public final class SelectiveKeyRestoreOperationParameters
                 }
             }
             if (sasTokenParametersFound && folderFound) {
-                SelectiveKeyRestoreOperationParameters deserializedSelectiveKeyRestoreOperationParameters
-                    = new SelectiveKeyRestoreOperationParameters(sasTokenParameters, folder);
-
-                return deserializedSelectiveKeyRestoreOperationParameters;
+                return new SelectiveKeyRestoreOperationParameters(sasTokenParameters, folder);
             }
             List<String> missingProperties = new ArrayList<>();
             if (!sasTokenParametersFound) {

@@ -13,32 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SolutionPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionPatch model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"xrifkwmrvkts\":\"fsqesaagdfmglzlh\",\"ucmpoyfd\":\"zntocipaouajps\",\"s\":\"fogknygjofjdde\",\"jzyflu\":\"deupewnwrei\"}}")
-                .toObject(SolutionPatch.class);
+        SolutionPatch model = BinaryData.fromString(
+            "{\"tags\":{\"xrifkwmrvkts\":\"fsqesaagdfmglzlh\",\"ucmpoyfd\":\"zntocipaouajps\",\"s\":\"fogknygjofjdde\",\"jzyflu\":\"deupewnwrei\"}}")
+            .toObject(SolutionPatch.class);
         Assertions.assertEquals("fsqesaagdfmglzlh", model.tags().get("xrifkwmrvkts"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionPatch model =
-            new SolutionPatch()
-                .withTags(
-                    mapOf(
-                        "xrifkwmrvkts",
-                        "fsqesaagdfmglzlh",
-                        "ucmpoyfd",
-                        "zntocipaouajps",
-                        "s",
-                        "fogknygjofjdde",
-                        "jzyflu",
-                        "deupewnwrei"));
+        SolutionPatch model = new SolutionPatch().withTags(mapOf("xrifkwmrvkts", "fsqesaagdfmglzlh", "ucmpoyfd",
+            "zntocipaouajps", "s", "fogknygjofjdde", "jzyflu", "deupewnwrei"));
         model = BinaryData.fromObject(model).toObject(SolutionPatch.class);
         Assertions.assertEquals("fsqesaagdfmglzlh", model.tags().get("xrifkwmrvkts"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

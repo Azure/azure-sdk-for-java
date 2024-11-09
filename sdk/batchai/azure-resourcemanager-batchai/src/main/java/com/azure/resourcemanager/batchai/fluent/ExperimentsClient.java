@@ -43,8 +43,8 @@ public interface ExperimentsClient {
      * @return a list of Experiments within the specified Workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExperimentInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context);
+    PagedIterable<ExperimentInner> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context);
 
     /**
      * Creates an Experiment.
@@ -60,8 +60,8 @@ public interface ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreate(
-        String resourceGroupName, String workspaceName, String experimentName);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreate(String resourceGroupName, String workspaceName,
+        String experimentName);
 
     /**
      * Creates an Experiment.
@@ -78,8 +78,8 @@ public interface ExperimentsClient {
      * @return experiment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreate(
-        String resourceGroupName, String workspaceName, String experimentName, Context context);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreate(String resourceGroupName, String workspaceName,
+        String experimentName, Context context);
 
     /**
      * Creates an Experiment.
@@ -128,8 +128,8 @@ public interface ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String experimentName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String experimentName);
 
     /**
      * Deletes an Experiment.
@@ -146,8 +146,8 @@ public interface ExperimentsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String experimentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String experimentName, Context context);
 
     /**
      * Deletes an Experiment.
@@ -211,6 +211,6 @@ public interface ExperimentsClient {
      * @return information about an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExperimentInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String experimentName, Context context);
+    Response<ExperimentInner> getWithResponse(String resourceGroupName, String workspaceName, String experimentName,
+        Context context);
 }

@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics.models;
 
-
 import com.azure.ai.textanalytics.implementation.EntityDataSourcePropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
@@ -23,18 +22,17 @@ public final class EntityDataSource {
     private String name;
 
     static {
-        EntityDataSourcePropertiesHelper.setAccessor(
-            new EntityDataSourcePropertiesHelper.EntityDataSourceAccessor() {
-                @Override
-                public void setName(EntityDataSource entityDataSource, String name) {
-                    entityDataSource.setName(name);
-                }
+        EntityDataSourcePropertiesHelper.setAccessor(new EntityDataSourcePropertiesHelper.EntityDataSourceAccessor() {
+            @Override
+            public void setName(EntityDataSource entityDataSource, String name) {
+                entityDataSource.setName(name);
+            }
 
-                @Override
-                public void setEntityId(EntityDataSource entityDataSource, String entityId) {
-                    entityDataSource.setEntityId(entityId);
-                }
-            });
+            @Override
+            public void setEntityId(EntityDataSource entityDataSource, String entityId) {
+                entityDataSource.setEntityId(entityId);
+            }
+        });
     }
 
     /**

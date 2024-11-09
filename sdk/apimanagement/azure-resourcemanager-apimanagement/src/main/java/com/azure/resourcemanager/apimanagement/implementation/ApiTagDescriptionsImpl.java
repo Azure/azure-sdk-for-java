@@ -23,37 +23,29 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiTagDescriptionsImpl(
-        ApiTagDescriptionsClient innerClient,
+    public ApiTagDescriptionsImpl(ApiTagDescriptionsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<TagDescriptionContract> listByService(
-        String resourceGroupName, String serviceName, String apiId) {
-        PagedIterable<TagDescriptionContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, apiId);
+    public PagedIterable<TagDescriptionContract> listByService(String resourceGroupName, String serviceName,
+        String apiId) {
+        PagedIterable<TagDescriptionContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, apiId);
         return Utils.mapPage(inner, inner1 -> new TagDescriptionContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TagDescriptionContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<TagDescriptionContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, apiId, filter, top, skip, context);
+    public PagedIterable<TagDescriptionContract> listByService(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<TagDescriptionContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, apiId, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new TagDescriptionContractImpl(inner1, this.manager()));
     }
 
-    public ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context) {
-        return this
-            .serviceClient()
+    public ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String tagDescriptionId, Context context) {
+        return this.serviceClient()
             .getEntityTagWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, context);
     }
 
@@ -61,25 +53,22 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, tagDescriptionId);
     }
 
-    public Response<TagDescriptionContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context) {
-        ApiTagDescriptionsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, context);
+    public Response<TagDescriptionContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId, Context context) {
+        ApiTagDescriptionsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TagDescriptionContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public TagDescriptionContract get(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId) {
-        TagDescriptionContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, apiId, tagDescriptionId);
+    public TagDescriptionContract get(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId) {
+        TagDescriptionContractInner inner
+            = this.serviceClient().get(resourceGroupName, serviceName, apiId, tagDescriptionId);
         if (inner != null) {
             return new TagDescriptionContractImpl(inner, this.manager());
         } else {
@@ -87,53 +76,37 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String tagDescriptionId,
-        String ifMatch,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId, String ifMatch, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, ifMatch, context);
     }
 
-    public void delete(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, String ifMatch) {
+    public void delete(String resourceGroupName, String serviceName, String apiId, String tagDescriptionId,
+        String ifMatch) {
         this.serviceClient().delete(resourceGroupName, serviceName, apiId, tagDescriptionId, ifMatch);
     }
 
     public TagDescriptionContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String tagDescriptionId = Utils.getValueFromIdByName(id, "tagDescriptions");
         if (tagDescriptionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, Context.NONE).getValue();
     }
@@ -141,33 +114,23 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
     public Response<TagDescriptionContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String tagDescriptionId = Utils.getValueFromIdByName(id, "tagDescriptions");
         if (tagDescriptionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, context);
     }
@@ -175,33 +138,23 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String tagDescriptionId = Utils.getValueFromIdByName(id, "tagDescriptions");
         if (tagDescriptionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, localIfMatch, Context.NONE);
@@ -210,33 +163,23 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String tagDescriptionId = Utils.getValueFromIdByName(id, "tagDescriptions");
         if (tagDescriptionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, ifMatch, context);
     }

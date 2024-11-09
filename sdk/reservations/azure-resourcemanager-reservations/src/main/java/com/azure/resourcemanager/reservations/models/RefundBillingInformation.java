@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** billing information. */
+/**
+ * billing information.
+ */
 @Fluent
-public final class RefundBillingInformation {
+public final class RefundBillingInformation implements JsonSerializable<RefundBillingInformation> {
     /*
      * Represent the billing plans.
      */
-    @JsonProperty(value = "billingPlan")
     private ReservationBillingPlan billingPlan;
 
     /*
      * The number of completed transactions in this reservation's payment
      */
-    @JsonProperty(value = "completedTransactions")
     private Integer completedTransactions;
 
     /*
      * The number of total transactions in this reservation's payment
      */
-    @JsonProperty(value = "totalTransactions")
     private Integer totalTransactions;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingCurrencyTotalPaidAmount")
     private Price billingCurrencyTotalPaidAmount;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingCurrencyProratedAmount")
     private Price billingCurrencyProratedAmount;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingCurrencyRemainingCommitmentAmount")
     private Price billingCurrencyRemainingCommitmentAmount;
 
-    /** Creates an instance of RefundBillingInformation class. */
+    /**
+     * Creates an instance of RefundBillingInformation class.
+     */
     public RefundBillingInformation() {
     }
 
     /**
      * Get the billingPlan property: Represent the billing plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public ReservationBillingPlan billingPlan() {
@@ -61,7 +63,7 @@ public final class RefundBillingInformation {
 
     /**
      * Set the billingPlan property: Represent the billing plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the RefundBillingInformation object itself.
      */
@@ -72,7 +74,7 @@ public final class RefundBillingInformation {
 
     /**
      * Get the completedTransactions property: The number of completed transactions in this reservation's payment.
-     *
+     * 
      * @return the completedTransactions value.
      */
     public Integer completedTransactions() {
@@ -81,7 +83,7 @@ public final class RefundBillingInformation {
 
     /**
      * Set the completedTransactions property: The number of completed transactions in this reservation's payment.
-     *
+     * 
      * @param completedTransactions the completedTransactions value to set.
      * @return the RefundBillingInformation object itself.
      */
@@ -92,7 +94,7 @@ public final class RefundBillingInformation {
 
     /**
      * Get the totalTransactions property: The number of total transactions in this reservation's payment.
-     *
+     * 
      * @return the totalTransactions value.
      */
     public Integer totalTransactions() {
@@ -101,7 +103,7 @@ public final class RefundBillingInformation {
 
     /**
      * Set the totalTransactions property: The number of total transactions in this reservation's payment.
-     *
+     * 
      * @param totalTransactions the totalTransactions value to set.
      * @return the RefundBillingInformation object itself.
      */
@@ -112,7 +114,7 @@ public final class RefundBillingInformation {
 
     /**
      * Get the billingCurrencyTotalPaidAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingCurrencyTotalPaidAmount value.
      */
     public Price billingCurrencyTotalPaidAmount() {
@@ -121,7 +123,7 @@ public final class RefundBillingInformation {
 
     /**
      * Set the billingCurrencyTotalPaidAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingCurrencyTotalPaidAmount the billingCurrencyTotalPaidAmount value to set.
      * @return the RefundBillingInformation object itself.
      */
@@ -132,7 +134,7 @@ public final class RefundBillingInformation {
 
     /**
      * Get the billingCurrencyProratedAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingCurrencyProratedAmount value.
      */
     public Price billingCurrencyProratedAmount() {
@@ -141,7 +143,7 @@ public final class RefundBillingInformation {
 
     /**
      * Set the billingCurrencyProratedAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingCurrencyProratedAmount the billingCurrencyProratedAmount value to set.
      * @return the RefundBillingInformation object itself.
      */
@@ -153,7 +155,7 @@ public final class RefundBillingInformation {
     /**
      * Get the billingCurrencyRemainingCommitmentAmount property: Pricing information containing the amount and the
      * currency code.
-     *
+     * 
      * @return the billingCurrencyRemainingCommitmentAmount value.
      */
     public Price billingCurrencyRemainingCommitmentAmount() {
@@ -163,19 +165,19 @@ public final class RefundBillingInformation {
     /**
      * Set the billingCurrencyRemainingCommitmentAmount property: Pricing information containing the amount and the
      * currency code.
-     *
+     * 
      * @param billingCurrencyRemainingCommitmentAmount the billingCurrencyRemainingCommitmentAmount value to set.
      * @return the RefundBillingInformation object itself.
      */
-    public RefundBillingInformation withBillingCurrencyRemainingCommitmentAmount(
-        Price billingCurrencyRemainingCommitmentAmount) {
+    public RefundBillingInformation
+        withBillingCurrencyRemainingCommitmentAmount(Price billingCurrencyRemainingCommitmentAmount) {
         this.billingCurrencyRemainingCommitmentAmount = billingCurrencyRemainingCommitmentAmount;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -188,5 +190,59 @@ public final class RefundBillingInformation {
         if (billingCurrencyRemainingCommitmentAmount() != null) {
             billingCurrencyRemainingCommitmentAmount().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingPlan", this.billingPlan == null ? null : this.billingPlan.toString());
+        jsonWriter.writeNumberField("completedTransactions", this.completedTransactions);
+        jsonWriter.writeNumberField("totalTransactions", this.totalTransactions);
+        jsonWriter.writeJsonField("billingCurrencyTotalPaidAmount", this.billingCurrencyTotalPaidAmount);
+        jsonWriter.writeJsonField("billingCurrencyProratedAmount", this.billingCurrencyProratedAmount);
+        jsonWriter.writeJsonField("billingCurrencyRemainingCommitmentAmount",
+            this.billingCurrencyRemainingCommitmentAmount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RefundBillingInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RefundBillingInformation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RefundBillingInformation.
+     */
+    public static RefundBillingInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RefundBillingInformation deserializedRefundBillingInformation = new RefundBillingInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingPlan".equals(fieldName)) {
+                    deserializedRefundBillingInformation.billingPlan
+                        = ReservationBillingPlan.fromString(reader.getString());
+                } else if ("completedTransactions".equals(fieldName)) {
+                    deserializedRefundBillingInformation.completedTransactions = reader.getNullable(JsonReader::getInt);
+                } else if ("totalTransactions".equals(fieldName)) {
+                    deserializedRefundBillingInformation.totalTransactions = reader.getNullable(JsonReader::getInt);
+                } else if ("billingCurrencyTotalPaidAmount".equals(fieldName)) {
+                    deserializedRefundBillingInformation.billingCurrencyTotalPaidAmount = Price.fromJson(reader);
+                } else if ("billingCurrencyProratedAmount".equals(fieldName)) {
+                    deserializedRefundBillingInformation.billingCurrencyProratedAmount = Price.fromJson(reader);
+                } else if ("billingCurrencyRemainingCommitmentAmount".equals(fieldName)) {
+                    deserializedRefundBillingInformation.billingCurrencyRemainingCommitmentAmount
+                        = Price.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRefundBillingInformation;
+        });
     }
 }

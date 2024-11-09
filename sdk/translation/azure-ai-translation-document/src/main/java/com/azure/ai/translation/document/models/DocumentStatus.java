@@ -5,56 +5,55 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Document Status Response.
  */
 @Immutable
-public final class DocumentStatus {
+public final class DocumentStatus implements JsonSerializable<DocumentStatus> {
 
     /*
      * Location of the document or folder
      */
     @Generated
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * Location of the source document
      */
     @Generated
-    @JsonProperty(value = "sourcePath")
     private final String sourcePath;
 
     /*
      * Operation created date time
      */
     @Generated
-    @JsonProperty(value = "createdDateTimeUtc")
     private final OffsetDateTime createdDateTimeUtc;
 
     /*
      * Date time in which the operation's status has been updated
      */
     @Generated
-    @JsonProperty(value = "lastActionDateTimeUtc")
     private final OffsetDateTime lastActionDateTimeUtc;
 
     /*
      * List of possible statuses for job or document
      */
     @Generated
-    @JsonProperty(value = "status")
     private final Status status;
 
     /*
      * To language
      */
     @Generated
-    @JsonProperty(value = "to")
     private final String to;
 
     /*
@@ -62,28 +61,24 @@ public final class DocumentStatus {
      * inner error with more descriptive details.
      */
     @Generated
-    @JsonProperty(value = "error")
     private TranslationError error;
 
     /*
      * Progress of the translation if available
      */
     @Generated
-    @JsonProperty(value = "progress")
     private final double progress;
 
     /*
      * Document Id
      */
     @Generated
-    @JsonProperty(value = "id")
     private final String id;
 
     /*
      * Character charged by the API
      */
     @Generated
-    @JsonProperty(value = "characterCharged")
     private Integer characterCharged;
 
     /**
@@ -98,12 +93,8 @@ public final class DocumentStatus {
      * @param id the id value to set.
      */
     @Generated
-    @JsonCreator
-    private DocumentStatus(@JsonProperty(value = "sourcePath") String sourcePath,
-        @JsonProperty(value = "createdDateTimeUtc") OffsetDateTime createdDateTimeUtc,
-        @JsonProperty(value = "lastActionDateTimeUtc") OffsetDateTime lastActionDateTimeUtc,
-        @JsonProperty(value = "status") Status status, @JsonProperty(value = "to") String to,
-        @JsonProperty(value = "progress") double progress, @JsonProperty(value = "id") String id) {
+    private DocumentStatus(String sourcePath, OffsetDateTime createdDateTimeUtc, OffsetDateTime lastActionDateTimeUtc,
+        Status status, String to, double progress, String id) {
         this.sourcePath = sourcePath;
         this.createdDateTimeUtc = createdDateTimeUtc;
         this.lastActionDateTimeUtc = lastActionDateTimeUtc;
@@ -212,5 +203,91 @@ public final class DocumentStatus {
     @Generated
     public Integer getCharacterCharged() {
         return this.characterCharged;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourcePath", this.sourcePath);
+        jsonWriter.writeStringField("createdDateTimeUtc",
+            this.createdDateTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTimeUtc));
+        jsonWriter.writeStringField("lastActionDateTimeUtc",
+            this.lastActionDateTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastActionDateTimeUtc));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("to", this.to);
+        jsonWriter.writeDoubleField("progress", this.progress);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeNumberField("characterCharged", this.characterCharged);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentStatus from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentStatus.
+     */
+    @Generated
+    public static DocumentStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String sourcePath = null;
+            OffsetDateTime createdDateTimeUtc = null;
+            OffsetDateTime lastActionDateTimeUtc = null;
+            Status status = null;
+            String to = null;
+            double progress = 0.0;
+            String id = null;
+            String path = null;
+            TranslationError error = null;
+            Integer characterCharged = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sourcePath".equals(fieldName)) {
+                    sourcePath = reader.getString();
+                } else if ("createdDateTimeUtc".equals(fieldName)) {
+                    createdDateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastActionDateTimeUtc".equals(fieldName)) {
+                    lastActionDateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    status = Status.fromString(reader.getString());
+                } else if ("to".equals(fieldName)) {
+                    to = reader.getString();
+                } else if ("progress".equals(fieldName)) {
+                    progress = reader.getDouble();
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    path = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    error = TranslationError.fromJson(reader);
+                } else if ("characterCharged".equals(fieldName)) {
+                    characterCharged = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DocumentStatus deserializedDocumentStatus
+                = new DocumentStatus(sourcePath, createdDateTimeUtc, lastActionDateTimeUtc, status, to, progress, id);
+            deserializedDocumentStatus.path = path;
+            deserializedDocumentStatus.error = error;
+            deserializedDocumentStatus.characterCharged = characterCharged;
+            return deserializedDocumentStatus;
+        });
     }
 }

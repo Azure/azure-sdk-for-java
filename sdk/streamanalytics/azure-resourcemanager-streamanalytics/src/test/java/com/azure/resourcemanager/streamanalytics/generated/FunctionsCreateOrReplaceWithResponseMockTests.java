@@ -6,60 +6,47 @@ package com.azure.resourcemanager.streamanalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager;
 import com.azure.resourcemanager.streamanalytics.models.Function;
 import com.azure.resourcemanager.streamanalytics.models.FunctionBinding;
 import com.azure.resourcemanager.streamanalytics.models.FunctionInput;
 import com.azure.resourcemanager.streamanalytics.models.FunctionOutput;
 import com.azure.resourcemanager.streamanalytics.models.FunctionProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FunctionsCreateOrReplaceWithResponseMockTests {
     @Test
     public void testCreateOrReplaceWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"uzlm\",\"properties\":{\"inputs\":[{\"dataType\":\"ktgplcr\",\"isConfigurationParameter\":true},{\"dataType\":\"eznoig\",\"isConfigurationParameter\":true},{\"dataType\":\"w\",\"isConfigurationParameter\":false},{\"dataType\":\"nbsazejjoqkag\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"taugzxnfaa\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"dtnkdmkq\",\"type\":\"lwuenvrkp\",\"id\":\"uaibrebqaaysj\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Function response = manager.functions().define("hbpnaixexccbd")
+        Function response = manager.functions()
+            .define("hbpnaixexccbd")
             .withExistingStreamingjob("tvgbmhrixkwmy", "jejveg")
             .withProperties(new FunctionProperties()
                 .withInputs(Arrays.asList(new FunctionInput().withDataType("wijnh").withIsConfigurationParameter(true),
                     new FunctionInput().withDataType("f").withIsConfigurationParameter(false)))
-                .withOutput(new FunctionOutput().withDataType("fvoow")).withBinding(new FunctionBinding()))
-            .withName("mtg").withIfMatch("afxtsgum").withIfNoneMatch("jglikkxwslolb").create();
+                .withOutput(new FunctionOutput().withDataType("fvoow"))
+                .withBinding(new FunctionBinding()))
+            .withName("mtg")
+            .withIfMatch("afxtsgum")
+            .withIfNoneMatch("jglikkxwslolb")
+            .create();
 
         Assertions.assertEquals("uaibrebqaaysj", response.id());
         Assertions.assertEquals("ktgplcr", response.properties().inputs().get(0).dataType());

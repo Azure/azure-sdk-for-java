@@ -14,26 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingPathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingPath model =
-            BinaryData
-                .fromString(
-                    "{\"streamingProtocol\":\"SmoothStreaming\",\"encryptionScheme\":\"CommonEncryptionCenc\",\"paths\":[\"dlxyjrxs\",\"gafcnihgwqapnedg\",\"bcvkcvqvpkeq\",\"cvdrhvoodsot\"]}")
-                .toObject(StreamingPath.class);
-        Assertions.assertEquals(StreamingPolicyStreamingProtocol.SMOOTH_STREAMING, model.streamingProtocol());
+        StreamingPath model = BinaryData.fromString(
+            "{\"streamingProtocol\":\"Hls\",\"encryptionScheme\":\"CommonEncryptionCenc\",\"paths\":[\"cslfaoqzpiyylha\",\"nswhcc\"]}")
+            .toObject(StreamingPath.class);
+        Assertions.assertEquals(StreamingPolicyStreamingProtocol.HLS, model.streamingProtocol());
         Assertions.assertEquals(EncryptionScheme.COMMON_ENCRYPTION_CENC, model.encryptionScheme());
-        Assertions.assertEquals("dlxyjrxs", model.paths().get(0));
+        Assertions.assertEquals("cslfaoqzpiyylha", model.paths().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingPath model =
-            new StreamingPath()
-                .withStreamingProtocol(StreamingPolicyStreamingProtocol.SMOOTH_STREAMING)
-                .withEncryptionScheme(EncryptionScheme.COMMON_ENCRYPTION_CENC)
-                .withPaths(Arrays.asList("dlxyjrxs", "gafcnihgwqapnedg", "bcvkcvqvpkeq", "cvdrhvoodsot"));
+        StreamingPath model = new StreamingPath().withStreamingProtocol(StreamingPolicyStreamingProtocol.HLS)
+            .withEncryptionScheme(EncryptionScheme.COMMON_ENCRYPTION_CENC)
+            .withPaths(Arrays.asList("cslfaoqzpiyylha", "nswhcc"));
         model = BinaryData.fromObject(model).toObject(StreamingPath.class);
-        Assertions.assertEquals(StreamingPolicyStreamingProtocol.SMOOTH_STREAMING, model.streamingProtocol());
+        Assertions.assertEquals(StreamingPolicyStreamingProtocol.HLS, model.streamingProtocol());
         Assertions.assertEquals(EncryptionScheme.COMMON_ENCRYPTION_CENC, model.encryptionScheme());
-        Assertions.assertEquals("dlxyjrxs", model.paths().get(0));
+        Assertions.assertEquals("cslfaoqzpiyylha", model.paths().get(0));
     }
 }

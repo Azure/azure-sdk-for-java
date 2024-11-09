@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Test;
 public final class CheckNameAvailabilityRequestTests {
     @Test
     public void testDeserialize() {
-        CheckNameAvailabilityRequest model =
-            BinaryData
-                .fromString("{\"name\":\"hejjz\",\"type\":\"dudgwdslfhot\"}")
-                .toObject(CheckNameAvailabilityRequest.class);
+        CheckNameAvailabilityRequest model = BinaryData.fromString("{\"name\":\"hejjz\",\"type\":\"dudgwdslfhot\"}")
+            .toObject(CheckNameAvailabilityRequest.class);
         Assertions.assertEquals("hejjz", model.name());
         Assertions.assertEquals("dudgwdslfhot", model.type());
     }
 
     @Test
     public void testSerialize() {
-        CheckNameAvailabilityRequest model =
-            new CheckNameAvailabilityRequest().withName("hejjz").withType("dudgwdslfhot");
+        CheckNameAvailabilityRequest model
+            = new CheckNameAvailabilityRequest().withName("hejjz").withType("dudgwdslfhot");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityRequest.class);
         Assertions.assertEquals("hejjz", model.name());
         Assertions.assertEquals("dudgwdslfhot", model.type());

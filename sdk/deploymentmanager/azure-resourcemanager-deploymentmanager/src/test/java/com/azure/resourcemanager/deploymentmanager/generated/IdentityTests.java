@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Identity model =
-            BinaryData
-                .fromString("{\"type\":\"wtnhxbnjbiksqr\",\"identityIds\":[\"ssainqpjwnzll\",\"fmppe\"]}")
+        Identity model
+            = BinaryData.fromString("{\"type\":\"wtnhxbnjbiksqr\",\"identityIds\":[\"ssainqpjwnzll\",\"fmppe\"]}")
                 .toObject(Identity.class);
         Assertions.assertEquals("wtnhxbnjbiksqr", model.type());
         Assertions.assertEquals("ssainqpjwnzll", model.identityIds().get(0));
@@ -22,8 +21,8 @@ public final class IdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model =
-            new Identity().withType("wtnhxbnjbiksqr").withIdentityIds(Arrays.asList("ssainqpjwnzll", "fmppe"));
+        Identity model
+            = new Identity().withType("wtnhxbnjbiksqr").withIdentityIds(Arrays.asList("ssainqpjwnzll", "fmppe"));
         model = BinaryData.fromObject(model).toObject(Identity.class);
         Assertions.assertEquals("wtnhxbnjbiksqr", model.type());
         Assertions.assertEquals("ssainqpjwnzll", model.identityIds().get(0));

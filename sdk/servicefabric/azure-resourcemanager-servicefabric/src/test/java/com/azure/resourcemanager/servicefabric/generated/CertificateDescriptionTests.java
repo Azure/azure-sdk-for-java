@@ -23,7 +23,8 @@ public final class CertificateDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateDescription model = new CertificateDescription().withThumbprint("fpownoizhwlr")
-            .withThumbprintSecondary("bqsoqijg").withX509StoreName(StoreName.TRUSTED_PUBLISHER);
+            .withThumbprintSecondary("bqsoqijg")
+            .withX509StoreName(StoreName.TRUSTED_PUBLISHER);
         model = BinaryData.fromObject(model).toObject(CertificateDescription.class);
         Assertions.assertEquals("fpownoizhwlr", model.thumbprint());
         Assertions.assertEquals("bqsoqijg", model.thumbprintSecondary());

@@ -21,107 +21,99 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"definition\":{\"type\":\"Invoice\",\"category\":\"Billing\",\"criteria\":\"CrossCloudNewDataAvailable\"},\"description\":\"ubisnjampmng\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"Monthly\",\"periodStartDate\":\"wooc\",\"triggeredBy\":\"bonqvpkvlrxnjeas\",\"resourceGroupFilter\":[\"dataheoflokeyyienjbd\",\"datawtgrhpdjpj\",\"datamasxazjpqyegu\"],\"resourceFilter\":[\"datab\"],\"meterFilter\":[\"datae\",\"datajzzvdud\"],\"tagFilter\":\"datadslfhotwmcy\",\"operator\":\"None\",\"unit\":\"npgacftade\",\"contactEmails\":[\"tyfsoppusuesn\",\"wd\"],\"contactGroups\":[\"avo\"],\"contactRoles\":[\"dmoh\",\"tbqvudw\",\"dndnvow\"],\"overridingAlert\":\"jjugwdkcglhslaz\",\"departmentName\":\"yggdtjixh\",\"companyName\":\"uofqwe\",\"enrollmentNumber\":\"hmenevfyexfwhybc\",\"enrollmentStartDate\":\"vyvdcs\",\"enrollmentEndDate\":\"ynnaam\"},\"costEntityId\":\"tehfiqscjeypvh\",\"status\":\"Resolved\",\"creationTime\":\"gqhcjrefovg\",\"closeTime\":\"qsl\",\"modificationTime\":\"yvxyqjp\",\"statusModificationUserName\":\"attpngjcrcczsq\",\"statusModificationTime\":\"hvmdajvnysounq\"},\"eTag\":\"a\",\"id\":\"oaeupfhyhltrpmo\",\"name\":\"jmcmatuokthfu\",\"type\":\"uaodsfcpk\"}")
-                .toObject(AlertInner.class);
-        Assertions.assertEquals("a", model.etag());
-        Assertions.assertEquals(AlertType.INVOICE, model.definition().type());
+        AlertInner model = BinaryData.fromString(
+            "{\"properties\":{\"definition\":{\"type\":\"Quota\",\"category\":\"Billing\",\"criteria\":\"MultiCurrency\"},\"description\":\"tndoaongbjc\",\"source\":\"User\",\"details\":{\"timeGrainType\":\"BillingAnnual\",\"periodStartDate\":\"jed\",\"triggeredBy\":\"wwa\",\"resourceGroupFilter\":[\"dataojvdcpzfoqo\",\"datai\"],\"resourceFilter\":[\"dataxarzgszufoxciq\",\"datap\",\"datadoamciodhkha\",\"dataxkhnzbonlwnto\"],\"meterFilter\":[\"datakdwbwhkszz\",\"datamrv\"],\"tagFilter\":\"dataztvbtqgsfr\",\"operator\":\"GreaterThan\",\"unit\":\"owtlmnguxawqald\",\"contactEmails\":[\"ximerqfobwyznk\",\"ykutwpf\",\"pagmhrskdsnf\"],\"contactGroups\":[\"oakgtdlmkkzev\",\"l\",\"ewpusdsttwvogvb\",\"ejdcngqqmoakuf\"],\"contactRoles\":[\"zr\",\"rdgrtw\",\"enuuzkopbm\"],\"overridingAlert\":\"rfdwoyu\",\"departmentName\":\"ziuiefozbhdm\",\"companyName\":\"l\",\"enrollmentNumber\":\"qhoftrmaequiah\",\"enrollmentStartDate\":\"cslfaoqzpiyylha\",\"enrollmentEndDate\":\"swhccsphk\"},\"costEntityId\":\"witqscywuggwoluh\",\"status\":\"None\",\"creationTime\":\"emh\",\"closeTime\":\"rsbrgzdwm\",\"modificationTime\":\"eypqwdxggicccn\",\"statusModificationUserName\":\"huexmk\",\"statusModificationTime\":\"lstvlzywe\"},\"eTag\":\"zrncsdt\",\"id\":\"lusiy\",\"name\":\"bsfgytguslfea\",\"type\":\"cy\"}")
+            .toObject(AlertInner.class);
+        Assertions.assertEquals("zrncsdt", model.etag());
+        Assertions.assertEquals(AlertType.QUOTA, model.definition().type());
         Assertions.assertEquals(AlertCategory.BILLING, model.definition().category());
-        Assertions.assertEquals(AlertCriteria.CROSS_CLOUD_NEW_DATA_AVAILABLE, model.definition().criteria());
-        Assertions.assertEquals("ubisnjampmng", model.description());
-        Assertions.assertEquals(AlertSource.PRESET, model.source());
-        Assertions.assertEquals(AlertTimeGrainType.MONTHLY, model.details().timeGrainType());
-        Assertions.assertEquals("wooc", model.details().periodStartDate());
-        Assertions.assertEquals("bonqvpkvlrxnjeas", model.details().triggeredBy());
-        Assertions.assertEquals(AlertOperator.NONE, model.details().operator());
-        Assertions.assertEquals("npgacftade", model.details().unit());
-        Assertions.assertEquals("tyfsoppusuesn", model.details().contactEmails().get(0));
-        Assertions.assertEquals("avo", model.details().contactGroups().get(0));
-        Assertions.assertEquals("dmoh", model.details().contactRoles().get(0));
-        Assertions.assertEquals("jjugwdkcglhslaz", model.details().overridingAlert());
-        Assertions.assertEquals("yggdtjixh", model.details().departmentName());
-        Assertions.assertEquals("uofqwe", model.details().companyName());
-        Assertions.assertEquals("hmenevfyexfwhybc", model.details().enrollmentNumber());
-        Assertions.assertEquals("vyvdcs", model.details().enrollmentStartDate());
-        Assertions.assertEquals("ynnaam", model.details().enrollmentEndDate());
-        Assertions.assertEquals("tehfiqscjeypvh", model.costEntityId());
-        Assertions.assertEquals(AlertStatus.RESOLVED, model.status());
-        Assertions.assertEquals("gqhcjrefovg", model.creationTime());
-        Assertions.assertEquals("qsl", model.closeTime());
-        Assertions.assertEquals("yvxyqjp", model.modificationTime());
-        Assertions.assertEquals("attpngjcrcczsq", model.statusModificationUsername());
-        Assertions.assertEquals("hvmdajvnysounq", model.statusModificationTime());
+        Assertions.assertEquals(AlertCriteria.MULTI_CURRENCY, model.definition().criteria());
+        Assertions.assertEquals("tndoaongbjc", model.description());
+        Assertions.assertEquals(AlertSource.USER, model.source());
+        Assertions.assertEquals(AlertTimeGrainType.BILLING_ANNUAL, model.details().timeGrainType());
+        Assertions.assertEquals("jed", model.details().periodStartDate());
+        Assertions.assertEquals("wwa", model.details().triggeredBy());
+        Assertions.assertEquals(AlertOperator.GREATER_THAN, model.details().operator());
+        Assertions.assertEquals("owtlmnguxawqald", model.details().unit());
+        Assertions.assertEquals("ximerqfobwyznk", model.details().contactEmails().get(0));
+        Assertions.assertEquals("oakgtdlmkkzev", model.details().contactGroups().get(0));
+        Assertions.assertEquals("zr", model.details().contactRoles().get(0));
+        Assertions.assertEquals("rfdwoyu", model.details().overridingAlert());
+        Assertions.assertEquals("ziuiefozbhdm", model.details().departmentName());
+        Assertions.assertEquals("l", model.details().companyName());
+        Assertions.assertEquals("qhoftrmaequiah", model.details().enrollmentNumber());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.details().enrollmentStartDate());
+        Assertions.assertEquals("swhccsphk", model.details().enrollmentEndDate());
+        Assertions.assertEquals("witqscywuggwoluh", model.costEntityId());
+        Assertions.assertEquals(AlertStatus.NONE, model.status());
+        Assertions.assertEquals("emh", model.creationTime());
+        Assertions.assertEquals("rsbrgzdwm", model.closeTime());
+        Assertions.assertEquals("eypqwdxggicccn", model.modificationTime());
+        Assertions.assertEquals("huexmk", model.statusModificationUsername());
+        Assertions.assertEquals("lstvlzywe", model.statusModificationTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertInner model =
-            new AlertInner()
-                .withEtag("a")
-                .withDefinition(
-                    new AlertPropertiesDefinition()
-                        .withType(AlertType.INVOICE)
-                        .withCategory(AlertCategory.BILLING)
-                        .withCriteria(AlertCriteria.CROSS_CLOUD_NEW_DATA_AVAILABLE))
-                .withDescription("ubisnjampmng")
-                .withSource(AlertSource.PRESET)
-                .withDetails(
-                    new AlertPropertiesDetails()
-                        .withTimeGrainType(AlertTimeGrainType.MONTHLY)
-                        .withPeriodStartDate("wooc")
-                        .withTriggeredBy("bonqvpkvlrxnjeas")
-                        .withResourceGroupFilter(
-                            Arrays.asList("dataheoflokeyyienjbd", "datawtgrhpdjpj", "datamasxazjpqyegu"))
-                        .withResourceFilter(Arrays.asList("datab"))
-                        .withMeterFilter(Arrays.asList("datae", "datajzzvdud"))
-                        .withTagFilter("datadslfhotwmcy")
-                        .withOperator(AlertOperator.NONE)
-                        .withUnit("npgacftade")
-                        .withContactEmails(Arrays.asList("tyfsoppusuesn", "wd"))
-                        .withContactGroups(Arrays.asList("avo"))
-                        .withContactRoles(Arrays.asList("dmoh", "tbqvudw", "dndnvow"))
-                        .withOverridingAlert("jjugwdkcglhslaz")
-                        .withDepartmentName("yggdtjixh")
-                        .withCompanyName("uofqwe")
-                        .withEnrollmentNumber("hmenevfyexfwhybc")
-                        .withEnrollmentStartDate("vyvdcs")
-                        .withEnrollmentEndDate("ynnaam"))
-                .withCostEntityId("tehfiqscjeypvh")
-                .withStatus(AlertStatus.RESOLVED)
-                .withCreationTime("gqhcjrefovg")
-                .withCloseTime("qsl")
-                .withModificationTime("yvxyqjp")
-                .withStatusModificationUsername("attpngjcrcczsq")
-                .withStatusModificationTime("hvmdajvnysounq");
+        AlertInner model = new AlertInner().withEtag("zrncsdt")
+            .withDefinition(new AlertPropertiesDefinition().withType(AlertType.QUOTA)
+                .withCategory(AlertCategory.BILLING)
+                .withCriteria(AlertCriteria.MULTI_CURRENCY))
+            .withDescription("tndoaongbjc")
+            .withSource(AlertSource.USER)
+            .withDetails(new AlertPropertiesDetails().withTimeGrainType(AlertTimeGrainType.BILLING_ANNUAL)
+                .withPeriodStartDate("jed")
+                .withTriggeredBy("wwa")
+                .withResourceGroupFilter(Arrays.asList("dataojvdcpzfoqo", "datai"))
+                .withResourceFilter(
+                    Arrays.asList("dataxarzgszufoxciq", "datap", "datadoamciodhkha", "dataxkhnzbonlwnto"))
+                .withMeterFilter(Arrays.asList("datakdwbwhkszz", "datamrv"))
+                .withTagFilter("dataztvbtqgsfr")
+                .withOperator(AlertOperator.GREATER_THAN)
+                .withUnit("owtlmnguxawqald")
+                .withContactEmails(Arrays.asList("ximerqfobwyznk", "ykutwpf", "pagmhrskdsnf"))
+                .withContactGroups(Arrays.asList("oakgtdlmkkzev", "l", "ewpusdsttwvogvb", "ejdcngqqmoakuf"))
+                .withContactRoles(Arrays.asList("zr", "rdgrtw", "enuuzkopbm"))
+                .withOverridingAlert("rfdwoyu")
+                .withDepartmentName("ziuiefozbhdm")
+                .withCompanyName("l")
+                .withEnrollmentNumber("qhoftrmaequiah")
+                .withEnrollmentStartDate("cslfaoqzpiyylha")
+                .withEnrollmentEndDate("swhccsphk"))
+            .withCostEntityId("witqscywuggwoluh")
+            .withStatus(AlertStatus.NONE)
+            .withCreationTime("emh")
+            .withCloseTime("rsbrgzdwm")
+            .withModificationTime("eypqwdxggicccn")
+            .withStatusModificationUsername("huexmk")
+            .withStatusModificationTime("lstvlzywe");
         model = BinaryData.fromObject(model).toObject(AlertInner.class);
-        Assertions.assertEquals("a", model.etag());
-        Assertions.assertEquals(AlertType.INVOICE, model.definition().type());
+        Assertions.assertEquals("zrncsdt", model.etag());
+        Assertions.assertEquals(AlertType.QUOTA, model.definition().type());
         Assertions.assertEquals(AlertCategory.BILLING, model.definition().category());
-        Assertions.assertEquals(AlertCriteria.CROSS_CLOUD_NEW_DATA_AVAILABLE, model.definition().criteria());
-        Assertions.assertEquals("ubisnjampmng", model.description());
-        Assertions.assertEquals(AlertSource.PRESET, model.source());
-        Assertions.assertEquals(AlertTimeGrainType.MONTHLY, model.details().timeGrainType());
-        Assertions.assertEquals("wooc", model.details().periodStartDate());
-        Assertions.assertEquals("bonqvpkvlrxnjeas", model.details().triggeredBy());
-        Assertions.assertEquals(AlertOperator.NONE, model.details().operator());
-        Assertions.assertEquals("npgacftade", model.details().unit());
-        Assertions.assertEquals("tyfsoppusuesn", model.details().contactEmails().get(0));
-        Assertions.assertEquals("avo", model.details().contactGroups().get(0));
-        Assertions.assertEquals("dmoh", model.details().contactRoles().get(0));
-        Assertions.assertEquals("jjugwdkcglhslaz", model.details().overridingAlert());
-        Assertions.assertEquals("yggdtjixh", model.details().departmentName());
-        Assertions.assertEquals("uofqwe", model.details().companyName());
-        Assertions.assertEquals("hmenevfyexfwhybc", model.details().enrollmentNumber());
-        Assertions.assertEquals("vyvdcs", model.details().enrollmentStartDate());
-        Assertions.assertEquals("ynnaam", model.details().enrollmentEndDate());
-        Assertions.assertEquals("tehfiqscjeypvh", model.costEntityId());
-        Assertions.assertEquals(AlertStatus.RESOLVED, model.status());
-        Assertions.assertEquals("gqhcjrefovg", model.creationTime());
-        Assertions.assertEquals("qsl", model.closeTime());
-        Assertions.assertEquals("yvxyqjp", model.modificationTime());
-        Assertions.assertEquals("attpngjcrcczsq", model.statusModificationUsername());
-        Assertions.assertEquals("hvmdajvnysounq", model.statusModificationTime());
+        Assertions.assertEquals(AlertCriteria.MULTI_CURRENCY, model.definition().criteria());
+        Assertions.assertEquals("tndoaongbjc", model.description());
+        Assertions.assertEquals(AlertSource.USER, model.source());
+        Assertions.assertEquals(AlertTimeGrainType.BILLING_ANNUAL, model.details().timeGrainType());
+        Assertions.assertEquals("jed", model.details().periodStartDate());
+        Assertions.assertEquals("wwa", model.details().triggeredBy());
+        Assertions.assertEquals(AlertOperator.GREATER_THAN, model.details().operator());
+        Assertions.assertEquals("owtlmnguxawqald", model.details().unit());
+        Assertions.assertEquals("ximerqfobwyznk", model.details().contactEmails().get(0));
+        Assertions.assertEquals("oakgtdlmkkzev", model.details().contactGroups().get(0));
+        Assertions.assertEquals("zr", model.details().contactRoles().get(0));
+        Assertions.assertEquals("rfdwoyu", model.details().overridingAlert());
+        Assertions.assertEquals("ziuiefozbhdm", model.details().departmentName());
+        Assertions.assertEquals("l", model.details().companyName());
+        Assertions.assertEquals("qhoftrmaequiah", model.details().enrollmentNumber());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.details().enrollmentStartDate());
+        Assertions.assertEquals("swhccsphk", model.details().enrollmentEndDate());
+        Assertions.assertEquals("witqscywuggwoluh", model.costEntityId());
+        Assertions.assertEquals(AlertStatus.NONE, model.status());
+        Assertions.assertEquals("emh", model.creationTime());
+        Assertions.assertEquals("rsbrgzdwm", model.closeTime());
+        Assertions.assertEquals("eypqwdxggicccn", model.modificationTime());
+        Assertions.assertEquals("huexmk", model.statusModificationUsername());
+        Assertions.assertEquals("lstvlzywe", model.statusModificationTime());
     }
 }

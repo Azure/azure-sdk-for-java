@@ -13,8 +13,7 @@ public final class IntegrationRuntimeOperationStatusImpl implements IntegrationR
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    IntegrationRuntimeOperationStatusImpl(
-        IntegrationRuntimeOperationStatusInner innerObject,
+    IntegrationRuntimeOperationStatusImpl(IntegrationRuntimeOperationStatusInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

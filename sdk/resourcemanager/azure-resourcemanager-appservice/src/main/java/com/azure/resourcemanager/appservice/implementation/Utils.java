@@ -106,14 +106,13 @@ class Utils {
      */
     static Mono<byte[]> downloadFileAsync(String url, HttpPipeline httpPipeline) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        return httpPipeline.send(request)
-            .flatMap(response1 -> {
-                int code = response1.getStatusCode();
-                if (code == 200) {
-                    return Mono.just(response1);
-                } else {
-                    return Mono.error(new HttpResponseException(response1));
-                }
-            }).flatMap(HttpResponse::getBodyAsByteArray);
+        return httpPipeline.send(request).flatMap(response1 -> {
+            int code = response1.getStatusCode();
+            if (code == 200) {
+                return Mono.just(response1);
+            } else {
+                return Mono.error(new HttpResponseException(response1));
+            }
+        }).flatMap(HttpResponse::getBodyAsByteArray);
     }
 }

@@ -65,8 +65,8 @@ public final class ContainerImpl implements Container, Container.Definition, Con
 
     private String resourceGroupName;
 
-    public ContainerImpl withExistingStorageAccount(
-        String deviceName, String storageAccountName, String resourceGroupName) {
+    public ContainerImpl withExistingStorageAccount(String deviceName, String storageAccountName,
+        String resourceGroupName) {
         this.deviceName = deviceName;
         this.storageAccountName = storageAccountName;
         this.resourceGroupName = resourceGroupName;
@@ -74,22 +74,18 @@ public final class ContainerImpl implements Container, Container.Definition, Con
     }
 
     public Container create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainers()
-                .createOrUpdate(
-                    deviceName, storageAccountName, containerName, resourceGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContainers()
+            .createOrUpdate(deviceName, storageAccountName, containerName, resourceGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public Container create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainers()
-                .createOrUpdate(
-                    deviceName, storageAccountName, containerName, resourceGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContainers()
+            .createOrUpdate(deviceName, storageAccountName, containerName, resourceGroupName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -104,51 +100,43 @@ public final class ContainerImpl implements Container, Container.Definition, Con
     }
 
     public Container apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainers()
-                .createOrUpdate(
-                    deviceName, storageAccountName, containerName, resourceGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContainers()
+            .createOrUpdate(deviceName, storageAccountName, containerName, resourceGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public Container apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainers()
-                .createOrUpdate(
-                    deviceName, storageAccountName, containerName, resourceGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContainers()
+            .createOrUpdate(deviceName, storageAccountName, containerName, resourceGroupName, this.innerModel(),
+                context);
         return this;
     }
 
     ContainerImpl(ContainerInner innerObject, com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.deviceName = Utils.getValueFromIdByName(innerObject.id(), "dataBoxEdgeDevices");
-        this.storageAccountName = Utils.getValueFromIdByName(innerObject.id(), "storageAccounts");
-        this.containerName = Utils.getValueFromIdByName(innerObject.id(), "containers");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.deviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataBoxEdgeDevices");
+        this.storageAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageAccounts");
+        this.containerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "containers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public Container refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainers()
-                .getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainers()
+            .getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Container refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainers()
-                .getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainers()
+            .getWithResponse(deviceName, storageAccountName, containerName, resourceGroupName, context)
+            .getValue();
         return this;
     }
 

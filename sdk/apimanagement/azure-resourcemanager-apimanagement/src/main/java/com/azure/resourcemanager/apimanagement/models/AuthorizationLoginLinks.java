@@ -23,12 +23,8 @@ public interface AuthorizationLoginLinks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization login links.
      */
-    Response<AuthorizationLoginResponseContract> postWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters,
+    Response<AuthorizationLoginResponseContract> postWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters,
         Context context);
 
     /**
@@ -44,10 +40,6 @@ public interface AuthorizationLoginLinks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization login links.
      */
-    AuthorizationLoginResponseContract post(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters);
+    AuthorizationLoginResponseContract post(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters);
 }

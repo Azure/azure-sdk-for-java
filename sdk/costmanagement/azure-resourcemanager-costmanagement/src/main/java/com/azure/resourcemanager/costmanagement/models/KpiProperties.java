@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Each KPI must contain a 'type' and 'enabled' key. */
+/**
+ * Each KPI must contain a 'type' and 'enabled' key.
+ */
 @Fluent
-public final class KpiProperties {
+public final class KpiProperties implements JsonSerializable<KpiProperties> {
     /*
      * KPI type (Forecast, Budget).
      */
-    @JsonProperty(value = "type")
     private KpiType type;
 
     /*
      * ID of resource related to metric (budget).
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * show the KPI in the UI?
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of KpiProperties class. */
+    /**
+     * Creates an instance of KpiProperties class.
+     */
     public KpiProperties() {
     }
 
     /**
      * Get the type property: KPI type (Forecast, Budget).
-     *
+     * 
      * @return the type value.
      */
     public KpiType type() {
@@ -43,7 +48,7 @@ public final class KpiProperties {
 
     /**
      * Set the type property: KPI type (Forecast, Budget).
-     *
+     * 
      * @param type the type value to set.
      * @return the KpiProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class KpiProperties {
 
     /**
      * Get the id property: ID of resource related to metric (budget).
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -63,7 +68,7 @@ public final class KpiProperties {
 
     /**
      * Set the id property: ID of resource related to metric (budget).
-     *
+     * 
      * @param id the id value to set.
      * @return the KpiProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class KpiProperties {
 
     /**
      * Get the enabled property: show the KPI in the UI?.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -83,7 +88,7 @@ public final class KpiProperties {
 
     /**
      * Set the enabled property: show the KPI in the UI?.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the KpiProperties object itself.
      */
@@ -94,9 +99,51 @@ public final class KpiProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KpiProperties.
+     */
+    public static KpiProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiProperties deserializedKpiProperties = new KpiProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedKpiProperties.type = KpiType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedKpiProperties.id = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedKpiProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiProperties;
+        });
     }
 }

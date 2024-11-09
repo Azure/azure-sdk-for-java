@@ -7,32 +7,34 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 
-/** An immutable client-side representation of AsyncOperationResult. */
+/**
+ * An immutable client-side representation of AsyncOperationResult.
+ */
 public interface AsyncOperationResult {
     /**
      * Gets the error property: The error object.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
 
     /**
      * Gets the name property: Operation Id of the async operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the status property: Operation status of the async operation.
-     *
+     * 
      * @return the status value.
      */
     AsyncOperationStatus status();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     AsyncOperationResultInner innerModel();
