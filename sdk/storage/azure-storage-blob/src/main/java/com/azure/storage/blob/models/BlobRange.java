@@ -75,7 +75,7 @@ public final class BlobRange {
     @Override
     public String toString() {
         if (this.count != null) {
-            long rangeEnd = this.offset + this.count - 1;
+            long rangeEnd = this.offset + (this.offset == 0 && this.count == 0 ? 0 : this.count - 1);
             return String.format(Locale.ROOT, RANGE_HEADER_FORMAT, this.offset, rangeEnd);
         }
 

@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 - Fixed an issue where BlobClient.upload(InputStream data) would overwrite an existing blob by default.
+- Fixed an issue where BlobRange(0, 0) would send a -1 count.
 
 ### Other Changes
 
