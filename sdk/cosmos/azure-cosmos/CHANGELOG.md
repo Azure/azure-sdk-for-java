@@ -3,6 +3,7 @@
 ### 4.65.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `CosmosFullTextPolicy` in `CosmosContainerProperties` and `CosmosFullTextIndexes` in `IndexingPolicy` to support Full Text Search in Cosmos DB - See [PR 42278](https://github.com/Azure/azure-sdk-for-java/pull/42278)
 
 #### Breaking Changes
 
