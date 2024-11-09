@@ -94,7 +94,7 @@ You can familiarize yourself with different APIs using [samples for Digital Twin
 
 Portions of the client library are generated through Autorest, and the swagger file used is defined in the Autorest config file.
 
-To regenerate the code, run the Powershell script [generate.ps1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/digitaltwins/azure-digitaltwins-core/generate.ps1).
+To regenerate the code, run the Powershell script [generate.ps1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/digitaltwins/azure-digitaltwins-core/swagger/generate.ps1).
 
 ### /src/samples
 
