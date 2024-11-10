@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.StringUtil;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
@@ -113,75 +114,133 @@ final class ServiceBusSessionAcquirer {
         return acquireIntern(sessionId);
     }
 
+    /**
+     * Tries to acquire a session from the broker by opening an AMQP receive link. When the acquire attempt timeout then
+     * the api will retry if {@code timeoutRetryDisabled} is set to {@code false}. In case an error needs to be propagated,
+     * api publishes the error using bounded-elastic Thread.
+     *
+     * @param sessionId the unique id of the specific session to acquire, a value {@code null} means acquire any free session.
+     * @return A Mono that completes with the acquired session, the Mono can emit {@link AmqpException} if the acquirer
+     * is already disposed or {@link TimeoutException} if session acquire timeouts and {@code timeoutRetryDisabled} set to true.
+     */
     private Mono<Session> acquireIntern(String sessionId) {
-        final Mono<Session> acquireSession
-            = Mono.defer(() -> createSessionReceiveLink(sessionId).flatMap(link -> link.getSessionProperties() // Await for link to "ACTIVE" then reads its properties
-                .flatMap(sessionProperties -> Mono.just(new Session(link, sessionProperties, sessionManagement)))));
-
-        return (timeoutRetryDisabled ? acquireSession : acquireSession.timeout(tryTimeout))
-            .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
-                final Throwable failure = signal.failure();
-                final boolean isTimeoutError = isTimeoutError(failure);
-                if (isTimeoutError && !timeoutRetryDisabled) {
-                    logger.atVerbose()
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .addKeyValue("attempt", signal.totalRetriesInARow())
-                        .log("Broker timeout while acquiring session '{}'.", sessionName(sessionId), failure);
-                    // retry for a session on Schedulers.parallel() and free the QPid thread for other IO.
-                    return Mono.delay(Duration.ZERO);
+        if (timeoutRetryDisabled) {
+            return acquireSession(sessionId).onErrorResume(t -> {
+                if (isBrokerTimeoutError(t)) {
+                    // map the broker timeout to application-friendly TimeoutException.
+                    final Throwable e = new TimeoutException("com.microsoft:timeout").initCause(t);
+                    return publishError(sessionId, e, false);
                 }
-                final long id = System.nanoTime();
-                if (!isTimeoutError) {
-                    // Not a typical path as most of the time we expect broker timeout error, hence 'info' log.
-                    logger.atInfo()
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .addKeyValue(TRACKING_ID_KEY, id)
-                        .log("Unable to acquire session '{}'.", sessionName(sessionId), failure);
-                }
-                return propagateError(id, failure);
-            })));
-    }
-
-    private Mono<ServiceBusReceiveLink> createSessionReceiveLink(String sessionId) {
-        final String linkName = (sessionId != null) ? sessionId : StringUtil.getRandomString("session-");
-        return connectionCacheWrapper.getConnection()
-            .flatMap(connection -> connection.createReceiveLink(linkName, entityPath, receiveMode, null, entityType,
-                identifier, sessionId));
-    }
-
-    private Mono<Long> propagateError(long id, Throwable failure) {
-        final Throwable t;
-        if (failure instanceof AmqpException
-            && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-            // The broker timeout event needs to propagated to the application when timeoutRetryDisabled is true.
-            // In such case, map the broker error (AmqpException with TIMEOUT_ERROR condition) to more user-friendly
-            // TimeoutException.
-            t = new TimeoutException().initCause(failure);
+                return publishError(sessionId, t, true);
+            });
         } else {
-            t = failure;
+            return acquireSession(sessionId).timeout(tryTimeout)
+                .retryWhen(Retry.from(signals -> signals.flatMap(signal -> {
+                    final Throwable t = signal.failure();
+                    if (isTimeoutError(t)) {
+                        logger.atVerbose()
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .addKeyValue("attempt", signal.totalRetriesInARow())
+                            .log("Timeout while acquiring session '{}'.", sessionName(sessionId), t);
+                        // retry session acquire using Schedulers.parallel() and free the QPid thread.
+                        return Mono.delay(Duration.ZERO);
+                    }
+                    return publishError(sessionId, t, true);
+                })));
         }
-        // The link-endpoint-state publisher will emit error on the QPid Thread, that is a non-blocking Thread,
-        // publish the error on the (block-able) bounded-elastic thread to free QPid thread and to allow
-        // any blocking operation that downstream may do.
-        return Mono.<Long>error(t)
+    }
+
+    /**
+     * Tries to acquire a session from the broker by opening an AMQP receive link.
+     *
+     * @param sessionId the unique id of the session to acquire, a value {@code null} means acquire any free session.
+     *
+     * @return the acquired session.
+     */
+    private Mono<Session> acquireSession(String sessionId) {
+        return Mono.defer(() -> {
+            final Mono<ServiceBusReceiveLink> createLink = connectionCacheWrapper.getConnection()
+                .flatMap(connection -> connection.createReceiveLink(linkName(sessionId), entityPath, receiveMode, null,
+                    entityType, identifier, sessionId));
+            return createLink.flatMap(link -> {
+                // ServiceBusReceiveLink::getSessionProperties() await for link to "ACTIVE" then reads its properties.
+                return link.getSessionProperties()
+                    .flatMap(sessionProperties -> Mono.just(new Session(link, sessionProperties, sessionManagement)));
+            });
+        });
+    }
+
+    /**
+     * Publish the session acquire error using a bounded-elastic Thread.
+     * <p>
+     * The link-endpoint-state publisher ({@link ReceiveLinkHandler2#getEndpointStates()}) will emit error on the QPid
+     * Thread, which is a non-block-able Thread. Publishing the error on the (block-able) bounded-elastic Thread will free
+     * QPid Thread and to allow any blocking operation that downstream may do. If library do not publish in bounded-elastic
+     * Thread and downstream happens to make a blocking call on non-block-able QPid Thread then reactor-core will error
+     * - 'IllegalStateException(..*operation* are blocking, which is not supported in thread ...').
+     * </p>
+     *
+     * @param sessionId the session id.
+     * @param t the error to publish.
+     * @param logAtInfo indicates if session acquire error should be logged at "info" level from the current thread, most of
+     *     the time, the broker timeout is the reason for session acquisition failure, in case, the acquire fails
+     *     due to any other reasons, that least expected error is logged in the "info" level.
+     * @return a Mono that publishes the given error using a bounded-elastic Thread.
+     * @param <T> the type
+     */
+    private <T> Mono<T> publishError(String sessionId, Throwable t, boolean logAtInfo) {
+        final long id = System.nanoTime();
+        if (logAtInfo) {
+            logger.atInfo()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(TRACKING_ID_KEY, id)
+                .log("Unable to acquire session '{}'.", sessionName(sessionId), t);
+        }
+        return Mono.<T>error(t)
             .publishOn(Schedulers.boundedElastic())
-            .doOnError(
-                e -> logger.atVerbose().addKeyValue(TRACKING_ID_KEY, id).log("Emitting session acquire error signal."));
+            .doOnError(ignored -> logger.atVerbose()
+                .addKeyValue(TRACKING_ID_KEY, id)
+                .log("Emitting session acquire error signal."));
     }
 
-    private static boolean isTimeoutError(Throwable failure) {
-        if (failure instanceof TimeoutException) {
-            return true;
-        }
-        if (failure instanceof AmqpException
-            && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-            // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
-            // the broker waited for N seconds (60 sec default) but there was no free or new session.
-            return true;
-        }
-        return false;
+    /**
+     * Check if the given error is a remote link detach with '{errorCondition:com.microsoft:timeout}' indicating the broker
+     * waited for N seconds (60 sec default) but there was no free or new session.
+     *
+     * @param t the error to test.
+     * @return {@code true} if the error represents broker timeout.
+     */
+    private static boolean isBrokerTimeoutError(Throwable t) {
+        return t instanceof AmqpException
+            && ((AmqpException) t).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR;
     }
 
+    /**
+     * Checks if the given error is a timeout error.
+     *
+     * @param t the error to test.
+     * @return {@code true} if the error represents timeout.
+     */
+    private static boolean isTimeoutError(Throwable t) {
+        return t instanceof TimeoutException || isBrokerTimeoutError(t);
+    }
+
+    /**
+     * Obtain the name for the AMQP link that channels messages from a session.
+     *
+     * @param sessionId the session to channel messages from.
+     * @return name for the AMQP link.
+     */
+    private static String linkName(String sessionId) {
+        return (sessionId != null) ? sessionId : StringUtil.getRandomString("session-");
+    }
+
+    /**
+     * Get the session name for simple local logging purpose.
+     *
+     * @param sessionId the unique id of the session or {@code null}, if session id is unknown.
+     * @return the session name.
+     */
     private static String sessionName(String sessionId) {
         return sessionId == null ? "unnamed" : sessionId;
     }
