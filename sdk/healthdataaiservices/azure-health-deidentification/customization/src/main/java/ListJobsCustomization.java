@@ -35,6 +35,7 @@ public class ListJobsCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         PackageCustomization models = libraryCustomization.getPackage("com.azure.health.deidentification");
+        models.getClass("JobName").setModifiers(Modifier.Keyword.PRIVATE);
 
         ClassCustomization deidentificationClientClass = models.getClass("DeidentificationClient");
         customizeClassByMarkingContinuationTokenOverloadsPrivate(deidentificationClientClass);
