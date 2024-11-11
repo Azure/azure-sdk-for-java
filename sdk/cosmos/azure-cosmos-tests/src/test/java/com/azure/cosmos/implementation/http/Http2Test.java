@@ -5,6 +5,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.PartitionKey;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.Test;
 
 public class Http2Test {
@@ -16,8 +18,11 @@ public class Http2Test {
             .gatewayMode()
             .buildAsyncClient();
 
-        CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("TestContainer");
+        CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("ChangeFeedTestContainer");
         TestItem testItem = TestItem.createNewItem();
+        System.out.println(testItem.getId());
         container.createItem(testItem).block();
+        container.readItem(testItem.getId(), new PartitionKey(testItem.getId()), JsonNode.class)
+            .block();
     }
 }

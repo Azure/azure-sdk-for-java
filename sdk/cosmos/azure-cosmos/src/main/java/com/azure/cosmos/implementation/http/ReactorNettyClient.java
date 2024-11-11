@@ -3,8 +3,10 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.http2.Http2ResponseHeaderCleanerHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -136,14 +138,12 @@ public class ReactorNettyClient implements HttpClient {
         logger.info("Changing to use http2 protocol with removing all whitespaces");
         this.httpClient =
             this.httpClient
-                .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
+                .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContextHttp2()))
                 .protocol(HttpProtocol.H2)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
-                .doOnResponse((response, connection) -> {
-                    // does not work for the invalid headers
-                    response.responseHeaders().entries().forEach(entry -> {
-                        entry.setValue(entry.getValue().trim());
-                    });
+                .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
+                    ChannelPipeline channelPipeline = channel.pipeline();
+                    channelPipeline.addAfter("reactor.left.httpCodec", "customHeaderCleaner", new Http2ResponseHeaderCleanerHandler());
                 })
                 .httpResponseDecoder(httpResponseDecoderSpec ->
                     httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength())

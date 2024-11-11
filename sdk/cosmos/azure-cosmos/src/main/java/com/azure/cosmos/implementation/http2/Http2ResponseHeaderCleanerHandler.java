@@ -1,0 +1,40 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation.http2;
+
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.codec.http2.Http2Headers;
+import io.netty.handler.codec.http2.Http2HeadersFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdapter {
+
+    private static final Logger logger = LoggerFactory.getLogger(Http2ResponseHeaderCleanerHandler.class);
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        logger.info("In Http2HeaderCleanerHandler ");
+        if (msg instanceof Http2HeadersFrame) {
+            Http2HeadersFrame headersFrame = (Http2HeadersFrame) msg;
+            Http2Headers headers = headersFrame.headers();
+
+            headers.forEach(entry -> {
+                CharSequence key = entry.getKey();
+                CharSequence value = entry.getValue();
+
+                // Check for leading whitespace or other prohibited characters
+                if (StringUtils.isNotEmpty(value) && (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
+                    // Clean up the header value by trimming or handling as needed
+                    logger.warn("There are extra white space for key {} with value {}", key, value);
+                    headers.set(key, value.toString().trim());
+                }
+            });
+        }
+
+        // Pass the message to the next handler in the pipeline
+        super.channelRead(ctx, msg);
+    }
+}
