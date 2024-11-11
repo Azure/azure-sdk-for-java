@@ -1,28 +1,33 @@
-# Instructions for Generation
-This file is used to generate the OpenAPI files for track 2 EventGrid
-## Requirements/Installation
-You need the following to start generating code
-> NodeJS v10.x - v13.x
->
-> Java 8+
->
-> Maven 3.x
+# Azure Event Grid for Java
 
-Install Autorest beta with NPM:
+> see https://aka.ms/autorest
 
-`npm i -g @autorest/autorest`
+This is the AutoRest configuration file for Event Grid.
 
-## Using
+---
+## Getting Started
+To build the SDK for Event Grid, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
 
-run `autorest readme.md`
+> `autorest`
 
-If you are adding or updating swagger files, please make sure that they are included 
-in the input file list. Also, if you are adding an additional service event, make sure that 
-its `eventType` string is added as a constant and a mapping to the event data model in the
-`SystemEventMappings` file.
+To see additional help and options, run:
+
+> `autorest --help`
+
+### Setup
+```ps
+npm install -g autorest
+```
+
+### Generation
+```ps
+cd <swagger-folder>
+autorest
+```
 
 ```yaml
-use: '@autorest/java@4.1.25'
+use: '@autorest/java@4.1.39'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client

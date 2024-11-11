@@ -13,6 +13,9 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
     variables:
       - template: ../../../eng/pipelines/templates/variables/globals.yml
+    pool:
+      name: azsdk-pool-mms-ubuntu-2204-general
+      vmImage: ubuntu-22.04
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:

@@ -97,6 +97,9 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

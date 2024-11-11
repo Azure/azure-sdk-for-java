@@ -291,7 +291,6 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion)
         throws RuntimeException {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -401,15 +400,15 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("Disabled until file available on main")
+    @Disabled("com.azure.core.exception.AzureException: Long running operation failed.\n")
     public void analyzeBatchDocuments(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationAsyncClient adminClient
             = getDocumentAdminAsyncClient(httpClient, serviceVersion);
-        buildBatchModelRunner((trainingFilesUrl) -> {
+        buildBatchModelRunner((trainingFilesUrl, trainingFilesResultUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
                 .beginBuildDocumentModel(
-                    new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.GENERATIVE)
+                    new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();

@@ -40,7 +40,7 @@ com.azure:azure-ai-anomalydetector;3.0.0-beta.5;3.0.0-beta.6
 com.azure:azure-ai-contentsafety;1.0.8;1.1.0-beta.1
 com.azure:azure-ai-documentintelligence;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-ai-formrecognizer;4.1.11;4.2.0-beta.1
+com.azure:azure-ai-formrecognizer;4.1.12;4.2.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-inference;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-metricsadvisor;1.2.3;1.3.0-beta.1
@@ -165,6 +165,7 @@ com.azure:azure-messaging-webpubsub-client;1.0.8;1.1.0-beta.1
 com.azure:azure-mixedreality-authentication;1.2.29;1.3.0-beta.1
 com.azure:azure-mixedreality-remoterendering;1.1.34;1.2.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.31;1.0.0-beta.32
+com.azure:azure-monitor-opentelemetry-autoconfigure;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-monitor-ingestion;1.2.6;1.3.0-beta.1
 com.azure:azure-monitor-ingestion-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-monitor-query;1.5.3;1.6.0-beta.1
@@ -272,7 +273,7 @@ com.azure.resourcemanager:azure-resourcemanager-compute;2.44.0;2.45.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.44.0;2.45.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.44.0;2.45.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.44.0;2.45.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cosmos;2.44.0;2.45.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cosmos;2.44.1;2.45.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.44.0;2.45.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.44.0;2.45.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.44.0;2.45.0-beta.1
