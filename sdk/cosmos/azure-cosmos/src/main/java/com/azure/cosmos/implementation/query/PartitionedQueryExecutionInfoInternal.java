@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Utils;
@@ -19,6 +19,7 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
     static final String QUERY_INFO_PROPERTY = "queryInfo";
     static final String QUERY_RANGES_PROPERTY = "queryRanges";
     static final String PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY = "partitionedQueryExecutionInfoVersion";
+    static final String HYBRID_SEARCH_QUERY_INFO_PROPERTY = "hybridSearchQueryInfo";
 
     @SuppressWarnings("unchecked")
     private static final Class<Range<PartitionKeyInternal>> QUERY_RANGE_CLASS = (Class<Range<PartitionKeyInternal>>) Range
@@ -26,6 +27,7 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
 
     private QueryInfo queryInfo;
     private List<Range<PartitionKeyInternal>> queryRanges;
+    private HybridSearchQueryInfo hybridSearchQueryInfo;
 
     public PartitionedQueryExecutionInfoInternal() {
         this.set(
@@ -63,6 +65,13 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
     public void setQueryRanges(List<Range<PartitionKeyInternal>> queryRanges) {
         this.queryRanges = queryRanges;
     }
+
+    public HybridSearchQueryInfo getHybridSearchQueryInfo() {
+        return this.hybridSearchQueryInfo != null ? this.hybridSearchQueryInfo
+            :(this.hybridSearchQueryInfo = super.getObject(HYBRID_SEARCH_QUERY_INFO_PROPERTY, HybridSearchQueryInfo.class));
+    }
+
+    public void setHybridSearchQueryInfo(HybridSearchQueryInfo hybridSearchQueryInfo) { this.hybridSearchQueryInfo = hybridSearchQueryInfo; }
 
     public String toJson() {
         try {

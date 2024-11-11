@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ObjectNodeMap;
+import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -35,10 +36,11 @@ public class PipelinedDocumentQueryExecutionContext<T>
         IDocumentQueryExecutionComponent<Document> pipelinedComponent,
         int actualPageSize,
         QueryInfo queryInfo,
+        HybridSearchQueryInfo hybridSearchQueryInfo,
         CosmosItemSerializer itemSerializer,
         Class<T> classOfT) {
 
-        super(actualPageSize, queryInfo, itemSerializer, classOfT);
+        super(actualPageSize, queryInfo, hybridSearchQueryInfo, itemSerializer, classOfT);
 
         this.component = pipelinedComponent;
     }
@@ -105,6 +107,26 @@ public class PipelinedDocumentQueryExecutionContext<T>
         return createAggregateComponentFunction;
     }
 
+    private static BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createBaseHybridComponentFunction(
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient client,
+        PipelinedDocumentQueryParams<Document> initParams,
+        DocumentCollection collection) {
+        CosmosQueryRequestOptions requestOptions = initParams.getCosmosQueryRequestOptions();
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createBaseComponentFunction;
+
+        createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
+            CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
+                qryOptAccessor.clone(requestOptions);
+
+            qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
+            documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
+            return HybridSearchDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+        };
+        return createBaseComponentFunction;
+    }
+
+
     private static
         BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>>
         createDistinctPipelineComponentFunction(
@@ -169,6 +191,22 @@ public class PipelinedDocumentQueryExecutionContext<T>
         }
     }
 
+    private static BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createHybridPipelineComponentFunction(
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient client,
+        PipelinedDocumentQueryParams<Document> initParams,
+        DocumentCollection collection
+    ) {
+        HybridSearchQueryInfo hybridSearchQueryInfo = initParams.getHybridSearchQueryInfo();
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createBaseComponentFunction = createBaseHybridComponentFunction(
+            diagnosticsClientContext, client, initParams, collection);
+        return createCommonHybridPipelineComponentFunction(
+        createBaseComponentFunction,
+        hybridSearchQueryInfo
+    );
+
+    }
+
     protected static <T> Flux<PipelinedQueryExecutionContextBase<T>> createAsyncCore(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
@@ -190,7 +228,31 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
                 initParams.convertGenericType(Document.class))
             .map(c -> new PipelinedDocumentQueryExecutionContext<>(
-                c, pageSize, queryInfo, itemSerializer, classOfT));
+                c, pageSize, queryInfo, null, itemSerializer, classOfT));
+    }
+
+    protected static <T> Flux<PipelinedQueryExecutionContextBase<T>> createHybridAsyncCore(
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient client,
+        PipelinedDocumentQueryParams<T> initParams,
+        int pageSize,
+        CosmosItemSerializer itemSerializer,
+        Class<T> classOfT,
+        DocumentCollection collection
+    ) {
+        // Use nested callback pattern to unwrap the continuation token and query params at each level.
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createPipelineComponentFunction =
+            createHybridPipelineComponentFunction(diagnosticsClientContext, client, initParams.convertGenericType(Document.class), collection);
+
+        HybridSearchQueryInfo hybridSearchQueryInfo = initParams.getHybridSearchQueryInfo();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = initParams.getCosmosQueryRequestOptions();
+
+        return createPipelineComponentFunction
+            .apply(
+                ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
+                initParams.convertGenericType(Document.class))
+            .map(c -> new PipelinedDocumentQueryExecutionContext<>(
+                c, pageSize, null, hybridSearchQueryInfo, itemSerializer, classOfT));
     }
 
     @Override

@@ -29,6 +29,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private boolean emptyPageDiagnosticsEnabled;
     private String queryName;
     private Integer maxItemCountForVectorSearch;
+    private Integer maxItemCountForHybridSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private String collectionRid;
 
@@ -69,6 +70,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.feedRange = options.feedRange;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
         this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
+        this.maxItemCountForHybridSearch = options.maxItemCountForHybridSearch;
         this.collectionRid = options.collectionRid;
     }
 
@@ -233,6 +235,18 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
             this.maxItemCountForVectorSearch = Configs.DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH;
         }
         return this.maxItemCountForVectorSearch;
+    }
+
+    /**
+     * Gets the maximum item size to fetch during hybrid search queries.
+     *
+     * @return the max number of items for hybrid search.
+     */
+    public Integer getMaxItemCountForHybridSearch() {
+        if (this.maxItemCountForHybridSearch == null) {
+            this.maxItemCountForHybridSearch = Configs.DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH;
+        }
+        return this.maxItemCountForHybridSearch;
     }
 
     /**
