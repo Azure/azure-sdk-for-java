@@ -30,6 +30,9 @@ public final class AvsPrivateCloudUpdatingEventData extends AvsPrivateCloudEvent
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
