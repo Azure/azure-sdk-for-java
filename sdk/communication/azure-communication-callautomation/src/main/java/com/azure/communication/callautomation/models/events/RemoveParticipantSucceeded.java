@@ -3,15 +3,13 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import java.io.IOException;
+
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 
 /** The RemoveParticipantSucceeded model. */
 @Immutable
@@ -55,8 +53,8 @@ public final class RemoveParticipantSucceeded extends CallAutomationEventBase {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("resultInformation", resultInformation);
-        final CommunicationIdentifierModel inner = CommunicationIdentifierConverter.convert(participant);
-        jsonWriter.writeJsonField("participant", inner);
+        // final CommunicationIdentifierModel inner = CommunicationIdentifierConverter.convert(participant);
+        // jsonWriter.writeJsonField("participant", inner);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -77,9 +75,9 @@ public final class RemoveParticipantSucceeded extends CallAutomationEventBase {
                 reader.nextToken();
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("participant".equals(fieldName)) {
-                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    event.participant = CommunicationIdentifierConverter.convert(inner);
+                    // } else if ("participant".equals(fieldName)) {
+                    //     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    //     event.participant = CommunicationIdentifierConverter.convert(inner);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();

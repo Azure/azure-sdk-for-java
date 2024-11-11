@@ -5,41 +5,38 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The locator used for joining or taking action on a call.
- */
+/** The locator used for joining or taking action on a call. */
 @Fluent
-public final class CallLocatorInternal implements JsonSerializable<CallLocatorInternal> {
+public final class CallLocatorInternal {
     /*
      * The group call id
      */
+    @JsonProperty(value = "groupCallId")
     private String groupCallId;
 
     /*
      * The server call id.
      */
+    @JsonProperty(value = "serverCallId")
     private String serverCallId;
+
+    /*
+     * The Acs room id
+     */
+    @JsonProperty(value = "roomId")
+    private String roomId;
 
     /*
      * The call locator kind.
      */
+    @JsonProperty(value = "kind")
     private CallLocatorKindInternal kind;
 
     /**
-     * Creates an instance of CallLocatorInternal class.
-     */
-    public CallLocatorInternal() {
-    }
-
-    /**
      * Get the groupCallId property: The group call id.
-     * 
+     *
      * @return the groupCallId value.
      */
     public String getGroupCallId() {
@@ -48,7 +45,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
 
     /**
      * Set the groupCallId property: The group call id.
-     * 
+     *
      * @param groupCallId the groupCallId value to set.
      * @return the CallLocatorInternal object itself.
      */
@@ -59,7 +56,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
 
     /**
      * Get the serverCallId property: The server call id.
-     * 
+     *
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -68,7 +65,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
 
     /**
      * Set the serverCallId property: The server call id.
-     * 
+     *
      * @param serverCallId the serverCallId value to set.
      * @return the CallLocatorInternal object itself.
      */
@@ -78,8 +75,28 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     }
 
     /**
+     * Get the roomId property: The Acs room id.
+     *
+     * @return the roomId value.
+     */
+    public String getRoomId() {
+        return this.roomId;
+    }
+
+    /**
+     * Set the roomId property: The Acs room id.
+     *
+     * @param roomId the roomId value to set.
+     * @return the CallLocatorInternal object itself.
+     */
+    public CallLocatorInternal setRoomId(String roomId) {
+        this.roomId = roomId;
+        return this;
+    }
+
+    /**
      * Get the kind property: The call locator kind.
-     * 
+     *
      * @return the kind value.
      */
     public CallLocatorKindInternal getKind() {
@@ -88,54 +105,12 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
 
     /**
      * Set the kind property: The call locator kind.
-     * 
+     *
      * @param kind the kind value to set.
      * @return the CallLocatorInternal object itself.
      */
     public CallLocatorInternal setKind(CallLocatorKindInternal kind) {
         this.kind = kind;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("groupCallId", this.groupCallId);
-        jsonWriter.writeStringField("serverCallId", this.serverCallId);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CallLocatorInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CallLocatorInternal if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CallLocatorInternal.
-     */
-    public static CallLocatorInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CallLocatorInternal deserializedCallLocatorInternal = new CallLocatorInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("groupCallId".equals(fieldName)) {
-                    deserializedCallLocatorInternal.groupCallId = reader.getString();
-                } else if ("serverCallId".equals(fieldName)) {
-                    deserializedCallLocatorInternal.serverCallId = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedCallLocatorInternal.kind = CallLocatorKindInternal.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCallLocatorInternal;
-        });
     }
 }

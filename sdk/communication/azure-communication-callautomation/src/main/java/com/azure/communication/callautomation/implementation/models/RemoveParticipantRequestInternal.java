@@ -5,42 +5,36 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The remove participant by identifier request.
- */
+/** The remove participant by identifier request. */
 @Fluent
-public final class RemoveParticipantRequestInternal implements JsonSerializable<RemoveParticipantRequestInternal> {
+public final class RemoveParticipantRequestInternal {
     /*
      * The participants to be removed from the call.
      */
+    @JsonProperty(value = "participantToRemove", required = true)
     private CommunicationIdentifierModel participantToRemove;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
+    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
-     * Creates an instance of RemoveParticipantRequestInternal class.
-     */
-    public RemoveParticipantRequestInternal() {
-    }
-
-    /**
      * Get the participantToRemove property: The participants to be removed from the call.
-     * 
+     *
      * @return the participantToRemove value.
      */
     public CommunicationIdentifierModel getParticipantToRemove() {
@@ -49,7 +43,7 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
 
     /**
      * Set the participantToRemove property: The participants to be removed from the call.
-     * 
+     *
      * @param participantToRemove the participantToRemove value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
@@ -61,7 +55,7 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -71,7 +65,7 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
@@ -82,9 +76,9 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -93,59 +87,14 @@ public final class RemoveParticipantRequestInternal implements JsonSerializable<
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
     public RemoveParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("participantToRemove", this.participantToRemove);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RemoveParticipantRequestInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RemoveParticipantRequestInternal if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RemoveParticipantRequestInternal.
-     */
-    public static RemoveParticipantRequestInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RemoveParticipantRequestInternal deserializedRemoveParticipantRequestInternal
-                = new RemoveParticipantRequestInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("participantToRemove".equals(fieldName)) {
-                    deserializedRemoveParticipantRequestInternal.participantToRemove
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedRemoveParticipantRequestInternal.operationContext = reader.getString();
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedRemoveParticipantRequestInternal.operationCallbackUri = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedRemoveParticipantRequestInternal;
-        });
     }
 }

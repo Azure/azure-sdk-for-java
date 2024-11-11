@@ -5,41 +5,32 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DialogStateResponse model.
- */
+/** The DialogStateResponse model. */
 @Fluent
-public final class DialogStateResponse implements JsonSerializable<DialogStateResponse> {
+public final class DialogStateResponse {
     /*
      * The dialog ID.
      */
+    @JsonProperty(value = "dialogId")
     private String dialogId;
 
     /*
      * Defines dialog.
      */
+    @JsonProperty(value = "dialog")
     private BaseDialog dialog;
 
     /*
      * The value to identify context of the operation.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
-     * Creates an instance of DialogStateResponse class.
-     */
-    public DialogStateResponse() {
-    }
-
-    /**
      * Get the dialogId property: The dialog ID.
-     * 
+     *
      * @return the dialogId value.
      */
     public String getDialogId() {
@@ -48,7 +39,7 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
 
     /**
      * Set the dialogId property: The dialog ID.
-     * 
+     *
      * @param dialogId the dialogId value to set.
      * @return the DialogStateResponse object itself.
      */
@@ -59,7 +50,7 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
 
     /**
      * Get the dialog property: Defines dialog.
-     * 
+     *
      * @return the dialog value.
      */
     public BaseDialog getDialog() {
@@ -68,7 +59,7 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
 
     /**
      * Set the dialog property: Defines dialog.
-     * 
+     *
      * @param dialog the dialog value to set.
      * @return the DialogStateResponse object itself.
      */
@@ -79,7 +70,7 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -88,54 +79,12 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the DialogStateResponse object itself.
      */
     public DialogStateResponse setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dialogId", this.dialogId);
-        jsonWriter.writeJsonField("dialog", this.dialog);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DialogStateResponse from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DialogStateResponse if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DialogStateResponse.
-     */
-    public static DialogStateResponse fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DialogStateResponse deserializedDialogStateResponse = new DialogStateResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("dialogId".equals(fieldName)) {
-                    deserializedDialogStateResponse.dialogId = reader.getString();
-                } else if ("dialog".equals(fieldName)) {
-                    deserializedDialogStateResponse.dialog = BaseDialog.fromJson(reader);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedDialogStateResponse.operationContext = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedDialogStateResponse;
-        });
     }
 }

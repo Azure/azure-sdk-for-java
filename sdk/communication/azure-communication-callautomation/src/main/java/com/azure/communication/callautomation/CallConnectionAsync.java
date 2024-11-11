@@ -3,6 +3,11 @@
 
 package com.azure.communication.callautomation;
 
+import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.UUID;
+
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
 import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
@@ -51,14 +56,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
-
-import java.net.URISyntaxException;
-import java.util.Collections;
-
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.core.util.logging.ClientLogger;
+
+import reactor.core.publisher.Mono;
 
 /**
  * CallConnectionAsync for mid-call actions
@@ -153,7 +155,8 @@ public final class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             return (isForEveryone
-                ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+                ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId,
+                    UUID.fromString(callConnectionId), OffsetDateTime.now())
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -303,7 +306,9 @@ public final class CallConnectionAsync {
                     CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTransferee()));
             }
 
-            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal
+                .transferToParticipantWithResponseAsync(callConnectionId, request, UUID.fromString(callConnectionId),
+                    OffsetDateTime.now())
                 .map(response -> {
                     TransferCallResult result = TransferCallResponseConstructorProxy.create(response.getValue());
                     result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
@@ -369,7 +374,9 @@ public final class CallConnectionAsync {
                 request.setCustomCallingContext(customCallingContext);
             }
 
-            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal
+                .addParticipantWithResponseAsync(callConnectionId, request, UUID.fromString(callConnectionId),
+                    OffsetDateTime.now())
                 .map(response -> {
                     AddParticipantResult result = AddParticipantResponseConstructorProxy.create(response.getValue());
                     result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
@@ -419,7 +426,9 @@ public final class CallConnectionAsync {
                 .setOperationContext(removeParticipantOptions.getOperationContext())
                 .setOperationCallbackUri(removeParticipantOptions.getOperationCallbackUrl());
 
-            return callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal
+                .removeParticipantWithResponseAsync(callConnectionId, request, UUID.fromString(callConnectionId),
+                    OffsetDateTime.now())
                 .map(response -> {
                     RemoveParticipantResult result
                         = RemoveParticipantResponseConstructorProxy.create(response.getValue());
@@ -463,7 +472,9 @@ public final class CallConnectionAsync {
                     Collections.singletonList(CommunicationIdentifierConverter.convert(options.getTargetParticipant())))
                 .setOperationContext(options.getOperationContext());
 
-            return callConnectionInternal.muteWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal
+                .muteWithResponseAsync(callConnectionId, request, UUID.fromString(callConnectionId),
+                    OffsetDateTime.now())
                 .map(internalResponse -> new SimpleResponse<>(internalResponse,
                     MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
@@ -502,7 +513,9 @@ public final class CallConnectionAsync {
                     CommunicationIdentifierConverter.convert(unmuteParticipantOptions.getTargetParticipant())))
                 .setOperationContext(unmuteParticipantOptions.getOperationContext());
 
-            return callConnectionInternal.unmuteWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal
+                .unmuteWithResponseAsync(callConnectionId, request, UUID.fromString(callConnectionId),
+                    OffsetDateTime.now())
                 .map(internalResponse -> new SimpleResponse<>(internalResponse,
                     UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
@@ -549,7 +562,9 @@ public final class CallConnectionAsync {
                 .setOperationContext(cancelAddParticipantOperationOptions.getOperationContext())
                 .setOperationCallbackUri(cancelAddParticipantOperationOptions.getOperationCallbackUrl());
 
-            return callConnectionInternal.cancelAddParticipantWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal
+                .cancelAddParticipantWithResponseAsync(callConnectionId, request, UUID.fromString(callConnectionId),
+                    OffsetDateTime.now())
                 .map(response -> {
                     CancelAddParticipantOperationResult result
                         = CancelAddParticipantResponseConstructorProxy.create(response.getValue());

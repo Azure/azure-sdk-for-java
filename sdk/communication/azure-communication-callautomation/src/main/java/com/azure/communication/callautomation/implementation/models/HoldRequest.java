@@ -5,47 +5,42 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The request payload for holding participant from the call.
- */
+/** The request payload for holding participant from the call. */
 @Fluent
-public final class HoldRequest implements JsonSerializable<HoldRequest> {
+public final class HoldRequest {
     /*
      * Participant to be held from the call.
      */
+    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Prompt to play while in hold.
      */
+    @JsonProperty(value = "playSourceInfo")
     private PlaySourceInternal playSourceInfo;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
+    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
-     * Creates an instance of HoldRequest class.
-     */
-    public HoldRequest() {
-    }
-
-    /**
      * Get the targetParticipant property: Participant to be held from the call.
-     * 
+     *
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -54,7 +49,7 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
 
     /**
      * Set the targetParticipant property: Participant to be held from the call.
-     * 
+     *
      * @param targetParticipant the targetParticipant value to set.
      * @return the HoldRequest object itself.
      */
@@ -65,7 +60,7 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
 
     /**
      * Get the playSourceInfo property: Prompt to play while in hold.
-     * 
+     *
      * @return the playSourceInfo value.
      */
     public PlaySourceInternal getPlaySourceInfo() {
@@ -74,7 +69,7 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
 
     /**
      * Set the playSourceInfo property: Prompt to play while in hold.
-     * 
+     *
      * @param playSourceInfo the playSourceInfo value to set.
      * @return the HoldRequest object itself.
      */
@@ -86,7 +81,7 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -96,7 +91,7 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the HoldRequest object itself.
      */
@@ -107,9 +102,9 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -118,60 +113,14 @@ public final class HoldRequest implements JsonSerializable<HoldRequest> {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the HoldRequest object itself.
      */
     public HoldRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
-        jsonWriter.writeJsonField("playSourceInfo", this.playSourceInfo);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of HoldRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of HoldRequest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the HoldRequest.
-     */
-    public static HoldRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            HoldRequest deserializedHoldRequest = new HoldRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("targetParticipant".equals(fieldName)) {
-                    deserializedHoldRequest.targetParticipant = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("playSourceInfo".equals(fieldName)) {
-                    deserializedHoldRequest.playSourceInfo = PlaySourceInternal.fromJson(reader);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedHoldRequest.operationContext = reader.getString();
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedHoldRequest.operationCallbackUri = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedHoldRequest;
-        });
     }
 }

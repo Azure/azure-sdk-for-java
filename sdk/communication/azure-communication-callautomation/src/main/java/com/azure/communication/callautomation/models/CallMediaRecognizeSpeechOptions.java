@@ -3,18 +3,16 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
-import java.time.Duration;
-import java.util.List;
 
 /** The Recognize configurations specific for Continuous Speech Recognition. **/
 @Fluent
@@ -198,9 +196,9 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
         jsonWriter.writeStringField("initialSilenceTimeout",
             CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
         jsonWriter.writeStringField("speechModelEndpointId", getSpeechModelEndpointId());
-        final CommunicationIdentifierModel participant
-            = CommunicationIdentifierConverter.convert(getTargetParticipant());
-        jsonWriter.writeJsonField("targetParticipant", participant);
+        // final CommunicationIdentifierModel participant
+        //     = CommunicationIdentifierConverter.convert(getTargetParticipant());
+        // jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
         // write properties specific to this class.
         jsonWriter.writeStringField("endSilenceTimeout", CoreUtils.durationToStringWithDays(this.endSilenceTimeout));
@@ -262,9 +260,9 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
                     speechModelEndpointId = reader.getString();
                 } else if ("operationCallbackUrl".equals(fieldName)) {
                     operationCallbackUrl = reader.getString();
-                } else if ("targetParticipant".equals(fieldName)) {
-                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    targetParticipant = CommunicationIdentifierConverter.convert(inner);
+                    // } else if ("targetParticipant".equals(fieldName)) {
+                    //     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    //     targetParticipant = CommunicationIdentifierConverter.convert(inner);
                 } else {
                     reader.skipChildren();
                 }

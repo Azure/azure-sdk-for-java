@@ -3,7 +3,9 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
+import java.io.IOException;
+import java.util.List;
+
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.models.CallParticipant;
@@ -11,10 +13,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /** The ParticipantsUpdated model. */
 @Immutable
@@ -52,7 +50,7 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
             inner.setIdentifier(CommunicationIdentifierConverter.convert(participant.getIdentifier()));
             inner.setIsMuted(participant.isMuted());
             inner.setIsOnHold(participant.isOnHold());
-            jsonWriter.writeJson(inner);
+            //jsonWriter.writeJson(inner);
         }
         jsonWriter.writeEndArray();
         super.writeFields(jsonWriter);
@@ -75,11 +73,11 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
                 reader.nextToken();
                 if ("sequenceNumber".equals(fieldName)) {
                     event.sequenceNumber = reader.getInt();
-                } else if ("participants".equals(fieldName)) {
-                    event.participants = reader.readArray(CallParticipantInternal::fromJson)
-                        .stream()
-                        .map(CallParticipantConverter::convert)
-                        .collect(Collectors.toList());
+                    // } else if ("participants".equals(fieldName)) {
+                    //     event.participants = reader.readArray(CallParticipantInternal::fromJson)
+                    //         .stream()
+                    //         .map(CallParticipantConverter::convert)
+                    //         .collect(Collectors.toList());
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();

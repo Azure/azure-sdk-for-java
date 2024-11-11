@@ -5,32 +5,21 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * AI options for the call.
- */
+/** AI options for the call. */
 @Fluent
-public final class CallIntelligenceOptionsInternal implements JsonSerializable<CallIntelligenceOptionsInternal> {
+public final class CallIntelligenceOptionsInternal {
     /*
      * The identifier of the Cognitive Service resource assigned to this call.
      */
+    @JsonProperty(value = "cognitiveServicesEndpoint")
     private String cognitiveServicesEndpoint;
-
-    /**
-     * Creates an instance of CallIntelligenceOptionsInternal class.
-     */
-    public CallIntelligenceOptionsInternal() {
-    }
 
     /**
      * Get the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
      * call.
-     * 
+     *
      * @return the cognitiveServicesEndpoint value.
      */
     public String getCognitiveServicesEndpoint() {
@@ -40,49 +29,12 @@ public final class CallIntelligenceOptionsInternal implements JsonSerializable<C
     /**
      * Set the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
      * call.
-     * 
+     *
      * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
      * @return the CallIntelligenceOptionsInternal object itself.
      */
     public CallIntelligenceOptionsInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
         this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("cognitiveServicesEndpoint", this.cognitiveServicesEndpoint);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CallIntelligenceOptionsInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CallIntelligenceOptionsInternal if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CallIntelligenceOptionsInternal.
-     */
-    public static CallIntelligenceOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CallIntelligenceOptionsInternal deserializedCallIntelligenceOptionsInternal
-                = new CallIntelligenceOptionsInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("cognitiveServicesEndpoint".equals(fieldName)) {
-                    deserializedCallIntelligenceOptionsInternal.cognitiveServicesEndpoint = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCallIntelligenceOptionsInternal;
-        });
     }
 }

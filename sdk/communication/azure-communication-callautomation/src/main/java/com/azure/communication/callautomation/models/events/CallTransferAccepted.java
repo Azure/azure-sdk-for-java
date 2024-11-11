@@ -5,8 +5,6 @@ package com.azure.communication.callautomation.models.events;
 
 import java.io.IOException;
 
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
@@ -67,8 +65,8 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("resultInformation", resultInformation);
-        jsonWriter.writeJsonField("transferee", CommunicationIdentifierConverter.convert(transferee));
-        jsonWriter.writeJsonField("transferTarget", CommunicationIdentifierConverter.convert(transferTarget));
+        // jsonWriter.writeJsonField("transferee", CommunicationIdentifierConverter.convert(transferee));
+        // jsonWriter.writeJsonField("transferTarget", CommunicationIdentifierConverter.convert(transferTarget));
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -89,12 +87,12 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
                 reader.nextToken();
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("transferee".equals(fieldName)) {
-                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    event.transferee = CommunicationIdentifierConverter.convert(inner);
-                } else if ("transferTarget".equals(fieldName)) {
-                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    event.transferTarget = CommunicationIdentifierConverter.convert(inner);
+                    // } else if ("transferee".equals(fieldName)) {
+                    //     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    //     event.transferee = CommunicationIdentifierConverter.convert(inner);
+                    // } else if ("transferTarget".equals(fieldName)) {
+                    //     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    //     event.transferTarget = CommunicationIdentifierConverter.convert(inner);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();

@@ -5,51 +5,32 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The rejection reason.
- */
+/** Defines values for CallRejectReasonInternal. */
 public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRejectReasonInternal> {
-    /**
-     * Static value none for CallRejectReasonInternal.
-     */
+    /** Static value none for CallRejectReasonInternal. */
     public static final CallRejectReasonInternal NONE = fromString("none");
 
-    /**
-     * Static value busy for CallRejectReasonInternal.
-     */
+    /** Static value busy for CallRejectReasonInternal. */
     public static final CallRejectReasonInternal BUSY = fromString("busy");
 
-    /**
-     * Static value forbidden for CallRejectReasonInternal.
-     */
+    /** Static value forbidden for CallRejectReasonInternal. */
     public static final CallRejectReasonInternal FORBIDDEN = fromString("forbidden");
 
     /**
-     * Creates a new instance of CallRejectReasonInternal value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public CallRejectReasonInternal() {
-    }
-
-    /**
      * Creates or finds a CallRejectReasonInternal from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding CallRejectReasonInternal.
      */
+    @JsonCreator
     public static CallRejectReasonInternal fromString(String name) {
         return fromString(name, CallRejectReasonInternal.class);
     }
 
-    /**
-     * Gets known CallRejectReasonInternal values.
-     * 
-     * @return known CallRejectReasonInternal values.
-     */
+    /** @return known CallRejectReasonInternal values. */
     public static Collection<CallRejectReasonInternal> values() {
         return values(CallRejectReasonInternal.class);
     }

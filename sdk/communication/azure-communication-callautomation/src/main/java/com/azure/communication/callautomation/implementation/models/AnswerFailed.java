@@ -4,71 +4,47 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * AnswerFailed event.
- */
-@Immutable
-public final class AnswerFailed implements JsonSerializable<AnswerFailed> {
-    /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
-     */
-    private String operationContext;
-
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
-
+/** The failed to answer call event. */
+@Fluent
+public final class AnswerFailed {
     /*
      * Call connection ID.
      */
+    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
+    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for
+     * skype chain ID.
      */
+    @JsonProperty(value = "correlationId")
     private String correlationId;
 
-    /**
-     * Creates an instance of AnswerFailed class.
+    /*
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
-    public AnswerFailed() {
-    }
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
 
-    /**
-     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
-     * 
-     * @return the operationContext value.
+    /*
+     * Contains the resulting SIP code, sub-code and message.
      */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     * 
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
-    }
+    @JsonProperty(value = "resultInformation")
+    private ResultInformation resultInformation;
 
     /**
      * Get the callConnectionId property: Call connection ID.
-     * 
+     *
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -76,8 +52,19 @@ public final class AnswerFailed implements JsonSerializable<AnswerFailed> {
     }
 
     /**
+     * Set the callConnectionId property: Call connection ID.
+     *
+     * @param callConnectionId the callConnectionId value to set.
+     * @return the AnswerFailed object itself.
+     */
+    public AnswerFailed setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    /**
      * Get the serverCallId property: Server call ID.
-     * 
+     *
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -85,9 +72,20 @@ public final class AnswerFailed implements JsonSerializable<AnswerFailed> {
     }
 
     /**
+     * Set the serverCallId property: Server call ID.
+     *
+     * @param serverCallId the serverCallId value to set.
+     * @return the AnswerFailed object itself.
+     */
+    public AnswerFailed setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
+        return this;
+    }
+
+    /**
      * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
      * ID.
-     * 
+     *
      * @return the correlationId value.
      */
     public String getCorrelationId() {
@@ -95,45 +93,56 @@ public final class AnswerFailed implements JsonSerializable<AnswerFailed> {
     }
 
     /**
-     * {@inheritDoc}
+     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
+     * ID.
+     *
+     * @param correlationId the correlationId value to set.
+     * @return the AnswerFailed object itself.
      */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
+    public AnswerFailed setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+        return this;
     }
 
     /**
-     * Reads an instance of AnswerFailed from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnswerFailed if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AnswerFailed.
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     *
+     * @return the operationContext value.
      */
-    public static AnswerFailed fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AnswerFailed deserializedAnswerFailed = new AnswerFailed();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    public String getOperationContext() {
+        return this.operationContext;
+    }
 
-                if ("operationContext".equals(fieldName)) {
-                    deserializedAnswerFailed.operationContext = reader.getString();
-                } else if ("resultInformation".equals(fieldName)) {
-                    deserializedAnswerFailed.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("callConnectionId".equals(fieldName)) {
-                    deserializedAnswerFailed.callConnectionId = reader.getString();
-                } else if ("serverCallId".equals(fieldName)) {
-                    deserializedAnswerFailed.serverCallId = reader.getString();
-                } else if ("correlationId".equals(fieldName)) {
-                    deserializedAnswerFailed.correlationId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+    /**
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the AnswerFailed object itself.
+     */
+    public AnswerFailed setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
 
-            return deserializedAnswerFailed;
-        });
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     *
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
+    }
+
+    /**
+     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     *
+     * @param resultInformation the resultInformation value to set.
+     * @return the AnswerFailed object itself.
+     */
+    public AnswerFailed setResultInformation(ResultInformation resultInformation) {
+        this.resultInformation = resultInformation;
+        return this;
     }
 }

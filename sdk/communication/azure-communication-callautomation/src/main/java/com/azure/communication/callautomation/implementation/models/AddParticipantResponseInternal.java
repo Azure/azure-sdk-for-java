@@ -5,41 +5,32 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The response payload for adding participants to the call.
- */
+/** The response payload for adding participants to the call. */
 @Fluent
-public final class AddParticipantResponseInternal implements JsonSerializable<AddParticipantResponseInternal> {
+public final class AddParticipantResponseInternal {
     /*
      * List of current participants in the call.
      */
+    @JsonProperty(value = "participant")
     private CallParticipantInternal participant;
 
     /*
      * The operation context provided by client.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Invitation ID used to add a participant.
      */
+    @JsonProperty(value = "invitationId")
     private String invitationId;
 
     /**
-     * Creates an instance of AddParticipantResponseInternal class.
-     */
-    public AddParticipantResponseInternal() {
-    }
-
-    /**
      * Get the participant property: List of current participants in the call.
-     * 
+     *
      * @return the participant value.
      */
     public CallParticipantInternal getParticipant() {
@@ -48,7 +39,7 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
 
     /**
      * Set the participant property: List of current participants in the call.
-     * 
+     *
      * @param participant the participant value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
@@ -59,7 +50,7 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
 
     /**
      * Get the operationContext property: The operation context provided by client.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -68,7 +59,7 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
 
     /**
      * Set the operationContext property: The operation context provided by client.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
@@ -79,7 +70,7 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
 
     /**
      * Get the invitationId property: Invitation ID used to add a participant.
-     * 
+     *
      * @return the invitationId value.
      */
     public String getInvitationId() {
@@ -88,55 +79,12 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
 
     /**
      * Set the invitationId property: Invitation ID used to add a participant.
-     * 
+     *
      * @param invitationId the invitationId value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
     public AddParticipantResponseInternal setInvitationId(String invitationId) {
         this.invitationId = invitationId;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("participant", this.participant);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("invitationId", this.invitationId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AddParticipantResponseInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AddParticipantResponseInternal if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AddParticipantResponseInternal.
-     */
-    public static AddParticipantResponseInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AddParticipantResponseInternal deserializedAddParticipantResponseInternal
-                = new AddParticipantResponseInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("participant".equals(fieldName)) {
-                    deserializedAddParticipantResponseInternal.participant = CallParticipantInternal.fromJson(reader);
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedAddParticipantResponseInternal.operationContext = reader.getString();
-                } else if ("invitationId".equals(fieldName)) {
-                    deserializedAddParticipantResponseInternal.invitationId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAddParticipantResponseInternal;
-        });
     }
 }

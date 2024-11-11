@@ -5,36 +5,26 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TranscriptionUpdate model.
- */
+/** The TranscriptionUpdate model. */
 @Fluent
-public final class TranscriptionUpdate implements JsonSerializable<TranscriptionUpdate> {
+public final class TranscriptionUpdate {
     /*
      * The transcriptionStatus property.
      */
+    @JsonProperty(value = "transcriptionStatus")
     private TranscriptionStatus transcriptionStatus;
 
     /*
      * The transcriptionStatusDetails property.
      */
+    @JsonProperty(value = "transcriptionStatusDetails")
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
     /**
-     * Creates an instance of TranscriptionUpdate class.
-     */
-    public TranscriptionUpdate() {
-    }
-
-    /**
      * Get the transcriptionStatus property: The transcriptionStatus property.
-     * 
+     *
      * @return the transcriptionStatus value.
      */
     public TranscriptionStatus getTranscriptionStatus() {
@@ -43,7 +33,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
 
     /**
      * Set the transcriptionStatus property: The transcriptionStatus property.
-     * 
+     *
      * @param transcriptionStatus the transcriptionStatus value to set.
      * @return the TranscriptionUpdate object itself.
      */
@@ -54,7 +44,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
 
     /**
      * Get the transcriptionStatusDetails property: The transcriptionStatusDetails property.
-     * 
+     *
      * @return the transcriptionStatusDetails value.
      */
     public TranscriptionStatusDetails getTranscriptionStatusDetails() {
@@ -63,55 +53,12 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
 
     /**
      * Set the transcriptionStatusDetails property: The transcriptionStatusDetails property.
-     * 
+     *
      * @param transcriptionStatusDetails the transcriptionStatusDetails value to set.
      * @return the TranscriptionUpdate object itself.
      */
     public TranscriptionUpdate setTranscriptionStatusDetails(TranscriptionStatusDetails transcriptionStatusDetails) {
         this.transcriptionStatusDetails = transcriptionStatusDetails;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transcriptionStatus",
-            this.transcriptionStatus == null ? null : this.transcriptionStatus.toString());
-        jsonWriter.writeStringField("transcriptionStatusDetails",
-            this.transcriptionStatusDetails == null ? null : this.transcriptionStatusDetails.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TranscriptionUpdate from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TranscriptionUpdate if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the TranscriptionUpdate.
-     */
-    public static TranscriptionUpdate fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TranscriptionUpdate deserializedTranscriptionUpdate = new TranscriptionUpdate();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("transcriptionStatus".equals(fieldName)) {
-                    deserializedTranscriptionUpdate.transcriptionStatus
-                        = TranscriptionStatus.fromString(reader.getString());
-                } else if ("transcriptionStatusDetails".equals(fieldName)) {
-                    deserializedTranscriptionUpdate.transcriptionStatusDetails
-                        = TranscriptionStatusDetails.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedTranscriptionUpdate;
-        });
     }
 }

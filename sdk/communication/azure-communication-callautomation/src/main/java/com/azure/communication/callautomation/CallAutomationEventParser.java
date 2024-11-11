@@ -3,11 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import com.azure.communication.callautomation.models.events.AddParticipantFailed;
 import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.AnswerFailed;
@@ -18,6 +13,7 @@ import com.azure.communication.callautomation.models.events.CallTransferAccepted
 import com.azure.communication.callautomation.models.events.CallTransferFailed;
 import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
 import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.ConnectFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
@@ -57,6 +53,10 @@ import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Event handler for taking care of event related tasks.
@@ -151,8 +151,8 @@ public final class CallAutomationEventParser {
                 ret = CancelAddParticipantSucceeded.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = CancelAddParticipantFailed.fromJson(jsonReader);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {
-                ret = CreateCallFailed.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.ConnectFailed")) {
+                ret = ConnectFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.DialogStarted")) {
                 ret = DialogStarted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.DialogCompleted")) {

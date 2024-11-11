@@ -5,41 +5,32 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A call participant.
- */
+/** A call participant. */
 @Fluent
-public final class CallParticipantInternal implements JsonSerializable<CallParticipantInternal> {
+public final class CallParticipantInternal {
     /*
      * Communication identifier of the participant
      */
+    @JsonProperty(value = "identifier")
     private CommunicationIdentifierModel identifier;
 
     /*
      * Is participant muted
      */
+    @JsonProperty(value = "isMuted")
     private Boolean isMuted;
 
     /*
      * Is participant on hold.
      */
+    @JsonProperty(value = "isOnHold")
     private Boolean isOnHold;
 
     /**
-     * Creates an instance of CallParticipantInternal class.
-     */
-    public CallParticipantInternal() {
-    }
-
-    /**
      * Get the identifier property: Communication identifier of the participant.
-     * 
+     *
      * @return the identifier value.
      */
     public CommunicationIdentifierModel getIdentifier() {
@@ -48,7 +39,7 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
 
     /**
      * Set the identifier property: Communication identifier of the participant.
-     * 
+     *
      * @param identifier the identifier value to set.
      * @return the CallParticipantInternal object itself.
      */
@@ -59,7 +50,7 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
 
     /**
      * Get the isMuted property: Is participant muted.
-     * 
+     *
      * @return the isMuted value.
      */
     public Boolean isMuted() {
@@ -68,7 +59,7 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
 
     /**
      * Set the isMuted property: Is participant muted.
-     * 
+     *
      * @param isMuted the isMuted value to set.
      * @return the CallParticipantInternal object itself.
      */
@@ -79,7 +70,7 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
 
     /**
      * Get the isOnHold property: Is participant on hold.
-     * 
+     *
      * @return the isOnHold value.
      */
     public Boolean isOnHold() {
@@ -88,54 +79,12 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
 
     /**
      * Set the isOnHold property: Is participant on hold.
-     * 
+     *
      * @param isOnHold the isOnHold value to set.
      * @return the CallParticipantInternal object itself.
      */
     public CallParticipantInternal setIsOnHold(Boolean isOnHold) {
         this.isOnHold = isOnHold;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("identifier", this.identifier);
-        jsonWriter.writeBooleanField("isMuted", this.isMuted);
-        jsonWriter.writeBooleanField("isOnHold", this.isOnHold);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CallParticipantInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CallParticipantInternal if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CallParticipantInternal.
-     */
-    public static CallParticipantInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CallParticipantInternal deserializedCallParticipantInternal = new CallParticipantInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("identifier".equals(fieldName)) {
-                    deserializedCallParticipantInternal.identifier = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("isMuted".equals(fieldName)) {
-                    deserializedCallParticipantInternal.isMuted = reader.getNullable(JsonReader::getBoolean);
-                } else if ("isOnHold".equals(fieldName)) {
-                    deserializedCallParticipantInternal.isOnHold = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCallParticipantInternal;
-        });
     }
 }
