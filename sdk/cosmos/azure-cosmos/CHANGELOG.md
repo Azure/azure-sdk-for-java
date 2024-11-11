@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added `CosmosFullTextPolicy` in `CosmosContainerProperties` and `CosmosFullTextIndexes` in `IndexingPolicy` to support Full Text Search in Cosmos DB - See [PR 42278](https://github.com/Azure/azure-sdk-for-java/pull/42278)
+* Added two new properties `quantizationSizeInBytes` and `indexingSearchListSize` to the `CosmosVectorIndexSpec` to support Partitioned DiskANN for vector search in Cosmos DB - See [PR 42333](https://github.com/Azure/azure-sdk-for-java/pull/42333)
 
 #### Breaking Changes
 

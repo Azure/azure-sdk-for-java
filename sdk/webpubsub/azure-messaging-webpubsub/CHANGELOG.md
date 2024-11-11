@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for `socketIO` when generating client access URI.
+
 ### Breaking Changes
 
 ### Bugs Fixed

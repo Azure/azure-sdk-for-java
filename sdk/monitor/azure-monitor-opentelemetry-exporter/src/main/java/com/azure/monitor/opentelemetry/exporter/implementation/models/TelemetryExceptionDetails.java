@@ -18,7 +18,8 @@ import java.util.List;
 @Fluent
 public final class TelemetryExceptionDetails implements JsonSerializable<TelemetryExceptionDetails> {
     /*
-     * In case exception is nested (outer exception contains inner one), the id and outerId properties are used to represent the nesting.
+     * In case exception is nested (outer exception contains inner one), the id and outerId properties are used to
+     * represent the nesting.
      */
     private Integer id;
 
@@ -38,7 +39,8 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     private String message;
 
     /*
-     * Indicates if full exception stack is provided in the exception. The stack may be trimmed, such as in the case of a StackOverflow exception.
+     * Indicates if full exception stack is provided in the exception. The stack may be trimmed, such as in the case of
+     * a StackOverflow exception.
      */
     private Boolean hasFullStack;
 
@@ -61,7 +63,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     /**
      * Get the id property: In case exception is nested (outer exception contains inner one), the id and outerId
      * properties are used to represent the nesting.
-     *
+     * 
      * @return the id value.
      */
     public Integer getId() {
@@ -71,7 +73,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     /**
      * Set the id property: In case exception is nested (outer exception contains inner one), the id and outerId
      * properties are used to represent the nesting.
-     *
+     * 
      * @param id the id value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
@@ -83,7 +85,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     /**
      * Get the outerId property: The value of outerId is a reference to an element in ExceptionDetails that represents
      * the outer exception.
-     *
+     * 
      * @return the outerId value.
      */
     public Integer getOuterId() {
@@ -93,7 +95,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     /**
      * Set the outerId property: The value of outerId is a reference to an element in ExceptionDetails that represents
      * the outer exception.
-     *
+     * 
      * @param outerId the outerId value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
@@ -104,7 +106,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Get the typeName property: Exception type name.
-     *
+     * 
      * @return the typeName value.
      */
     public String getTypeName() {
@@ -113,7 +115,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Set the typeName property: Exception type name.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
@@ -124,7 +126,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Get the message property: Exception message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -133,7 +135,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Set the message property: Exception message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
@@ -145,7 +147,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     /**
      * Get the hasFullStack property: Indicates if full exception stack is provided in the exception. The stack may be
      * trimmed, such as in the case of a StackOverflow exception.
-     *
+     * 
      * @return the hasFullStack value.
      */
     public Boolean isHasFullStack() {
@@ -155,7 +157,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     /**
      * Set the hasFullStack property: Indicates if full exception stack is provided in the exception. The stack may be
      * trimmed, such as in the case of a StackOverflow exception.
-     *
+     * 
      * @param hasFullStack the hasFullStack value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
@@ -166,7 +168,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Get the stack property: Text describing the stack. Either stack or parsedStack should have a value.
-     *
+     * 
      * @return the stack value.
      */
     public String getStack() {
@@ -175,7 +177,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Set the stack property: Text describing the stack. Either stack or parsedStack should have a value.
-     *
+     * 
      * @param stack the stack value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
@@ -186,7 +188,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Get the parsedStack property: List of stack frames. Either stack or parsedStack should have a value.
-     *
+     * 
      * @return the parsedStack value.
      */
     public List<StackFrame> getParsedStack() {
@@ -195,7 +197,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Set the parsedStack property: List of stack frames. Either stack or parsedStack should have a value.
-     *
+     * 
      * @param parsedStack the parsedStack value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
@@ -222,7 +224,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
 
     /**
      * Reads an instance of TelemetryExceptionDetails from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TelemetryExceptionDetails if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

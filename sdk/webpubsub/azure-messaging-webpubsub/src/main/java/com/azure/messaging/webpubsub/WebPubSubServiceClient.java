@@ -61,8 +61,20 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubClientAccessToken getClientAccessToken(GetClientAccessTokenOptions options) {
         final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientProtocol();
-        final String path
-            = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT) ? "clients/mqtt/hubs/" : "client/hubs/";
+        final String path;
+        switch (webPubSubClientProtocol.toString()) {
+            case "mqtt":
+                path = "clients/mqtt/hubs/";
+                break;
+
+            case "socketio":
+                path = "clients/socketio/hubs/";
+                break;
+
+            default:
+                path = "client/hubs/";
+                break;
+        }
         if (this.keyCredential == null) {
             Response<BinaryData> response
                 = serviceClient.generateClientTokenWithResponse(hub, configureClientAccessTokenRequestOptions(options));

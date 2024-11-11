@@ -38,7 +38,7 @@ public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
 
     /**
      * Creates a new instance of SeverityLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -47,7 +47,7 @@ public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
 
     /**
      * Creates or finds a SeverityLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SeverityLevel.
      */
@@ -57,7 +57,7 @@ public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
 
     /**
      * Gets known SeverityLevel values.
-     *
+     * 
      * @return known SeverityLevel values.
      */
     public static Collection<SeverityLevel> values() {
