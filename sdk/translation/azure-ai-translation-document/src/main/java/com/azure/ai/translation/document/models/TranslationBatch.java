@@ -16,21 +16,21 @@ import java.util.List;
  * Translation job submission batch request.
  */
 @Immutable
-public final class StartTranslationDetails implements JsonSerializable<StartTranslationDetails> {
+public final class TranslationBatch implements JsonSerializable<TranslationBatch> {
 
     /*
      * The input list of documents or folders containing documents
      */
     @Generated
-    private final List<BatchRequest> inputs;
+    private final List<DocumentTranslationInput> inputs;
 
     /**
-     * Creates an instance of StartTranslationDetails class.
+     * Creates an instance of TranslationBatch class.
      *
      * @param inputs the inputs value to set.
      */
     @Generated
-    public StartTranslationDetails(List<BatchRequest> inputs) {
+    public TranslationBatch(List<DocumentTranslationInput> inputs) {
         this.inputs = inputs;
     }
 
@@ -40,7 +40,7 @@ public final class StartTranslationDetails implements JsonSerializable<StartTran
      * @return the inputs value.
      */
     @Generated
-    public List<BatchRequest> getInputs() {
+    public List<DocumentTranslationInput> getInputs() {
         return this.inputs;
     }
 
@@ -56,28 +56,28 @@ public final class StartTranslationDetails implements JsonSerializable<StartTran
     }
 
     /**
-     * Reads an instance of StartTranslationDetails from the JsonReader.
+     * Reads an instance of TranslationBatch from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StartTranslationDetails if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of TranslationBatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StartTranslationDetails.
+     * @throws IOException If an error occurs while reading the TranslationBatch.
      */
     @Generated
-    public static StartTranslationDetails fromJson(JsonReader jsonReader) throws IOException {
+    public static TranslationBatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<BatchRequest> inputs = null;
+            List<DocumentTranslationInput> inputs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> BatchRequest.fromJson(reader1));
+                    inputs = reader.readArray(reader1 -> DocumentTranslationInput.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new StartTranslationDetails(inputs);
+            return new TranslationBatch(inputs);
         });
     }
 }

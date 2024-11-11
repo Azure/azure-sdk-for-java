@@ -16,19 +16,19 @@ import java.util.List;
  * Definition for the input batch translation request.
  */
 @Fluent
-public final class BatchRequest implements JsonSerializable<BatchRequest> {
+public final class DocumentTranslationInput implements JsonSerializable<DocumentTranslationInput> {
 
     /*
      * Source of the input documents
      */
     @Generated
-    private final SourceInput source;
+    private final TranslationSource source;
 
     /*
      * Location of the destination for the output
      */
     @Generated
-    private final List<TargetInput> targets;
+    private final List<TranslationTarget> targets;
 
     /*
      * Storage type of the input documents source string
@@ -37,13 +37,13 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
     private StorageInputType storageType;
 
     /**
-     * Creates an instance of BatchRequest class.
+     * Creates an instance of DocumentTranslationInput class.
      *
      * @param source the source value to set.
      * @param targets the targets value to set.
      */
     @Generated
-    public BatchRequest(SourceInput source, List<TargetInput> targets) {
+    public DocumentTranslationInput(TranslationSource source, List<TranslationTarget> targets) {
         this.source = source;
         this.targets = targets;
     }
@@ -54,7 +54,7 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
      * @return the source value.
      */
     @Generated
-    public SourceInput getSource() {
+    public TranslationSource getSource() {
         return this.source;
     }
 
@@ -64,7 +64,7 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
      * @return the targets value.
      */
     @Generated
-    public List<TargetInput> getTargets() {
+    public List<TranslationTarget> getTargets() {
         return this.targets;
     }
 
@@ -82,10 +82,10 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
      * Set the storageType property: Storage type of the input documents source string.
      *
      * @param storageType the storageType value to set.
-     * @return the BatchRequest object itself.
+     * @return the DocumentTranslationInput object itself.
      */
     @Generated
-    public BatchRequest setStorageType(StorageInputType storageType) {
+    public DocumentTranslationInput setStorageType(StorageInputType storageType) {
         this.storageType = storageType;
         return this;
     }
@@ -104,36 +104,37 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
     }
 
     /**
-     * Reads an instance of BatchRequest from the JsonReader.
+     * Reads an instance of DocumentTranslationInput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BatchRequest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of DocumentTranslationInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BatchRequest.
+     * @throws IOException If an error occurs while reading the DocumentTranslationInput.
      */
     @Generated
-    public static BatchRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static DocumentTranslationInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SourceInput source = null;
-            List<TargetInput> targets = null;
+            TranslationSource source = null;
+            List<TranslationTarget> targets = null;
             StorageInputType storageType = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("source".equals(fieldName)) {
-                    source = SourceInput.fromJson(reader);
+                    source = TranslationSource.fromJson(reader);
                 } else if ("targets".equals(fieldName)) {
-                    targets = reader.readArray(reader1 -> TargetInput.fromJson(reader1));
+                    targets = reader.readArray(reader1 -> TranslationTarget.fromJson(reader1));
                 } else if ("storageType".equals(fieldName)) {
                     storageType = StorageInputType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            BatchRequest deserializedBatchRequest = new BatchRequest(source, targets);
-            deserializedBatchRequest.storageType = storageType;
-            return deserializedBatchRequest;
+            DocumentTranslationInput deserializedDocumentTranslationInput
+                = new DocumentTranslationInput(source, targets);
+            deserializedDocumentTranslationInput.storageType = storageType;
+            return deserializedDocumentTranslationInput;
         });
     }
 }
