@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.HoldOptions;
+import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
@@ -262,16 +263,14 @@ public final class CallMedia {
 
     /**
      * Removes hold from participant in call.
-     * @param targetParticipant the target.
-     * @param operationContext operational context.
+     * @param options Different options to pass to the request.
      * @param context Context.
      * @return Response for successful operation.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> unholdWithResponse(CommunicationIdentifier targetParticipant,
-                                                     String operationContext,
+    public Response<Void> unholdWithResponse(UnholdOptions options,
                                                      Context context) {
-        return callMediaAsync.unholdWithResponseInternal(targetParticipant, operationContext, context).block();
+        return callMediaAsync.unholdWithResponseInternal(options, context).block();
     }
     
     /**

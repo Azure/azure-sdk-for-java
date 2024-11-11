@@ -17,7 +17,7 @@ public final class SendDtmfTonesCompleted extends CallAutomationEventBase {
     /**
      * Constructor for SendDtmfTonesCompleted
      */
-    public SendDtmfTonesCompleted() {
+    private SendDtmfTonesCompleted() {
     }
 
     /**

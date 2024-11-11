@@ -3,23 +3,20 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-
-/** The ContinuousDtmfRecognitionStopped model. */
+/** The AnswerFailed model. */
 @Immutable
-public final class ContinuousDtmfRecognitionStopped extends CallAutomationEventBase {
+public final class AnswerFailed extends CallAutomationEventBase {
+    private AnswerFailed() {
 
-    /**
-     * Constructor for ContinuousDtmfRecognitionToneReceived
-     */
-    private ContinuousDtmfRecognitionStopped() {
     }
-
+    
     /**
      * {@inheritDoc}
      */
@@ -31,16 +28,16 @@ public final class ContinuousDtmfRecognitionStopped extends CallAutomationEventB
     }
 
     /**
-     * Reads an instance of ContinuousDtmfRecognitionStopped from the JsonReader.
+     * Reads an instance of AnswerFailed from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ContinuousDtmfRecognitionStopped if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of AnswerFailed if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ContinuousDtmfRecognitionStopped.
+     * @throws IOException If an error occurs while reading the AnswerFailed.
      */
-    public static ContinuousDtmfRecognitionStopped fromJson(JsonReader jsonReader) throws IOException {
+    public static AnswerFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final ContinuousDtmfRecognitionStopped event = new ContinuousDtmfRecognitionStopped();
+            final AnswerFailed event = new AnswerFailed();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
