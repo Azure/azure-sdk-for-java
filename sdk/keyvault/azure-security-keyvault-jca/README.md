@@ -194,15 +194,42 @@ Please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_ID
 
 ### Debug Key Vault Provider
 
-Remote debugger can be used to troubleshoot complex issues, add below parameter for `jarsigner` command to enable remote debug:
+Remote debugger can be used to troubleshoot complex issues. Let’s try this out in Java 9 and above!
 
-```shell
--J-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=y
-```
+Before you start debugging, make sure the code of your JCA jar is the same as your IDE source code. 
 
-Create a Remote JVM Debug configuration in your IDE tool, such as in Intellij IDEA:
+1. Replace the placeholders with your own credentials and execute below command to start the `jarsigner` command:
 
-![remote-jvm-debug.png](./resources/remote-jvm-debug.png.png)
+   ```shell
+   jarsigner \
+       -keystore NONE \
+       -storetype AzureKeyVault \
+       -signedjar <file-name-generated-after-signing> <jar-file-name-to-be-signed> <certificate-bundle-name-in-key-vault> \
+       -verbose  \
+       -storepass "" \
+       -providerName AzureKeyVault \
+       -providerClass com.azure.security.keyvault.jca.KeyVaultJcaProvider \
+       -J--module-path="<your-local-Maven-repository-path>/com/azure/azure-security-keyvault-jca/<current-version-num>/azure-security-keyvault-jca-<current-version-num>.jar" \
+       -J--add-modules="com.azure.security.keyvault.jca" \
+       -J-Dazure.keyvault.uri=https://<your-key-vault-name>.vault.azure.net/ \
+       -J-Dazure.keyvault.tenant-id=<your-tenant-id> \
+       -J-Dazure.keyvault.client-id=<your-client-id> \
+       -J-Dazure.keyvault.client-secret=<your-client-secret> \
+       -J-Djava.security.debug=jar \
+       -J-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=y
+   ```
+
+   After execution, you will see the following output information:
+
+   ![start jarsigner command for debug](resources/start-jarsigner-command-for-debug.png)
+
+2. Create a Remote JVM Debug configuration in your IDE tool, such as in Intellij IDEA:
+
+   ![add remote JVM Debug configuration](./resources/add-remote-jvm-debug-configuration.png)
+
+3. Click the `Debug` button to debug in your IDE:
+
+   ![debug breakpoints](resources/debug-breakpoints.png)
 
 ## Configure logging
 This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
