@@ -13,18 +13,18 @@ public class FaceCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        ClassCustomization classCustomization = customization.getClass(
-                "com.azure.ai.vision.face.administration",
-                "FaceAdministrationClientBuilder");
+        // ClassCustomization classCustomization = customization.getClass(
+        //         "com.azure.ai.vision.face.administration",
+        //         "FaceAdministrationClientBuilder");
 
-        classCustomization.removeAnnotation("@ServiceClientBuilder");
-        classCustomization.addAnnotation("@ServiceClientBuilder(\n" +
-                "    serviceClients = {\n" +
-                "        FaceAdministrationClient.class,\n" +
-                "        FaceAdministrationAsyncClient.class,\n" +
-                "        LargeFaceListClient.class,\n" +
-                "        LargePersonGroupClient.class,\n" +
-                "        LargeFaceListAsyncClient.class,\n" +
-                "        LargePersonGroupAsyncClient.class })");
+        // classCustomization.removeAnnotation("@ServiceClientBuilder");
+        // classCustomization.addAnnotation("@ServiceClientBuilder(\n" +
+        //         "    serviceClients = {\n" +
+        //         "        FaceAdministrationClient.class,\n" +
+        //         "        FaceAdministrationAsyncClient.class,\n" +
+        //         "        LargeFaceListClient.class,\n" +
+        //         "        LargePersonGroupClient.class,\n" +
+        //         "        LargeFaceListAsyncClient.class,\n" +
+        //         "        LargePersonGroupAsyncClient.class })");
     }
 }

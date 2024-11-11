@@ -1,7 +1,7 @@
 {
   "main": "dist/src/index.js",
   "dependencies": {
-    "@azure-tools/typespec-java": "0.24.0"
+    "@azure-tools/typespec-java": "c:/github/autorest.java/typespec-extension/azure-tools-typespec-java-0.24.0.tgz"
   },
   "devDependencies": {
     "@azure-tools/typespec-autorest": "0.48.0",

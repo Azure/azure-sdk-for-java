@@ -25,6 +25,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -36,34 +40,55 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in LargeFaceLists.
+ * Initializes a new instance of the LargeFaceList type.
  */
-public final class LargeFaceListsImpl {
+public final class LargeFaceListImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final LargeFaceListsService service;
+    private final LargeFaceListService service;
 
     /**
-     * The service client containing this operation class.
+     * Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://{resource-name}.cognitiveservices.azure.com).
      */
-    private final FaceAdministrationClientImpl client;
+    private final String endpoint;
 
     /**
-     * Initializes an instance of LargeFaceListsImpl.
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://{resource-name}.cognitiveservices.azure.com).
      * 
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    LargeFaceListsImpl(FaceAdministrationClientImpl client) {
-        this.service
-            = RestProxy.create(LargeFaceListsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
     }
+
+    /**
+     * Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     */
+    private final String largeFaceListId;
+
+    /**
+     * Gets Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     * 
+     * @return the largeFaceListId value.
+     */
+    public String getLargeFaceListId() {
+        return this.largeFaceListId;
+    }
+
+    /**
+     * Service version.
+     */
+    private final FaceServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
@@ -71,16 +96,90 @@ public final class LargeFaceListsImpl {
      * @return the serviceVersion value.
      */
     public FaceServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return this.serviceVersion;
     }
 
     /**
-     * The interface defining all the services for FaceAdministrationClientLargeFaceLists to be used by the proxy
-     * service to perform REST calls.
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     * 
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     * 
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of LargeFaceList client.
+     * 
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://{resource-name}.cognitiveservices.azure.com).
+     * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     * @param serviceVersion Service version.
+     */
+    public LargeFaceListImpl(String endpoint, String largeFaceListId, FaceServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, largeFaceListId, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of LargeFaceList client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://{resource-name}.cognitiveservices.azure.com).
+     * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     * @param serviceVersion Service version.
+     */
+    public LargeFaceListImpl(HttpPipeline httpPipeline, String endpoint, String largeFaceListId,
+        FaceServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, largeFaceListId, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of LargeFaceList client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://{resource-name}.cognitiveservices.azure.com).
+     * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     * @param serviceVersion Service version.
+     */
+    public LargeFaceListImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        String largeFaceListId, FaceServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.largeFaceListId = largeFaceListId;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(LargeFaceListService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for LargeFaceList to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}/face/{apiVersion}")
-    @ServiceInterface(name = "FaceAdministrationCl")
-    public interface LargeFaceListsService {
+    @ServiceInterface(name = "LargeFaceList")
+    public interface LargeFaceListService {
         @Put("/largefacelists/{largeFaceListId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -392,9 +491,8 @@ public final class LargeFaceListsImpl {
     public Mono<Response<Void>> createWithResponseAsync(BinaryData createRequest1, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.create(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), contentType, accept, createRequest1, requestOptions, context));
+        return FluxUtil.withContext(context -> service.create(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), contentType, accept, createRequest1, requestOptions, context));
     }
 
     /**
@@ -427,8 +525,8 @@ public final class LargeFaceListsImpl {
     public Response<Void> createWithResponse(BinaryData createRequest1, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), contentType, accept, createRequest1, requestOptions, Context.NONE);
+        return service.createSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getLargeFaceListId(),
+            contentType, accept, createRequest1, requestOptions, Context.NONE);
     }
 
     /**
@@ -447,9 +545,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.delete(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.delete(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), accept, requestOptions, context));
     }
 
     /**
@@ -468,8 +565,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), accept, requestOptions, Context.NONE);
+        return service.deleteSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getLargeFaceListId(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -507,9 +604,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.get(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), accept, requestOptions, context));
     }
 
     /**
@@ -546,8 +642,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), accept, requestOptions, Context.NONE);
+        return service.getSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getLargeFaceListId(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -576,9 +672,8 @@ public final class LargeFaceListsImpl {
     public Mono<Response<Void>> updateWithResponseAsync(BinaryData updateRequest1, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.update(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), contentType, accept, updateRequest1, requestOptions, context));
+        return FluxUtil.withContext(context -> service.update(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), contentType, accept, updateRequest1, requestOptions, context));
     }
 
     /**
@@ -607,8 +702,8 @@ public final class LargeFaceListsImpl {
     public Response<Void> updateWithResponse(BinaryData updateRequest1, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), contentType, accept, updateRequest1, requestOptions, Context.NONE);
+        return service.updateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getLargeFaceListId(),
+            contentType, accept, updateRequest1, requestOptions, Context.NONE);
     }
 
     /**
@@ -653,8 +748,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLargeFaceListsWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getLargeFaceLists(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getLargeFaceLists(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -699,8 +794,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLargeFaceListsWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getLargeFaceListsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+        return service.getLargeFaceListsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -731,9 +826,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTrainingStatusWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTrainingStatus(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), this.client.getLargeFaceListId(), accept, requestOptions,
-            context));
+        return FluxUtil.withContext(context -> service.getTrainingStatus(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), this.getLargeFaceListId(), accept, requestOptions, context));
     }
 
     /**
@@ -764,8 +858,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTrainingStatusWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTrainingStatusSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), accept, requestOptions, Context.NONE);
+        return service.getTrainingStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -784,9 +878,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> trainWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.train(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.train(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), accept, requestOptions, context));
     }
 
     /**
@@ -805,8 +898,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> trainWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.trainSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), accept, requestOptions, Context.NONE);
+        return service.trainSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getLargeFaceListId(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -825,13 +918,13 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginTrainAsync(RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1), () -> this.trainWithResponseAsync(requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/face/{apiVersion}".replace("{endpoint}", this.client.getEndpoint())
-                    .replace("{apiVersion}", this.client.getServiceVersion().getVersion()))
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/face/{apiVersion}".replace("{endpoint}", this.getEndpoint())
+                    .replace("{apiVersion}", this.getServiceVersion().getVersion()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+                .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -851,13 +944,13 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginTrain(RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.trainWithResponse(requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/face/{apiVersion}".replace("{endpoint}", this.client.getEndpoint())
-                    .replace("{apiVersion}", this.client.getServiceVersion().getVersion()))
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/face/{apiVersion}".replace("{endpoint}", this.getEndpoint())
+                    .replace("{apiVersion}", this.getServiceVersion().getVersion()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+                .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -877,13 +970,13 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FaceTrainingResult, Void> beginTrainWithModelAsync(RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1), () -> this.trainWithResponseAsync(requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/face/{apiVersion}".replace("{endpoint}", this.client.getEndpoint())
-                    .replace("{apiVersion}", this.client.getServiceVersion().getVersion()))
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/face/{apiVersion}".replace("{endpoint}", this.getEndpoint())
+                    .replace("{apiVersion}", this.getServiceVersion().getVersion()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+                .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(FaceTrainingResult.class), TypeReference.createInstance(Void.class));
     }
 
@@ -903,13 +996,13 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FaceTrainingResult, Void> beginTrainWithModel(RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.trainWithResponse(requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/face/{apiVersion}".replace("{endpoint}", this.client.getEndpoint())
-                    .replace("{apiVersion}", this.client.getServiceVersion().getVersion()))
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/face/{apiVersion}".replace("{endpoint}", this.getEndpoint())
+                    .replace("{apiVersion}", this.getServiceVersion().getVersion()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
-                .setServiceVersion(this.client.getServiceVersion().getVersion())),
+                .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(FaceTrainingResult.class), TypeReference.createInstance(Void.class));
     }
 
@@ -965,9 +1058,9 @@ public final class LargeFaceListsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.addFaceFromUrlImpl(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), this.client.getLargeFaceListId(), contentType, accept,
-            addFaceFromUrlRequest1, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.addFaceFromUrlImpl(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                this.getLargeFaceListId(), contentType, accept, addFaceFromUrlRequest1, requestOptions, context));
     }
 
     /**
@@ -1022,9 +1115,8 @@ public final class LargeFaceListsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.addFaceFromUrlImplSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), contentType, accept, addFaceFromUrlRequest1, requestOptions,
-            Context.NONE);
+        return service.addFaceFromUrlImplSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), contentType, accept, addFaceFromUrlRequest1, requestOptions, Context.NONE);
     }
 
     /**
@@ -1077,9 +1169,9 @@ public final class LargeFaceListsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.addFaceImpl(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), contentType, accept, imageContent, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.addFaceImpl(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                this.getLargeFaceListId(), contentType, accept, imageContent, requestOptions, context));
     }
 
     /**
@@ -1131,8 +1223,8 @@ public final class LargeFaceListsImpl {
     public Response<BinaryData> addFaceImplWithResponse(BinaryData imageContent, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return service.addFaceImplSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), contentType, accept, imageContent, requestOptions, Context.NONE);
+        return service.addFaceImplSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), contentType, accept, imageContent, requestOptions, Context.NONE);
     }
 
     /**
@@ -1150,9 +1242,9 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFaceWithResponseAsync(String persistedFaceId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteFace(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), persistedFaceId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.deleteFace(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                this.getLargeFaceListId(), persistedFaceId, accept, requestOptions, context));
     }
 
     /**
@@ -1170,8 +1262,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFaceWithResponse(String persistedFaceId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteFaceSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), persistedFaceId, accept, requestOptions, Context.NONE);
+        return service.deleteFaceSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), persistedFaceId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1199,9 +1291,9 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFaceWithResponseAsync(String persistedFaceId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getFace(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), persistedFaceId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getFace(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                this.getLargeFaceListId(), persistedFaceId, accept, requestOptions, context));
     }
 
     /**
@@ -1229,8 +1321,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFaceWithResponse(String persistedFaceId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getFaceSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), persistedFaceId, accept, requestOptions, Context.NONE);
+        return service.getFaceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getLargeFaceListId(),
+            persistedFaceId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1260,9 +1352,9 @@ public final class LargeFaceListsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateFace(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), this.client.getLargeFaceListId(), persistedFaceId,
-            contentType, accept, updateFaceRequest1, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateFace(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), this.getLargeFaceListId(), persistedFaceId, contentType, accept,
+            updateFaceRequest1, requestOptions, context));
     }
 
     /**
@@ -1292,8 +1384,8 @@ public final class LargeFaceListsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateFaceSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), persistedFaceId, contentType, accept, updateFaceRequest1, requestOptions,
+        return service.updateFaceSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), persistedFaceId, contentType, accept, updateFaceRequest1, requestOptions,
             Context.NONE);
     }
 
@@ -1335,9 +1427,8 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFacesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getFaces(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                this.client.getLargeFaceListId(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getFaces(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), this.getLargeFaceListId(), accept, requestOptions, context));
     }
 
     /**
@@ -1378,7 +1469,7 @@ public final class LargeFaceListsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFacesWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getFacesSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            this.client.getLargeFaceListId(), accept, requestOptions, Context.NONE);
+        return service.getFacesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            this.getLargeFaceListId(), accept, requestOptions, Context.NONE);
     }
 }
