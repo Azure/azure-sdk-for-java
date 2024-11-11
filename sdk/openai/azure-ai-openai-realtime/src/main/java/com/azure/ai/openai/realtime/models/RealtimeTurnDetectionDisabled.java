@@ -15,7 +15,7 @@ import java.time.Duration;
 
 // Manually added model
 /**
- * The RealtimeTurnDetectionDisabled model.
+ * The RealtimeTurnDetectionDisabled model. Supported only in Azure.
  */
 @Fluent
 public final class RealtimeTurnDetectionDisabled extends RealtimeTurnDetection {
@@ -48,7 +48,9 @@ public final class RealtimeTurnDetectionDisabled extends RealtimeTurnDetection {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        // Azure supports, `none`, but non-Azure only accepts `null`
+//        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNullField("type");
         return jsonWriter.writeEndObject();
     }
 

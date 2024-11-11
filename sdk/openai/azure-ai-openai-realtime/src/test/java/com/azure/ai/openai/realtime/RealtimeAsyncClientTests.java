@@ -39,13 +39,11 @@ import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
