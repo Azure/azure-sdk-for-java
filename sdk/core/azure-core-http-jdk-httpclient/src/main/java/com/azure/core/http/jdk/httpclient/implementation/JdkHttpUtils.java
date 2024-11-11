@@ -61,10 +61,11 @@ public final class JdkHttpUtils {
     }
 
     /**
-     * Schedules a timeout task to be executed after the given timeout.
+     * Schedules a task to be executed after the given timeout.
      *
      * @param task The task to be executed.
      * @param timeoutMillis The timeout in milliseconds.
+     * @return A {@link ScheduledFuture} that will run the task in the future.
      */
     public static ScheduledFuture<?> scheduleTimeoutTask(Runnable task, long timeoutMillis) {
         return SharedExecutorService.getInstance().schedule(task, timeoutMillis, TimeUnit.MILLISECONDS);

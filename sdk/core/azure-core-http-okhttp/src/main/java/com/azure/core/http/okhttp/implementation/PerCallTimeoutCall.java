@@ -40,10 +40,9 @@ public final class PerCallTimeoutCall {
      */
     public void beginPerCallTimeout(Call call) {
         if (perCallTimeout > 0) {
-            ScheduledFuture<?> future
-                = SharedExecutorService.getInstance().schedule(() -> {
-                    this.timedOut = true;
-                    call.cancel();
+            ScheduledFuture<?> future = SharedExecutorService.getInstance().schedule(() -> {
+                this.timedOut = true;
+                call.cancel();
             }, perCallTimeout, TimeUnit.MILLISECONDS);
             ScheduledFuture<?> existing = CURRENT_TIMEOUT_UPDATER.getAndSet(this, future);
             if (existing != null) {
