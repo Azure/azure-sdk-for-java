@@ -492,7 +492,7 @@ public class KeyVaultClient {
                 LOGGER.log(WARNING, "Failed to parse sign result response.", e);
             }
         } else {
-            LOGGER.log(WARNING, "The received key information is empty, which may indicate that the token has no sign permission. "
+            LOGGER.log(WARNING, "Can not get signature. It can be caused by missing 'sign' permission. To know how to add 'sign' permission. "
                 + "See more from https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#key-less-certificates.");
         }
 
