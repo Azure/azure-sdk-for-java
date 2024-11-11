@@ -164,7 +164,8 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
         return sessionAsyncClient.acceptNextSession()
             .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
             .timeout(operationTimeout, Mono.error(() -> {
-                final String message = TIMEOUT_MESSAGE_PREFIX + operationTimeout.toNanos() + " " + TimeUnit.NANOSECONDS + " (client-timeout)";
+                final String message = TIMEOUT_MESSAGE_PREFIX + operationTimeout.toNanos() + " " + TimeUnit.NANOSECONDS
+                    + " (client-timeout)";
                 return new TimeoutException(message);
             }))
             .onErrorMap(TimeoutException.class, e -> new IllegalStateException(e.getMessage(), e))
@@ -192,7 +193,8 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
         return sessionAsyncClient.acceptSession(sessionId)
             .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
             .timeout(operationTimeout, Mono.error(() -> {
-                final String message = TIMEOUT_MESSAGE_PREFIX + operationTimeout.toNanos() + " " + TimeUnit.NANOSECONDS + " (client-timeout)";
+                final String message = TIMEOUT_MESSAGE_PREFIX + operationTimeout.toNanos() + " " + TimeUnit.NANOSECONDS
+                    + " (client-timeout)";
                 return new TimeoutException(message);
             }))
             .onErrorMap(TimeoutException.class, e -> new IllegalStateException(e.getMessage(), e))

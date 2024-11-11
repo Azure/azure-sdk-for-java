@@ -200,7 +200,7 @@ final class ServiceBusSessionAcquirer {
             .publishOn(Schedulers.boundedElastic())
             .doOnError(ignored -> logger.atVerbose()
                 .addKeyValue(TRACKING_ID_KEY, id)
-                .log("Emitting session acquire error signal."));
+                .log("Emitting session acquire error" + (logAtInfo ? "." : ": " + t.getMessage())));
     }
 
     /**
