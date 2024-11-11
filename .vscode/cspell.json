@@ -136,6 +136,7 @@
     "sdk/eventhubs/azure-messaging-eventhubs/**",
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
+    "sdk/healthdataaiservices/azure-health-deidentification/**",
     "sdk/cosmos/azure-cosmos/**",
     "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",

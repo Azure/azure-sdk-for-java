@@ -3,22 +3,10 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.github.javaparser.ParseProblemException;
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.CatchClause;
-import com.github.javaparser.ast.stmt.Statement;
-import com.github.javaparser.ast.stmt.TryStmt;
-import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import com.github.javaparser.ast.type.Type;
 import org.slf4j.Logger;
 
 import java.util.function.Consumer;
@@ -35,7 +23,6 @@ public class ListJobsCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         PackageCustomization models = libraryCustomization.getPackage("com.azure.health.deidentification");
-        models.getClass("JobName").setModifiers(Modifier.Keyword.PRIVATE);
 
         ClassCustomization deidentificationClientClass = models.getClass("DeidentificationClient");
         customizeClassByMarkingContinuationTokenOverloadsPrivate(deidentificationClientClass);
