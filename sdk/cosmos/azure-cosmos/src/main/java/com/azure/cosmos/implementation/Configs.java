@@ -5,9 +5,13 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import io.netty.handler.codec.http2.Http2SecurityUtil;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +36,7 @@ public class Configs {
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
     private final SslContext sslContext;
+    private final SslContext sslContextHttp2;
 
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
@@ -258,6 +263,7 @@ public class Configs {
 
     public Configs() {
         this.sslContext = sslContextInit();
+        this.sslContextHttp2 = sslContextHttp2Init();
     }
 
     public static int getCPUCnt() {
@@ -267,15 +273,46 @@ public class Configs {
     private SslContext sslContextInit() {
         try {
             SslProvider sslProvider = SslContext.defaultClientProvider();
-            return SslContextBuilder.forClient().sslProvider(sslProvider).build();
+            return SslContextBuilder
+                .forClient()
+                .sslProvider(sslProvider)
+                .build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
             throw new IllegalStateException(sslException);
         }
     }
 
+    private SslContext sslContextHttp2Init() {
+
+        try {
+            SslProvider sslProvider = SslContext.defaultClientProvider();
+            return SslContextBuilder
+                .forClient()
+                .sslProvider(sslProvider)
+                .ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
+                .applicationProtocolConfig(
+                    new ApplicationProtocolConfig(
+                        ApplicationProtocolConfig.Protocol.ALPN,
+                        ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                        ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
+                        ApplicationProtocolNames.HTTP_2
+                    )
+                )
+                .build();
+        } catch (SSLException sslException) {
+            logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
+            throw new IllegalStateException(sslException);
+        }
+
+    }
+
     public SslContext getSslContext() {
         return this.sslContext;
+    }
+
+    public SslContext getSslContextHttp2() {
+        return sslContextHttp2;
     }
 
     public Protocol getProtocol() {

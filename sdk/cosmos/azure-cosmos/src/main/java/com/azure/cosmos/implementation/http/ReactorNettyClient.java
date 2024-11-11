@@ -17,6 +17,7 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.http.client.HttpClientState;
@@ -132,13 +133,25 @@ public class ReactorNettyClient implements HttpClient {
             this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
         }
 
-        this.httpClient = this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
-            .httpResponseDecoder(httpResponseDecoderSpec ->
-                httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength())
-                    .maxHeaderSize(configs.getMaxHttpHeaderSize())
-                    .maxChunkSize(configs.getMaxHttpChunkSize())
-                    .validateHeaders(true));
+        logger.info("Changing to use http2 protocol with removing all whitespaces");
+        this.httpClient =
+            this.httpClient
+                .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
+                .protocol(HttpProtocol.H2)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
+                .doOnResponse((response, connection) -> {
+                    // does not work for the invalid headers
+                    response.responseHeaders().entries().forEach(entry -> {
+                        entry.setValue(entry.getValue().trim());
+                    });
+                })
+                .httpResponseDecoder(httpResponseDecoderSpec ->
+                    httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength())
+                        .maxHeaderSize(configs.getMaxHttpHeaderSize())
+                        .maxChunkSize(configs.getMaxHttpChunkSize())
+                        .validateHeaders(true));
+        // somehow faced Caused by: java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
+        // however this flag does not work for http2
     }
 
     @Override
