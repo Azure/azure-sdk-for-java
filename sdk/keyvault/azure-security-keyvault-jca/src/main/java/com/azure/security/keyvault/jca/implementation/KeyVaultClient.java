@@ -491,6 +491,8 @@ public class KeyVaultClient {
             } catch (IOException e) {
                 LOGGER.log(WARNING, "Failed to parse sign result response.", e);
             }
+        } else {
+            LOGGER.log(WARNING, "The received key information is empty, which may indicate that the token has no sign permission.");
         }
 
         byte[] signature;
