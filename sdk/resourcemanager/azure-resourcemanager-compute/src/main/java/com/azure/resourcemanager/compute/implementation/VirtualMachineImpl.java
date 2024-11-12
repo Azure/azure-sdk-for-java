@@ -27,6 +27,7 @@ import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.BootDiagnostics;
 import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
@@ -124,7 +125,9 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
-/** The implementation for VirtualMachine and its create and update interfaces. */
+/**
+ * The implementation for VirtualMachine and its create and update interfaces.
+ */
 class VirtualMachineImpl
     extends GroupableResourceImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl, ComputeManager>
     implements VirtualMachine, VirtualMachine.DefinitionManagedOrUnmanaged, VirtualMachine.DefinitionManaged,
@@ -1993,6 +1996,11 @@ class VirtualMachineImpl
         return this.innerModel().userData();
     }
 
+    @Override
+    public CapacityReservationProfile capacityReservation() {
+        return this.innerModel().capacityReservation();
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator.beforeGroupCreateOrUpdate implementation
     @Override
     public void beforeGroupCreateOrUpdate() {
@@ -2356,7 +2364,9 @@ class VirtualMachineImpl
         }
     }
 
-    /** Prepare virtual machine disks profile (StorageProfile). */
+    /**
+     * Prepare virtual machine disks profile (StorageProfile).
+     */
     private void handleUnManagedOSAndDataDisksStorageSettings() {
         if (isManagedDiskEnabled()) {
             // NOP if the virtual machine is based on managed disk (managed and un-managed disk cannot be mixed)
@@ -2866,7 +2876,17 @@ class VirtualMachineImpl
         return this;
     }
 
-    /** Class to manage Data disk collection. */
+    @Override
+    public VirtualMachineImpl withCapacityReservation(String capacityReservationGroupsId) {
+        this.innerModel()
+            .withCapacityReservation(new CapacityReservationProfile()
+                .withCapacityReservationGroup(new SubResource().withId(capacityReservationGroupsId)));
+        return this;
+    }
+
+    /**
+     * Class to manage Data disk collection.
+     */
     private class ManagedDataDiskCollection {
         private final Map<String, DataDisk> newDisksToAttach = new HashMap<>();
         private final List<DataDisk> existingDisksToAttach = new ArrayList<>();
@@ -3126,7 +3146,9 @@ class VirtualMachineImpl
         }
     }
 
-    /** Class to manage VM boot diagnostics settings. */
+    /**
+     * Class to manage VM boot diagnostics settings.
+     */
     private class BootDiagnosticsHandler {
         private final VirtualMachineImpl vmImpl;
         private String creatableDiagnosticsStorageAccountKey;
