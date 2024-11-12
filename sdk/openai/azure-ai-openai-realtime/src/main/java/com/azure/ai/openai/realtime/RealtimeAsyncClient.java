@@ -25,7 +25,6 @@ import reactor.util.concurrent.Queues;
 import reactor.util.retry.Retry;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
