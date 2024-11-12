@@ -109,4 +109,12 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
         );
         testRunner.accept(weatherTool, sessionUpdate);
     }
+
+    void pause(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

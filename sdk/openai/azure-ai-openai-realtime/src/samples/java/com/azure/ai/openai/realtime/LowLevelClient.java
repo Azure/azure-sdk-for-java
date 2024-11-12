@@ -42,7 +42,7 @@ public class LowLevelClient {
                     if (userInputRequest instanceof RealtimeEventHandler.SessionUpdateRequest) {
                         return client.sendMessage(RealtimeEventHandler.sessionUpdate());
                     } else if (userInputRequest instanceof RealtimeEventHandler.SendAudioRequest) {
-                        return FileUtils.sendAudioFile(client, FileUtils.openResourceFile("audio_weather_alaw.wav"));
+                        return FileUtils.sendAudioFileAsync(client, FileUtils.openResourceFile("audio_weather_alaw.wav"));
                     } else if (userInputRequest instanceof RealtimeEventHandler.EndSession) {
                         return Mono.empty();
                     } else {

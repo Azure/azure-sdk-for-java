@@ -76,7 +76,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                 .assertNext(event -> {
                     assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
                 })
-                .then(() -> FileUtils.sendAudioFile(client, FileUtils.openResourceFile("audio_weather_alaw.wav")).block())
+                .then(() -> FileUtils.sendAudioFileAsync(client, FileUtils.openResourceFile("audio_weather_alaw.wav")).block())
                 .thenConsumeWhile(
                     event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
                     Assertions::assertNotNull)
@@ -249,7 +249,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
         AtomicInteger responseDoneCount = new AtomicInteger(0);
         getWeatherToolRunner((weatherTool, sessionConfig) -> {
             client.sendMessage(sessionConfig).block();
-            FileUtils.sendAudioFile(client,
+            FileUtils.sendAudioFileAsync(client,
                     FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).block();
             StepVerifier.create(client.getServerEvents())
                 .thenConsumeWhile(
@@ -296,7 +296,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                     .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
         )).block();
 
-        FileUtils.sendAudioFile(client, FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).block();
+        FileUtils.sendAudioFileAsync(client, FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).block();
         client.sendMessage(ConversationItem.createUserMessage("Hello, assistant!")).block();
 
         StepVerifier.create(client.getServerEvents())

@@ -4,6 +4,7 @@
 package com.azure.ai.openai.realtime.implementation;
 
 import com.azure.ai.openai.realtime.RealtimeAsyncClient;
+import com.azure.ai.openai.realtime.RealtimeClient;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventInputAudioBufferAppend;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ public class FileUtils {
     // Increasing the buffer size per chunk will trigger the server to send more `response.audio.append` events
     private static final int BYTES_PER_CHUNK = 4 * SAMPLES_PER_CHUNK * BYTES_PER_SAMPLE;
 
-    public static Mono<Void> sendAudioFile(RealtimeAsyncClient client, Path audioFile) {
+    public static Mono<Void> sendAudioFileAsync(RealtimeAsyncClient client, Path audioFile) {
         byte[] audioBytes;
         try {
             audioBytes = Files.readAllBytes(audioFile);
@@ -38,6 +39,22 @@ public class FileUtils {
         }
 
         return Mono.empty();
+    }
+
+    public static void sendAudioFile(RealtimeClient client, Path audioFile) {
+        byte[] audioBytes;
+        try {
+            audioBytes = Files.readAllBytes(audioFile);
+        } catch (IOException e) {
+           throw new RuntimeException(e);
+        }
+
+        for (int i = 0; i < audioBytes.length; i += BYTES_PER_CHUNK) {
+            int end = Math.min(audioBytes.length, i + BYTES_PER_CHUNK);
+            byte[] chunk = new byte[end - i];
+            System.arraycopy(audioBytes, i, chunk, 0, end - i);
+            client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(chunk));
+        }
     }
 
     public static Path openResourceFile(String fileName) {
