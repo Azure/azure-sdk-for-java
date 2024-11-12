@@ -233,14 +233,14 @@ public class RoutingMapProviderHelperTest {
 
         Function<PartitionKeyRange, String> func = Resource::getId;
 
-        List<PartitionKeyRange> rangeList = List.of(new PartitionKeyRange("0", "", "FF"));
+        List<PartitionKeyRange> rangeList = Arrays.asList(new PartitionKeyRange("0", "", "FF"));
 
         IRoutingMapProvider routingMapProviderMock = new MockIRoutingMapProviderWithNullRoutingMap(rangeList);
 
         Mono<List<PartitionKeyRange>> overlappingRanges;
         overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
             "coll1",
-            List.of(new Range<String>("", "FF", true, false)));
+            Arrays.asList(new Range<String>("", "FF", true, false)));
         assertThat("").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
     }
 }
