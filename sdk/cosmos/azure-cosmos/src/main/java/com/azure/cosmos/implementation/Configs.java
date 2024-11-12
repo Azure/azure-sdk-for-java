@@ -43,7 +43,7 @@ public class Configs {
     // * Java property naming conventions as illustrated by the name/value pairs returned by System.getProperties.
 
     private static final String PROTOCOL_ENVIRONMENT_VARIABLE = "AZURE_COSMOS_DIRECT_MODE_PROTOCOL";
-    private static final String PROTOCOL_PROPERTY = "azure.cosmos.directModeProtocol";
+    public static final String PROTOCOL_PROPERTY = "azure.cosmos.directModeProtocol";
     private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
