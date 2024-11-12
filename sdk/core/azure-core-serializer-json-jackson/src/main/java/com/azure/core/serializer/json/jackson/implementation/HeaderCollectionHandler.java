@@ -4,7 +4,6 @@
 package com.azure.core.serializer.json.jackson.implementation;
 
 import com.azure.core.implementation.AccessControllerUtils;
-import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
