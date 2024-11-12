@@ -33,4 +33,5 @@ module io.clientcore.core {
         with io.clientcore.core.http.client.DefaultHttpClientProvider;
 
     uses io.clientcore.core.serialization.json.JsonProvider;
+    exports io.clientcore.core.implementation.util;
 }
