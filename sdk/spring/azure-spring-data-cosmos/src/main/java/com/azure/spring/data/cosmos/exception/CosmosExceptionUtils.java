@@ -6,7 +6,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.util.ObjectUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,7 @@ public class CosmosExceptionUtils {
      * @param responseDiagnosticsProcessor response diagnostics processor
      * @param <T> type class of Mono
      * @return Mono instance
-     * @throws CosmosAccessException for operations on cosmos db
-     * @throws DataAccessException for operations on cosmos db
+     * @throws CosmosException | CosmosAccessException for operations on cosmos db
      */
     public static <T> Mono<T> exceptionHandler(String message, Throwable throwable,
                                                ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
