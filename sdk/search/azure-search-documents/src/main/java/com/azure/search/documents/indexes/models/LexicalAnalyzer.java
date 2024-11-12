@@ -21,7 +21,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
     /*
      * A URI fragment specifying the type of analyzer.
      */
-    private String odataType = "LexicalAnalyzer";
+    String odataType;
 
     /*
      * The name of the analyzer. It must only contain letters, digits, spaces, dashes or underscores, can only start and
@@ -36,6 +36,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
      */
     public LexicalAnalyzer(String name) {
         this.name = name;
+        this.odataType = "LexicalAnalyzer";
     }
 
     /**
@@ -63,9 +64,13 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("@odata.type", this.odataType);
-        return jsonWriter.writeEndObject();
     }
 
     /**

@@ -20,12 +20,6 @@ import java.util.List;
 @Fluent
 public final class MagnitudeScoringFunction extends ScoringFunction {
     /*
-     * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The function
-     * type must be lower case.
-     */
-    private String type = "magnitude";
-
-    /*
      * Parameter values for the magnitude scoring function.
      */
     private final MagnitudeScoringParameters parameters;
@@ -40,17 +34,7 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     public MagnitudeScoringFunction(String fieldName, double boost, MagnitudeScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
-    }
-
-    /**
-     * Get the type property: Indicates the type of function to use. Valid values include magnitude, freshness,
-     * distance, and tag. The function type must be lower case.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "magnitude";
     }
 
     /**
@@ -77,11 +61,8 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fieldName", getFieldName());
-        jsonWriter.writeDoubleField("boost", getBoost());
-        jsonWriter.writeStringField("interpolation", getInterpolation() == null ? null : getInterpolation().toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("magnitude", this.parameters);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

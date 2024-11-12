@@ -20,11 +20,6 @@ import java.io.IOException;
 @Fluent
 public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     /*
-     * The @odata.type property.
-     */
-    private String odataType = "#Microsoft.Azure.Search.BM25Similarity";
-
-    /*
      * This property controls the scaling function between the term frequency of each matching terms and the final
      * relevance score of a document-query pair. By default, a value of 1.2 is used. A value of 0.0 means the score does
      * not scale with an increase in term frequency.
@@ -42,16 +37,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * Creates an instance of BM25SimilarityAlgorithm class.
      */
     public BM25SimilarityAlgorithm() {
-    }
-
-    /**
-     * Get the odataType property: The &#064;odata.type property.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.BM25Similarity";
     }
 
     /**
@@ -108,7 +94,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeNumberField("k1", this.k1);
         jsonWriter.writeNumberField("b", this.b);
         return jsonWriter.writeEndObject();
@@ -129,8 +115,8 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedBM25SimilarityAlgorithm.odataType = reader.getString();
+                if (SimilarityAlgorithm.fromJsonShared(reader, fieldName, deserializedBM25SimilarityAlgorithm)) {
+                    continue;
                 } else if ("k1".equals(fieldName)) {
                     deserializedBM25SimilarityAlgorithm.k1 = reader.getNullable(JsonReader::getDouble);
                 } else if ("b".equals(fieldName)) {

@@ -19,11 +19,6 @@ import java.io.IOException;
 public final class VectorizableImageUrlQuery extends VectorQuery {
 
     /*
-     * The kind of vector query being performed.
-     */
-    private VectorQueryKind kind = VectorQueryKind.IMAGE_URL;
-
-    /*
      * The URL of an image to be vectorized to perform a vector search query.
      */
     private String url;
@@ -32,16 +27,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      * Creates an instance of VectorizableImageUrlQuery class.
      */
     public VectorizableImageUrlQuery() {
-    }
-
-    /**
-     * Get the kind property: The kind of vector query being performed.
-     *
-     * @return the kind value.
-     */
-    @Override
-    public VectorQueryKind getKind() {
-        return this.kind;
+        this.kind = VectorQueryKind.IMAGE_URL;
     }
 
     /**
@@ -133,14 +119,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
-        jsonWriter.writeStringField("fields", getFields());
-        jsonWriter.writeBooleanField("exhaustive", isExhaustive());
-        jsonWriter.writeNumberField("oversampling", getOversampling());
-        jsonWriter.writeNumberField("weight", getWeight());
-        jsonWriter.writeJsonField("threshold", getThreshold());
-        jsonWriter.writeStringField("filterOverride", getFilterOverride());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("url", this.url);
         return jsonWriter.writeEndObject();
     }
@@ -159,23 +138,8 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("k".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery
-                        .setKNearestNeighborsCount(reader.getNullable(JsonReader::getInt));
-                } else if ("fields".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery.setFields(reader.getString());
-                } else if ("exhaustive".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery.setExhaustive(reader.getNullable(JsonReader::getBoolean));
-                } else if ("oversampling".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery.setOversampling(reader.getNullable(JsonReader::getDouble));
-                } else if ("weight".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery.setWeight(reader.getNullable(JsonReader::getFloat));
-                } else if ("threshold".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery.setThreshold(VectorThreshold.fromJson(reader));
-                } else if ("filterOverride".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery.setFilterOverride(reader.getString());
-                } else if ("kind".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery.kind = VectorQueryKind.fromString(reader.getString());
+                if (VectorQuery.fromJsonShared(reader, fieldName, deserializedVectorizableImageUrlQuery)) {
+                    continue;
                 } else if ("url".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery.url = reader.getString();
                 } else {

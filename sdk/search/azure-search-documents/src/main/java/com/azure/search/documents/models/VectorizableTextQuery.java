@@ -18,11 +18,6 @@ import java.io.IOException;
 public final class VectorizableTextQuery extends VectorQuery {
 
     /*
-     * The kind of vector query being performed.
-     */
-    private VectorQueryKind kind = VectorQueryKind.TEXT;
-
-    /*
      * The text to be vectorized to perform a vector search query.
      */
     private final String text;
@@ -34,16 +29,7 @@ public final class VectorizableTextQuery extends VectorQuery {
      */
     public VectorizableTextQuery(String text) {
         this.text = text;
-    }
-
-    /**
-     * Get the kind property: The kind of vector query being performed.
-     *
-     * @return the kind value.
-     */
-    @Override
-    public VectorQueryKind getKind() {
-        return this.kind;
+        this.kind = VectorQueryKind.TEXT;
     }
 
     /**
@@ -124,15 +110,8 @@ public final class VectorizableTextQuery extends VectorQuery {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
-        jsonWriter.writeStringField("fields", getFields());
-        jsonWriter.writeBooleanField("exhaustive", isExhaustive());
-        jsonWriter.writeNumberField("oversampling", getOversampling());
-        jsonWriter.writeNumberField("weight", getWeight());
-        jsonWriter.writeJsonField("threshold", getThreshold());
-        jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 

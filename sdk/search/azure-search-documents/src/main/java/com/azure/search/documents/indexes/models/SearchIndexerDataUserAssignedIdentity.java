@@ -18,11 +18,6 @@ import java.io.IOException;
 @Immutable
 public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDataIdentity {
     /*
-     * A URI fragment specifying the type of identity.
-     */
-    private String odataType = "#Microsoft.Azure.Search.DataUserAssignedIdentity";
-
-    /*
      * The fully qualified Azure resource Id of a user assigned managed identity typically in the form
      * "/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId"
      * that should have been assigned to the search service.
@@ -36,16 +31,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
      */
     public SearchIndexerDataUserAssignedIdentity(String resourceId) {
         this.resourceId = resourceId;
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of identity.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.DataUserAssignedIdentity";
     }
 
     /**
@@ -66,8 +52,8 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("userAssignedIdentity", this.resourceId);
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         return jsonWriter.writeEndObject();
     }
 

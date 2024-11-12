@@ -19,11 +19,6 @@ import java.io.IOException;
 @Fluent
 public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer {
     /*
-     * The name of the kind of vectorization method being configured for use with vector search.
-     */
-    private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.AML;
-
-    /*
      * Specifies the properties of the AML vectorizer.
      */
     private AzureMachineLearningParameters aMLParameters;
@@ -35,16 +30,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
      */
     public AzureMachineLearningVectorizer(String vectorizerName) {
         super(vectorizerName);
-    }
-
-    /**
-     * Get the kind property: The name of the kind of vectorization method being configured for use with vector search.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public VectorSearchVectorizerKind getKind() {
-        return this.kind;
+        this.kind = VectorSearchVectorizerKind.AML;
     }
 
     /**
@@ -73,8 +59,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getVectorizerName());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("amlParameters", this.aMLParameters);
         return jsonWriter.writeEndObject();
     }

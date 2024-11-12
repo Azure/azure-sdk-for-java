@@ -23,11 +23,6 @@ import java.util.List;
 @Immutable
 public final class PatternReplaceCharFilter extends CharFilter {
     /*
-     * A URI fragment specifying the type of char filter.
-     */
-    private String odataType = "#Microsoft.Azure.Search.PatternReplaceCharFilter";
-
-    /*
      * A regular expression pattern.
      */
     private final String pattern;
@@ -48,16 +43,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
         super(name);
         this.pattern = pattern;
         this.replacement = replacement;
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of char filter.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.PatternReplaceCharFilter";
     }
 
     /**
@@ -84,10 +70,9 @@ public final class PatternReplaceCharFilter extends CharFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("pattern", this.pattern);
         jsonWriter.writeStringField("replacement", this.replacement);
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         return jsonWriter.writeEndObject();
     }
 

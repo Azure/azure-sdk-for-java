@@ -19,11 +19,6 @@ import java.io.IOException;
 @Fluent
 public final class HnswAlgorithmConfiguration extends VectorSearchAlgorithmConfiguration {
     /*
-     * The name of the kind of algorithm being configured for use with vector search.
-     */
-    private VectorSearchAlgorithmKind kind = VectorSearchAlgorithmKind.HNSW;
-
-    /*
      * Contains the parameters specific to HNSW algorithm.
      */
     private HnswParameters parameters;
@@ -35,16 +30,7 @@ public final class HnswAlgorithmConfiguration extends VectorSearchAlgorithmConfi
      */
     public HnswAlgorithmConfiguration(String name) {
         super(name);
-    }
-
-    /**
-     * Get the kind property: The name of the kind of algorithm being configured for use with vector search.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public VectorSearchAlgorithmKind getKind() {
-        return this.kind;
+        this.kind = VectorSearchAlgorithmKind.HNSW;
     }
 
     /**
@@ -73,8 +59,7 @@ public final class HnswAlgorithmConfiguration extends VectorSearchAlgorithmConfi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("hnswParameters", this.parameters);
         return jsonWriter.writeEndObject();
     }

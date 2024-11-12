@@ -22,11 +22,6 @@ import java.util.stream.Collectors;
 public final class PatternAnalyzer extends LexicalAnalyzer {
 
     /*
-     * A URI fragment specifying the type of analyzer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
-
-    /*
      * A value indicating whether terms should be lower-cased. Default is true.
      */
     private Boolean lowerCaseTerms;
@@ -54,16 +49,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      */
     public PatternAnalyzer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of analyzer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
     }
 
     /**
@@ -164,8 +150,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeBooleanField("lowercase", this.lowerCaseTerms);
         jsonWriter.writeStringField("pattern", this.pattern);
         jsonWriter.writeStringField("flags", this.flags == null ? null : this.flags.toString());

@@ -21,7 +21,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
     /*
      * The name of the kind of vectorization method being configured for use with vector search.
      */
-    private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.fromString("VectorSearchVectorizer");
+    VectorSearchVectorizerKind kind;
 
     /*
      * The name to associate with this particular vectorization method.
@@ -35,6 +35,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
      */
     public VectorSearchVectorizer(String vectorizerName) {
         this.vectorizerName = vectorizerName;
+        this.kind = VectorSearchVectorizerKind.fromString("VectorSearchVectorizer");
     }
 
     /**
@@ -61,9 +62,13 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("name", this.vectorizerName);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        return jsonWriter.writeEndObject();
     }
 
     /**

@@ -17,25 +17,11 @@ import java.io.IOException;
  */
 @Immutable
 public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdentity {
-    /*
-     * A URI fragment specifying the type of identity.
-     */
-    private String odataType = "#Microsoft.Azure.Search.DataNoneIdentity";
-
     /**
      * Creates an instance of SearchIndexerDataNoneIdentity class.
      */
     public SearchIndexerDataNoneIdentity() {
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of identity.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.DataNoneIdentity";
     }
 
     /**
@@ -44,7 +30,7 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -64,8 +50,9 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedSearchIndexerDataNoneIdentity.odataType = reader.getString();
+                if (SearchIndexerDataIdentity.fromJsonShared(reader, fieldName,
+                    deserializedSearchIndexerDataNoneIdentity)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

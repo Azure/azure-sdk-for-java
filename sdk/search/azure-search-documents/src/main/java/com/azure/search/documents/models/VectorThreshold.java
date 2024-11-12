@@ -21,12 +21,13 @@ public class VectorThreshold implements JsonSerializable<VectorThreshold> {
     /*
      * The kind of threshold used to filter vector queries
      */
-    private VectorThresholdKind kind = VectorThresholdKind.fromString("VectorThreshold");
+    VectorThresholdKind kind;
 
     /**
      * Creates an instance of VectorThreshold class.
      */
     public VectorThreshold() {
+        this.kind = VectorThresholdKind.fromString("VectorThreshold");
     }
 
     /**
@@ -44,8 +45,12 @@ public class VectorThreshold implements JsonSerializable<VectorThreshold> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
     }
 
     /**
@@ -90,14 +95,21 @@ public class VectorThreshold implements JsonSerializable<VectorThreshold> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    deserializedVectorThreshold.kind = VectorThresholdKind.fromString(reader.getString());
-                } else {
+                if (!VectorThreshold.fromJsonShared(reader, fieldName, deserializedVectorThreshold)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedVectorThreshold;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName, VectorThreshold deserializedVectorThreshold)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedVectorThreshold.kind = VectorThresholdKind.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

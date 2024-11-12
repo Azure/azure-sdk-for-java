@@ -20,11 +20,6 @@ import java.util.List;
 public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
 
     /*
-     * A URI fragment specifying the type of analyzer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.StandardAnalyzer";
-
-    /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token
      * length that can be used is 300 characters.
      */
@@ -42,16 +37,7 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      */
     public LuceneStandardAnalyzer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of analyzer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.StandardAnalyzer";
     }
 
     /**
@@ -102,8 +88,7 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();

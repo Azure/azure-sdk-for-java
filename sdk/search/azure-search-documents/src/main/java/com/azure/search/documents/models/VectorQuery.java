@@ -21,7 +21,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     /*
      * The kind of vector query being performed.
      */
-    private VectorQueryKind kind = VectorQueryKind.fromString("VectorQuery");
+    VectorQueryKind kind;
 
     /*
      * Number of nearest neighbors to return as top hits.
@@ -70,6 +70,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * Creates an instance of VectorQuery class.
      */
     public VectorQuery() {
+        this.kind = VectorQueryKind.fromString("VectorQuery");
     }
 
     /**
@@ -249,6 +250,11 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeNumberField("k", this.kNearestNeighborsCount);
         jsonWriter.writeStringField("fields", this.fields);
@@ -257,7 +263,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         jsonWriter.writeNumberField("weight", this.weight);
         jsonWriter.writeJsonField("threshold", this.threshold);
         jsonWriter.writeStringField("filterOverride", this.filterOverride);
-        return jsonWriter.writeEndObject();
     }
 
     /**
@@ -306,27 +311,41 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedVectorQuery.kind = VectorQueryKind.fromString(reader.getString());
-                } else if ("k".equals(fieldName)) {
-                    deserializedVectorQuery.kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
-                } else if ("fields".equals(fieldName)) {
-                    deserializedVectorQuery.fields = reader.getString();
-                } else if ("exhaustive".equals(fieldName)) {
-                    deserializedVectorQuery.exhaustive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("oversampling".equals(fieldName)) {
-                    deserializedVectorQuery.oversampling = reader.getNullable(JsonReader::getDouble);
-                } else if ("weight".equals(fieldName)) {
-                    deserializedVectorQuery.weight = reader.getNullable(JsonReader::getFloat);
-                } else if ("threshold".equals(fieldName)) {
-                    deserializedVectorQuery.threshold = VectorThreshold.fromJson(reader);
-                } else if ("filterOverride".equals(fieldName)) {
-                    deserializedVectorQuery.filterOverride = reader.getString();
-                } else {
+                if (!VectorQuery.fromJsonShared(reader, fieldName, deserializedVectorQuery)) {
                     reader.skipChildren();
                 }
             }
             return deserializedVectorQuery;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName, VectorQuery deserializedVectorQuery)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedVectorQuery.kind = VectorQueryKind.fromString(reader.getString());
+            return true;
+        } else if ("k".equals(fieldName)) {
+            deserializedVectorQuery.kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
+            return true;
+        } else if ("fields".equals(fieldName)) {
+            deserializedVectorQuery.fields = reader.getString();
+            return true;
+        } else if ("exhaustive".equals(fieldName)) {
+            deserializedVectorQuery.exhaustive = reader.getNullable(JsonReader::getBoolean);
+            return true;
+        } else if ("oversampling".equals(fieldName)) {
+            deserializedVectorQuery.oversampling = reader.getNullable(JsonReader::getDouble);
+            return true;
+        } else if ("weight".equals(fieldName)) {
+            deserializedVectorQuery.weight = reader.getNullable(JsonReader::getFloat);
+            return true;
+        } else if ("threshold".equals(fieldName)) {
+            deserializedVectorQuery.threshold = VectorThreshold.fromJson(reader);
+            return true;
+        } else if ("filterOverride".equals(fieldName)) {
+            deserializedVectorQuery.filterOverride = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

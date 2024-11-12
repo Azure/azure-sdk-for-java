@@ -18,11 +18,6 @@ import java.io.IOException;
 public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
 
     /*
-     * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
-     */
-    private String odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
-
-    /*
      * The key used to provision the Azure AI service resource attached to a skillset.
      */
     private String key;
@@ -34,17 +29,7 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
      */
     public CognitiveServicesAccountKey(String key) {
         this.key = key;
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of Azure AI service resource attached to a
-     * skillset.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
     }
 
     /**
@@ -71,9 +56,8 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("description", getDescription());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("key", this.key);
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         return jsonWriter.writeEndObject();
     }
 

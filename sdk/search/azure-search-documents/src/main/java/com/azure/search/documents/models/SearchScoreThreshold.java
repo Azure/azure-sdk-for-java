@@ -20,11 +20,6 @@ import java.io.IOException;
 public final class SearchScoreThreshold extends VectorThreshold {
 
     /*
-     * The kind of threshold used to filter vector queries
-     */
-    private VectorThresholdKind kind = VectorThresholdKind.SEARCH_SCORE;
-
-    /*
      * The threshold will filter based on the '@search.score' value. Note this is the @search.score returned as part of
      * the search response. The threshold direction will be chosen for higher @search.score.
      */
@@ -37,16 +32,7 @@ public final class SearchScoreThreshold extends VectorThreshold {
      */
     public SearchScoreThreshold(double value) {
         this.value = value;
-    }
-
-    /**
-     * Get the kind property: The kind of threshold used to filter vector queries.
-     *
-     * @return the kind value.
-     */
-    @Override
-    public VectorThresholdKind getKind() {
-        return this.kind;
+        this.kind = VectorThresholdKind.SEARCH_SCORE;
     }
 
     /**
@@ -69,8 +55,8 @@ public final class SearchScoreThreshold extends VectorThreshold {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeDoubleField("value", this.value);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 

@@ -18,11 +18,6 @@ import java.io.IOException;
 @Fluent
 public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     /*
-     * The name of the kind of vectorization method being configured for use with vector search.
-     */
-    private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.AZURE_OPEN_AI;
-
-    /*
      * Contains the parameters specific to Azure OpenAI embedding vectorization.
      */
     private AzureOpenAIVectorizerParameters parameters;
@@ -34,16 +29,7 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
      */
     public AzureOpenAIVectorizer(String vectorizerName) {
         super(vectorizerName);
-    }
-
-    /**
-     * Get the kind property: The name of the kind of vectorization method being configured for use with vector search.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public VectorSearchVectorizerKind getKind() {
-        return this.kind;
+        this.kind = VectorSearchVectorizerKind.AZURE_OPEN_AI;
     }
 
     /**
@@ -72,8 +58,7 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getVectorizerName());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("azureOpenAIParameters", this.parameters);
         return jsonWriter.writeEndObject();
     }

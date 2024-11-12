@@ -21,7 +21,7 @@ public class CharFilter implements JsonSerializable<CharFilter> {
     /*
      * A URI fragment specifying the type of char filter.
      */
-    private String odataType = "CharFilter";
+    String odataType;
 
     /*
      * The name of the char filter. It must only contain letters, digits, spaces, dashes or underscores, can only start
@@ -36,6 +36,7 @@ public class CharFilter implements JsonSerializable<CharFilter> {
      */
     public CharFilter(String name) {
         this.name = name;
+        this.odataType = "CharFilter";
     }
 
     /**
@@ -63,9 +64,13 @@ public class CharFilter implements JsonSerializable<CharFilter> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("@odata.type", this.odataType);
-        return jsonWriter.writeEndObject();
     }
 
     /**

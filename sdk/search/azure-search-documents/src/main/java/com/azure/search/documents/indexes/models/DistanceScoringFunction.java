@@ -20,12 +20,6 @@ import java.util.List;
 @Fluent
 public final class DistanceScoringFunction extends ScoringFunction {
     /*
-     * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The function
-     * type must be lower case.
-     */
-    private String type = "distance";
-
-    /*
      * Parameter values for the distance scoring function.
      */
     private final DistanceScoringParameters parameters;
@@ -40,17 +34,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
     public DistanceScoringFunction(String fieldName, double boost, DistanceScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
-    }
-
-    /**
-     * Get the type property: Indicates the type of function to use. Valid values include magnitude, freshness,
-     * distance, and tag. The function type must be lower case.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "distance";
     }
 
     /**
@@ -77,11 +61,8 @@ public final class DistanceScoringFunction extends ScoringFunction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fieldName", getFieldName());
-        jsonWriter.writeDoubleField("boost", getBoost());
-        jsonWriter.writeStringField("interpolation", getInterpolation() == null ? null : getInterpolation().toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("distance", this.parameters);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

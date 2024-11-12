@@ -21,7 +21,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     /*
      * The name of the kind of compression method being configured for use with vector search.
      */
-    private VectorSearchCompressionKind kind = VectorSearchCompressionKind.fromString("VectorSearchCompression");
+    VectorSearchCompressionKind kind;
 
     /*
      * The name to associate with this particular configuration.
@@ -59,6 +59,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      */
     public VectorSearchCompression(String compressionName) {
         this.compressionName = compressionName;
+        this.kind = VectorSearchCompressionKind.fromString("VectorSearchCompression");
     }
 
     /**
@@ -165,12 +166,16 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("name", this.compressionName);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeBooleanField("rerankWithOriginalVectors", this.rerankWithOriginalVectors);
         jsonWriter.writeNumberField("defaultOversampling", this.defaultOversampling);
         jsonWriter.writeNumberField("truncationDimension", this.truncationDimension);
-        return jsonWriter.writeEndObject();
     }
 
     /**

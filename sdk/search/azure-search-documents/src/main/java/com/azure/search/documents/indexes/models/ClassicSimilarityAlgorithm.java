@@ -19,25 +19,11 @@ import java.io.IOException;
  */
 @Immutable
 public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
-    /*
-     * The @odata.type property.
-     */
-    private String odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
-
     /**
      * Creates an instance of ClassicSimilarityAlgorithm class.
      */
     public ClassicSimilarityAlgorithm() {
-    }
-
-    /**
-     * Get the odataType property: The &#064;odata.type property.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
     }
 
     /**
@@ -46,7 +32,7 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -65,8 +51,8 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedClassicSimilarityAlgorithm.odataType = reader.getString();
+                if (SimilarityAlgorithm.fromJsonShared(reader, fieldName, deserializedClassicSimilarityAlgorithm)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

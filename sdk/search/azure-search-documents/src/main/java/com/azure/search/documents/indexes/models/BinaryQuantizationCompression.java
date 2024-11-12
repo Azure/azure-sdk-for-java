@@ -18,11 +18,6 @@ import java.io.IOException;
  */
 @Fluent
 public final class BinaryQuantizationCompression extends VectorSearchCompression {
-    /*
-     * The name of the kind of compression method being configured for use with vector search.
-     */
-    private VectorSearchCompressionKind kind = VectorSearchCompressionKind.BINARY_QUANTIZATION;
-
     /**
      * Creates an instance of BinaryQuantizationCompression class.
      * 
@@ -30,16 +25,7 @@ public final class BinaryQuantizationCompression extends VectorSearchCompression
      */
     public BinaryQuantizationCompression(String compressionName) {
         super(compressionName);
-    }
-
-    /**
-     * Get the kind property: The name of the kind of compression method being configured for use with vector search.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public VectorSearchCompressionKind getKind() {
-        return this.kind;
+        this.kind = VectorSearchCompressionKind.BINARY_QUANTIZATION;
     }
 
     /**
@@ -75,11 +61,7 @@ public final class BinaryQuantizationCompression extends VectorSearchCompression
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getCompressionName());
-        jsonWriter.writeBooleanField("rerankWithOriginalVectors", isRerankWithOriginalVectors());
-        jsonWriter.writeNumberField("defaultOversampling", getDefaultOversampling());
-        jsonWriter.writeNumberField("truncationDimension", getTruncationDimension());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 

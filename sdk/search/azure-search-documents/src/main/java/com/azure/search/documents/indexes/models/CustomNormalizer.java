@@ -21,11 +21,6 @@ import java.util.List;
 @Fluent
 public final class CustomNormalizer extends LexicalNormalizer {
     /*
-     * A URI fragment specifying the type of normalizer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.CustomNormalizer";
-
-    /*
      * A list of token filters used to filter out or modify the input token. For example, you can specify a lowercase
      * filter that converts all characters to lowercase. The filters are run in the order in which they are listed.
      */
@@ -44,16 +39,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      */
     public CustomNormalizer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of normalizer.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.CustomNormalizer";
     }
 
     /**
@@ -110,8 +96,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeArrayField("tokenFilters", this.tokenFilters,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("charFilters", this.charFilters,

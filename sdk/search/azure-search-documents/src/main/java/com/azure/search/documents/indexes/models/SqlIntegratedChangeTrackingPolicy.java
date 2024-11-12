@@ -18,25 +18,11 @@ import java.io.IOException;
  */
 @Immutable
 public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy {
-    /*
-     * A URI fragment specifying the type of data change detection policy.
-     */
-    private String odataType = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
-
     /**
      * Creates an instance of SqlIntegratedChangeTrackingPolicy class.
      */
     public SqlIntegratedChangeTrackingPolicy() {
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of data change detection policy.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
     }
 
     /**
@@ -45,7 +31,7 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -65,8 +51,9 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedSqlIntegratedChangeTrackingPolicy.odataType = reader.getString();
+                if (DataChangeDetectionPolicy.fromJsonShared(reader, fieldName,
+                    deserializedSqlIntegratedChangeTrackingPolicy)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

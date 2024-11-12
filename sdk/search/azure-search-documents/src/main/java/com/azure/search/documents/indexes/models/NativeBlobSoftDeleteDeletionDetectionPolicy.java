@@ -18,25 +18,11 @@ import java.io.IOException;
  */
 @Immutable
 public final class NativeBlobSoftDeleteDeletionDetectionPolicy extends DataDeletionDetectionPolicy {
-    /*
-     * A URI fragment specifying the type of data deletion detection policy.
-     */
-    private String odataType = "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy";
-
     /**
      * Creates an instance of NativeBlobSoftDeleteDeletionDetectionPolicy class.
      */
     public NativeBlobSoftDeleteDeletionDetectionPolicy() {
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of data deletion detection policy.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy";
     }
 
     /**
@@ -45,7 +31,7 @@ public final class NativeBlobSoftDeleteDeletionDetectionPolicy extends DataDelet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -65,8 +51,9 @@ public final class NativeBlobSoftDeleteDeletionDetectionPolicy extends DataDelet
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedNativeBlobSoftDeleteDeletionDetectionPolicy.odataType = reader.getString();
+                if (DataDeletionDetectionPolicy.fromJsonShared(reader, fieldName,
+                    deserializedNativeBlobSoftDeleteDeletionDetectionPolicy)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

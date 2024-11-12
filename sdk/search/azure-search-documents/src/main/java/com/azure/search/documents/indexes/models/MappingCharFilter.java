@@ -22,11 +22,6 @@ import java.util.List;
 @Immutable
 public final class MappingCharFilter extends CharFilter {
     /*
-     * A URI fragment specifying the type of char filter.
-     */
-    private String odataType = "#Microsoft.Azure.Search.MappingCharFilter";
-
-    /*
      * A list of mappings of the following format: "a=>b" (all occurrences of the character "a" will be replaced with
      * character "b").
      */
@@ -41,16 +36,7 @@ public final class MappingCharFilter extends CharFilter {
     public MappingCharFilter(String name, List<String> mappings) {
         super(name);
         this.mappings = mappings;
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of char filter.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.MappingCharFilter";
     }
 
     /**
@@ -69,9 +55,8 @@ public final class MappingCharFilter extends CharFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
+        toJsonShared(jsonWriter);
         jsonWriter.writeArrayField("mappings", this.mappings, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         return jsonWriter.writeEndObject();
     }
 

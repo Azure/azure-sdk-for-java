@@ -21,7 +21,7 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
     /*
      * A URI fragment specifying the type of normalizer.
      */
-    private String odataType = "LexicalNormalizer";
+    String odataType;
 
     /*
      * The name of the normalizer. It must only contain letters, digits, spaces, dashes or underscores, can only start
@@ -37,6 +37,7 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
      */
     public LexicalNormalizer(String name) {
         this.name = name;
+        this.odataType = "LexicalNormalizer";
     }
 
     /**
@@ -65,9 +66,13 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("@odata.type", this.odataType);
-        return jsonWriter.writeEndObject();
     }
 
     /**

@@ -23,11 +23,6 @@ import java.util.List;
 public final class CustomAnalyzer extends LexicalAnalyzer {
 
     /*
-     * A URI fragment specifying the type of analyzer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.CustomAnalyzer";
-
-    /*
      * The name of the tokenizer to use to divide continuous text into a sequence of tokens, such as breaking a sentence
      * into words.
      */
@@ -55,16 +50,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     public CustomAnalyzer(String name, LexicalTokenizerName tokenizer) {
         super(name);
         this.tokenizer = tokenizer;
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of analyzer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.CustomAnalyzer";
     }
 
     /**
@@ -131,9 +117,8 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("tokenizer", this.tokenizer == null ? null : this.tokenizer.toString());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeArrayField("tokenFilters", this.tokenFilters,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("charFilters", this.charFilters,

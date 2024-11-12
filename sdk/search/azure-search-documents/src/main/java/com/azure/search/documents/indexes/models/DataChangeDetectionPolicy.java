@@ -21,12 +21,13 @@ public class DataChangeDetectionPolicy implements JsonSerializable<DataChangeDet
     /*
      * A URI fragment specifying the type of data change detection policy.
      */
-    private String odataType = "DataChangeDetectionPolicy";
+    String odataType;
 
     /**
      * Creates an instance of DataChangeDetectionPolicy class.
      */
     public DataChangeDetectionPolicy() {
+        this.odataType = "DataChangeDetectionPolicy";
     }
 
     /**
@@ -44,8 +45,12 @@ public class DataChangeDetectionPolicy implements JsonSerializable<DataChangeDet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("@odata.type", this.odataType);
     }
 
     /**
@@ -90,14 +95,22 @@ public class DataChangeDetectionPolicy implements JsonSerializable<DataChangeDet
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedDataChangeDetectionPolicy.odataType = reader.getString();
-                } else {
+                if (!DataChangeDetectionPolicy.fromJsonShared(reader, fieldName,
+                    deserializedDataChangeDetectionPolicy)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedDataChangeDetectionPolicy;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        DataChangeDetectionPolicy deserializedDataChangeDetectionPolicy) throws IOException {
+        if ("@odata.type".equals(fieldName)) {
+            deserializedDataChangeDetectionPolicy.odataType = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

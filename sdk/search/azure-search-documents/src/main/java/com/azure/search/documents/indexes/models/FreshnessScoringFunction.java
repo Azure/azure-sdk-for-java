@@ -20,12 +20,6 @@ import java.util.List;
 @Fluent
 public final class FreshnessScoringFunction extends ScoringFunction {
     /*
-     * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The function
-     * type must be lower case.
-     */
-    private String type = "freshness";
-
-    /*
      * Parameter values for the freshness scoring function.
      */
     private final FreshnessScoringParameters parameters;
@@ -40,17 +34,7 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     public FreshnessScoringFunction(String fieldName, double boost, FreshnessScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
-    }
-
-    /**
-     * Get the type property: Indicates the type of function to use. Valid values include magnitude, freshness,
-     * distance, and tag. The function type must be lower case.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "freshness";
     }
 
     /**
@@ -77,11 +61,8 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fieldName", getFieldName());
-        jsonWriter.writeDoubleField("boost", getBoost());
-        jsonWriter.writeStringField("interpolation", getInterpolation() == null ? null : getInterpolation().toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("freshness", this.parameters);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

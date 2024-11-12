@@ -17,26 +17,11 @@ import java.io.IOException;
  */
 @Fluent
 public final class DefaultCognitiveServicesAccount extends CognitiveServicesAccount {
-    /*
-     * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
-     */
-    private String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
-
     /**
      * Creates an instance of DefaultCognitiveServicesAccount class.
      */
     public DefaultCognitiveServicesAccount() {
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of Azure AI service resource attached to a
-     * skillset.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
     }
 
     /**
@@ -54,8 +39,7 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -75,10 +59,9 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("description".equals(fieldName)) {
-                    deserializedDefaultCognitiveServicesAccount.setDescription(reader.getString());
-                } else if ("@odata.type".equals(fieldName)) {
-                    deserializedDefaultCognitiveServicesAccount.odataType = reader.getString();
+                if (CognitiveServicesAccount.fromJsonShared(reader, fieldName,
+                    deserializedDefaultCognitiveServicesAccount)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

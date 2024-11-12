@@ -21,11 +21,6 @@ import java.util.List;
 public final class StopAnalyzer extends LexicalAnalyzer {
 
     /*
-     * A URI fragment specifying the type of analyzer.
-     */
-    private String odataType = "#Microsoft.Azure.Search.StopAnalyzer";
-
-    /*
      * A list of stopwords.
      */
     private List<String> stopwords;
@@ -37,16 +32,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
      */
     public StopAnalyzer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of analyzer.
-     *
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.StopAnalyzer";
     }
 
     /**
@@ -75,8 +61,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }

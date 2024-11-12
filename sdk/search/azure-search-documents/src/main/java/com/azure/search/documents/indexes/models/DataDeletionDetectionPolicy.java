@@ -21,12 +21,13 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
     /*
      * A URI fragment specifying the type of data deletion detection policy.
      */
-    private String odataType = "DataDeletionDetectionPolicy";
+    String odataType;
 
     /**
      * Creates an instance of DataDeletionDetectionPolicy class.
      */
     public DataDeletionDetectionPolicy() {
+        this.odataType = "DataDeletionDetectionPolicy";
     }
 
     /**
@@ -44,8 +45,12 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("@odata.type", this.odataType);
     }
 
     /**
@@ -91,14 +96,22 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedDataDeletionDetectionPolicy.odataType = reader.getString();
-                } else {
+                if (!DataDeletionDetectionPolicy.fromJsonShared(reader, fieldName,
+                    deserializedDataDeletionDetectionPolicy)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedDataDeletionDetectionPolicy;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        DataDeletionDetectionPolicy deserializedDataDeletionDetectionPolicy) throws IOException {
+        if ("@odata.type".equals(fieldName)) {
+            deserializedDataDeletionDetectionPolicy.odataType = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

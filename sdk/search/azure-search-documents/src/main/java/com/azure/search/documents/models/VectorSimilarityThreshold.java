@@ -20,11 +20,6 @@ import java.io.IOException;
 @Immutable
 public final class VectorSimilarityThreshold extends VectorThreshold {
     /*
-     * The kind of threshold used to filter vector queries
-     */
-    private VectorThresholdKind kind = VectorThresholdKind.VECTOR_SIMILARITY;
-
-    /*
      * The threshold will filter based on the similarity metric value. Note this is the canonical definition of
      * similarity metric, not the 'distance' version. The threshold direction (larger or smaller) will be chosen
      * automatically according to the metric used by the field.
@@ -38,16 +33,7 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
      */
     public VectorSimilarityThreshold(double value) {
         this.value = value;
-    }
-
-    /**
-     * Get the kind property: The kind of threshold used to filter vector queries.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public VectorThresholdKind getKind() {
-        return this.kind;
+        this.kind = VectorThresholdKind.VECTOR_SIMILARITY;
     }
 
     /**
@@ -67,8 +53,8 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeDoubleField("value", this.value);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 

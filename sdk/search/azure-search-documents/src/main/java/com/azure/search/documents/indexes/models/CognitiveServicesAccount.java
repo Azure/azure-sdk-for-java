@@ -21,7 +21,7 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
     /*
      * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
      */
-    private String odataType = "CognitiveServicesAccount";
+    String odataType;
 
     /*
      * Description of the Azure AI service resource attached to a skillset.
@@ -32,6 +32,7 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
      * Creates an instance of CognitiveServicesAccount class.
      */
     public CognitiveServicesAccount() {
+        this.odataType = "CognitiveServicesAccount";
     }
 
     /**
@@ -70,9 +71,13 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeStringField("description", this.description);
-        return jsonWriter.writeEndObject();
     }
 
     /**
@@ -117,16 +122,24 @@ public class CognitiveServicesAccount implements JsonSerializable<CognitiveServi
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedCognitiveServicesAccount.odataType = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedCognitiveServicesAccount.description = reader.getString();
-                } else {
+                if (!CognitiveServicesAccount.fromJsonShared(reader, fieldName, deserializedCognitiveServicesAccount)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedCognitiveServicesAccount;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        CognitiveServicesAccount deserializedCognitiveServicesAccount) throws IOException {
+        if ("@odata.type".equals(fieldName)) {
+            deserializedCognitiveServicesAccount.odataType = reader.getString();
+            return true;
+        } else if ("description".equals(fieldName)) {
+            deserializedCognitiveServicesAccount.description = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

@@ -23,12 +23,13 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
     /*
      * The @odata.type property.
      */
-    private String odataType = "SimilarityAlgorithm";
+    String odataType;
 
     /**
      * Creates an instance of SimilarityAlgorithm class.
      */
     public SimilarityAlgorithm() {
+        this.odataType = "SimilarityAlgorithm";
     }
 
     /**
@@ -46,8 +47,12 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("@odata.type", this.odataType);
     }
 
     /**
@@ -92,14 +97,21 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedSimilarityAlgorithm.odataType = reader.getString();
-                } else {
+                if (!SimilarityAlgorithm.fromJsonShared(reader, fieldName, deserializedSimilarityAlgorithm)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedSimilarityAlgorithm;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        SimilarityAlgorithm deserializedSimilarityAlgorithm) throws IOException {
+        if ("@odata.type".equals(fieldName)) {
+            deserializedSimilarityAlgorithm.odataType = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

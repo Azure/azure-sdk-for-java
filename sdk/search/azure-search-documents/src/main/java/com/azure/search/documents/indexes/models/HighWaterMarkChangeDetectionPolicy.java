@@ -18,11 +18,6 @@ import java.io.IOException;
 @Immutable
 public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolicy {
     /*
-     * A URI fragment specifying the type of data change detection policy.
-     */
-    private String odataType = "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy";
-
-    /*
      * The name of the high water mark column.
      */
     private final String highWaterMarkColumnName;
@@ -34,16 +29,7 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
      */
     public HighWaterMarkChangeDetectionPolicy(String highWaterMarkColumnName) {
         this.highWaterMarkColumnName = highWaterMarkColumnName;
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of data change detection policy.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy";
     }
 
     /**
@@ -61,8 +47,8 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("highWaterMarkColumnName", this.highWaterMarkColumnName);
-        jsonWriter.writeStringField("@odata.type", this.odataType);
         return jsonWriter.writeEndObject();
     }
 

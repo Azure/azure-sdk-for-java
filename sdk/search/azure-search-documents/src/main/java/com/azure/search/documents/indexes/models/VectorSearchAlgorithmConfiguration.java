@@ -21,7 +21,7 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
     /*
      * The name of the kind of algorithm being configured for use with vector search.
      */
-    private VectorSearchAlgorithmKind kind = VectorSearchAlgorithmKind.fromString("VectorSearchAlgorithmConfiguration");
+    VectorSearchAlgorithmKind kind;
 
     /*
      * The name to associate with this particular configuration.
@@ -35,6 +35,7 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
      */
     public VectorSearchAlgorithmConfiguration(String name) {
         this.name = name;
+        this.kind = VectorSearchAlgorithmKind.fromString("VectorSearchAlgorithmConfiguration");
     }
 
     /**
@@ -61,9 +62,13 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        return jsonWriter.writeEndObject();
     }
 
     /**

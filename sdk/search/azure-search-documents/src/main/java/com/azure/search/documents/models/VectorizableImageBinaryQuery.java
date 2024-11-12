@@ -19,11 +19,6 @@ import java.io.IOException;
 public final class VectorizableImageBinaryQuery extends VectorQuery {
 
     /*
-     * The kind of vector query being performed.
-     */
-    private VectorQueryKind kind = VectorQueryKind.IMAGE_BINARY;
-
-    /*
      * The base 64 encoded binary of an image to be vectorized to perform a vector search query.
      */
     private String base64Image;
@@ -32,16 +27,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      * Creates an instance of VectorizableImageBinaryQuery class.
      */
     public VectorizableImageBinaryQuery() {
-    }
-
-    /**
-     * Get the kind property: The kind of vector query being performed.
-     *
-     * @return the kind value.
-     */
-    @Override
-    public VectorQueryKind getKind() {
-        return this.kind;
+        this.kind = VectorQueryKind.IMAGE_BINARY;
     }
 
     /**
@@ -135,14 +121,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
-        jsonWriter.writeStringField("fields", getFields());
-        jsonWriter.writeBooleanField("exhaustive", isExhaustive());
-        jsonWriter.writeNumberField("oversampling", getOversampling());
-        jsonWriter.writeNumberField("weight", getWeight());
-        jsonWriter.writeJsonField("threshold", getThreshold());
-        jsonWriter.writeStringField("filterOverride", getFilterOverride());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("base64Image", this.base64Image);
         return jsonWriter.writeEndObject();
     }
@@ -161,23 +140,8 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("k".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery
-                        .setKNearestNeighborsCount(reader.getNullable(JsonReader::getInt));
-                } else if ("fields".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery.setFields(reader.getString());
-                } else if ("exhaustive".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery.setExhaustive(reader.getNullable(JsonReader::getBoolean));
-                } else if ("oversampling".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery.setOversampling(reader.getNullable(JsonReader::getDouble));
-                } else if ("weight".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery.setWeight(reader.getNullable(JsonReader::getFloat));
-                } else if ("threshold".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery.setThreshold(VectorThreshold.fromJson(reader));
-                } else if ("filterOverride".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery.setFilterOverride(reader.getString());
-                } else if ("kind".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery.kind = VectorQueryKind.fromString(reader.getString());
+                if (VectorQuery.fromJsonShared(reader, fieldName, deserializedVectorizableImageBinaryQuery)) {
+                    continue;
                 } else if ("base64Image".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.base64Image = reader.getString();
                 } else {

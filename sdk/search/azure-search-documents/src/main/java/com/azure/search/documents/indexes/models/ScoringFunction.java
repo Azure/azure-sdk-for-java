@@ -24,7 +24,7 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
      * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The function
      * type must be lower case.
      */
-    private String type = "ScoringFunction";
+    String type;
 
     /*
      * The name of the field used as input to the scoring function.
@@ -50,6 +50,7 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
     public ScoringFunction(String fieldName, double boost) {
         this.fieldName = fieldName;
         this.boost = boost;
+        this.type = "ScoringFunction";
     }
 
     /**
@@ -108,11 +109,15 @@ public class ScoringFunction implements JsonSerializable<ScoringFunction> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("fieldName", this.fieldName);
         jsonWriter.writeDoubleField("boost", this.boost);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("interpolation", this.interpolation == null ? null : this.interpolation.toString());
-        return jsonWriter.writeEndObject();
     }
 
     /**

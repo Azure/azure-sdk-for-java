@@ -19,11 +19,6 @@ import java.io.IOException;
 @Fluent
 public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionDetectionPolicy {
     /*
-     * A URI fragment specifying the type of data deletion detection policy.
-     */
-    private String odataType = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy";
-
-    /*
      * The name of the column to use for soft-deletion detection.
      */
     private String softDeleteColumnName;
@@ -37,16 +32,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * Creates an instance of SoftDeleteColumnDeletionDetectionPolicy class.
      */
     public SoftDeleteColumnDeletionDetectionPolicy() {
-    }
-
-    /**
-     * Get the odataType property: A URI fragment specifying the type of data deletion detection policy.
-     * 
-     * @return the odataType value.
-     */
-    @Override
-    public String getOdataType() {
-        return this.odataType;
+        this.odataType = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy";
     }
 
     /**
@@ -95,7 +81,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", this.odataType);
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("softDeleteColumnName", this.softDeleteColumnName);
         jsonWriter.writeStringField("softDeleteMarkerValue", this.softDeleteMarkerValue);
         return jsonWriter.writeEndObject();
@@ -117,8 +103,9 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    deserializedSoftDeleteColumnDeletionDetectionPolicy.odataType = reader.getString();
+                if (DataDeletionDetectionPolicy.fromJsonShared(reader, fieldName,
+                    deserializedSoftDeleteColumnDeletionDetectionPolicy)) {
+                    continue;
                 } else if ("softDeleteColumnName".equals(fieldName)) {
                     deserializedSoftDeleteColumnDeletionDetectionPolicy.softDeleteColumnName = reader.getString();
                 } else if ("softDeleteMarkerValue".equals(fieldName)) {
