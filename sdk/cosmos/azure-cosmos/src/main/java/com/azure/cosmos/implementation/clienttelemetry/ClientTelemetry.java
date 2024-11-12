@@ -357,8 +357,8 @@ public class ClientTelemetry {
     }
 
     private Mono<?> loadAzureVmMetaData() {
-        if (!Configs.shouldLoadAzureVmMetaData()) {
-            logger.info("Loading azure VM metadata is disabled");
+        if (Configs.shouldDisableIMDSAccess()) {
+            logger.info("Access to IMDS to get Azure VM metadata is disabled");
             return Mono.empty();
         }
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();

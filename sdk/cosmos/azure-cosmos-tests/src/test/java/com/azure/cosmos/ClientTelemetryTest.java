@@ -259,10 +259,10 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
 
     @Test(groups = {"emulator"}, dataProvider = "clients", timeOut = TIMEOUT)
-    public void shouldNotLoadAzureVMData(CosmosClient cosmosClient) throws Exception {
+    public void shouldDisableIMDSAccess(CosmosClient cosmosClient) throws Exception {
         // Test using different http client for client telemetry requests and metaRequests
 
-        System.setProperty("COSMOS.LOAD_AZURE_VM_META_DATA", "false");
+        System.setProperty("COSMOS.DISABLE_IMDS_ACCESS", "true");
 
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
         HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
@@ -280,7 +280,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         //  Call should not go through loading azure VM metadata
         assertThat(clientTelemetryMetadataHttpClientWrapper.capturedRequests.size()).isEqualTo(0);
 
-        System.setProperty("COSMOS.LOAD_AZURE_VM_META_DATA", "true");// setting it back for other tests
+        System.setProperty("COSMOS.DISABLE_IMDS_ACCESS", "false");// setting it back for other tests
     }
 
 

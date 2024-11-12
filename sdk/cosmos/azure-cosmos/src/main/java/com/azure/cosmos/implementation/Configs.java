@@ -255,8 +255,8 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
-    private static final String LOAD_AZURE_VM_META_DATA = "COSMOS.LOAD_AZURE_VM_META_DATA";
-    private static final boolean LOAD_AZURE_VM_META_DATA_DEFAULT = true;
+    private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
+    private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -816,14 +816,14 @@ public class Configs {
                     DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
     }
 
-    public static boolean shouldLoadAzureVmMetaData() {
-        String loadAzureVmMetaDataConfig =
+    public static boolean shouldDisableIMDSAccess() {
+        String shouldDisableIMDSAccess =
             System.getProperty(
-                LOAD_AZURE_VM_META_DATA,
+                COSMOS_DISABLE_IMDS_ACCESS,
                 firstNonNull(
-                    emptyToNull(System.getenv().get(LOAD_AZURE_VM_META_DATA)),
-                    String.valueOf(LOAD_AZURE_VM_META_DATA_DEFAULT)));
+                    emptyToNull(System.getenv().get(COSMOS_DISABLE_IMDS_ACCESS)),
+                    String.valueOf(COSMOS_DISABLE_IMDS_ACCESS_DEFAULT)));
 
-        return Boolean.parseBoolean(loadAzureVmMetaDataConfig);
+        return Boolean.parseBoolean(shouldDisableIMDSAccess);
     }
 }
