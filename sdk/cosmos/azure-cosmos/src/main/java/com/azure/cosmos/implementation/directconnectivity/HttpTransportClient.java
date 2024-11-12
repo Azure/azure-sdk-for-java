@@ -76,11 +76,9 @@ public class HttpTransportClient extends TransportClient {
     private final GlobalEndpointManager globalEndpointManager;
 
     HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
-        // TODO: use one instance of SSL context everywhere
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs);
         httpClientConfig.withNetworkRequestTimeout(connectionPolicy.getHttpNetworkRequestTimeout());
         httpClientConfig.withPoolSize(configs.getDirectHttpsMaxConnectionLimit());
-
         return HttpClient.createFixed(httpClientConfig);
     }
 
@@ -141,7 +139,7 @@ public class HttpTransportClient extends TransportClient {
 
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
 
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            Duration responseTimeout = request.getResponseTimeout();
             if (OperationType.QueryPlan.equals(request.getOperationType())) {
                 responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
             } else if (request.isAddressRefresh()) {

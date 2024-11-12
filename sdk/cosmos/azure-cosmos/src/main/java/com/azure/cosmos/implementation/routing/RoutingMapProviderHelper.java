@@ -123,13 +123,8 @@ public final class RoutingMapProviderHelper {
             }
 
             return routingMapProvider.tryGetOverlappingRangesAsync(null, resourceId, queryRange, false, null)
-                       .map(ranges -> ranges.v)
-                       .map(c -> {
-                           if (c != null) {
-                               return targetRanges.addAll(c);
-                           }
-                           return false;
-                       })
+                       .map(ranges -> ranges.v != null ? ranges.v : new ArrayList<PartitionKeyRange>())
+                       .map(targetRanges::addAll)
                        .flatMap(aBoolean -> {
                            if (!targetRanges.isEmpty()) {
                                Range<String> lastKnownTargetRange = targetRanges.get(targetRanges.size() - 1).toRange();
