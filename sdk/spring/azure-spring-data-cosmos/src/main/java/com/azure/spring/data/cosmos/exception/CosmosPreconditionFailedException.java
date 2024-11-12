@@ -3,14 +3,14 @@
 package com.azure.spring.data.cosmos.exception;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class CosmosPartitionIsMigratingException extends PartitionIsMigratingException {
+public class CosmosPreconditionFailedException extends PreconditionFailedException {
 
     /**
      * Cosmos exception.
@@ -18,14 +18,14 @@ public class CosmosPartitionIsMigratingException extends PartitionIsMigratingExc
     protected final CosmosException cosmosException;
 
     /**
-     * Instantiates a new Partition is migrating exception.
-     *
+     * Constructor
      * @param message the message
      * @param headers the headers
-     * @param requestUri the request uri
+     * @param requestUriString the request uri string
+     * @param cause the nested Throwable
      */
-    public CosmosPartitionIsMigratingException(String message, HttpHeaders headers, String requestUri, Throwable cause) {
-        super(message, headers, requestUri);
+    public CosmosPreconditionFailedException(String message, HttpHeaders headers, String requestUriString, Throwable cause) {
+        super(message, headers, requestUriString);
         this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
     }
 

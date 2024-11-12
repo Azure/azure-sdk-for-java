@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 
 import java.net.URI;
-import java.util.Map;
 
 /**
  * Forbidden exception
@@ -15,25 +14,28 @@ import java.util.Map;
 public class CosmosForbiddenException extends ForbiddenException {
 
     /**
-     * Constructor
-     * @param cosmosError the cosmos error
-     * @param lsn the lsn
-     * @param partitionKeyRangeId the partition key range id
-     * @param responseHeaders the response headers
+     * Cosmos exception.
      */
-    public CosmosForbiddenException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                              Map<String, String> responseHeaders) {
-        super(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
-    }
+    protected final CosmosException cosmosException;
 
     /**
      * Constructor
      * @param message the message
      * @param headers the headers
      * @param requestUri the request uri
+     * @param cause the nested Throwable
      */
-    public CosmosForbiddenException(String message, HttpHeaders headers, URI requestUri) {
+    public CosmosForbiddenException(String message, HttpHeaders headers, URI requestUri, Throwable cause) {
         super(message, headers, requestUri);
+        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
+    }
+
+    /**
+     * To get exception object for cosmos client
+     * @return CosmosException
+     */
+    public CosmosException getCosmosException() {
+        return cosmosException;
     }
 
 }

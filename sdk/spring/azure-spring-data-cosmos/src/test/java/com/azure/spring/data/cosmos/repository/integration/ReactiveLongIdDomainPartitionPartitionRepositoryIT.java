@@ -6,7 +6,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.LongIdDomainPartition;
-import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveLongIdDomainPartitionRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -107,7 +107,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     @Test
     public void testDeleteByIdWithoutPartitionKey() {
         final Mono<Void> deleteMono = repository.deleteById(DOMAIN_1.getNumber());
-        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosNotFoundException.class).verify();
     }
 
     @Test
@@ -128,7 +128,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
         final Mono<Void> deleteIdMono = repository.deleteById(DOMAIN_1.getNumber(),
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
-        StepVerifier.create(deleteIdMono).expectError(CosmosAccessException.class).verify();
+        StepVerifier.create(deleteIdMono).expectError(CosmosNotFoundException.class).verify();
     }
 
     @Test
@@ -149,7 +149,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
         StepVerifier.create(deletedMono).thenAwait().verifyComplete();
 
         Mono<Void> deleteIdMono = this.repository.delete(DOMAIN_1);
-        StepVerifier.create(deleteIdMono).expectError(CosmosAccessException.class).verify();
+        StepVerifier.create(deleteIdMono).expectError(CosmosNotFoundException.class).verify();
     }
 
     @Test

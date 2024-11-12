@@ -12,7 +12,7 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.CompositeIndexEntity;
 import com.azure.spring.data.cosmos.domain.UniqueKeyPolicyEntity;
-import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosConflictException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.UniqueKeyPolicyEntityRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -127,9 +127,9 @@ public class UniqueKeyPolicyIT {
         try {
             repository.save(entity);
             fail("Save call should have failed with unique constraints exception");
-        } catch (CosmosAccessException cosmosAccessException) {
-            assertThat(cosmosAccessException.getCosmosException().getStatusCode()).isEqualTo(409);
-            assertThat(cosmosAccessException.getCosmosException().getMessage()).contains("Unique index constraint "
+        } catch (CosmosConflictException cosmosConflictException) {
+            assertThat(cosmosConflictException.getCosmosException().getStatusCode()).isEqualTo(409);
+            assertThat(cosmosConflictException.getCosmosException().getMessage()).contains("Unique index constraint "
                 + "violation.");
         }
         //  change logical partition, now the entity should be saved
@@ -150,9 +150,9 @@ public class UniqueKeyPolicyIT {
         try {
             repository.save(entity);
             fail("Save call should have failed with unique constraints exception");
-        } catch (CosmosAccessException cosmosAccessException) {
-            assertThat(cosmosAccessException.getCosmosException().getStatusCode()).isEqualTo(409);
-            assertThat(cosmosAccessException.getCosmosException().getMessage()).contains("Unique index constraint "
+        } catch (CosmosConflictException cosmosConflictException) {
+            assertThat(cosmosConflictException.getStatusCode()).isEqualTo(409);
+            assertThat(cosmosConflictException.getCosmosException().getMessage()).contains("Unique index constraint "
                 + "violation.");
         }
         //  change logical partition, now the entity should be saved

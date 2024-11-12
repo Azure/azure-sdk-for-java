@@ -37,6 +37,9 @@ import com.azure.spring.data.cosmos.domain.PersonWithTransientEtag;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientId;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientPartitionKey;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosBadRequestException;
+import com.azure.spring.data.cosmos.exception.CosmosConflictException;
+import com.azure.spring.data.cosmos.exception.CosmosPreconditionFailedException;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -231,8 +234,8 @@ public class CosmosTemplateIT {
             cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
                 new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
             fail();
-        } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.CONFLICT_STATUS_CODE);
+        } catch (CosmosConflictException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(TestConstants.CONFLICT_STATUS_CODE);
             assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         }
     }
@@ -268,7 +271,7 @@ public class CosmosTemplateIT {
     }
 
 
-    @Test(expected = CosmosAccessException.class)
+    @Test(expected = CosmosBadRequestException.class)
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
         final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
         cosmosTemplate.insert(Person.class.getSimpleName(), person, new PartitionKey(person.getLastName()));
@@ -552,8 +555,8 @@ public class CosmosTemplateIT {
             Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class,  operations, options);
             assertEquals(patchedPerson.getAge(), PATCH_AGE_1);
             fail();
-        } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
+        } catch (CosmosPreconditionFailedException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
             assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         }
     }
@@ -567,11 +570,10 @@ public class CosmosTemplateIT {
 
         try {
             cosmosTemplate.upsert(Person.class.getSimpleName(), updated);
-        } catch (CosmosAccessException e) {
-            assertThat(e.getCosmosException()).isNotNull();
-            final Throwable cosmosClientException = e.getCosmosException();
-            assertThat(cosmosClientException).isInstanceOf(CosmosException.class);
-            assertThat(cosmosClientException.getMessage()).contains(PRECONDITION_IS_NOT_MET);
+        } catch (CosmosPreconditionFailedException e) {
+            assertThat(e).isNotNull();
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(e.getMessage()).contains(PRECONDITION_IS_NOT_MET);
             assertThat(responseDiagnosticsTestUtils.getDiagnostics()).isNotNull();
 
             final Person unmodifiedPerson = cosmosTemplate.findById(Person.class.getSimpleName(),

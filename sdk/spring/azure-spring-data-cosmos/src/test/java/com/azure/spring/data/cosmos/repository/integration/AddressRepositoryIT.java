@@ -12,7 +12,7 @@ import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
-import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosPreconditionFailedException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import org.assertj.core.util.Lists;
@@ -303,8 +303,8 @@ public class AddressRepositoryIT {
             Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation, options);
             assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
             Assert.fail();
-        } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
+        } catch (CosmosPreconditionFailedException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
         }
     }
 

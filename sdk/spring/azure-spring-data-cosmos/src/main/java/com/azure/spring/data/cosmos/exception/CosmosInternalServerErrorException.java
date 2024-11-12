@@ -2,12 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-
-import java.net.URI;
-import java.util.Map;
 
 /**
  * This exception is thrown when DocumentServiceRequest contains x-ms-documentdb-partitionkeyrangeid
@@ -19,65 +15,30 @@ import java.util.Map;
 public class CosmosInternalServerErrorException extends InternalServerErrorException {
 
     /**
-     * Instantiates a new Internal server error exception.
-     *
-     * @param cosmosError the cosmos error
-     * @param lsn the lsn
-     * @param partitionKeyRangeId the partition key range id
-     * @param responseHeaders the response headers
+     * Cosmos exception.
      */
-    public CosmosInternalServerErrorException(CosmosError cosmosError,
-                                        long lsn,
-                                        String partitionKeyRangeId,
-                                        Map<String, String> responseHeaders) {
-        super(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
-    }
+    protected final CosmosException cosmosException;
+
 
     /**
-     * Instantiates a new Internal server error exception.
-     *
-     * @param message the message
-     */
-    public CosmosInternalServerErrorException(String message, int subStatusCode) {
-        super(message, subStatusCode);
-    }
-
-    public CosmosInternalServerErrorException(String message, Exception innerException, int subStatusCode) {
-        super(message, innerException, subStatusCode);
-    }
-
-    /**
-     * Instantiates a new Internal server error exception.
-     *
-     * @param message the message
-     * @param headers the headers
-     * @param requestUri the request uri
-     * @param subStatusCode the subStatusCode
-     */
-    public CosmosInternalServerErrorException(String message, HttpHeaders headers, URI requestUri, int subStatusCode) {
-        super(message, headers, requestUri, subStatusCode);
-    }
-
-    /**
-     * Instantiates a new Internal server error exception.
+     * Instantiates a new InternalServerError exception.
      *
      * @param message the message
      * @param innerException the inner exception
-     * @param headers the headers
-     * @param requestUriString the request uri string
+     * @param subStatusCode the subStatusCode
+     * @param cause the nested Throwable
      */
-    public CosmosInternalServerErrorException(String message, Exception innerException, Map<String, String> headers,
-                                        String requestUriString) {
-        super(message, innerException, headers, requestUriString);
+    public CosmosInternalServerErrorException(String message, Exception innerException, int subStatusCode, Throwable cause) {
+        super(message, innerException, subStatusCode);
+        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
     }
 
-    public CosmosInternalServerErrorException(
-        String message,
-        Exception innerException,
-        Map<String, String> headers,
-        String requestUriString,
-        int subStatusCode) {
-        super(message, innerException, headers, requestUriString, subStatusCode);
+    /**
+     * To get exception object for cosmos client
+     * @return CosmosException
+     */
+    public CosmosException getCosmosException() {
+        return cosmosException;
     }
 
 }

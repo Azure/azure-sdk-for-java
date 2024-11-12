@@ -2,33 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-
-import java.io.Serial;
-import java.util.Map;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
 public class CosmosConflictException extends ConflictException {
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
-     * Instantiates a new Conflict exception.
-     *
-     * @param cosmosError the cosmos error
-     * @param lsn the lsn
-     * @param partitionKeyRangeId the partition key range id
-     * @param responseHeaders the response headers
+     * Cosmos exception.
      */
-    public CosmosConflictException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
-                             Map<String, String> responseHeaders) {
-        super(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
-    }
+    protected final CosmosException cosmosException;
 
     /**
      * Instantiates a new Conflict exception.
@@ -36,9 +23,19 @@ public class CosmosConflictException extends ConflictException {
      * @param message the message
      * @param headers the headers
      * @param requestUriString the request uri string
+     * @param cause the nested Throwable
      */
-    public CosmosConflictException(String message, HttpHeaders headers, String requestUriString) {
+    public CosmosConflictException(String message, HttpHeaders headers, String requestUriString, Throwable cause) {
         super(message, headers, requestUriString);
+        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
+    }
+
+    /**
+     * To get exception object for cosmos client
+     * @return CosmosException
+     */
+    public CosmosException getCosmosException() {
+        return cosmosException;
     }
 
 }

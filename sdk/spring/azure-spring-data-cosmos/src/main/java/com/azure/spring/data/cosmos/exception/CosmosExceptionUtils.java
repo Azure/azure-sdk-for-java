@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.exception;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.springframework.dao.DataAccessException;
@@ -46,6 +47,28 @@ public class CosmosExceptionUtils {
             // Maybe extend CosmosAccessException to create subclasses
             // Figure out type by StatusCode
             // Add comments to CosmosException and HttpConstants mentioning usage in spring and need to update
+            switch (unwrappedThrowable.getClass().getSimpleName()) {
+                case "BadRequestException" -> throw new CosmosBadRequestException(message, cosmosException, unwrappedThrowable);
+                case "ConflictException" -> throw new CosmosConflictException(message, null, null, unwrappedThrowable);
+                case "ForbiddenException" -> throw new CosmosForbiddenException(message, null, null, unwrappedThrowable);
+                case "GoneException" -> throw new CosmosGoneException(message, cosmosException, null, null, HttpConstants.StatusCodes.GONE, unwrappedThrowable);
+                case "InternalServerErrorException" -> throw new CosmosInternalServerErrorException(message, cosmosException, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, unwrappedThrowable);
+                case "InvalidPartitionException" -> throw new CosmosInvalidPartitionException(message, unwrappedThrowable);
+                case "MethodNotAllowedException" -> throw new CosmosMethodNotAllowedException(message, cosmosException, null, null, unwrappedThrowable);
+                case "NonStreamingOrderByBadRequestException" -> throw new CosmosNonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST, message, unwrappedThrowable);
+                case "NotFoundException" -> throw new CosmosNotFoundException(message, unwrappedThrowable);
+                case "PartitionIsMigratingException" -> throw new CosmosPartitionIsMigratingException(message, null, null, unwrappedThrowable);
+                case "PartitionKeyRangeGoneException" -> throw new CosmosPartitionKeyRangeGoneException(message, unwrappedThrowable);
+                case "PartitionKeyRangeIsSplittingException" -> throw new CosmosPartitionKeyRangeIsSplittingException(message, null, null, unwrappedThrowable);
+                case "PreconditionFailedException" -> throw new CosmosPreconditionFailedException(message, null, null, unwrappedThrowable);
+                case "RequestEntityTooLargeException" -> throw new CosmosRequestEntityTooLargeException(message, null, null, unwrappedThrowable);
+                case "RequestRateTooLargeException" -> throw new CosmosRequestRateTooLargeException(message, null, null, unwrappedThrowable);
+                case "RequestTimeoutException" -> throw new CosmosRequestTimeoutException(message, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, unwrappedThrowable);
+                case "RetryWithException" -> throw new CosmosRetryWithException(message, null, null, unwrappedThrowable);
+                case "ServiceUnavailableException" -> throw new CosmosServiceUnavailableException(message, cosmosException, null, null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, unwrappedThrowable);
+                case "UnauthorizedException" -> throw new CosmosUnauthorizedException(message, null, null, unwrappedThrowable);
+                default -> throw new CosmosAccessException(message, unwrappedThrowable);
+            }
 
         }
         throw new CosmosAccessException(message, unwrappedThrowable);

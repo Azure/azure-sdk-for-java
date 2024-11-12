@@ -2,11 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.cosmos.implementation.CosmosError;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-
-import java.util.Map;
 
 /**
  * This exception is thrown when DocumentServiceRequest contains x-ms-documentdb-partitionkeyrangeid
@@ -18,45 +15,27 @@ import java.util.Map;
 public class CosmosPartitionKeyRangeGoneException extends PartitionKeyRangeGoneException {
 
     /**
-     * Instantiates a new Partition key range gone exception.
+     * Cosmos exception.
      */
-    public CosmosPartitionKeyRangeGoneException() {
-        super();
-    }
-
-    /**
-     * Instantiates a new Partition key range gone exception.
-     *
-     * @param cosmosError the cosmos error
-     * @param lsn the lsn
-     * @param partitionKeyRangeId the partition key range id
-     * @param responseHeaders the response headers
-     */
-    public CosmosPartitionKeyRangeGoneException(CosmosError cosmosError,
-                                          long lsn,
-                                          String partitionKeyRangeId,
-                                          Map<String, String> responseHeaders) {
-        super(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
-    }
+    protected final CosmosException cosmosException;
 
     /**
      * Instantiates a new Partition key range gone exception.
      *
      * @param message the message
+     * @param cause the nested Throwable
      */
-    public CosmosPartitionKeyRangeGoneException(String message) {
+    public CosmosPartitionKeyRangeGoneException(String message, Throwable cause) {
         super(message);
+        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
     }
 
     /**
-     * Instantiates a new Partition key range gone exception.
-     *
-     * @param message the message
-     * @param headers the headers
-     * @param requestUriString the request uri string
+     * To get exception object for cosmos client
+     * @return CosmosException
      */
-    public CosmosPartitionKeyRangeGoneException(String message, HttpHeaders headers, String requestUriString) {
-        super(message, headers, requestUriString);
+    public CosmosException getCosmosException() {
+        return cosmosException;
     }
 
 }

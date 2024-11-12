@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.CourseWithEtag;
-import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosPreconditionFailedException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseWithEtagRepository;
 import org.junit.Assert;
@@ -118,10 +118,10 @@ public class ReactiveEtagIT {
 
 
         Mono<CourseWithEtag> courseMono = reactiveCourseWithEtagRepository.save(updatedCourseWithEtag);
-        StepVerifier.create(courseMono).verifyError(CosmosAccessException.class);
+        StepVerifier.create(courseMono).verifyError(CosmosPreconditionFailedException.class);
 
         Mono<Void> deleteMono = reactiveCourseWithEtagRepository.delete(updatedCourseWithEtag);
-        StepVerifier.create(deleteMono).verifyError(CosmosAccessException.class);
+        StepVerifier.create(deleteMono).verifyError(CosmosPreconditionFailedException.class);
     }
 
     @Test
