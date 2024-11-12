@@ -88,6 +88,7 @@ public class ReactorNettyClient implements HttpClient {
         ReactorNettyClient reactorNettyClient = new ReactorNettyClient();
         reactorNettyClient.connectionProvider = connectionProvider;
         reactorNettyClient.httpClientConfig = httpClientConfig;
+        reactorNettyClient.reactorNetworkLogCategory = httpClientConfig.getReactorNetworkLogCategory();
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient
             .create(connectionProvider)
             .observe(getConnectionObserver())
