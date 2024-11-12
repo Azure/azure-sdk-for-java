@@ -87,7 +87,7 @@ public class SharedTransportClient extends TransportClient {
                     clientTelemetry,
                     globalEndpointManager);
 
-        } else if (protocol == Protocol.HTTPS){
+        } else if (protocol == Protocol.HTTPS || protocol == Protocol.HTTP2){
             this.rntbdOptions = null;
             this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent, globalEndpointManager);
         } else {

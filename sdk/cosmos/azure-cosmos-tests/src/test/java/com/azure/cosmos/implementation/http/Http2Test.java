@@ -7,11 +7,14 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class Http2Test {
     @Test
     public void gatewayWithHttp2() {
+        System.setProperty("PROTOCOL_ENVIRONMENT_VARIABLE", "HTTP2");
+
         CosmosAsyncClient client  = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)

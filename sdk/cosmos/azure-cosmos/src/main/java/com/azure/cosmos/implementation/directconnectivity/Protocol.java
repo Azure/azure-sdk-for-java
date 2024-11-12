@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.apachecommons.text.WordUtils;
 
 public enum Protocol {
-    HTTPS, TCP;
+    HTTPS, TCP, HTTP2;
 
     String scheme() {
         switch (this) {
@@ -14,6 +14,8 @@ public enum Protocol {
                 return "https";
             case TCP:
                 return "rntbd";
+            case HTTP2:
+                return "http2";
             default:
                 throw new IllegalStateException();
         }

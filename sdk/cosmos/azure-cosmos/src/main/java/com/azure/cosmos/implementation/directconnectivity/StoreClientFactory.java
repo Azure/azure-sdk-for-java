@@ -48,7 +48,7 @@ public class StoreClientFactory implements AutoCloseable {
                 clientTelemetry,
                 globalEndpointManager);
         } else {
-            if (protocol == Protocol.HTTPS) {
+            if (protocol == Protocol.HTTPS || protocol == Protocol.HTTP2) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent, globalEndpointManager);
             } else if (protocol == Protocol.TCP) {
 

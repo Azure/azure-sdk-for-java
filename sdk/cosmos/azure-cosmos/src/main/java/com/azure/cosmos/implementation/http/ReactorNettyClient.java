@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.http2.Http2ResponseHeaderCleanerHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
@@ -135,11 +136,15 @@ public class ReactorNettyClient implements HttpClient {
             this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
         }
 
-        logger.info("Changing to use http2 protocol with removing all whitespaces");
+        Protocol protocol = configs.getProtocol();
+        HttpProtocol httpProtocol = HttpProtocol.HTTP11;
+        if (protocol == Protocol.HTTP2) { httpProtocol = HttpProtocol.H2; }
+        // what if accidentally get Protocol.TCP? not sure best way to handle
+
         this.httpClient =
             this.httpClient
                 .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContextHttp2()))
-                .protocol(HttpProtocol.H2)
+                .protocol(httpProtocol)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
                 .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
                     ChannelPipeline channelPipeline = channel.pipeline();
