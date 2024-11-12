@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
@@ -313,13 +312,27 @@ public class RxGatewayStoreModel implements RxStoreModel {
             path = StringUtils.EMPTY;
         }
 
-        return new URI("https",
+        String schema = "https";
+        if (isEmulatorHost(rootUri)) {
+            // To support vNext emulator with GATEWAY_TLS_ENABLED = false
+            schema = rootUri.getScheme();
+        }
+
+        return new URI(schema,
             null,
             rootUri.getHost(),
             rootUri.getPort(),
             ensureSlashPrefixed(path),
             null,  // Query string not used.
             null);
+    }
+
+    private boolean isEmulatorHost(URI uri) {
+        if (StringUtils.isNotEmpty(uri.getHost())) {
+            return uri.getHost().equals("localhost") || uri.getHost().equals("127.0.0.1");
+        }
+
+        return false;
     }
 
     private String ensureSlashPrefixed(String path) {

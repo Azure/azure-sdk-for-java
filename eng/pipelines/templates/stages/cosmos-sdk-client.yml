@@ -64,7 +64,39 @@ extends:
               - .*Version=1.21/1.17
             BuildParallelization: 1
             TestOptions: '-Punit'
+      - stage: TestVNextEmulator
+        displayName: Test VNext Emulator
+        dependsOn: [ ]
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
+          - name: ArtifactsJson
+            value: '${{ convertToJson(parameters.Artifacts) }}'
+        jobs:
+          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
+            parameters:
+              JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
+              MatrixConfigs:
+                - Name: Cosmos_vnext_emulator_integration
+                  Path: eng/pipelines/templates/stages/cosmos-emulator-vnext-matrix.json
+                  Selection: all
+                  GenerateVMJobs: true
+              MatrixFilters:
+                - ${{ parameters.LanguageFilter }}
+                - ${{ parameters.MatrixFilters }}
+              AdditionalParameters:
+                BuildParallelization: 1
+                DisableAzureResourceCreation: true
+                ServiceDirectory: cosmos
+                ACCOUNT_HOST: 'http://localhost:8081/'
+                ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+                SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+                TimeoutInMinutes: 90
+                TestGoals: 'clean verify'
+                TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
 
+                PreSteps:
+                  - template: /eng/common/pipelines/templates/steps/cosmos-vnext-emulator.yml
       - stage: TestEmulator
         displayName: Test Emulator
         dependsOn: []
