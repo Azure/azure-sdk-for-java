@@ -6,7 +6,9 @@ package com.azure.health.deidentification.batch;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.deidentification.DeidentificationAsyncClient;
@@ -27,7 +29,6 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        System.out.println("Test Mode!!!!!: " + getTestMode()); // TODO remove
         String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded006r";
 
         String inputPrefix = "example_patient_1";
@@ -125,17 +126,18 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         assertEquals(JobStatus.SUCCEEDED, result.getStatus());
 
-        PagedFlux<DocumentDetails> reports = deidentificationAsyncClient.listJobDocuments(jobName);
+        PagedFlux<BinaryData> reports = deidentificationAsyncClient.listJobDocuments(jobName, new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)));
         Long count = reports.count().block();
-        assertEquals(count, 2);
+        assertEquals(count, 3);
 
         reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
             .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
             .subscribe(item -> {
-                assertEquals(item.getStatus(), OperationState.SUCCEEDED);
-                assertNotNull(item.getOutput());
-                assertFalse(item.getOutput().getLocation().startsWith(OUTPUT_FOLDER)); // TODO fix - this is null
-                assertEquals(item.getId().length(), 36);
+                DocumentDetails details = item.toObject(DocumentDetails.class);
+                assertEquals(details.getStatus(), OperationState.SUCCEEDED);
+                assertNotNull(details.getOutput());
+                assertFalse(details.getOutput().getLocation().startsWith(OUTPUT_FOLDER));
+                assertEquals(details.getId().length(), 36);
             });
     }
 
