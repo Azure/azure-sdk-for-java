@@ -338,4 +338,256 @@ public final class RealtimeClient implements Closeable {
     public void addOnSessionUpdatedEventHandler (Consumer<RealtimeServerEventSessionUpdated> onSessionUpdatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.SESSION_UPDATED.toString(), onSessionUpdatedEventHandler);
     }
+
+    /**
+     * Removes an event handler for the conversation created event.
+     *
+     * @param onConversationCreatedEventHandler the event handler to be removed.
+     */
+    public void removeOnConversationCreatedEventHandler(Consumer<RealtimeServerEventConversationCreated> onConversationCreatedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_CREATED.toString(), onConversationCreatedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the conversation item created event.
+     *
+     * @param onConversationItemCreatedEventHandler the event handler to be removed.
+     */
+    public void removeOnConversationItemCreatedEventHandler(Consumer<RealtimeServerEventConversationItemCreated> onConversationItemCreatedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_CREATED.toString(), onConversationItemCreatedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the conversation item deleted event.
+     *
+     * @param onConversationItemDeletedEventHandler the event handler to be removed.
+     */
+    public void removeOnConversationItemDeletedEventHandler(Consumer<RealtimeServerEventConversationItemDeleted> onConversationItemDeletedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_DELETED.toString(), onConversationItemDeletedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the conversation item input audio transcription completed event.
+     *
+     * @param onConversationItemInputAudioTranscriptionCompletedEventHandler the event handler to be removed.
+     */
+    public void removeOnConversationItemInputAudioTranscriptionCompletedEventHandler(Consumer<RealtimeServerEventConversationItemInputAudioTranscriptionCompleted> onConversationItemInputAudioTranscriptionCompletedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED.toString(), onConversationItemInputAudioTranscriptionCompletedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the conversation item input audio transcription failed event.
+     *
+     * @param onConversationItemInputAudioTranscriptionFailedEventHandler the event handler to be removed.
+     */
+    public void removeOnConversationItemInputAudioTranscriptionFailedEventHandler(Consumer<RealtimeServerEventConversationItemInputAudioTranscriptionFailed> onConversationItemInputAudioTranscriptionFailedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_FAILED.toString(), onConversationItemInputAudioTranscriptionFailedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the conversation item truncated event.
+     *
+     * @param onConversationItemTruncatedEventHandler the event handler to be removed.
+     */
+    public void removeOnConversationItemTruncatedEventHandler(Consumer<RealtimeServerEventConversationItemTruncated> onConversationItemTruncatedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_TRUNCATED.toString(), onConversationItemTruncatedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the error event.
+     *
+     * @param onErrorEventHandler the event handler to be removed.
+     */
+    public void removeOnErrorEventHandler(Consumer<RealtimeServerEventError> onErrorEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.ERROR.toString(), onErrorEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the input audio buffer cleared event.
+     *
+     * @param onInputAudioBufferClearedEventHandler the event handler to be removed.
+     */
+    public void removeOnInputAudioBufferClearedEventHandler(Consumer<RealtimeServerEventInputAudioBufferCleared> onInputAudioBufferClearedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_CLEARED.toString(), onInputAudioBufferClearedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the input audio buffer committed event.
+     *
+     * @param onInputAudioBufferCommittedEventHandler the event handler to be removed.
+     */
+    public void removeOnInputAudioBufferCommittedEventHandler(Consumer<RealtimeServerEventInputAudioBufferCommitted> onInputAudioBufferCommittedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_COMMITTED.toString(), onInputAudioBufferCommittedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the input audio buffer speech started event.
+     *
+     * @param onInputAudioBufferSpeechStartedEventHandler the event handler to be removed.
+     */
+    public void removeOnInputAudioBufferSpeechStartedEventHandler(Consumer<RealtimeServerEventInputAudioBufferSpeechStarted> onInputAudioBufferSpeechStartedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED.toString(), onInputAudioBufferSpeechStartedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the input audio buffer speech stopped event.
+     *
+     * @param onInputAudioBufferSpeechStoppedEventHandler the event handler to be removed.
+     */
+    public void removeOnInputAudioBufferSpeechStoppedEventHandler(Consumer<RealtimeServerEventInputAudioBufferSpeechStopped> onInputAudioBufferSpeechStoppedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED.toString(), onInputAudioBufferSpeechStoppedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the rate limits updated event.
+     *
+     * @param onRateLimitsUpdatedEventHandler the event handler to be removed.
+     */
+    public void removeOnRateLimitsUpdatedEventHandler(Consumer<RealtimeServerEventRateLimitsUpdated> onRateLimitsUpdatedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RATE_LIMITS_UPDATED.toString(), onRateLimitsUpdatedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response audio delta event.
+     *
+     * @param onResponseAudioDeltaEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseAudioDeltaEventHandler(Consumer<RealtimeServerEventResponseAudioDelta> onResponseAudioDeltaEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DELTA.toString(), onResponseAudioDeltaEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response audio done event.
+     *
+     * @param onResponseAudioDoneEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseAudioDoneEventHandler(Consumer<RealtimeServerEventResponseAudioDone> onResponseAudioDoneEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DONE.toString(), onResponseAudioDoneEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response audio transcript delta event.
+     *
+     * @param onResponseAudioTranscriptDeltaEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseAudioTranscriptDeltaEventHandler(Consumer<RealtimeServerEventResponseAudioTranscriptDelta> onResponseAudioTranscriptDeltaEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DELTA.toString(), onResponseAudioTranscriptDeltaEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response audio transcript done event.
+     *
+     * @param onResponseAudioTranscriptDoneEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseAudioTranscriptDoneEventHandler(Consumer<RealtimeServerEventResponseAudioTranscriptDone> onResponseAudioTranscriptDoneEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE.toString(), onResponseAudioTranscriptDoneEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response content part added event.
+     *
+     * @param onResponseContentPartAddedEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseContentPartAddedEventHandler(Consumer<RealtimeServerEventResponseContentPartAdded> onResponseContentPartAddedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_CONTENT_PART_ADDED.toString(), onResponseContentPartAddedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response content part done event.
+     *
+     * @param onResponseContentPartDoneEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseContentPartDoneEventHandler(Consumer<RealtimeServerEventResponseContentPartDone> onResponseContentPartDoneEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_CONTENT_PART_DONE.toString(), onResponseContentPartDoneEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response created event.
+     *
+     * @param onResponseCreatedEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseCreatedEventHandler(Consumer<RealtimeServerEventResponseCreated> onResponseCreatedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_CREATED.toString(), onResponseCreatedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response done event.
+     *
+     * @param onResponseDoneEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseDoneEventHandler(Consumer<RealtimeServerEventResponseDone> onResponseDoneEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_DONE.toString(), onResponseDoneEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response function call arguments delta event.
+     *
+     * @param onResponseFunctionCallArgumentsDeltaEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseFunctionCallArgumentsDeltaEventHandler(Consumer<RealtimeServerEventResponseFunctionCallArgumentsDelta> onResponseFunctionCallArgumentsDeltaEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA.toString(), onResponseFunctionCallArgumentsDeltaEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response function call arguments done event.
+     *
+     * @param onResponseFunctionCallArgumentsDoneEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseFunctionCallArgumentsDoneEventHandler(Consumer<RealtimeServerEventResponseFunctionCallArgumentsDone> onResponseFunctionCallArgumentsDoneEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE.toString(), onResponseFunctionCallArgumentsDoneEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response output item added event.
+     *
+     * @param onResponseOutputItemAddedEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseOutputItemAddedEventHandler(Consumer<RealtimeServerEventResponseOutputItemAdded> onResponseOutputItemAddedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_OUTPUT_ITEM_ADDED.toString(), onResponseOutputItemAddedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response output item done event.
+     *
+     * @param onResponseOutputItemDoneEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseOutputItemDoneEventHandler(Consumer<RealtimeServerEventResponseOutputItemDone> onResponseOutputItemDoneEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_OUTPUT_ITEM_DONE.toString(), onResponseOutputItemDoneEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response text delta event.
+     *
+     * @param onResponseTextDeltaEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseTextDeltaEventHandler(Consumer<RealtimeServerEventResponseTextDelta> onResponseTextDeltaEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DELTA.toString(), onResponseTextDeltaEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the response text done event.
+     *
+     * @param onResponseTextDoneEventHandler the event handler to be removed.
+     */
+    public void removeOnResponseTextDoneEventHandler(Consumer<RealtimeServerEventResponseTextDone> onResponseTextDoneEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DONE.toString(), onResponseTextDoneEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the session created event.
+     *
+     * @param onSessionCreatedEventHandler the event handler to be removed.
+     */
+    public void removeOnSessionCreatedEventHandler(Consumer<RealtimeServerEventSessionCreated> onSessionCreatedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.SESSION_CREATED.toString(), onSessionCreatedEventHandler);
+    }
+
+    /**
+     * Removes an event handler for the session updated event.
+     *
+     * @param onSessionUpdatedEventHandler the event handler to be removed.
+     */
+    public void removeOnSessionUpdatedEventHandler(Consumer<RealtimeServerEventSessionUpdated> onSessionUpdatedEventHandler) {
+        eventHandlerCollection.removeEventHandler(RealtimeServerEventType.SESSION_UPDATED.toString(), onSessionUpdatedEventHandler);
+    }
 }
