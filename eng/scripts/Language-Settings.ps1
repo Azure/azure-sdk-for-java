@@ -72,8 +72,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
     $serviceDirFromYml = GetValueSafelyFrom-Yaml $ymlFileContent @("extends", "parameters", "ServiceDirectory")
     if (-not $serviceDirFromYml) {
       # Log the error and skip this yml file here if there's no ServiceDirectory entry
-      # TODO: should this exit after the error or just skip the yml file?
-      LogError "$ymlFile does not have a ServiceDirectory entry, skipping..."
+      LogWarning "$ymlFile does not have a ServiceDirectory entry, skipping..."
       continue
     }
     else {
@@ -81,7 +80,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       # entry in the ci*.yml file matches the one passed in.
       if ($serviceDirectory) {
         if ($serviceDirectory -ne $serviceDirFromYml) {
-          Write-Host "$ymlFile's ServiceDirectory entry does not match the serviceDirectory parameter: '$serviceDirectory'"
+          LogWarning "$ymlFile's ServiceDirectory entry does not match the serviceDirectory parameter: '$serviceDirectory'"
         }
       }
       # Check whether or not the yml's serviceDirectory matches the actual path of
@@ -93,8 +92,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       # -replace needs to be used
       $computedServiceDirectory = $computedServiceDirectory -replace "\\", "/"
       if ($serviceDirFromYml -ne $computedServiceDirectory) {
-        # TODO: Should this also exit or just error
-        LogError "$ymlFile error: ServiceDirectory in the yml file, '$serviceDirFromYml' doesn't match the path relative from the sdkRoot '$computedServiceDirectory'"
+        LogWarning "$ymlFile error: ServiceDirectory in the yml file, '$serviceDirFromYml' doesn't match the path relative from the sdkRoot '$computedServiceDirectory'"
       }
     }
     # At this point the SdkType is correct.
