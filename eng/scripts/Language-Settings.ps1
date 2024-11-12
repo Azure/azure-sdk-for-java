@@ -173,8 +173,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       }
       $pkgProp.IsNewSdk = $False
       if ($groupId) {
-        # TODO: should things that start with io.clientcore also be client?
-        $pkgProp.IsNewSdk = $groupId.StartsWith("com.azure")
+        $pkgProp.IsNewSdk = $groupId.StartsWith("com.azure") -or $groupId.StartsWith("io.clientcore")
       }
       $pkgProp.ArtifactName = $artifactId
       if ($additionalModules) {
