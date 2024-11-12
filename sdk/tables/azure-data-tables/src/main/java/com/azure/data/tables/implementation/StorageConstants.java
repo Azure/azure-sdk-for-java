@@ -74,6 +74,8 @@ public final class StorageConstants {
 
     public static final String STORAGE_SCOPE = "https://storage.azure.com/.default";
 
+    public static final String COSMOS_SCOPE = "https://cosmos.azure.com/.default";
+
     public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
 
     /**

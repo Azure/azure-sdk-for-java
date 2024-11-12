@@ -112,8 +112,12 @@ final class BuilderHelper {
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else if (tokenCredential != null) {
-            credentialPolicy = new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential, enableTenantDiscovery,
-                StorageConstants.STORAGE_SCOPE);
+            String scope = StorageConstants.STORAGE_SCOPE;
+            if (endpoint.contains(COSMOS_ENDPOINT_SUFFIX)) {
+                scope = StorageConstants.COSMOS_SCOPE;
+            }
+            credentialPolicy
+                = new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential, enableTenantDiscovery, scope);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
