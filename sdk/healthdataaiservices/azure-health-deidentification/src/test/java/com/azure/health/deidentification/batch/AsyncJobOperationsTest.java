@@ -126,7 +126,8 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         assertEquals(JobStatus.SUCCEEDED, result.getStatus());
 
-        PagedFlux<BinaryData> reports = deidentificationAsyncClient.listJobDocuments(jobName, new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)));
+        PagedFlux<BinaryData> reports = deidentificationAsyncClient.listJobDocuments(jobName,
+            new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)));
         Long count = reports.count().block();
         assertEquals(count, 3);
 

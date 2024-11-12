@@ -68,6 +68,10 @@ public class BatchOperationTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             return FAKE_STORAGE_ACCOUNT_SAS_URI;
         }
+        String sasUri = Configuration.getGlobalConfiguration().get("SAS_URI");
+        if (sasUri != null && !sasUri.isEmpty()) {
+            return sasUri;
+        }
         return "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME")
             + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
     }
