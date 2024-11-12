@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for Microsoft Entra auth with Azure Cosmos DB for Table's OAuth scope (`https://cosmos.azure.com/.default`).
+
 ### Breaking Changes
 
 ### Bugs Fixed
