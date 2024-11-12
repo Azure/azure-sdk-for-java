@@ -10,6 +10,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
+import io.netty.handler.ssl.SslContext;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
@@ -138,12 +139,16 @@ public class ReactorNettyClient implements HttpClient {
 
         Protocol protocol = configs.getProtocol();
         HttpProtocol httpProtocol = HttpProtocol.HTTP11;
-        if (protocol == Protocol.HTTP2) { httpProtocol = HttpProtocol.H2; }
+        if (protocol == Protocol.HTTP2) {
+            httpProtocol = HttpProtocol.H2;
+        }
         // what if accidentally get Protocol.TCP? not sure best way to handle
+
+        SslContext sslContext = protocol == Protocol.HTTP2 ? configs.getSslContextHttp2() : configs.getSslContext();
 
         this.httpClient =
             this.httpClient
-                .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContextHttp2()))
+                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext))
                 .protocol(httpProtocol)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
                 .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
