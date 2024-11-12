@@ -256,6 +256,7 @@ public class Configs {
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
+    private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
     private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
 
     public Configs() {
@@ -821,7 +822,7 @@ public class Configs {
             System.getProperty(
                 COSMOS_DISABLE_IMDS_ACCESS,
                 firstNonNull(
-                    emptyToNull(System.getenv().get(COSMOS_DISABLE_IMDS_ACCESS)),
+                    emptyToNull(System.getenv().get(COSMOS_DISABLE_IMDS_ACCESS_VARIABLE)),
                     String.valueOf(COSMOS_DISABLE_IMDS_ACCESS_DEFAULT)));
 
         return Boolean.parseBoolean(shouldDisableIMDSAccess);

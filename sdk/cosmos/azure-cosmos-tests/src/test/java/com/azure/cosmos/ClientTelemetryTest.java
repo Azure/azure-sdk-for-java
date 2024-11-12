@@ -299,7 +299,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
         Duration responseTimeout = reactorHttpClient.configuration().responseTimeout();
         int maxConnections = reactorHttpClient.configuration().connectionProvider().maxConnections();
-        int connectionAcquireTimeout = (int) reactorHttpClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
+        Integer connectionAcquireTimeout = (Integer) reactorHttpClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
 
         assertThat(responseTimeout).isEqualTo(ClientTelemetry.IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT);
         assertThat(maxConnections).isEqualTo(ClientTelemetry.IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE);
