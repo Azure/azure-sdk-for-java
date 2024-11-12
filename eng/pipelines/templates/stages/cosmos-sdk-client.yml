@@ -72,6 +72,8 @@ extends:
           - template: /eng/pipelines/templates/variables/image.yml
           - name: ArtifactsJson
             value: '${{ convertToJson(parameters.Artifacts) }}'
+          - name: AdditionalModulesJson
+            value: '${{ convertToJson(parameters.AdditionalModules) }}'
         jobs:
           - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
             parameters:
@@ -96,7 +98,7 @@ extends:
                 TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
 
                 PreSteps:
-                  - template: /eng/common/pipelines/templates/steps/cosmos-vnext-emulator.yml
+                  - template: /eng/pipelines/templates/stages/cosmos-vnext-emulator.yml
       - stage: TestEmulator
         displayName: Test Emulator
         dependsOn: []
@@ -105,6 +107,8 @@ extends:
           - template: /eng/pipelines/templates/variables/image.yml
           - name: ArtifactsJson
             value: '${{ convertToJson(parameters.Artifacts) }}'
+          - name: AdditionalModulesJson
+            value: '${{ convertToJson(parameters.AdditionalModules) }}'
         jobs:
         - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
           parameters:

@@ -3,14 +3,20 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -22,9 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.testng.AssertJUnit.fail;
+
 public class EmulatorVNextWithHttpTest extends TestSuiteBase {
-    private CosmosAsyncClient testClient;
-    private CosmosAsyncContainer testContainer;
+    private CosmosAsyncClient client;
+    private CosmosAsyncContainer createdContainer;
+    private CosmosAsyncDatabase createdDatabase;
 
     @Factory(dataProvider = "clientBuilders")
     public EmulatorVNextWithHttpTest(CosmosClientBuilder clientBuilder) {
@@ -33,64 +43,161 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
     public void before_EmulatorWithHttpTest() {
-        this.testClient = getClientBuilder().gatewayMode().buildAsyncClient();
-        this.testContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.testClient);
-
+        System.out.println("EmulatorVNextWithHttpTest " + System.getProperty("ACCOUNT_HOST"));
+        System.out.println("EmulatorVNextWithHttpTest " + System.getProperty("ACCOUNT_KEY"));
+        this.client =
+            getClientBuilder()
+                .gatewayMode()
+                .contentResponseOnWriteEnabled(true)
+                .buildAsyncClient();
+        this.createdDatabase = getSharedCosmosDatabase(this.client);
+        this.createdContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
     }
 
     @AfterClass(groups = { "emulator-vnext" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
-        safeClose(this.testClient);
+        safeClose(this.client);
     }
 
-    @Test(groups = { "emulator-vnext" }, timeOut = 4 * SHUTDOWN_TIMEOUT)
+    @Test(groups = { "emulator-vnext" }, timeOut = TIMEOUT)
+    public void createSameDatabaseTwice() {
+        try {
+            this.client.createDatabase(this.createdDatabase.getId()).block();
+            fail("Creating database with same name twice should have failed");
+        } catch (CosmosException e) {
+            if (e.getStatusCode() != HttpConstants.StatusCodes.CONFLICT) {
+                fail("Creating database with same name twice should have resulted conflict error");
+            }
+        }
+    }
+
+    @Test(groups = { "emulator-vnext" }, timeOut = 4 * TIMEOUT)
     public void documentCrud() {
+        // Currently emulator vnext only support gateway mode and limited set of features
+        // https://review.learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux?branch=release-ignite-2024-cosmos-db#feature-support
+
         // create item
-        TestItem newItem = TestItem.createNewItem();
-        this.testContainer.createItem(newItem).block();
+        TestItem createdItem = TestItem.createNewItem();
+        this.createdContainer.createItem(createdItem).block();
 
         // read item
-        this.testContainer.readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestItem.class).block();
+        TestItem itemReadBack =
+            this.createdContainer
+                .readItem(
+                    createdItem.getId(),
+                    new PartitionKey(createdItem.getId()),
+                    TestItem.class)
+                .block()
+                .getItem();
+        validateItem(itemReadBack, createdItem);
 
         // query item
         String query = "select * from c";
-        this.testContainer.queryItems(query, new CosmosQueryRequestOptions(), TestItem.class)
+        List<TestItem> queryResults = new ArrayList<>();
+        this.createdContainer.queryItems(query, new CosmosQueryRequestOptions(), TestItem.class)
             .byPage()
+            .doOnNext(feedResponse -> {
+                queryResults.addAll(feedResponse.getResults());
+            })
             .blockLast();
+        assertThat(queryResults.size()).isOne();
+        validateItem(queryResults.get(0), createdItem);
+
+        // query items with sqlQuerySpec
+        List<SqlParameter> sqlParameterList = new ArrayList<>();
+        sqlParameterList.add(new SqlParameter("@ID", createdItem.getId()));
+        List<TestItem> querySpecResult = new ArrayList<>();
+        this.createdContainer
+            .queryItems(
+                new SqlQuerySpec("select * from c where c.id = @ID", sqlParameterList), TestItem.class)
+            .byPage()
+            .doOnNext(feedResponse -> {
+                querySpecResult.addAll(feedResponse.getResults());
+            })
+            .blockLast();
+        assertThat(querySpecResult.size()).isOne();
+        validateItem(querySpecResult.get(0), createdItem);
 
         // update item
-        newItem.setProp(UUID.randomUUID().toString());
-        this.testContainer.upsertItem(newItem).block();
+        createdItem.setProp(UUID.randomUUID().toString());
+        TestItem updatedItem = this.createdContainer.upsertItem(createdItem).block().getItem();
+        validateItem(updatedItem, createdItem);
 
         // replace item
-        newItem.setProp(UUID.randomUUID().toString());
-        this.testContainer.replaceItem(newItem, newItem.getId(), new PartitionKey(newItem.getId())).block();
+        createdItem.setProp(UUID.randomUUID().toString());
+        TestItem replacedItem =
+            this.createdContainer
+                .replaceItem(
+                    createdItem, createdItem.getId(),
+                    new PartitionKey(createdItem.getId()))
+                .block()
+                .getItem();
+        validateItem(replacedItem, createdItem);
 
         // read all items
-        this.testContainer.readAllItems(new PartitionKey(newItem.getId()), TestItem.class).byPage().blockLast();
-
-//        // patch item
-//        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create().set("/prop", UUID.randomUUID().toString());
-//        this.testContainer.patchItem(newItem.getId(), new PartitionKey(newItem.getId()), cosmosPatchOperations, TestItem.class).block();
+        List<TestItem> allItemsResult = new ArrayList<>();
+        this.createdContainer.readAllItems(new PartitionKey(createdItem.getId()), TestItem.class).byPage()
+            .doOnNext(response -> {
+                allItemsResult.addAll(response.getResults());
+            }).blockLast();
+        assertThat(allItemsResult.size()).isOne();
+        validateItem(allItemsResult.get(0), createdItem);
 
         // bulk
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-        cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(newItem, new PartitionKey(newItem.getId())));
-        this.testContainer.executeBulkOperations(Flux.fromIterable(cosmosItemOperations), new CosmosBulkExecutionOptions())
+        cosmosItemOperations.add(CosmosBulkOperations.getReadItemOperation(createdItem.getId(), new PartitionKey(createdItem.getId())));
+        List<TestItem> bulkReadResponse = new ArrayList<>();
+        this.createdContainer.executeBulkOperations(Flux.fromIterable(cosmosItemOperations), new CosmosBulkExecutionOptions())
+            .doOnNext(bulkResponse -> {
+                bulkReadResponse.add(bulkResponse.getResponse().getItem(TestItem.class));
+            })
             .blockLast();
+        assertThat(bulkReadResponse.size()).isOne();
+        validateItem(bulkReadResponse.get(0), createdItem);
 
         // batch
-        CosmosBatch batchForRead = CosmosBatch.createCosmosBatch(new PartitionKey(newItem.getId()));
-        batchForRead.readItemOperation(newItem.getId());
-        this.testContainer.executeCosmosBatch(batchForRead).block();
+        CosmosBatch batchForRead = CosmosBatch.createCosmosBatch(new PartitionKey(createdItem.getId()));
+        batchForRead.readItemOperation(createdItem.getId());
+        CosmosBatchResponse cosmosBatchResponse = this.createdContainer.executeCosmosBatch(batchForRead).block();
+        assertThat(cosmosBatchResponse.getResults().size()).isOne();
+        validateItem(cosmosBatchResponse.getResults().get(0).getItem(TestItem.class), createdItem);
 
         // read many
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
-        cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey(newItem.getId()), newItem.getId()));
-        this.testContainer.readMany(cosmosItemIdentities, TestItem.class).block();
+        cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey(createdItem.getId()), createdItem.getId()));
+        List<TestItem> readManyResults = new ArrayList<>();
+        this.createdContainer
+            .readMany(cosmosItemIdentities, TestItem.class)
+            .doOnNext(feedResponse -> readManyResults.addAll(feedResponse.getResults()))
+            .block();
+        assertThat(readManyResults.size()).isOne();
+        validateItem(readManyResults.get(0), createdItem);
+
+        // read feed ranges
+        List<FeedRange> feedRanges = this.createdContainer.getFeedRanges().block();
+        assertThat(feedRanges.size()).isGreaterThanOrEqualTo(1);
+
+        // query change feed
+        List<TestItem> changeFeedItems = new ArrayList<>();
+        this.createdContainer.queryChangeFeed(
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange()),
+                TestItem.class)
+            .byPage()
+            .doOnNext(feedResponse -> changeFeedItems.addAll(feedResponse.getResults()))
+            .blockLast();
+        assertThat(readManyResults.size()).isOne();
+        validateItem(readManyResults.get(0), createdItem);
 
         // delete item
-        this.testContainer.deleteItem(newItem.getId(), new PartitionKey(newItem.getId())).block();
+        this.createdContainer.deleteItem(createdItem.getId(), new PartitionKey(createdItem.getId())).block();
+    }
+
+    private void validateItem(TestItem returnedItem, TestItem expectedItem) {
+        assertThat(returnedItem).isNotNull();
+        assertThat(expectedItem).isNotNull();
+        assertThat(returnedItem.getId()).isEqualTo(expectedItem.getId());
+        assertThat(returnedItem.getMypk()).isEqualTo(expectedItem.getMypk());
+        assertThat(returnedItem.getProp()).isEqualTo(expectedItem.getProp());
     }
 }

@@ -239,8 +239,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @AfterSuite(groups = { "emulator-vnext" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuitEmulatorVNext() {
-
-        logger.info("afterSuite for emulator vnext group started");
+        // can not use the after suite method directly as for vnext, query databases is not implemented, so it will error out
+        logger.info("afterSuite for emulator vnext group started. ");
         safeDeleteDatabase(SHARED_DATABASE);
     }
 

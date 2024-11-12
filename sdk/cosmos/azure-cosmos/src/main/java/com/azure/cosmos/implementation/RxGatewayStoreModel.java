@@ -312,27 +312,13 @@ public class RxGatewayStoreModel implements RxStoreModel {
             path = StringUtils.EMPTY;
         }
 
-        String schema = "https";
-        if (isEmulatorHost(rootUri)) {
-            // To support vNext emulator with GATEWAY_TLS_ENABLED = false
-            schema = rootUri.getScheme();
-        }
-
-        return new URI(schema,
+        return new URI(rootUri.getScheme(), // allow using http connections if customer use http:// endpoint
             null,
             rootUri.getHost(),
             rootUri.getPort(),
             ensureSlashPrefixed(path),
             null,  // Query string not used.
             null);
-    }
-
-    private boolean isEmulatorHost(URI uri) {
-        if (StringUtils.isNotEmpty(uri.getHost())) {
-            return uri.getHost().equals("localhost") || uri.getHost().equals("127.0.0.1");
-        }
-
-        return false;
     }
 
     private String ensureSlashPrefixed(String path) {

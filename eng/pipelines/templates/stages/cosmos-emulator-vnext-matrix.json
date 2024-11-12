@@ -6,15 +6,15 @@
     "EmulatorConfig": {
       "Emulator Vnext Integration Tests On Http - Java 8": {
         "ProfileFlag": "-Pemulator-vnext",
-        "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
+        "AdditionalArgs": "-DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       },
       "Emulator Vnext Only Integration Tests On Http - Java 17": {
         "ProfileFlag": "-Pemulator-vnext",
-        "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.17",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
+        "AdditionalArgs": "-DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       }
     }
   }
