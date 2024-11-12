@@ -4,22 +4,21 @@
 
 package com.azure.ai.documentintelligence.generated;
 
-import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
-import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ListAnalyzeBatchDocumentsResults {
     public static void main(String[] args) {
-        DocumentIntelligenceAdministrationClient documentIntelligenceAdministrationClient
-            = new DocumentIntelligenceAdministrationClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
+        DocumentIntelligenceClient documentIntelligenceClient
+            = new DocumentIntelligenceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.listanalyzebatchresults.listanalyzebatchdocumentsresults
         PagedIterable<AnalyzeBatchResultOperation> response
-            = documentIntelligenceAdministrationClient.listAnalyzeBatchResults("prebuilt-invoice");
+            = documentIntelligenceClient.listAnalyzeBatchResults("prebuilt-invoice");
         // END:com.azure.ai.documentintelligence.generated.listanalyzebatchresults.listanalyzebatchdocumentsresults
     }
 }

@@ -25,7 +25,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
         customizePollingUtils(customization, logger);
     }
 
-    private void customizeAnalyzeBatchResultOperation(LibraryCustomization customization, Logger logger) {
+    private void customizeAnalyzeResultOperation(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing the AnalyzeResultOperation class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
         packageCustomization.getClass("AnalyzeResultOperation")
@@ -38,7 +38,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 }));
     }
 
-    private void customizeAnalyzeResultOperation(LibraryCustomization customization, Logger logger) {
+    private void customizeAnalyzeBatchResultOperation(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing the AnalyzeResultOperation class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
         packageCustomization.getClass("AnalyzeBatchResultOperation")
@@ -116,6 +116,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
         packageCustomization.getClass("SyncOperationLocationPollingStrategy").customizeAst(ast ->
             ast.getClassByName("SyncOperationLocationPollingStrategy").ifPresent(clazz -> {
                 ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeResultOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation");
                 ast.addImport("static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId");
                 addSyncPollOverrideMethod(clazz);
             }));
@@ -124,6 +125,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
         packageCustomization.getClass("OperationLocationPollingStrategy").customizeAst(ast ->
             ast.getClassByName("OperationLocationPollingStrategy").ifPresent(clazz -> {
                 ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeResultOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation");
                 ast.addImport("static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId");
                 addAsyncPollOverrideMethod(clazz);
             }));
@@ -149,15 +151,16 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 "            AnalyzeResultOperation operation = (AnalyzeResultOperation) pollResponse.getValue();",
                 "            operation.setOperationId(operationId);",
                 "        }",
+                "        if (pollResponse.getValue() instanceof AnalyzeBatchResultOperation) {",
+                "            AnalyzeBatchResultOperation operation = (AnalyzeBatchResultOperation) pollResponse.getValue();",
+                "            operation.setOperationId(operationId);",
+                "        }",
                 "        return pollResponse;",
                 "    });",
                 "}")));
     }
 
     private void addSyncPollOverrideMethod(ClassOrInterfaceDeclaration clazz) {
-        clazz.findCompilationUnit().ifPresent(ast ->
-            ast.addImport("com.azure.communication.common.implementation.HmacAuthenticationPolicy"));
-
         clazz.addMethod("poll", Modifier.Keyword.PUBLIC)
             .setType("PollResponse<T>")
             .addParameter("PollingContext<T>", "pollingContext")
@@ -173,6 +176,10 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 "}",
                 "if (pollResponse.getValue() instanceof AnalyzeResultOperation) {",
                 "    AnalyzeResultOperation operation = (AnalyzeResultOperation) pollResponse.getValue();",
+                "    operation.setOperationId(operationId);",
+                "}",
+                "if (pollResponse.getValue() instanceof AnalyzeBatchResultOperation) {",
+                "    AnalyzeBatchResultOperation operation = (AnalyzeBatchResultOperation) pollResponse.getValue();",
                 "    operation.setOperationId(operationId);",
                 "}",
                 "return pollResponse;",

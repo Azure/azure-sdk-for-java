@@ -25,6 +25,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -243,6 +244,137 @@ public final class DocumentIntelligenceClient {
     public SyncPoller<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId,
         RequestOptions requestOptions) {
         return this.serviceClient.beginAnalyzeBatchDocuments(modelId, requestOptions);
+    }
+
+    /**
+     * List batch document analysis results.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchResultOperation items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAnalyzeBatchResults(String modelId, RequestOptions requestOptions) {
+        return this.serviceClient.listAnalyzeBatchResults(modelId, requestOptions);
+    }
+
+    /**
+     * Mark the batch document analysis result for deletion.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAnalyzeBatchResultWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions);
+    }
+
+    /**
+     * Gets the result of batch document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of batch document analysis along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAnalyzeBatchResultWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions);
     }
 
     /**
@@ -523,6 +655,69 @@ public final class DocumentIntelligenceClient {
         // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginAnalyzeBatchDocumentsWithModel(modelId, requestOptions);
+    }
+
+    /**
+     * List batch document analysis results.
+     * 
+     * @param modelId Unique document model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of AnalyzeBatchResultOperation items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AnalyzeBatchResultOperation> listAnalyzeBatchResults(String modelId) {
+        // Generated convenience method for listAnalyzeBatchResults
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listAnalyzeBatchResults(modelId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AnalyzeBatchResultOperation.class));
+    }
+
+    /**
+     * Mark the batch document analysis result for deletion.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAnalyzeBatchResult(String modelId, String resultId) {
+        // Generated convenience method for deleteAnalyzeBatchResultWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the result of batch document analysis.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of batch document analysis.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeBatchResultOperation getAnalyzeBatchResult(String modelId, String resultId) {
+        // Generated convenience method for getAnalyzeBatchResultWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions).getValue()
+            .toObject(AnalyzeBatchResultOperation.class);
     }
 
     /**

@@ -25,6 +25,9 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -33,6 +36,7 @@ import com.azure.core.util.polling.PollerFlux;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -247,6 +251,138 @@ public final class DocumentIntelligenceAsyncClient {
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId,
         RequestOptions requestOptions) {
         return this.serviceClient.beginAnalyzeBatchDocumentsAsync(modelId, requestOptions);
+    }
+
+    /**
+     * List batch document analysis results.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of AnalyzeBatchResultOperation items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listAnalyzeBatchResults(String modelId, RequestOptions requestOptions) {
+        return this.serviceClient.listAnalyzeBatchResultsAsync(modelId, requestOptions);
+    }
+
+    /**
+     * Mark the batch document analysis result for deletion.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteAnalyzeBatchResultWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteAnalyzeBatchResultWithResponseAsync(modelId, resultId, requestOptions);
+    }
+
+    /**
+     * Gets the result of batch document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of batch document analysis along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAnalyzeBatchResultWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getAnalyzeBatchResultWithResponseAsync(modelId, resultId, requestOptions);
     }
 
     /**
@@ -530,6 +666,81 @@ public final class DocumentIntelligenceAsyncClient {
         // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginAnalyzeBatchDocumentsWithModelAsync(modelId, requestOptions);
+    }
+
+    /**
+     * List batch document analysis results.
+     * 
+     * @param modelId Unique document model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of AnalyzeBatchResultOperation items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AnalyzeBatchResultOperation> listAnalyzeBatchResults(String modelId) {
+        // Generated convenience method for listAnalyzeBatchResults
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listAnalyzeBatchResults(modelId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, AnalyzeBatchResultOperation>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchResultOperation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Mark the batch document analysis result for deletion.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAnalyzeBatchResult(String modelId, String resultId) {
+        // Generated convenience method for deleteAnalyzeBatchResultWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the result of batch document analysis.
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of batch document analysis on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeBatchResultOperation> getAnalyzeBatchResult(String modelId, String resultId) {
+        // Generated convenience method for getAnalyzeBatchResultWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchResultOperation.class));
     }
 
     /**

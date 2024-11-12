@@ -11,6 +11,8 @@ import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.StringIndexType;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -32,5 +34,16 @@ public class AnalyzeBatchDocuments {
                         .setResultPrefix("trainingDocsResult/")
                         .setOverwriteExisting(true));
         // END:com.azure.ai.documentintelligence.generated.analyzebatchdocuments.analyzebatchdocuments
+
+        // Users can store the operation Id
+        String resultId = null;
+        PollResponse<AnalyzeBatchResultOperation> pollResponse = response.poll();
+        while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            resultId = pollResponse.getValue().getOperationId();
+            pollResponse = response.poll();
+        }
+
+        // Get the final result from the new API
+        AnalyzeBatchResultOperation analyzeBatchResult = documentIntelligenceClient.getAnalyzeBatchResult("prebuilt-invoice", resultId);
     }
 }

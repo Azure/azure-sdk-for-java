@@ -4,20 +4,18 @@
 
 package com.azure.ai.documentintelligence.generated;
 
-import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
-import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DeleteAnalyzeBatchDocumentsResult {
     public static void main(String[] args) {
-        DocumentIntelligenceAdministrationClient documentIntelligenceAdministrationClient
-            = new DocumentIntelligenceAdministrationClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
+        DocumentIntelligenceClient documentIntelligenceClient
+            = new DocumentIntelligenceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.deleteanalyzebatchresult.deleteanalyzebatchdocumentsresult
-        documentIntelligenceAdministrationClient.deleteAnalyzeBatchResult("prebuilt-invoice",
-            "3b31320d-8bab-4f88-b19c-2322a7f11034");
+        documentIntelligenceClient.deleteAnalyzeBatchResult("prebuilt-invoice", "3b31320d-8bab-4f88-b19c-2322a7f11034");
         // END:com.azure.ai.documentintelligence.generated.deleteanalyzebatchresult.deleteanalyzebatchdocumentsresult
     }
 }
