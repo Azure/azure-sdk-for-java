@@ -95,6 +95,8 @@ public interface AsyncDocumentClient {
         List<Permission> permissionFeed;
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
+        boolean useHttp2;
+        URI thinClientEndpoint;
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
         AzureKeyCredential credential;
         TokenCredential tokenCredential;
@@ -115,6 +117,20 @@ public interface AsyncDocumentClient {
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
                 this.serviceEndpoint = new URI(serviceEndpoint);
+            } catch (URISyntaxException e) {
+                throw new IllegalArgumentException(e.getMessage());
+            }
+            return this;
+        }
+
+        public Builder withHttp2Enabled(boolean useHttp2) {
+            this.useHttp2 = useHttp2;
+            return this;
+        }
+
+        public Builder withThinClientEndpoint(String withThinClientEndpoint) {
+            try {
+                this.thinClientEndpoint = new URI(withThinClientEndpoint);
             } catch (URISyntaxException e) {
                 throw new IllegalArgumentException(e.getMessage());
             }
@@ -282,6 +298,10 @@ public interface AsyncDocumentClient {
         public AsyncDocumentClient build() {
 
             ifThrowIllegalArgException(this.serviceEndpoint == null || StringUtils.isEmpty(this.serviceEndpoint.toString()), "cannot buildAsyncClient client without service endpoint");
+            if (this.useHttp2) {
+                ifThrowIllegalArgException(this.thinClientEndpoint == null || StringUtils.isEmpty(this.thinClientEndpoint.toString()), "cannot buildAsyncClient for HTTP2 without thinclient endpoint");
+            }
+
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
                         && this.credential == null && this.tokenCredential == null && this.cosmosAuthorizationTokenResolver == null,
@@ -291,6 +311,8 @@ public interface AsyncDocumentClient {
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
+                    useHttp2,
+                    thinClientEndpoint,
                     masterKeyOrResourceToken,
                     permissionFeed,
                     connectionPolicy,

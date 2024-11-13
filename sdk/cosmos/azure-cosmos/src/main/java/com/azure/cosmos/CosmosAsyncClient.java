@@ -91,6 +91,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     private final AsyncDocumentClient asyncDocumentClient;
     private final String serviceEndpoint;
+    private final String thinClientEndpoint;
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
     private final AzureKeyCredential credential;
@@ -112,6 +113,8 @@ public final class CosmosAsyncClient implements Closeable {
         // Async Cosmos client wrapper
         Configs configs = builder.configs();
         this.serviceEndpoint = builder.getEndpoint();
+        boolean useHttp2 = builder.getHttp2Enabled();
+        this.thinClientEndpoint = builder.getThinClientEndpoint();
         String keyOrResourceToken = builder.getKey();
         this.connectionPolicy = builder.getConnectionPolicy();
         this.desiredConsistencyLevel = builder.getConsistencyLevel();
@@ -154,6 +157,8 @@ public final class CosmosAsyncClient implements Closeable {
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withOperationPolicies(this.requestPolicies)
                                        .withServiceEndpoint(this.serviceEndpoint)
+                                       .withHttp2Enabled(useHttp2)
+                                       .withThinClientEndpoint(this.thinClientEndpoint)
                                        .withMasterKeyOrResourceToken(keyOrResourceToken)
                                        .withConnectionPolicy(this.connectionPolicy)
                                        .withConsistencyLevel(this.desiredConsistencyLevel)

@@ -119,6 +119,8 @@ public class CosmosClientBuilder implements
     private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilder.class);
     private Configs configs = new Configs();
     private String serviceEndpoint;
+    private boolean useHttp2;
+    private String thinClientEndpoint;
     private String keyOrResourceToken;
     private CosmosClientMetadataCachesSnapshot state;
     private TokenCredential tokenCredential;
@@ -369,6 +371,26 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Gets whether HTTP2 transport is enabled or not
+     *
+     * @return the endpoint
+     */
+    boolean getHttp2Enabled() {
+        return useHttp2;
+    }
+
+    /**
+     * Gets the Thinclient endpoint the SDK wil connect to.
+     * Populated through system variable for now. May move to read
+     * it from Gateway API, not finalized yet
+     *
+     * @return the endpoint
+     */
+    String getThinClientEndpoint() {
+        return thinClientEndpoint;
+    }
+
+    /**
      * Sets the Azure Cosmos DB endpoint the SDK will connect to
      *
      * @param endpoint the service endpoint
@@ -377,6 +399,17 @@ public class CosmosClientBuilder implements
     @Override
     public CosmosClientBuilder endpoint(String endpoint) {
         this.serviceEndpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the thinclient endpoint the SDK will connect to
+     *
+     * @param endpoint the service endpoint
+     * @return current Builder
+     */
+    public CosmosClientBuilder thinClientEndpoint(String endpoint) {
+        this.thinClientEndpoint = Objects.requireNonNull(endpoint, "'thinClientEndpoint' cannot be null.");
         return this;
     }
 
@@ -1415,6 +1448,10 @@ public class CosmosClientBuilder implements
                 @Override
                 public String getEndpoint(CosmosClientBuilder builder) {
                     return builder.getEndpoint();
+                }
+
+                public String getThinClientEndpoint(CosmosClientBuilder builder) {
+                    return builder.getThinClientEndpoint();
                 }
 
                 @Override

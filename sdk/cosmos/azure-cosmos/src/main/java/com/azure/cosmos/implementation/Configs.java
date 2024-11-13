@@ -45,6 +45,8 @@ public class Configs {
     private static final String PROTOCOL_ENVIRONMENT_VARIABLE = "AZURE_COSMOS_DIRECT_MODE_PROTOCOL";
     public static final String PROTOCOL_PROPERTY = "azure.cosmos.directModeProtocol";
     private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
+    private static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
+    private static final boolean HTTP2_ENABLED_DEFAULT = false;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
@@ -325,6 +327,15 @@ public class Configs {
             logger.error("Parsing protocol {} failed. Using the default {}.", protocol, DEFAULT_PROTOCOL, e);
             return DEFAULT_PROTOCOL;
         }
+    }
+
+    public boolean useHttp2() {
+        String valueFromSystemProperty = System.getProperty(HTTP2_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        return HTTP2_ENABLED_DEFAULT;
     }
 
     public int getMaxNumberOfReadBarrierReadRetries() {

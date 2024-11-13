@@ -306,6 +306,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public RxDocumentClientImpl(URI serviceEndpoint,
+                                boolean useHttp2,
+                                URI thinClientEndpoint,
                                 String masterKeyOrResourceToken,
                                 List<Permission> permissionFeed,
                                 ConnectionPolicy connectionPolicy,
@@ -329,6 +331,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<CosmosOperationPolicy> operationPolicies) {
         this(
                 serviceEndpoint,
+                useHttp2,
+                thinClientEndpoint,
                 masterKeyOrResourceToken,
                 permissionFeed,
                 connectionPolicy,
@@ -353,6 +357,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
+                                boolean useHttp2,
+                                URI thinClientEndpoint,
                                 String masterKeyOrResourceToken,
                                 List<Permission> permissionFeed,
                                 ConnectionPolicy connectionPolicy,
@@ -374,6 +380,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
+                useHttp2,
+                thinClientEndpoint,
                 masterKeyOrResourceToken,
                 connectionPolicy,
                 consistencyLevel,
@@ -436,6 +444,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     RxDocumentClientImpl(URI serviceEndpoint,
+                         boolean useHttp2,
+                         URI thinClientEndpoint,
                          String masterKeyOrResourceToken,
                          ConnectionPolicy connectionPolicy,
                          ConsistencyLevel consistencyLevel,

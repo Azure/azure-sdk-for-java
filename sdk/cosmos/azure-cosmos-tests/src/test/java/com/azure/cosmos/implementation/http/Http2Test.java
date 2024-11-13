@@ -14,12 +14,12 @@ import org.testng.annotations.Test;
 public class Http2Test {
     @Test
     public void gatewayWithHttp2() {
-        //System.setProperty("PROTOCOL_ENVIRONMENT_VARIABLE", "HTTP2");
         System.setProperty(Configs.PROTOCOL_PROPERTY, "HTTP2");
 
         CosmosAsyncClient client  = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)
+            .thinClientEndpoint("testEndpoint")
             .gatewayMode()
             .buildAsyncClient();
 

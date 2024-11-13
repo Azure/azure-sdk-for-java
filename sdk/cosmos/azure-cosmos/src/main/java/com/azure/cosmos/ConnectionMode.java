@@ -29,5 +29,11 @@ public enum ConnectionMode {
      * are always routed through the gateway using HTTPS.
      * </p>
      */
-    DIRECT
+    DIRECT,
+
+    /**
+     * Specifies that request to server resources are directed to the thin client proxy before
+     * following the same request path as GATEWAY mode.
+     */
+    THINPROXY,
 }
