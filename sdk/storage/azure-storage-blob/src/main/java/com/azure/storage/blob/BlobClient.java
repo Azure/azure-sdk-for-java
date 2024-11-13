@@ -135,11 +135,12 @@ public class BlobClient extends BlobClientBase {
      */
     @Override
     public BlobClient getSnapshotClient(String snapshot) {
-        BlobAsyncClient asyncClient
-            = new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-                getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
+        BlobAsyncClient asyncClient = new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(),
+            new EncryptionScope().setEncryptionScope(getEncryptionScope()), getVersionId());
         return new BlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
+            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(),
+            new EncryptionScope().setEncryptionScope(getEncryptionScope()), getVersionId());
     }
 
     /**
@@ -153,9 +154,10 @@ public class BlobClient extends BlobClientBase {
     public BlobClient getVersionClient(String versionId) {
         BlobAsyncClient asyncClient = new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(),
-            encryptionScope, versionId);
+            new EncryptionScope().setEncryptionScope(getEncryptionScope()), versionId);
         return new BlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), encryptionScope, versionId);
+            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(),
+            new EncryptionScope().setEncryptionScope(getEncryptionScope()), versionId);
     }
 
     /**
@@ -192,7 +194,7 @@ public class BlobClient extends BlobClientBase {
         }
         return new BlobClient(this.client.getCustomerProvidedKeyAsyncClient(customerProvidedKey), getHttpPipeline(),
             getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
-            finalCustomerProvidedKey, encryptionScope, getVersionId());
+            finalCustomerProvidedKey, new EncryptionScope().setEncryptionScope(getEncryptionScope()), getVersionId());
     }
 
     /**
