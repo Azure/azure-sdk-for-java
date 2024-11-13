@@ -300,7 +300,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
     @Test
     public void generateAccountSasTokenWithMinimumParameters() {
-        Assumptions.assumeFalse(usingEntraAuth, "Skipping test for authentication with Microsoft Entra.");
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("r");
         final TableAccountSasService services = new TableAccountSasService().setTableAccess(true);
@@ -320,7 +319,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
     @Test
     public void generateAccountSasTokenWithAllParameters() {
-        Assumptions.assumeFalse(usingEntraAuth, "Skipping test for authentication with Microsoft Entra.");
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("rdau");
         final TableAccountSasService services = new TableAccountSasService().setTableAccess(true);
@@ -345,7 +343,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
-        Assumptions.assumeFalse(usingEntraAuth, "Skipping test for authentication with Microsoft Entra.");
         final OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("a");
         final TableAccountSasService services = new TableAccountSasService().setTableAccess(true);

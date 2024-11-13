@@ -16,7 +16,7 @@
         }
     },
     "variables": {
-        "mgmtApiVersion": "2023-11-01",
+        "mgmtApiVersion": "2022-05-01",
         "authorizationApiVersion": "2023-07-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')]",
         "location": "[resourceGroup().location]",
@@ -52,7 +52,7 @@
         {
             "condition": "[equals(parameters('endpointType'),'storage')]",
             "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "[variables('authorizationApiVersion')]",
+            "apiVersion": "2018-09-01-preview",
             "name": "[guid(concat('tableDataContributorRoleId', resourceGroup().id))]",
             "properties": {
                 "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
@@ -62,7 +62,7 @@
         {
             "condition": "[equals(parameters('endpointType'),'storage')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('mgmtApiVersion')]",
+            "apiVersion": "2022-05-01",
             "name": "[variables('primaryAccountName')]",
             "location": "[variables('location')]",
             "sku": {

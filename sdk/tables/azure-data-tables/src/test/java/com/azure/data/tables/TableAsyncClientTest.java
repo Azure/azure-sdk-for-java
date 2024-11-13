@@ -234,7 +234,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-    
+
         SampleEntity tableEntity = new SampleEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setByteField(bytes);
         tableEntity.setBooleanField(b);
@@ -245,9 +245,9 @@ public class TableAsyncClientTest extends TableClientTestBase {
         tableEntity.setLongField(l);
         tableEntity.setStringField(s);
         tableEntity.setEnumField(color);
-    
+
         tableClient.createEntity(tableEntity).block(TIMEOUT);
-    
+
         // Act & Assert
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
@@ -512,7 +512,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-    
+
         final Map<String, Object> props = new HashMap<>();
         props.put("ByteField", bytes);
         props.put("BooleanField", b);
@@ -523,26 +523,26 @@ public class TableAsyncClientTest extends TableClientTestBase {
         props.put("LongField", l);
         props.put("StringField", s);
         props.put("EnumField", color);
-    
+
         TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setProperties(props);
-    
+
         int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
-    
+
         // Act & Assert
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, SampleEntity.class))
             .assertNext(response -> {
                 SampleEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
-    
+
                 assertNotNull(entity);
                 assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
                 assertEquals(tableEntity.getRowKey(), entity.getRowKey());
-    
+
                 assertNotNull(entity.getTimestamp());
                 assertNotNull(entity.getETag());
-    
+
                 assertArrayEquals(bytes, entity.getByteField());
                 assertEquals(b, entity.getBooleanField());
                 assertTrue(dateTime.isEqual(entity.getDateTimeField()));
@@ -614,18 +614,18 @@ public class TableAsyncClientTest extends TableClientTestBase {
         String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
         int expectedStatusCode = 204;
-    
+
         SingleFieldEntity tableEntity = new SingleFieldEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setSubclassProperty("InitialValue");
         tableClient.createEntity(tableEntity).block(TIMEOUT);
-    
+
         // Act & Assert
         tableEntity.setSubclassProperty("UpdatedValue");
         StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, TableEntityUpdateMode.REPLACE, true))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
-    
+
         StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
             .assertNext(entity -> {
                 final Map<String, Object> properties = entity.getProperties();
@@ -739,7 +739,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)).block(TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)).block(TIMEOUT);
-    
+
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(SampleEntity.class))
             .expectNextCount(2)
@@ -953,7 +953,6 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     @Test
     public void generateSasTokenWithMinimumParameters() {
-        Assumptions.assumeFalse(usingEntraAuth, "Skipping test for authentication with Microsoft Entra.");
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("r");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_ONLY;
@@ -972,7 +971,6 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     @Test
     public void generateSasTokenWithAllParameters() {
-        Assumptions.assumeFalse(usingEntraAuth, "Skipping test for authentication with Microsoft Entra.");
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("raud");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
