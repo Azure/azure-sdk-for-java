@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -43,7 +44,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
      * The updated thread properties
      */
     @Generated
-    private final Map<String, Object> properties;
+    private final Map<String, BinaryData> properties;
 
     /*
      * The version of the thread
@@ -77,7 +78,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     private AcsChatThreadPropertiesUpdatedPerUserEventData(
         CommunicationIdentifierModel recipientCommunicationIdentifier, OffsetDateTime createTime,
         CommunicationIdentifierModel editedByCommunicationIdentifier, OffsetDateTime editTime,
-        Map<String, String> metadata, Map<String, Object> properties) {
+        Map<String, String> metadata, Map<String, BinaryData> properties) {
         super(recipientCommunicationIdentifier, createTime);
         this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
         this.editTime = editTime;
@@ -122,7 +123,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
      * @return the properties value.
      */
     @Generated
-    public Map<String, Object> getProperties() {
+    public Map<String, BinaryData> getProperties() {
         return this.properties;
     }
 
@@ -176,7 +177,8 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
         jsonWriter.writeStringField("editTime",
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("properties", this.properties,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         return jsonWriter.writeEndObject();
     }
 
@@ -200,7 +202,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
             CommunicationIdentifierModel editedByCommunicationIdentifier = null;
             OffsetDateTime editTime = null;
             Map<String, String> metadata = null;
-            Map<String, Object> properties = null;
+            Map<String, BinaryData> properties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -224,7 +226,8 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("properties".equals(fieldName)) {
-                    properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    properties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else {
                     reader.skipChildren();
                 }

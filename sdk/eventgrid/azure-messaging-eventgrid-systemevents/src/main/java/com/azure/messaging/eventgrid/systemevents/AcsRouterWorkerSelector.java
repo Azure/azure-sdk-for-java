@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -36,7 +37,7 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
      * Router Job Worker Selector Value
      */
     @Generated
-    private final Object value;
+    private final BinaryData labelValue;
 
     /*
      * Router Job Worker Selector Time to Live in Seconds
@@ -60,16 +61,16 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
      * Creates an instance of AcsRouterWorkerSelector class.
      * 
      * @param labelOperator the labelOperator value to set.
-     * @param value the value value to set.
+     * @param labelValue the labelValue value to set.
      * @param getTimeToLive the getTimeToLive value to set.
      * @param state the state value to set.
      * @param expirationTime the expirationTime value to set.
      */
     @Generated
-    private AcsRouterWorkerSelector(AcsRouterLabelOperator labelOperator, Object value, double getTimeToLive,
+    private AcsRouterWorkerSelector(AcsRouterLabelOperator labelOperator, BinaryData labelValue, double getTimeToLive,
         AcsRouterWorkerSelectorState state, OffsetDateTime expirationTime) {
         this.labelOperator = labelOperator;
-        this.value = value;
+        this.labelValue = labelValue;
         this.getTimeToLive = getTimeToLive;
         this.state = state;
         this.expirationTime = expirationTime;
@@ -96,13 +97,13 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
     }
 
     /**
-     * Get the value property: Router Job Worker Selector Value.
+     * Get the labelValue property: Router Job Worker Selector Value.
      * 
-     * @return the value value.
+     * @return the labelValue value.
      */
     @Generated
-    public Object getValue() {
-        return this.value;
+    public BinaryData getLabelValue() {
+        return this.labelValue;
     }
 
     /**
@@ -143,7 +144,7 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("labelOperator", this.labelOperator == null ? null : this.labelOperator.toString());
-        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeUntypedField("value", this.labelValue.toObject(Object.class));
         jsonWriter.writeDoubleField("ttlSeconds", this.getTimeToLive);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("expirationTime",
@@ -165,7 +166,7 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
     public static AcsRouterWorkerSelector fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRouterLabelOperator labelOperator = null;
-            Object value = null;
+            BinaryData labelValue = null;
             double getTimeToLive = 0.0;
             AcsRouterWorkerSelectorState state = null;
             OffsetDateTime expirationTime = null;
@@ -177,7 +178,8 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
                 if ("labelOperator".equals(fieldName)) {
                     labelOperator = AcsRouterLabelOperator.fromString(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    value = reader.readUntyped();
+                    labelValue
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("ttlSeconds".equals(fieldName)) {
                     getTimeToLive = reader.getDouble();
                 } else if ("state".equals(fieldName)) {
@@ -192,7 +194,7 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
                 }
             }
             AcsRouterWorkerSelector deserializedAcsRouterWorkerSelector
-                = new AcsRouterWorkerSelector(labelOperator, value, getTimeToLive, state, expirationTime);
+                = new AcsRouterWorkerSelector(labelOperator, labelValue, getTimeToLive, state, expirationTime);
             deserializedAcsRouterWorkerSelector.key = key;
 
             return deserializedAcsRouterWorkerSelector;

@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -73,7 +74,7 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
      * ignored by event consumers.
      */
     @Generated
-    private final Map<String, Object> storageDiagnostics;
+    private final Map<String, BinaryData> storageDiagnostics;
 
     /**
      * Creates an instance of StorageBlobDeletedEventData class.
@@ -81,7 +82,7 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
      * @param storageDiagnostics the storageDiagnostics value to set.
      */
     @Generated
-    private StorageBlobDeletedEventData(Map<String, Object> storageDiagnostics) {
+    private StorageBlobDeletedEventData(Map<String, BinaryData> storageDiagnostics) {
         this.storageDiagnostics = storageDiagnostics;
     }
 
@@ -177,7 +178,7 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
      * @return the storageDiagnostics value.
      */
     @Generated
-    public Map<String, Object> getStorageDiagnostics() {
+    public Map<String, BinaryData> getStorageDiagnostics() {
         return this.storageDiagnostics;
     }
 
@@ -189,7 +190,7 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("storageDiagnostics", this.storageDiagnostics,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("api", this.api);
         jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
         jsonWriter.writeStringField("requestId", this.requestId);
@@ -213,7 +214,7 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
     @Generated
     public static StorageBlobDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, Object> storageDiagnostics = null;
+            Map<String, BinaryData> storageDiagnostics = null;
             String api = null;
             String clientRequestId = null;
             String requestId = null;
@@ -227,7 +228,8 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
                 reader.nextToken();
 
                 if ("storageDiagnostics".equals(fieldName)) {
-                    storageDiagnostics = reader.readMap(reader1 -> reader1.readUntyped());
+                    storageDiagnostics = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("api".equals(fieldName)) {
                     api = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {

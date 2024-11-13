@@ -15,7 +15,7 @@ import java.io.IOException;
  * Event data for Microsoft.EventGrid.MQTTClientDeleted event.
  */
 @Immutable
-public final class EventGridMQTTClientDeletedEventData extends EventGridMQTTClientEventData {
+public final class EventGridMqttClientDeletedEventData extends EventGridMqttClientEventData {
     /*
      * Name of the Event Grid namespace where the MQTT client was created or updated.
      */
@@ -37,10 +37,10 @@ public final class EventGridMQTTClientDeletedEventData extends EventGridMQTTClie
     private String clientAuthenticationName;
 
     /**
-     * Creates an instance of EventGridMQTTClientDeletedEventData class.
+     * Creates an instance of EventGridMqttClientDeletedEventData class.
      */
     @Generated
-    private EventGridMQTTClientDeletedEventData() {
+    private EventGridMqttClientDeletedEventData() {
     }
 
     /**
@@ -93,34 +93,34 @@ public final class EventGridMQTTClientDeletedEventData extends EventGridMQTTClie
     }
 
     /**
-     * Reads an instance of EventGridMQTTClientDeletedEventData from the JsonReader.
+     * Reads an instance of EventGridMqttClientDeletedEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EventGridMQTTClientDeletedEventData if the JsonReader was pointing to an instance of it,
+     * @return An instance of EventGridMqttClientDeletedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the EventGridMQTTClientDeletedEventData.
+     * @throws IOException If an error occurs while reading the EventGridMqttClientDeletedEventData.
      */
     @Generated
-    public static EventGridMQTTClientDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static EventGridMqttClientDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            EventGridMQTTClientDeletedEventData deserializedEventGridMQTTClientDeletedEventData
-                = new EventGridMQTTClientDeletedEventData();
+            EventGridMqttClientDeletedEventData deserializedEventGridMqttClientDeletedEventData
+                = new EventGridMqttClientDeletedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("clientAuthenticationName".equals(fieldName)) {
-                    deserializedEventGridMQTTClientDeletedEventData.clientAuthenticationName = reader.getString();
+                    deserializedEventGridMqttClientDeletedEventData.clientAuthenticationName = reader.getString();
                 } else if ("clientName".equals(fieldName)) {
-                    deserializedEventGridMQTTClientDeletedEventData.clientName = reader.getString();
+                    deserializedEventGridMqttClientDeletedEventData.clientName = reader.getString();
                 } else if ("namespaceName".equals(fieldName)) {
-                    deserializedEventGridMQTTClientDeletedEventData.namespaceName = reader.getString();
+                    deserializedEventGridMqttClientDeletedEventData.namespaceName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedEventGridMQTTClientDeletedEventData;
+            return deserializedEventGridMqttClientDeletedEventData;
         });
     }
 }

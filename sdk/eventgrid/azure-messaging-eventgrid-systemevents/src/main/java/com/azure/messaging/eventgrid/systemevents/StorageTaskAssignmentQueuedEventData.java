@@ -25,7 +25,7 @@ public final class StorageTaskAssignmentQueuedEventData
      * The time at which a storage task was queued.
      */
     @Generated
-    private final OffsetDateTime queuedDateTime;
+    private final OffsetDateTime queuedOn;
 
     /*
      * The execution id for a storage task.
@@ -36,21 +36,21 @@ public final class StorageTaskAssignmentQueuedEventData
     /**
      * Creates an instance of StorageTaskAssignmentQueuedEventData class.
      * 
-     * @param queuedDateTime the queuedDateTime value to set.
+     * @param queuedOn the queuedOn value to set.
      */
     @Generated
-    private StorageTaskAssignmentQueuedEventData(OffsetDateTime queuedDateTime) {
-        this.queuedDateTime = queuedDateTime;
+    private StorageTaskAssignmentQueuedEventData(OffsetDateTime queuedOn) {
+        this.queuedOn = queuedOn;
     }
 
     /**
-     * Get the queuedDateTime property: The time at which a storage task was queued.
+     * Get the queuedOn property: The time at which a storage task was queued.
      * 
-     * @return the queuedDateTime value.
+     * @return the queuedOn value.
      */
     @Generated
-    public OffsetDateTime getQueuedDateTime() {
-        return this.queuedDateTime;
+    public OffsetDateTime getQueuedOn() {
+        return this.queuedOn;
     }
 
     /**
@@ -71,7 +71,7 @@ public final class StorageTaskAssignmentQueuedEventData
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("queuedDateTime",
-            this.queuedDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queuedDateTime));
+            this.queuedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queuedOn));
         jsonWriter.writeStringField("taskExecutionId", this.taskExecutionId);
         return jsonWriter.writeEndObject();
     }
@@ -88,14 +88,14 @@ public final class StorageTaskAssignmentQueuedEventData
     @Generated
     public static StorageTaskAssignmentQueuedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OffsetDateTime queuedDateTime = null;
+            OffsetDateTime queuedOn = null;
             String taskExecutionId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("queuedDateTime".equals(fieldName)) {
-                    queuedDateTime = reader
+                    queuedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("taskExecutionId".equals(fieldName)) {
                     taskExecutionId = reader.getString();
@@ -104,7 +104,7 @@ public final class StorageTaskAssignmentQueuedEventData
                 }
             }
             StorageTaskAssignmentQueuedEventData deserializedStorageTaskAssignmentQueuedEventData
-                = new StorageTaskAssignmentQueuedEventData(queuedDateTime);
+                = new StorageTaskAssignmentQueuedEventData(queuedOn);
             deserializedStorageTaskAssignmentQueuedEventData.taskExecutionId = taskExecutionId;
 
             return deserializedStorageTaskAssignmentQueuedEventData;

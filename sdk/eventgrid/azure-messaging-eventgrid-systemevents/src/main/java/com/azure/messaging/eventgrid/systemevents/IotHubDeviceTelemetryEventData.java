@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -25,7 +26,7 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
      * @param systemProperties the systemProperties value to set.
      */
     @Generated
-    private IotHubDeviceTelemetryEventData(Map<String, Object> body, Map<String, String> properties,
+    private IotHubDeviceTelemetryEventData(Map<String, BinaryData> body, Map<String, String> properties,
         Map<String, String> systemProperties) {
         super(body, properties, systemProperties);
     }
@@ -37,7 +38,8 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("body", getBody(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("body", getBody(),
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeMapField("properties", getProperties(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("systemProperties", getSystemProperties(),
             (writer, element) -> writer.writeString(element));
@@ -56,7 +58,7 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
     @Generated
     public static IotHubDeviceTelemetryEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, Object> body = null;
+            Map<String, BinaryData> body = null;
             Map<String, String> properties = null;
             Map<String, String> systemProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -64,7 +66,8 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
                 reader.nextToken();
 
                 if ("body".equals(fieldName)) {
-                    body = reader.readMap(reader1 -> reader1.readUntyped());
+                    body = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("properties".equals(fieldName)) {
                     properties = reader.readMap(reader1 -> reader1.getString());
                 } else if ("systemProperties".equals(fieldName)) {

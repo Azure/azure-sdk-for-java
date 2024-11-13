@@ -16,10 +16,10 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ExportRDBCompleted event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ImportRDBCompleted event.
  */
 @Immutable
-public final class RedisExportRDBCompletedEventData implements JsonSerializable<RedisExportRDBCompletedEventData> {
+public final class RedisImportRdbCompletedEventData implements JsonSerializable<RedisImportRdbCompletedEventData> {
     /*
      * The time at which the event occurred.
      */
@@ -39,12 +39,12 @@ public final class RedisExportRDBCompletedEventData implements JsonSerializable<
     private String status;
 
     /**
-     * Creates an instance of RedisExportRDBCompletedEventData class.
+     * Creates an instance of RedisImportRdbCompletedEventData class.
      * 
      * @param timestamp the timestamp value to set.
      */
     @Generated
-    private RedisExportRDBCompletedEventData(OffsetDateTime timestamp) {
+    private RedisImportRdbCompletedEventData(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -93,16 +93,16 @@ public final class RedisExportRDBCompletedEventData implements JsonSerializable<
     }
 
     /**
-     * Reads an instance of RedisExportRDBCompletedEventData from the JsonReader.
+     * Reads an instance of RedisImportRdbCompletedEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RedisExportRDBCompletedEventData if the JsonReader was pointing to an instance of it, or
+     * @return An instance of RedisImportRdbCompletedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RedisExportRDBCompletedEventData.
+     * @throws IOException If an error occurs while reading the RedisImportRdbCompletedEventData.
      */
     @Generated
-    public static RedisExportRDBCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static RedisImportRdbCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OffsetDateTime timestamp = null;
             String name = null;
@@ -122,12 +122,12 @@ public final class RedisExportRDBCompletedEventData implements JsonSerializable<
                     reader.skipChildren();
                 }
             }
-            RedisExportRDBCompletedEventData deserializedRedisExportRDBCompletedEventData
-                = new RedisExportRDBCompletedEventData(timestamp);
-            deserializedRedisExportRDBCompletedEventData.name = name;
-            deserializedRedisExportRDBCompletedEventData.status = status;
+            RedisImportRdbCompletedEventData deserializedRedisImportRdbCompletedEventData
+                = new RedisImportRdbCompletedEventData(timestamp);
+            deserializedRedisImportRdbCompletedEventData.name = name;
+            deserializedRedisImportRdbCompletedEventData.status = status;
 
-            return deserializedRedisExportRDBCompletedEventData;
+            return deserializedRedisImportRdbCompletedEventData;
         });
     }
 }

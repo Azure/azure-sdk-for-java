@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -35,13 +36,13 @@ public final class MachineLearningServicesModelRegisteredEventData
      * The tags of the model that was registered.
      */
     @Generated
-    private final Map<String, Object> modelTags;
+    private final Map<String, BinaryData> modelTags;
 
     /*
      * The properties of the model that was registered.
      */
     @Generated
-    private final Map<String, Object> modelProperties;
+    private final Map<String, BinaryData> modelProperties;
 
     /**
      * Creates an instance of MachineLearningServicesModelRegisteredEventData class.
@@ -50,8 +51,8 @@ public final class MachineLearningServicesModelRegisteredEventData
      * @param modelProperties the modelProperties value to set.
      */
     @Generated
-    private MachineLearningServicesModelRegisteredEventData(Map<String, Object> modelTags,
-        Map<String, Object> modelProperties) {
+    private MachineLearningServicesModelRegisteredEventData(Map<String, BinaryData> modelTags,
+        Map<String, BinaryData> modelProperties) {
         this.modelTags = modelTags;
         this.modelProperties = modelProperties;
     }
@@ -82,7 +83,7 @@ public final class MachineLearningServicesModelRegisteredEventData
      * @return the modelTags value.
      */
     @Generated
-    public Map<String, Object> getModelTags() {
+    public Map<String, BinaryData> getModelTags() {
         return this.modelTags;
     }
 
@@ -92,7 +93,7 @@ public final class MachineLearningServicesModelRegisteredEventData
      * @return the modelProperties value.
      */
     @Generated
-    public Map<String, Object> getModelProperties() {
+    public Map<String, BinaryData> getModelProperties() {
         return this.modelProperties;
     }
 
@@ -103,9 +104,10 @@ public final class MachineLearningServicesModelRegisteredEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("modelTags", this.modelTags, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("modelTags", this.modelTags,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeMapField("modelProperties", this.modelProperties,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("modelName", this.modelName);
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
         return jsonWriter.writeEndObject();
@@ -123,8 +125,8 @@ public final class MachineLearningServicesModelRegisteredEventData
     @Generated
     public static MachineLearningServicesModelRegisteredEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, Object> modelTags = null;
-            Map<String, Object> modelProperties = null;
+            Map<String, BinaryData> modelTags = null;
+            Map<String, BinaryData> modelProperties = null;
             String modelName = null;
             String modelVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -132,9 +134,11 @@ public final class MachineLearningServicesModelRegisteredEventData
                 reader.nextToken();
 
                 if ("modelTags".equals(fieldName)) {
-                    modelTags = reader.readMap(reader1 -> reader1.readUntyped());
+                    modelTags = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("modelProperties".equals(fieldName)) {
-                    modelProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                    modelProperties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("modelName".equals(fieldName)) {
                     modelName = reader.getString();
                 } else if ("modelVersion".equals(fieldName)) {

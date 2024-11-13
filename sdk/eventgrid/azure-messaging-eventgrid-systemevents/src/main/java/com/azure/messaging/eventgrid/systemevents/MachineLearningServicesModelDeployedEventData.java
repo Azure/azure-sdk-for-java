@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -41,13 +42,13 @@ public final class MachineLearningServicesModelDeployedEventData
      * The tags of the deployed service.
      */
     @Generated
-    private final Map<String, Object> serviceTags;
+    private final Map<String, BinaryData> serviceTags;
 
     /*
      * The properties of the deployed service.
      */
     @Generated
-    private final Map<String, Object> serviceProperties;
+    private final Map<String, BinaryData> serviceProperties;
 
     /**
      * Creates an instance of MachineLearningServicesModelDeployedEventData class.
@@ -56,8 +57,8 @@ public final class MachineLearningServicesModelDeployedEventData
      * @param serviceProperties the serviceProperties value to set.
      */
     @Generated
-    private MachineLearningServicesModelDeployedEventData(Map<String, Object> serviceTags,
-        Map<String, Object> serviceProperties) {
+    private MachineLearningServicesModelDeployedEventData(Map<String, BinaryData> serviceTags,
+        Map<String, BinaryData> serviceProperties) {
         this.serviceTags = serviceTags;
         this.serviceProperties = serviceProperties;
     }
@@ -98,7 +99,7 @@ public final class MachineLearningServicesModelDeployedEventData
      * @return the serviceTags value.
      */
     @Generated
-    public Map<String, Object> getServiceTags() {
+    public Map<String, BinaryData> getServiceTags() {
         return this.serviceTags;
     }
 
@@ -108,7 +109,7 @@ public final class MachineLearningServicesModelDeployedEventData
      * @return the serviceProperties value.
      */
     @Generated
-    public Map<String, Object> getServiceProperties() {
+    public Map<String, BinaryData> getServiceProperties() {
         return this.serviceProperties;
     }
 
@@ -119,9 +120,10 @@ public final class MachineLearningServicesModelDeployedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("serviceTags", this.serviceTags, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("serviceTags", this.serviceTags,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeMapField("serviceProperties", this.serviceProperties,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("serviceName", this.serviceName);
         jsonWriter.writeStringField("serviceComputeType", this.serviceComputeType);
         jsonWriter.writeStringField("modelIds", this.modelIds);
@@ -140,8 +142,8 @@ public final class MachineLearningServicesModelDeployedEventData
     @Generated
     public static MachineLearningServicesModelDeployedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, Object> serviceTags = null;
-            Map<String, Object> serviceProperties = null;
+            Map<String, BinaryData> serviceTags = null;
+            Map<String, BinaryData> serviceProperties = null;
             String serviceName = null;
             String serviceComputeType = null;
             String modelIds = null;
@@ -150,9 +152,11 @@ public final class MachineLearningServicesModelDeployedEventData
                 reader.nextToken();
 
                 if ("serviceTags".equals(fieldName)) {
-                    serviceTags = reader.readMap(reader1 -> reader1.readUntyped());
+                    serviceTags = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("serviceProperties".equals(fieldName)) {
-                    serviceProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                    serviceProperties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("serviceName".equals(fieldName)) {
                     serviceName = reader.getString();
                 } else if ("serviceComputeType".equals(fieldName)) {

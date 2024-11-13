@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -31,7 +32,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
      * The thread properties
      */
     @Generated
-    private final Map<String, Object> properties;
+    private final Map<String, BinaryData> properties;
 
     /*
      * The thread metadata
@@ -76,7 +77,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
     @Generated
     private AcsChatThreadCreatedWithUserEventData(CommunicationIdentifierModel recipientCommunicationIdentifier,
         OffsetDateTime createTime, CommunicationIdentifierModel createdByCommunicationIdentifier,
-        Map<String, Object> properties, Map<String, String> metadata,
+        Map<String, BinaryData> properties, Map<String, String> metadata,
         List<AcsChatThreadParticipantProperties> participants) {
         super(recipientCommunicationIdentifier, createTime);
         this.createdByCommunicationIdentifier = createdByCommunicationIdentifier;
@@ -102,7 +103,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
      * @return the properties value.
      */
     @Generated
-    public Map<String, Object> getProperties() {
+    public Map<String, BinaryData> getProperties() {
         return this.properties;
     }
 
@@ -173,7 +174,8 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
         jsonWriter.writeStringField("threadId", getThreadId());
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("properties", this.properties,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("participants", this.participants, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -197,7 +199,7 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
             String threadId = null;
             Long version = null;
             CommunicationIdentifierModel createdByCommunicationIdentifier = null;
-            Map<String, Object> properties = null;
+            Map<String, BinaryData> properties = null;
             Map<String, String> metadata = null;
             List<AcsChatThreadParticipantProperties> participants = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -218,7 +220,8 @@ public final class AcsChatThreadCreatedWithUserEventData extends AcsChatThreadEv
                 } else if ("createdByCommunicationIdentifier".equals(fieldName)) {
                     createdByCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
-                    properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    properties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("participants".equals(fieldName)) {

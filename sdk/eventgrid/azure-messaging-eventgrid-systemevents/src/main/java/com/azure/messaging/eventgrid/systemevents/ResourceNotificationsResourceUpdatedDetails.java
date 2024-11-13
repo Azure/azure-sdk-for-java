@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -54,7 +55,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * properties in the payload of the resource for which the event is being emitted
      */
     @Generated
-    private final Map<String, Object> properties;
+    private final Map<String, BinaryData> properties;
 
     /**
      * Creates an instance of ResourceNotificationsResourceUpdatedDetails class.
@@ -63,7 +64,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @param properties the properties value to set.
      */
     @Generated
-    private ResourceNotificationsResourceUpdatedDetails(Map<String, String> tags, Map<String, Object> properties) {
+    private ResourceNotificationsResourceUpdatedDetails(Map<String, String> tags, Map<String, BinaryData> properties) {
         this.tags = tags;
         this.properties = properties;
     }
@@ -124,7 +125,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @return the properties value.
      */
     @Generated
-    public Map<String, Object> getProperties() {
+    public Map<String, BinaryData> getProperties() {
         return this.properties;
     }
 
@@ -136,7 +137,8 @@ public final class ResourceNotificationsResourceUpdatedDetails
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("properties", this.properties,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("type", this.type);
@@ -157,7 +159,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
     public static ResourceNotificationsResourceUpdatedDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Map<String, String> tags = null;
-            Map<String, Object> properties = null;
+            Map<String, BinaryData> properties = null;
             String id = null;
             String name = null;
             String type = null;
@@ -169,7 +171,8 @@ public final class ResourceNotificationsResourceUpdatedDetails
                 if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("properties".equals(fieldName)) {
-                    properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    properties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("name".equals(fieldName)) {

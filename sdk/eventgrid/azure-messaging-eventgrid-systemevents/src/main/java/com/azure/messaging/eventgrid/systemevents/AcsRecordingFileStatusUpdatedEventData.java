@@ -37,7 +37,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * The recording duration in milliseconds
      */
     @Generated
-    private Long recordingDurationMs;
+    private Long recordingDuration;
 
     /*
      * The recording content type- AudioVideo, or Audio
@@ -104,13 +104,13 @@ public final class AcsRecordingFileStatusUpdatedEventData
     }
 
     /**
-     * Get the recordingDurationMs property: The recording duration in milliseconds.
+     * Get the recordingDuration property: The recording duration in milliseconds.
      * 
-     * @return the recordingDurationMs value.
+     * @return the recordingDuration value.
      */
     @Generated
-    public Long getRecordingDurationMs() {
-        return this.recordingDurationMs;
+    public Long getRecordingDuration() {
+        return this.recordingDuration;
     }
 
     /**
@@ -171,7 +171,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
             this.recordingChannelType == null ? null : this.recordingChannelType.toString());
         jsonWriter.writeStringField("recordingFormatType",
             this.recordingFormatType == null ? null : this.recordingFormatType.toString());
-        jsonWriter.writeNumberField("recordingDurationMs", this.recordingDurationMs);
+        jsonWriter.writeNumberField("recordingDurationMs", this.recordingDuration);
         jsonWriter.writeStringField("sessionEndReason", this.sessionEndReason);
         return jsonWriter.writeEndObject();
     }
@@ -193,7 +193,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
             RecordingContentType recordingContentType = null;
             RecordingChannelType recordingChannelType = null;
             RecordingFormatType recordingFormatType = null;
-            Long recordingDurationMs = null;
+            Long recordingDuration = null;
             String sessionEndReason = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -211,7 +211,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
                 } else if ("recordingFormatType".equals(fieldName)) {
                     recordingFormatType = RecordingFormatType.fromString(reader.getString());
                 } else if ("recordingDurationMs".equals(fieldName)) {
-                    recordingDurationMs = reader.getNullable(JsonReader::getLong);
+                    recordingDuration = reader.getNullable(JsonReader::getLong);
                 } else if ("sessionEndReason".equals(fieldName)) {
                     sessionEndReason = reader.getString();
                 } else {
@@ -221,7 +221,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
             AcsRecordingFileStatusUpdatedEventData deserializedAcsRecordingFileStatusUpdatedEventData
                 = new AcsRecordingFileStatusUpdatedEventData(recordingStorageInfo, recordingStartTime,
                     recordingContentType, recordingChannelType, recordingFormatType);
-            deserializedAcsRecordingFileStatusUpdatedEventData.recordingDurationMs = recordingDurationMs;
+            deserializedAcsRecordingFileStatusUpdatedEventData.recordingDuration = recordingDuration;
             deserializedAcsRecordingFileStatusUpdatedEventData.sessionEndReason = sessionEndReason;
 
             return deserializedAcsRecordingFileStatusUpdatedEventData;

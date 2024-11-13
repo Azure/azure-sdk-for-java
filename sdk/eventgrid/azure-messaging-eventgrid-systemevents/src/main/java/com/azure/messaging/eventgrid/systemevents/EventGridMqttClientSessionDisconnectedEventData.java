@@ -15,7 +15,7 @@ import java.io.IOException;
  * Event data for Microsoft.EventGrid.MQTTClientSessionDisconnected event.
  */
 @Immutable
-public final class EventGridMQTTClientSessionDisconnectedEventData extends EventGridMQTTClientEventData {
+public final class EventGridMqttClientSessionDisconnectedEventData extends EventGridMqttClientEventData {
     /*
      * Unique identifier for the MQTT client's session. This case-sensitive string can
      * be up to 128 characters long, and supports UTF-8 characters.
@@ -36,7 +36,7 @@ public final class EventGridMQTTClientSessionDisconnectedEventData extends Event
      * one of the values in the disconnection reasons table.
      */
     @Generated
-    private final EventGridMQTTClientDisconnectionReason disconnectionReason;
+    private final EventGridMqttClientDisconnectionReason disconnectionReason;
 
     /*
      * Name of the Event Grid namespace where the MQTT client was created or updated.
@@ -59,13 +59,13 @@ public final class EventGridMQTTClientSessionDisconnectedEventData extends Event
     private String clientAuthenticationName;
 
     /**
-     * Creates an instance of EventGridMQTTClientSessionDisconnectedEventData class.
+     * Creates an instance of EventGridMqttClientSessionDisconnectedEventData class.
      * 
      * @param disconnectionReason the disconnectionReason value to set.
      */
     @Generated
-    private EventGridMQTTClientSessionDisconnectedEventData(
-        EventGridMQTTClientDisconnectionReason disconnectionReason) {
+    private EventGridMqttClientSessionDisconnectedEventData(
+        EventGridMqttClientDisconnectionReason disconnectionReason) {
         this.disconnectionReason = disconnectionReason;
     }
 
@@ -101,7 +101,7 @@ public final class EventGridMQTTClientSessionDisconnectedEventData extends Event
      * @return the disconnectionReason value.
      */
     @Generated
-    public EventGridMQTTClientDisconnectionReason getDisconnectionReason() {
+    public EventGridMqttClientDisconnectionReason getDisconnectionReason() {
         return this.disconnectionReason;
     }
 
@@ -159,21 +159,21 @@ public final class EventGridMQTTClientSessionDisconnectedEventData extends Event
     }
 
     /**
-     * Reads an instance of EventGridMQTTClientSessionDisconnectedEventData from the JsonReader.
+     * Reads an instance of EventGridMqttClientSessionDisconnectedEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EventGridMQTTClientSessionDisconnectedEventData if the JsonReader was pointing to an
+     * @return An instance of EventGridMqttClientSessionDisconnectedEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EventGridMQTTClientSessionDisconnectedEventData.
+     * @throws IOException If an error occurs while reading the EventGridMqttClientSessionDisconnectedEventData.
      */
     @Generated
-    public static EventGridMQTTClientSessionDisconnectedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static EventGridMqttClientSessionDisconnectedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String clientAuthenticationName = null;
             String clientName = null;
             String namespaceName = null;
-            EventGridMQTTClientDisconnectionReason disconnectionReason = null;
+            EventGridMqttClientDisconnectionReason disconnectionReason = null;
             String clientSessionName = null;
             Long sequenceNumber = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -187,7 +187,7 @@ public final class EventGridMQTTClientSessionDisconnectedEventData extends Event
                 } else if ("namespaceName".equals(fieldName)) {
                     namespaceName = reader.getString();
                 } else if ("disconnectionReason".equals(fieldName)) {
-                    disconnectionReason = EventGridMQTTClientDisconnectionReason.fromString(reader.getString());
+                    disconnectionReason = EventGridMqttClientDisconnectionReason.fromString(reader.getString());
                 } else if ("clientSessionName".equals(fieldName)) {
                     clientSessionName = reader.getString();
                 } else if ("sequenceNumber".equals(fieldName)) {
@@ -196,16 +196,16 @@ public final class EventGridMQTTClientSessionDisconnectedEventData extends Event
                     reader.skipChildren();
                 }
             }
-            EventGridMQTTClientSessionDisconnectedEventData deserializedEventGridMQTTClientSessionDisconnectedEventData
-                = new EventGridMQTTClientSessionDisconnectedEventData(disconnectionReason);
-            deserializedEventGridMQTTClientSessionDisconnectedEventData.clientAuthenticationName
+            EventGridMqttClientSessionDisconnectedEventData deserializedEventGridMqttClientSessionDisconnectedEventData
+                = new EventGridMqttClientSessionDisconnectedEventData(disconnectionReason);
+            deserializedEventGridMqttClientSessionDisconnectedEventData.clientAuthenticationName
                 = clientAuthenticationName;
-            deserializedEventGridMQTTClientSessionDisconnectedEventData.clientName = clientName;
-            deserializedEventGridMQTTClientSessionDisconnectedEventData.namespaceName = namespaceName;
-            deserializedEventGridMQTTClientSessionDisconnectedEventData.clientSessionName = clientSessionName;
-            deserializedEventGridMQTTClientSessionDisconnectedEventData.sequenceNumber = sequenceNumber;
+            deserializedEventGridMqttClientSessionDisconnectedEventData.clientName = clientName;
+            deserializedEventGridMqttClientSessionDisconnectedEventData.namespaceName = namespaceName;
+            deserializedEventGridMqttClientSessionDisconnectedEventData.clientSessionName = clientSessionName;
+            deserializedEventGridMqttClientSessionDisconnectedEventData.sequenceNumber = sequenceNumber;
 
-            return deserializedEventGridMQTTClientSessionDisconnectedEventData;
+            return deserializedEventGridMqttClientSessionDisconnectedEventData;
         });
     }
 }

@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -47,13 +48,13 @@ public final class MachineLearningServicesRunCompletedEventData
      * The tags of the completed Run.
      */
     @Generated
-    private final Map<String, Object> runTags;
+    private final Map<String, BinaryData> runTags;
 
     /*
      * The properties of the completed Run.
      */
     @Generated
-    private final Map<String, Object> runProperties;
+    private final Map<String, BinaryData> runProperties;
 
     /**
      * Creates an instance of MachineLearningServicesRunCompletedEventData class.
@@ -62,8 +63,8 @@ public final class MachineLearningServicesRunCompletedEventData
      * @param runProperties the runProperties value to set.
      */
     @Generated
-    private MachineLearningServicesRunCompletedEventData(Map<String, Object> runTags,
-        Map<String, Object> runProperties) {
+    private MachineLearningServicesRunCompletedEventData(Map<String, BinaryData> runTags,
+        Map<String, BinaryData> runProperties) {
         this.runTags = runTags;
         this.runProperties = runProperties;
     }
@@ -114,7 +115,7 @@ public final class MachineLearningServicesRunCompletedEventData
      * @return the runTags value.
      */
     @Generated
-    public Map<String, Object> getRunTags() {
+    public Map<String, BinaryData> getRunTags() {
         return this.runTags;
     }
 
@@ -124,7 +125,7 @@ public final class MachineLearningServicesRunCompletedEventData
      * @return the runProperties value.
      */
     @Generated
-    public Map<String, Object> getRunProperties() {
+    public Map<String, BinaryData> getRunProperties() {
         return this.runProperties;
     }
 
@@ -135,9 +136,10 @@ public final class MachineLearningServicesRunCompletedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("runTags", this.runTags, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("runTags", this.runTags,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeMapField("runProperties", this.runProperties,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("experimentId", this.experimentId);
         jsonWriter.writeStringField("experimentName", this.experimentName);
         jsonWriter.writeStringField("runId", this.runId);
@@ -157,8 +159,8 @@ public final class MachineLearningServicesRunCompletedEventData
     @Generated
     public static MachineLearningServicesRunCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, Object> runTags = null;
-            Map<String, Object> runProperties = null;
+            Map<String, BinaryData> runTags = null;
+            Map<String, BinaryData> runProperties = null;
             String experimentId = null;
             String experimentName = null;
             String runId = null;
@@ -168,9 +170,11 @@ public final class MachineLearningServicesRunCompletedEventData
                 reader.nextToken();
 
                 if ("runTags".equals(fieldName)) {
-                    runTags = reader.readMap(reader1 -> reader1.readUntyped());
+                    runTags = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("runProperties".equals(fieldName)) {
-                    runProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                    runProperties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("experimentId".equals(fieldName)) {
                     experimentId = reader.getString();
                 } else if ("experimentName".equals(fieldName)) {

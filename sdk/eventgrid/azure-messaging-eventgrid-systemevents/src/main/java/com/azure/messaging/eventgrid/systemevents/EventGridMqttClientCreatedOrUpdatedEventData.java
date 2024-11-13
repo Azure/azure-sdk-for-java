@@ -19,12 +19,12 @@ import java.util.Map;
  * Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event.
  */
 @Immutable
-public final class EventGridMQTTClientCreatedOrUpdatedEventData extends EventGridMQTTClientEventData {
+public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGridMqttClientEventData {
     /*
      * Configured state of the client. The value could be Enabled or Disabled
      */
     @Generated
-    private final EventGridMQTTClientState state;
+    private final EventGridMqttClientState state;
 
     /*
      * Time the client resource is created based on the provider's UTC time.
@@ -67,7 +67,7 @@ public final class EventGridMQTTClientCreatedOrUpdatedEventData extends EventGri
     private String clientAuthenticationName;
 
     /**
-     * Creates an instance of EventGridMQTTClientCreatedOrUpdatedEventData class.
+     * Creates an instance of EventGridMqttClientCreatedOrUpdatedEventData class.
      * 
      * @param state the state value to set.
      * @param createdOn the createdOn value to set.
@@ -75,7 +75,7 @@ public final class EventGridMQTTClientCreatedOrUpdatedEventData extends EventGri
      * @param attributes the attributes value to set.
      */
     @Generated
-    private EventGridMQTTClientCreatedOrUpdatedEventData(EventGridMQTTClientState state, OffsetDateTime createdOn,
+    private EventGridMqttClientCreatedOrUpdatedEventData(EventGridMqttClientState state, OffsetDateTime createdOn,
         OffsetDateTime updatedOn, Map<String, String> attributes) {
         this.state = state;
         this.createdOn = createdOn;
@@ -89,7 +89,7 @@ public final class EventGridMQTTClientCreatedOrUpdatedEventData extends EventGri
      * @return the state value.
      */
     @Generated
-    public EventGridMQTTClientState getState() {
+    public EventGridMqttClientState getState() {
         return this.state;
     }
 
@@ -181,21 +181,21 @@ public final class EventGridMQTTClientCreatedOrUpdatedEventData extends EventGri
     }
 
     /**
-     * Reads an instance of EventGridMQTTClientCreatedOrUpdatedEventData from the JsonReader.
+     * Reads an instance of EventGridMqttClientCreatedOrUpdatedEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EventGridMQTTClientCreatedOrUpdatedEventData if the JsonReader was pointing to an instance
+     * @return An instance of EventGridMqttClientCreatedOrUpdatedEventData if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EventGridMQTTClientCreatedOrUpdatedEventData.
+     * @throws IOException If an error occurs while reading the EventGridMqttClientCreatedOrUpdatedEventData.
      */
     @Generated
-    public static EventGridMQTTClientCreatedOrUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static EventGridMqttClientCreatedOrUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String clientAuthenticationName = null;
             String clientName = null;
             String namespaceName = null;
-            EventGridMQTTClientState state = null;
+            EventGridMqttClientState state = null;
             OffsetDateTime createdOn = null;
             OffsetDateTime updatedOn = null;
             Map<String, String> attributes = null;
@@ -210,7 +210,7 @@ public final class EventGridMQTTClientCreatedOrUpdatedEventData extends EventGri
                 } else if ("namespaceName".equals(fieldName)) {
                     namespaceName = reader.getString();
                 } else if ("state".equals(fieldName)) {
-                    state = EventGridMQTTClientState.fromString(reader.getString());
+                    state = EventGridMqttClientState.fromString(reader.getString());
                 } else if ("createdOn".equals(fieldName)) {
                     createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -223,14 +223,14 @@ public final class EventGridMQTTClientCreatedOrUpdatedEventData extends EventGri
                     reader.skipChildren();
                 }
             }
-            EventGridMQTTClientCreatedOrUpdatedEventData deserializedEventGridMQTTClientCreatedOrUpdatedEventData
-                = new EventGridMQTTClientCreatedOrUpdatedEventData(state, createdOn, updatedOn, attributes);
-            deserializedEventGridMQTTClientCreatedOrUpdatedEventData.clientAuthenticationName
+            EventGridMqttClientCreatedOrUpdatedEventData deserializedEventGridMqttClientCreatedOrUpdatedEventData
+                = new EventGridMqttClientCreatedOrUpdatedEventData(state, createdOn, updatedOn, attributes);
+            deserializedEventGridMqttClientCreatedOrUpdatedEventData.clientAuthenticationName
                 = clientAuthenticationName;
-            deserializedEventGridMQTTClientCreatedOrUpdatedEventData.clientName = clientName;
-            deserializedEventGridMQTTClientCreatedOrUpdatedEventData.namespaceName = namespaceName;
+            deserializedEventGridMqttClientCreatedOrUpdatedEventData.clientName = clientName;
+            deserializedEventGridMqttClientCreatedOrUpdatedEventData.namespaceName = namespaceName;
 
-            return deserializedEventGridMQTTClientCreatedOrUpdatedEventData;
+            return deserializedEventGridMqttClientCreatedOrUpdatedEventData;
         });
     }
 }
