@@ -15,7 +15,8 @@
 * Enable `JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS` by default for objectMapper. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
 * Added system property `COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS` which allow customer to disable/enable `JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS`. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
 * Added system property `COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT` and `COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER` to allow user config error action on invalid UTF-8 bytes. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
-* Added system property `COSMOS.HTTP_FOR_EMULATOR_ALLOWED` and system variable `COSMOS_HTTP_FOR_EMULATOR_ALLOWED` to allow using http connections to connect to CosmosDB emulator. See [PR 42912](https://github.com/Azure/azure-sdk-for-java/pull/42912)
+* Added system property `COSMOS.INSECURE_EMULATOR_CONNECTION_ALLOWED` and system variable `COSMOS_INSECURE_EMULATOR_CONNECTION_ALLOWED` to allow using insecure connections to connect to CosmosDB emulator. - See [PR 42912](https://github.com/Azure/azure-sdk-for-java/pull/42912)
+  * **NOTE :** Please only use this config during local development or test environment, do not use this in prod env.
 
 ### 4.63.4 (2024-10-15)
 
