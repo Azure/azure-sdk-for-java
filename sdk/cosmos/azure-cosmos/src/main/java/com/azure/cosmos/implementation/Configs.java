@@ -255,6 +255,10 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
+    // Config to indicate whether opt-in http connection support for vnext emulator
+    private static final boolean DEFAULT_HTTP_FOR_EMULATOR_ALLOWED = false;
+    private static final String HTTP_FOR_EMULATOR_ALLOWED = "COSMOS.HTTP_FOR_EMULATOR_ALLOWED";
+    private static final String HTTP_FOR_EMULATOR_ALLOWED_VARIABLE = "COSMOS_HTTP_FOR_EMULATOR_ALLOWED";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -812,5 +816,15 @@ public class Configs {
                 firstNonNull(
                     emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER)),
                     DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
+    }
+
+    public static boolean isHttpForEmulatorAllowed() {
+        String httpForEmulatorAllowed = System.getProperty(
+            HTTP_FOR_EMULATOR_ALLOWED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP_FOR_EMULATOR_ALLOWED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP_FOR_EMULATOR_ALLOWED)));
+
+        return Boolean.parseBoolean(httpForEmulatorAllowed);
     }
 }

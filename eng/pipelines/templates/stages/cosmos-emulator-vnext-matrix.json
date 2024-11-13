@@ -8,13 +8,13 @@
         "ProfileFlag": "-Pemulator-vnext",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
-        "AdditionalArgs": "-DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
+        "AdditionalArgs": "-DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true -DCOSMOS.HTTP_FOR_EMULATOR_ALLOWED=true"
       },
       "Emulator Vnext Only Integration Tests On Http - Java 17": {
         "ProfileFlag": "-Pemulator-vnext",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.17",
-        "AdditionalArgs": "-DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
+        "AdditionalArgs": "-DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true -DCOSMOS.HTTP_FOR_EMULATOR_ALLOWED=true"
       }
     }
   }
