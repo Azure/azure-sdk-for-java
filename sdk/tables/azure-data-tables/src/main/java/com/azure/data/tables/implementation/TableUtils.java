@@ -406,12 +406,7 @@ public final class TableUtils {
         try {
             URI endpointUrl = new URI(endpoint);
             String host = endpointUrl.getHost();
-            if (host.contains(".cosmos.") || host.contains(".cosmosdb.")) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return host.contains(".cosmos.") || host.contains(".cosmosdb.");
         } catch (Exception e) {
             return false;
         }
