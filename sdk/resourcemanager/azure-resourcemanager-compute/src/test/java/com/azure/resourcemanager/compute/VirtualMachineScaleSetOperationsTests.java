@@ -10,6 +10,8 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.CapacityReservationInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
@@ -92,6 +94,96 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         if (rgName != null) {
             resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
+    }
+
+    @Test
+    @Disabled("No found any available vm size and zone(s) (if zonal) for capacity reservation.")
+    public void canCreateAndUpdateWithCapacityReservation() {
+        final String capacityReservationGroupName1 = generateRandomResourceName("crg", 15);
+        final String capacityReservationGroupName2 = generateRandomResourceName("crg", 15);
+        final String uname = "jvuser";
+
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+
+        Network network = this.networkManager.networks()
+            .define(generateRandomResourceName("vmssvnet", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        ImageReference imageReference = new ImageReference().withPublisher("MicrosoftWindowsServer")
+            .withOffer("WindowsServer")
+            .withSku("2019-datacenter-gensecond")
+            .withVersion("latest");
+
+        // Create a capacity reservation group for create virtual machine
+        CapacityReservationGroupInner capacityReservationGroup1 = computeManager.serviceClient()
+            .getCapacityReservationGroups()
+            .createOrUpdate(rgName, capacityReservationGroupName1,
+                new CapacityReservationGroupInner().withLocation(region.name()).withZones(Arrays.asList("1")));
+
+        computeManager.serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate(rgName, capacityReservationGroupName1, generateRandomResourceName("cr", 15),
+                new CapacityReservationInner().withLocation(region.name())
+                    .withZones(Arrays.asList("1"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L)));
+
+        // Create another capacity reservation group for update virtual machine
+        CapacityReservationGroupInner capacityReservationGroup2 = computeManager.serviceClient()
+            .getCapacityReservationGroups()
+            .createOrUpdate(rgName, capacityReservationGroupName2,
+                new CapacityReservationGroupInner().withLocation(region.name()).withZones(Arrays.asList("1")));
+
+        computeManager.serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate(rgName, capacityReservationGroupName2, generateRandomResourceName("cr", 15),
+                new CapacityReservationInner().withLocation(region.name())
+                    .withZones(Arrays.asList("1"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L)));
+
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(generateRandomResourceName("vmss", 10))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withSpecificWindowsImageVersion(imageReference)
+            .withAdminUsername(uname)
+            .withAdminPassword(password())
+            .withNewDataDisk(1)
+            .create();
+
+        virtualMachineScaleSet.update().withCapacityReservation(capacityReservationGroup2.id()).apply();
+        Assertions.assertEquals(capacityReservationGroup2.id(),
+            virtualMachineScaleSet.capacityReservation().capacityReservationGroup().id());
+
+        computeManager.virtualMachineScaleSets().deleteById(virtualMachineScaleSet.id());
+
+        virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(generateRandomResourceName("vmss", 10))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withSpecificWindowsImageVersion(imageReference)
+            .withAdminUsername(uname)
+            .withAdminPassword(password())
+            .withNewDataDisk(1)
+            .withCapacityReservation(capacityReservationGroup1.id())
+            .create();
+        Assertions.assertEquals(capacityReservationGroup1.id(),
+            virtualMachineScaleSet.capacityReservation().capacityReservationGroup().id());
+
+        virtualMachineScaleSet.update().withCapacityReservation(capacityReservationGroup2.id()).apply();
+        Assertions.assertEquals(capacityReservationGroup2.id(),
+            virtualMachineScaleSet.capacityReservation().capacityReservationGroup().id());
     }
 
     @Test

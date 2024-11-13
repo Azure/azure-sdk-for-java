@@ -20,6 +20,7 @@ import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.BootDiagnostics;
 import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.DiffDiskOptions;
 import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
@@ -644,6 +645,11 @@ public class VirtualMachineScaleSetImpl extends
         return this.innerModel().orchestrationMode() == null
             ? OrchestrationMode.UNIFORM
             : this.innerModel().orchestrationMode();
+    }
+
+    @Override
+    public CapacityReservationProfile capacityReservation() {
+        return this.innerModel().virtualMachineProfile().capacityReservation();
     }
 
     @Override
@@ -2838,6 +2844,15 @@ public class VirtualMachineScaleSetImpl extends
     @Override
     public VirtualMachineScaleSetImpl withPlacement(DiffDiskPlacement placement) {
         this.innerModel().virtualMachineProfile().storageProfile().osDisk().diffDiskSettings().withPlacement(placement);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withCapacityReservation(String capacityReservationGroupsId) {
+        this.innerModel()
+            .virtualMachineProfile()
+            .withCapacityReservation(new CapacityReservationProfile()
+                .withCapacityReservationGroup(new SubResource().withId(capacityReservationGroupsId)));
         return this;
     }
 

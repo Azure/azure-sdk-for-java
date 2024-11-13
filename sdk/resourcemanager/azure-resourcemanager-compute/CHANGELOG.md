@@ -6,6 +6,8 @@
 
 - Supported `capacityReservation` and `withCapacityReservation` methods for `VirtualMachine`.
 
+- Supported `capacityReservation` and `withCapacityReservation` methods for `VirtualMachineScaleSet`.
+
 ## 2.44.0 (2024-10-25)
 
 ### Features Added

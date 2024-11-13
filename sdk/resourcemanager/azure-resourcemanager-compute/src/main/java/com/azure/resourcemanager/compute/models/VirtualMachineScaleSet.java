@@ -405,6 +405,13 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     OrchestrationMode orchestrationMode();
 
     /**
+     * Gets the profile of capacity reservation group for the virtual machine scale set.
+     *
+     * @return the profile of capacity reservation for the virtual machine scale set.
+     */
+    CapacityReservationProfile capacityReservation();
+
+    /**
      * The virtual machine scale set stages shared between managed and unmanaged based virtual machine scale set
      * definitions.
      */
@@ -1762,6 +1769,19 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to specify capacity reservation configurations.
+         */
+        interface WithCapacityReservation {
+            /**
+             * Specifies the id of capacity reservation groups for the virtual machine scale se.
+             *
+             * @param capacityReservationGroupsId the id of capacity reservation groups
+             * @return the next stage of the definition
+             */
+            WithCreate withCapacityReservation(String capacityReservationGroupsId);
+        }
+
+        /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
@@ -1775,7 +1795,7 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
             DefinitionStages.WithIpForwarding, DefinitionStages.WithNetworkSecurityGroup,
             DefinitionStages.WithSinglePlacementGroup, DefinitionStages.WithApplicationGateway,
             DefinitionStages.WithApplicationSecurityGroup, DefinitionStages.WithSecrets, DefinitionStages.WithPlan,
-            DefinitionStages.WithEphemeralOSDisk,
+            DefinitionStages.WithEphemeralOSDisk, DefinitionStages.WithCapacityReservation,
             Resource.DefinitionWithTags<VirtualMachineScaleSet.DefinitionStages.WithCreate> {
         }
     }
@@ -2483,6 +2503,17 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
             WithApply withoutApplicationSecurityGroup(String applicationSecurityGroupId);
         }
 
+        /** The stage of the virtual machine scale set update allowing to specify capacity reservation configurations. */
+        interface WithCapacityReservation {
+            /**
+             * Specifies the id of capacity reservation groups for the virtual machine scale set.
+             *
+             * @param capacityReservationGroupsId the id of capacity reservation groups
+             * @return the next stage of the update
+             */
+            Update withCapacityReservation(String capacityReservationGroupsId);
+        }
+
         /** The stage of a virtual machine scale set update containing inputs for the resource to be updated. */
         interface WithApply extends Appliable<VirtualMachineScaleSet>, Resource.UpdateWithTags<WithApply>,
             UpdateStages.WithManagedDataDisk, UpdateStages.WithUnmanagedDataDisk, UpdateStages.WithSku,
@@ -2493,7 +2524,8 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
             UpdateStages.WithBootDiagnostics, UpdateStages.WithBillingProfile, UpdateStages.WithAvailabilityZone,
             UpdateStages.WithVirtualMachinePublicIp, UpdateStages.WithAcceleratedNetworking,
             UpdateStages.WithIpForwarding, UpdateStages.WithNetworkSecurityGroup, UpdateStages.WithSinglePlacementGroup,
-            UpdateStages.WithApplicationGateway, UpdateStages.WithApplicationSecurityGroup {
+            UpdateStages.WithApplicationGateway, UpdateStages.WithApplicationSecurityGroup,
+            UpdateStages.WithCapacityReservation {
         }
     }
 
