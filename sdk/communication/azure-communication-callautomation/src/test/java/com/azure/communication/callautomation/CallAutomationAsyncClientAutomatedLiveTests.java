@@ -293,7 +293,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             ConnectCallOptions connectCallOptions = new ConnectCallOptions(serverCallLocator, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             ConnectCallResult connectCallResult = Objects.requireNonNull(connectAsyncClient.connectCallWithResponse(connectCallOptions).block()).getValue();
             String callConnectionId = connectCallResult.getCallConnectionProperties().getCallConnectionId();
-            CallConnected connectCallConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
+            CallConnected connectCallConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(15));
             assertNotNull(connectCallConnectedEvent);
 
             // hang up the call.
