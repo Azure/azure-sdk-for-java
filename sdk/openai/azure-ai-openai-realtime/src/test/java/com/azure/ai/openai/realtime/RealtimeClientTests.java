@@ -6,8 +6,11 @@ import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreate;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreateResponse;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
+import com.azure.ai.openai.realtime.models.RealtimeMessageRole;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
+import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
+import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
 import org.junit.jupiter.api.Test;
@@ -17,8 +20,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RealtimeClientTests extends RealtimeClientTestBase {
 
@@ -113,14 +118,70 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
         client.stop();
 
         assertTrue(sessionCreatedEventFired.get());
-        assertEquals(2 , sessionUpdatedEventFired.get());
+        assertEquals(2, sessionUpdatedEventFired.get());
         assertTrue(responseDoneEventFired.get());
     }
 
     @Test
     @Override
     void textOnly() {
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
+        AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
+        AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);
+        AtomicBoolean responseDoneEventFired = new AtomicBoolean(false);
+        AtomicBoolean assistantConversationItemCreated = new AtomicBoolean(false);
+        AtomicBoolean userConversationItemCreated = new AtomicBoolean(false);
+
+        client.start();
+
+        client.addOnSessionCreatedEventHandler(sessionCreated -> {
+            assertNotNull(sessionCreated);
+            sessionCreatedEventFired.set(true);
+            client.sendMessage(new RealtimeClientEventSessionUpdate(
+                    new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
+                            .setTurnDetection(new RealtimeTurnDetectionDisabled())));
+            client.sendMessage(ConversationItem.createUserMessage("Hello, world!"));
+            client.sendMessage(new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()
+                    .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))));
+        });
+
+        client.addOnSessionUpdatedEventHandler(sessionUpdated -> {
+            assertNotNull(sessionUpdated);
+            sessionUpdatedEventFired.set(true);
+        });
+
+        client.addOnConversationItemCreatedEventHandler(conversationItemCreated -> {
+            assertNotNull(conversationItemCreated);
+            assertInstanceOf(RealtimeResponseMessageItem.class, conversationItemCreated.getItem());
+            RealtimeResponseMessageItem responseItem = (RealtimeResponseMessageItem) conversationItemCreated.getItem();
+            if (responseItem.getRole() == RealtimeMessageRole.ASSISTANT) {
+                assertEquals(0, responseItem.getContent().size());
+                assistantConversationItemCreated.set(true);
+            } else if (responseItem.getRole() == RealtimeMessageRole.USER) {
+                assertEquals(1, responseItem.getContent().size());
+                userConversationItemCreated.set(true);
+                RealtimeRequestTextContentPart textContentPart
+                        = (RealtimeRequestTextContentPart) responseItem.getContent().get(0);
+                assertEquals("Hello, world!", textContentPart.getText());
+            } else {
+                fail("Unexpected message role: " + responseItem.getRole());
+            }
+        });
+
+        client.addOnResponseDoneEventHandler(responseDone -> {
+            assertNotNull(responseDone);
+            responseDoneEventFired.set(true);
+        });
+
+        pause(2000);
+        client.stop();
+
+        assertTrue(sessionCreatedEventFired.get());
+        assertTrue(sessionUpdatedEventFired.get());
+        assertTrue(responseDoneEventFired.get());
+        assertTrue(assistantConversationItemCreated.get());
+        assertTrue(userConversationItemCreated.get());
     }
 
     @Test
