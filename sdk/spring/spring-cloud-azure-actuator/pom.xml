@@ -107,9 +107,9 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-       <groupId>com.azure.spring</groupId>
-       <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-       <version>5.19.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+      <version>5.19.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
       <optional>true</optional>
     </dependency>
     <!-- For Testing -->
@@ -246,7 +246,8 @@
             <configuration>
               <target>
                 <echo>Deleting existing ${project.basedir}/javadocTemp and
-                  ${project.basedir}/sourceTemp</echo>
+                  ${project.basedir}/sourceTemp
+                </echo>
                 <delete includeEmptyDirs="true" quiet="true">
                   <fileset dir="${project.basedir}/javadocTemp"/>
                   <fileset dir="${project.basedir}/sourceTemp"/>
@@ -269,7 +270,26 @@
         <!-- END: Empty Java Doc & Sources -->
       </plugin>
     </plugins>
-
   </build>
 
+  <profiles>
+    <!-- Library cannot build for Java 16 and below -->
+    <profile>
+      <id>below-java-17</id>
+      <activation>
+        <jdk>[,17)</jdk>
+      </activation>
+      <properties>
+        <jacoco.skip>true</jacoco.skip>
+        <skipCompile>true</skipCompile>
+        <skipTestCompile>true</skipTestCompile>
+        <codesnippet.skip>true</codesnippet.skip>
+        <checkstyle.skip>true</checkstyle.skip>
+        <spotbugs.skip>true</spotbugs.skip>
+        <revapi.skip>true</revapi.skip>
+        <maven.test.skip>true</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
+    </profile>
+  </profiles>
 </project>
