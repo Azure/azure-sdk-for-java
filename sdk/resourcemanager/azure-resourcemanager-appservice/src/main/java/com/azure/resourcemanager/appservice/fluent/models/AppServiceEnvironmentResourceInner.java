@@ -31,14 +31,16 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     private AppServiceEnvironmentInner innerProperties;
 
     /*
-     * Kind of resource.
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
      */
     private String kind;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -46,9 +48,9 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of AppServiceEnvironmentResourceInner class.
@@ -66,7 +68,9 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource.
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @return the kind value.
      */
@@ -75,7 +79,9 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource.
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @param kind the kind value to set.
      * @return the AppServiceEnvironmentResourceInner object itself.
@@ -86,13 +92,13 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -106,13 +112,13 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
