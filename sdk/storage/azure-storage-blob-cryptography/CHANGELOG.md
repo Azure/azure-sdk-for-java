@@ -1,14 +1,14 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
+## 12.28.0 (2024-11-13)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service version 2025-01-05.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.28.1` to version `12.29.0`.
 
 ## 12.28.0-beta.1 (2024-10-17)
 
