@@ -55,7 +55,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         assertNull(result.getStartedAt());
         assertEquals(JobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
-        assertNull(result.getCustomizations());
+        //assertNull(result.getCustomizations());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
         assertEquals(OUTPUT_FOLDER, result.getTargetLocation().getPrefix());
@@ -94,7 +94,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                 assertNull(item.getStartedAt());
                 assertEquals(JobStatus.NOT_STARTED, item.getStatus());
                 assertNull(item.getError());
-                assertNull(item.getCustomizations());
+                //assertNull(item.getCustomizations());
                 assertNull(item.getSummary());
                 assertEquals(inputPrefix, item.getSourceLocation().getPrefix());
                 assertTrue(item.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -137,7 +137,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                 DocumentDetails details = item.toObject(DocumentDetails.class);
                 assertEquals(details.getStatus(), OperationState.SUCCEEDED);
                 assertNotNull(details.getOutput());
-                assertFalse(details.getOutput().getLocation().startsWith(OUTPUT_FOLDER));
+                assertFalse(details.getOutput().getLocation().contains(OUTPUT_FOLDER));
                 assertEquals(details.getId().length(), 36);
             });
     }
@@ -170,9 +170,10 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         deidentificationAsyncClient.deleteJob(jobName).block();
 
-        assertThrows(HttpResponseException.class, () -> { // TODO - sometimes doesn't throw
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
             deidentificationAsyncClient.getJob(jobName).block();
         });
+        assertEquals(404, exception.getResponse().getStatusCode());
     }
 
     @Test

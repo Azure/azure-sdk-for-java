@@ -162,7 +162,7 @@ public final class DeidentificationClientImpl {
      * The interface defining all the services for DeidentificationClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("https://{endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "DeidentificationClie")
     public interface DeidentificationClientService {
         @Get("/jobs/{name}")
@@ -857,7 +857,7 @@ public final class DeidentificationClientImpl {
             () -> this.deidentifyDocumentsWithResponseAsync(name, resource, requestOptions),
             new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE)
@@ -985,7 +985,7 @@ public final class DeidentificationClientImpl {
             () -> this.deidentifyDocumentsWithResponse(name, resource, requestOptions),
             new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE)
@@ -1113,7 +1113,7 @@ public final class DeidentificationClientImpl {
             () -> this.deidentifyDocumentsWithResponseAsync(name, resource, requestOptions),
             new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE)
@@ -1242,7 +1242,7 @@ public final class DeidentificationClientImpl {
             () -> this.deidentifyDocumentsWithResponse(name, resource, requestOptions),
             new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE)

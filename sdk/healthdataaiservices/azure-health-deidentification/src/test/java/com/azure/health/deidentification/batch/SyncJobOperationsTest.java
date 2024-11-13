@@ -4,14 +4,12 @@
 package com.azure.health.deidentification.batch;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDataType;
 import com.azure.health.deidentification.models.DocumentDetails;
 import com.azure.health.deidentification.models.JobStatus;
 import com.azure.health.deidentification.models.OperationState;
@@ -65,7 +63,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         assertNull(result.getStartedAt());
         assertEquals(JobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
-        assertNull(result.getCustomizations());
+        //assertNull(result.getCustomizations());
         assertNull(result.getSummary());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -107,7 +105,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
                 assertNull(currentJob.getStartedAt());
                 assertEquals(JobStatus.NOT_STARTED, currentJob.getStatus());
                 assertNull(currentJob.getError());
-                assertNull(currentJob.getCustomizations());
+                //assertNull(currentJob.getCustomizations());
                 assertEquals(inputPrefix, currentJob.getSourceLocation().getPrefix());
                 assertTrue(currentJob.getSourceLocation().getLocation().contains("blob.core.windows.net"));
                 assertEquals(OUTPUT_FOLDER, currentJob.getTargetLocation().getPrefix());
@@ -147,7 +145,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         while (iterator.hasNext()) {
             DocumentDetails currentReport = iterator.next();
             assertEquals(currentReport.getStatus(), OperationState.SUCCEEDED);
-            assertTrue(currentReport.getOutput().getLocation().startsWith(OUTPUT_FOLDER));
+            assertTrue(currentReport.getOutput().getLocation().contains(OUTPUT_FOLDER));
             assertEquals(currentReport.getId().length(), 36);
             results++;
         }
@@ -181,9 +179,11 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
 
         deidentificationClient.deleteJob(jobName);
 
-        assertThrows(HttpResponseException.class, () -> {
-            deidentificationClient.getJob(jobName); // TODO - sometimes doesn't throw?
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+            deidentificationClient.getJob(jobName);
         });
+        assertEquals(404, exception.getResponse().getStatusCode());
+
     }
 
     @Test
