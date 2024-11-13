@@ -23,6 +23,9 @@ import java.util.List;
 public class BatchOperationTestBase extends TestProxyTestBase {
     private static final String FAKE_STORAGE_ACCOUNT_SAS_URI
         = "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid";
+    private static final String FAKE_NEXT_LINK
+        = "https://fakedeidservice.api.deid.azure.com/jobs?api-version=2000-01-01-preview&continuationToken=1234";
+    private static final String FAKE_CONTINUATION_TOKEN = "12345";
 
     protected DeidentificationClientBuilder getDeidServicesClientBuilder() {
         DeidentificationClientBuilder deidentificationClientBuilder = new DeidentificationClientBuilder()
@@ -35,6 +38,10 @@ public class BatchOperationTestBase extends TestProxyTestBase {
             List<TestProxySanitizer> customSanitizer = new ArrayList<>();
             customSanitizer.add(new TestProxySanitizer("$..location", "^(?!.*FAKE_STORAGE_ACCOUNT).*",
                 FAKE_STORAGE_ACCOUNT_SAS_URI, TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..nextLink", "^(?!.*fakedeidservice).*", FAKE_NEXT_LINK,
+                TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("(?<=continuationToken=)[^&]+", FAKE_CONTINUATION_TOKEN,
+                TestProxySanitizerType.URL));
             interceptorManager.addSanitizers(customSanitizer);
             deidentificationClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -51,7 +58,7 @@ public class BatchOperationTestBase extends TestProxyTestBase {
     }
 
     String getJobName() {
-        return testResourceNamer.randomName("job", 16);
+        return testResourceNamer.randomName("job-", 16);
     }
 
     /**
