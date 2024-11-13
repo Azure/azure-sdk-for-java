@@ -51,6 +51,7 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
      * Set the content property
      *
      * @param content as a BinaryData
+     * @return the RealtimeRequestUserMessageItem object itself.
      */
     public RealtimeRequestUserMessageItem setContent(BinaryData content) {
         this.content = content;
@@ -61,6 +62,7 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
      * Set content to text prompts class.
      *
      * @param content the content value to set.
+     * @return the RealtimeRequestUserMessageItem object itself.
      */
     public RealtimeRequestUserMessageItem setTextContent(List<RealtimeRequestTextContentPart> content) {
         this.content = BinaryData.fromObject(content);
@@ -71,6 +73,7 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
      * Set content to audio prompts class.
      *
      * @param audioContent the content value to set.
+     * @return the RealtimeRequestUserMessageItem object itself.
      */
     public RealtimeRequestUserMessageItem setAudioContent(List<RealtimeRequestAudioContentPart> audioContent) {
         this.content = BinaryData.fromObject(audioContent);
