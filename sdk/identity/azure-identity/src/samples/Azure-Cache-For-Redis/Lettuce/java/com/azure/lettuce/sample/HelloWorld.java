@@ -20,9 +20,16 @@ import io.lettuce.core.protocol.ProtocolVersion;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+/**
+ * A "Hello World" sample.
+ */
+public class HelloWorld {
 
-public class HellloWorld {
-
+    /**
+     * The runnable sample.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
 
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
@@ -31,8 +38,8 @@ public class HellloWorld {
         // Fetch a Microsoft Entra token to be used for authentication. The Microsoft Entra token will be used as password.
         // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         String token = defaultAzureCredential
-            .getToken(new TokenRequestContext()
-                .addScopes("https://redis.azure.com/.default")).block().getToken();
+            .getTokenSync(new TokenRequestContext().addScopes("https://redis.azure.com/.default"))
+            .getToken();
 
         String username = extractUsernameFromToken(token);
 
