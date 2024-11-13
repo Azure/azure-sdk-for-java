@@ -24,11 +24,11 @@ public final class RealtimeServerEventRateLimitsUpdated extends RealtimeServerEv
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RATE_LIMITS_UPDATED;
 
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * List of rate limit information.
@@ -107,7 +107,7 @@ public final class RealtimeServerEventRateLimitsUpdated extends RealtimeServerEv
     public static RealtimeServerEventRateLimitsUpdated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             List<RealtimeServerEventRateLimitsUpdatedRateLimitsItem> rateLimits = null;
             RealtimeServerEventType type = RealtimeServerEventType.RATE_LIMITS_UPDATED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {

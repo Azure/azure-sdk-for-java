@@ -24,11 +24,11 @@ public final class RealtimeServerEventResponseAudioDelta extends RealtimeServerE
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_AUDIO_DELTA;
 
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * The ID of the response.
@@ -183,7 +183,7 @@ public final class RealtimeServerEventResponseAudioDelta extends RealtimeServerE
     public static RealtimeServerEventResponseAudioDelta fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;
@@ -213,8 +213,8 @@ public final class RealtimeServerEventResponseAudioDelta extends RealtimeServerE
                 }
             }
             RealtimeServerEventResponseAudioDelta deserializedRealtimeServerEventResponseAudioDelta
-                = new RealtimeServerEventResponseAudioDelta(eventId, responseId, itemId, outputIndex,
-                    contentIndex, delta);
+                = new RealtimeServerEventResponseAudioDelta(eventId, responseId, itemId, outputIndex, contentIndex,
+                    delta);
             deserializedRealtimeServerEventResponseAudioDelta.type = type;
 
             return deserializedRealtimeServerEventResponseAudioDelta;

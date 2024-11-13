@@ -117,7 +117,7 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
             String eventId = null;
             RealtimeRequestSession session = null;
             RealtimeClientEventType type = RealtimeClientEventType.SESSION_UPDATE;
-//            String eventId = null;
+            //            String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

@@ -92,8 +92,8 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
 
     public RealtimeAsyncClient buildAsyncClient() {
         String applicationId = CoreUtils.getApplicationId(clientOptions, null);
-        return new RealtimeAsyncClient(webSocketClient, getClientEndpointConfiguration(),
-                applicationId, getRetryStrategy(), getAuthenticationProvider());
+        return new RealtimeAsyncClient(webSocketClient, getClientEndpointConfiguration(), applicationId,
+            getRetryStrategy(), getAuthenticationProvider());
     }
 
     public RealtimeClient buildClient() {
@@ -101,14 +101,15 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
     }
 
     private AuthenticationProvider getAuthenticationProvider() {
-        if(useNonAzureOpenAIService()) {
+        if (useNonAzureOpenAIService()) {
             return new AuthenticationProvider(keyCredential, false);
         } else if (keyCredential != null) {
             return new AuthenticationProvider(keyCredential, true);
         } else if (tokenCredential != null) {
             return new AuthenticationProvider(tokenCredential, DEFAULT_SCOPES);
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing credential information while building a client."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
     }
 
@@ -121,7 +122,7 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
                 retryStrategy = new FixedDelay(retryOptions.getFixedDelayOptions());
             } else {
                 throw LOGGER.logExceptionAsError(
-                        new IllegalArgumentException("'retryOptions' didn't define any retry strategy options"));
+                    new IllegalArgumentException("'retryOptions' didn't define any retry strategy options"));
             }
         } else {
             // default retry strategy be ExponentialBackoff
@@ -136,11 +137,13 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
         final String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = CoreUtils.getApplicationId(clientOptions, null);
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion,
-                configuration == null ? Configuration.getGlobalConfiguration() : configuration);
+            configuration == null ? Configuration.getGlobalConfiguration() : configuration);
 
-        return useNonAzureOpenAIService() ?
-            ClientEndpointConfiguration.createNonAzureClientEndpointConfiguration(OPENAI_BASE_URL, userAgent, deploymentOrModelName) :
-            ClientEndpointConfiguration.createAzureClientEndpointConfiguration(endpoint, userAgent, deploymentOrModelName, this.serviceVersion);
+        return useNonAzureOpenAIService()
+            ? ClientEndpointConfiguration.createNonAzureClientEndpointConfiguration(OPENAI_BASE_URL, userAgent,
+                deploymentOrModelName)
+            : ClientEndpointConfiguration.createAzureClientEndpointConfiguration(endpoint, userAgent,
+                deploymentOrModelName, this.serviceVersion);
     }
 
     /**

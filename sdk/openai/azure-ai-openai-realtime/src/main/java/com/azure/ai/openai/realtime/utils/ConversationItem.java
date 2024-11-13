@@ -22,7 +22,7 @@ public class ConversationItem {
      */
     public static RealtimeClientEventConversationItemCreate createUserMessage(String itemText) {
         RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem()
-                .setTextContent(Arrays.asList(new RealtimeRequestTextContentPart(itemText)));
+            .setTextContent(Arrays.asList(new RealtimeRequestTextContentPart(itemText)));
         return new RealtimeClientEventConversationItemCreate(messageItem);
     }
 
@@ -33,8 +33,8 @@ public class ConversationItem {
      * @return the system message item.
      */
     public static RealtimeClientEventConversationItemCreate createSystemMessage(String systemMessage) {
-        RealtimeRequestSystemMessageItem messageItem = new RealtimeRequestSystemMessageItem(
-                Arrays.asList(new RealtimeRequestTextContentPart(systemMessage)));
+        RealtimeRequestSystemMessageItem messageItem
+            = new RealtimeRequestSystemMessageItem(Arrays.asList(new RealtimeRequestTextContentPart(systemMessage)));
         return new RealtimeClientEventConversationItemCreate(messageItem);
     }
 
@@ -46,7 +46,7 @@ public class ConversationItem {
      */
     public static RealtimeClientEventConversationItemCreate createAssistantMessage(String assistantMessage) {
         RealtimeRequestAssistantMessageItem messageItem = new RealtimeRequestAssistantMessageItem(
-                Arrays.asList(new RealtimeRequestTextContentPart(assistantMessage)));
+            Arrays.asList(new RealtimeRequestTextContentPart(assistantMessage)));
         return new RealtimeClientEventConversationItemCreate(messageItem);
     }
 
@@ -58,8 +58,10 @@ public class ConversationItem {
      * @param arguments the arguments to pass to the function.
      * @return the function call item.
      */
-    public static RealtimeClientEventConversationItemCreate createFunctionCall(String functionName, String callId, String arguments) {
-        return new RealtimeClientEventConversationItemCreate(new RealtimeRequestFunctionCallItem(functionName, callId, arguments));
+    public static RealtimeClientEventConversationItemCreate createFunctionCall(String functionName, String callId,
+        String arguments) {
+        return new RealtimeClientEventConversationItemCreate(
+            new RealtimeRequestFunctionCallItem(functionName, callId, arguments));
     }
 
     /**
@@ -69,7 +71,9 @@ public class ConversationItem {
      * @param functionOutput the output of the function call to be passed to the service.
      * @return the function call output item.
      */
-    public static RealtimeClientEventConversationItemCreate createFunctionCallOutput(String callId, String functionOutput) {
-        return new RealtimeClientEventConversationItemCreate(new RealtimeRequestFunctionCallOutputItem(callId, functionOutput));
+    public static RealtimeClientEventConversationItemCreate createFunctionCallOutput(String callId,
+        String functionOutput) {
+        return new RealtimeClientEventConversationItemCreate(
+            new RealtimeRequestFunctionCallOutputItem(callId, functionOutput));
     }
 }

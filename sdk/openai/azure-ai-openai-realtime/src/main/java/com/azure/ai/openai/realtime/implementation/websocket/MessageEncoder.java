@@ -15,7 +15,7 @@ public final class MessageEncoder {
 
     public String encode(RealtimeClientEvent object) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             object.toJson(writer).flush();
             return outputStream.toString();
         } catch (IOException e) {

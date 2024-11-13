@@ -24,11 +24,11 @@ public final class RealtimeServerEventResponseFunctionCallArgumentsDone extends 
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE;
 
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * The ID of the response.
@@ -184,7 +184,7 @@ public final class RealtimeServerEventResponseFunctionCallArgumentsDone extends 
         throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;
@@ -214,8 +214,8 @@ public final class RealtimeServerEventResponseFunctionCallArgumentsDone extends 
                 }
             }
             RealtimeServerEventResponseFunctionCallArgumentsDone deserializedRealtimeServerEventResponseFunctionCallArgumentsDone
-                = new RealtimeServerEventResponseFunctionCallArgumentsDone(eventId, responseId, itemId,
-                    outputIndex, callId, arguments);
+                = new RealtimeServerEventResponseFunctionCallArgumentsDone(eventId, responseId, itemId, outputIndex,
+                    callId, arguments);
             deserializedRealtimeServerEventResponseFunctionCallArgumentsDone.type = type;
 
             return deserializedRealtimeServerEventResponseFunctionCallArgumentsDone;

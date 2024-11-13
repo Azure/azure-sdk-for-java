@@ -23,11 +23,11 @@ public final class RealtimeServerEventResponseTextDelta extends RealtimeServerEv
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_TEXT_DELTA;
 
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * The ID of the response.
@@ -182,7 +182,7 @@ public final class RealtimeServerEventResponseTextDelta extends RealtimeServerEv
     public static RealtimeServerEventResponseTextDelta fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;
@@ -212,8 +212,8 @@ public final class RealtimeServerEventResponseTextDelta extends RealtimeServerEv
                 }
             }
             RealtimeServerEventResponseTextDelta deserializedRealtimeServerEventResponseTextDelta
-                = new RealtimeServerEventResponseTextDelta(eventId, responseId, itemId, outputIndex,
-                    contentIndex, delta);
+                = new RealtimeServerEventResponseTextDelta(eventId, responseId, itemId, outputIndex, contentIndex,
+                    delta);
             deserializedRealtimeServerEventResponseTextDelta.type = type;
 
             return deserializedRealtimeServerEventResponseTextDelta;

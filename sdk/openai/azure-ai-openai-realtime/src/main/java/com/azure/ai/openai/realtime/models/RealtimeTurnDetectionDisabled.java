@@ -41,7 +41,6 @@ public final class RealtimeTurnDetectionDisabled extends RealtimeTurnDetection {
         return this.type;
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -49,7 +48,7 @@ public final class RealtimeTurnDetectionDisabled extends RealtimeTurnDetection {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         // Azure supports, `none`, but non-Azure only accepts `null`
-//        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        //        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNullField("type");
         return jsonWriter.writeEndObject();
     }

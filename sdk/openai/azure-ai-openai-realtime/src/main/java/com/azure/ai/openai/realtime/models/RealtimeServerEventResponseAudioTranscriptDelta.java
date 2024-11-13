@@ -22,12 +22,12 @@ public final class RealtimeServerEventResponseAudioTranscriptDelta extends Realt
      */
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DELTA;
-//
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * The ID of the response.
@@ -182,7 +182,7 @@ public final class RealtimeServerEventResponseAudioTranscriptDelta extends Realt
     public static RealtimeServerEventResponseAudioTranscriptDelta fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;

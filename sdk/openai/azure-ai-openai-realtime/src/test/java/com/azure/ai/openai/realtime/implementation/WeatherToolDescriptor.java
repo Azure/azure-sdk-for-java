@@ -26,7 +26,8 @@ public final class WeatherToolDescriptor implements JsonSerializable<WeatherTool
         return properties;
     }
 
-    public WeatherToolDescriptor() {}
+    public WeatherToolDescriptor() {
+    }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

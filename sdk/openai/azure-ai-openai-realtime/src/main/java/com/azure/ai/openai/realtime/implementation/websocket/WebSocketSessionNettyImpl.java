@@ -79,18 +79,15 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
             if (sslCtx != null) {
                 p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
             }
-            p.addLast(
-                    new HttpClientCodec(),
-                    new HttpObjectAggregator(MAX_FRAME_SIZE),
-                    WebSocketClientCompressionHandler.INSTANCE,
-                    new WebSocketFrameAggregator(MAX_FRAME_SIZE),
-                    handler);
+            p.addLast(new HttpClientCodec(), new HttpObjectAggregator(MAX_FRAME_SIZE),
+                WebSocketClientCompressionHandler.INSTANCE, new WebSocketFrameAggregator(MAX_FRAME_SIZE), handler);
         }
     }
 
-    WebSocketSessionNettyImpl(ClientEndpointConfiguration cec, Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
-                              AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
-                              Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
+    WebSocketSessionNettyImpl(ClientEndpointConfiguration cec,
+        Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
+        AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
+        Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
         this.uri = cec.getUri();
         this.loggerReference = loggerReference;
         this.messageEncoder = cec.getMessageEncoder();
@@ -132,14 +129,15 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
         group = new NioEventLoopGroup();
 
-        handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, this.subProtocol, true, this.headers);
+        handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, this.subProtocol, true,
+            this.headers);
 
         clientHandler = new WebSocketClientHandler(handshaker, loggerReference, messageDecoder, messageHandler);
 
         Bootstrap b = new Bootstrap();
         b.group(group)
-                .channel(NioSocketChannel.class)
-                .handler(new WebSocketChannelHandler(host, port, sslCtx, clientHandler));
+            .channel(NioSocketChannel.class)
+            .handler(new WebSocketChannelHandler(host, port, sslCtx, clientHandler));
 
         final CompletableFuture<Void> handshakeCallbackFuture = new CompletableFuture<>();
 
@@ -238,10 +236,10 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
                     CloseWebSocketFrame closeFrame = new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE);
                     loggerReference.get()
-                            .atVerbose()
-                            .addKeyValue("statusCode", closeFrame.statusCode())
-                            .addKeyValue("reasonText", closeFrame.reasonText())
-                            .log("Send CloseWebSocketFrame");
+                        .atVerbose()
+                        .addKeyValue("statusCode", closeFrame.statusCode())
+                        .addKeyValue("reasonText", closeFrame.reasonText())
+                        .log("Send CloseWebSocketFrame");
                     ch.writeAndFlush(closeFrame);
                     // server will reply a CloseWebSocketFrame and close TCP connection, wait for it
                     ch.closeFuture().sync();

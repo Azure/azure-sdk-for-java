@@ -45,11 +45,13 @@ public abstract class ClientEndpointConfiguration {
 
     protected abstract String getURIString();
 
-    public static AzureClientEndpointConfiguration createAzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion) {
+    public static AzureClientEndpointConfiguration createAzureClientEndpointConfiguration(String baseUrl,
+        String userAgent, String deployment, OpenAIServiceVersion serviceVersion) {
         return new AzureClientEndpointConfiguration(baseUrl, userAgent, deployment, serviceVersion);
     }
 
-    public static NonAzureClientEndpointConfiguration createNonAzureClientEndpointConfiguration(String baseUrl, String userAgent, String model) {
+    public static NonAzureClientEndpointConfiguration createNonAzureClientEndpointConfiguration(String baseUrl,
+        String userAgent, String model) {
         return new NonAzureClientEndpointConfiguration(baseUrl, userAgent, model);
     }
 }

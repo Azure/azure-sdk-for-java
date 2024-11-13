@@ -21,7 +21,8 @@ public class WeatherToolProperties implements JsonSerializable<WeatherToolProper
         return unit;
     }
 
-    public WeatherToolProperties() {}
+    public WeatherToolProperties() {
+    }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

@@ -24,11 +24,11 @@ public final class RealtimeServerEventResponseAudioTranscriptDone extends Realti
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE;
 
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * The ID of the response.
@@ -183,7 +183,7 @@ public final class RealtimeServerEventResponseAudioTranscriptDone extends Realti
     public static RealtimeServerEventResponseAudioTranscriptDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;

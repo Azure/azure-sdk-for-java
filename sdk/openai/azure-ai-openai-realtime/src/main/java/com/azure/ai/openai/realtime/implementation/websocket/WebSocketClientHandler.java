@@ -33,7 +33,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     private final Consumer<Object> messageHandler;
 
     WebSocketClientHandler(WebSocketClientHandshaker handShaker, AtomicReference<ClientLogger> loggerReference,
-                           MessageDecoder messageDecoder, Consumer<Object> messageHandler) {
+        MessageDecoder messageDecoder, Consumer<Object> messageHandler) {
         this.handShaker = handShaker;
         this.loggerReference = loggerReference;
         this.messageDecoder = messageDecoder;
@@ -70,9 +70,8 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         if (msg instanceof FullHttpResponse) {
             FullHttpResponse response = (FullHttpResponse) msg;
             throw loggerReference.get()
-                    .logExceptionAsError(new IllegalStateException(
-                            "Unexpected FullHttpResponse (getStatus=" + response.status() + ", content=" + response.content()
-                                    .toString(CharsetUtil.UTF_8) + ')'));
+                .logExceptionAsError(new IllegalStateException("Unexpected FullHttpResponse (getStatus="
+                    + response.status() + ", content=" + response.content().toString(CharsetUtil.UTF_8) + ')'));
         }
 
         WebSocketFrame frame = (WebSocketFrame) msg;
@@ -95,10 +94,10 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             // Close
             CloseWebSocketFrame closeFrame = (CloseWebSocketFrame) frame;
             loggerReference.get()
-                    .atVerbose()
-                    .addKeyValue("statusCode", closeFrame.statusCode())
-                    .addKeyValue("reasonText", closeFrame.reasonText())
-                    .log("Received CloseWebSocketFrame");
+                .atVerbose()
+                .addKeyValue("statusCode", closeFrame.statusCode())
+                .addKeyValue("reasonText", closeFrame.reasonText())
+                .log("Received CloseWebSocketFrame");
 
             this.serverCloseWebSocketFrame = closeFrame.retain();   // retain for SessionNettyImpl
 
@@ -120,7 +119,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         if (logger != null) {
             logger.atError().log(cause);
         }
-//        cause.printStackTrace();
+        //        cause.printStackTrace();
         if (handshakeFuture != null && !handshakeFuture.isDone()) {
             handshakeFuture.setFailure(cause);
         }

@@ -35,25 +35,23 @@ import java.util.function.BiConsumer;
 
 public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
 
-    RealtimeClientBuilder getRealtimeClientBuilder(WebSocketClient webSocketClient, OpenAIServiceVersion serviceVersion) {
+    RealtimeClientBuilder getRealtimeClientBuilder(WebSocketClient webSocketClient,
+        OpenAIServiceVersion serviceVersion) {
         String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelId = Configuration.getGlobalConfiguration().get("MODEL_OR_DEPLOYMENT_NAME");
 
-        return new RealtimeClientBuilder()
-                .endpoint(endpoint)
-                .deploymentOrModelName(deploymentOrModelId)
-                .serviceVersion(serviceVersion)
-                .credential(new AzureKeyCredential(azureOpenaiKey));
+        return new RealtimeClientBuilder().endpoint(endpoint)
+            .deploymentOrModelName(deploymentOrModelId)
+            .serviceVersion(serviceVersion)
+            .credential(new AzureKeyCredential(azureOpenaiKey));
     }
 
     RealtimeClientBuilder getNonAzureRealtimeClientBuilder(WebSocketClient webSocketClient) {
         String openAIKey = Configuration.getGlobalConfiguration().get("OPENAI_KEY");
         String openAIModel = Configuration.getGlobalConfiguration().get("OPENAI_MODEL");
 
-        return new RealtimeClientBuilder()
-                .deploymentOrModelName(openAIModel)
-                .credential(new KeyCredential(openAIKey));
+        return new RealtimeClientBuilder().deploymentOrModelName(openAIModel).credential(new KeyCredential(openAIKey));
     }
 
     @Test
@@ -93,20 +91,16 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
     }
 
     void getWeatherToolRunner(BiConsumer<RealtimeFunctionTool, RealtimeClientEventSessionUpdate> testRunner) {
-        RealtimeFunctionTool weatherTool = new RealtimeFunctionTool("get_weather_for_location")
-                .setDescription("Get the weather for a location")
+        RealtimeFunctionTool weatherTool
+            = new RealtimeFunctionTool("get_weather_for_location").setDescription("Get the weather for a location")
                 .setParameters(new WeatherToolDescriptor());
-        RealtimeClientEventSessionUpdate sessionUpdate = new RealtimeClientEventSessionUpdate(
-                new RealtimeRequestSession()
-                        .setTools(Arrays.asList(weatherTool))
-                        .setInstructions("Call provided tools if appropriate for the user's input")
-                        .setVoice(RealtimeVoice.ALLOY)
-                        .setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
-                        .setInputAudioTranscription(
-                                new RealtimeAudioInputTranscriptionSettings()
-                                        .setModel(RealtimeAudioInputTranscriptionModel.WHISPER_1)
-                        )
-        );
+        RealtimeClientEventSessionUpdate sessionUpdate
+            = new RealtimeClientEventSessionUpdate(new RealtimeRequestSession().setTools(Arrays.asList(weatherTool))
+                .setInstructions("Call provided tools if appropriate for the user's input")
+                .setVoice(RealtimeVoice.ALLOY)
+                .setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
+                .setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings()
+                    .setModel(RealtimeAudioInputTranscriptionModel.WHISPER_1)));
         testRunner.accept(weatherTool, sessionUpdate);
     }
 

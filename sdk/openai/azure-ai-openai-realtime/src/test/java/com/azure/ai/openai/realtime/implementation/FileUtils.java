@@ -34,8 +34,7 @@ public class FileUtils {
             int end = Math.min(audioBytes.length, i + BYTES_PER_CHUNK);
             byte[] chunk = new byte[end - i];
             System.arraycopy(audioBytes, i, chunk, 0, end - i);
-            client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(chunk))
-                    .block();
+            client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(chunk)).block();
         }
 
         return Mono.empty();
@@ -46,7 +45,7 @@ public class FileUtils {
         try {
             audioBytes = Files.readAllBytes(audioFile);
         } catch (IOException e) {
-           throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
 
         for (int i = 0; i < audioBytes.length; i += BYTES_PER_CHUNK) {

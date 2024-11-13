@@ -35,7 +35,7 @@ public final class SendMessageFailedException extends AzureException {
      * @param error the "error" of response message.
      */
     public SendMessageFailedException(String message, Throwable cause, boolean isTransient, String eventId,
-                                      RealtimeServerEventError error) {
+        RealtimeServerEventError error) {
         super(message, cause);
         this.isTransient = isTransient;
         this.eventId = eventId;

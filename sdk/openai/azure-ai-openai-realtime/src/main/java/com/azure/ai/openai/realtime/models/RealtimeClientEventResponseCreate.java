@@ -117,7 +117,7 @@ public final class RealtimeClientEventResponseCreate extends RealtimeClientEvent
             String eventId = null;
             RealtimeClientEventResponseCreateResponse response = null;
             RealtimeClientEventType type = RealtimeClientEventType.RESPONSE_CREATE;
-//            String eventId = null;
+            //            String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

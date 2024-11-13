@@ -12,7 +12,8 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface WebSocketClient {
 
-    WebSocketSession connectToServer(ClientEndpointConfiguration cec, Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
-                                     AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
-                                     Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler);
+    WebSocketSession connectToServer(ClientEndpointConfiguration cec,
+        Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
+        AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
+        Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler);
 }

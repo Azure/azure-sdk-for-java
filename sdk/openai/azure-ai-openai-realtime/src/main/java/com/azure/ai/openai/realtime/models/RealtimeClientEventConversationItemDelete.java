@@ -117,7 +117,7 @@ public final class RealtimeClientEventConversationItemDelete extends RealtimeCli
             String eventId = null;
             String itemId = null;
             RealtimeClientEventType type = RealtimeClientEventType.CONVERSATION_ITEM_DELETE;
-//            String eventId = null;
+            //            String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

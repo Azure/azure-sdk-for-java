@@ -36,14 +36,13 @@ public final class AuthenticationProvider {
                 return Mono.error(new IllegalArgumentException("Scopes are required for token based authentication."));
             }
             return tokenCredential.getToken(new TokenRequestContext().addScopes(scopes))
-                    .map(accessToken -> new AuthenticationHeader(HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(),
-                            "Bearer " + accessToken.getToken()));
+                .map(accessToken -> new AuthenticationHeader(HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(),
+                    "Bearer " + accessToken.getToken()));
         } else if (keyCredential != null && isAzure) {
             return Mono.just(new AuthenticationHeader("api-key", keyCredential.getKey()));
         } else if (keyCredential != null) {
-            return Mono.just(new AuthenticationHeader(
-                    HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(),
-                    "Bearer " + keyCredential.getKey()));
+            return Mono.just(new AuthenticationHeader(HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(),
+                "Bearer " + keyCredential.getKey()));
         } else {
             return Mono.error(new IllegalArgumentException("No valid credentials found."));
         }

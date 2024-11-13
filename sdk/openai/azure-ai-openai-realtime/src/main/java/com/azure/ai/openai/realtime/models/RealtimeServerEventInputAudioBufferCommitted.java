@@ -23,11 +23,11 @@ public final class RealtimeServerEventInputAudioBufferCommitted extends Realtime
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.INPUT_AUDIO_BUFFER_COMMITTED;
 
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * The ID of the preceding item after which the new item will be inserted.
@@ -124,7 +124,7 @@ public final class RealtimeServerEventInputAudioBufferCommitted extends Realtime
     public static RealtimeServerEventInputAudioBufferCommitted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             String previousItemId = null;
             String itemId = null;
             RealtimeServerEventType type = RealtimeServerEventType.INPUT_AUDIO_BUFFER_COMMITTED;

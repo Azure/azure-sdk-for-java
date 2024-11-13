@@ -23,11 +23,11 @@ public final class RealtimeServerEventConversationItemCreated extends RealtimeSe
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_ITEM_CREATED;
 
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * The ID of the preceding item.
@@ -125,7 +125,7 @@ public final class RealtimeServerEventConversationItemCreated extends RealtimeSe
     public static RealtimeServerEventConversationItemCreated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             String previousItemId = null;
             RealtimeResponseItem item = null;
             RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_ITEM_CREATED;

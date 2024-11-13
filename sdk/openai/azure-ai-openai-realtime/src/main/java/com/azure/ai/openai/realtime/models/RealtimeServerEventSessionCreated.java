@@ -23,11 +23,11 @@ public final class RealtimeServerEventSessionCreated extends RealtimeServerEvent
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.SESSION_CREATED;
 
-//    /*
-//     * The unique ID of the server event.
-//     */
-//    @Generated
-//    private final String eventId;
+    //    /*
+    //     * The unique ID of the server event.
+    //     */
+    //    @Generated
+    //    private final String eventId;
 
     /*
      * The session resource.
@@ -105,7 +105,7 @@ public final class RealtimeServerEventSessionCreated extends RealtimeServerEvent
     public static RealtimeServerEventSessionCreated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-//            String eventId = null;
+            //            String eventId = null;
             RealtimeResponseSession session = null;
             RealtimeServerEventType type = RealtimeServerEventType.SESSION_CREATED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {

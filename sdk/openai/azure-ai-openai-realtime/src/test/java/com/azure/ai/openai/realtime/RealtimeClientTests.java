@@ -16,8 +16,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void testAlawSendAudio() {
-        client = getRealtimeClientBuilder(null,
-                OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
         AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);

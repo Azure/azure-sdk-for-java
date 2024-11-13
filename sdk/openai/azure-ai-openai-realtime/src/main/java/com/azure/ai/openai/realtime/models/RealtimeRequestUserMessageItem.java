@@ -34,17 +34,17 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
     /*
      * The content property.
      */
-//    @Generated
+    //    @Generated
     private BinaryData content;
 
     /**
      * Creates an instance of RealtimeRequestUserMessageItem class.
      *
-//     * @param content the content value to set.
+    //     * @param content the content value to set.
      */
-//   @Generated
+    //   @Generated
     public RealtimeRequestUserMessageItem() {
-//        this.content = content;
+        //        this.content = content;
     }
 
     /**
@@ -104,7 +104,7 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
      * 
      * @return the content value.
      */
-//    @Generated
+    //    @Generated
     public BinaryData getContent() {
         return this.content;
     }
@@ -139,7 +139,7 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
-        if(this.content != null) {
+        if (this.content != null) {
             jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
         }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
@@ -160,7 +160,7 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
         return jsonReader.readObject(reader -> {
             String id = null;
             RealtimeItemStatus status = null;
-//            List<BinaryData> content = null;
+            //            List<BinaryData> content = null;
             BinaryData content = null;
             RealtimeMessageRole role = RealtimeMessageRole.USER;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -173,8 +173,8 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
                     status = RealtimeItemStatus.fromString(reader.getString());
                 } else if ("content".equals(fieldName)) {
                     content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-//                    content = reader.readArray(reader1 -> reader1
-//                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    //                    content = reader.readArray(reader1 -> reader1
+                    //                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("role".equals(fieldName)) {
                     role = RealtimeMessageRole.fromString(reader.getString());
                 } else {

@@ -10,7 +10,7 @@ import io.netty.handler.codec.http.HttpHeaders;
 
 import java.util.UUID;
 
-public class AzureClientEndpointConfiguration  extends ClientEndpointConfiguration {
+public class AzureClientEndpointConfiguration extends ClientEndpointConfiguration {
 
     // Path
     private static final String PATH = "/openai/realtime";
@@ -23,8 +23,8 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
     private final String requestId = UUID.randomUUID().toString();
     // userAgent is already defined in the parent class
 
-
-    public AzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion) {
+    public AzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment,
+        OpenAIServiceVersion serviceVersion) {
         super(baseUrl, userAgent);
         this.serviceVersion = serviceVersion;
         this.deployment = deployment;
@@ -32,8 +32,7 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
 
     @Override
     public HttpHeaders getHeaders(AuthenticationProvider.AuthenticationHeader authenticationHeader) {
-        return new DefaultHttpHeaders()
-            .add("x-ms-client-request-id", requestId)
+        return new DefaultHttpHeaders().add("x-ms-client-request-id", requestId)
             .add(authenticationHeader.getHeaderName(), authenticationHeader.getHeaderValue())
             .add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), super.userAgent);
     }

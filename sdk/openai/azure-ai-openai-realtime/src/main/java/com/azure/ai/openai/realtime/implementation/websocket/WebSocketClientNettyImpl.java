@@ -12,12 +12,13 @@ import java.util.function.Supplier;
 
 public final class WebSocketClientNettyImpl implements WebSocketClient {
     @Override
-    public WebSocketSession connectToServer(ClientEndpointConfiguration cec, Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
-                                            AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
-                                            Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
+    public WebSocketSession connectToServer(ClientEndpointConfiguration cec,
+        Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
+        AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
+        Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
         try {
-            WebSocketSessionNettyImpl session = new WebSocketSessionNettyImpl(cec, authenticationHeaderSupplier, loggerReference,
-                    messageHandler, openHandler, closeHandler);
+            WebSocketSessionNettyImpl session = new WebSocketSessionNettyImpl(cec, authenticationHeaderSupplier,
+                loggerReference, messageHandler, openHandler, closeHandler);
             session.connect();
             return session;
         } catch (Exception e) {
