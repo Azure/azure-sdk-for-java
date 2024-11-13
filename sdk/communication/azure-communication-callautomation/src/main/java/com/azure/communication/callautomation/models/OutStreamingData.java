@@ -28,8 +28,7 @@ public class OutStreamingData {
      * 
      * @param kind media kind type on the out streaming data
      */
-    public OutStreamingData(MediaKind kind)
-    {
+    public OutStreamingData(MediaKind kind) {
         this.kind = kind;
     }
 
