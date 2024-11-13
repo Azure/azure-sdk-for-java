@@ -668,11 +668,15 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
 
-            StepVerifier.create(client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions())
-                .setPollInterval(durationTestMode)).thenAwait().expectErrorSatisfies(throwable -> {
+            StepVerifier.create(
+                    client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions())
+                        .setPollInterval(durationTestMode)
+                )
+                .expectErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     assertEquals(BAD_REQUEST.code(), ((HttpResponseException) throwable).getResponse().getStatusCode());
-                }).verify(DEFAULT_TIMEOUT);
+                })
+                .verify(DEFAULT_TIMEOUT);
 
             client.deleteModel(model1.getModelId()).block();
             client.deleteModel(model2.getModelId()).block();
