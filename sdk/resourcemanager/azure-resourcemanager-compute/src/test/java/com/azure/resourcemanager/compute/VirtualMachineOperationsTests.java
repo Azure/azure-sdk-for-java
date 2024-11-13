@@ -17,6 +17,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.CapacityReservationInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
@@ -38,6 +40,7 @@ import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
+import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
@@ -77,6 +80,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -112,6 +116,89 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         if (rgName != null) {
             resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
+    }
+
+    @Test
+    @Disabled("No found any available vm size and zone(s) (if zonal) for capacity reservation.")
+    public void canCreateAndUpdateVirtualMachineWithCapacityReservation() {
+        final String capacityReservationGroupName1 = generateRandomResourceName("crg", 15);
+        final String capacityReservationGroupName2 = generateRandomResourceName("crg", 15);
+
+        // Create resource group
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+
+        // Create a capacity reservation group for create virtual machine
+        CapacityReservationGroupInner capacityReservationGroup1 = computeManager.serviceClient()
+            .getCapacityReservationGroups()
+            .createOrUpdate(rgName, capacityReservationGroupName1,
+                new CapacityReservationGroupInner().withLocation(region.name())
+                    .withZones(Arrays.asList("1", "2", "3")));
+
+        computeManager.serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate(rgName, capacityReservationGroupName1, generateRandomResourceName("cr", 15),
+                new CapacityReservationInner().withLocation(region.name())
+                    .withZones(Arrays.asList("1", "2", "3"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L)));
+
+        // Create another capacity reservation group for update virtual machine
+        CapacityReservationGroupInner capacityReservationGroup2 = computeManager.serviceClient()
+            .getCapacityReservationGroups()
+            .createOrUpdate(rgName, capacityReservationGroupName2,
+                new CapacityReservationGroupInner().withLocation(region.name())
+                    .withZones(Arrays.asList("1", "2", "3")));
+
+        computeManager.serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate(rgName, capacityReservationGroupName2, generateRandomResourceName("cr", 15),
+                new CapacityReservationInner().withLocation(region.name())
+                    .withZones(Arrays.asList("1", "2", "3"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L)));
+
+        // Create virtual machine without any capacity reservations
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(generateRandomResourceName("vm", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .create();
+
+        // Update virtual machine with capacity reservation group
+        vm.update().withCapacityReservation(capacityReservationGroup2.id()).apply();
+        Assertions.assertEquals(capacityReservationGroup2.id(),
+            vm.capacityReservation().capacityReservationGroup().id());
+
+        // Create virtual machine with capacity reservation group
+        vm = computeManager.virtualMachines()
+            .define(generateRandomResourceName("vm", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("20.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withCapacityReservation(capacityReservationGroup1.id())
+            .create();
+
+        Assertions.assertEquals(capacityReservationGroup1.id(),
+            vm.capacityReservation().capacityReservationGroup().id());
+
+        // Update virtual machine with another capacity reservation group
+        vm.update().withCapacityReservation(capacityReservationGroup2.id()).apply();
+
+        Assertions.assertEquals(capacityReservationGroup2.id(),
+            vm.capacityReservation().capacityReservationGroup().id());
     }
 
     @Test
