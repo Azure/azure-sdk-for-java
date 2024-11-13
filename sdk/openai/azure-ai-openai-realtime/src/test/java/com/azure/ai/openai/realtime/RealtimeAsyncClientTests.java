@@ -104,12 +104,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
         }).assertNext(event -> {
             assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
             // send prompt
-            RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem()
-                .setTextContent(Arrays.asList(new RealtimeRequestTextContentPart("Hello, assistant! Tell me a joke.")));
-
-            RealtimeClientEventConversationItemCreate conversationItem
-                = new RealtimeClientEventConversationItemCreate(messageItem);
-            client.sendMessage(conversationItem).block();
+            client.sendMessage(ConversationItem.createUserMessage("Hello, assistant! Tell me a joke.")).block();
 
             // starting conversation - needs to be submitted after the prompt, otherwise it will be ignored
             RealtimeClientEventResponseCreate conversation
