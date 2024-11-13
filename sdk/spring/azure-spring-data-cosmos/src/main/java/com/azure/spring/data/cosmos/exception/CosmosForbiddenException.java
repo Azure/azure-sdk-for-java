@@ -2,40 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.ForbiddenException;
-import com.azure.cosmos.implementation.http.HttpHeaders;
+import org.springframework.lang.Nullable;
 
-import java.net.URI;
-
-/**
- * Forbidden exception
- */
-public class CosmosForbiddenException extends ForbiddenException {
+public class CosmosForbiddenException extends CosmosAccessException {
 
     /**
-     * Cosmos exception.
-     */
-    protected final CosmosException cosmosException;
-
-    /**
-     * Constructor
-     * @param message the message
-     * @param headers the headers
-     * @param requestUri the request uri
+     * Construct a {@code CosmosDBAccessException} with the specified detail message.
+     * and nested exception.
+     * @param msg the detail message
      * @param cause the nested Throwable
      */
-    public CosmosForbiddenException(String message, HttpHeaders headers, URI requestUri, Throwable cause) {
-        super(message, headers, requestUri);
-        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
-    }
-
-    /**
-     * To get exception object for cosmos client
-     * @return CosmosException
-     */
-    public CosmosException getCosmosException() {
-        return cosmosException;
+    public CosmosForbiddenException(@Nullable String msg, @Nullable Throwable cause) {
+        super(msg, cause);
     }
 
 }

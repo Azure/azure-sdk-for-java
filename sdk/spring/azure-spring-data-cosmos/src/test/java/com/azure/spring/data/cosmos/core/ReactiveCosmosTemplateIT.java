@@ -235,7 +235,7 @@ public class ReactiveCosmosTemplateIT {
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(insertMono)
                     .expectErrorMatches(ex -> ex instanceof CosmosConflictException &&
-                        ((CosmosConflictException) ex).getStatusCode() == TestConstants.CONFLICT_STATUS_CODE)
+                        ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.CONFLICT_STATUS_CODE)
                     .verify();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
@@ -566,7 +566,7 @@ public class ReactiveCosmosTemplateIT {
         options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
         Mono<Person> person = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
         StepVerifier.create(person).expectErrorMatches(ex -> ex instanceof CosmosPreconditionFailedException &&
-                ((CosmosPreconditionFailedException) ex).getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
+                ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
     }
 
     @Test
@@ -578,10 +578,11 @@ public class ReactiveCosmosTemplateIT {
 
         try {
             cosmosTemplate.upsert(updated).block();
-        } catch (CosmosPreconditionFailedException cosmosPreconditionFailedException) {
-            assertThat(cosmosPreconditionFailedException).isNotNull();
-            assertThat(cosmosPreconditionFailedException).isInstanceOf(CosmosException.class);
-            assertThat(cosmosPreconditionFailedException.getMessage()).contains(PRECONDITION_IS_NOT_MET);
+        } catch (CosmosAccessException cosmosAccessException) {
+            assertThat(cosmosAccessException.getCosmosException()).isNotNull();
+            final Throwable cosmosClientException = cosmosAccessException.getCosmosException();
+            assertThat(cosmosClientException).isInstanceOf(CosmosException.class);
+            assertThat(cosmosClientException.getMessage()).contains(PRECONDITION_IS_NOT_MET);
 
             final Mono<Person> unmodifiedPerson =
                 cosmosTemplate.findById(Person.class.getSimpleName(),

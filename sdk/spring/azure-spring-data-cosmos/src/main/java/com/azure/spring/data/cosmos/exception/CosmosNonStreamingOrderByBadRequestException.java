@@ -2,34 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.query.NonStreamingOrderByBadRequestException;
+import org.springframework.lang.Nullable;
 
-public class CosmosNonStreamingOrderByBadRequestException extends NonStreamingOrderByBadRequestException {
-
-    /**
-     * Cosmos exception.
-     */
-    protected final CosmosException cosmosException;
+public class CosmosNonStreamingOrderByBadRequestException extends CosmosAccessException {
 
     /**
-     * Creates a new instance of the NonStreamingOrderByBadRequestException class.
-     *
-     * @param statusCode the http status code of the response.
-     * @param errorMessage the error message.
+     * Construct a {@code CosmosDBAccessException} with the specified detail message.
+     * and nested exception.
+     * @param msg the detail message
      * @param cause the nested Throwable
      */
-    public CosmosNonStreamingOrderByBadRequestException(int statusCode, String errorMessage, Throwable cause) {
-        super(statusCode, errorMessage);
-        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
-    }
-
-    /**
-     * To get exception object for cosmos client
-     * @return CosmosException
-     */
-    public CosmosException getCosmosException() {
-        return cosmosException;
+    public CosmosNonStreamingOrderByBadRequestException(@Nullable String msg, @Nullable Throwable cause) {
+        super(msg, cause);
     }
 
 }

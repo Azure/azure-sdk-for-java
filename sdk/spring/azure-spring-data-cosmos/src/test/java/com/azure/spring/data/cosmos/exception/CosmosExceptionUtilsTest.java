@@ -106,6 +106,14 @@ public class CosmosExceptionUtilsTest {
     }
 
     @Test
+    public void testOperationCancelledException() {
+        OperationCancelledException operationCancelledException = new OperationCancelledException();
+        assertThrows(CosmosOperationCancelledException.class, () -> {
+            CosmosExceptionUtils.exceptionHandler("Operation Cancelled", operationCancelledException, responseDiagnosticsProcessor).block();
+        });
+    }
+
+    @Test
     public void testPartitionIsMigratingException() {
         PartitionIsMigratingException partitionIsMigratingException = new PartitionIsMigratingException();
         assertThrows(CosmosPartitionIsMigratingException.class, () -> {

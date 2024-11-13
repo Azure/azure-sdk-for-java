@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
-public class CosmosPartitionIsMigratingException extends CosmosAccessException {
+public class CosmosOperationCancelledException extends CosmosAccessException {
 
     /**
      * Construct a {@code CosmosDBAccessException} with the specified detail message.
@@ -12,7 +12,7 @@ public class CosmosPartitionIsMigratingException extends CosmosAccessException {
      * @param msg the detail message
      * @param cause the nested Throwable
      */
-    public CosmosPartitionIsMigratingException(@Nullable String msg, @Nullable Throwable cause) {
+    public CosmosOperationCancelledException(@Nullable String msg, @Nullable Throwable cause) {
         super(msg, cause);
     }
 

@@ -389,7 +389,7 @@ public class ReactiveCourseRepositoryIT {
         options.setFilterPredicate("FROM course a WHERE a.department = 'dummy'");
         Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
         StepVerifier.create(patchedCourse).expectErrorMatches(ex -> ex instanceof CosmosPreconditionFailedException &&
-            ((CosmosPreconditionFailedException) ex).getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
+            ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
     }
 
     @Test

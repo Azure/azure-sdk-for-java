@@ -2,40 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.RequestTimeoutException;
+import org.springframework.lang.Nullable;
 
-import java.net.URI;
-
-/**
- * The type Request timeout exception.
- */
-public class CosmosRequestTimeoutException extends RequestTimeoutException {
+public class CosmosRequestTimeoutException extends CosmosAccessException {
 
     /**
-     * Cosmos exception.
-     */
-    protected final CosmosException cosmosException;
-
-    /**
-     * Instantiates a new Retry with exception.
-     *
-     * @param message the message
-     * @param requestUri the request uri
-     * @param subStatusCode the sub status code
+     * Construct a {@code CosmosDBAccessException} with the specified detail message.
+     * and nested exception.
+     * @param msg the detail message
      * @param cause the nested Throwable
      */
-    public CosmosRequestTimeoutException(String message, URI requestUri, int subStatusCode, Throwable cause) {
-        super(message, requestUri, subStatusCode);
-        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
-    }
-
-    /**
-     * To get exception object for cosmos client
-     * @return CosmosException
-     */
-    public CosmosException getCosmosException() {
-        return cosmosException;
+    public CosmosRequestTimeoutException(@Nullable String msg, @Nullable Throwable cause) {
+        super(msg, cause);
     }
 
 }

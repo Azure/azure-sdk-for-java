@@ -2,37 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.InvalidPartitionException;
+import org.springframework.lang.Nullable;
 
-/**
- * While this class is public, but it is not part of our published public APIs.
- * This is meant to be internally used only by our sdk.
- */
-public class CosmosInvalidPartitionException extends InvalidPartitionException {
+public class CosmosInvalidPartitionException extends CosmosAccessException {
 
     /**
-     * Cosmos exception.
-     */
-    protected final CosmosException cosmosException;
-
-    /**
-     * Instantiates a new Invalid partition exception.
-     *
-     * @param msg the msg
+     * Construct a {@code CosmosDBAccessException} with the specified detail message.
+     * and nested exception.
+     * @param msg the detail message
      * @param cause the nested Throwable
      */
-    public CosmosInvalidPartitionException(String msg, Throwable cause) {
-        super(msg);
-        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
-    }
-
-    /**
-     * To get exception object for cosmos client
-     * @return CosmosException
-     */
-    public CosmosException getCosmosException() {
-        return cosmosException;
+    public CosmosInvalidPartitionException(@Nullable String msg, @Nullable Throwable cause) {
+        super(msg, cause);
     }
 
 }
