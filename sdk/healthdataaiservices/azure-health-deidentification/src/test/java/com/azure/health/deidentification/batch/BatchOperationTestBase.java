@@ -21,6 +21,7 @@ import java.util.List;
  * Base class for Deid Services client tests.
  */
 public class BatchOperationTestBase extends TestProxyTestBase {
+    private boolean sanitizersRemoved = false;
     private static final String FAKE_STORAGE_ACCOUNT_SAS_URI
         = "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid";
     private static final String FAKE_NEXT_LINK
@@ -34,7 +35,8 @@ public class BatchOperationTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             deidentificationClientBuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(new MockTokenCredential());
-        } else if (interceptorManager.isRecordMode()) {
+        }
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             List<TestProxySanitizer> customSanitizer = new ArrayList<>();
             customSanitizer.add(new TestProxySanitizer("$..location", "^(?!.*FAKE_STORAGE_ACCOUNT).*",
                 FAKE_STORAGE_ACCOUNT_SAS_URI, TestProxySanitizerType.BODY_KEY));
@@ -43,16 +45,14 @@ public class BatchOperationTestBase extends TestProxyTestBase {
             customSanitizer.add(new TestProxySanitizer("(?<=continuationToken=)[^&]+", FAKE_CONTINUATION_TOKEN,
                 TestProxySanitizerType.URL));
             interceptorManager.addSanitizers(customSanitizer);
+            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
+            sanitizersRemoved = true;
             deidentificationClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
-        } else if (interceptorManager.isLiveMode()) {
+        } else {
             deidentificationClientBuilder.credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
-        }
-
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
         }
         return deidentificationClientBuilder;
     }
