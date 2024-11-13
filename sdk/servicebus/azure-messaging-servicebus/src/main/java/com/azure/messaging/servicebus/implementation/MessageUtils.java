@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
@@ -30,6 +31,9 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -92,6 +96,48 @@ public final class MessageUtils {
             }
         }
         return Duration.ofNanos(totalTimeout);
+    }
+
+    /**
+     * Subscribes to the given Mono by providing empty subscription handlers.
+     *
+     * @param source the source Mono to subscribe.
+     * @return the disposable to the subscription.
+     * @param <T> the Mono item type.
+     */
+    public static <T> Disposable subscribe(Mono<T> source) {
+        return source.subscribe(ignored -> {
+        }, e -> {
+        }, () -> {
+        });
+    }
+
+    /**
+     * Subscribes to the given Flux by providing empty subscription handlers.
+     *
+     * @param source the source Flux to subscribe.
+     * @return the disposable to the subscription.
+     * @param <T> the Flux item type.
+     */
+    public static <T> Disposable subscribe(Flux<T> source) {
+        return source.subscribe(ignored -> {
+        }, e -> {
+        }, () -> {
+        });
+    }
+
+    /**
+     * Subscribes to the given Mono by providing subscription handlers that logs terminal states.
+     *
+     * @param source the source Mono to subscribe.
+     * @param message the message to log.
+     * @param logger the logger to use.
+     * @return the disposable to the subscription.
+     * @param <T> the Mono item type.
+     */
+    public static <T> Disposable subscribe(Mono<T> source, String message, LoggingEventBuilder logger) {
+        return source.subscribe(ignored -> {
+        }, e -> logger.log(message + " (terminal-error)", e), () -> logger.log(message + " (terminal-completion)"));
     }
 
     /**
@@ -521,5 +567,4 @@ public final class MessageUtils {
 
         return null;
     }
-
 }
