@@ -316,9 +316,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
             files="com.azure.ai.textanalytics.(models|util).*\.java"/>
 
-  <!-- Suppress checks on sample for Video Analyzer -->
-  <suppress checks="AvoidStarImport" files="com.azure.media.videoanalyzer.edge.LvaInvokeModuleSample"/>
-
   <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
