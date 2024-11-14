@@ -39,6 +39,7 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          TestName: 'Cosmos_Live_Test_Http2'
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
