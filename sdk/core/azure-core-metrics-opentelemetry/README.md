@@ -1,9 +1,10 @@
 # Azure OpenTelemetry Metrics plugin library for Java
 
-This package enables  metrics from Azure SDK Java libraries through [OpenTelemetry][OpenTelemetry]. OpenTelemetry is an open source, vendor-agnostic, single distribution of libraries to provide metrics collection and distributed tracing for services.
+This package enables  metrics from Azure SDK Java libraries through [OpenTelemetry][OpenTelemetry]. OpenTelemetry is an
+open source, vendor-agnostic, single distribution of libraries to provide metrics collection and distributed tracing for
+services.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product
-documentation][OpenTelemetry] | [Samples][samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][OpenTelemetry] | [Samples][samples]
 
 ## Getting started
 
@@ -56,7 +57,6 @@ package to configure OpenTelemetry using environment variables (or system proper
 
 
 ```java readme-sample-defaultConfiguration
-
 // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
 // AutoConfiguredOpenTelemetrySdk.initialize();
 
@@ -68,7 +68,6 @@ AzureClient sampleClient = new AzureClientBuilder()
 
 // use client as usual, if it emits metric, they will be exported
 sampleClient.methodCall("get items");
-
 ```
 
 ### Custom configuration
@@ -76,7 +75,6 @@ sampleClient.methodCall("get items");
 If you want to pass `MeterProvider` explicitly, you can do it using `MetricsOptions` and passing them to Azure Clients. `MetricsOptions` can also be used to disable metrics from specific client. 
 
 ```java readme-sample-customConfiguration
-
 // configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
 SdkMeterProvider meterProvider = SdkMeterProvider.builder()
     .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
@@ -96,7 +94,6 @@ AzureClient sampleClient = new AzureClientBuilder()
 
 // use client as usual, if it emits metric, they will be exported
 sampleClient.methodCall("get items");
-
 ```
 
 ## Troubleshooting
@@ -130,5 +127,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/src/
+[OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java#opentelemetry-for-java
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/src/samples/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-metrics-opentelemetry%2FREADME.png)
