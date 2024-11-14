@@ -77,15 +77,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
     }
 
     @Test
-    public void listTables() {
-        serviceClient.listTables().iterableByPage().forEach(page -> {
-            page.getElements().forEach(tableItem -> {
-                System.out.printf("Table name: %s%n", tableItem.getName());
-            });
-        });
-    }
-
-    @Test
     public void serviceCreateTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);

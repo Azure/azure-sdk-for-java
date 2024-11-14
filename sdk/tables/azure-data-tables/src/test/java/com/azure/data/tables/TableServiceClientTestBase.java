@@ -15,8 +15,6 @@ import java.net.URISyntaxException;
 public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
 
-    protected static boolean usingEntraAuth;
-
     protected HttpPipelinePolicy recordPolicy;
     protected HttpClient playbackClient;
 
@@ -26,7 +24,7 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     protected TableServiceClientBuilder getClientBuilder(String connectionString) {
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
             .connectionString(connectionString);
-    
+
         return configureTestClientBuilder(tableServiceClientBuilder);
     }
     */
@@ -36,7 +34,6 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     }
 
     protected TableServiceClientBuilder getClientBuilderWithEntra(boolean enableTenantDiscovery) {
-        usingEntraAuth = true;
         final TableServiceClientBuilder tableServiceClientBuilder
             = new TableServiceClientBuilder().credential(TestUtils.getTestTokenCredential(interceptorManager))
                 .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
@@ -49,7 +46,6 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     }
 
     protected TableServiceClientBuilder getClientBuilderWithConnectionString(boolean enableTenantDiscovery) {
-        usingEntraAuth = false;
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
             .connectionString(TestUtils.getConnectionString(interceptorManager.isPlaybackMode()));
 
