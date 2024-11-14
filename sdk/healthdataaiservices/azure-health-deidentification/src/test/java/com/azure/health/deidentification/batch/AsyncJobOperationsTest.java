@@ -14,7 +14,9 @@ import com.azure.health.deidentification.DeidentificationAsyncClient;
 import com.azure.health.deidentification.models.*;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recor-006r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-006r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -64,7 +66,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateThenListReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recor-007r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-007r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -105,7 +107,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2EWaitUntilSuccess() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recor-008r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-008r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -130,21 +132,38 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         Long count = reports.count().block();
         assertEquals(count, 3);
 
-        reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
-            .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
-            .subscribe(item -> {
-                DocumentDetails details = item.toObject(DocumentDetails.class);
-                assertEquals(details.getStatus(), OperationState.SUCCEEDED);
-                assertNotNull(details.getOutput());
-                assertFalse(details.getOutput().getLocation().contains(OUTPUT_FOLDER));
-                assertEquals(details.getId().length(), 36);
-            });
+        //        reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
+        //            .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
+        //            .subscribe(item -> {
+        //                DocumentDetails details = item.toObject(DocumentDetails.class);
+        //                assertEquals(details.getStatus(), OperationState.SUCCEEDED);
+        //                assertNotNull(details.getOutput());
+        //                assertFalse(details.getOutput().getLocation().contains(OUTPUT_FOLDER));
+        //                assertEquals(details.getId().length(), 36);
+        //            });
+
+        List<String> documentIdList = new ArrayList<>();
+        StepVerifier.create(deidentificationAsyncClient
+            .listJobDocuments(jobName, new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)))
+            .byPage()
+            .take(2)).thenConsumeWhile(documentDetailsPagedResponse -> {
+                documentDetailsPagedResponse.getValue().forEach(detailsBinary -> {
+                    DocumentDetails details = detailsBinary.toObject(DocumentDetails.class);
+                    assertFalse(documentIdList.contains(details.getId()));
+                    documentIdList.add(details.getId());
+                    assertEquals(details.getStatus(), OperationState.SUCCEEDED);
+                    assertNotNull(details.getOutput());
+                    assertTrue(details.getOutput().getLocation().contains(OUTPUT_FOLDER));
+                    assertEquals(details.getId().length(), 36);
+                });
+                return true;
+            }).expectComplete().verify(Duration.ofSeconds(100));
     }
 
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recor-009r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-009r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -178,7 +197,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recor-0010r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-0010r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = "FAKE_STORAGE_ACCOUNT";

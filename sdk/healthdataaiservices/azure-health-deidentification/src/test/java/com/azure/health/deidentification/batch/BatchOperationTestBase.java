@@ -25,20 +25,28 @@ public class BatchOperationTestBase extends TestProxyTestBase {
     private static final String FAKE_STORAGE_ACCOUNT_SAS_URI
         = "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid";
     private static final String FAKE_NEXT_LINK
-        = "https://fakedeidservice.api.deid.azure.com/jobs?api-version=2000-01-01-preview&continuationToken=1234";
-    private static final String FAKE_CONTINUATION_TOKEN = "12345";
+        = "https://localhost:5020/jobs/record8-008r/documents?api-version=2024-11-15&maxpagesize=2&continuationToken=1234";
+    private static final String FAKE_CONTINUATION_TOKEN = "1234";
 
     protected DeidentificationClientBuilder getDeidServicesClientBuilder() {
         DeidentificationClientBuilder deidentificationClientBuilder = new DeidentificationClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
+            .endpoint(Configuration.getGlobalConfiguration()
+                .get("HEALTHDATAAISERVICES_DEID_SERVICE_ENDPOINT", "https://localhost:8080"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (interceptorManager.isPlaybackMode()) {
             deidentificationClientBuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(new MockTokenCredential());
         }
+        if (interceptorManager.isRecordMode()) {
+            deidentificationClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .httpClient(HttpClient.createDefault());
+        }
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             List<TestProxySanitizer> customSanitizer = new ArrayList<>();
-            customSanitizer.add(new TestProxySanitizer("$..location", "^(?!.*FAKE_STORAGE_ACCOUNT).*",
+            customSanitizer.add(new TestProxySanitizer("$..sourceLocation.location", "^(?!.*FAKE_STORAGE_ACCOUNT).*",
+                FAKE_STORAGE_ACCOUNT_SAS_URI, TestProxySanitizerType.BODY_KEY));
+            customSanitizer.add(new TestProxySanitizer("$..targetLocation.location", "^(?!.*FAKE_STORAGE_ACCOUNT).*",
                 FAKE_STORAGE_ACCOUNT_SAS_URI, TestProxySanitizerType.BODY_KEY));
             customSanitizer.add(new TestProxySanitizer("$..nextLink", "^(?!.*fakedeidservice).*", FAKE_NEXT_LINK,
                 TestProxySanitizerType.BODY_KEY));
@@ -47,9 +55,6 @@ public class BatchOperationTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(customSanitizer);
             interceptorManager.removeSanitizers("AZSDK3493", "AZSDK4001", "AZSDK3430", "AZSDK2003", "AZSDK2030");
             sanitizersRemoved = true;
-            deidentificationClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .httpClient(HttpClient.createDefault());
         } else {
             deidentificationClientBuilder.credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
@@ -79,7 +84,8 @@ public class BatchOperationTestBase extends TestProxyTestBase {
         if (sasUri != null && !sasUri.isEmpty()) {
             return sasUri;
         }
-        return "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME")
-            + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
+        return "https://" + Configuration.getGlobalConfiguration().get("HEALTHDATAAISERVICES_STORAGE_ACCOUNT_NAME")
+            + ".blob.core.windows.net/"
+            + Configuration.getGlobalConfiguration().get("HEALTHDATAAISERVICES_STORAGE_CONTAINER_NAME");
     }
 }
