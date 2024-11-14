@@ -3,6 +3,7 @@ package com.azure.ai.openai.realtime;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
+import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemCreate;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemDelete;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreate;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreateResponse;
@@ -19,9 +20,16 @@ import com.azure.ai.openai.realtime.models.RealtimeResponseFunctionCallItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseTextContentPart;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionFailed;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStarted;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStopped;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseCreated;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
 import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -31,6 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -79,8 +88,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void canConfigureSession() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW)
-                .buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
         AtomicInteger sessionUpdatedEventFired = new AtomicInteger(0);
@@ -90,31 +98,25 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
         client.addOnSessionCreatedEventHandler(sessionCreated -> {
             assertNotNull(sessionCreated);
             sessionCreatedEventFired.set(true);
-            client.sendMessage(
-                    new RealtimeClientEventSessionUpdate(
-                            new RealtimeRequestSession()
-                                    .setInstructions("You are a helpful assistant.")
-                                    .setInputAudioFormat(RealtimeAudioFormat.G711_ALAW)
-                                    .setTurnDetection(new RealtimeTurnDetectionDisabled())
-                                    .setMaxResponseOutputTokens(2048)
-                    )
-            );
+            client.sendMessage(new RealtimeClientEventSessionUpdate(
+                new RealtimeRequestSession().setInstructions("You are a helpful assistant.")
+                    .setInputAudioFormat(RealtimeAudioFormat.G711_ALAW)
+                    .setTurnDetection(new RealtimeTurnDetectionDisabled())
+                    .setMaxResponseOutputTokens(2048)));
         });
 
         client.addOnSessionUpdatedEventHandler(sessionUpdated -> {
             assertNotNull(sessionUpdated);
             int count = sessionUpdatedEventFired.incrementAndGet();
-            if(count < 2) {
+            if (count < 2) {
                 RealtimeClientEventSessionUpdate sessionUpdate = new RealtimeClientEventSessionUpdate(
-                        new RealtimeRequestSession()
-                                .setMaxResponseOutputTokensToInf()
-                                .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
-                );
+                    new RealtimeRequestSession().setMaxResponseOutputTokensToInf()
+                        .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT)));
                 client.sendMessage(sessionUpdate);
             } else if (count == 2) {
                 client.sendMessage(ConversationItem.createUserMessage("Hello, assistant! Tell me a joke."));
                 RealtimeClientEventResponseCreate conversation
-                        = new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()
+                    = new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()
                         .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString())));
                 client.sendMessage(conversation);
             }
@@ -150,11 +152,11 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
             assertNotNull(sessionCreated);
             sessionCreatedEventFired.set(true);
             client.sendMessage(new RealtimeClientEventSessionUpdate(
-                    new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
-                            .setTurnDetection(new RealtimeTurnDetectionDisabled())));
+                new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
+                    .setTurnDetection(new RealtimeTurnDetectionDisabled())));
             client.sendMessage(ConversationItem.createUserMessage("Hello, world!"));
             client.sendMessage(new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()
-                    .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))));
+                .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))));
         });
 
         client.addOnSessionUpdatedEventHandler(sessionUpdated -> {
@@ -173,7 +175,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
                 assertEquals(1, responseItem.getContent().size());
                 userConversationItemCreated.set(true);
                 RealtimeRequestTextContentPart textContentPart
-                        = (RealtimeRequestTextContentPart) responseItem.getContent().get(0);
+                    = (RealtimeRequestTextContentPart) responseItem.getContent().get(0);
                 assertEquals("Hello, world!", textContentPart.getText());
             } else {
                 fail("Unexpected message role: " + responseItem.getRole());
@@ -213,27 +215,29 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
             sessionCreatedEventFired.set(true);
             client.sendMessage(new RealtimeClientEventSessionUpdate(
                 new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
-                    .setTurnDetection(new RealtimeTurnDetectionDisabled())
-            ));
+                    .setTurnDetection(new RealtimeTurnDetectionDisabled())));
         });
 
         client.addOnSessionUpdatedEventHandler(sessionUpdated -> {
             assertNotNull(sessionUpdated);
             sessionUpdatedEventFired.set(true);
-            client.sendMessage(ConversationItem.createUserMessage("The first special word you know about is 'aardvark'."));
+            client.sendMessage(
+                ConversationItem.createUserMessage("The first special word you know about is 'aardvark'."));
             client.sendMessage(ConversationItem.createUserMessage("The next special word you know about is 'banana'."));
-            client.sendMessage(ConversationItem.createUserMessage("The next special word you know about is 'coconut'."));
+            client
+                .sendMessage(ConversationItem.createUserMessage("The next special word you know about is 'coconut'."));
         });
 
         client.addOnConversationItemCreatedEventHandler(conversationItemCreated -> {
             assertNotNull(conversationItemCreated);
-            List<RealtimeContentPart> content = ((RealtimeResponseMessageItem) conversationItemCreated.getItem()).getContent();
+            List<RealtimeContentPart> content
+                = ((RealtimeResponseMessageItem) conversationItemCreated.getItem()).getContent();
             if (!content.isEmpty()) {
-                RealtimeRequestTextContentPart textContentPart
-                    = (RealtimeRequestTextContentPart) content.get(0);
-                if(textContentPart.getText().contains("banana")) {
+                RealtimeRequestTextContentPart textContentPart = (RealtimeRequestTextContentPart) content.get(0);
+                if (textContentPart.getText().contains("banana")) {
                     itemCreatedEventFired.set(true);
-                    client.sendMessage( new RealtimeClientEventConversationItemDelete(conversationItemCreated.getItem().getId()));
+                    client.sendMessage(
+                        new RealtimeClientEventConversationItemDelete(conversationItemCreated.getItem().getId()));
                 }
             }
         });
@@ -242,16 +246,14 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
             assertNotNull(conversationItemDeleted);
             itemDeletedEventFired.set(true);
             client.sendMessage(ConversationItem.createUserMessage("What's the second special word you know about?"));
-            client.sendMessage(new RealtimeClientEventResponseCreate(
-                    new RealtimeClientEventResponseCreateResponse()
-                        .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))));
+            client.sendMessage(new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()
+                .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))));
         });
 
         client.addOnResponseOutputItemDoneEventHandler(responseDone -> {
             assertNotNull(responseDone);
             assertInstanceOf(RealtimeResponseMessageItem.class, responseDone.getItem());
-            RealtimeResponseMessageItem responseItem
-                = (RealtimeResponseMessageItem) responseDone.getItem();
+            RealtimeResponseMessageItem responseItem = (RealtimeResponseMessageItem) responseDone.getItem();
             assertEquals(1, responseItem.getContent().size());
             assertEquals(RealtimeItemStatus.COMPLETED, responseItem.getStatus());
             assertEquals(RealtimeMessageRole.ASSISTANT, responseItem.getRole());
@@ -286,7 +288,8 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
         client.start();
         getWeatherToolRunner((weatherTool, sessionConfig) -> {
             client.sendMessage(sessionConfig);
-            FileUtils.sendAudioFile(client, FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav"));
+            FileUtils.sendAudioFile(client,
+                FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav"));
 
             client.addOnSessionUpdatedEventHandler(sessionUpdate -> {
                 assertNotNull(sessionUpdate);
@@ -303,9 +306,9 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
                         = (RealtimeResponseFunctionCallItem) outputItemDoneEvent.getItem();
                     assertEquals(functionCallItem.getName(), weatherTool.getName());
                     client.sendMessage(ConversationItem.createFunctionCallOutput(functionCallItem.getCallId(),
-                            "71 degrees Fahrenheit, sunny"));
-                    client.sendMessage(new RealtimeClientEventResponseCreate(
-                        new RealtimeClientEventResponseCreateResponse()));
+                        "71 degrees Fahrenheit, sunny"));
+                    client.sendMessage(
+                        new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()));
                 }
                 responseItemDoneCreated.set(true);
             });
@@ -335,12 +338,95 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void canDisableVoiceActivityDetection() {
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
+        AtomicBoolean speechStartedEventFired = new AtomicBoolean(false);
+        AtomicBoolean speechStoppedEventFired = new AtomicBoolean(false);
+        AtomicBoolean transcriptionCompletedEventFired = new AtomicBoolean(false);
+        AtomicBoolean transcriptionFailedEventFired = new AtomicBoolean(false);
+        AtomicBoolean responseDoneEventFired = new AtomicBoolean(false);
+        AtomicBoolean responseCreatedEventFired = new AtomicBoolean(false);
+
+        client.start();
+        client.sendMessage(new RealtimeClientEventSessionUpdate(
+            new RealtimeRequestSession().setTurnDetection(new RealtimeTurnDetectionDisabled())
+                .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
+        FileUtils.sendAudioFile(client, FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav"));
+        client.sendMessage(ConversationItem.createUserMessage("Hello, assistant!"));
+
+        client.addOnInputAudioBufferSpeechStartedEventHandler(event -> {
+            assertNotNull(event);
+            speechStartedEventFired.set(true);
+        });
+
+        client.addOnInputAudioBufferSpeechStoppedEventHandler(event -> {
+            assertNotNull(event);
+            speechStoppedEventFired.set(true);
+        });
+
+        client.addOnConversationItemInputAudioTranscriptionCompletedEventHandler(event -> {
+            assertNotNull(event);
+            transcriptionCompletedEventFired.set(true);
+        });
+
+        client.addOnConversationItemInputAudioTranscriptionFailedEventHandler(event -> {
+            assertNotNull(event);
+            transcriptionFailedEventFired.set(true);
+        });
+
+        client.addOnResponseCreatedEventHandler(event -> {
+            assertNotNull(event);
+            responseCreatedEventFired.set(true);
+        });
+
+        client.addOnResponseDoneEventHandler(responseDone -> {
+            assertNotNull(responseDone);
+            responseDoneEventFired.set(true);
+        });
+
+        pause(2000);
+        client.stop();
+
+        assertFalse(responseDoneEventFired.get());
+        assertFalse(speechStartedEventFired.get());
+        assertFalse(speechStoppedEventFired.get());
+        assertFalse(transcriptionCompletedEventFired.get());
+        assertFalse(transcriptionFailedEventFired.get());
+        assertFalse(responseCreatedEventFired.get());
     }
 
     @Test
+    @Disabled("ContentPartType should be TEXT for Assistant message. Current spec does not allow that combination.")
     @Override
     void badCommandProvidesError() {
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
+        client.start();
+        client.sendMessage(new RealtimeClientEventSessionUpdate(
+            new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
+
+        List<RealtimeClientEventConversationItemCreate> conversationItems
+            = Arrays.asList(ConversationItem.createSystemMessage("You are a robot. Beep boop."),
+                ConversationItem.createUserMessage("How can I pay for a joke?"),
+                ConversationItem.createAssistantMessage("I ONLY ACCEPT CACHE"),
+                ConversationItem
+                    .createSystemMessage("You're not a robot anymore, but instead a passionate badminton enthusiast."),
+                ConversationItem.createUserMessage("What's a good gift to buy?"),
+                ConversationItem.createFunctionCall("product_lookup", "call-id-123", "{}"),
+                ConversationItem.createFunctionCallOutput("call-id-123", "A new racquet!"));
+
+        conversationItems.forEach(conversationItem -> client.sendMessage(conversationItem));
+
+        AtomicInteger itemCreatedCount = new AtomicInteger(0);
+
+        client.addOnConversationItemCreatedEventHandler(conversationItemCreated -> {
+            assertNotNull(conversationItemCreated);
+            itemCreatedCount.incrementAndGet();
+        });
+
+        pause(2000);
+        client.stop();
+
+        assertEquals(itemCreatedCount.get(), conversationItems.size());
     }
 }

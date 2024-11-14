@@ -93,7 +93,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
             RealtimeClientEventSessionUpdate sessionUpdate = new RealtimeClientEventSessionUpdate(
                 new RealtimeRequestSession().setInstructions("You are a helpful assistant.")
                     .setInputAudioFormat(RealtimeAudioFormat.G711_ALAW)
-//                    .setTurnDetection(new RealtimeTurnDetectionDisabled())
+                    //                    .setTurnDetection(new RealtimeTurnDetectionDisabled())
                     .setMaxResponseOutputTokens(2048));
             System.out.println("sessionUpdate: " + toJson(sessionUpdate));
             client.sendMessage(sessionUpdate).block();

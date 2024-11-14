@@ -355,6 +355,6 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
             .verifyComplete();
         client.stop().block();
 
-        assert (itemCreatedCount.get() == conversationItems.size());
+        assertEquals(itemCreatedCount.get(), conversationItems.size());
     }
 }
