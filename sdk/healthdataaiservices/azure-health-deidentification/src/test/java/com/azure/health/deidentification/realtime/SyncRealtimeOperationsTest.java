@@ -7,7 +7,6 @@ import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.batch.BatchOperationTestBase;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
 import com.azure.health.deidentification.models.OperationType;
 import com.azure.health.deidentification.models.PhiCategory;
 import org.junit.jupiter.api.Test;

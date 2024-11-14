@@ -16,11 +16,8 @@ import com.azure.health.deidentification.models.OperationState;
 import com.azure.health.deidentification.models.OperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
-import com.azure.json.JsonWriteContext;
-import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
