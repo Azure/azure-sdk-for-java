@@ -44,6 +44,28 @@ public final class FormattedDuration {
         return sb.toString();
     }
 
+    // Returns duration in microseconds
+    public static long getDurationFromTelemetryItemDurationString(String duration) {
+        // duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
+        try {
+            String[] parts = duration.split(".");
+            int days = Integer.parseInt(parts[0]);
+            long microseconds = Integer.parseInt(parts[2]);
+            String hms = parts[1];
+            String[] hmsParts = hms.split(":");
+            int hours = Integer.parseInt(hmsParts[0]);
+            int minutes = Integer.parseInt(hmsParts[1]);
+            int seconds = Integer.parseInt(hmsParts[2]);
+            return (days * 24L * 60 * 60 * 1_000_000) +
+                (hours * 60L * 60 * 1_000_000) +
+                (minutes * 60L * 1_000_000) +
+                (seconds * 1_000_000L) +
+                microseconds;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     private static void appendDaysHoursMinutesSeconds(StringBuilder sb, long days, long hours, long minutes,
         long seconds) {
         if (days > 0) {
