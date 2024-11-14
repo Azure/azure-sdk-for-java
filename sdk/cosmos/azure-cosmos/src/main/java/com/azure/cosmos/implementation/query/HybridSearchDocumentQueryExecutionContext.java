@@ -385,24 +385,18 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                     assert queryInfo.hasNonStreamingOrderBy();
                     List<Mono<String>> rewrittenOrderByExpressionList = queryInfo.getOrderByExpressions()
                         .stream()
-                        .map(this::formatComponentQuery)
+                        .map(orderByExpression -> formatComponentQuery(orderByExpression, componentQueryInfos.size()))
                         .collect(Collectors.toList());
 
                     Mono<List<String>> rewrittenOrderByExpression =
                         Mono.zip(rewrittenOrderByExpressionList, results -> Arrays.stream(results).map(Object::toString).collect(Collectors.toList()));
 
-                    Mono<String> rewrittenQuery = formatComponentQuery(queryInfo.getRewrittenQuery());
+                    Mono<String> rewrittenQuery = formatComponentQuery(queryInfo.getRewrittenQuery(), componentQueryInfos.size());
                     Mono<QueryInfo> newQueryInfo = Mono.zip(rewrittenOrderByExpression, rewrittenQuery)
                         .map(tuple -> {
                             QueryInfo newQueryInfoInternal = new QueryInfo(queryInfo.getPropertyBag());
-                            // TODO: Remove this hack, once the backend bug for VectorScore is fixed.
-                            //  For now VectorScore component query can not have the sort order in defined in the rewritten query.
-                            if (tuple.getT1().get(0).contains("_VectorScore")) {
-                                newQueryInfoInternal.setRewrittenQuery(tuple.getT2().substring(0, tuple.getT2().length()-4));
-                            } else {
-                                newQueryInfoInternal.setRewrittenQuery(tuple.getT2());
-                            }
                             newQueryInfoInternal.setOrderByExpressions(tuple.getT1());
+                            newQueryInfoInternal.setRewrittenQuery(tuple.getT2());
                             return newQueryInfoInternal;
                         });
                     rewrittenQueryInfosInternal.add(newQueryInfo);
@@ -431,13 +425,22 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             });
     }
 
-    private Mono<String> formatComponentQuery(String orderByExpression) {
+    private Mono<String> formatComponentQuery(String orderByExpression, int componentCount) {
         return aggregatedGlobalStatistics.map(statistics -> {
             String query = orderByExpression.replace(FORMATTABLE_ORDER_BY, TRUE)
                 .replace(FORMATTABLE_TOTAL_DOCUMENT_COUNT, Long.toString(statistics.getDocumentCount()));
-            for (int i = 0; i < statistics.getFullTextQueryStatistics().size(); i++) {
-                FullTextQueryStatistics fullTextQueryStatistics = statistics.getFullTextQueryStatistics().get(i);
-                query = query.replace(String.format(FORMATTABLE_TOTAL_WORD_COUNT, i), Long.toString(fullTextQueryStatistics.getTotalWordCount()));
+            int statisticsIndex = 0;
+            for (int componentIndex = 0; componentIndex < componentCount; componentIndex++) {
+                String totalWordCountPlaceHolder = String.format(FORMATTABLE_TOTAL_WORD_COUNT, componentIndex);
+                String hitCountsArrayPlaceHolder = String.format(FORMATTABLE_HIT_COUNTS_ARRAY, componentIndex);
+
+                // TODO: Workaround until the gateway fix for allowing vectorDistance as the first predicate in Order By Rank query is deployed.
+                if (!query.contains(totalWordCountPlaceHolder)) {
+                    continue;
+                }
+
+                FullTextQueryStatistics fullTextQueryStatistics = statistics.getFullTextQueryStatistics().get(statisticsIndex);
+                query = query.replace(totalWordCountPlaceHolder, Long.toString(fullTextQueryStatistics.getTotalWordCount()));
 
                 String hit_counts_array = "[" +
                     fullTextQueryStatistics.getHitCounts()
@@ -446,7 +449,8 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                         .collect(Collectors.joining(","))
                     + "]";
 
-                query = query.replace(String.format(FORMATTABLE_HIT_COUNTS_ARRAY, i), hit_counts_array);
+                query = query.replace(hitCountsArrayPlaceHolder, hit_counts_array);
+                ++statisticsIndex;
             }
             return query;
         });

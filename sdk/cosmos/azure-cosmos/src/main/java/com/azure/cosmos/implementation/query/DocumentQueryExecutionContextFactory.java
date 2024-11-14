@@ -167,11 +167,14 @@ public class DocumentQueryExecutionContextFactory {
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext,
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo, Instant planFetchStartTime,
         Instant planFetchEndTime) {
+
         QueryInfo queryInfo =
             partitionedQueryExecutionInfo.getQueryInfo();
-        queryInfo.setQueryPlanDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(planFetchStartTime,
-            planFetchEndTime,
-            partitionedQueryExecutionInfo.getQueryPlanRequestTimeline()));
+        if (queryInfo != null) {
+            queryInfo.setQueryPlanDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(planFetchStartTime,
+                planFetchEndTime,
+                partitionedQueryExecutionInfo.getQueryPlanRequestTimeline()));
+        }
         List<Range<String>> queryRanges =
             partitionedQueryExecutionInfo.getQueryRanges();
 
@@ -199,7 +202,7 @@ public class DocumentQueryExecutionContextFactory {
                     if (partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()) {
                         return new QueryInfoAndRanges(QueryInfo.EMPTY, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), Collections.singletonList(tuple.getT1()), tuple.getT2());
                     } else {
-                        return new QueryInfoAndRanges(partitionedQueryExecutionInfo.getQueryInfo(), HybridSearchQueryInfo.EMPTY, Collections.singletonList(tuple.getT1()), tuple.getT2());
+                        return new QueryInfoAndRanges(queryInfo, HybridSearchQueryInfo.EMPTY, Collections.singletonList(tuple.getT1()), tuple.getT2());
                     }
                 });
         }
