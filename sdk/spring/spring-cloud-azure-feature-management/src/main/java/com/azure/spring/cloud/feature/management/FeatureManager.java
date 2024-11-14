@@ -261,7 +261,7 @@ public class FeatureManager {
 
         if (StringUtils.hasText(targetingContext.getUserId())) {
             // Loop through all user allocations
-            for (UserAllocation userAllocation : allocation.getUsers()) {
+            for (UserAllocation userAllocation : allocation.getUser()) {
                 if (!evaluationOptions.isIgnoreCase()
                     && userAllocation.getUsers().contains(targetingContext.getUserId())) {
                     event.setReason(VariantAssignmentReason.USER);
@@ -275,8 +275,8 @@ public class FeatureManager {
                 }
             }
         }
-        if (variantName != null) {
-            for (GroupAllocation groupAllocation : allocation.getGroups()) {
+        if (variantName == null) {
+            for (GroupAllocation groupAllocation : allocation.getGroup()) {
                 for (String allocationGroup : groupAllocation.getGroups()) {
                     if (!evaluationOptions.isIgnoreCase() && groups.contains(allocationGroup)) {
                         event.setReason(VariantAssignmentReason.GROUP);
@@ -295,18 +295,19 @@ public class FeatureManager {
             }
         }
 
-        if (variantName != null) {
+        if (variantName == null) {
             String seed = allocation.getSeed();
             if (!StringUtils.hasText(seed)) {
                 seed = "allocation\n" + featureFlag.getId();
             }
-            String contextId = targetingContext.getUserId() + "\n" + featureFlag.getId();
+            String contextId = targetingContext.getUserId() + "\n" + seed;
             double box = FeatureFilterUtils.isTargetedPercentage(contextId);
             for (PercentileAllocation percentileAllocation : allocation.getPercentile()) {
                 Double to = percentileAllocation.getTo();
                 if ((box == 100 && to == 100) || (percentileAllocation.getFrom() <= box && box < to)) {
                     event.setReason(VariantAssignmentReason.PERCENTILE);
                     variantName = percentileAllocation.getVariant();
+                    break;
                 }
             }
         }
@@ -330,11 +331,11 @@ public class FeatureManager {
         }
         for (VariantReference variant : variants) {
             if (variant.getName().equals(defaultVariantName)) {
-                if (variant.getStatusOverride().equals("Enabled")) {
+                if ("Enabled".equals(variant.getStatusOverride())) {
                     event.setEnabled(true);
                     return;
                 }
-                if (variant.getStatusOverride().equals("Disabled")) {
+                if ("Disabled".equals(variant.getStatusOverride())) {
                     event.setEnabled(false);
                     return;
                 }

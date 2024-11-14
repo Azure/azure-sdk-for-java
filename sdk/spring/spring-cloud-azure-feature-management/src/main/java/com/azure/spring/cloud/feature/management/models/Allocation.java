@@ -6,17 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Allocation {
 
+    @JsonProperty("default_when_enabled")
     private String defaultWhenEnabled;
 
+    @JsonProperty("default_when_disabled")
     private String defaultWhenDisabled;
 
-    private List<UserAllocation> users = new ArrayList<>();
+    private List<UserAllocation> user = new ArrayList<>();
 
-    private List<GroupAllocation> groups = new ArrayList<>();
+    private List<GroupAllocation> group = new ArrayList<>();
 
     private List<PercentileAllocation> percentile = new ArrayList<>();
 
@@ -55,30 +58,30 @@ public class Allocation {
     /**
      * @return the users
      */
-    public List<UserAllocation> getUsers() {
-        return users;
+    public List<UserAllocation> getUser() {
+        return user;
     }
 
     /**
      * @param users the users to set
      */
-    public Allocation setUsers(List<UserAllocation> users) {
-        this.users = users;
+    public Allocation setUser(List<UserAllocation> user) {
+        this.user = user;
         return this;
     }
 
     /**
      * @return the groups
      */
-    public List<GroupAllocation> getGroups() {
-        return groups;
+    public List<GroupAllocation> getGroup() {
+        return group;
     }
 
     /**
      * @param groups the groups to set
      */
-    public Allocation setGroups(List<GroupAllocation> groups) {
-        this.groups = groups;
+    public Allocation setGroups(List<GroupAllocation> group) {
+        this.group = group;
         return this;
     }
 
