@@ -44,18 +44,103 @@ public final class JsonArray extends JsonElement {
     }
 
     /**
+     * Adds a boolean element to the JSON array. This element will be appended to the end of the array.
+     *
+     * @param element The boolean element to add to the array.
+     * @return The updated JsonArray object.
+     */
+    public JsonArray addElement(boolean element) {
+        elements.add(JsonBoolean.getInstance(element));
+        return this;
+    }
+
+    /**
+     * Adds a number element to the JSON array. This element will be appended to the end of the array.
+     * <p>
+     * If the {@code element} is null this will be treated as a JSON null.
+     *
+     * @param element The number element to add to the array.
+     * @return The updated JsonArray object.
+     */
+    public JsonArray addElement(Number element) {
+        elements.add(element == null ? JsonNull.getInstance() : new JsonNumber(element));
+        return this;
+    }
+
+    /**
+     * Adds a string element to the JSON array. This element will be appended to the end of the array.
+     * <p>
+     * If the {@code element} is null this will be treated as a JSON null.
+     *
+     * @param element The string element to add to the array.
+     * @return The updated JsonArray object.
+     */
+    public JsonArray addElement(String element) {
+        elements.add(element == null ? JsonNull.getInstance() : new JsonString(element));
+        return this;
+    }
+
+    /**
      * Adds a JsonElement to the JSON array at the specified index. This element will be inserted at the specified index
      * and all elements at or after the index will be shifted.
      *
      * @param element The JsonElement to add to the array.
      * @param index The index at which to add the element.
      * @return The updated JsonArray object.
-     * @throws NullPointerException If the {@code element} is null.
      * @throws IndexOutOfBoundsException If the {@code index} is less than zero or greater than or equal to
      * {@link #size()}.
      */
     public JsonArray addElement(int index, JsonElement element) {
         elements.add(index, nullCheck(element));
+        return this;
+    }
+
+    /**
+     * Adds a boolean element to the JSON array at the specified index. This element will be inserted at the specified index
+     * and all elements at or after the index will be shifted.
+     *
+     * @param element The boolean element to add to the array.
+     * @param index The index at which to add the element.
+     * @return The updated JsonArray object.
+     * @throws IndexOutOfBoundsException If the {@code index} is less than zero or greater than or equal to
+     * {@link #size()}.
+     */
+    public JsonArray addElement(int index, boolean element) {
+        elements.add(index, JsonBoolean.getInstance(element));
+        return this;
+    }
+
+    /**
+     * Adds a number element to the JSON array at the specified index. This element will be inserted at the specified index
+     * and all elements at or after the index will be shifted.
+     * <p>
+     * If the {@code element} is null this will be treated as a JSON null.
+     *
+     * @param element The number element to add to the array.
+     * @param index The index at which to add the element.
+     * @return The updated JsonArray object.
+     * @throws IndexOutOfBoundsException If the {@code index} is less than zero or greater than or equal to
+     * {@link #size()}.
+     */
+    public JsonArray addElement(int index, Number element) {
+        elements.add(index, element == null ? JsonNull.getInstance() : new JsonNumber(element));
+        return this;
+    }
+
+    /**
+     * Adds a string element to the JSON array at the specified index. This element will be inserted at the specified index
+     * and all elements at or after the index will be shifted.
+     * <p>
+     * If the {@code element} is null this will be treated as a JSON null.
+     *
+     * @param element The string element to add to the array.
+     * @param index The index at which to add the element.
+     * @return The updated JsonArray object.
+     * @throws IndexOutOfBoundsException If the {@code index} is less than zero or greater than or equal to
+     * {@link #size()}.
+     */
+    public JsonArray addElement(int index, String element) {
+        elements.add(index, element == null ? JsonNull.getInstance() : new JsonString(element));
         return this;
     }
 
@@ -72,6 +157,55 @@ public final class JsonArray extends JsonElement {
      */
     public JsonArray setElement(int index, JsonElement element) {
         elements.set(index, nullCheck(element));
+        return this;
+    }
+
+    /**
+     * Sets a specified boolean element at a specified index within the JsonArray. This will replace the current
+     * JsonElement at the specified index with the newly specified boolean element.
+     *
+     * @param element The boolean element to set at the specified index.
+     * @param index The index at which to set the element.
+     * @return The updated JsonArray object.
+     * @throws IndexOutOfBoundsException If the {@code index} is less than zero or greater than or equal to
+     * {@link #size()}.
+     */
+    public JsonArray setElement(int index, boolean element) {
+        elements.set(index, JsonBoolean.getInstance(element));
+        return this;
+    }
+
+    /**
+     * Sets a specified number element at a specified index within the JsonArray. This will replace the current
+     * JsonElement at the specified index with the newly specified number element.
+     * <p>
+     * If the {@code element} is null this will be treated as a JSON null.
+     *
+     * @param element The number element to set at the specified index.
+     * @param index The index at which to set the element.
+     * @return The updated JsonArray object.
+     * @throws IndexOutOfBoundsException If the {@code index} is less than zero or greater than or equal to
+     * {@link #size()}.
+     */
+    public JsonArray setElement(int index, Number element) {
+        elements.set(index, element == null ? JsonNull.getInstance() : new JsonNumber(element));
+        return this;
+    }
+
+    /**
+     * Sets a specified string element at a specified index within the JsonArray. This will replace the current
+     * JsonElement at the specified index with the newly specified string element.
+     * <p>
+     * If the {@code element} is null this will be treated as a JSON null.
+     *
+     * @param element The string element to set at the specified index.
+     * @param index The index at which to set the element.
+     * @return The updated JsonArray object.
+     * @throws IndexOutOfBoundsException If the {@code index} is less than zero or greater than or equal to
+     * {@link #size()}.
+     */
+    public JsonArray setElement(int index, String element) {
+        elements.set(index, element == null ? JsonNull.getInstance() : new JsonString(element));
         return this;
     }
 
