@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
 import com.azure.health.deidentification.models.OperationType;
 
 public final class ReadmeSamples {

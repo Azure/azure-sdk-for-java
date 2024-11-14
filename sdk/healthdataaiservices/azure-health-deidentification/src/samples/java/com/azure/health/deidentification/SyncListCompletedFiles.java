@@ -9,7 +9,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDataType;
 import com.azure.health.deidentification.models.DocumentDetails;
 import com.azure.health.deidentification.models.OperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
