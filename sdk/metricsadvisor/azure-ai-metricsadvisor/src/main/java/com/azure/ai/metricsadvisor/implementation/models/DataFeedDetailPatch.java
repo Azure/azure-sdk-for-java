@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,6 +21,11 @@ import java.util.List;
 @Fluent
 public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch> {
     /*
+     * data source type
+     */
+    private DataSourceType dataSourceType = DataSourceType.fromString("DataFeedDetailPatch");
+
+    /*
      * data feed name
      */
     private String dataFeedName;
@@ -30,8 +36,8 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
     private String dataFeedDescription;
 
     /*
-     * user-defined timestamp column. if timestampColumn is null, start time of every time slice will be used as
-     * default value.
+     * user-defined timestamp column. if timestampColumn is null, start time of every time slice will be used as default
+     * value.
      */
     private String timestampColumn;
 
@@ -129,6 +135,15 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * Creates an instance of DataFeedDetailPatch class.
      */
     public DataFeedDetailPatch() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -559,9 +574,14 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeStringField("dataFeedName", this.dataFeedName);
         jsonWriter.writeStringField("dataFeedDescription", this.dataFeedDescription);
         jsonWriter.writeStringField("timestampColumn", this.timestampColumn);
@@ -596,54 +616,53 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataFeedDetailPatch if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the DataFeedDetailPatch.
      */
     public static DataFeedDetailPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("dataSourceType".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("dataSourceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
                 }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("AzureApplicationInsights".equals(discriminatorValue)) {
-                return AzureApplicationInsightsDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("AzureBlob".equals(discriminatorValue)) {
-                return AzureBlobDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("AzureCosmosDB".equals(discriminatorValue)) {
-                return AzureCosmosDBDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("AzureDataExplorer".equals(discriminatorValue)) {
-                return AzureDataExplorerDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("AzureDataLakeStorageGen2".equals(discriminatorValue)) {
-                return AzureDataLakeStorageGen2DataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("AzureEventHubs".equals(discriminatorValue)) {
-                return AzureEventHubsDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("AzureLogAnalytics".equals(discriminatorValue)) {
-                return AzureLogAnalyticsDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("AzureTable".equals(discriminatorValue)) {
-                return AzureTableDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("InfluxDB".equals(discriminatorValue)) {
-                return InfluxDBDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("MySql".equals(discriminatorValue)) {
-                return MySqlDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("PostgreSql".equals(discriminatorValue)) {
-                return PostgreSqlDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("SqlServer".equals(discriminatorValue)) {
-                return SQLServerDataFeedPatch.fromJson(readerToUse.reset());
-            } else if ("MongoDB".equals(discriminatorValue)) {
-                return MongoDBDataFeedPatch.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureApplicationInsights".equals(discriminatorValue)) {
+                    return AzureApplicationInsightsDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("AzureBlob".equals(discriminatorValue)) {
+                    return AzureBlobDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("AzureCosmosDB".equals(discriminatorValue)) {
+                    return AzureCosmosDBDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("AzureDataExplorer".equals(discriminatorValue)) {
+                    return AzureDataExplorerDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeStorageGen2".equals(discriminatorValue)) {
+                    return AzureDataLakeStorageGen2DataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("AzureEventHubs".equals(discriminatorValue)) {
+                    return AzureEventHubsDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("AzureLogAnalytics".equals(discriminatorValue)) {
+                    return AzureLogAnalyticsDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("AzureTable".equals(discriminatorValue)) {
+                    return AzureTableDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("InfluxDB".equals(discriminatorValue)) {
+                    return InfluxDBDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("MySql".equals(discriminatorValue)) {
+                    return MySqlDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("PostgreSql".equals(discriminatorValue)) {
+                    return PostgreSqlDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("SqlServer".equals(discriminatorValue)) {
+                    return SQLServerDataFeedPatch.fromJson(readerToUse.reset());
+                } else if ("MongoDB".equals(discriminatorValue)) {
+                    return MongoDBDataFeedPatch.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
             }
         });
     }
@@ -655,15 +674,17 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.dataSourceType = DataSourceType.fromString(reader.getString());
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedDataFeedDetailPatch.dataFeedName = reader.getString();
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedDataFeedDetailPatch.dataFeedDescription = reader.getString();
                 } else if ("timestampColumn".equals(fieldName)) {
                     deserializedDataFeedDetailPatch.timestampColumn = reader.getString();
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedDataFeedDetailPatch.dataStartFrom
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDataFeedDetailPatch.dataStartFrom = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("startOffsetInSeconds".equals(fieldName)) {
                     deserializedDataFeedDetailPatch.startOffsetInSeconds = reader.getNullable(JsonReader::getLong);
                 } else if ("maxConcurrency".equals(fieldName)) {

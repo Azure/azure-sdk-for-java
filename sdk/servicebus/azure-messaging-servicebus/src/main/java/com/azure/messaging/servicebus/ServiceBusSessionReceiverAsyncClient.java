@@ -166,7 +166,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     ServiceBusSessionReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath,
         MessagingEntityType entityType, ReceiverOptions receiverOptions, ConnectionCacheWrapper connectionCacheWrapper,
         ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
-        String identifier) {
+        String identifier, boolean timeoutRetryDisabled) {
         this.fullyQualifiedNamespace
             = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -180,7 +180,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         if (connectionCacheWrapper.isV2()) {
             this.sessionAcquirer = new ServiceBusSessionAcquirer(LOGGER, identifier, entityPath, entityType,
                 receiverOptions.getReceiveMode(), connectionCacheWrapper.getRetryOptions().getTryTimeout(),
-                connectionCacheWrapper);
+                timeoutRetryDisabled, connectionCacheWrapper);
             this.unNamedSessionManager = null;
         } else {
             this.unNamedSessionManager = new ServiceBusSessionManager(entityPath, entityType, connectionCacheWrapper,

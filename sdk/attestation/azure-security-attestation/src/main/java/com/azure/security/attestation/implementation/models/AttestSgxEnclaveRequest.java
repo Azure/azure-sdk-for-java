@@ -25,9 +25,8 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     private Base64Url quote;
 
     /*
-     * Runtime data provided by the enclave at the time of quote generation. The MAA will verify that the first 32
-     * bytes of the report_data field of the quote contains the SHA256 hash of the decoded "data" field of the runtime
-     * data.
+     * Runtime data provided by the enclave at the time of quote generation. The MAA will verify that the first 32 bytes
+     * of the report_data field of the quote contains the SHA256 hash of the decoded "data" field of the runtime data.
      */
     private RuntimeData runtimeData;
 
@@ -105,8 +104,8 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     }
 
     /**
-     * Get the initTimeData property: Initialization data provided when the enclave is created. MAA will verify that
-     * the init data was known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
+     * Get the initTimeData property: Initialization data provided when the enclave is created. MAA will verify that the
+     * init data was known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
      * 
      * @return the initTimeData value.
      */
@@ -115,8 +114,8 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     }
 
     /**
-     * Set the initTimeData property: Initialization data provided when the enclave is created. MAA will verify that
-     * the init data was known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
+     * Set the initTimeData property: Initialization data provided when the enclave is created. MAA will verify that the
+     * init data was known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
      * 
      * @param initTimeData the initTimeData value to set.
      * @return the AttestSgxEnclaveRequest object itself.
@@ -182,6 +181,9 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -1,21 +1,40 @@
-# Azure Cognitive Service - Form Recognizer for Java
+# Azure Document Intelligence for Java
 
 > see https://aka.ms/autorest
 
+This is the Autorest configuration file for Document Intelligence.
+
+---
+## Getting Started
+To build the SDK for Document Intelligence, simply [Install Autorest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest --tag={swagger specification}`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
-git checkout v4
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
+
+There are two swagger specifications for Document Intelligence: `formrecognizer-v2.1` and `formrecognizer-documentanalysis`.
+They use the following tags respectively: `--tag=formrecognizer-v2.1`, `--tag=formrecognizer-documentanalysis`.
+
 ```ps
 cd <swagger-folder>
-autorest --java --use=C:/work/autorest.java
+autorest --tag={swagger specification}
+```
+
+e.g.
+```ps
+cd <swagger-folder>
+autorest --tag=formrecognizer-v2.1
+autorest --tag=formrecognizer-documentanalysis
 ```
 
 ## Form Recognizer Service V2.1
