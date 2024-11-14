@@ -6,17 +6,13 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.PropertyCustomization;
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.github.javaparser.StaticJavaParser.parseBlock;
@@ -31,6 +27,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeModuleInfo(customization, logger);
         customizeMediaLiveEventChannelArchiveHeartbeatEventData(customization, logger);
         customizeAcsRouterEvents(customization, logger);
+        customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization, logger);
     }
 
     /**
@@ -98,6 +95,23 @@ public class EventGridSystemEventsCustomization extends Customization {
                 m.setType("List<ResponseError>");
                 m.setBody(parseBlock("{ return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage())).collect(Collectors.toList()); }"));
             });
+        });
+    }
+
+    public void customizeAcsRecordingFileStatusUpdatedEventDataDuration(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsRecordingFileStatusUpdatedEventData");
+
+        classCustomization.customizeAst(ast -> {
+            ast.addImport("java.time.Duration");
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("AcsRecordingFileStatusUpdatedEventData").get();
+            clazz.getMethodsByName("getRecordingDuration").forEach(method -> {
+                method.setType("Duration");
+                method.setBody(parseBlock("{ if (this.recordingDuration != null) { return Duration.ofMillis(this.recordingDuration); } return null; }"));
+                method.setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the recordingDuration property: The recording duration."))))
+                    .addBlockTag("return", "the recordingDuration value."));
+            });
+
         });
     }
 }
