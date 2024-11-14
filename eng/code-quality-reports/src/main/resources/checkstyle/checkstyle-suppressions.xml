@@ -177,8 +177,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
   <suppress checks="."
-            files=".*[/\\]webpubsub[/\\]implementation[/\\]"/>
-  <suppress checks="."
             files=".*[/\\]monitor[/\\]implementation[/\\]"/>
 
   <!-- Suppress ConfigurationCredentialsPolicy for HttpPipelinePolicyCheck.
@@ -190,11 +188,6 @@
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files=".*[/\\](implementation|test)[/\\].*"/>
 
-  <!-- FIXME temp -->
-  <suppress checks="ServiceClient" files="com.azure.messaging.webpubsub.*"/>
-  <!-- Suppress ReverseProxyPolicy being package private. It may get moved into azure-core. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
-            files="com.azure.messaging.webpubsub.ReverseProxyPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
             files="com.azure.ai.translation.text.TranslatorRegionAuthenticationPolicy.java"/>
 
