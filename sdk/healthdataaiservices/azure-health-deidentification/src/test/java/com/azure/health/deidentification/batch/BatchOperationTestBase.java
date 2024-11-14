@@ -31,7 +31,7 @@ public class BatchOperationTestBase extends TestProxyTestBase {
     protected DeidentificationClientBuilder getDeidServicesClientBuilder() {
         DeidentificationClientBuilder deidentificationClientBuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration()
-                .get("HEALTHDATAAISERVICES_DEID_SERVICE_ENDPOINT", "https://localhost:8080"))
+                .get("DEID_SERVICE_ENDPOINT", "https://localhost:8080"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (interceptorManager.isPlaybackMode()) {
             deidentificationClientBuilder.httpClient(interceptorManager.getPlaybackClient())
