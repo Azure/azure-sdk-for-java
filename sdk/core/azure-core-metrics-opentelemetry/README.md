@@ -4,7 +4,7 @@ This package enables  metrics from Azure SDK Java libraries through [OpenTelemet
 open source, vendor-agnostic, single distribution of libraries to provide metrics collection and distributed tracing for
 services.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][OpenTelemetry]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][OpenTelemetry] | [Samples][samples]
 
 ## Getting started
 
@@ -128,5 +128,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/src/
 [OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java#opentelemetry-for-java
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/src/samples/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-metrics-opentelemetry%2FREADME.png)
