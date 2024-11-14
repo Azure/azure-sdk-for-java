@@ -304,6 +304,9 @@ public final class ResourceActionSuccessEventData implements JsonSerializable<Re
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -375,9 +378,8 @@ public final class ResourceActionSuccessEventData implements JsonSerializable<Re
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionSuccessEventData#getResourceClaims()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionSuccessEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -397,9 +399,8 @@ public final class ResourceActionSuccessEventData implements JsonSerializable<Re
      *
      * @param claims the claims value to set.
      * @return the ResourceActionSuccessEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionSuccessEventData#setResourceClaims(Map)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionSuccessEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceActionSuccessEventData setClaims(String claims) {
@@ -415,9 +416,8 @@ public final class ResourceActionSuccessEventData implements JsonSerializable<Re
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionSuccessEventData#getResourceHttpRequest()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionSuccessEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -434,9 +434,8 @@ public final class ResourceActionSuccessEventData implements JsonSerializable<Re
      *
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceActionSuccessEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionSuccessEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionSuccessEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceActionSuccessEventData setHttpRequest(String httpRequest) {
@@ -453,9 +452,8 @@ public final class ResourceActionSuccessEventData implements JsonSerializable<Re
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionSuccessEventData#getResourceAuthorization()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionSuccessEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -472,9 +470,8 @@ public final class ResourceActionSuccessEventData implements JsonSerializable<Re
      *
      * @param authorization the authorization value to set.
      * @return the ResourceActionSuccessEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionSuccessEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionSuccessEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceActionSuccessEventData setAuthorization(String authorization) {

@@ -11,7 +11,7 @@ public final class NetworkSecurityPerimeterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeter model
-            = BinaryData.fromString("{\"id\":\"nszqujiz\",\"perimeterGuid\":\"oqytibyowbblgy\",\"location\":\"utp\"}")
+            = BinaryData.fromString("{\"id\":\"ft\",\"perimeterGuid\":\"gfcwqmpimaqxzhem\",\"location\":\"h\"}")
                 .toObject(NetworkSecurityPerimeter.class);
     }
 

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
 public final class MachinesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/
      * Machines_Get_LicenseProfileInstanceView.json
      */
     /**
@@ -29,7 +29,7 @@ public final class MachinesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/
      * Machines_Get.json
      */
     /**

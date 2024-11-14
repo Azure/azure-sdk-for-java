@@ -21,7 +21,7 @@ public final class ExtensionMetadatasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"mwqkchcxwaxf\",\"extensionType\":\"zjkjexfdeqv\",\"publisher\":\"sylkks\"},\"id\":\"bffmbmxz\",\"name\":\"rgywwp\",\"type\":\"jx\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"jlpjrtwszhv\",\"extensionType\":\"icphvtrrmhw\",\"publisher\":\"fdpyflubh\"},\"id\":\"glrocuy\",\"name\":\"lw\",\"type\":\"hmem\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ExtensionMetadatasListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ExtensionValue> response
-            = manager.extensionMetadatas().list("xjwet", "psihcla", "zvaylptrsqqw", com.azure.core.util.Context.NONE);
+            = manager.extensionMetadatas().list("dfjmzsyzfhotlh", "k", "yych", com.azure.core.util.Context.NONE);
 
     }
 }

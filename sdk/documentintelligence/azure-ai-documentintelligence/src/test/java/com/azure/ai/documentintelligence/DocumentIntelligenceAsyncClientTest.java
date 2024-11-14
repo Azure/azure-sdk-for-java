@@ -291,7 +291,6 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion)
         throws RuntimeException {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -352,16 +351,18 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
                         new AnalyzeDocumentRequest().setBase64Source(data))
                     .setPollInterval(durationTestMode);
 
-            AtomicReference<String> resultIdRef = new AtomicReference<>();
-            resultPollerFlux.subscribe(response -> resultIdRef.set(response.getValue().getOperationId()));
-            resultPollerFlux.getSyncPoller().waitForCompletion();
-            StepVerifier.create(client.getAnalyzeResultPdf(modelID, resultIdRef.get())).assertNext(pdf -> {
-                byte[] pdfBytes = pdf.toBytes();
-                byte[] pdfHeader = { pdfBytes[0], pdfBytes[1], pdfBytes[2], pdfBytes[3], pdfBytes[4] };
+            StepVerifier
+                .create(resultPollerFlux.last()
+                    .flatMap(response -> client.getAnalyzeResultPdf(modelID, response.getValue().getOperationId())))
+                .assertNext(pdf -> {
+                    byte[] pdfBytes = pdf.toBytes();
+                    byte[] pdfHeader = { pdfBytes[0], pdfBytes[1], pdfBytes[2], pdfBytes[3], pdfBytes[4] };
 
-                // A PDF's header is expected to be: %PDF-
-                Assertions.assertArrayEquals(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2D }, pdfHeader);
-            }).expectComplete().verify(DEFAULT_TIMEOUT);
+                    // A PDF's header is expected to be: %PDF-
+                    Assertions.assertArrayEquals(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2D }, pdfHeader);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
         }, LAYOUT_SAMPLE);
     }
 
@@ -378,13 +379,10 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
                         Collections.singletonList(AnalyzeOutputOption.FIGURES),
                         new AnalyzeDocumentRequest().setBase64Source(data))
                     .setPollInterval(durationTestMode);
-            AtomicReference<String> resultIdRef = new AtomicReference<>();
-            resultPollerFlux.subscribe(response -> resultIdRef.set(response.getValue().getOperationId()));
-            AnalyzeResult analyzeResult = resultPollerFlux.getSyncPoller().getFinalResult();
-            Assertions.assertNotNull(analyzeResult);
-            Assertions.assertFalse(analyzeResult.getFigures().isEmpty());
-            String figureId = analyzeResult.getFigures().get(0).getId();
-            StepVerifier.create(client.getAnalyzeResultFigure(modelID, resultIdRef.get(), figureId))
+
+            StepVerifier.create(resultPollerFlux.last()
+                .flatMap(response -> client.getAnalyzeResultFigure(modelID, response.getValue().getOperationId(),
+                    response.getValue().getAnalyzeResult().getFigures().get(0).getId())))
                 .assertNext(figures -> {
                     byte[] figuresBytes = figures.toBytes();
                     byte[] figuresHeader
@@ -401,15 +399,15 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("Disabled until file available on main")
+    @Disabled("com.azure.core.exception.AzureException: Long running operation failed.\n")
     public void analyzeBatchDocuments(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationAsyncClient adminClient
             = getDocumentAdminAsyncClient(httpClient, serviceVersion);
-        buildBatchModelRunner((trainingFilesUrl) -> {
+        buildBatchModelRunner((trainingFilesUrl, trainingFilesResultUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
                 .beginBuildDocumentModel(
-                    new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.GENERATIVE)
+                    new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();

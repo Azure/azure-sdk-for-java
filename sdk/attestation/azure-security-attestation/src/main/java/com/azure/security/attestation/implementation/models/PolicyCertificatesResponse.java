@@ -17,8 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class PolicyCertificatesResponse implements JsonSerializable<PolicyCertificatesResponse> {
     /*
-     * An RFC7519 JSON Web Token structure containing a PolicyCertificatesResults object which contains the
-     * certificates used to validate policy changes
+     * An RFC7519 JSON Web Token structure containing a PolicyCertificatesResults object which contains the certificates
+     * used to validate policy changes
      */
     private String token;
 
@@ -58,6 +58,9 @@ public final class PolicyCertificatesResponse implements JsonSerializable<Policy
     public void validate() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

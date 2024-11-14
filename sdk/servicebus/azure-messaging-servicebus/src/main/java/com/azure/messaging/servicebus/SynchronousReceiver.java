@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.amqp.implementation.WindowedSubscriber;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import reactor.core.publisher.Flux;
 
@@ -162,12 +163,9 @@ final class SynchronousReceiver {
      */
     private Flux<ServiceBusReceivedMessage> traceDecorator(Flux<ServiceBusReceivedMessage> toDecorate) {
         final Flux<ServiceBusReceivedMessage> decorated = tracer.traceSyncReceive(SYNC_RECEIVE_SPAN_NAME, toDecorate);
-        // TODO (anu) - discuss with Liudmila - do we need decorated.subscribe() here or IterableStream's internal
+        // TODO (anu) - discuss with Liudmila - do we need subscribe(decorated) here or IterableStream's internal
         //              subscription to the 'decorated' flux will do?
-        decorated.subscribe(i -> {
-        }, e -> {
-        }, () -> {
-        });
+        MessageUtils.subscribe(decorated);
         return decorated;
     }
 }
