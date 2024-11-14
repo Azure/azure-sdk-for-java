@@ -1,12 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.azure.autorest.customization.PackageCustomization;
+import com.azure.autorest.customization.PropertyCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
+import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
 
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
+
+import static com.github.javaparser.StaticJavaParser.parseBlock;
 
 /**
  * This class contains the customization code to customize the AutoRest generated code for Event Grid.
@@ -16,6 +29,8 @@ public class EventGridSystemEventsCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         customizeModuleInfo(customization, logger);
+        customizeMediaLiveEventChannelArchiveHeartbeatEventData(customization, logger);
+        customizeAcsRouterEvents(customization, logger);
     }
 
     /**
@@ -38,4 +53,51 @@ public class EventGridSystemEventsCustomization extends Customization {
         editor.replaceFile("src/main/java/module-info.java", sb.toString());
     }
 
+    /**
+     * Customize the MediaLiveEventChannelArchiveHeartbeatEventData.getChannelLatency method to return a Duration object.
+     * @param customization The LibraryCustomization object.
+     * @param logger The logger object.
+     */
+    public void customizeMediaLiveEventChannelArchiveHeartbeatEventData(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventChannelArchiveHeartbeatEventData");
+        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);");
+        logger.info("Fixing getChannelLatency");
+        classCustomization.customizeAst(ast -> {
+            ast.addImport("java.time.Duration");
+            ast.addImport("com.azure.core.util.logging.ClientLogger");
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("MediaLiveEventChannelArchiveHeartbeatEventData").get();
+            clazz.getMethodsByName("getChannelLatency").forEach(method -> {
+                method.setType("Duration");
+                method.setBody(parseBlock("{ if (\"n/a\".equals(this.channelLatency)) { return null; } Long channelLatencyLong; try { channelLatencyLong = Long.parseLong(this.channelLatency); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; } return Duration.ofMillis(channelLatencyLong); }"));
+                method.setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Gets the duration of channel latency."))))
+                    .addBlockTag("return", "the duration of channel latency."));
+            });
+
+        });
+    }
+
+    public void customizeAcsRouterEvents(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsRouterWorkerSelector");
+
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterWorkerSelector").get();
+            clazz.getMethodsByName("getTimeToLive").forEach(m -> {
+                m.setType(Duration.class);
+                m.setBody(parseBlock("{ return Duration.ofSeconds((long)timeToLive); }"));
+            });
+        });
+
+        classCustomization = packageModels.getClass("AcsRouterJobClassificationFailedEventData");
+        classCustomization.addImports("com.azure.core.models.ResponseError");
+        classCustomization.addImports("java.util.stream.Collectors");
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterJobClassificationFailedEventData").get();
+            clazz.getMethodsByName("getErrors").forEach(m -> {
+                m.setType("List<ResponseError>");
+                m.setBody(parseBlock("{ return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage())).collect(Collectors.toList()); }"));
+            });
+        });
+    }
 }
