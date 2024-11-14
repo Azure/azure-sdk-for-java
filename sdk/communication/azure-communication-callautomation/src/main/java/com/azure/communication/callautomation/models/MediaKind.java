@@ -3,11 +3,48 @@
 
 package com.azure.communication.callautomation.models;
 
-/** Media kind for the outstreaming audio */
-public enum MediaKind {
-    /** Audio data.*/
-    AUDIODATA,
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
-    /** stop audio data*/
-    STOPAUDIO
+/**
+ * Specifies the media kind for out streaming data.
+ */
+public final class MediaKind extends ExpandableStringEnum<MediaKind> {
+    /**
+     * AudioData.
+     */
+    public static final MediaKind AUDIO_DATA = fromString("AudioData");
+
+    /**
+     * StopAudio.
+     */
+    public static final MediaKind STOP_AUDIO = fromString("StopAudio");
+
+    /**
+     * Creates a new instance of MediaKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MediaKind() {
+    }
+
+    /**
+     * Creates or finds a MediaKind from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MediaKind.
+     */
+    public static MediaKind fromString(String name) {
+        return fromString(name, MediaKind.class);
+    }
+
+    /**
+     * Gets known MediaKind values.
+     * 
+     * @return known MediaKind values.
+     */
+    public static Collection<MediaKind> values() {
+        return values(MediaKind.class);
+    }
 }

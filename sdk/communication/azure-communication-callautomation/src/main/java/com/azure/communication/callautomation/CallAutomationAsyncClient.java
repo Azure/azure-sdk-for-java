@@ -283,9 +283,9 @@ public final class CallAutomationAsyncClient {
                     mediaStreamingOptions.getTransportType().toString()))
             .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled())
             .setEnableBidirectional(mediaStreamingOptions.isEnableBidirectional())
-            .setAudioFormat(mediaStreamingOptions.getAudioFormat() != null ? 
-            AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat().toString())
-            :AudioFormatInternal.fromString(AudioFormat.PCM24KMONO.toString()));
+            .setAudioFormat(mediaStreamingOptions.getAudioFormat() != null 
+            ? AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat().toString())
+            : AudioFormatInternal.fromString(AudioFormat.PCM_24K_MONO.toString()));
     }
 
     private TranscriptionOptionsInternal getTranscriptionOptionsInternal(

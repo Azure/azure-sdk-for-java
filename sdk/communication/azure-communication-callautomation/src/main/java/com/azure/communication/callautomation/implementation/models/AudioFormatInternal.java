@@ -14,12 +14,12 @@ public final class AudioFormatInternal extends ExpandableStringEnum<AudioFormatI
     /**
      * Pcm16KMono.
      */
-    public static final AudioFormatInternal PCM16KMONO = fromString("Pcm16KMono");
+    public static final AudioFormatInternal PCM_16K_MONO = fromString("Pcm16KMono");
 
     /**
      * Pcm24KMono.
      */
-    public static final AudioFormatInternal PCM24KMONO = fromString("Pcm24KMono");
+    public static final AudioFormatInternal PCM_24K_MONO = fromString("Pcm24KMono");
 
     /**
      * Creates a new instance of AudioFormatInternal value.
