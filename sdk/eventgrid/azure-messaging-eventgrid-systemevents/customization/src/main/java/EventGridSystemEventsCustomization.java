@@ -13,6 +13,7 @@ import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.github.javaparser.StaticJavaParser.parseBlock;
@@ -29,6 +30,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeAcsRouterEvents(customization, logger);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization, logger);
         customizeStorageDirectoryDeletedEventData(customization, logger);
+        customizeMediaLiveEventIngestHeartbeatEventData(customization);
     }
 
     /**
@@ -122,4 +124,24 @@ public class EventGridSystemEventsCustomization extends Customization {
         classCustomization.getMethod("getRecursive").rename("isRecursive").setReturnType("Boolean", "Boolean.getBoolean(%s)");
     }
 
+    public void customizeMediaLiveEventIngestHeartbeatEventData(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventIngestHeartbeatEventData");
+        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);", Arrays.asList("com.azure.core.util.logging.ClientLogger"));
+
+        classCustomization.customizeAst(ast -> {
+            ast.addImport("java.time.OffsetDateTime");
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("MediaLiveEventIngestHeartbeatEventData").get();
+            clazz.getMethodsByName("getIngestDriftValue").forEach(method -> {
+                method.setType("Integer");
+                method.setBody(parseBlock("{ if (\"n/a\".equals(this.ingestDriftValue)) { return null; } try { return Integer.parseInt(this.ingestDriftValue); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; } }"));
+            });
+
+            clazz.getMethodsByName("getLastFragmentArrivalTime").forEach(method -> {
+                method.setType("OffsetDateTime");
+                method.setBody(parseBlock("{ return OffsetDateTime.parse(this.lastFragmentArrivalTime); }"));
+            });
+
+        });
+    }
 }
