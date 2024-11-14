@@ -76,12 +76,12 @@ public class FileAsyncApiTests extends FileShareTestBase {
         shareName = generateShareName();
         filePath = generatePathName();
         shareAsyncClient = shareBuilderHelper(shareName).buildAsyncClient();
+        shareAsyncClient.create().block();
         primaryFileAsyncClient = fileBuilderHelper(shareName, filePath).buildFileAsyncClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en").setContentType("application/octet-stream");
         smbProperties
             = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL));
-        StepVerifier.create(shareAsyncClient.create()).verifyComplete();
     }
 
     @Test
@@ -278,41 +278,38 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void uploadAndDownloadData() {
-        primaryFileAsyncClient.create(DATA.getDefaultDataSizeLong()).block();
-
-        StepVerifier
-            .create(primaryFileAsyncClient.uploadRangeWithResponse(
+        StepVerifier.create(primaryFileAsyncClient.create(DATA.getDefaultDataSizeLong())
+            .then(primaryFileAsyncClient.uploadRangeWithResponse(
                 new ShareFileUploadRangeOptions(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong())))
-            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
-            .verifyComplete();
-
-        StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null)).assertNext(response -> {
-            assertTrue((response.getStatusCode() == 200) || (response.getStatusCode() == 206));
-            ShareFileDownloadHeaders headers = response.getDeserializedHeaders();
-            assertEquals(DATA.getDefaultDataSizeLong(), headers.getContentLength());
-            assertNotNull(headers.getETag());
-            assertNotNull(headers.getLastModified());
-            assertNotNull(headers.getFilePermissionKey());
-            assertNotNull(headers.getFileAttributes());
-            assertNotNull(headers.getFileLastWriteTime());
-            assertNotNull(headers.getFileCreationTime());
-            assertNotNull(headers.getFileChangeTime());
-            assertNotNull(headers.getFileParentId());
-            assertNotNull(headers.getFileId());
-            FluxUtil.collectBytesInByteBufferStream(response.getValue()).flatMap(actualData -> {
-                assertArrayEquals(DATA.getDefaultBytes(), actualData);
-                return Mono.empty();
-            });
-        }).verifyComplete();
+            .flatMap(it -> {
+                FileShareTestHelper.assertResponseStatusCode(it, 201);
+                return primaryFileAsyncClient.downloadWithResponse(null);
+            })
+            .flatMap(response -> {
+                assertTrue((response.getStatusCode() == 200) || (response.getStatusCode() == 206));
+                ShareFileDownloadHeaders headers = response.getDeserializedHeaders();
+                assertEquals(DATA.getDefaultDataSizeLong(), headers.getContentLength());
+                assertNotNull(headers.getETag());
+                assertNotNull(headers.getLastModified());
+                assertNotNull(headers.getFilePermissionKey());
+                assertNotNull(headers.getFileAttributes());
+                assertNotNull(headers.getFileLastWriteTime());
+                assertNotNull(headers.getFileCreationTime());
+                assertNotNull(headers.getFileChangeTime());
+                assertNotNull(headers.getFileParentId());
+                assertNotNull(headers.getFileId());
+                return FluxUtil.collectBytesInByteBufferStream(response.getValue()).flatMap(actualData -> {
+                    assertArrayEquals(DATA.getDefaultBytes(), actualData);
+                    return Mono.empty();
+                });
+            })).verifyComplete();
     }
 
     @Test
     public void uploadAndDownloadDataWithArgs() {
-        StepVerifier.create(primaryFileAsyncClient.create(1024)).verifyComplete();
-
-        StepVerifier
-            .create(primaryFileAsyncClient.uploadRangeWithResponse(
-                new ShareFileUploadRangeOptions(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong()).setOffset(1L)))
+        StepVerifier.create(primaryFileAsyncClient.create(1024)
+            .then(primaryFileAsyncClient.uploadRangeWithResponse(
+                new ShareFileUploadRangeOptions(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong()).setOffset(1L))))
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
             .verifyComplete();
 
@@ -325,7 +322,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 FluxUtil.collectBytesInByteBufferStream(it.getValue()).flatMap(actualData -> {
                     assertArrayEquals(DATA.getDefaultBytes(), actualData);
                     return Mono.empty();
-                }).then();
+                });
             })
             .verifyComplete();
     }
@@ -339,13 +336,14 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void uploadLease() {
-        primaryFileAsyncClient.create(DATA.getDefaultDataSizeLong()).block();
-        String leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block();
-
-        StepVerifier.create(primaryFileAsyncClient.uploadRangeWithResponse(
-            new ShareFileUploadRangeOptions(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong())
-                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))))
-            .expectNextCount(1);
+        StepVerifier
+            .create(primaryFileAsyncClient.create(DATA.getDefaultDataSizeLong())
+                .then(createLeaseClient(primaryFileAsyncClient).acquireLease())
+                .flatMap(leaseId -> primaryFileAsyncClient.uploadRangeWithResponse(
+                    new ShareFileUploadRangeOptions(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong())
+                        .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)))))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @Test
@@ -556,20 +554,17 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void uploadFromFileLease() throws IOException {
+        String fileName = generatePathName();
+        String uploadFile = FileShareTestHelper.createRandomFileWithLength(1024, testFolder, fileName);
+
         StepVerifier.create(primaryFileAsyncClient.create(1024)
             .then(createLeaseClient(primaryFileAsyncClient).acquireLease())
-            .flatMap(leaseId -> {
-                String fileName = generatePathName();
-                String uploadFile = null;
-                try {
-                    uploadFile = FileShareTestHelper.createRandomFileWithLength(1024, testFolder, fileName);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                return primaryFileAsyncClient
-                    .uploadFromFile(uploadFile, new ShareRequestConditions().setLeaseId(leaseId))
-                    .then(primaryFileAsyncClient.deleteIfExists().then(Mono.empty()));
-            })).verifyComplete();
+            .flatMap(leaseId -> primaryFileAsyncClient.uploadFromFile(uploadFile,
+                new ShareRequestConditions().setLeaseId(leaseId))))
+            .verifyComplete();
+
+        // cleanup
+        FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
     }
 
     @Test
@@ -668,7 +663,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void uploadRangeFromURLSourceErrorAndStatusCode() {
         ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
-
+    
         StepVerifier.create(primaryFileAsyncClient.create(1024).then(destinationClient.create(1024))
             .then(destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileAsyncClient.getFileUrl())))
             .verifyErrorSatisfies(r -> {
@@ -810,37 +805,32 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void startCopy() {
-        primaryFileAsyncClient.create(1024).block();
-        // TODO: Need another test account if using SAS token for authentication.
-        // TODO: SasToken auth cannot be used until the logging redaction
-        String sourceURL = primaryFileAsyncClient.getFileUrl();
-
-        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
-            primaryFileAsyncClient.beginCopy(sourceURL, new ShareFileCopyOptions(), null));
-        StepVerifier.create(poller)
-            .assertNext(it -> assertNotNull(it.getValue().getCopyId()))
-            .expectComplete()
-            .verify(Duration.ofMinutes(1));
+        StepVerifier.create(primaryFileAsyncClient.create(1024).then(Mono.defer(() -> {
+            String sourceURL = primaryFileAsyncClient.getFileUrl();
+            PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+                primaryFileAsyncClient.beginCopy(sourceURL, new ShareFileCopyOptions(), null));
+            return Mono.from(poller);
+        }))).assertNext(it -> assertNotNull(it.getValue().getCopyId())).verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#startCopyArgumentsSupplier")
     public void startCopyWithArgs(boolean setFilePermissionKey, boolean setFilePermission, boolean ignoreReadOnly,
         boolean setArchiveAttribute, PermissionCopyModeType permissionType) {
-        primaryFileAsyncClient.create(1024).block();
-        String sourceURL = primaryFileAsyncClient.getFileUrl();
-        String filePermissionKey = shareAsyncClient.createPermission(FILE_PERMISSION).block();
-        // We recreate file properties for each test since we need to store the times for the test with
-        // testResourceNamer.now()
-        smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
-        if (setFilePermissionKey) {
-            smbProperties.setFilePermissionKey(filePermissionKey);
-        }
-
-        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
-            primaryFileAsyncClient.beginCopy(sourceURL, smbProperties, setFilePermission ? FILE_PERMISSION : null,
-                permissionType, ignoreReadOnly, setArchiveAttribute, null, null, null));
-        StepVerifier.create(poller)
+        StepVerifier.create(primaryFileAsyncClient.create(1024)
+            .then(Mono.just(primaryFileAsyncClient.getFileUrl()))
+            .flatMap(sourceURL -> shareAsyncClient.createPermission(FILE_PERMISSION).flatMap(filePermissionKey -> {
+                smbProperties.setFileCreationTime(testResourceNamer.now())
+                    .setFileLastWriteTime(testResourceNamer.now());
+                if (setFilePermissionKey) {
+                    smbProperties.setFilePermissionKey(filePermissionKey);
+                }
+                PollerFlux<ShareFileCopyInfo, Void> poller
+                    = setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, smbProperties,
+                        setFilePermission ? FILE_PERMISSION : null, permissionType, ignoreReadOnly, setArchiveAttribute,
+                        null, null, null));
+                return Mono.from(poller);
+            })))
             .assertNext(it -> assertNotNull(it.getValue().getCopyId()))
             .expectComplete()
             .verify(Duration.ofMinutes(1));
@@ -867,10 +857,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileAsyncClient.create(1024);
-
+    
         PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
             primaryFileAsyncClient.beginCopy("https://error.file.core.windows.net/garbage", new ShareFileCopyOptions(), null));
-
+    
         StepVerifier.create(primaryFileAsyncClient.create(1024).thenMany(poller))
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
@@ -921,30 +911,25 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#startCopyArgumentsSupplier")
     public void startCopyWithOptions(boolean setFilePermissionKey, boolean setFilePermission, boolean ignoreReadOnly,
         boolean setArchiveAttribute, PermissionCopyModeType permissionType) {
-        Mono<ShareFileInfo> createFileMono = primaryFileAsyncClient.create(1024);
-        String sourceURL = primaryFileAsyncClient.getFileUrl();
-        Mono<String> filePermissionKeyMono = shareAsyncClient.createPermission(FILE_PERMISSION);
+        StepVerifier.create(primaryFileAsyncClient.create(1024).then(Mono.defer(() -> {
+            String sourceURL = primaryFileAsyncClient.getFileUrl();
+            return shareAsyncClient.createPermission(FILE_PERMISSION).flatMap(filePermissionKey -> {
+                smbProperties.setFileCreationTime(testResourceNamer.now())
+                    .setFileLastWriteTime(testResourceNamer.now());
+                if (setFilePermissionKey) {
+                    smbProperties.setFilePermissionKey(filePermissionKey);
+                }
+                ShareFileCopyOptions options = new ShareFileCopyOptions().setSmbProperties(smbProperties)
+                    .setFilePermission(setFilePermission ? FILE_PERMISSION : null)
+                    .setIgnoreReadOnly(ignoreReadOnly)
+                    .setArchiveAttribute(setArchiveAttribute)
+                    .setPermissionCopyModeType(permissionType);
 
-        Mono<ShareFileCopyOptions> optionsMono = filePermissionKeyMono.map(filePermissionKey -> {
-            smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
-            if (setFilePermissionKey) {
-                smbProperties.setFilePermissionKey(filePermissionKey);
-            }
-            return new ShareFileCopyOptions().setSmbProperties(smbProperties)
-                .setFilePermission(setFilePermission ? FILE_PERMISSION : null)
-                .setIgnoreReadOnly(ignoreReadOnly)
-                .setArchiveAttribute(setArchiveAttribute)
-                .setPermissionCopyModeType(permissionType);
-        });
-
-        Mono<PollerFlux<ShareFileCopyInfo, Void>> pollerMono = optionsMono.map(
-            options -> setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null)));
-
-        StepVerifier
-            .create(createFileMono.thenMany(pollerMono
-                .flatMapMany(poller -> poller.take(1).doOnNext(it -> assertNotNull(it.getValue().getCopyId())))))
-            .expectComplete()
-            .verify(Duration.ofMinutes(1));
+                PollerFlux<ShareFileCopyInfo, Void> poller
+                    = setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null));
+                return Mono.from(poller);
+            });
+        }))).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
     }
 
     @Test
@@ -1107,12 +1092,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileCopyOptions options = new ShareFileCopyOptions().setDestinationRequestConditions(conditions);
 
         StepVerifier
-            .create(createFileMono.thenMany(
-                setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null))))
-            .verifyErrorSatisfies(throwable -> {
-                ShareStorageException e = assertInstanceOf(ShareStorageException.class, throwable);
-                assertEquals("LeaseNotPresentWithFileOperation", e.getErrorCode());
-            });
+            .create(createFileMono.then(Mono.defer(
+                () -> setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null))
+                    .then(Mono.error(new ShareStorageException("LeaseNotPresentWithFileOperation", null, null))))))
+            .verifyError(ShareStorageException.class);
     }
 
     @Test
@@ -1704,42 +1687,43 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void defaultAudience() {
         String fileName = generatePathName();
         ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
-        fileClient.create(Constants.KB).block();
         ShareServiceAsyncClient oAuthServiceClient
             = getOAuthServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP)
                 .audience(null) /* should default to "https://storage.azure.com/" */);
 
         ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
 
-        StepVerifier.create(aadFileClient.exists()).expectNext(true).verifyComplete();
+        StepVerifier.create(fileClient.create(Constants.KB).then(aadFileClient.exists()))
+            .expectNext(true)
+            .verifyComplete();
     }
 
     @Test
     public void storageAccountAudience() {
         String fileName = generatePathName();
         ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
-        fileClient.create(Constants.KB).block();
         ShareServiceAsyncClient oAuthServiceClient
             = getOAuthServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP)
                 .audience(ShareAudience.createShareServiceAccountAudience(shareAsyncClient.getAccountName())));
 
         ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
 
-        StepVerifier.create(aadFileClient.exists()).expectNext(true).verifyComplete();
+        StepVerifier.create(fileClient.create(Constants.KB).then(aadFileClient.exists()))
+            .expectNext(true)
+            .verifyComplete();
     }
 
     @Test
     public void audienceError() {
         String fileName = generatePathName();
         ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
-        fileClient.create(Constants.KB).block();
         ShareServiceAsyncClient oAuthServiceClient
             = getOAuthServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP)
                 .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
 
         ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
 
-        StepVerifier.create(aadFileClient.exists()).verifyErrorSatisfies(r -> {
+        StepVerifier.create(fileClient.create(Constants.KB).then(aadFileClient.exists())).verifyErrorSatisfies(r -> {
             ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
             assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
         });
@@ -1752,13 +1736,14 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         String fileName = generatePathName();
         ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
-        fileClient.create(Constants.KB).block();
         ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(
             new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP).audience(audience));
 
         ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
 
-        StepVerifier.create(aadFileClient.exists()).expectNext(true).verifyComplete();
+        StepVerifier.create(fileClient.create(Constants.KB).then(aadFileClient.exists()))
+            .expectNext(true)
+            .verifyComplete();
     }
 
     @PlaybackOnly
