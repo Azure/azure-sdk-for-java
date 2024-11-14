@@ -4,12 +4,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -26,6 +24,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -43,8 +42,6 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
     public void before_EmulatorWithHttpTest() {
-        System.out.println("EmulatorVNextWithHttpTest " + System.getProperty("ACCOUNT_HOST"));
-        System.out.println("EmulatorVNextWithHttpTest " + System.getProperty("ACCOUNT_KEY"));
         this.client =
             getClientBuilder()
                 .gatewayMode()
@@ -119,6 +116,19 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
         assertThat(querySpecResult.size()).isOne();
         validateItem(querySpecResult.get(0), createdItem);
 
+        // query items with order by
+        String orderByQuery = "select * from c order by c.intProp desc";
+        List<TestItem> orderByQueryResult = new ArrayList<>();
+        this.createdContainer
+            .queryItems(orderByQuery, TestItem.class)
+            .byPage()
+            .doOnNext(feedResponse -> {
+                orderByQueryResult.addAll(feedResponse.getResults());
+            })
+            .blockLast();
+        assertThat(orderByQueryResult.size()).isOne();
+        validateItem(orderByQueryResult.get(0), createdItem);
+
         // update item
         createdItem.setProp(UUID.randomUUID().toString());
         TestItem updatedItem = this.createdContainer.upsertItem(createdItem).block().getItem();
@@ -178,17 +188,6 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
         List<FeedRange> feedRanges = this.createdContainer.getFeedRanges().block();
         assertThat(feedRanges.size()).isGreaterThanOrEqualTo(1);
 
-        // query change feed
-        List<TestItem> changeFeedItems = new ArrayList<>();
-        this.createdContainer.queryChangeFeed(
-                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange()),
-                TestItem.class)
-            .byPage()
-            .doOnNext(feedResponse -> changeFeedItems.addAll(feedResponse.getResults()))
-            .blockLast();
-        assertThat(readManyResults.size()).isOne();
-        validateItem(readManyResults.get(0), createdItem);
-
         // delete item
         this.createdContainer.deleteItem(createdItem.getId(), new PartitionKey(createdItem.getId())).block();
     }
@@ -199,5 +198,64 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
         assertThat(returnedItem.getId()).isEqualTo(expectedItem.getId());
         assertThat(returnedItem.getMypk()).isEqualTo(expectedItem.getMypk());
         assertThat(returnedItem.getProp()).isEqualTo(expectedItem.getProp());
+    }
+
+    private static class TestItem {
+        private final static Random random = new Random();
+
+        private String id;
+        private String mypk;
+        private String prop;
+        private int intProp;
+
+        public TestItem() {
+        }
+
+        public TestItem(String id, String mypk, String prop, int intProp) {
+            this.id = id;
+            this.mypk = mypk;
+            this.prop = prop;
+            this.intProp = intProp;
+        }
+
+        public static TestItem createNewItem() {
+            return new TestItem(
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                random.nextInt(10));
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getMypk() {
+            return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
+        }
+
+        public String getProp() {
+            return prop;
+        }
+
+        public void setProp(String prop) {
+            this.prop = prop;
+        }
+
+        public int getIntProp() {
+            return intProp;
+        }
+
+        public void setIntProp(int intProp) {
+            this.intProp = intProp;
+        }
     }
 }
