@@ -1,6 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
+    "com.azure.messaging.eventgrid.implementation.models.AcsRouterCommunicationError": "Microsoft.EventGrid.SystemEvents.AcsRouterCommunicationError",
     "com.azure.messaging.eventgrid.systemevents.AcsChatEventBaseProperties": "Microsoft.EventGrid.SystemEvents.AcsChatEventBaseProperties",
     "com.azure.messaging.eventgrid.systemevents.AcsChatEventInThreadBaseProperties": "Microsoft.EventGrid.SystemEvents.AcsChatEventInThreadBaseProperties",
     "com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData": "Microsoft.EventGrid.SystemEvents.AcsChatMessageDeletedEventData",
@@ -47,7 +48,6 @@
     "com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData": "Microsoft.EventGrid.SystemEvents.AcsRecordingFileStatusUpdatedEventData",
     "com.azure.messaging.eventgrid.systemevents.AcsRecordingStorageInfoProperties": "Microsoft.EventGrid.SystemEvents.AcsRecordingStorageInfoProperties",
     "com.azure.messaging.eventgrid.systemevents.AcsRouterChannelConfiguration": "Microsoft.EventGrid.SystemEvents.AcsRouterChannelConfiguration",
-    "com.azure.messaging.eventgrid.systemevents.AcsRouterCommunicationError": "Microsoft.EventGrid.SystemEvents.AcsRouterCommunicationError",
     "com.azure.messaging.eventgrid.systemevents.AcsRouterEventData": "Microsoft.EventGrid.SystemEvents.AcsRouterEventData",
     "com.azure.messaging.eventgrid.systemevents.AcsRouterJobCancelledEventData": "Microsoft.EventGrid.SystemEvents.AcsRouterJobCancelledEventData",
     "com.azure.messaging.eventgrid.systemevents.AcsRouterJobClassificationFailedEventData": "Microsoft.EventGrid.SystemEvents.AcsRouterJobClassificationFailedEventData",
