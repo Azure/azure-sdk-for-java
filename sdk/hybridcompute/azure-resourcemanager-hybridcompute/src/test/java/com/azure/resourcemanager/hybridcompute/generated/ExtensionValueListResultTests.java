@@ -11,7 +11,7 @@ public final class ExtensionValueListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionValueListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"ebmnzbtbhjpglk\",\"extensionType\":\"ohdneuel\",\"publisher\":\"hsd\"},\"id\":\"t\",\"name\":\"zfikd\",\"type\":\"wwquuvxzxclvithh\"}]}")
+            "{\"value\":[{\"properties\":{\"version\":\"ltdtbnnhad\",\"extensionType\":\"crkvcikhnv\",\"publisher\":\"mqg\"},\"id\":\"queziky\",\"name\":\"ggxkallatmelwuip\",\"type\":\"ccjzkzivgvv\"},{\"properties\":{\"version\":\"y\",\"extensionType\":\"yrnxxmueedn\",\"publisher\":\"dvstkw\"},\"id\":\"tchealmf\",\"name\":\"tdaaygdvwvg\",\"type\":\"iohgwxrtfud\"},{\"properties\":{\"version\":\"xg\",\"extensionType\":\"agvrvmnpkuk\",\"publisher\":\"i\"},\"id\":\"blxgwimf\",\"name\":\"jhfjxwm\",\"type\":\"zk\"},{\"properties\":{\"version\":\"qreyfkzi\",\"extensionType\":\"jawneaiv\",\"publisher\":\"czelpcirel\"},\"id\":\"eae\",\"name\":\"wabfatkl\",\"type\":\"dxbjhwuaanozj\"}]}")
             .toObject(ExtensionValueListResult.class);
     }
 
