@@ -144,7 +144,7 @@ public final class SharedExecutorService implements ScheduledExecutorService {
     volatile ScheduledExecutorService executor;
     private static final AtomicReferenceFieldUpdater<SharedExecutorService, ScheduledExecutorService> EXECUTOR_UPDATER
         = AtomicReferenceFieldUpdater.newUpdater(SharedExecutorService.class, ScheduledExecutorService.class,
-        "executor");
+            "executor");
 
     private SharedExecutorService() {
     }
@@ -368,7 +368,8 @@ public final class SharedExecutorService implements ScheduledExecutorService {
                 threadFactory = createVirtualThreadFactory();
                 LOGGER.atVerbose().log("Successfully created a virtual thread factory.");
             } catch (Exception e) {
-                LOGGER.atInfo().log("Failed to create a virtual thread factory, falling back to non-virtual threads.", e);
+                LOGGER.atInfo()
+                    .log("Failed to create a virtual thread factory, falling back to non-virtual threads.", e);
                 threadFactory = createNonVirtualThreadFactory();
             }
         } else {

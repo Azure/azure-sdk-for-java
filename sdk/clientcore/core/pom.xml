@@ -41,7 +41,6 @@
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
     <javaModulesSurefireArgLine>
-      --add-opens io.clientcore.core/io.clientcore.core=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.credential=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http=ALL-UNNAMED

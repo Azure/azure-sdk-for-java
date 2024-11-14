@@ -12,8 +12,6 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -21,10 +19,6 @@ import java.util.concurrent.TimeUnit;
  * Utility class for JDK HttpClient.
  */
 public final class JdkHttpUtils {
-    // Singleton timer to schedule timeout tasks.
-    // TODO (alzimmer): Make sure one thread is sufficient for all timeout tasks.
-    private static final Timer TIMER = new Timer("clientcore-jdk-httpclient-network-timeout-tracker", true);
-
     /**
      * Converts the given JDK Http headers to clientcore Http header.
      *
