@@ -1,14 +1,10 @@
 # Release History
 
-## 1.55.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.54.1 (2024-11-14)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug where when using a `SecurityManager` a recursive call can crash an application. ([#42906](https://github.com/Azure/azure-sdk-for-java/pull/42906))
 
 ## 1.54.0 (2024-11-01)
 
