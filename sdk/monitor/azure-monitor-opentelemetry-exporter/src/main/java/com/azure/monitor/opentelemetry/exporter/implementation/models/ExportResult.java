@@ -40,7 +40,7 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Get the itemsReceived property: The number of items received.
-     *
+     * 
      * @return the itemsReceived value.
      */
     public Integer getItemsReceived() {
@@ -49,7 +49,7 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Set the itemsReceived property: The number of items received.
-     *
+     * 
      * @param itemsReceived the itemsReceived value to set.
      * @return the ExportResult object itself.
      */
@@ -60,7 +60,7 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Get the itemsAccepted property: The number of items accepted.
-     *
+     * 
      * @return the itemsAccepted value.
      */
     public Integer getItemsAccepted() {
@@ -69,7 +69,7 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Set the itemsAccepted property: The number of items accepted.
-     *
+     * 
      * @param itemsAccepted the itemsAccepted value to set.
      * @return the ExportResult object itself.
      */
@@ -80,7 +80,7 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Get the errors property: An array of error detail objects.
-     *
+     * 
      * @return the errors value.
      */
     public List<TelemetryErrorDetails> getErrors() {
@@ -89,7 +89,7 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Set the errors property: An array of error detail objects.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the ExportResult object itself.
      */
@@ -112,7 +112,7 @@ public final class ExportResult implements JsonSerializable<ExportResult> {
 
     /**
      * Reads an instance of ExportResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExportResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -124,6 +125,9 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
         this.error = error;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -156,8 +160,8 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
                 } else if ("to".equals(fieldName)) {
                     deserializedAcsMessageEventData.to = reader.getString();
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsMessageEventData.receivedTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsMessageEventData.receivedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     deserializedAcsMessageEventData.error = AcsMessageChannelEventError.fromJson(reader);
                 } else {

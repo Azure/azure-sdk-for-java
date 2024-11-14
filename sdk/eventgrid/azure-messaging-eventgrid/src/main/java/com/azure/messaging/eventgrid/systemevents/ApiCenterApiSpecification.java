@@ -72,6 +72,9 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -55,6 +55,9 @@ public final class AttestationResponse implements JsonSerializable<AttestationRe
     public void validate() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

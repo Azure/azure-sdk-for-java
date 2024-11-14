@@ -99,6 +99,9 @@ public final class MediaJobOutputProgressEventData implements JsonSerializable<M
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

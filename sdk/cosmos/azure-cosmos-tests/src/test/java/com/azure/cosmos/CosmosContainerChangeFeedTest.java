@@ -912,8 +912,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         ArrayList<Mono<CosmosItemResponse<ObjectNode>>> result = new ArrayList<>();
         for (int i = 0; i < docs.size(); i++) {
-            result.add(createdAsyncContainer
-                .createItem(docs.get(i)));
+            result.add(container.createItem(docs.get(i)));
         }
 
         List<ObjectNode> insertedDocs = Flux.merge(

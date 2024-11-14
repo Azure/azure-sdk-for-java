@@ -11,6 +11,7 @@ import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SupportedCipherSuiteFilter;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -258,6 +259,12 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
+    // Config to indicate whether allow insecure connections, for example allow http connection or disable cert verification
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final boolean DEFAULT_INSECURE_EMULATOR_CONNECTION_ALLOWED = false;
+    private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED = "COSMOS.INSECURE_EMULATOR_CONNECTION_ALLOWED";
+    private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE = "COSMOS_INSECURE_EMULATOR_CONNECTION_ALLOWED";
+
     // Flag to indicate whether enabled http2 for gateway, Please do not use it, only for internal testing purpose
     private static final boolean DEFAULT_USE_HTTP2 = false;
     private static final String USE_HTTP2 = "COSMOS.USE_HTTP2";
@@ -279,6 +286,10 @@ public class Configs {
                     .forClient()
                     .sslProvider(SslContext.defaultClientProvider());
 
+            if (isInsecureEmulatorConnectionAllowed()) {
+                sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
+            }
+
             if (useHttp2) {
                 sslContextBuilder
                     .ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
@@ -291,6 +302,7 @@ public class Configs {
                         )
                     );
             }
+
 
             return sslContextBuilder.build();
         } catch (SSLException sslException) {
@@ -841,6 +853,16 @@ public class Configs {
                 firstNonNull(
                     emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER)),
                     DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
+    }
+
+    public static boolean isInsecureEmulatorConnectionAllowed() {
+        String httpForEmulatorAllowed = System.getProperty(
+            INSECURE_EMULATOR_CONNECTION_ALLOWED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE)),
+                String.valueOf(DEFAULT_INSECURE_EMULATOR_CONNECTION_ALLOWED)));
+
+        return Boolean.parseBoolean(httpForEmulatorAllowed);
     }
 
     public static boolean shouldUseHttp2() {

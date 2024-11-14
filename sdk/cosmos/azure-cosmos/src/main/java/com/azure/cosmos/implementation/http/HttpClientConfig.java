@@ -88,11 +88,10 @@ public class HttpClientConfig {
     //  TODO(kuthapar): Do we really need to use Strings.lenientFormat() here?
     //  Even the documentation of this API suggests to use String.format or just string appends if possible.
     public String toDiagnosticsString() {
-        return Strings.lenientFormat("(cps:%s, nrto:%s, icto:%s, p:%s, http2:%s)",
+        return Strings.lenientFormat("(cps:%s, nrto:%s, icto:%s, p:%s)",
             maxPoolSize,
             networkRequestTimeout,
             maxIdleConnectionTimeout,
-            proxy != null,
-            useHttp2);
+            proxy != null);
     }
 }

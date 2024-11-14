@@ -76,7 +76,8 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         if (this.content != null) {
-            jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
+            jsonWriter.writeFieldName("content");
+            this.content.writeTo(jsonWriter);
         }
         return jsonWriter.writeEndObject();
     }

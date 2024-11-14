@@ -25,7 +25,7 @@ public final class PrivateLinkScopesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"r\",\"privateLinkScopeId\":\"rohkpigqfusu\",\"privateEndpointConnections\":[{\"id\":\"kwklsnoxaxmq\",\"name\":\"alhhjnhgwydyynfs\",\"type\":\"hgbvqtan\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"lpu\",\"description\":\"hp\"},\"provisioningState\":\"neizjcpe\",\"groupIds\":[\"hnmgbroux\",\"dbhfhp\",\"paz\"]}}]},\"location\":\"oywjxhpdulont\",\"tags\":{\"rhrljyoogwxhn\":\"pqwtehtue\"},\"id\":\"duugwbsre\",\"name\":\"rfqkfuar\",\"type\":\"nlvhhtklnvnafvv\"}";
+            = "{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"kzykjtjk\",\"privateLinkScopeId\":\"xfwush\",\"privateEndpointConnections\":[{\"id\":\"upnqrmgjfb\",\"name\":\"uwxeoiojfizf\",\"type\":\"kjzwfbcyayk\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"sbfwxr\",\"description\":\"xmdewsrsxkrplbj\"},\"provisioningState\":\"ejwwviyoyps\",\"groupIds\":[\"rnnhjxs\",\"wjh\",\"kbiwetpozyc\"]}},{\"id\":\"iqyhgfse\",\"name\":\"lexbsf\",\"type\":\"dynojpziuwfb\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"tnhqsycl\",\"description\":\"selpkpbaf\"},\"provisioningState\":\"fhlbylccbev\",\"groupIds\":[\"yzd\",\"wrso\"]}}]},\"location\":\"ltdb\",\"tags\":{\"g\":\"rrhvhfnracwnpq\",\"ouhdawsigrb\":\"uuj\"},\"id\":\"bxsjybvitvqkj\",\"name\":\"az\",\"type\":\"umtggmuwdchozfn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,17 @@ public final class PrivateLinkScopesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         HybridComputePrivateLinkScope response = manager.privateLinkScopes()
-            .define("cjjvpilguooqja")
-            .withRegion("csserxht")
-            .withExistingResourceGroup("mlbnseq")
-            .withTags(mapOf("tsjgqrsx", "xhlw", "uuuybnchrsziz", "p"))
-            .withProperties(
-                new HybridComputePrivateLinkScopeProperties().withPublicNetworkAccess(PublicNetworkAccessType.DISABLED))
+            .define("bugtywatmqa")
+            .withRegion("gxdgdhpab")
+            .withExistingResourceGroup("twknvgm")
+            .withTags(mapOf("vjsaqwotm", "xjd", "xaptefhexcgjok", "wllcolsr", "ek", "ljnhvlqj", "xeslkhhustcpoqm",
+                "eeksnbksdqhjvyk"))
+            .withProperties(new HybridComputePrivateLinkScopeProperties()
+                .withPublicNetworkAccess(PublicNetworkAccessType.SECURED_BY_PERIMETER))
             .create();
 
-        Assertions.assertEquals("oywjxhpdulont", response.location());
-        Assertions.assertEquals("pqwtehtue", response.tags().get("rhrljyoogwxhn"));
+        Assertions.assertEquals("ltdb", response.location());
+        Assertions.assertEquals("rrhvhfnracwnpq", response.tags().get("g"));
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.properties().publicNetworkAccess());
     }
 

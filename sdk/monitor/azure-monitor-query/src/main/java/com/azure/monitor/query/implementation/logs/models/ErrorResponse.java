@@ -19,8 +19,6 @@ import java.io.IOException;
 @Immutable
 public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
-     * The code and message for an error.
-     * 
      * The error details.
      */
     private final ErrorInfo error;
@@ -35,9 +33,7 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     }
 
     /**
-     * Get the error property: The code and message for an error.
-     * 
-     * The error details.
+     * Get the error property: The error details.
      * 
      * @return the error value.
      */
@@ -45,6 +41,9 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
         return this.error;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
