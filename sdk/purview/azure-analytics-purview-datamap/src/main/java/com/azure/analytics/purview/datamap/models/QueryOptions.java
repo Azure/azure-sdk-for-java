@@ -241,7 +241,8 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
         jsonWriter.writeArrayField("orderby", this.orderby,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         if (this.filter != null) {
-            jsonWriter.writeUntypedField("filter", this.filter.toObject(Object.class));
+            jsonWriter.writeFieldName("filter");
+            this.filter.writeTo(jsonWriter);
         }
         jsonWriter.writeArrayField("facets", this.facets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("taxonomySetting", this.taxonomySetting);

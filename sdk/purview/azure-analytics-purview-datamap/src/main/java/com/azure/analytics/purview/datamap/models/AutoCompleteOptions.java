@@ -125,7 +125,8 @@ public final class AutoCompleteOptions implements JsonSerializable<AutoCompleteO
         jsonWriter.writeStringField("keywords", this.keywords);
         jsonWriter.writeNumberField("limit", this.limit);
         if (this.filter != null) {
-            jsonWriter.writeUntypedField("filter", this.filter.toObject(Object.class));
+            jsonWriter.writeFieldName("filter");
+            this.filter.writeTo(jsonWriter);
         }
         return jsonWriter.writeEndObject();
     }
