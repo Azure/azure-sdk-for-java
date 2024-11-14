@@ -213,13 +213,13 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
                         RealtimeResponseMessageItem responseItem
                             = (RealtimeResponseMessageItem) outputItemDoneEvent.getItem();
                         assertEquals(1, responseItem.getContent().size());
-                        assertEquals(responseItem.getStatus(), RealtimeItemStatus.COMPLETED);
-                        assertEquals(responseItem.getRole(), RealtimeMessageRole.ASSISTANT);
-                        assertEquals(responseItem.getType(), RealtimeItemType.MESSAGE);
+                        assertEquals(RealtimeItemStatus.COMPLETED, responseItem.getStatus());
+                        assertEquals(RealtimeMessageRole.ASSISTANT, responseItem.getRole());
+                        assertEquals(RealtimeItemType.MESSAGE, responseItem.getType());
                         RealtimeResponseTextContentPart textContentPart
                             = (RealtimeResponseTextContentPart) responseItem.getContent().get(0);
                         assertTrue(textContentPart.getText().contains("coconut"));
-                        assertEquals(textContentPart.getType(), RealtimeContentPartType.TEXT);
+                        assertEquals(RealtimeContentPartType.TEXT, textContentPart.getType());
                     }
                 })
             .thenRequest(1)

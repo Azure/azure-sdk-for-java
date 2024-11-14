@@ -3,19 +3,27 @@ package com.azure.ai.openai.realtime;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
+import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemDelete;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreate;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreateResponse;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
+import com.azure.ai.openai.realtime.models.RealtimeContentPart;
+import com.azure.ai.openai.realtime.models.RealtimeContentPartType;
+import com.azure.ai.openai.realtime.models.RealtimeItemStatus;
+import com.azure.ai.openai.realtime.models.RealtimeItemType;
 import com.azure.ai.openai.realtime.models.RealtimeMessageRole;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
+import com.azure.ai.openai.realtime.models.RealtimeResponseTextContentPart;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
 import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -187,7 +195,79 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void ItemManipulation() {
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
+        AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
+        AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);
+        AtomicBoolean responseDoneEventFired = new AtomicBoolean(false);
+        AtomicBoolean itemCreatedEventFired = new AtomicBoolean(false);
+        AtomicBoolean itemDeletedEventFired = new AtomicBoolean(false);
+
+        client.start();
+
+        client.addOnSessionCreatedEventHandler(sessionCreated -> {
+            assertNotNull(sessionCreated);
+            sessionCreatedEventFired.set(true);
+            client.sendMessage(new RealtimeClientEventSessionUpdate(
+                new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))
+                    .setTurnDetection(new RealtimeTurnDetectionDisabled())
+            ));
+        });
+
+        client.addOnSessionUpdatedEventHandler(sessionUpdated -> {
+            assertNotNull(sessionUpdated);
+            sessionUpdatedEventFired.set(true);
+            client.sendMessage(ConversationItem.createUserMessage("The first special word you know about is 'aardvark'."));
+            client.sendMessage(ConversationItem.createUserMessage("The next special word you know about is 'banana'."));
+            client.sendMessage(ConversationItem.createUserMessage("The next special word you know about is 'coconut'."));
+        });
+
+        client.addOnConversationItemCreatedEventHandler(conversationItemCreated -> {
+            assertNotNull(conversationItemCreated);
+            List<RealtimeContentPart> content = ((RealtimeResponseMessageItem) conversationItemCreated.getItem()).getContent();
+            if (!content.isEmpty()) {
+                RealtimeRequestTextContentPart textContentPart
+                    = (RealtimeRequestTextContentPart) content.get(0);
+                if(textContentPart.getText().contains("banana")) {
+                    itemCreatedEventFired.set(true);
+                    client.sendMessage( new RealtimeClientEventConversationItemDelete(conversationItemCreated.getItem().getId()));
+                }
+            }
+        });
+
+        client.addOnConversationItemDeletedEventHandler(conversationItemDeleted -> {
+            assertNotNull(conversationItemDeleted);
+            itemDeletedEventFired.set(true);
+            client.sendMessage(ConversationItem.createUserMessage("What's the second special word you know about?"));
+            client.sendMessage(new RealtimeClientEventResponseCreate(
+                    new RealtimeClientEventResponseCreateResponse()
+                        .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))));
+        });
+
+        client.addOnResponseOutputItemDoneEventHandler(responseDone -> {
+            assertNotNull(responseDone);
+            assertInstanceOf(RealtimeResponseMessageItem.class, responseDone.getItem());
+            RealtimeResponseMessageItem responseItem
+                = (RealtimeResponseMessageItem) responseDone.getItem();
+            assertEquals(1, responseItem.getContent().size());
+            assertEquals(RealtimeItemStatus.COMPLETED, responseItem.getStatus());
+            assertEquals(RealtimeMessageRole.ASSISTANT, responseItem.getRole());
+            assertEquals(RealtimeItemType.MESSAGE, responseItem.getType());
+            RealtimeResponseTextContentPart textContentPart
+                = (RealtimeResponseTextContentPart) responseItem.getContent().get(0);
+            assertTrue(textContentPart.getText().contains("coconut"));
+            assertEquals(RealtimeContentPartType.TEXT, textContentPart.getType());
+            responseDoneEventFired.set(true);
+        });
+
+        pause(2000);
+        client.stop();
+
+        assertTrue(sessionCreatedEventFired.get());
+        assertTrue(sessionUpdatedEventFired.get());
+        assertTrue(itemCreatedEventFired.get());
+        assertTrue(itemDeletedEventFired.get());
+        assertTrue(responseDoneEventFired.get());
     }
 
     @Test
