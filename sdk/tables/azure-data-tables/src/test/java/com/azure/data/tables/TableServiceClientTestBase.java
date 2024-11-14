@@ -24,7 +24,7 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     protected TableServiceClientBuilder getClientBuilder(String connectionString) {
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
             .connectionString(connectionString);
-
+    
         return configureTestClientBuilder(tableServiceClientBuilder);
     }
     */
