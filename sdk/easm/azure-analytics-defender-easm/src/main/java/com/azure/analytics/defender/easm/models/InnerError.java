@@ -67,7 +67,8 @@ public final class InnerError implements JsonSerializable<InnerError> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("code", this.code);
         if (this.value != null) {
-            jsonWriter.writeUntypedField("value", this.value.toObject(Object.class));
+            jsonWriter.writeFieldName("value");
+            this.value.writeTo(jsonWriter);
         }
         return jsonWriter.writeEndObject();
     }
