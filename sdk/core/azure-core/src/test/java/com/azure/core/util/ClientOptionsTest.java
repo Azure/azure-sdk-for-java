@@ -39,11 +39,18 @@ public class ClientOptionsTest {
         assertEquals(expectedTotal, actualCount);
     }
 
-    @ParameterizedTest
-    @MethodSource("invalidApplicationId")
-    public void testMaxApplicationId(String applicationId) {
-        // Arrange, Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> new ClientOptions().setApplicationId(applicationId));
+    @Test
+    public void testLongApplicationId() {
+        // Arrange
+        String expected = "LongApplicationIdIsAllowedIfItContainsNoSpaces";
+
+        // Act & Assert
+        assertEquals(expected, new ClientOptions().setApplicationId(expected).getApplicationId());
+    }
+
+    @Test
+    public void testInvalidApplicationId() {
+        assertThrows(IllegalArgumentException.class, () -> new ClientOptions().setApplicationId("appid with spaces"));
     }
 
     @Test
@@ -53,9 +60,5 @@ public class ClientOptionsTest {
 
         // Act & Assert
         assertEquals(expected, new ClientOptions().setApplicationId(expected).getApplicationId());
-    }
-
-    private static Stream<Arguments> invalidApplicationId() {
-        return Stream.of(Arguments.arguments("AppId-0123456789012345678912345"), Arguments.arguments("AppId 78912345"));
     }
 }
