@@ -26,7 +26,6 @@ options:
   "@azure-tools/typespec-java":
     "package-dir": "azure-security-keyvault-secrets"
     "namespace": "com.azure.security.keyvault.secrets.implementation"
-    "generate-protocol-methods": false
     "customization-class": "swagger/src/main/java/SecretsCustomizations.java"
   # Uncomment this line and add "@azure-tools/typespec-csharp" to your package.json to generate C# code
   # "@azure-tools/typespec-csharp": true
