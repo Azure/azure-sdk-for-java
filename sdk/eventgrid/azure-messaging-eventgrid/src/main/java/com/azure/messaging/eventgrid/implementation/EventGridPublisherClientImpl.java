@@ -181,8 +181,7 @@ public final class EventGridPublisherClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishEventGridEventsWithResponseAsync(String topicHostname,
         List<EventGridEvent> events) {
-        return FluxUtil.withContext(
-            context -> service.publishEventGridEvents(topicHostname, this.getApiVersion(), events, context));
+        return FluxUtil.withContext(context -> publishEventGridEventsWithResponseAsync(topicHostname, events, context));
     }
 
     /**
@@ -279,8 +278,8 @@ public final class EventGridPublisherClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCloudEventEventsWithResponseAsync(String topicHostname, List<CloudEvent> events,
         String aegChannelName) {
-        return FluxUtil.withContext(context -> service.publishCloudEventEvents(topicHostname, this.getApiVersion(),
-            aegChannelName, events, context));
+        return FluxUtil.withContext(
+            context -> publishCloudEventEventsWithResponseAsync(topicHostname, events, aegChannelName, context));
     }
 
     /**
@@ -389,8 +388,8 @@ public final class EventGridPublisherClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCustomEventEventsWithResponseAsync(String topicHostname, List<Object> events) {
-        return FluxUtil.withContext(
-            context -> service.publishCustomEventEvents(topicHostname, this.getApiVersion(), events, context));
+        return FluxUtil
+            .withContext(context -> publishCustomEventEventsWithResponseAsync(topicHostname, events, context));
     }
 
     /**

@@ -16,8 +16,8 @@ import java.util.Arrays;
 public final class LicenseProfilesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/licenseProfile/
-     * LicenseProfile_Update.json
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/
+     * licenseProfile/LicenseProfile_Update.json
      */
     /**
      * Sample code: Update a License Profile.

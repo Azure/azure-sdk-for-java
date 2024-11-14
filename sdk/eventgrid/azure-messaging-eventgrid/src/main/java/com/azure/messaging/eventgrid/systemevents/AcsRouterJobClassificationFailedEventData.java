@@ -134,6 +134,9 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

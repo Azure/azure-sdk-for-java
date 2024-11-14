@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreak
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -258,6 +258,11 @@ public class Configs {
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
     private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
+    // Config to indicate whether allow insecure connections, for example allow http connection or disable cert verification
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final boolean DEFAULT_INSECURE_EMULATOR_CONNECTION_ALLOWED = false;
+    private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED = "COSMOS.INSECURE_EMULATOR_CONNECTION_ALLOWED";
+    private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE = "COSMOS_INSECURE_EMULATOR_CONNECTION_ALLOWED";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -269,8 +274,15 @@ public class Configs {
 
     private SslContext sslContextInit() {
         try {
-            SslProvider sslProvider = SslContext.defaultClientProvider();
-            return SslContextBuilder.forClient().sslProvider(sslProvider).build();
+            SslContextBuilder sslContextBuilder =
+                SslContextBuilder
+                    .forClient()
+                    .sslProvider(SslContext.defaultClientProvider());
+            if (isInsecureEmulatorConnectionAllowed()) {
+                sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
+            }
+
+            return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
             throw new IllegalStateException(sslException);
@@ -826,5 +838,15 @@ public class Configs {
                     String.valueOf(COSMOS_DISABLE_IMDS_ACCESS_DEFAULT)));
 
         return Boolean.parseBoolean(shouldDisableIMDSAccess);
+    }
+
+    public static boolean isInsecureEmulatorConnectionAllowed() {
+        String httpForEmulatorAllowed = System.getProperty(
+            INSECURE_EMULATOR_CONNECTION_ALLOWED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE)),
+                String.valueOf(DEFAULT_INSECURE_EMULATOR_CONNECTION_ALLOWED)));
+
+        return Boolean.parseBoolean(httpForEmulatorAllowed);
     }
 }

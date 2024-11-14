@@ -81,9 +81,9 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
     }
 
     /**
-     * Get the runtimeData property: Runtime data provided by the enclave at the time of report generation. The MAA
-     * will verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the
-     * decoded "data" field of the runtime data.
+     * Get the runtimeData property: Runtime data provided by the enclave at the time of report generation. The MAA will
+     * verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the decoded
+     * "data" field of the runtime data.
      * 
      * @return the runtimeData value.
      */
@@ -92,9 +92,9 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
     }
 
     /**
-     * Set the runtimeData property: Runtime data provided by the enclave at the time of report generation. The MAA
-     * will verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the
-     * decoded "data" field of the runtime data.
+     * Set the runtimeData property: Runtime data provided by the enclave at the time of report generation. The MAA will
+     * verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the decoded
+     * "data" field of the runtime data.
      * 
      * @param runtimeData the runtimeData value to set.
      * @return the AttestOpenEnclaveRequest object itself.
@@ -182,6 +182,9 @@ public final class AttestOpenEnclaveRequest implements JsonSerializable<AttestOp
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

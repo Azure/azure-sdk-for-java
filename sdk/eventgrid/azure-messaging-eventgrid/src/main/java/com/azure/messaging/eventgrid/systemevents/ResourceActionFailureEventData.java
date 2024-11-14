@@ -304,6 +304,9 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -375,9 +378,8 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionFailureEventData#getResourceClaims()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -397,9 +399,8 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
      *
      * @param claims the claims value to set.
      * @return the ResourceActionFailureEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionFailureEventData#setResourceClaims(Map)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceActionFailureEventData setClaims(String claims) {
@@ -415,9 +416,8 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionFailureEventData#getResourceHttpRequest()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -434,9 +434,8 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
      *
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceActionFailureEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceActionFailureEventData setHttpRequest(String httpRequest) {
@@ -453,9 +452,8 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionFailureEventData#getResourceAuthorization()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -472,9 +470,8 @@ public final class ResourceActionFailureEventData implements JsonSerializable<Re
      *
      * @param authorization the authorization value to set.
      * @return the ResourceActionFailureEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceActionFailureEventData setAuthorization(String authorization) {

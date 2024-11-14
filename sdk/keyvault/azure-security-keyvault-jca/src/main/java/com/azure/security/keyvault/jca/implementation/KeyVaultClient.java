@@ -491,6 +491,10 @@ public class KeyVaultClient {
             } catch (IOException e) {
                 LOGGER.log(WARNING, "Failed to parse sign result response.", e);
             }
+        } else {
+            LOGGER.log(WARNING,
+                "Can not get signature. It can be caused by missing 'sign' permission. To know how to add 'sign' permission, "
+                    + "see https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#key-less-certificates.");
         }
 
         byte[] signature;

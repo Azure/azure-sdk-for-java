@@ -342,8 +342,10 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         jsonWriter.writeNumberField("max_prompt_tokens", this.maxPromptTokens);
         jsonWriter.writeNumberField("max_completion_tokens", this.maxCompletionTokens);
         jsonWriter.writeJsonField("truncation_strategy", this.truncationStrategy);
-        jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
-        jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+        jsonWriter.writeFieldName("tool_choice");
+        this.toolChoice.writeTo(jsonWriter);
+        jsonWriter.writeFieldName("response_format");
+        this.responseFormat.writeTo(jsonWriter);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("required_action", this.requiredAction);
         jsonWriter.writeNumberField("temperature", this.temperature);

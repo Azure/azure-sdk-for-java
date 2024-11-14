@@ -40,6 +40,9 @@ public final class MetricDefinitionCollection implements JsonSerializable<Metric
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
