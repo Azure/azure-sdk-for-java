@@ -60,7 +60,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
      *
      * @param transcriptionSubscriptionInternal The internal response of TranscriptionSubscription
      */
-    public TranscriptionSubscription(TranscriptionSubscriptionInternal transcriptionSubscriptionInternal) {
+    TranscriptionSubscription(TranscriptionSubscriptionInternal transcriptionSubscriptionInternal) {
         this.id = transcriptionSubscriptionInternal.getId() != null ? transcriptionSubscriptionInternal.getId() : null;
         this.state = transcriptionSubscriptionInternal.getState() != null ? TranscriptionSubscriptionState.fromString(transcriptionSubscriptionInternal.getState().toString()) : null;
         this.subscribedResultTypes = transcriptionSubscriptionInternal.getSubscribedResultTypes() != null ? transcriptionSubscriptionInternal.getSubscribedResultTypes().stream()

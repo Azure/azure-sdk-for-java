@@ -61,7 +61,7 @@ public final class MediaStreamingSubscription  implements JsonSerializable<Media
      *
      * @param mediaStreamingSubscriptionInternal The internal response of MediaStreamingSubscription
      */
-    public MediaStreamingSubscription(MediaStreamingSubscriptionInternal mediaStreamingSubscriptionInternal) {
+    MediaStreamingSubscription(MediaStreamingSubscriptionInternal mediaStreamingSubscriptionInternal) {
         this.id = mediaStreamingSubscriptionInternal.getId() != null ? mediaStreamingSubscriptionInternal.getId() : null;
         this.state = mediaStreamingSubscriptionInternal.getState() != null ? MediaStreamingSubscriptionState.fromString(mediaStreamingSubscriptionInternal.getState().toString()) : null;
         this.subscribedContentTypes = mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null ? mediaStreamingSubscriptionInternal.getSubscribedContentTypes().stream().
