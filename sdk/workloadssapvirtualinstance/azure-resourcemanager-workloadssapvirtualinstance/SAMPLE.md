@@ -3497,8 +3497,8 @@ public final class SapVirtualInstancesStopSamples {
 
 ```java
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedResourcesNetworkAccessType;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentity;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentityType;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapVirtualInstance;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.UpdateSapVirtualInstanceProperties;
 import java.util.HashMap;
@@ -3523,7 +3523,7 @@ public final class SapVirtualInstancesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE))
             .withProperties(new UpdateSapVirtualInstanceProperties())
             .apply();
     }
@@ -3543,7 +3543,7 @@ public final class SapVirtualInstancesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .withIdentity(new SAPVirtualInstanceIdentity().withType(SAPVirtualInstanceIdentityType.NONE))
             .withProperties(new UpdateSapVirtualInstanceProperties()
                 .withManagedResourcesNetworkAccessType(ManagedResourcesNetworkAccessType.PRIVATE))
             .apply();

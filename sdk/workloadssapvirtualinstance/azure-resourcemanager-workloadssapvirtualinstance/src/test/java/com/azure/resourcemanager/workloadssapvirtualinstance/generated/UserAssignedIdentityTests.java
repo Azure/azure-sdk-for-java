@@ -10,7 +10,7 @@ import com.azure.resourcemanager.workloadssapvirtualinstance.models.UserAssigned
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"qwwncw\",\"clientId\":\"hxg\"}")
+        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"sflhhca\",\"clientId\":\"n\"}")
             .toObject(UserAssignedIdentity.class);
     }
 
