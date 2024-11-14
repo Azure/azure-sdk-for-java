@@ -89,10 +89,13 @@ public final class ServerSentEventUtils {
             }
 
             // Retry the request after the retry time
-            try {
-                Thread.sleep(serverSentResult.getRetryAfter().toMillis());
-            } catch (InterruptedException ignored) {
-                // ignored
+            long millis = serverSentResult.getRetryAfter().toMillis();
+            if (millis > 0) {
+                try {
+                    Thread.sleep(serverSentResult.getRetryAfter().toMillis());
+                } catch (InterruptedException ignored) {
+                    // ignored
+                }
             }
             return true;
         } else {
