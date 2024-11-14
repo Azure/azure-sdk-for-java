@@ -15,6 +15,8 @@ import com.azure.ai.openai.realtime.models.RealtimeMessageRole;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
+import com.azure.ai.openai.realtime.models.RealtimeResponseFunctionCallItem;
+import com.azure.ai.openai.realtime.models.RealtimeResponseItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseTextContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
@@ -22,6 +24,7 @@ import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -273,7 +276,60 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void AudioWithTool() {
+        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
+        AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);
+        AtomicBoolean responseItemDoneCreated = new AtomicBoolean(false);
+        AtomicBoolean functionCallItemCreated = new AtomicBoolean(false);
+        AtomicInteger responseDoneCount = new AtomicInteger(0);
+
+        client.start();
+        getWeatherToolRunner((weatherTool, sessionConfig) -> {
+            client.sendMessage(sessionConfig);
+            FileUtils.sendAudioFile(client, FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav"));
+
+            client.addOnSessionUpdatedEventHandler(sessionUpdate -> {
+                assertNotNull(sessionUpdate);
+                assertNotNull(sessionUpdate.getSession());
+                sessionUpdatedEventFired.set(true);
+            });
+
+            client.addOnResponseOutputItemDoneEventHandler(outputItemDoneEvent -> {
+                RealtimeResponseItem responseItem = outputItemDoneEvent.getItem();
+                assertNotNull(responseItem);
+                if (responseItem instanceof RealtimeResponseFunctionCallItem) {
+                    functionCallItemCreated.set(true);
+                    RealtimeResponseFunctionCallItem functionCallItem
+                        = (RealtimeResponseFunctionCallItem) outputItemDoneEvent.getItem();
+                    assertEquals(functionCallItem.getName(), weatherTool.getName());
+                    client.sendMessage(ConversationItem.createFunctionCallOutput(functionCallItem.getCallId(),
+                            "71 degrees Fahrenheit, sunny"));
+                    client.sendMessage(new RealtimeClientEventResponseCreate(
+                        new RealtimeClientEventResponseCreateResponse()));
+                }
+                responseItemDoneCreated.set(true);
+            });
+
+            client.addOnResponseDoneEventHandler(responseDoneEvent -> {
+                assertNotNull(responseDoneEvent);
+                int currentResponseDoneCount = responseDoneCount.incrementAndGet();
+
+                if (currentResponseDoneCount < 1) {
+                    assertTrue(responseDoneEvent.getResponse()
+                        .getOutput()
+                        .stream()
+                        .anyMatch(outputItem -> outputItem instanceof RealtimeResponseFunctionCallItem));
+                }
+            });
+        });
+
+        pause(3000);
+        client.stop();
+
+        assertTrue(sessionUpdatedEventFired.get());
+        assertTrue(functionCallItemCreated.get());
+        assertTrue(responseItemDoneCreated.get());
+        assertEquals(2, responseDoneCount.get());
     }
 
     @Test
