@@ -113,7 +113,7 @@ public class HttpTransportClientTest {
             }
 
             @Override
-            HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
+            HttpClient createHttpClient(Configs configs, ConnectionPolicy connectionPolicy) {
                 return httpClient;
             }
         }

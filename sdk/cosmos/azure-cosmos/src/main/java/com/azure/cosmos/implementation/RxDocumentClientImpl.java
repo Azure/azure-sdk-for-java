@@ -623,8 +623,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
         return databaseAccount;
-        // TODO: add support for openAsync
-        // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
     }
 
     private void resetSessionContainerIfNeeded(DatabaseAccount databaseAccount) {
@@ -672,8 +670,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
         try {
-            // TODO: add support for openAsync
-            // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
 
             this.httpClientInterceptor = httpClientInterceptor;
             if (httpClientInterceptor != null) {
