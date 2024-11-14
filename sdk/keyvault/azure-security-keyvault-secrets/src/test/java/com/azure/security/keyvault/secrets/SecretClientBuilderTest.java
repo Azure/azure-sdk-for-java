@@ -154,14 +154,15 @@ public class SecretClientBuilderTest {
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
+        SecretClientBuilder secretClientBuilder = new SecretClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
-            .addPolicy(new TestUtils.PerRetryPolicy())
-            .buildAsyncClient();
+            .addPolicy(new TestUtils.PerRetryPolicy());
 
-        HttpPipeline pipeline = secretAsyncClient.getHttpPipeline();
+        secretClientBuilder.buildClient();
+
+        HttpPipeline pipeline = secretClientBuilder.getPipelineForTest();
 
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;
 
