@@ -75,6 +75,7 @@ Calling the realtime endpoint with an input.
 String inputText = "Hello, my name is John Smith.";
 
 DeidentificationContent content = new DeidentificationContent(inputText);
+content.setOperation(OperationType.SURROGATE);
 
 DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
