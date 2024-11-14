@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.implementation.Configs;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -17,6 +18,7 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.http.client.HttpClientState;
@@ -76,7 +78,7 @@ public class ReactorNettyClient implements HttpClient {
             .newConnection()
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
-        reactorNettyClient.configureChannelPipelineHandlers();
+        reactorNettyClient.configureChannelPipelineHandlers(httpClientConfig.shouldUseHttp2());
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
     }
@@ -92,7 +94,7 @@ public class ReactorNettyClient implements HttpClient {
             .create(connectionProvider)
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
-        reactorNettyClient.configureChannelPipelineHandlers();
+        reactorNettyClient.configureChannelPipelineHandlers(httpClientConfig.shouldUseHttp2());
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
     }
@@ -117,7 +119,7 @@ public class ReactorNettyClient implements HttpClient {
         }
     }
 
-    private void configureChannelPipelineHandlers() {
+    private void configureChannelPipelineHandlers(boolean useHttp2) {
         Configs configs = this.httpClientConfig.getConfigs();
 
         if (this.httpClientConfig.getProxy() != null) {
@@ -139,6 +141,22 @@ public class ReactorNettyClient implements HttpClient {
                     .maxHeaderSize(configs.getMaxHttpHeaderSize())
                     .maxChunkSize(configs.getMaxHttpChunkSize())
                     .validateHeaders(true));
+
+        if (useHttp2) {
+            this.httpClient = this.httpClient
+                .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContextForHttp2()))
+                .protocol(HttpProtocol.H2)
+                .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
+                    // The response header clean up pipeline is being added due to an error getting when calling gateway:
+                    // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
+                    // validateHeaders(false) does not work for http2
+                    ChannelPipeline channelPipeline = channel.pipeline();
+                    channelPipeline.addAfter(
+                        "reactor.left.httpCodec",
+                        "customHeaderCleaner",
+                        new Http2ResponseHeaderCleanerHandler());
+                });
+        }
     }
 
     @Override

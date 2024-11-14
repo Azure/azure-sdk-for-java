@@ -95,7 +95,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.util.concurrent.Queues;
 import reactor.util.function.Tuple2;
-import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -672,9 +671,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
         try {
-            // TODO: add support for openAsync
-            // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
-
             this.httpClientInterceptor = httpClientInterceptor;
             if (httpClientInterceptor != null) {
                 this.reactorHttpClient = httpClientInterceptor.apply(httpClient());
@@ -835,7 +831,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleHttpConnectionTimeout())
             .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
             .withProxy(this.connectionPolicy.getProxy())
-            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout());
+            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
+            .withHttp2(Configs.shouldUseHttp2());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);

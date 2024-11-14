@@ -21,6 +21,7 @@ public class HttpClientConfig {
     private Duration networkRequestTimeout;
     private ProxyOptions proxy;
     private boolean connectionKeepAlive = true;
+    private boolean useHttp2;
 
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
@@ -51,6 +52,11 @@ public class HttpClientConfig {
         return this;
     }
 
+    public HttpClientConfig withHttp2(boolean useHttp2) {
+        this.useHttp2 = useHttp2;
+        return this;
+    }
+
     public Configs getConfigs() {
         return configs;
     }
@@ -75,13 +81,18 @@ public class HttpClientConfig {
         return connectionKeepAlive;
     }
 
+    public boolean shouldUseHttp2() {
+        return useHttp2;
+    }
+
     //  TODO(kuthapar): Do we really need to use Strings.lenientFormat() here?
     //  Even the documentation of this API suggests to use String.format or just string appends if possible.
     public String toDiagnosticsString() {
-        return Strings.lenientFormat("(cps:%s, nrto:%s, icto:%s, p:%s)",
+        return Strings.lenientFormat("(cps:%s, nrto:%s, icto:%s, p:%s, http2:%s)",
             maxPoolSize,
             networkRequestTimeout,
             maxIdleConnectionTimeout,
-            proxy != null);
+            proxy != null,
+            useHttp2);
     }
 }

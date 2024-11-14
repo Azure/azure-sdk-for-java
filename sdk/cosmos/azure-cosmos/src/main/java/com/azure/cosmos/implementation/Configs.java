@@ -5,9 +5,12 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import io.netty.handler.codec.http2.Http2SecurityUtil;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +35,7 @@ public class Configs {
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
     private final SslContext sslContext;
-
+    private final SslContext sslContextForHttp2;
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
     // * Java property naming conventions as illustrated by the name/value pairs returned by System.getProperties.
@@ -255,19 +258,41 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
+    // Flag to indicate whether enabled http2 for gateway, Please do not use it, only for internal testing purpose
+    private static final boolean DEFAULT_USE_HTTP2 = false;
+    private static final String USE_HTTP2 = "COSMOS.USE_HTTP2";
+    private static final String USE_HTTP2_VARIABLE = "COSMOS_USE_HTTP2";
 
     public Configs() {
-        this.sslContext = sslContextInit();
+        this.sslContext = sslContextInit(false);
+        this.sslContextForHttp2 = sslContextInit(true);
     }
 
     public static int getCPUCnt() {
         return CPU_CNT;
     }
 
-    private SslContext sslContextInit() {
+    private SslContext sslContextInit(boolean useHttp2) {
         try {
-            SslProvider sslProvider = SslContext.defaultClientProvider();
-            return SslContextBuilder.forClient().sslProvider(sslProvider).build();
+            SslContextBuilder sslContextBuilder =
+                SslContextBuilder
+                    .forClient()
+                    .sslProvider(SslContext.defaultClientProvider());
+
+            if (useHttp2) {
+                sslContextBuilder
+                    .ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
+                    .applicationProtocolConfig(
+                        new ApplicationProtocolConfig(
+                            ApplicationProtocolConfig.Protocol.ALPN,
+                            ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                            ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
+                            ApplicationProtocolNames.HTTP_2
+                        )
+                    );
+            }
+
+            return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
             throw new IllegalStateException(sslException);
@@ -276,6 +301,10 @@ public class Configs {
 
     public SslContext getSslContext() {
         return this.sslContext;
+    }
+
+    public SslContext getSslContextForHttp2() {
+        return this.sslContextForHttp2;
     }
 
     public Protocol getProtocol() {
@@ -812,5 +841,15 @@ public class Configs {
                 firstNonNull(
                     emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER)),
                     DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
+    }
+
+    public static boolean shouldUseHttp2() {
+        String httpEnabledConfig = System.getProperty(
+            USE_HTTP2,
+            firstNonNull(
+                emptyToNull(System.getenv().get(USE_HTTP2_VARIABLE)),
+                String.valueOf(DEFAULT_USE_HTTP2)));
+
+        return Boolean.parseBoolean(httpEnabledConfig);
     }
 }
