@@ -45,13 +45,13 @@ public class UserAgentUtilTest {
 
         // long app id
         assertEquals("LongApplicationIdIsAllowedIfItContainsNoSpaces azsdk-java-azure-storage-blob/12.0.0",
-            UserAgentUtil.toUserAgentString("LongApplicationIdIsAllowedIfItContainsNoSpaces", "azure-storage-blob", "12.0.0",
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+            UserAgentUtil.toUserAgentString("LongApplicationIdIsAllowedIfItContainsNoSpaces", "azure-storage-blob",
+                "12.0.0", new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
                     new TestConfigurationSource().put("AZURE_TELEMETRY_DISABLED", "true")).build()));
 
         // app id with spaces should not be allowed
-        assertThrows(IllegalArgumentException.class, () -> UserAgentUtil
-            .toUserAgentString("appid with spaces", "azure-storage-blob", "12.0.0", null));
+        assertThrows(IllegalArgumentException.class,
+            () -> UserAgentUtil.toUserAgentString("appid with spaces", "azure-storage-blob", "12.0.0", null));
 
         // null sdk name and version
         assertEquals("myapp azsdk-java-null/null " + platform,
