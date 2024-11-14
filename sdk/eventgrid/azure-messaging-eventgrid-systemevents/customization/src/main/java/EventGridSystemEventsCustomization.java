@@ -28,6 +28,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeMediaLiveEventChannelArchiveHeartbeatEventData(customization, logger);
         customizeAcsRouterEvents(customization, logger);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization, logger);
+        customizeStorageDirectoryDeletedEventData(customization, logger);
     }
 
     /**
@@ -114,4 +115,11 @@ public class EventGridSystemEventsCustomization extends Customization {
 
         });
     }
+
+    public void customizeStorageDirectoryDeletedEventData(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("StorageDirectoryDeletedEventData");
+        classCustomization.getMethod("getRecursive").rename("isRecursive").setReturnType("Boolean", "Boolean.getBoolean(%s)");
+    }
+
 }

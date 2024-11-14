@@ -47,7 +47,7 @@ public final class StorageDirectoryDeletedEventData implements JsonSerializable<
      * Is this event for a recursive delete operation.
      */
     @Generated
-    private String isRecursive;
+    private String recursive;
 
     /*
      * An opaque string value representing the logical sequence of events for any particular directory name. Users can
@@ -122,13 +122,14 @@ public final class StorageDirectoryDeletedEventData implements JsonSerializable<
     }
 
     /**
-     * Get the isRecursive property: Is this event for a recursive delete operation.
+     * Get the recursive property: Is this event for a recursive delete operation.
      * 
-     * @return the isRecursive value.
+     * @return the recursive value.
      */
     @Generated
-    public String getIsRecursive() {
-        return this.isRecursive;
+    public Boolean isRecursive() {
+        String returnValue = this.recursive;
+        return Boolean.getBoolean(returnValue);
     }
 
     /**
@@ -177,7 +178,7 @@ public final class StorageDirectoryDeletedEventData implements JsonSerializable<
         jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
         jsonWriter.writeStringField("requestId", this.requestId);
         jsonWriter.writeStringField("url", this.url);
-        jsonWriter.writeStringField("recursive", this.isRecursive);
+        jsonWriter.writeStringField("recursive", this.recursive);
         jsonWriter.writeStringField("sequencer", this.sequencer);
         jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();
@@ -200,7 +201,7 @@ public final class StorageDirectoryDeletedEventData implements JsonSerializable<
             String clientRequestId = null;
             String requestId = null;
             String url = null;
-            String isRecursive = null;
+            String recursive = null;
             String sequencer = null;
             String identity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -219,7 +220,7 @@ public final class StorageDirectoryDeletedEventData implements JsonSerializable<
                 } else if ("url".equals(fieldName)) {
                     url = reader.getString();
                 } else if ("recursive".equals(fieldName)) {
-                    isRecursive = reader.getString();
+                    recursive = reader.getString();
                 } else if ("sequencer".equals(fieldName)) {
                     sequencer = reader.getString();
                 } else if ("identity".equals(fieldName)) {
@@ -234,7 +235,7 @@ public final class StorageDirectoryDeletedEventData implements JsonSerializable<
             deserializedStorageDirectoryDeletedEventData.clientRequestId = clientRequestId;
             deserializedStorageDirectoryDeletedEventData.requestId = requestId;
             deserializedStorageDirectoryDeletedEventData.url = url;
-            deserializedStorageDirectoryDeletedEventData.isRecursive = isRecursive;
+            deserializedStorageDirectoryDeletedEventData.recursive = recursive;
             deserializedStorageDirectoryDeletedEventData.sequencer = sequencer;
             deserializedStorageDirectoryDeletedEventData.identity = identity;
 
