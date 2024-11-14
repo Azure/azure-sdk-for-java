@@ -188,9 +188,6 @@
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files=".*[/\\](implementation|test)[/\\].*"/>
 
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
-            files="com.azure.ai.translation.text.TranslatorRegionAuthenticationPolicy.java"/>
-
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>
   <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl"/>
