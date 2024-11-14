@@ -52,13 +52,13 @@ public final class KeyVaultCertificateExpiredEventData
      * Not before date of the object that triggered this event
      */
     @Generated
-    private Double nBF;
+    private Double nbf;
 
     /*
      * The expiration date of the object that triggered this event
      */
     @Generated
-    private Double eXP;
+    private Double exp;
 
     /**
      * Creates an instance of KeyVaultCertificateExpiredEventData class.
@@ -118,23 +118,23 @@ public final class KeyVaultCertificateExpiredEventData
     }
 
     /**
-     * Get the nBF property: Not before date of the object that triggered this event.
+     * Get the nbf property: Not before date of the object that triggered this event.
      * 
-     * @return the nBF value.
+     * @return the nbf value.
      */
     @Generated
-    public Double getNBF() {
-        return this.nBF;
+    public Double getNbf() {
+        return this.nbf;
     }
 
     /**
-     * Get the eXP property: The expiration date of the object that triggered this event.
+     * Get the exp property: The expiration date of the object that triggered this event.
      * 
-     * @return the eXP value.
+     * @return the exp value.
      */
     @Generated
-    public Double getEXP() {
-        return this.eXP;
+    public Double getExp() {
+        return this.exp;
     }
 
     /**
@@ -149,8 +149,8 @@ public final class KeyVaultCertificateExpiredEventData
         jsonWriter.writeStringField("ObjectType", this.objectType);
         jsonWriter.writeStringField("ObjectName", this.objectName);
         jsonWriter.writeStringField("Version", this.version);
-        jsonWriter.writeNumberField("NBF", this.nBF);
-        jsonWriter.writeNumberField("EXP", this.eXP);
+        jsonWriter.writeNumberField("NBF", this.nbf);
+        jsonWriter.writeNumberField("EXP", this.exp);
         return jsonWriter.writeEndObject();
     }
 
@@ -182,9 +182,9 @@ public final class KeyVaultCertificateExpiredEventData
                 } else if ("Version".equals(fieldName)) {
                     deserializedKeyVaultCertificateExpiredEventData.version = reader.getString();
                 } else if ("NBF".equals(fieldName)) {
-                    deserializedKeyVaultCertificateExpiredEventData.nBF = reader.getNullable(JsonReader::getDouble);
+                    deserializedKeyVaultCertificateExpiredEventData.nbf = reader.getNullable(JsonReader::getDouble);
                 } else if ("EXP".equals(fieldName)) {
-                    deserializedKeyVaultCertificateExpiredEventData.eXP = reader.getNullable(JsonReader::getDouble);
+                    deserializedKeyVaultCertificateExpiredEventData.exp = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
