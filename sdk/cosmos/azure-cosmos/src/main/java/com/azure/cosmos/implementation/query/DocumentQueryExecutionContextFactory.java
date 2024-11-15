@@ -200,9 +200,9 @@ public class DocumentQueryExecutionContextFactory {
             return Mono.zip(targetRange, allRanges)
                 .map(tuple -> {
                     if (partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()) {
-                        return new QueryInfoAndRanges(QueryInfo.EMPTY, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), Collections.singletonList(tuple.getT1()), tuple.getT2());
+                        return new QueryInfoAndRanges(null, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), Collections.singletonList(tuple.getT1()), tuple.getT2());
                     } else {
-                        return new QueryInfoAndRanges(queryInfo, HybridSearchQueryInfo.EMPTY, Collections.singletonList(tuple.getT1()), tuple.getT2());
+                        return new QueryInfoAndRanges(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2());
                     }
                 });
         }
@@ -425,8 +425,8 @@ public class DocumentQueryExecutionContextFactory {
             // Validate the TOP for non-streaming order-by queries
             if (!hybridSearchQueryInfo.hasTake()) {
                 throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
-                    "Executing a hybrid or full text query without Top can consume a large number of RUs" +
-                        "very fast and have long runtimes. Please ensure you are using the above filter" +
+                    "Executing a hybrid or full text query without Top can consume a large number of RUs " +
+                        "very fast and have long runtimes. Please ensure you are using the above filter " +
                         "with your hybrid or full text search query.");
             }
 
