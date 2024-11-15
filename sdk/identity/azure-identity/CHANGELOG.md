@@ -2,6 +2,9 @@
 
 ## 1.14.2 (2024-11-15)
 
+### Bugs Fixed
+- Fixed issue in Managed Identity scopes [#42934](https://github.com/Azure/azure-sdk-for-java/pull/42934)
+
 ### Other Changes
 
 #### Dependency Updates
