@@ -4,10 +4,10 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MetricPointBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MetricTelemetryBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.preaggregatedmetrics.DependencyExtractor;
@@ -27,12 +27,12 @@ import reactor.util.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.*;
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.MappingType.*;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.MappingType.METRIC;
 import static io.opentelemetry.api.internal.Utils.checkArgument;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
@@ -217,12 +217,16 @@ public class MetricDataMapper {
 
     private static boolean applyConnectionStringAndRoleNameOverrides(AbstractTelemetryBuilder telemetryBuilder,
         Object value, String key) {
-        if (key.equals(AiSemanticAttributes.INTERNAL_CONNECTION_STRING.getKey()) && value instanceof String) {
+        if (!(value instanceof String)) {
+            return false;
+        }
+
+        if (Objects.equals(key, AiSemanticAttributes.INTERNAL_CONNECTION_STRING.getKey())) {
             // intentionally letting exceptions from parse bubble up
             telemetryBuilder.setConnectionString(ConnectionString.parse((String) value));
             return true;
         }
-        if (key.equals(AiSemanticAttributes.INTERNAL_ROLE_NAME.getKey()) && value instanceof String) {
+        if (Objects.equals(key, AiSemanticAttributes.INTERNAL_ROLE_NAME.getKey())) {
             telemetryBuilder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), (String) value);
             return true;
         }
