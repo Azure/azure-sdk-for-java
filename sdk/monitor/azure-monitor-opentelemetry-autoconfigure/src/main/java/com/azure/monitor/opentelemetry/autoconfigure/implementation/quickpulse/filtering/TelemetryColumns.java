@@ -7,14 +7,18 @@ public class TelemetryColumns {
     private Map<String, String> CustomDimensions;
 
     public TelemetryColumns() {
-
+        this.CustomDimensions = new HashMap<String, String>();
     }
 
     public void setCustomDimensions(Map<String, String> customDimensions, Map<String, Double> customMeasurements) {
         Map<String, String> resultMap = new HashMap<>();
-        resultMap.putAll(customDimensions);
-        for (Map.Entry<String, Double> cmEntry: customMeasurements.entrySet()) {
-            resultMap.put(cmEntry.getKey(), cmEntry.getValue().toString());
+        if (customDimensions != null) {
+            resultMap.putAll(customDimensions);
+        }
+        if (customMeasurements != null) {
+            for (Map.Entry<String, Double> cmEntry: customMeasurements.entrySet()) {
+                resultMap.put(cmEntry.getKey(), cmEntry.getValue().toString());
+            }
         }
         this.CustomDimensions = resultMap;
     }

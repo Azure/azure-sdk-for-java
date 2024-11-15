@@ -21,4 +21,11 @@ public class ExceptionDataColumns extends TelemetryColumns{
             this.StackTrace = "";
         }
     }
+
+    // To be used in tests only
+    public ExceptionDataColumns(String message, String stackTrace) {
+        super();
+        this.Message = message;
+        this.StackTrace = stackTrace;
+    }
 }

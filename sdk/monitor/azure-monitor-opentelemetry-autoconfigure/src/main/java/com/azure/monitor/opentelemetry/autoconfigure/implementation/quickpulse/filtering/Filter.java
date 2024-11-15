@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class Filter {
-    private static final String EXCEPTION_FIELDNAME_PREFIX = "Exception.";
-    private static final String CUSTOM_DIM_FIELDNAME_PREFIX = "CustomDimensions.";
-    private static final String ANY_FIELD = "*";
+    public static final String EXCEPTION_FIELDNAME_PREFIX = "Exception.";
+    public static final String CUSTOM_DIM_FIELDNAME_PREFIX = "CustomDimensions.";
+    public static final String ANY_FIELD = "*";
     private static final String TELEMETRY_COLUMNS_CUSTOM_DIM_FIELD = "CustomDimensions";
 
     public static void renameExceptionFieldNamesForFiltering(FilterConjunctionGroupInfo filterConjunctionGroupInfo) {
@@ -61,29 +61,33 @@ public class Filter {
                 Object fieldValue = getFieldValue(data, filter.getFieldName());
 
                 if (filter.getFieldName().equals(KnownRequestColumns.success)) {
+                    boolean fieldValueBoolean = (Boolean) fieldValue;
+                    boolean comparand = Boolean.parseBoolean(filter.getComparand().toLowerCase());
                     if (filter.getPredicate().equals(PredicateType.EQUAL)) {
-                        return fieldValue.equals(Boolean.parseBoolean(filter.getComparand().toLowerCase()));
+                        return fieldValueBoolean == comparand;
                     } else if (filter.getPredicate().equals(PredicateType.NOT_EQUAL)) {
-                        return !fieldValue.equals(Boolean.parseBoolean(filter.getComparand().toLowerCase()));
+                        return fieldValueBoolean != comparand;
                     }
                 } else if (filter.getFieldName().equals(KnownDependencyColumns.resultCode) ||
                     filter.getFieldName().equals(KnownRequestColumns.responseCode) ||
                     filter.getFieldName().equals(KnownDependencyColumns.duration)) {
-                    double comparand = filter.getFieldName().equals(KnownDependencyColumns.duration) ?
-                        getMsFromFilterTimestampString(filter.getComparand()) : Double.parseDouble(filter.getComparand());
+                    long comparand = filter.getFieldName().equals(KnownDependencyColumns.duration) ?
+                        getMicroSecondsFromFilterTimestampString(filter.getComparand()): Long.parseLong(filter.getComparand());
+                    long fieldValueLong = filter.getFieldName().equals(KnownDependencyColumns.duration) ?
+                        (Long) fieldValue : ((Integer) fieldValue).longValue();
                     PredicateType predicate = filter.getPredicate();
                     if (predicate.equals(PredicateType.EQUAL)) {
-                        return fieldValue.equals(comparand);
+                        return fieldValueLong == comparand;
                     } else if (predicate.equals(PredicateType.NOT_EQUAL)) {
-                        return !fieldValue.equals(comparand);
+                        return fieldValueLong != comparand;
                     } else if (predicate.equals(PredicateType.GREATER_THAN)) {
-                        return fieldValue.equals(comparand);
+                        return fieldValueLong > comparand;
                     } else if (predicate.equals(PredicateType.GREATER_THAN_OR_EQUAL)) {
-                        return !fieldValue.equals(comparand);
+                        return fieldValueLong >= comparand;
                     } else if (predicate.equals(PredicateType.LESS_THAN)) {
-                        return fieldValue.equals(comparand);
+                        return fieldValueLong < comparand;
                     } else if (predicate.equals(PredicateType.LESS_THAN_OR_EQUAL)) {
-                        return !fieldValue.equals(comparand);
+                        return fieldValueLong <= comparand;
                     }
                     return false;
                 } else {
@@ -92,7 +96,8 @@ public class Filter {
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            // because we will be doing validation of filtering configuration when the config changes,
+            // there should be no case where we are accessing fields that don't exist or are invalid.
             return false;
         }
         return false;
@@ -158,6 +163,52 @@ public class Filter {
             return !fieldValue.toLowerCase().contains(comparand.toLowerCase());
         }
         return false;
+    }
+
+    public static long getMicroSecondsFromFilterTimestampString(String timestamp) {
+        // The service side will return a timestamp in the following format:
+        // [days].[hours]:[minutes]:[seconds]
+        // the seconds may be a whole number or something like 7.89. 7.89 seconds translates to 7890000 microseconds.
+        // examples: "14.6:56:7.89" = 1234567890000 microseconds, "0.0:0:0.2" = 200000 microseconds
+
+
+        // Split the timestamp by ":"
+        String[] parts = timestamp.split(":");
+        if (parts.length != 3) {
+            return Long.MIN_VALUE; // Return a special value to indicate an error
+        }
+
+        // Parse seconds and minutes
+        int seconds = parseInt(parts[2]);
+        int minutes = parseInt(parts[1]);
+
+        // Split the first part by "." to get days and hours
+        String[] firstPart = parts[0].split("\\.");
+        if (firstPart.length != 2) {
+            return Long.MIN_VALUE; // Return a special value to indicate an error
+        }
+
+        int hours = parseInt(firstPart[1]);
+        int days = parseInt(firstPart[0]);
+
+        if (seconds == Integer.MIN_VALUE || minutes == Integer.MIN_VALUE || hours == Integer.MIN_VALUE || days == Integer.MIN_VALUE) {
+            return Long.MIN_VALUE; // Return a special value to indicate an error
+        }
+
+        // Calculate the total microseconds
+        return (seconds * 1000000L)
+            + (minutes * 60L * 1000000L)
+            + (hours * 60L * 60L * 1000000L)
+            + (days * 24L * 60L * 60L * 1000000L);
+
+    }
+
+    private static int parseInt(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return Integer.MIN_VALUE;
+        }
     }
 
 

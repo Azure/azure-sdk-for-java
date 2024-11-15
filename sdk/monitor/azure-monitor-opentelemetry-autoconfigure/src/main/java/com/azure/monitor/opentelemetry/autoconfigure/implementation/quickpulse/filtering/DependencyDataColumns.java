@@ -29,10 +29,19 @@ public class DependencyDataColumns extends TelemetryColumns {
         } catch (NumberFormatException e) {
             this.ResultCode = -1;
         }
-
-
     }
 
+    // To be used for tests only
+    public DependencyDataColumns(String target, long duration, boolean success, String name, int resultCode, String type, String data) {
+        super();
+        this.Target = target;
+        this.Duration = duration;
+        this.Success = success;
+        this.Name = name;
+        this.ResultCode = resultCode;
+        this.Type = type;
+        this.Data = data;
+    }
 
 
 }

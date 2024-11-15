@@ -9,4 +9,10 @@ public class TraceDataColumns extends TelemetryColumns{
         setCustomDimensions(traceData.getProperties(), traceData.getMeasurements());
         this.Message = traceData.getMessage();
     }
+
+    // to be used in tests only
+    public TraceDataColumns(String message) {
+        super();
+        this.Message = message;
+    }
 }

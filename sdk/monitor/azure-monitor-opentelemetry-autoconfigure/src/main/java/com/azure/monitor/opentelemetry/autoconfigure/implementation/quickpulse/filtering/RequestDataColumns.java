@@ -25,4 +25,14 @@ public class RequestDataColumns extends TelemetryColumns {
         this.Name = requestData.getName();
     }
 
+    // To be used in tests only
+    public RequestDataColumns(String url, long duration, int responseCode, boolean success, String name) {
+        super();
+        this.Url = url;
+        this.Duration = duration;
+        this.ResponseCode = responseCode;
+        this.Success = success;
+        this.Name = name;
+    }
+
 }
