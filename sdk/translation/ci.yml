@@ -38,9 +38,12 @@ extends:
       - name: azure-ai-documenttranslator
         groupId: com.azure
         safeName: azureaidocumenttranslator
+        releaseInBatch: ${{ parameters.release_azureaidocumenttranslator }}
       - name: azure-ai-translation-text
         groupId: com.azure
         safeName: azureaitranslationtext
+        releaseInBatch: ${{ parameters.release_azureaitranslationtext }}
       - name: azure-ai-translation-document
         groupId: com.azure
         safeName: azureaitranslationdocument
+        releaseInBatch: ${{ parameters.release_azureaitranslationdocument }}
