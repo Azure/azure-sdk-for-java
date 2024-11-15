@@ -355,7 +355,7 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
             -Directory sdk/${{ parameters.ServiceDirectory }}
-            -IgnoreVerifyTypeSpecCodeGenerationError ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
+            -IgnoreVerifyTypeSpecCodeGenerationError $${{ parameters.IgnoreVerifyTypeSpecCodeGenerationError }}
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
