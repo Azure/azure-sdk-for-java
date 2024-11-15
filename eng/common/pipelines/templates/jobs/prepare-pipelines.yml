@@ -43,6 +43,7 @@ jobs:
             WorkingDirectory: $(System.DefaultWorkingDirectory)
         Paths:
           - 'sdk/**/*.yml'
+          - 'sdk/**/*.yaml'
           - '!sdk/**/test-recordings/*'
           - '!sdk/**/recordings/*'
           - '!sdk/**/SessionRecords/*'
