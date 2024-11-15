@@ -14,11 +14,24 @@ are in, and exit with a failure status.
 The directory that will be searched for 'Update-Codegeneration.ps1' scripts and 'tsp-location.yaml'. The default is
 the root directory of the Azure SDK for Java repository. One can also input service directory like:
 '-Directory /sdk/storage' or '-Directory sdk/anomalydetector/azure-ai-anomalydetector'.
+
+.PARAMETER IgnoreVerifyTypeSpecCodeGenerationError
+Determines if the script should exit with an error if the TypeSpec code generation fails. The default is false.
+The script will exit with an error if the Swagger code generation fails.
+
+.PARAMETER UpdateOnly
+Determines if the script should only update the code generation and not verify the changes. The default is false.
 #>
 
 param(
     [Parameter(Mandatory = $false)]
-    [string]$Directory
+    [string]$Directory,
+
+    [Parameter(Mandatory = $false)]
+    [boolean]$IgnoreVerifyTypeSpecCodeGenerationError = $false,
+
+    [Parameter(Mandatory = $false)]
+    [boolean]$UpdateOnly = $false
 )
 
 function Reset-Repository {
@@ -46,7 +59,10 @@ No Swagger or TypeSpec files to regenerate
 }
 
 # Stores SDKs that failed to regenerate code successfully
-$failedSdk = $null
+$swaggerFailedSdk = $null
+$swaggerDiff = $null
+$typespecFailedSdk = $null
+$typespecDiff = $null
 if ($swaggers.Count -gt 0) {
     Write-Host "
 
@@ -59,9 +75,12 @@ Invoking Autorest code regeneration
     foreach ($script in $swaggers) {
         Invoke-Expression $script.FullName
         if ($LastExitCode -ne 0) {
-            $failedSdk += $script.Directory.FullName
+            $swaggerFailedSdk += $script.Directory.FullName
         }
     }
+
+    # prevent warning related to EOL differences which triggers an exception for some reason
+    $swaggerDiff = git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java"
 }
 
 if ($tspYamls.Count -gt 0) {
@@ -89,16 +108,20 @@ Invoking tsp-client update
         Set-Location -Path $sdkPath
         tsp-client update
         if ($LastExitCode -ne 0) {
-            $failedSdk += $sdkPath
+            $typespecFailedSdk += $sdkPath
         }
         Pop-Location
     }
+
+    # prevent warning related to EOL differences which triggers an exception for some reason
+    $typespecDiff = git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**"
 }
 
-if ($failedSdk.Length -gt 0) {
-    Write-Host "Code generation failed for following modules: $failedSdk"
+if ($swaggerFailedSdk.Length -gt 0 -or $typespecFailedSdk.Length -gt 0) {
+    Write-Host "Code generation failed for following modules: $swaggerFailedSdk $typespecFailedSdk"
     Reset-Repository
-    exit 1
+    # Only exit with an error if Swagger had a failure or TypeSpec had a failure and IgnoreVerifyTypeSpecCodeGenerationError is false
+    exit ($swaggerFailedSdk.Length -gt 0 -or ($typespecFailedSdk.Length -gt 0 -and -not $IgnoreVerifyTypeSpecCodeGenerationError)) ? 1 : 0
 }
 
 Write-Host "
@@ -109,22 +132,30 @@ Verify no diff
 
 "
 
-# prevent warning related to EOL differences which triggers an exception for some reason
-git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**"
+if ($swaggerDiff.Length -gt 0 -or $typespecDiff.Length -gt 0) {
+    if ($swaggerDiff.Length -gt 0) {
+        Write-Host "Swagger code generation failed. The following files are out of date:"
+        Write-Host $swaggerDiff
+    }
 
-if ($LastExitCode -ne 0) {
-  $status = git status -s | Out-String
-  Write-Host "
+    if ($typespecDiff.Length -gt 0) {
+        Write-Host "TypeSpec code generation failed. The following files are out of date:"
+        Write-Host $typespecDiff
+    }
+
+    $status = git status -s | Out-String
+    Write-Host "
 The following files are out of date:
 $status
 "
-  Reset-Repository
-  exit 1
+    Reset-Repository
+    # Only exit with an error if Swagger had a diff or TypeSpec had a diff and IgnoreVerifyTypeSpecCodeGenerationError is false
+    exit ($swaggerDiff.Length -gt 0 -or ($typespectypespecDiffFailedSdk.Length -gt 0 -and -not $IgnoreVerifyTypeSpecCodeGenerationError)) ? 1 : 0
 }
 
 # Delete out TypeSpec temporary folders if they still exist.
 Get-ChildItem -Path $path -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
-  Remove-Item -Path $_.FullName -Recurse -Force
+    Remove-Item -Path $_.FullName -Recurse -Force
 }
 
 Reset-Repository
