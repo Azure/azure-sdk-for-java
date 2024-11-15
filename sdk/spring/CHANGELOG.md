@@ -6,7 +6,7 @@
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
-- Registry a connection string provider for Event Hubs only when conn string is not empty; support to custom the connection string provider for Event Hubs. [#42919](https://github.com/Azure/azure-sdk-for-java/pull/42919).
+- Support customize StaticConnectionStringProvider<AzureServiceType.EventHubs> bean. [#42919](https://github.com/Azure/azure-sdk-for-java/pull/42919).
 
 #### Bugs Fixed
 - Fix error: Event Hubs connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
