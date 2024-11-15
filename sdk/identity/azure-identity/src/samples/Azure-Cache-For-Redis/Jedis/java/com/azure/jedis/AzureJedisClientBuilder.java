@@ -3,7 +3,6 @@
 
 package com.azure.jedis;
 
-import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,13 +18,14 @@ import java.util.Map;
  *
  * @see AzureJedisClient
  */
-@ServiceClientBuilder(serviceClients = AzureJedisClient.class)
 public class AzureJedisClientBuilder {
     private String cacheHostName;
     private Integer port;
     private TokenCredential tokenCredential;
     private RetryOptions retryOptions;
     private boolean useSSL;
+
+    private final ClientLogger clientLogger = new ClientLogger(AzureJedisClientBuilder.class);
 
     /**
      * Creates an instance of {@link AzureJedisClientBuilder}
@@ -93,12 +93,14 @@ public class AzureJedisClientBuilder {
      *
      * @return An instance of {@link AzureJedisClient}
      */
-    public Jedis buildClient() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("cacheHostName", cacheHostName);
-        map.put("port", port);
-        map.put("credential", tokenCredential);
-        validate(this.getClass().getSimpleName(), map);
+    public Jedis build() {
+        validate(this.getClass().getSimpleName(), new HashMap<String, Object>() {
+            {
+                this.put("cacheHostName", cacheHostName);
+                this.put("port", port);
+                this.put("credential", tokenCredential);
+            }
+        });
         return new AzureJedisClient(cacheHostName, port, tokenCredential, useSSL, retryOptions);
     }
 
@@ -110,7 +112,7 @@ public class AzureJedisClientBuilder {
                 missing.add(entry.getKey());
             }
         }
-        if (!missing.isEmpty()) {
+        if (missing.size() > 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
                 + String.join(", ", missing) + " properties in " + className));
         }

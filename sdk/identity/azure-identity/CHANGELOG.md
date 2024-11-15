@@ -1,16 +1,5 @@
 # Release History
 
-## 1.15.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-- `@Deprecated` methods `DefaultAzureCredential.setIntelliJKeePassDatabasePath` and `IntelliJCredentialBuilder.keePassDatabasePath`. [#42437](https://github.com/Azure/azure-sdk-for-java/pull/42437)
-
 ## 1.14.1 (2024-11-04)
 
 ### Other Changes
@@ -19,6 +8,7 @@
 
 - Upgraded `azure-core` from `1.53.0` to version `1.54.0`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.6`.
+
 
 ## 1.14.0 (2024-10-03)
 

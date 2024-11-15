@@ -25,16 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
 
-/**
- * A sample where reauthentication is handled.
- */
 public class HandleReauthentication {
 
-    /**
-     * The runnable sample.
-     *
-     * @param args Ignored.
-     */
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -100,9 +92,9 @@ public class HandleReauthentication {
      * Redis Credential Implementation for Azure Redis for Cache
      */
     public static class AzureRedisCredentials implements RedisCredentials {
-        private final TokenRequestContext tokenRequestContext = new TokenRequestContext()
+        private TokenRequestContext tokenRequestContext = new TokenRequestContext()
             .addScopes("https://redis.azure.com/.default");
-        private final TokenCredential tokenCredential;
+        private TokenCredential tokenCredential;
         private final String username;
 
         /**

@@ -14,16 +14,8 @@ import redis.clients.jedis.Jedis;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-/**
- * A "Hello World" sample.
- */
-public class HelloWorld {
+public class HellloWorld {
 
-    /**
-     * The runnable sample.
-     *
-     * @param args Ignored.
-     */
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();

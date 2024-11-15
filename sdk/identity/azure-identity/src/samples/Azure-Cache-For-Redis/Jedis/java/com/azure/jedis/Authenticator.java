@@ -4,6 +4,7 @@
 package com.azure.jedis;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.jedis.implementation.authentication.AccessTokenCache;
 import com.azure.jedis.implementation.authentication.AccessTokenResult;
 import com.azure.jedis.implementation.authentication.AuthenticationInfo;
@@ -18,10 +19,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * Authenticator manages authentication for Jedis client connection.
  */
 class Authenticator {
-    private final AccessTokenCache tokenCache;
-    private final TokenRequestContext tokenRequestContext;
+    private final ClientLogger clientLogger = new ClientLogger(Authenticator.class);
+    private AccessTokenCache tokenCache;
+    private TokenRequestContext tokenRequestContext;
     private volatile boolean authenticated;
-    private final ReentrantLock lock;
+    ReentrantLock lock;
 
     Authenticator(AccessTokenCache tokenCache) {
         this.tokenCache = tokenCache;

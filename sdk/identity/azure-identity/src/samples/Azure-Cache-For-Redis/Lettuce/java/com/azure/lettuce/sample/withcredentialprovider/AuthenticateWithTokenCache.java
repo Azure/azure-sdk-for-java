@@ -32,16 +32,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * A sample of authenticating with a token cache.
- */
 public class AuthenticateWithTokenCache {
 
-    /**
-     * The runnable sample.
-     *
-     * @param args Ignored.
-     */
     public static void main(String[] args) {
 
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
@@ -120,10 +112,10 @@ public class AuthenticateWithTokenCache {
      * Redis Credential Implementation for Azure Redis for Cache
      */
     public static class AzureRedisCredentials implements RedisCredentials {
-        private final TokenRequestContext tokenRequestContext = new TokenRequestContext()
+        private TokenRequestContext tokenRequestContext = new TokenRequestContext()
             .addScopes("https://redis.azure.com/.default");
-        private final TokenCredential tokenCredential;
-        private final TokenRefreshCache refreshCache;
+        private TokenCredential tokenCredential;
+        private TokenRefreshCache refreshCache;
         private final String username;
 
         /**
@@ -171,11 +163,6 @@ public class AuthenticateWithTokenCache {
             return tokenCredential != null;
         }
 
-        /**
-         * Gets the {@link TokenRefreshCache}.
-         *
-         * @return The {@link TokenRefreshCache}.
-         */
         public TokenRefreshCache getTokenCache() {
             return this.refreshCache;
         }

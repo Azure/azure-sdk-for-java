@@ -29,16 +29,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * A sample of authenticating with a token cache.
- */
 public class AuthenticateWithTokenCache {
 
-    /**
-     * The runnable sample.
-     *
-     * @param args Ignored.
-     */
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
