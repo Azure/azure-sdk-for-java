@@ -56,7 +56,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         assertNull(result.getStartedAt());
         assertEquals(JobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
-        //assertNull(result.getCustomizations());
+        assertEquals("en-US", result.getCustomizations().getSurrogateLocale());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
         assertEquals(OUTPUT_FOLDER, result.getTargetLocation().getPrefix());
@@ -95,7 +95,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                 assertNull(item.getStartedAt());
                 assertEquals(JobStatus.NOT_STARTED, item.getStatus());
                 assertNull(item.getError());
-                //assertNull(item.getCustomizations());
+                assertEquals("en-US", item.getCustomizations().getSurrogateLocale());
                 assertNull(item.getSummary());
                 assertEquals(inputPrefix, item.getSourceLocation().getPrefix());
                 assertTrue(item.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -131,16 +131,6 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
             new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)));
         Long count = reports.count().block();
         assertEquals(count, 3);
-
-        //        reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
-        //            .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
-        //            .subscribe(item -> {
-        //                DocumentDetails details = item.toObject(DocumentDetails.class);
-        //                assertEquals(details.getStatus(), OperationState.SUCCEEDED);
-        //                assertNotNull(details.getOutput());
-        //                assertFalse(details.getOutput().getLocation().contains(OUTPUT_FOLDER));
-        //                assertEquals(details.getId().length(), 36);
-        //            });
 
         List<String> documentIdList = new ArrayList<>();
         StepVerifier.create(deidentificationAsyncClient
