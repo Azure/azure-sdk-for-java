@@ -42,7 +42,7 @@ parameters:
   - name: release_azureaitranslationdocument
     displayName: 'azure-ai-translation-document'
     type: boolean
-    default: false
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
