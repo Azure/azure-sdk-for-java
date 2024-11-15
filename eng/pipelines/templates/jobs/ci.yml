@@ -266,7 +266,6 @@ jobs:
               - '**/*.xml'
               - '**/*.md'
               - '**/*.yml'
-              - '**/*.yaml'
               - '.vscode/cspell.json'
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
