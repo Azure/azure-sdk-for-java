@@ -28,6 +28,12 @@ public final class BlobDetails implements JsonSerializable<BlobDetails> {
     private String blobName;
 
     /**
+     * Creates an instance of {@link BlobDetails}.
+     */
+    public BlobDetails() {
+    }
+
+    /**
      * Get the containerName property: The container name.
      *
      * @return the containerName value.
