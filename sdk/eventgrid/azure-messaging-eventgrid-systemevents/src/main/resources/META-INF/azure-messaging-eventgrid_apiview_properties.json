@@ -1,6 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
+    "com.azure.messaging.eventgrid.implementation.models.AcsMessageChannelEventError": "Microsoft.EventGrid.SystemEvents.AcsMessageChannelEventError",
     "com.azure.messaging.eventgrid.implementation.models.AcsRouterCommunicationError": "Microsoft.EventGrid.SystemEvents.AcsRouterCommunicationError",
     "com.azure.messaging.eventgrid.systemevents.AcsChatEventBaseProperties": "Microsoft.EventGrid.SystemEvents.AcsChatEventBaseProperties",
     "com.azure.messaging.eventgrid.systemevents.AcsChatEventInThreadBaseProperties": "Microsoft.EventGrid.SystemEvents.AcsChatEventInThreadBaseProperties",
@@ -33,7 +34,6 @@
     "com.azure.messaging.eventgrid.systemevents.AcsIncomingCallEventData": "Microsoft.EventGrid.SystemEvents.AcsIncomingCallEventData",
     "com.azure.messaging.eventgrid.systemevents.AcsInteractiveReplyKind": "Microsoft.EventGrid.SystemEvents.AcsInteractiveReplyKind",
     "com.azure.messaging.eventgrid.systemevents.AcsMessageButtonContent": "Microsoft.EventGrid.SystemEvents.AcsMessageButtonContent",
-    "com.azure.messaging.eventgrid.systemevents.AcsMessageChannelEventError": "Microsoft.EventGrid.SystemEvents.AcsMessageChannelEventError",
     "com.azure.messaging.eventgrid.systemevents.AcsMessageChannelKind": "Microsoft.EventGrid.SystemEvents.AcsMessageChannelKind",
     "com.azure.messaging.eventgrid.systemevents.AcsMessageContext": "Microsoft.EventGrid.SystemEvents.AcsMessageContext",
     "com.azure.messaging.eventgrid.systemevents.AcsMessageDeliveryStatus": "Microsoft.EventGrid.SystemEvents.AcsMessageDeliveryStatus",

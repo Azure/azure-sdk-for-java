@@ -10,6 +10,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.messaging.eventgrid.implementation.models.AcsMessageChannelEventError;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,7 +37,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      * The updated message channel type
      */
     @Generated
-    private final AcsMessageChannelKind channelType;
+    private final AcsMessageChannelKind channelKind;
 
     /*
      * The message recipient
@@ -56,14 +57,14 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      * @param receivedTimeStamp the receivedTimeStamp value to set.
      * @param error the error value to set.
      * @param status the status value to set.
-     * @param channelType the channelType value to set.
+     * @param channelKind the channelKind value to set.
      */
     @Generated
     private AcsMessageDeliveryStatusUpdatedEventData(OffsetDateTime receivedTimeStamp,
-        AcsMessageChannelEventError error, AcsMessageDeliveryStatus status, AcsMessageChannelKind channelType) {
+        AcsMessageChannelEventError error, AcsMessageDeliveryStatus status, AcsMessageChannelKind channelKind) {
         super(receivedTimeStamp, error);
         this.status = status;
-        this.channelType = channelType;
+        this.channelKind = channelKind;
     }
 
     /**
@@ -87,13 +88,13 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     }
 
     /**
-     * Get the channelType property: The updated message channel type.
+     * Get the channelKind property: The updated message channel type.
      * 
-     * @return the channelType value.
+     * @return the channelKind value.
      */
     @Generated
-    public AcsMessageChannelKind getChannelType() {
-        return this.channelType;
+    public AcsMessageChannelKind getChannelKind() {
+        return this.channelKind;
     }
 
     /**
@@ -133,7 +134,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeStringField("channelType", this.channelType == null ? null : this.channelType.toString());
+        jsonWriter.writeStringField("channelType", this.channelKind == null ? null : this.channelKind.toString());
         jsonWriter.writeStringField("messageId", this.messageId);
         return jsonWriter.writeEndObject();
     }
@@ -155,7 +156,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
             String from = null;
             String to = null;
             AcsMessageDeliveryStatus status = null;
-            AcsMessageChannelKind channelType = null;
+            AcsMessageChannelKind channelKind = null;
             String messageId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -173,7 +174,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
                 } else if ("status".equals(fieldName)) {
                     status = AcsMessageDeliveryStatus.fromString(reader.getString());
                 } else if ("channelType".equals(fieldName)) {
-                    channelType = AcsMessageChannelKind.fromString(reader.getString());
+                    channelKind = AcsMessageChannelKind.fromString(reader.getString());
                 } else if ("messageId".equals(fieldName)) {
                     messageId = reader.getString();
                 } else {
@@ -181,7 +182,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
                 }
             }
             AcsMessageDeliveryStatusUpdatedEventData deserializedAcsMessageDeliveryStatusUpdatedEventData
-                = new AcsMessageDeliveryStatusUpdatedEventData(receivedTimeStamp, error, status, channelType);
+                = new AcsMessageDeliveryStatusUpdatedEventData(receivedTimeStamp, error, status, channelKind);
             deserializedAcsMessageDeliveryStatusUpdatedEventData.from = from;
             deserializedAcsMessageDeliveryStatusUpdatedEventData.to = to;
             deserializedAcsMessageDeliveryStatusUpdatedEventData.messageId = messageId;

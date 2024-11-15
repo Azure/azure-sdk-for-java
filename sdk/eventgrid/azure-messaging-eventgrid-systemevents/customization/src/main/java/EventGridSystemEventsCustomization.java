@@ -31,6 +31,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization, logger);
         customizeStorageDirectoryDeletedEventData(customization, logger);
         customizeMediaLiveEventIngestHeartbeatEventData(customization);
+        customizeAcsMessageEventData(customization, logger);
     }
 
     /**
@@ -142,6 +143,22 @@ public class EventGridSystemEventsCustomization extends Customization {
                 method.setBody(parseBlock("{ return OffsetDateTime.parse(this.lastFragmentArrivalTime); }"));
             });
 
+        });
+    }
+
+    public void customizeAcsMessageEventData(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsMessageEventData");
+        classCustomization.addImports("com.azure.core.models.ResponseError");
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsMessageEventData").get();
+            // Fix up the getError method to always return a ResponseError.
+            clazz.getMethodsByName("getError").forEach(m -> {
+                m.setType("ResponseError")
+                    .setBody(parseBlock("{ return new ResponseError(this.error.getChannelCode(), this.error.getChannelMessage()); }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the error property: The channel error code and message."))))
+                        .addBlockTag("return", "the error value."));
+            });
         });
     }
 }
