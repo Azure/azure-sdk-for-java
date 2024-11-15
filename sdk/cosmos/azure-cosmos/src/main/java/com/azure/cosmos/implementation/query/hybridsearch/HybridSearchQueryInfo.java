@@ -15,8 +15,6 @@ import java.util.List;
  * Hybrid Search Query Info {@link HybridSearchQueryInfo}
  */
 public class HybridSearchQueryInfo extends JsonSerializable {
-    public static final HybridSearchQueryInfo EMPTY = new HybridSearchQueryInfo();
-
     @JsonProperty(Constants.Properties.GLOBAL_STATISTICS_QUERY)
     private String globalStatisticsQuery;
     @JsonProperty(Constants.Properties.COMPONENT_QUERY_INFOS)
