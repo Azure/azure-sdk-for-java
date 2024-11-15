@@ -55,7 +55,7 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 public class RxGatewayStoreModel implements RxStoreModel {
-    private static final boolean INSECURE_HTTP_CONNECTION_FOR_EMULATOR_ALLOWED = Configs.isInsecureEmulatorConnectionAllowed();
+    private static final boolean INSECURE_HTTP_CONNECTION_FOR_EMULATOR_ALLOWED = Configs.isEmulatorHttpConnectionAllowed();
 
     private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);

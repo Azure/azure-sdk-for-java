@@ -32,6 +32,7 @@ public class Configs {
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
     private final SslContext sslContext;
+    private final SslContext sslContextWithCertValidationDisabled;
 
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
@@ -255,27 +256,40 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
-    // Config to indicate whether allow insecure connections, for example allow http connection or disable cert verification
+    // Config to indicate whether allow http connections for emulator
     // Please note that this config should only during development or test, please do not use in prod env
-    private static final boolean DEFAULT_INSECURE_EMULATOR_CONNECTION_ALLOWED = false;
-    private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED = "COSMOS.INSECURE_EMULATOR_CONNECTION_ALLOWED";
-    private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE = "COSMOS_INSECURE_EMULATOR_CONNECTION_ALLOWED";
+    private static final boolean DEFAULT_EMULATOR_HTTP_CONNECTION_ALLOWED = false;
+    private static final String EMULATOR_HTTP_CONNECTION_ALLOWED = "COSMOS.EMULATOR_HTTP_CONNECTION_ALLOWED";
+    private static final String EMULATOR_HTTP_CONNECTION_ALLOWED_VARIABLE = "COSMOS_EMULATOR_HTTP_CONNECTION_ALLOWED";
+
+    // Config to indicate whether disable server certificate verification for emulator
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final boolean DEFAULT_EMULATOR_CERTIFICATE_VERIFICATION_DISABLED = false;
+    private static final String EMULATOR_CERTIFICATE_VERIFICATION_DISABLED = "COSMOS.EMULATOR_CERTIFICATE_VERIFICATION_DISABLED";
+    private static final String EMULATOR_CERTIFICATE_VERIFICATION_DISABLED_VARIABLE = "COSMOS_EMULATOR_CERTIFICATE_VERIFICATION_DISABLED";
+
+    // Config to indicate emulator host name
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final String DEFAULT_EMULATOR_HOST = "localhost";
+    private static final String EMULATOR_HOST = "COSMOS.EMULATOR_HOST";
+    private static final String EMULATOR_HOST_VARIABLE = "COSMOS_EMULATOR_HOST";
 
     public Configs() {
-        this.sslContext = sslContextInit();
+        this.sslContext = sslContextInit(false);
+        this.sslContextWithCertValidationDisabled = sslContextInit(true);
     }
 
     public static int getCPUCnt() {
         return CPU_CNT;
     }
 
-    private SslContext sslContextInit() {
+    private SslContext sslContextInit(boolean certVerificationDisabled) {
         try {
             SslContextBuilder sslContextBuilder =
                 SslContextBuilder
                     .forClient()
                     .sslProvider(SslContext.defaultClientProvider());
-            if (isInsecureEmulatorConnectionAllowed()) {
+            if (certVerificationDisabled) {
                 sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
             }
 
@@ -286,8 +300,8 @@ public class Configs {
         }
     }
 
-    public SslContext getSslContext() {
-        return this.sslContext;
+    public SslContext getSslContext(boolean serverCertValidationDisabled) {
+        return serverCertValidationDisabled ? this.sslContextWithCertValidationDisabled : this.sslContext;
     }
 
     public Protocol getProtocol() {
@@ -826,13 +840,31 @@ public class Configs {
                     DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
     }
 
-    public static boolean isInsecureEmulatorConnectionAllowed() {
+    public static boolean isEmulatorHttpConnectionAllowed() {
         String httpForEmulatorAllowed = System.getProperty(
-            INSECURE_EMULATOR_CONNECTION_ALLOWED,
+            EMULATOR_HTTP_CONNECTION_ALLOWED,
             firstNonNull(
-                emptyToNull(System.getenv().get(INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE)),
-                String.valueOf(DEFAULT_INSECURE_EMULATOR_CONNECTION_ALLOWED)));
+                emptyToNull(System.getenv().get(EMULATOR_HTTP_CONNECTION_ALLOWED_VARIABLE)),
+                String.valueOf(DEFAULT_EMULATOR_HTTP_CONNECTION_ALLOWED)));
 
         return Boolean.parseBoolean(httpForEmulatorAllowed);
+    }
+
+    public static boolean isEmulatorServerCertValidationDisabled() {
+        String certVerificationDisabledConfig = System.getProperty(
+            EMULATOR_CERTIFICATE_VERIFICATION_DISABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(EMULATOR_CERTIFICATE_VERIFICATION_DISABLED_VARIABLE)),
+                String.valueOf(DEFAULT_EMULATOR_CERTIFICATE_VERIFICATION_DISABLED)));
+
+        return Boolean.parseBoolean(certVerificationDisabledConfig);
+    }
+
+    public static String getEmulatorHost() {
+        return System.getProperty(
+            EMULATOR_HOST,
+            firstNonNull(
+                emptyToNull(System.getenv().get(EMULATOR_HOST_VARIABLE)),
+                DEFAULT_EMULATOR_HOST));
     }
 }

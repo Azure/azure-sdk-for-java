@@ -21,6 +21,7 @@ public class HttpClientConfig {
     private Duration networkRequestTimeout;
     private ProxyOptions proxy;
     private boolean connectionKeepAlive = true;
+    private boolean serverCertValidationDisabled = false;
 
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
@@ -51,6 +52,11 @@ public class HttpClientConfig {
         return this;
     }
 
+    public HttpClientConfig withServerCertValidationDisabled(boolean serverCertValidationDisabled) {
+        this.serverCertValidationDisabled = serverCertValidationDisabled;
+        return this;
+    }
+
     public Configs getConfigs() {
         return configs;
     }
@@ -73,6 +79,10 @@ public class HttpClientConfig {
 
     public boolean isConnectionKeepAlive() {
         return connectionKeepAlive;
+    }
+
+    public boolean isServerCertValidationDisabled() {
+        return serverCertValidationDisabled;
     }
 
     //  TODO(kuthapar): Do we really need to use Strings.lenientFormat() here?

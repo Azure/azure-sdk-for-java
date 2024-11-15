@@ -73,6 +73,6 @@ public class ConfigsTests {
     @Test(groups = { "emulator" })
     public void allowUseHttpForVNextEmulator() {
         Configs config = new Configs();
-        assertThat(config.isInsecureEmulatorConnectionAllowed()).isFalse();
+        assertThat(config.isEmulatorHttpConnectionAllowed()).isFalse();
     }
 }
