@@ -11,6 +11,7 @@ public final class QueryAnswer {
     private final QueryAnswerType answerType;
     private Integer count;
     private Double threshold;
+    private Integer maxCharLength;
 
     /**
      * Creates a new instance of {@link QueryAnswer}.
@@ -84,6 +85,34 @@ public final class QueryAnswer {
      */
     public QueryAnswer setThreshold(Double threshold) {
         this.threshold = threshold;
+        return this;
+    }
+
+    /**
+     * Gets the maximum character length of answers.
+     * <p>
+     * The maximum character length of answers is optional.
+     * <p>
+     * The value only takes effect when {@link #getAnswerType()} is {@link QueryAnswerType#EXTRACTIVE}.
+     *
+     * @return The maximum character length of answers.
+     */
+    public Integer getMaxCharLength() {
+        return maxCharLength;
+    }
+
+    /**
+     * Sets the maximum character length of answers.
+     * <p>
+     * The maximum character length of answers is optional.
+     * <p>
+     * The value only takes effect when {@link #getAnswerType()} is {@link QueryAnswerType#EXTRACTIVE}.
+     *
+     * @param maxCharLength The maximum character length of answers.
+     * @return The QueryAnswer object itself.
+     */
+    public QueryAnswer setMaxCharLength(Integer maxCharLength) {
+        this.maxCharLength = maxCharLength;
         return this;
     }
 }
