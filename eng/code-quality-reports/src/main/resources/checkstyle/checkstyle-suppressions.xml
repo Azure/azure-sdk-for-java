@@ -162,8 +162,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
   <suppress checks="."
-            files=".*[/\\]webpubsub[/\\]implementation[/\\]"/>
-  <suppress checks="."
             files=".*[/\\]monitor[/\\]implementation[/\\]"/>
 
   <!-- Suppress ConfigurationCredentialsPolicy for HttpPipelinePolicyCheck.
@@ -174,12 +172,6 @@
 
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files=".*[/\\](implementation|test)[/\\].*"/>
-
-  <!-- FIXME temp -->
-  <suppress checks="ServiceClient" files="com.azure.messaging.webpubsub.*"/>
-  <!-- Suppress ReverseProxyPolicy being package private. It may get moved into azure-core. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
-            files="com.azure.messaging.webpubsub.ReverseProxyPolicy.java"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>
@@ -291,9 +283,6 @@
 
   <!-- Suppress checks on AutoRest generated Attestation service code -->
   <suppress checks="ThrowFromClientLogger" files="com.azure.security.attestation.implementation.models.*\.java"/>
-
-  <!-- Suppress checks on sample for Video Analyzer -->
-  <suppress checks="AvoidStarImport" files="com.azure.media.videoanalyzer.edge.LvaInvokeModuleSample"/>
 
   <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
