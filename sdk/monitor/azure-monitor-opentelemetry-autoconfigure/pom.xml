@@ -37,7 +37,10 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.monitor.opentelemetry.autoconfigure/com.azure.monitor.opentelemetry.autoconfigure=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
