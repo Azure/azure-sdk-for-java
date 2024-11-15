@@ -8,6 +8,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
@@ -78,7 +79,7 @@ public class ReactorNettyClient implements HttpClient {
             .newConnection()
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
-        reactorNettyClient.configureChannelPipelineHandlers(httpClientConfig.shouldUseHttp2());
+        reactorNettyClient.configureChannelPipelineHandlers(httpClientConfig.isHttp2Enabled());
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
     }
@@ -94,7 +95,7 @@ public class ReactorNettyClient implements HttpClient {
             .create(connectionProvider)
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
-        reactorNettyClient.configureChannelPipelineHandlers(httpClientConfig.shouldUseHttp2());
+        reactorNettyClient.configureChannelPipelineHandlers(httpClientConfig.isHttp2Enabled());
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
     }
@@ -119,7 +120,7 @@ public class ReactorNettyClient implements HttpClient {
         }
     }
 
-    private void configureChannelPipelineHandlers(boolean useHttp2) {
+    private void configureChannelPipelineHandlers(boolean http2Enabled) {
         Configs configs = this.httpClientConfig.getConfigs();
 
         if (this.httpClientConfig.getProxy() != null) {
@@ -142,20 +143,22 @@ public class ReactorNettyClient implements HttpClient {
                     .maxChunkSize(configs.getMaxHttpChunkSize())
                     .validateHeaders(true));
 
-        if (useHttp2) {
+        if (http2Enabled) {
             this.httpClient = this.httpClient
-                .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContextForHttp2()))
-                .protocol(HttpProtocol.H2)
-                .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
+                .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContextWithHttp2Enabled()))
+                .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
                     // validateHeaders(false) does not work for http2
-                    ChannelPipeline channelPipeline = channel.pipeline();
-                    channelPipeline.addAfter(
-                        "reactor.left.httpCodec",
-                        "customHeaderCleaner",
-                        new Http2ResponseHeaderCleanerHandler());
-                });
+                    ChannelPipeline channelPipeline = connection.channel().pipeline();
+                    if (channelPipeline.get("reactor.left.httpCodec") != null) {
+                        channelPipeline.addAfter(
+                            "reactor.left.httpCodec",
+                            "customHeaderCleaner",
+                            new Http2ResponseHeaderCleanerHandler());
+                    }
+                }));
         }
     }
 

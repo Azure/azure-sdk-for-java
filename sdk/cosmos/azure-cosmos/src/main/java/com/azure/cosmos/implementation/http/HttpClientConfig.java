@@ -21,7 +21,7 @@ public class HttpClientConfig {
     private Duration networkRequestTimeout;
     private ProxyOptions proxy;
     private boolean connectionKeepAlive = true;
-    private boolean useHttp2;
+    private boolean http2Enabled;
 
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
@@ -52,8 +52,8 @@ public class HttpClientConfig {
         return this;
     }
 
-    public HttpClientConfig withHttp2(boolean useHttp2) {
-        this.useHttp2 = useHttp2;
+    public HttpClientConfig withHttp2Enabled(boolean http2Enabled) {
+        this.http2Enabled = http2Enabled;
         return this;
     }
 
@@ -81,8 +81,8 @@ public class HttpClientConfig {
         return connectionKeepAlive;
     }
 
-    public boolean shouldUseHttp2() {
-        return useHttp2;
+    public boolean isHttp2Enabled() {
+        return http2Enabled;
     }
 
     //  TODO(kuthapar): Do we really need to use Strings.lenientFormat() here?

@@ -16,7 +16,7 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
     private static final Logger logger = LoggerFactory.getLogger(Http2ResponseHeaderCleanerHandler.class);
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.info("In Http2HeaderCleanerHandler ");
+
         if (msg instanceof Http2HeadersFrame) {
             Http2HeadersFrame headersFrame = (Http2HeadersFrame) msg;
             Http2Headers headers = headersFrame.headers();

@@ -832,7 +832,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
             .withProxy(this.connectionPolicy.getProxy())
             .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
-            .withHttp2(Configs.shouldUseHttp2());
+            .withHttp2Enabled(Configs.isHttp2Enabled());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);

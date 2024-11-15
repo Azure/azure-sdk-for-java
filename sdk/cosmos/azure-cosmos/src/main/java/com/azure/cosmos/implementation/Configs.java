@@ -36,7 +36,7 @@ public class Configs {
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
     private final SslContext sslContext;
-    private final SslContext sslContextForHttp2;
+    private final SslContext sslContextWithHttp2Enabled;
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
     // * Java property naming conventions as illustrated by the name/value pairs returned by System.getProperties.
@@ -266,20 +266,20 @@ public class Configs {
     private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE = "COSMOS_INSECURE_EMULATOR_CONNECTION_ALLOWED";
 
     // Flag to indicate whether enabled http2 for gateway, Please do not use it, only for internal testing purpose
-    private static final boolean DEFAULT_USE_HTTP2 = false;
-    private static final String USE_HTTP2 = "COSMOS.USE_HTTP2";
-    private static final String USE_HTTP2_VARIABLE = "COSMOS_USE_HTTP2";
+    private static final boolean DEFAULT_HTTP2_ENABLED = false;
+    private static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
+    private static final String HTTP2_ENABLED_VARIABLE = "COSMOS_HTTP2_ENABLED";
 
     public Configs() {
         this.sslContext = sslContextInit(false);
-        this.sslContextForHttp2 = sslContextInit(true);
+        this.sslContextWithHttp2Enabled = sslContextInit(true);
     }
 
     public static int getCPUCnt() {
         return CPU_CNT;
     }
 
-    private SslContext sslContextInit(boolean useHttp2) {
+    private SslContext sslContextInit(boolean http2Enabled) {
         try {
             SslContextBuilder sslContextBuilder =
                 SslContextBuilder
@@ -290,20 +290,18 @@ public class Configs {
                 sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
             }
 
-            if (useHttp2) {
+            if (http2Enabled) {
                 sslContextBuilder
-                    .ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
                     .applicationProtocolConfig(
                         new ApplicationProtocolConfig(
                             ApplicationProtocolConfig.Protocol.ALPN,
                             ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
                             ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
-                            ApplicationProtocolNames.HTTP_2
+                            ApplicationProtocolNames.HTTP_2,
+                            ApplicationProtocolNames.HTTP_1_1
                         )
                     );
             }
-
-
             return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
@@ -315,8 +313,8 @@ public class Configs {
         return this.sslContext;
     }
 
-    public SslContext getSslContextForHttp2() {
-        return this.sslContextForHttp2;
+    public SslContext getSslContextWithHttp2Enabled() {
+        return this.sslContextWithHttp2Enabled;
     }
 
     public Protocol getProtocol() {
@@ -865,12 +863,12 @@ public class Configs {
         return Boolean.parseBoolean(httpForEmulatorAllowed);
     }
 
-    public static boolean shouldUseHttp2() {
+    public static boolean isHttp2Enabled() {
         String httpEnabledConfig = System.getProperty(
-            USE_HTTP2,
+            HTTP2_ENABLED,
             firstNonNull(
-                emptyToNull(System.getenv().get(USE_HTTP2_VARIABLE)),
-                String.valueOf(DEFAULT_USE_HTTP2)));
+                emptyToNull(System.getenv().get(HTTP2_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_ENABLED)));
 
         return Boolean.parseBoolean(httpEnabledConfig);
     }

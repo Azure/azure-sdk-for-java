@@ -69,7 +69,7 @@ extends:
           TestResultsFiles: '**/junitreports/TEST-*.xml'
           AdditionalVariables:
             - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DCOSMOS.USE_HTTP2=true'
+              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DCOSMOS.HTTP2_ENABLED=true'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:

@@ -59,6 +59,8 @@ public interface HttpClient {
         fixedConnectionProviderBuilder.pendingAcquireTimeout(connectionAcquireTimeout);
         fixedConnectionProviderBuilder.maxIdleTime(maxIdleConnectionTimeoutInMillis);
 
+        // TODO[Http2]: config Http2AllocationStrategy (maxConnections & maxConcurrentStreams)
+
         return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),
             httpClientConfig);
     }
