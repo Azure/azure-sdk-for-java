@@ -1,7 +1,5 @@
 # Azure OpenAI client library for Java
 
-Do not merge.
-
 Azure OpenAI is a managed service that allows developers to deploy, tune, and generate content from OpenAI models on 
 Azure resources.
 
