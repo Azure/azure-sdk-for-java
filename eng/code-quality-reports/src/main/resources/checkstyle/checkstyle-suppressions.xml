@@ -28,15 +28,6 @@
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*(CredentialBuilderBase|DeviceCodeCredentialBuilder|InteractiveBrowserCredentialBuilder).java"/>
 
-  <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
-
-  <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
-
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.secrets.models.SecretProperties"/>
-
   <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>
@@ -108,17 +99,6 @@
   <!-- Suppress warning for ServiceClients to have Client in its name as Azure Container Registry has Clientlets which do not follow the same convention. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="(ContainerRepository|RegistryArtifact)(Async)?.java"/>
 
-  <!-- InvalidKeyException is not a runtime exception, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5178 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.keys.cryptography.(AesCbc|AesCbcPad).java"/>
-
-  <!-- suppress the runtime exception in the KeyVaultClient class-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.jca.implementation.KeyVaultClient.java"/>
-  <!-- suppress the runtime exception in the classes KeyVaultKeyLessECSignature, KeyVaultKeyLessRsaSignature, and AbstractKeyVaultKeyLessSignature-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.jca.implementation.signature.(KeyVaultKeyLessECSignature|KeyVaultKeyLessRsaSignature|AbstractKeyVaultKeyLessSignature).java"/>
-
   <!-- suppress eceptions caught to for tracing-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.containers.containerregistry.ContainerRegistryContentClient.java"/>
@@ -135,10 +115,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigureOptions"/>
 
-  <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
-  <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
-            files="com.azure.security.keyvault.keys.(KeyClient|KeyAsyncClient).java"/>
-
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="(ClientLogger|DefaultLogger|LoggingEventBuilder).java"/>
 
@@ -148,18 +124,6 @@
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy.java"/>
-
-  <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
-
-  <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
-
-  <!-- The KeyVault JCA library has to be as lightweight as possible and thus, does not use Azure Core or its loggers. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.security.keyvault.jca.*"/>
-
-  <!-- This class overrides a method that throws, so it cannot be avoided. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
   <suppress checks="."
             files=".*[/\\]monitor[/\\]implementation[/\\]"/>
@@ -174,7 +138,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files=".*[/\\](implementation|test)[/\\].*"/>
 
   <!-- Suppress the check on code-gen classes -->
-  <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>
   <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl"/>
   <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
   <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
@@ -333,9 +296,4 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.http.okhttp3.OkHttpHttpClientBuilder" />
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]http-stress[/\\].*\.java"/>
   <suppress checks="IllegalImport" files="io.clientcore.http.*.stress"/>
-
-  <!-- Exceptions thrown here are caught in the calling method. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.security.keyvault.keys.cryptography.CryptographyClient.java"
-            lines="1234,1237,1243"/>
 </suppressions>

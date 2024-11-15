@@ -4,11 +4,6 @@
 
 <suppressions>
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.security.keyvault.jca.implementation.certificates.AzureCertificates.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.security.keyvault.jca.implementation.model.AccessToken.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeylessSignature.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.KeyVaultClient.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.java" checks="MissingJavadocMethodCheck" />
