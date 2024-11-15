@@ -3,16 +3,22 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionDataContructorProxy;
+import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 
 import java.util.List;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * The TranscriptionData model.
  */
-public final class TranscriptionData extends StreamingData {
+public final class TranscriptionData extends StreamingData<TranscriptionData> {
 
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionData.class);
 
@@ -29,17 +35,17 @@ public final class TranscriptionData extends StreamingData {
     /*
      * Confidence of recognition of the whole phrase, from 0.0 (no confidence) to 1.0 (full confidence)
      */
-    private final double confidence;
+    private final Double confidence;
 
     /*
      * The position of this payload
      */
-    private final long offset;
+    private final Long offset;
 
     /*
      * Duration in ticks. 1 tick = 100 nanoseconds.
      */
-    private final long duration;
+    private final Long duration;
 
     /*
      * The result for each word of the phrase
@@ -57,30 +63,52 @@ public final class TranscriptionData extends StreamingData {
     private final TranscriptionResultState resultState;
 
     /**
+     * 
+     */
+    static {
+        TranscriptionDataContructorProxy.setAccessor(
+            new TranscriptionDataContructorProxy.TranscriptionDataContructorProxyAccessor() {
+                @Override
+                public TranscriptionData create(TranscriptionDataConverter internalData) {
+                    return new TranscriptionData(internalData);
+                }
+            }
+        );
+    }
+
+    /**
      * The TranscriptionData constructor
      *
-     * @param text The display form of the recognized word
-     * @param format The format of text
-     * @param confidence Confidence of recognition of the whole phrase, from 0.0 (no confidence) to 1.0 (full confidence)
-     * @param offset The position of this payload
-     * @param duration The Duration in ticks. 1 tick = 100 nanoseconds.
-     * @param words The result for each word of the phrase
-     * @param participantRawID The identified speaker based on participant raw ID
-     * @param resultStatus Status of the result of transcription
+     * @param internalData transcription internal data
      */
-    public TranscriptionData(String text, String format, double confidence, long offset, long duration, List<WordData> words, String participantRawID, String resultStatus) {
-        this.text = text;
-        this.format = convertToTextFormatEnum(format);
-        this.confidence = confidence;
-        this.offset = offset;
-        this.duration = duration;
-        this.words = words;
-        if (participantRawID != null && !participantRawID.isEmpty()) {
-            this.participant = CommunicationIdentifier.fromRawId(participantRawID);
+    TranscriptionData(TranscriptionDataConverter internalData) {
+        this.text = internalData.getText();
+        this.format = convertToTextFormatEnum(internalData.getFormat());
+        this.confidence = internalData.getConfidence();
+        this.offset = internalData.getOffset();
+        this.duration = internalData.getDuration();
+        this.words = internalData.getWords();
+        if (internalData.getParticipantRawID() != null && !internalData.getParticipantRawID().isEmpty()) {
+            this.participant = CommunicationIdentifier.fromRawId(internalData.getParticipantRawID());
         } else {
-            participant = null;
+            this.participant = null;
         }
-        this.resultState = convertToResultStatusEnum(resultStatus);
+
+        this.resultState = convertToResultStatusEnum(internalData.getResultStatus());
+    }
+
+    /**
+     * Create instance of transcription data
+     */
+    public TranscriptionData() { 
+        this.text = null;
+        this.format = null;
+        this.confidence = null;
+        this.offset = null;
+        this.duration = null;
+        this.words = null;
+        this.participant = null;
+        this.resultState = null;
     }
 
     private TranscriptionResultState convertToResultStatusEnum(String resultStatus) {
@@ -150,7 +178,7 @@ public final class TranscriptionData extends StreamingData {
      *
      * @return the words value.
      */
-    public List<WordData> getTranscripeWords() {
+    public List<WordData> getTranscribedWords() {
         return words;
     }
 
@@ -164,11 +192,40 @@ public final class TranscriptionData extends StreamingData {
     }
 
     /**
-     * Get the resultStatus property.
+     * Get the resultState property.
      *
-     * @return the resultStatus value.
+     * @return the resultState value.
      */
-    public TranscriptionResultState getResultStatus() {
+    public TranscriptionResultState getResultState() {
         return resultState;
+    }
+
+    @Override
+    public TranscriptionData parse(String data) {
+        // Implementation for parsing audio data
+        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
+            return jsonReader.readObject(reader -> {
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("transcriptionData".equals(fieldName)) {
+                        // Possible return of AudioData
+                        final TranscriptionDataConverter transcriptionDataInternal = TranscriptionDataConverter.fromJson(reader);
+                        if (transcriptionDataInternal != null) {
+                            return TranscriptionDataContructorProxy.create(transcriptionDataInternal);
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return null; // cases triggered.
+            });
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 }

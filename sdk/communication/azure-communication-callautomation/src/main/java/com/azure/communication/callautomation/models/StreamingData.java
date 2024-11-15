@@ -4,5 +4,13 @@
 package com.azure.communication.callautomation.models;
 
 /** The abstract classed used as parent of Streaming data such as Audio, Transcription or Captions. */
-public abstract class StreamingData {
+public abstract class StreamingData<T extends StreamingData<T>> {
+    
+    /**
+     * convert the base64 string into streamindata subtypes. 
+     * ex. AudioData, AudioMetadata, TranscriptionData, TranscriptionMetadata
+     * @param data the base64 string 
+     * @return Subtypes of StreamingData 
+     */
+    public abstract T parse(String data);
 }

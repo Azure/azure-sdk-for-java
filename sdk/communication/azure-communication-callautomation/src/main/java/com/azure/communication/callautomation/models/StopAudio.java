@@ -6,6 +6,6 @@ import com.azure.core.annotation.Fluent;
 
 /** The StopAudio model. */
 @Fluent
-public final class StopAudio {
+class StopAudio {
 
 }

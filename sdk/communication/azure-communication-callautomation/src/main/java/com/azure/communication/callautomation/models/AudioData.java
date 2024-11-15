@@ -3,18 +3,28 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.implementation.accesshelpers.AudioDataContructorProxy;
+import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 
 /** The MediaStreamingAudio model. */
-public final class AudioData extends StreamingData {
+public final class AudioData extends StreamingData<AudioData> {
 
+    private static final ClientLogger LOGGER = new ClientLogger(AudioData.class);
+    
     /*
      * The audio data.
      */
-    private final String data;
+    private final byte[] data;
 
     /*
      * The timestamp of when the media was sourced.
@@ -31,31 +41,54 @@ public final class AudioData extends StreamingData {
      */
     private final boolean silent;
 
+    static {
+        AudioDataContructorProxy.setAccessor(
+            new AudioDataContructorProxy.AudioDataContructorProxyAccessor() {
+                @Override
+                public AudioData create(AudioDataConverter internalData) {
+                    return new AudioData(internalData);
+                }
+
+                @Override
+                public AudioData create(byte[] data) {
+                    return new AudioData(data);
+                }
+            }
+        );
+    }
+
+    /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param internalData The audiodataconvertor
+     */
+    AudioData(AudioDataConverter internalData) {
+        this.data = Base64.getDecoder().decode(internalData.getData());
+        this.timestamp = OffsetDateTime.parse(internalData.getTimestamp(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        if (internalData.getParticipantRawID() != null && !internalData.getParticipantRawID().isEmpty()) {
+            this.participant = CommunicationIdentifier.fromRawId(internalData.getParticipantRawID());
+        } else {
+            participant = null;
+        }
+        this.silent = internalData.isSilent();
+    }
+
+    /**
+     * The constructor
+     */
+    public AudioData() {
+        this.data = null;
+        this.timestamp = null;
+        this.participant = null;
+        this.silent = false;
+    }
+
     /**
      * The constructor
      *
      * @param data The audio data.
-     * @param timestamp The timestamp of when the media was sourced.
-     * @param participantRawID The participantId.
-     * @param silent Indicates if the received audio buffer contains only silence.
      */
-    public AudioData(String data, String timestamp, String participantRawID, boolean silent) {
-        this.data = data;
-        this.timestamp = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        if (participantRawID != null && !participantRawID.isEmpty()) {
-            this.participant = CommunicationIdentifier.fromRawId(participantRawID);
-        } else {
-            participant = null;
-        }
-        this.silent = silent;
-    }
-
-     /**
-     * The constructor
-     *
-     * @param data The audio data.
-     */
-    public AudioData(String data) {
+    AudioData(byte[] data) {
         this.data = data;
         this.timestamp = null;
         this.participant = null;
@@ -67,7 +100,7 @@ public final class AudioData extends StreamingData {
      *
      * @return the data value.
      */
-    public String getData() {
+    public byte[] getData() {
         return data;
     }
 
@@ -96,5 +129,34 @@ public final class AudioData extends StreamingData {
      */
     public boolean isSilent() {
         return silent;
+    }
+
+    @Override
+    public AudioData parse(String data) {
+        // Implementation for parsing audio data
+        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
+            return jsonReader.readObject(reader -> {
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("audioData".equals(fieldName)) {
+                        // Possible return of AudioData
+                        final AudioDataConverter audioInternal = AudioDataConverter.fromJson(reader);
+                        if (audioInternal != null) {
+                            return AudioDataContructorProxy.create(audioInternal);
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return null; // cases triggered.
+            });
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 }

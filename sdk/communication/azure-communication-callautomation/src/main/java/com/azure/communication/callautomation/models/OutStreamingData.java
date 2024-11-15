@@ -28,8 +28,7 @@ public class OutStreamingData {
      * 
      * @param kind media kind type on the out streaming data
      */
-    public OutStreamingData(MediaKind kind)
-    {
+    public OutStreamingData(MediaKind kind) {
         this.kind = kind;
     }
 
@@ -51,34 +50,24 @@ public class OutStreamingData {
         return audioData;
     }
 
-    /**
+     /**
      * Set the out streaming Audio Data.
      *
      * @param audioData the audioData to set
      * @return the OutStreamingData object itself.
      */
-    public OutStreamingData setAudioData(AudioData audioData) {
-        this.audioData = audioData;
+    public OutStreamingData setAudioData(byte[] audioData) {
+        this.audioData = new AudioData(audioData);
         return this;
-    }
-
-     /**
-     * Get the out streaming Stop Audio.
-     *
-     * @return the stopAudio
-     */
-    public StopAudio getStopAudio() {
-        return stopAudio;
     }
 
     /**
      * Set the out streaming stop Audio.
      *
-     * @param stopAudio the stopAudio to set
      * @return the OutStreamingData object itself.
      */
-    public OutStreamingData setStopAudio(StopAudio stopAudio) {
-        this.stopAudio = stopAudio;
+    public OutStreamingData setStopAudio() {
+        this.stopAudio = new StopAudio();
         return this;
     }
 }

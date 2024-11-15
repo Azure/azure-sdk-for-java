@@ -3,11 +3,21 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.io.IOException;
+
+import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionMetadataContructorProxy;
+import com.azure.communication.callautomation.implementation.converters.TranscriptionMetadataConverter;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.core.util.logging.ClientLogger;
+
 /**
  * Metadata for Transcription Streaming.
  */
-public final class TranscriptionMetadata extends StreamingData {
+public final class TranscriptionMetadata extends StreamingData<TranscriptionMetadata> {
 
+    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionMetadata.class);
 
     /*
      * Transcription Subscription Id.
@@ -28,19 +38,37 @@ public final class TranscriptionMetadata extends StreamingData {
      * Correlation id
      */
     private final String correlationId;
+   
+    static {
+        TranscriptionMetadataContructorProxy.setAccessor(
+            new TranscriptionMetadataContructorProxy.TranscriptionMetadataContructorProxyAccessor() {
+                @Override
+                public TranscriptionMetadata create(TranscriptionMetadataConverter internalData) {
+                    return new TranscriptionMetadata(internalData);
+                }
+            }
+        );
+    }
 
     /**
      * Creates an instance of TranscriptionMetadata class.
-     * @param transcriptionSubscriptionId Transcription Subscription Id.
-     * @param locale The target locale in which the translated text needs to be
-     * @param callConnectionId Call connection id
-     * @param correlationId Correlation id
+     * @param internalData Transcription meta data internal.
      */
-    public TranscriptionMetadata(String transcriptionSubscriptionId, String locale, String callConnectionId, String correlationId) {
-        this.transcriptionSubscriptionId = transcriptionSubscriptionId;
-        this.locale = locale;
-        this.callConnectionId = callConnectionId;
-        this.correlationId = correlationId;
+    TranscriptionMetadata(TranscriptionMetadataConverter internalData) {
+        this.transcriptionSubscriptionId = internalData.getTranscriptionSubscriptionId();
+        this.locale = internalData.getLocale();
+        this.callConnectionId = internalData.getCallConnectionId();
+        this.correlationId = internalData.getCorrelationId();
+    }
+
+    /**
+     * Creates an instance of TranscriptionMetadata class.
+     */
+    public TranscriptionMetadata() {
+        this.transcriptionSubscriptionId = null;
+        this.locale = null;
+        this.callConnectionId = null;
+        this.correlationId = null;
     }
 
     /**
@@ -77,5 +105,34 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     public String getCorrelationId() {
         return correlationId;
+    }
+
+    @Override
+    public TranscriptionMetadata parse(String data) {
+        // Implementation for parsing audio data
+        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
+            return jsonReader.readObject(reader -> {
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("transcriptionMetadata".equals(fieldName)) {
+                        // Possible return of AudioData
+                        final TranscriptionMetadataConverter transcriptionMetadataInternal = TranscriptionMetadataConverter.fromJson(reader);
+                        if (transcriptionMetadataInternal != null) {
+                            return TranscriptionMetadataContructorProxy.create(transcriptionMetadataInternal);
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return null; // cases triggered.
+            });
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 }
