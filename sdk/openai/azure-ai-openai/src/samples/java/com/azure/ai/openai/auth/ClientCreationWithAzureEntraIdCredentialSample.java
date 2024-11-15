@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sample demonstrates how to create a client with `AzureKeyCredential`.
+ * Sample demonstrates how to create a client with Azure Entra ID.
  */
-public class ClientCreationWithAzureActiveDirectoryCredentialSample {
+public class ClientCreationWithAzureEntraIdCredentialSample {
     /**
-     * Runs the sample algorithm and demonstrates how to create a client with `AzureKeyCredential`.
+     * Runs the sample algorithm and demonstrates how to create a client with Azure Entra ID.
      *
      * @param args Unused. Arguments to the program.
      */

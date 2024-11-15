@@ -51,7 +51,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.3.11</version>
+  <version>1.4.0</version>
 </dependency>
 ```
 
@@ -93,8 +93,6 @@ You can familiarize yourself with different APIs using [samples for Digital Twin
 - [`models` package](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins/azure-digitaltwins-core/src/main/java/com/azure/digitaltwins/core/models)
 
 Portions of the client library are generated through Autorest, and the swagger file used is defined in the Autorest config file.
-
-To regenerate the code, run the Powershell script [generate.ps1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/digitaltwins/azure-digitaltwins-core/generate.ps1).
 
 ### /src/samples
 

@@ -92,7 +92,7 @@ The underlying MSAL library, MSAL4J, also has detailed logging. It is highly ver
 
 | Error Message                                  | Description                                              | Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 |------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Environment variables aren't fully configured. | A valid combination of environment variables wasn't set. | Ensure the appropriate environment variables are set **prior to application startup** for the intended authentication method.</p><ul><li>To authenticate a service principal using a client secret, ensure the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_CLIENT_SECRET` are properly set.</li><li>To authenticate a service principal using a certificate, ensure the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_CERTIFICATE_PATH` and optionally `AZURE_CLIENT_CERTIFICATE_PASSWORD` are properly set. `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` may optionally be set to send certificate chain in x5c header to support subject name / issuer based authentication.</li><li>To authenticate a user using a password, ensure the variables `AZURE_USERNAME` and `AZURE_PASSWORD` are properly set.</li></ul> |
+| Environment variables aren't fully configured. | A valid combination of environment variables wasn't set. | Ensure the appropriate environment variables are set **prior to application startup** for the intended authentication method.</p><ul><li>To authenticate a service principal using a client secret, ensure the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_CLIENT_SECRET` are properly set.</li><li>To authenticate a service principal using a certificate, ensure the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_CERTIFICATE_PATH` and optionally `AZURE_CLIENT_CERTIFICATE_PASSWORD` are properly set. `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` may optionally be set to send certificate chain in x5c header to support subject name / issuer-based authentication.</li><li>To authenticate a user using a password, ensure the variables `AZURE_USERNAME` and `AZURE_PASSWORD` are properly set.</li></ul> |
 
 ## Troubleshoot `ClientSecretCredential` authentication issues
 `ClientAuthenticationException`
@@ -130,7 +130,7 @@ The underlying MSAL library, MSAL4J, also has detailed logging. It is highly ver
 
 ## Troubleshoot `ManagedIdentityCredential` authentication issues
 
-The `ManagedIdentityCredential` is designed to work on a variety of Azure hosts that provide managed identity. Configuring the managed identity and troubleshooting failures varies from hosts. The below table lists the Azure hosts that can be assigned a managed identity, and are supported by the `ManagedIdentityCredential`.
+The `ManagedIdentityCredential` is designed to work on a variety of Azure hosts that provide managed identity. Configuring the managed identity and troubleshooting failures varies from hosts. The table below lists the Azure hosts that can be assigned a managed identity and are supported by the `ManagedIdentityCredential`.
 
 |Host Environment| | |
 |---|---|---|
@@ -153,12 +153,12 @@ The `ManagedIdentityCredential` is designed to work on a variety of Azure hosts 
 
 #### Verify IMDS is available on the VM
 
-If you have access to the VM, you can verify the manged identity endpoint is available via the command line using curl.
+If you have access to the VM, you can verify the managed identity endpoint is available via the command line using curl.
 
 ```bash
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://management.core.windows.net&api-version=2018-02-01' -H "Metadata: true"
 ```
-> Note that output of this command will contain a valid access token, and SHOULD NOT BE SHARED to avoid compromising account security.
+> Note that output of this command will contain a valid access token and SHOULD NOT BE SHARED to avoid compromising account security.
 ### Azure App Service and Azure Functions Managed Identity
 `CredentialUnavailableException`
 
@@ -172,7 +172,7 @@ If you have access to SSH into the App Service, you can verify managed identity 
 ```bash
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://management.core.windows.net&api-version=2018-02-01' -H "Metadata: true"
 ```
-> Note that the output of this command will contain a valid access token, and SHOULD NOT BE SHARED to avoid compromising account security.
+> Note that the output of this command will contain a valid access token and SHOULD NOT BE SHARED to avoid compromising account security.
 
 ### Azure Kubernetes Service Managed Identity
 #### Pod Identity for Kubernetes
@@ -230,18 +230,18 @@ az account get-access-token --output json --resource https://management.core.win
 
 #### Verify the Azure Developer CLI can obtain tokens
 
-You can manually verify that the Azure Developer CLI is properly authenticated, and can obtain tokens. First use the `config` command to verify the account which is currently logged in to the Azure Developer CLI.
+You can manually verify that the Azure Developer CLI is properly authenticated and can obtain tokens. First use the `config` command to verify the account which is currently logged in to the Azure Developer CLI.
 
 ```bash
 azd config list
 ```
 
-Once you've verified the Azure Developer CLI is using correct account, you can validate that it's able to obtain tokens for this account.
+Once you've verified the Azure Developer CLI is using the correct account, you can validate that it's able to obtain tokens for this account.
 
 ```bash
 azd auth token --output json --scope https://management.core.windows.net/.default
 ```
->Note that output of this command will contain a valid access token, and SHOULD NOT BE SHARED to avoid compromising account security.
+>Note that output of this command will contain a valid access token and SHOULD NOT BE SHARED to avoid compromising account security.
 
 ## Troubleshoot `AzurePowerShellCredential` authentication issues
 
@@ -255,7 +255,7 @@ azd auth token --output json --scope https://management.core.windows.net/.defaul
 
 #### Verify Azure PowerShell can obtain tokens
 
-You can manually verify that Azure PowerShell is properly authenticated, and can obtain tokens. First use the `Get-AzContext` command to verify the account which is currently logged in to the Azure CLI.
+You can manually verify that Azure PowerShell is properly authenticated and can obtain tokens. First use the `Get-AzContext` command to verify the account which is currently logged in to the Azure CLI.
 
 ```
 PS C:\> Get-AzContext
@@ -265,12 +265,12 @@ Name                                     Account             SubscriptionName   
 Subscription1 (xxxxxxxx-xxxx-xxxx-xxx... test@outlook.com    Subscription1       AzureCloud          xxxxxxxx-x...
 ```
 
-Once you've verified Azure PowerShell is using correct account, you can validate that it's able to obtain tokens for this account.
+Once you've verified Azure PowerShell is using the correct account, you can validate that it's able to obtain tokens for this account.
 
 ```bash
 Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 ```
->Note that output of this command will contain a valid access token, and SHOULD NOT BE SHARED to avoid compromising account security.
+>Note that output of this command will contain a valid access token and SHOULD NOT BE SHARED to avoid compromising account security.
 
 
 ## Troubleshoot `WorkloadIdentityCredential` authentication issues
@@ -304,7 +304,7 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 
 | Error Message |Description| Mitigation |
 |---|---|---|
-|The current credential is not configured to acquire tokens for tenant <tenant ID>|The application must configure the credential to allow acquiring tokens from the requested tenant.|Add the requested tenant ID it to the `additionallyAllowedTenants` on the credential builder, or add \"*\" to `additionallyAllowedTenants` to allow acquiring tokens for any tenant.</p>This exception was added as part of a breaking change to multi tenant authentication in version `1.6.0`. Users experiencing this error after upgrading can find details on the change and migration in [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md) |
+|The current credential is not configured to acquire tokens for tenant <tenant ID>|The application must configure the credential to allow acquiring tokens from the requested tenant.|Add the requested tenant ID it to the `additionallyAllowedTenants` on the credential builder, or add \"*\" to `additionallyAllowedTenants` to allow acquiring tokens for any tenant.</p>This exception was added as part of a breaking change to multi-tenant authentication in version `1.6.0`. Users experiencing this error after upgrading can find details on the change and migration in [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md) |
 
 ## Troubleshoot authentication timeout issues
 
