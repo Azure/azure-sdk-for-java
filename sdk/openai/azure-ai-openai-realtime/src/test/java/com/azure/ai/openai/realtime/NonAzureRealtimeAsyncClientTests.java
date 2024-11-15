@@ -36,7 +36,6 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
-import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Assertions;

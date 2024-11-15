@@ -17,7 +17,6 @@ import com.azure.ai.openai.realtime.models.RealtimeMessageRole;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
-import com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseFunctionCallItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
