@@ -1,11 +1,13 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.json;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.FormatFeature;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonToken;
 
 /**
  * Token reader (parser) features specific to JSON backend.
- * Eventual replacement for JSON-specific {@link io.clientcore.core.json.implementation.jackson.core.JsonParser.Feature}s.
+ * Eventual replacement for JSON-specific {@link JsonParser.Feature}s.
  *
  * @since 2.10
  */
@@ -191,23 +193,7 @@ public enum JsonReadFeature implements FormatFeature {
      */
     final private JsonParser.Feature _mappedFeature;
 
-    /**
-     * Method that calculates bit set (flags) of all features that
-     * are enabled by default.
-     *
-     * @return Bit mask of all features that are enabled by default
-     */
-    public static int collectDefaults() {
-        int flags = 0;
-        for (JsonReadFeature f : values()) {
-            if (f.enabledByDefault()) {
-                flags |= f.getMask();
-            }
-        }
-        return flags;
-    }
-
-    private JsonReadFeature(boolean defaultState, JsonParser.Feature mapTo) {
+    JsonReadFeature(boolean defaultState, JsonParser.Feature mapTo) {
         _defaultState = defaultState;
         _mask = (1 << ordinal());
         _mappedFeature = mapTo;

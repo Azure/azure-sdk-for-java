@@ -1,10 +1,11 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.io;
 
-import java.io.*;
-
 import io.clientcore.core.json.implementation.jackson.core.util.BufferRecycler;
 import io.clientcore.core.json.implementation.jackson.core.util.TextBuffer;
+
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * Efficient alternative to {@link StringWriter}, based on using segmented
@@ -23,9 +24,9 @@ public final class SegmentedStringWriter extends Writer {
     }
 
     /*
-    /**********************************************************
-    /* java.io.Writer implementation
-    /**********************************************************
+     * /**********************************************************
+     * /* java.io.Writer implementation
+     * /**********************************************************
      */
 
     @Override
@@ -82,23 +83,9 @@ public final class SegmentedStringWriter extends Writer {
     }
 
     /*
-    /**********************************************************
-    /* Extended API
-    /**********************************************************
+     * /**********************************************************
+     * /* Extended API
+     * /**********************************************************
      */
 
-    /**
-     * Main access method that will construct a String that contains
-     * all the contents, release all internal buffers we may have,
-     * and return result String.
-     * Note that the method is not idempotent -- if called second time,
-     * will just return an empty String.
-     *
-     * @return String that contains all aggregated content
-     */
-    public String getAndClear() {
-        String result = _buffer.contentsAsString();
-        _buffer.releaseBuffers();
-        return result;
-    }
 }

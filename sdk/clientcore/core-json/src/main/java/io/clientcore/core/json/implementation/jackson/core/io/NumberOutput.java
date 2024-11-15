@@ -2,12 +2,12 @@
 package io.clientcore.core.json.implementation.jackson.core.io;
 
 public final class NumberOutput {
-    private static int MILLION = 1000000;
-    private static int BILLION = 1000000000;
-    private static long BILLION_L = 1000000000L;
+    private static final int MILLION = 1000000;
+    private static final int BILLION = 1000000000;
+    private static final long BILLION_L = 1000000000L;
 
-    private static long MIN_INT_AS_LONG = (long) Integer.MIN_VALUE;
-    private static long MAX_INT_AS_LONG = (long) Integer.MAX_VALUE;
+    private static final long MIN_INT_AS_LONG = Integer.MIN_VALUE;
+    private static final long MAX_INT_AS_LONG = Integer.MAX_VALUE;
 
     final static String SMALLEST_INT = String.valueOf(Integer.MIN_VALUE);
     final static String SMALLEST_LONG = String.valueOf(Long.MIN_VALUE);
@@ -40,9 +40,9 @@ public final class NumberOutput {
         = new String[] { "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10" };
 
     /*
-    /**********************************************************
-    /* Efficient serialization methods using raw buffers
-    /**********************************************************
+     * /**********************************************************
+     * /* Efficient serialization methods using raw buffers
+     * /**********************************************************
      */
 
     /**
@@ -85,7 +85,8 @@ public final class NumberOutput {
         }
 
         // ok, all 3 triplets included
-        /* Let's first hand possible billions separately before
+        /*
+         * Let's first hand possible billions separately before
          * handling 3 triplets. This is possible since we know we
          * can have at most '2' as billion count.
          */
@@ -235,13 +236,14 @@ public final class NumberOutput {
     }
 
     /*
-    /**********************************************************
-    /* Convenience serialization methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Convenience serialization methods
+     * /**********************************************************
      */
 
-    /* !!! 05-Aug-2008, tatus: Any ways to further optimize
-     *   these? (or need: only called by diagnostics methods?)
+    /*
+     * !!! 05-Aug-2008, tatus: Any ways to further optimize
+     * these? (or need: only called by diagnostics methods?)
      */
     public static String toString(int v) {
         // Lookup table for small values
@@ -274,9 +276,9 @@ public final class NumberOutput {
     }
 
     /*
-    /**********************************************************
-    /* Other convenience methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Other convenience methods
+     * /**********************************************************
      */
 
     /**
@@ -310,9 +312,9 @@ public final class NumberOutput {
     }
 
     /*
-    /**********************************************************
-    /* Internal helper methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal helper methods
+     * /**********************************************************
      */
 
     private static int _outputUptoBillion(int v, char[] b, int off) {

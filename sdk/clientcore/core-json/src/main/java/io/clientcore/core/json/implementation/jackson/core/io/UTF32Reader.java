@@ -1,7 +1,10 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.io;
 
-import java.io.*;
+import java.io.CharConversionException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * Since JDK does not come with UTF-32/UCS-4, let's implement a simple
@@ -48,9 +51,9 @@ public class UTF32Reader extends Reader {
     protected final boolean _managedBuffers;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     public UTF32Reader(IOContext ctxt, InputStream in, byte[] buf, int ptr, int len, boolean isBigEndian) {
@@ -64,9 +67,9 @@ public class UTF32Reader extends Reader {
     }
 
     /*
-    /**********************************************************
-    /* Public API
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API
+     * /**********************************************************
      */
 
     @Override
@@ -138,7 +141,7 @@ public class UTF32Reader extends Reader {
         // 02-Jun-2017, tatu: Must ensure we don't try to read past buffer end:
         final int lastValidInputStart = (_length - 4);
 
-        main_loop: while ((outPtr < outEnd) && (_ptr <= lastValidInputStart)) {
+        while ((outPtr < outEnd) && (_ptr <= lastValidInputStart)) {
             int ptr = _ptr;
             int hi, lo;
 
@@ -165,7 +168,7 @@ public class UTF32Reader extends Reader {
                 // Room for second part?
                 if (outPtr >= outEnd) { // nope
                     _surrogate = (char) ch;
-                    break main_loop;
+                    break;
                 }
             }
             cbuf[outPtr++] = (char) lo;
@@ -176,9 +179,9 @@ public class UTF32Reader extends Reader {
     }
 
     /*
-    /**********************************************************
-    /* Internal methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods
+     * /**********************************************************
      */
 
     private void reportUnexpectedEOF(int gotBytes, int needed) throws IOException {
@@ -203,9 +206,9 @@ public class UTF32Reader extends Reader {
      */
     private boolean loadMore(int available) throws IOException {
         // 06-Apr-2021, tatu: If no InputStream (either due to closure or
-        //    input being passed direcly in buffer) let's NOT bother
-        //    trying to read (can't).
-        //    Similarly, without read buffer cannot really read...
+        // input being passed direcly in buffer) let's NOT bother
+        // trying to read (can't).
+        // Similarly, without read buffer cannot really read...
         if ((_in == null) || (_buffer == null)) {
             return false;
         }
@@ -271,7 +274,7 @@ public class UTF32Reader extends Reader {
         }
     }
 
-    private void reportBounds(char[] cbuf, int start, int len) throws IOException {
+    private void reportBounds(char[] cbuf, int start, int len) {
         throw new ArrayIndexOutOfBoundsException(String.format("read(buf,%d,%d), cbuf[%d]", start, len, cbuf.length));
     }
 

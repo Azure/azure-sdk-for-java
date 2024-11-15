@@ -5,6 +5,7 @@ package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.IterableOfByteBuffersInputStream;
+import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
@@ -96,6 +97,13 @@ public final class ListByteBufferBinaryData extends BinaryData {
                 channel.write(bb);
             }
         }
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
     }
 
     @Override
