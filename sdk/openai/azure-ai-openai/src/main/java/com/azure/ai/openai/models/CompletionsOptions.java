@@ -599,6 +599,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
         jsonWriter.writeNumberField("frequency_penalty", this.frequencyPenalty);
         jsonWriter.writeNumberField("best_of", this.bestOf);
         jsonWriter.writeBooleanField("stream", this.stream);
+        jsonWriter.writeJsonField("stream_options", this.streamOptions);
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeNumberField("seed", this.seed);
         return jsonWriter.writeEndObject();
@@ -631,6 +632,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
             Double frequencyPenalty = null;
             Integer bestOf = null;
             Boolean stream = null;
+            ChatCompletionStreamOptions streamOptions = null;
             String model = null;
             Integer seed = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -666,6 +668,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
                     bestOf = reader.getNullable(JsonReader::getInt);
                 } else if ("stream".equals(fieldName)) {
                     stream = reader.getNullable(JsonReader::getBoolean);
+                } else if ("stream_options".equals(fieldName)) {
+                    streamOptions = ChatCompletionStreamOptions.fromJson(reader);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
                 } else if ("seed".equals(fieldName)) {
@@ -689,6 +693,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
             deserializedCompletionsOptions.frequencyPenalty = frequencyPenalty;
             deserializedCompletionsOptions.bestOf = bestOf;
             deserializedCompletionsOptions.stream = stream;
+            deserializedCompletionsOptions.streamOptions = streamOptions;
             deserializedCompletionsOptions.model = model;
             deserializedCompletionsOptions.seed = seed;
             return deserializedCompletionsOptions;
@@ -732,6 +737,34 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     @Generated
     public CompletionsOptions setSeed(Integer seed) {
         this.seed = seed;
+        return this;
+    }
+
+    /*
+     * Options for streaming response. Only set this when you set `stream: true`.
+     */
+    @Generated
+    private ChatCompletionStreamOptions streamOptions;
+
+    /**
+     * Get the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
+     *
+     * @return the streamOptions value.
+     */
+    @Generated
+    public ChatCompletionStreamOptions getStreamOptions() {
+        return this.streamOptions;
+    }
+
+    /**
+     * Set the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
+     *
+     * @param streamOptions the streamOptions value to set.
+     * @return the CompletionsOptions object itself.
+     */
+    @Generated
+    public CompletionsOptions setStreamOptions(ChatCompletionStreamOptions streamOptions) {
+        this.streamOptions = streamOptions;
         return this;
     }
 }

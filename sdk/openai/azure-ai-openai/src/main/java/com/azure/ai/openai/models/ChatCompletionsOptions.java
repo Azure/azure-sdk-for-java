@@ -33,7 +33,10 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     private final List<ChatRequestMessage> messages;
 
     /*
-     * The maximum number of tokens to generate.
+     * The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can
+     * return will be (4096 - prompt tokens).
+     * 
+     * This value is now deprecated in favor of `max_completion_tokens`, and is not compatible with o1 series models.
      */
     @Generated
     private Integer maxTokens;
@@ -147,7 +150,10 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /**
-     * Get the maxTokens property: The maximum number of tokens to generate.
+     * Get the maxTokens property: The maximum number of tokens allowed for the generated answer. By default, the number
+     * of tokens the model can return will be (4096 - prompt tokens).
+     *
+     * This value is now deprecated in favor of `max_completion_tokens`, and is not compatible with o1 series models.
      *
      * @return the maxTokens value.
      */
@@ -157,7 +163,10 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /**
-     * Set the maxTokens property: The maximum number of tokens to generate.
+     * Set the maxTokens property: The maximum number of tokens allowed for the generated answer. By default, the number
+     * of tokens the model can return will be (4096 - prompt tokens).
+     *
+     * This value is now deprecated in favor of `max_completion_tokens`, and is not compatible with o1 series models.
      *
      * @param maxTokens the maxTokens value to set.
      * @return the ChatCompletionsOptions object itself.
@@ -859,6 +868,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             List<FunctionDefinition> functions = null;
             BinaryData functionCall = null;
             Integer maxTokens = null;
+            Integer maxCompletionTokens = null;
             Double temperature = null;
             Double topP = null;
             Map<String, Integer> logitBias = null;
@@ -868,6 +878,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             Double presencePenalty = null;
             Double frequencyPenalty = null;
             Boolean stream = null;
+            ChatCompletionStreamOptions streamOptions = null;
             String model = null;
             List<AzureChatExtensionConfiguration> dataSources = null;
             AzureChatEnhancementConfiguration enhancements = null;
@@ -877,6 +888,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             ChatCompletionsResponseFormat responseFormat = null;
             List<ChatCompletionsToolDefinition> tools = null;
             BinaryData toolChoice = null;
+            Boolean parallelToolCalls = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -889,6 +901,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("max_tokens".equals(fieldName)) {
                     maxTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("max_completion_tokens".equals(fieldName)) {
+                    maxCompletionTokens = reader.getNullable(JsonReader::getInt);
                 } else if ("temperature".equals(fieldName)) {
                     temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("top_p".equals(fieldName)) {
@@ -907,6 +921,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
                     frequencyPenalty = reader.getNullable(JsonReader::getDouble);
                 } else if ("stream".equals(fieldName)) {
                     stream = reader.getNullable(JsonReader::getBoolean);
+                } else if ("stream_options".equals(fieldName)) {
+                    streamOptions = ChatCompletionStreamOptions.fromJson(reader);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
                 } else if ("data_sources".equals(fieldName)) {
@@ -926,6 +942,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
                 } else if ("tool_choice".equals(fieldName)) {
                     toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("parallel_tool_calls".equals(fieldName)) {
+                    parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -934,6 +952,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.functions = functions;
             deserializedChatCompletionsOptions.functionCall = functionCall;
             deserializedChatCompletionsOptions.maxTokens = maxTokens;
+            deserializedChatCompletionsOptions.maxCompletionTokens = maxCompletionTokens;
             deserializedChatCompletionsOptions.temperature = temperature;
             deserializedChatCompletionsOptions.topP = topP;
             deserializedChatCompletionsOptions.logitBias = logitBias;
@@ -943,6 +962,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.presencePenalty = presencePenalty;
             deserializedChatCompletionsOptions.frequencyPenalty = frequencyPenalty;
             deserializedChatCompletionsOptions.stream = stream;
+            deserializedChatCompletionsOptions.streamOptions = streamOptions;
             deserializedChatCompletionsOptions.model = model;
             deserializedChatCompletionsOptions.dataSources = dataSources;
             deserializedChatCompletionsOptions.enhancements = enhancements;
@@ -952,7 +972,95 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.responseFormat = responseFormat;
             deserializedChatCompletionsOptions.tools = tools;
             deserializedChatCompletionsOptions.toolChoice = toolChoice;
+            deserializedChatCompletionsOptions.parallelToolCalls = parallelToolCalls;
             return deserializedChatCompletionsOptions;
         });
+    }
+
+    /*
+     * An upper bound for the number of tokens that can be generated for a completion, including visible output tokens
+     * and reasoning tokens.
+     */
+    @Generated
+    private Integer maxCompletionTokens;
+
+    /*
+     * Options for streaming response. Only set this when you set `stream: true`.
+     */
+    @Generated
+    private ChatCompletionStreamOptions streamOptions;
+
+    /*
+     * Whether to enable parallel function calling during tool use.
+     */
+    @Generated
+    private Boolean parallelToolCalls;
+
+    /**
+     * Get the maxCompletionTokens property: An upper bound for the number of tokens that can be generated for a
+     * completion, including visible output tokens and reasoning tokens.
+     *
+     * @return the maxCompletionTokens value.
+     */
+    @Generated
+    public Integer getMaxCompletionTokens() {
+        return this.maxCompletionTokens;
+    }
+
+    /**
+     * Set the maxCompletionTokens property: An upper bound for the number of tokens that can be generated for a
+     * completion, including visible output tokens and reasoning tokens.
+     *
+     * @param maxCompletionTokens the maxCompletionTokens value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setMaxCompletionTokens(Integer maxCompletionTokens) {
+        this.maxCompletionTokens = maxCompletionTokens;
+        return this;
+    }
+
+    /**
+     * Get the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
+     *
+     * @return the streamOptions value.
+     */
+    @Generated
+    public ChatCompletionStreamOptions getStreamOptions() {
+        return this.streamOptions;
+    }
+
+    /**
+     * Set the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
+     *
+     * @param streamOptions the streamOptions value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setStreamOptions(ChatCompletionStreamOptions streamOptions) {
+        this.streamOptions = streamOptions;
+        return this;
+    }
+
+    /**
+     * Get the parallelToolCalls property: Whether to enable parallel function calling during tool use.
+     *
+     * @return the parallelToolCalls value.
+     */
+    @Generated
+    public Boolean isParallelToolCalls() {
+        return this.parallelToolCalls;
+    }
+
+    /**
+     * Set the parallelToolCalls property: Whether to enable parallel function calling during tool use.
+     *
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setParallelToolCalls(Boolean parallelToolCalls) {
+        this.parallelToolCalls = parallelToolCalls;
+        return this;
     }
 }
