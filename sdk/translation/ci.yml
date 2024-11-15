@@ -30,6 +30,20 @@ pr:
       - sdk/translation/azure-ai-translation-text/pom.xml
       - sdk/translation/azure-ai-translation-document/pom.xml
 
+parameters:
+  - name: release_azureaidocumenttranslator
+    displayName: 'azure-ai-documenttranslator'
+    type: boolean
+    default: false
+  - name: release_azureaitranslationtext
+    displayName: 'azure-ai-translation-text'
+    type: boolean
+    default: true
+  - name: release_azureaitranslationdocument
+    displayName: 'azure-ai-translation-document'
+    type: boolean
+    default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
