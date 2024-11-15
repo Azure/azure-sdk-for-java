@@ -3,23 +3,26 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
 
+// Casing of private fields is to match the names of fields passed down via filtering configuration
 public class RequestDataColumns extends TelemetryColumns {
-    private String url;
-    private long duration; // microseconds
-    private int responseCode;
-    private boolean success;
-    private String name;
+    private String Url;
+    private long Duration; // microseconds
+    private int ResponseCode;
+    private boolean Success;
+    private String Name;
 
     public RequestDataColumns(RequestData requestData) {
-        this.url = requestData.getUrl();
-        this.duration = FormattedDuration.getDurationFromTelemetryItemDurationString(requestData.getDuration());
+        super();
+        setCustomDimensions(requestData.getProperties(), requestData.getMeasurements());
+        this.Url = requestData.getUrl();
+        this.Duration = FormattedDuration.getDurationFromTelemetryItemDurationString(requestData.getDuration());
         try {
-            this.responseCode = Integer.parseInt(requestData.getResponseCode());
+            this.ResponseCode = Integer.parseInt(requestData.getResponseCode());
         } catch (NumberFormatException e) {
-            this.responseCode = -1;
+            this.ResponseCode = -1;
         }
-        this.success = requestData.isSuccess();
-        this.name = requestData.getName();
+        this.Success = requestData.isSuccess();
+        this.Name = requestData.getName();
     }
 
 }

@@ -160,7 +160,7 @@ final class QuickPulseDataCollector {
         counters.exceptions.addAndGet(itemCount);
 
         List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
-        Exception exceptionDoc = new Exception();
+        Exception exceptionDoc = new Exception(); // mention exception from swagger
         if (exceptionList != null && !exceptionList.isEmpty()) {
             exceptionDoc.setExceptionMessage(exceptionList.get(0).getMessage());
             exceptionDoc.setExceptionType(exceptionList.get(0).getTypeName());
