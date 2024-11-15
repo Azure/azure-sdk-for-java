@@ -82,7 +82,7 @@ Invoking tsp-client update
 ===========================================
 
 "
-    foreach ($tspLocationPath in $tpsYamls) {
+    foreach ($tspLocationPath in $tspYamls) {
         $sdkPath = (get-item $tspLocationPath).Directory.FullName
         Write-Host "Generate SDK for $sdkPath"
         Push-Location
