@@ -422,6 +422,7 @@ public class DocumentQueryExecutionContextFactory {
         boolean getLazyFeedResponse = Boolean.FALSE;
 
         if (hybridSearchQueryInfo!=null) {
+            System.out.println("HybridSearchQueryInfo: " + hybridSearchQueryInfo.toString());
             // Validate the TOP for non-streaming order-by queries
             if (!hybridSearchQueryInfo.hasTake()) {
                 throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
