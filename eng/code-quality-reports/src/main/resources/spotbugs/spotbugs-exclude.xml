@@ -398,13 +398,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
-  <!-- Incorrect flagging, null is checked in signal.hasValue() -->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer"/>
-    <Method name="~(.*)\$reportSyncReceiveSpan\$(.*)"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
   <!-- Jackson property setter method is private -->
   <Match>
     <Or>
@@ -460,16 +453,8 @@
     <Or>
       <Class
         name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
-      <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
-      <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- This is a false positive. Exception is thrown and caught to map to a different type of exception-->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Names defined in the service. -->
@@ -922,13 +907,6 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- FormRecognizerException fields re serializable -->
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
-    <Field name="errorInformationList"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-  
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -1815,15 +1793,6 @@
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
-  <!-- EventGrid swagger naming -->
-  <Match>
-    <Or>
-      <Class name="com.azure.messaging.eventgrid.implementation.models.CloudEvent"/>
-      <Class name="com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData"/>
-    </Or>
-  </Match>
-  <Bug pattern="NM_CONFUSING"/>
-
   <!--  This method is made synchronous by blocking and waiting for a result. They do not return
   anything, so it can be ignored. -->
   <Match>
@@ -1937,13 +1906,6 @@
       <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
-  <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
-    <Method name="computeHash"/>
-    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
   </Match>
 
   <!-- Non Shipped code -->
