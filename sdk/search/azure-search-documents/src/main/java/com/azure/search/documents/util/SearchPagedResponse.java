@@ -116,7 +116,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
             semanticSearchResultsType, null, null);
     }
 
-
     /**
      * Constructor
      *
@@ -132,9 +131,9 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      * @param semanticQueryRewritesResultType Type of the partial response returned for a semantic query rewrites request.
      */
     public SearchPagedResponse(Response<List<SearchResult>> response, String continuationToken,
-       Map<String, List<FacetResult>> facets, Long count, Double coverage, List<QueryAnswerResult> queryAnswers,
-       SemanticErrorReason semanticErrorReason, SemanticSearchResultsType semanticSearchResultsType, DebugInfo debugInfo,
-       SemanticQueryRewritesResultType semanticQueryRewritesResultType) {
+        Map<String, List<FacetResult>> facets, Long count, Double coverage, List<QueryAnswerResult> queryAnswers,
+        SemanticErrorReason semanticErrorReason, SemanticSearchResultsType semanticSearchResultsType,
+        DebugInfo debugInfo, SemanticQueryRewritesResultType semanticQueryRewritesResultType) {
         super(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(),
             continuationToken, null);
 
@@ -148,8 +147,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
         this.debugInfo = debugInfo;
         this.semanticQueryRewritesResultType = semanticQueryRewritesResultType;
     }
-
-
 
     /**
      * The percentage of the index covered in the search request.

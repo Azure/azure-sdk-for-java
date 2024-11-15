@@ -1406,8 +1406,7 @@ public final class SearchAsyncClient {
 
         String queryCaptionTypeString = queryCaptionType.toString();
 
-        if (queryCaptionType == QueryCaptionType.NONE
-            || (highlightEnabled == null && maxCharLength == null)) {
+        if (queryCaptionType == QueryCaptionType.NONE || (highlightEnabled == null && maxCharLength == null)) {
             return queryCaptionTypeString;
         }
 
@@ -1427,7 +1426,6 @@ public final class SearchAsyncClient {
 
         return captionStringBuilder.toString();
     }
-
 
     static String createQueryRewrites(QueryRewrites queryRewrites) {
         if (queryRewrites == null) {

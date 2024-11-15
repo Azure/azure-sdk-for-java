@@ -103,7 +103,8 @@ public class UtilityMethodTests {
     public void QueryRewritesFromString() {
         assertEquals(new QueryRewrites(QueryRewritesType.NONE), QueryRewrites.fromString("none"));
         assertEquals(new QueryRewrites(QueryRewritesType.GENERATIVE), QueryRewrites.fromString("generative"));
-        assertEquals(new QueryRewrites(QueryRewritesType.GENERATIVE).setCount(5), QueryRewrites.fromString("generative|count-5"));
+        assertEquals(new QueryRewrites(QueryRewritesType.GENERATIVE).setCount(5),
+            QueryRewrites.fromString("generative|count-5"));
     }
 
 }
