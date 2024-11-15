@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -684,9 +683,9 @@ public final class DocumentTranslationClient {
      * The absence of a continuation
      * token means that no additional pages are available.
      *
-     * @param listTranslationStatusesOptions The configurable {@link ListTranslationStatusesOptions options} to pass for filtering the output result.
+     * @param listTranslationStatusesOptions The configurable options to pass for filtering the output result.
      *
-     * @return translation job Status Response as paginated response with {@link PagedFlux}.
+     * @return translation job Status Response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TranslationStatusResult>
@@ -897,6 +896,8 @@ public final class DocumentTranslationClient {
      * Paginated responses indicate a partial result and
      * include a continuation token in the response. The absence of a continuation
      * token means that no additional pages are available.
+     *
+     * @param listDocumentStatusesOptions The configurable options to pass for filtering the output result.
      *
      * @return documents Status Response as paginated response with {@link PagedIterable}.
      */

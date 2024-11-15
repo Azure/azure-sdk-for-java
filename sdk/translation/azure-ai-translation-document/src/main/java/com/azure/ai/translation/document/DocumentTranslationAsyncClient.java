@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -691,7 +690,7 @@ public final class DocumentTranslationAsyncClient {
      * The absence of a continuation
      * token means that no additional pages are available.
      *
-     * @param listTranslationStatusesOptions The configurable {@link ListTranslationStatusesOptions options} to pass for filtering the output result.
+     * @param listTranslationStatusesOptions The configurable options to pass for filtering the output result.
      *
      * @return translation job Status Response as paginated response with {@link PagedFlux}.
      */
@@ -932,7 +931,7 @@ public final class DocumentTranslationAsyncClient {
      * The absence of a continuation
      * token means that no additional pages are available.
      *
-     * @param listDocumentStatusesOptions The configurable {@link listDocumentStatusesOptions options} to pass for filtering the output result.
+     * @param listDocumentStatusesOptions The configurable options to pass for filtering the output result.
      *
      * @return document status Response as paginated response with {@link PagedFlux}.
      */
