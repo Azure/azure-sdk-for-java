@@ -422,10 +422,8 @@ public class DocumentQueryExecutionContextFactory {
         boolean getLazyFeedResponse = Boolean.FALSE;
 
         if (hybridSearchQueryInfo!=null) {
-            System.out.println("Hybrid Search Query Info: " + hybridSearchQueryInfo.toString());
-            System.out.println("Take: " + hybridSearchQueryInfo.hasTake());
             // Validate the TOP for non-streaming order-by queries
-            if (!hybridSearchQueryInfo.hasTake() && hybridSearchQueryInfo.getTake() < 0) {
+            if (!hybridSearchQueryInfo.hasTake()) {
                 throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
                     "Executing a hybrid or full text query without Top can consume a large number of RUs" +
                         "very fast and have long runtimes. Please ensure you are using the above filter" +
