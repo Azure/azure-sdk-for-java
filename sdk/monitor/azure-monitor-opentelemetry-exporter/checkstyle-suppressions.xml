@@ -120,17 +120,6 @@
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.Trie.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.DefaultHeartBeatPropertyProvider.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.localstorage.FileUtil.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.logging.AggregatingLogger.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.pipeline.AppInsightsByteBufferPool.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.DependencyExtractor.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulse.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseDependencyDocument.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.AttachStatsbeat.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.IntervalMetricsKey.java" checks="LocalVariableNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListenerTest.java" checks="MethodNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulseDataCollectorTests.java" checks="MethodNameCheck" />

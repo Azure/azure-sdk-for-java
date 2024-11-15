@@ -120,17 +120,6 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.PropertyHelper.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ThreadPoolUtils.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Trie.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.DefaultHeartBeatPropertyProvider.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.FileUtil.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.AggregatingLogger.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.AppInsightsByteBufferPool.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.preaggregatedmetrics.DependencyExtractor.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulse.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseDependencyDocument.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.AttachStatsbeat.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributes.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.IntervalMetricsKey.java" checks="LocalVariableNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageTelemetryPipelineListenerTest.java" checks="MethodNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataCollectorTests.java" checks="MethodNameCheck" />
@@ -299,6 +288,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.preaggregatedmetrics.DependencyExtractor.java" checks="PackageNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.preaggregatedmetrics.ExtractorHelper.java" checks="PackageNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.preaggregatedmetrics.RequestExtractor.java" checks="PackageNameCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.preaggregatedmetrics.package-info.java" checks="PackageNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.StatsbeatConnectionString.java" checks="RedundantModifierCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataFetcher.java" checks="RedundantModifierCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.RpAttachType.java" checks="RedundantModifierCheck" />
