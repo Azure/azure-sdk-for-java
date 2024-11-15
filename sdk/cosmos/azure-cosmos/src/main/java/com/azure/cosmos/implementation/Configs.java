@@ -262,11 +262,11 @@ public class Configs {
     private static final String EMULATOR_HTTP_CONNECTION_ALLOWED = "COSMOS.EMULATOR_HTTP_CONNECTION_ALLOWED";
     private static final String EMULATOR_HTTP_CONNECTION_ALLOWED_VARIABLE = "COSMOS_EMULATOR_HTTP_CONNECTION_ALLOWED";
 
-    // Config to indicate whether disable server certificate verification for emulator
+    // Config to indicate whether disable server certificate validation for emulator
     // Please note that this config should only during development or test, please do not use in prod env
-    private static final boolean DEFAULT_EMULATOR_CERTIFICATE_VERIFICATION_DISABLED = false;
-    private static final String EMULATOR_CERTIFICATE_VERIFICATION_DISABLED = "COSMOS.EMULATOR_CERTIFICATE_VERIFICATION_DISABLED";
-    private static final String EMULATOR_CERTIFICATE_VERIFICATION_DISABLED_VARIABLE = "COSMOS_EMULATOR_CERTIFICATE_VERIFICATION_DISABLED";
+    private static final boolean DEFAULT_EMULATOR_CERTIFICATE_VALIDATION_DISABLED = false;
+    private static final String EMULATOR_CERTIFICATE_VALIDATION_DISABLED = "COSMOS.EMULATOR_CERTIFICATE_VALIDATION_DISABLED";
+    private static final String EMULATOR_CERTIFICATE_VALIDATION_DISABLED_VARIABLE = "COSMOS_EMULATOR_CERTIFICATE_VALIDATION_DISABLED";
 
     // Config to indicate emulator host name
     // Please note that this config should only during development or test, please do not use in prod env
@@ -852,10 +852,10 @@ public class Configs {
 
     public static boolean isEmulatorServerCertValidationDisabled() {
         String certVerificationDisabledConfig = System.getProperty(
-            EMULATOR_CERTIFICATE_VERIFICATION_DISABLED,
+            EMULATOR_CERTIFICATE_VALIDATION_DISABLED,
             firstNonNull(
-                emptyToNull(System.getenv().get(EMULATOR_CERTIFICATE_VERIFICATION_DISABLED_VARIABLE)),
-                String.valueOf(DEFAULT_EMULATOR_CERTIFICATE_VERIFICATION_DISABLED)));
+                emptyToNull(System.getenv().get(EMULATOR_CERTIFICATE_VALIDATION_DISABLED_VARIABLE)),
+                String.valueOf(DEFAULT_EMULATOR_CERTIFICATE_VALIDATION_DISABLED)));
 
         return Boolean.parseBoolean(certVerificationDisabledConfig);
     }
