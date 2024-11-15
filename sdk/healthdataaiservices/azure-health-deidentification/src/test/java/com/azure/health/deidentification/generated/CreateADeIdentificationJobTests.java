@@ -7,8 +7,8 @@ package com.azure.health.deidentification.generated;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.models.DeidentificationJob;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.JobCustomizationOptions;
-import com.azure.health.deidentification.models.OperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public final class CreateADeIdentificationJobTests extends DeidentificationClien
                     new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
                         .setExtensions(Arrays.asList("*")),
                     new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
-                        .setOverwrite(true)).setOperation(OperationType.REDACT)
+                        .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
                             .setCustomizations(new JobCustomizationOptions().setRedactionFormat("[{type}]")
                                 .setSurrogateLocale("en-US"))));
 

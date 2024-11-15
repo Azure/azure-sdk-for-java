@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
-import com.azure.health.deidentification.models.DocumentDetails;
+import com.azure.health.deidentification.models.DeidentificationDocumentDetails;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ListProcessedDocumentsWithinAJob {
@@ -18,7 +18,7 @@ public class ListProcessedDocumentsWithinAJob {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
-        PagedIterable<DocumentDetails> response = deidentificationClient.listJobDocuments(
+        PagedIterable<DeidentificationDocumentDetails> response = deidentificationClient.listJobDocuments(
             "Replace this value with a string matching RegExp ^[a-zA-Z0-9][a-zA-Z0-9-_]+[a-zA-Z0-9]$");
         // END:com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
     }

@@ -9,8 +9,8 @@ import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.health.deidentification.models.CustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationContent;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.OperationType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DeIdentifyText {
@@ -20,8 +20,9 @@ public class DeIdentifyText {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.deidentifytext.deidentifytext
-        DeidentificationResult response = deidentificationClient.deidentifyText(
-            new DeidentificationContent("Hello my name is John Smith.").setOperation(OperationType.REDACT)
+        DeidentificationResult response
+            = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
+                .setOperation(DeidentificationOperationType.REDACT)
                 .setCustomizations(
                     new CustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
         // END:com.azure.health.deidentification.generated.deidentifytext.deidentifytext

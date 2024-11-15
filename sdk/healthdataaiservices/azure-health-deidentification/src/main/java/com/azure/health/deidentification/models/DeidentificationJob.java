@@ -30,7 +30,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * Operation to perform on the input documents.
      */
     @Generated
-    private OperationType operation;
+    private DeidentificationOperationType operation;
 
     /*
      * Storage location to perform the operation on.
@@ -54,7 +54,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * Current status of a job.
      */
     @Generated
-    private JobStatus status;
+    private DeidentificationJobStatus status;
 
     /*
      * Error when job fails in it's entirety.
@@ -88,7 +88,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * Summary of a job. Exists only when the job is completed.
      */
     @Generated
-    private JobSummary summary;
+    private DeidentificationJobSummary summary;
 
     /**
      * Creates an instance of DeidentificationJob class.
@@ -118,7 +118,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * @return the operation value.
      */
     @Generated
-    public OperationType getOperation() {
+    public DeidentificationOperationType getOperation() {
         return this.operation;
     }
 
@@ -129,7 +129,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * @return the DeidentificationJob object itself.
      */
     @Generated
-    public DeidentificationJob setOperation(OperationType operation) {
+    public DeidentificationJob setOperation(DeidentificationOperationType operation) {
         this.operation = operation;
         return this;
     }
@@ -182,7 +182,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * @return the status value.
      */
     @Generated
-    public JobStatus getStatus() {
+    public DeidentificationJobStatus getStatus() {
         return this.status;
     }
 
@@ -236,7 +236,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * @return the summary value.
      */
     @Generated
-    public JobSummary getSummary() {
+    public DeidentificationJobSummary getSummary() {
         return this.summary;
     }
 
@@ -269,14 +269,14 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             String name = null;
             SourceStorageLocation sourceLocation = null;
             TargetStorageLocation targetLocation = null;
-            JobStatus status = null;
+            DeidentificationJobStatus status = null;
             OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
-            OperationType operation = null;
+            DeidentificationOperationType operation = null;
             JobCustomizationOptions customizations = null;
             ResponseError error = null;
             OffsetDateTime startedAt = null;
-            JobSummary summary = null;
+            DeidentificationJobSummary summary = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -288,7 +288,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 } else if ("targetLocation".equals(fieldName)) {
                     targetLocation = TargetStorageLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    status = JobStatus.fromString(reader.getString());
+                    status = DeidentificationJobStatus.fromString(reader.getString());
                 } else if ("lastUpdatedAt".equals(fieldName)) {
                     lastUpdatedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -296,7 +296,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                     createdAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("operation".equals(fieldName)) {
-                    operation = OperationType.fromString(reader.getString());
+                    operation = DeidentificationOperationType.fromString(reader.getString());
                 } else if ("customizations".equals(fieldName)) {
                     customizations = JobCustomizationOptions.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
@@ -305,7 +305,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                     startedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("summary".equals(fieldName)) {
-                    summary = JobSummary.fromJson(reader);
+                    summary = DeidentificationJobSummary.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

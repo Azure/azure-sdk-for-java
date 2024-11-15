@@ -18,9 +18,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.implementation.DeidentificationClientImpl;
 import com.azure.health.deidentification.models.DeidentificationContent;
+import com.azure.health.deidentification.models.DeidentificationDocumentDetails;
 import com.azure.health.deidentification.models.DeidentificationJob;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDetails;
 
 /**
  * Initializes a new instance of the synchronous DeidentificationClient type.
@@ -352,7 +352,8 @@ public final class DeidentificationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DeidentificationDocumentDetails items as paginated response with
+     * {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -618,18 +619,19 @@ public final class DeidentificationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DocumentDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DeidentificationDocumentDetails items as paginated response with
+     * {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedIterable<DocumentDetails> listJobDocuments(String jobName, String continuationToken) {
+    private PagedIterable<DeidentificationDocumentDetails> listJobDocuments(String jobName, String continuationToken) {
         // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
         if (continuationToken != null) {
             requestOptions.addQueryParam("continuationToken", continuationToken, false);
         }
         return serviceClient.listJobDocuments(jobName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentDetails.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DeidentificationDocumentDetails.class));
     }
 
     /**
@@ -644,15 +646,16 @@ public final class DeidentificationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DocumentDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DeidentificationDocumentDetails items as paginated response with
+     * {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentDetails> listJobDocuments(String jobName) {
+    public PagedIterable<DeidentificationDocumentDetails> listJobDocuments(String jobName) {
         // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listJobDocuments(jobName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentDetails.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DeidentificationDocumentDetails.class));
     }
 
     /**

@@ -27,7 +27,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
      * Operation to perform on the input documents.
      */
     @Generated
-    private OperationType operation;
+    private DeidentificationOperationType operation;
 
     /*
      * Customization parameters to override default service behaviors.
@@ -61,7 +61,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
      * @return the operation value.
      */
     @Generated
-    public OperationType getOperation() {
+    public DeidentificationOperationType getOperation() {
         return this.operation;
     }
 
@@ -72,7 +72,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
      * @return the DeidentificationContent object itself.
      */
     @Generated
-    public DeidentificationContent setOperation(OperationType operation) {
+    public DeidentificationContent setOperation(DeidentificationOperationType operation) {
         this.operation = operation;
         return this;
     }
@@ -125,7 +125,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     public static DeidentificationContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String inputText = null;
-            OperationType operation = null;
+            DeidentificationOperationType operation = null;
             CustomizationOptions customizations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -134,7 +134,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
                 if ("inputText".equals(fieldName)) {
                     inputText = reader.getString();
                 } else if ("operation".equals(fieldName)) {
-                    operation = OperationType.fromString(reader.getString());
+                    operation = DeidentificationOperationType.fromString(reader.getString());
                 } else if ("customizations".equals(fieldName)) {
                     customizations = CustomizationOptions.fromJson(reader);
                 } else {

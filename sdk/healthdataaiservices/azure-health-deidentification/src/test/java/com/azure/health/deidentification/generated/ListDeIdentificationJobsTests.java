@@ -6,10 +6,10 @@ package com.azure.health.deidentification.generated;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.health.deidentification.models.DeidentificationJob;
+import com.azure.health.deidentification.models.DeidentificationJobStatus;
+import com.azure.health.deidentification.models.DeidentificationJobSummary;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.JobCustomizationOptions;
-import com.azure.health.deidentification.models.JobStatus;
-import com.azure.health.deidentification.models.JobSummary;
-import com.azure.health.deidentification.models.OperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 import java.util.List;
@@ -23,7 +23,8 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
     @Disabled
     public void testListDeIdentificationJobsTests() {
         // method invocation
-        PagedIterable<DeidentificationJob> response = deidentificationClient.listJobs();
+        PagedIterable<DeidentificationJob> response = deidentificationClient
+            .listJobs();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
@@ -32,7 +33,7 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         // verify property "name"
         Assertions.assertEquals("documents_smith_1", firstItem.getName());
         // verify property "operation"
-        Assertions.assertEquals(OperationType.REDACT, firstItem.getOperation());
+        Assertions.assertEquals(DeidentificationOperationType.REDACT, firstItem.getOperation());
         // verify property "sourceLocation"
         SourceStorageLocation firstItemSourceLocation = firstItem.getSourceLocation();
         Assertions.assertNotNull(firstItemSourceLocation);
@@ -54,7 +55,7 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         Assertions.assertEquals("[{type}]", firstItemCustomizations.getRedactionFormat());
         Assertions.assertEquals("en-US", firstItemCustomizations.getSurrogateLocale());
         // verify property "status"
-        Assertions.assertEquals(JobStatus.SUCCEEDED, firstItem.getStatus());
+        Assertions.assertEquals(DeidentificationJobStatus.SUCCEEDED, firstItem.getStatus());
         // verify property "lastUpdatedAt"
         Assertions.assertNotNull(firstItem.getLastUpdatedAt());
         // verify property "createdAt"
@@ -62,7 +63,7 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         // verify property "startedAt"
         Assertions.assertNotNull(firstItem.getStartedAt());
         // verify property "summary"
-        JobSummary firstItemSummary = firstItem.getSummary();
+        DeidentificationJobSummary firstItemSummary = firstItem.getSummary();
         Assertions.assertNotNull(firstItemSummary);
         Assertions.assertEquals(10, firstItemSummary.getSuccessfulCount());
         Assertions.assertEquals(0, firstItemSummary.getFailedCount());

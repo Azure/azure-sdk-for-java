@@ -5,8 +5,8 @@
 package com.azure.health.deidentification.generated;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.health.deidentification.models.DocumentDetails;
-import com.azure.health.deidentification.models.DocumentLocation;
+import com.azure.health.deidentification.models.DeidentificationDocumentDetails;
+import com.azure.health.deidentification.models.DeidentificationDocumentLocation;
 import com.azure.health.deidentification.models.OperationState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -18,21 +18,22 @@ public final class ListProcessedDocumentsWithinAJobTests extends Deidentificatio
     @Disabled
     public void testListProcessedDocumentsWithinAJobTests() {
         // method invocation
-        PagedIterable<DocumentDetails> response = deidentificationClient.listJobDocuments("documents_smith_1");
+        PagedIterable<DeidentificationDocumentDetails> response = deidentificationClient.listJobDocuments(
+            "Replace this value with a string matching RegExp ^[a-zA-Z0-9][a-zA-Z0-9-_]+[a-zA-Z0-9]$");
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        DocumentDetails firstItem = response.iterator().next();
+        DeidentificationDocumentDetails firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
         // verify property "id"
         Assertions.assertEquals("00000000-0000-0000-0000-000000000000", firstItem.getId());
         // verify property "input"
-        DocumentLocation firstItemInput = firstItem.getInput();
+        DeidentificationDocumentLocation firstItemInput = firstItem.getInput();
         Assertions.assertNotNull(firstItemInput);
         Assertions.assertEquals("https://blobtest.blob.core.windows.net/container", firstItemInput.getLocation());
         Assertions.assertEquals("0x8DB638EEA0CC717", firstItemInput.getEtag());
         // verify property "output"
-        DocumentLocation firstItemOutput = firstItem.getOutput();
+        DeidentificationDocumentLocation firstItemOutput = firstItem.getOutput();
         Assertions.assertNotNull(firstItemOutput);
         Assertions.assertEquals("0xAB298APO23099ZL", firstItemOutput.getEtag());
         // verify property "status"

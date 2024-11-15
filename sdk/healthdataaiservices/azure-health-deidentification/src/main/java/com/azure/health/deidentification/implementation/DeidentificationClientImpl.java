@@ -1651,8 +1651,8 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged collection of DeidentificationDocumentDetails items along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listJobDocumentsSinglePageAsync(String jobName,
@@ -1711,7 +1711,7 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listJobDocumentsAsync(String jobName, RequestOptions requestOptions) {
@@ -1788,7 +1788,7 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items along with {@link PagedResponse}.
+     * @return paged collection of DeidentificationDocumentDetails items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listJobDocumentsSinglePage(String jobName, RequestOptions requestOptions) {
@@ -1845,7 +1845,8 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DeidentificationDocumentDetails items as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions) {
@@ -2368,8 +2369,8 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged collection of DeidentificationDocumentDetails items along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listJobDocumentsNextSinglePageAsync(String nextLink,
@@ -2420,7 +2421,7 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items along with {@link PagedResponse}.
+     * @return paged collection of DeidentificationDocumentDetails items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listJobDocumentsNextSinglePage(String nextLink, RequestOptions requestOptions) {
