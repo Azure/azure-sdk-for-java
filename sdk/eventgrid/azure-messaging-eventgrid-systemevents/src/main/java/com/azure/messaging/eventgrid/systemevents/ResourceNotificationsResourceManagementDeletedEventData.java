@@ -21,14 +21,14 @@ public final class ResourceNotificationsResourceManagementDeletedEventData
     /**
      * Creates an instance of ResourceNotificationsResourceManagementDeletedEventData class.
      * 
-     * @param resourceInfo the resourceInfo value to set.
-     * @param operationalInfo the operationalInfo value to set.
+     * @param resourceDetails the resourceDetails value to set.
+     * @param operationalDetails the operationalDetails value to set.
      */
     @Generated
     private ResourceNotificationsResourceManagementDeletedEventData(
-        ResourceNotificationsResourceDeletedDetails resourceInfo,
-        ResourceNotificationsOperationalDetails operationalInfo) {
-        super(resourceInfo, operationalInfo);
+        ResourceNotificationsResourceDeletedDetails resourceDetails,
+        ResourceNotificationsOperationalDetails operationalDetails) {
+        super(resourceDetails, operationalDetails);
     }
 
     /**
@@ -38,8 +38,8 @@ public final class ResourceNotificationsResourceManagementDeletedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", getResourceInfo());
-        jsonWriter.writeJsonField("operationalInfo", getOperationalInfo());
+        jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
+        jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
         return jsonWriter.writeEndObject();
     }
 
@@ -56,21 +56,21 @@ public final class ResourceNotificationsResourceManagementDeletedEventData
     public static ResourceNotificationsResourceManagementDeletedEventData fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceNotificationsResourceDeletedDetails resourceInfo = null;
-            ResourceNotificationsOperationalDetails operationalInfo = null;
+            ResourceNotificationsResourceDeletedDetails resourceDetails = null;
+            ResourceNotificationsOperationalDetails operationalDetails = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("resourceInfo".equals(fieldName)) {
-                    resourceInfo = ResourceNotificationsResourceDeletedDetails.fromJson(reader);
+                    resourceDetails = ResourceNotificationsResourceDeletedDetails.fromJson(reader);
                 } else if ("operationalInfo".equals(fieldName)) {
-                    operationalInfo = ResourceNotificationsOperationalDetails.fromJson(reader);
+                    operationalDetails = ResourceNotificationsOperationalDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ResourceNotificationsResourceManagementDeletedEventData(resourceInfo, operationalInfo);
+            return new ResourceNotificationsResourceManagementDeletedEventData(resourceDetails, operationalDetails);
         });
     }
 }

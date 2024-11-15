@@ -30,13 +30,13 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * The message channel type
      */
     @Generated
-    private final AcsMessageChannelKind channelType;
+    private final AcsMessageChannelKind channelKind;
 
     /*
      * The received message media content
      */
     @Generated
-    private final AcsMessageMediaContent media;
+    private final AcsMessageMediaContent mediaContent;
 
     /*
      * The received message context
@@ -54,7 +54,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * The received message interactive content
      */
     @Generated
-    private final AcsMessageInteractiveContent interactive;
+    private final AcsMessageInteractiveContent interactiveContent;
 
     /*
      * The message recipient
@@ -73,22 +73,22 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * 
      * @param receivedTimeStamp the receivedTimeStamp value to set.
      * @param error the error value to set.
-     * @param channelType the channelType value to set.
-     * @param media the media value to set.
+     * @param channelKind the channelKind value to set.
+     * @param mediaContent the mediaContent value to set.
      * @param context the context value to set.
      * @param button the button value to set.
-     * @param interactive the interactive value to set.
+     * @param interactiveContent the interactiveContent value to set.
      */
     @Generated
     private AcsMessageReceivedEventData(OffsetDateTime receivedTimeStamp, AcsMessageChannelEventError error,
-        AcsMessageChannelKind channelType, AcsMessageMediaContent media, AcsMessageContext context,
-        AcsMessageButtonContent button, AcsMessageInteractiveContent interactive) {
+        AcsMessageChannelKind channelKind, AcsMessageMediaContent mediaContent, AcsMessageContext context,
+        AcsMessageButtonContent button, AcsMessageInteractiveContent interactiveContent) {
         super(receivedTimeStamp, error);
-        this.channelType = channelType;
-        this.media = media;
+        this.channelKind = channelKind;
+        this.mediaContent = mediaContent;
         this.context = context;
         this.button = button;
-        this.interactive = interactive;
+        this.interactiveContent = interactiveContent;
     }
 
     /**
@@ -102,23 +102,23 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     }
 
     /**
-     * Get the channelType property: The message channel type.
+     * Get the channelKind property: The message channel type.
      * 
-     * @return the channelType value.
+     * @return the channelKind value.
      */
     @Generated
-    public AcsMessageChannelKind getChannelType() {
-        return this.channelType;
+    public AcsMessageChannelKind getChannelKind() {
+        return this.channelKind;
     }
 
     /**
-     * Get the media property: The received message media content.
+     * Get the mediaContent property: The received message media content.
      * 
-     * @return the media value.
+     * @return the mediaContent value.
      */
     @Generated
-    public AcsMessageMediaContent getMedia() {
-        return this.media;
+    public AcsMessageMediaContent getMediaContent() {
+        return this.mediaContent;
     }
 
     /**
@@ -142,13 +142,13 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     }
 
     /**
-     * Get the interactive property: The received message interactive content.
+     * Get the interactiveContent property: The received message interactive content.
      * 
-     * @return the interactive value.
+     * @return the interactiveContent value.
      */
     @Generated
-    public AcsMessageInteractiveContent getInteractive() {
-        return this.interactive;
+    public AcsMessageInteractiveContent getInteractiveContent() {
+        return this.interactiveContent;
     }
 
     /**
@@ -187,11 +187,11 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
-        jsonWriter.writeStringField("channelType", this.channelType == null ? null : this.channelType.toString());
-        jsonWriter.writeJsonField("media", this.media);
+        jsonWriter.writeStringField("channelType", this.channelKind == null ? null : this.channelKind.toString());
+        jsonWriter.writeJsonField("media", this.mediaContent);
         jsonWriter.writeJsonField("context", this.context);
         jsonWriter.writeJsonField("button", this.button);
-        jsonWriter.writeJsonField("interactive", this.interactive);
+        jsonWriter.writeJsonField("interactive", this.interactiveContent);
         jsonWriter.writeStringField("content", this.content);
         return jsonWriter.writeEndObject();
     }
@@ -212,11 +212,11 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
             AcsMessageChannelEventError error = null;
             String from = null;
             String to = null;
-            AcsMessageChannelKind channelType = null;
-            AcsMessageMediaContent media = null;
+            AcsMessageChannelKind channelKind = null;
+            AcsMessageMediaContent mediaContent = null;
             AcsMessageContext context = null;
             AcsMessageButtonContent button = null;
-            AcsMessageInteractiveContent interactive = null;
+            AcsMessageInteractiveContent interactiveContent = null;
             String content = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -232,15 +232,15 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                 } else if ("to".equals(fieldName)) {
                     to = reader.getString();
                 } else if ("channelType".equals(fieldName)) {
-                    channelType = AcsMessageChannelKind.fromString(reader.getString());
+                    channelKind = AcsMessageChannelKind.fromString(reader.getString());
                 } else if ("media".equals(fieldName)) {
-                    media = AcsMessageMediaContent.fromJson(reader);
+                    mediaContent = AcsMessageMediaContent.fromJson(reader);
                 } else if ("context".equals(fieldName)) {
                     context = AcsMessageContext.fromJson(reader);
                 } else if ("button".equals(fieldName)) {
                     button = AcsMessageButtonContent.fromJson(reader);
                 } else if ("interactive".equals(fieldName)) {
-                    interactive = AcsMessageInteractiveContent.fromJson(reader);
+                    interactiveContent = AcsMessageInteractiveContent.fromJson(reader);
                 } else if ("content".equals(fieldName)) {
                     content = reader.getString();
                 } else {
@@ -248,7 +248,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                 }
             }
             AcsMessageReceivedEventData deserializedAcsMessageReceivedEventData = new AcsMessageReceivedEventData(
-                receivedTimeStamp, error, channelType, media, context, button, interactive);
+                receivedTimeStamp, error, channelKind, mediaContent, context, button, interactiveContent);
             deserializedAcsMessageReceivedEventData.from = from;
             deserializedAcsMessageReceivedEventData.to = to;
             deserializedAcsMessageReceivedEventData.content = content;

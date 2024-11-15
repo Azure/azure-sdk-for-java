@@ -27,14 +27,14 @@ public final class ResourceNotificationsHealthResourcesAnnotatedEventData
     /**
      * Creates an instance of ResourceNotificationsHealthResourcesAnnotatedEventData class.
      * 
-     * @param resourceInfo the resourceInfo value to set.
-     * @param operationalInfo the operationalInfo value to set.
+     * @param resourceDetails the resourceDetails value to set.
+     * @param operationalDetails the operationalDetails value to set.
      */
     @Generated
     private ResourceNotificationsHealthResourcesAnnotatedEventData(
-        ResourceNotificationsResourceUpdatedDetails resourceInfo,
-        ResourceNotificationsOperationalDetails operationalInfo) {
-        super(resourceInfo, operationalInfo);
+        ResourceNotificationsResourceUpdatedDetails resourceDetails,
+        ResourceNotificationsOperationalDetails operationalDetails) {
+        super(resourceDetails, operationalDetails);
     }
 
     /**
@@ -55,8 +55,8 @@ public final class ResourceNotificationsHealthResourcesAnnotatedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", getResourceInfo());
-        jsonWriter.writeJsonField("operationalInfo", getOperationalInfo());
+        jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
+        jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
         jsonWriter.writeStringField("apiVersion", getApiVersion());
         return jsonWriter.writeEndObject();
     }
@@ -74,17 +74,17 @@ public final class ResourceNotificationsHealthResourcesAnnotatedEventData
     public static ResourceNotificationsHealthResourcesAnnotatedEventData fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceNotificationsResourceUpdatedDetails resourceInfo = null;
-            ResourceNotificationsOperationalDetails operationalInfo = null;
+            ResourceNotificationsResourceUpdatedDetails resourceDetails = null;
+            ResourceNotificationsOperationalDetails operationalDetails = null;
             String apiVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("resourceInfo".equals(fieldName)) {
-                    resourceInfo = ResourceNotificationsResourceUpdatedDetails.fromJson(reader);
+                    resourceDetails = ResourceNotificationsResourceUpdatedDetails.fromJson(reader);
                 } else if ("operationalInfo".equals(fieldName)) {
-                    operationalInfo = ResourceNotificationsOperationalDetails.fromJson(reader);
+                    operationalDetails = ResourceNotificationsOperationalDetails.fromJson(reader);
                 } else if ("apiVersion".equals(fieldName)) {
                     apiVersion = reader.getString();
                 } else {
@@ -92,7 +92,7 @@ public final class ResourceNotificationsHealthResourcesAnnotatedEventData
                 }
             }
             ResourceNotificationsHealthResourcesAnnotatedEventData deserializedResourceNotificationsHealthResourcesAnnotatedEventData
-                = new ResourceNotificationsHealthResourcesAnnotatedEventData(resourceInfo, operationalInfo);
+                = new ResourceNotificationsHealthResourcesAnnotatedEventData(resourceDetails, operationalDetails);
             deserializedResourceNotificationsHealthResourcesAnnotatedEventData.apiVersion = apiVersion;
 
             return deserializedResourceNotificationsHealthResourcesAnnotatedEventData;

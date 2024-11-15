@@ -27,14 +27,14 @@ public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventD
     /**
      * Creates an instance of ResourceNotificationsResourceManagementCreatedOrUpdatedEventData class.
      * 
-     * @param resourceInfo the resourceInfo value to set.
-     * @param operationalInfo the operationalInfo value to set.
+     * @param resourceDetails the resourceDetails value to set.
+     * @param operationalDetails the operationalDetails value to set.
      */
     @Generated
     private ResourceNotificationsResourceManagementCreatedOrUpdatedEventData(
-        ResourceNotificationsResourceUpdatedDetails resourceInfo,
-        ResourceNotificationsOperationalDetails operationalInfo) {
-        super(resourceInfo, operationalInfo);
+        ResourceNotificationsResourceUpdatedDetails resourceDetails,
+        ResourceNotificationsOperationalDetails operationalDetails) {
+        super(resourceDetails, operationalDetails);
     }
 
     /**
@@ -55,8 +55,8 @@ public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventD
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", getResourceInfo());
-        jsonWriter.writeJsonField("operationalInfo", getOperationalInfo());
+        jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
+        jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
         jsonWriter.writeStringField("apiVersion", getApiVersion());
         return jsonWriter.writeEndObject();
     }
@@ -75,17 +75,17 @@ public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventD
     public static ResourceNotificationsResourceManagementCreatedOrUpdatedEventData fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceNotificationsResourceUpdatedDetails resourceInfo = null;
-            ResourceNotificationsOperationalDetails operationalInfo = null;
+            ResourceNotificationsResourceUpdatedDetails resourceDetails = null;
+            ResourceNotificationsOperationalDetails operationalDetails = null;
             String apiVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("resourceInfo".equals(fieldName)) {
-                    resourceInfo = ResourceNotificationsResourceUpdatedDetails.fromJson(reader);
+                    resourceDetails = ResourceNotificationsResourceUpdatedDetails.fromJson(reader);
                 } else if ("operationalInfo".equals(fieldName)) {
-                    operationalInfo = ResourceNotificationsOperationalDetails.fromJson(reader);
+                    operationalDetails = ResourceNotificationsOperationalDetails.fromJson(reader);
                 } else if ("apiVersion".equals(fieldName)) {
                     apiVersion = reader.getString();
                 } else {
@@ -93,7 +93,8 @@ public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventD
                 }
             }
             ResourceNotificationsResourceManagementCreatedOrUpdatedEventData deserializedResourceNotificationsResourceManagementCreatedOrUpdatedEventData
-                = new ResourceNotificationsResourceManagementCreatedOrUpdatedEventData(resourceInfo, operationalInfo);
+                = new ResourceNotificationsResourceManagementCreatedOrUpdatedEventData(resourceDetails,
+                    operationalDetails);
             deserializedResourceNotificationsResourceManagementCreatedOrUpdatedEventData.apiVersion = apiVersion;
 
             return deserializedResourceNotificationsResourceManagementCreatedOrUpdatedEventData;

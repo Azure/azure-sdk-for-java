@@ -23,45 +23,45 @@ public class ResourceNotificationsResourceDeletedEventData
      * resourceInfo details for delete event
      */
     @Generated
-    private final ResourceNotificationsResourceDeletedDetails resourceInfo;
+    private final ResourceNotificationsResourceDeletedDetails resourceDetails;
 
     /*
      * details about operational info
      */
     @Generated
-    private final ResourceNotificationsOperationalDetails operationalInfo;
+    private final ResourceNotificationsOperationalDetails operationalDetails;
 
     /**
      * Creates an instance of ResourceNotificationsResourceDeletedEventData class.
      * 
-     * @param resourceInfo the resourceInfo value to set.
-     * @param operationalInfo the operationalInfo value to set.
+     * @param resourceDetails the resourceDetails value to set.
+     * @param operationalDetails the operationalDetails value to set.
      */
     @Generated
-    protected ResourceNotificationsResourceDeletedEventData(ResourceNotificationsResourceDeletedDetails resourceInfo,
-        ResourceNotificationsOperationalDetails operationalInfo) {
-        this.resourceInfo = resourceInfo;
-        this.operationalInfo = operationalInfo;
+    protected ResourceNotificationsResourceDeletedEventData(ResourceNotificationsResourceDeletedDetails resourceDetails,
+        ResourceNotificationsOperationalDetails operationalDetails) {
+        this.resourceDetails = resourceDetails;
+        this.operationalDetails = operationalDetails;
     }
 
     /**
-     * Get the resourceInfo property: resourceInfo details for delete event.
+     * Get the resourceDetails property: resourceInfo details for delete event.
      * 
-     * @return the resourceInfo value.
+     * @return the resourceDetails value.
      */
     @Generated
-    public ResourceNotificationsResourceDeletedDetails getResourceInfo() {
-        return this.resourceInfo;
+    public ResourceNotificationsResourceDeletedDetails getResourceDetails() {
+        return this.resourceDetails;
     }
 
     /**
-     * Get the operationalInfo property: details about operational info.
+     * Get the operationalDetails property: details about operational info.
      * 
-     * @return the operationalInfo value.
+     * @return the operationalDetails value.
      */
     @Generated
-    public ResourceNotificationsOperationalDetails getOperationalInfo() {
-        return this.operationalInfo;
+    public ResourceNotificationsOperationalDetails getOperationalDetails() {
+        return this.operationalDetails;
     }
 
     /**
@@ -71,8 +71,8 @@ public class ResourceNotificationsResourceDeletedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", this.resourceInfo);
-        jsonWriter.writeJsonField("operationalInfo", this.operationalInfo);
+        jsonWriter.writeJsonField("resourceInfo", this.resourceDetails);
+        jsonWriter.writeJsonField("operationalInfo", this.operationalDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -88,21 +88,21 @@ public class ResourceNotificationsResourceDeletedEventData
     @Generated
     public static ResourceNotificationsResourceDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceNotificationsResourceDeletedDetails resourceInfo = null;
-            ResourceNotificationsOperationalDetails operationalInfo = null;
+            ResourceNotificationsResourceDeletedDetails resourceDetails = null;
+            ResourceNotificationsOperationalDetails operationalDetails = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("resourceInfo".equals(fieldName)) {
-                    resourceInfo = ResourceNotificationsResourceDeletedDetails.fromJson(reader);
+                    resourceDetails = ResourceNotificationsResourceDeletedDetails.fromJson(reader);
                 } else if ("operationalInfo".equals(fieldName)) {
-                    operationalInfo = ResourceNotificationsOperationalDetails.fromJson(reader);
+                    operationalDetails = ResourceNotificationsOperationalDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ResourceNotificationsResourceDeletedEventData(resourceInfo, operationalInfo);
+            return new ResourceNotificationsResourceDeletedEventData(resourceDetails, operationalDetails);
         });
     }
 }
