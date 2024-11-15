@@ -207,8 +207,10 @@ public final class StorageBlobInventoryPolicyCompletedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("scheduleDateTime", this.scheduleDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduleDateTime));
+        jsonWriter.writeStringField("scheduleDateTime",
+            this.scheduleDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduleDateTime));
         jsonWriter.writeStringField("accountName", this.accountName);
         jsonWriter.writeStringField("ruleName", this.ruleName);
         jsonWriter.writeStringField("policyRunStatus", this.policyRunStatus);

@@ -62,7 +62,8 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @return the errors value.
      */
     public List<ResponseError> getErrors() {
-        return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage()))
+        return this.errors.stream()
+            .map(e -> new ResponseError(e.getCode(), e.getMessage()))
             .collect(Collectors.toList());
     }
 

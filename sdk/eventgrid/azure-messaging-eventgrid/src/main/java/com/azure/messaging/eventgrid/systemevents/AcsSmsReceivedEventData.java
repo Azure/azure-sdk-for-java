@@ -111,8 +111,10 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("receivedTimestamp",
+            this.receivedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         return jsonWriter.writeEndObject();
     }
 

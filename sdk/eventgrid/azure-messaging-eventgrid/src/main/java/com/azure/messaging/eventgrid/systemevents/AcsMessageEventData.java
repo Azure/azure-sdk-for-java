@@ -133,8 +133,10 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", this.from);
         jsonWriter.writeStringField("to", this.to);
-        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("receivedTimestamp",
+            this.receivedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }

@@ -157,8 +157,10 @@ public final class StorageTaskCompletedEventData implements JsonSerializable<Sto
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeStringField("completedDateTime", this.completedDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedDateTime));
+        jsonWriter.writeStringField("completedDateTime",
+            this.completedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedDateTime));
         jsonWriter.writeStringField("taskExecutionId", this.taskExecutionId);
         jsonWriter.writeStringField("taskName", this.taskName);
         jsonWriter.writeStringField("summaryReportBlobUrl", this.summaryReportBlobUrl);
