@@ -16,7 +16,7 @@ public final class ConnectFailed extends CallAutomationEventBase {
     private ConnectFailed() {
 
     }
-    
+
     /**
      * {@inheritDoc}
      */

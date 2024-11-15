@@ -4,29 +4,23 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DialogUpdated model. */
-@Fluent
-public final class DialogUpdated {
+/** The StartRecordingFailed model. */
+@Immutable
+public final class StartRecordingFailed {
     /*
-     * Determines the type of the dialog.
+     * Contains the resulting SIP code, sub-code and message.
      */
-    @JsonProperty(value = "dialogInputType")
-    private DialogInputType dialogInputType;
+    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
+    private ResultInformation resultInformation;
 
     /*
-     * Dialog ID
+     * The call recording id
      */
-    @JsonProperty(value = "dialogId", access = JsonProperty.Access.WRITE_ONLY)
-    private String dialogId;
-
-    /*
-     * Ivr Context
-     */
-    @JsonProperty(value = "ivrContext", access = JsonProperty.Access.WRITE_ONLY)
-    private Object ivrContext;
+    @JsonProperty(value = "recordingId", access = JsonProperty.Access.WRITE_ONLY)
+    private String recordingId;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request
@@ -34,12 +28,6 @@ public final class DialogUpdated {
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
-
-    /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
-     */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private ResultInformation resultInformation;
 
     /*
      * Call connection ID.
@@ -61,41 +49,21 @@ public final class DialogUpdated {
     private String correlationId;
 
     /**
-     * Get the dialogInputType property: Determines the type of the dialog.
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
      *
-     * @return the dialogInputType value.
+     * @return the resultInformation value.
      */
-    public DialogInputType getDialogInputType() {
-        return this.dialogInputType;
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
     }
 
     /**
-     * Set the dialogInputType property: Determines the type of the dialog.
+     * Get the recordingId property: The call recording id.
      *
-     * @param dialogInputType the dialogInputType value to set.
-     * @return the DialogUpdated object itself.
+     * @return the recordingId value.
      */
-    public DialogUpdated setDialogInputType(DialogInputType dialogInputType) {
-        this.dialogInputType = dialogInputType;
-        return this;
-    }
-
-    /**
-     * Get the dialogId property: Dialog ID.
-     *
-     * @return the dialogId value.
-     */
-    public String getDialogId() {
-        return this.dialogId;
-    }
-
-    /**
-     * Get the ivrContext property: Ivr Context.
-     *
-     * @return the ivrContext value.
-     */
-    public Object getIvrContext() {
-        return this.ivrContext;
+    public String getRecordingId() {
+        return this.recordingId;
     }
 
     /**
@@ -106,15 +74,6 @@ public final class DialogUpdated {
      */
     public String getOperationContext() {
         return this.operationContext;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**

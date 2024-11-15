@@ -12,10 +12,18 @@ import java.util.List;
 @Fluent
 public final class StartCallRecordingRequestInternal {
     /*
-     * The call locator.
+     * The call locator. (Only one of callLocator or callConnectionId to be
+     * used)
      */
-    @JsonProperty(value = "callLocator", required = true)
+    @JsonProperty(value = "callLocator")
     private CallLocatorInternal callLocator;
+
+    /*
+     * The call connectionId. (Only one of callLocator or callConnectionId to
+     * be used)
+     */
+    @JsonProperty(value = "callConnectionId")
+    private String callConnectionId;
 
     /*
      * The uri to send notifications to.
@@ -79,7 +87,7 @@ public final class StartCallRecordingRequestInternal {
     private Boolean pauseOnStart;
 
     /**
-     * Get the callLocator property: The call locator.
+     * Get the callLocator property: The call locator. (Only one of callLocator or callConnectionId to be used).
      *
      * @return the callLocator value.
      */
@@ -88,13 +96,35 @@ public final class StartCallRecordingRequestInternal {
     }
 
     /**
-     * Set the callLocator property: The call locator.
+     * Set the callLocator property: The call locator. (Only one of callLocator or callConnectionId to be used).
      *
      * @param callLocator the callLocator value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
     public StartCallRecordingRequestInternal setCallLocator(CallLocatorInternal callLocator) {
         this.callLocator = callLocator;
+        return this;
+    }
+
+    /**
+     * Get the callConnectionId property: The call connectionId. (Only one of callLocator or callConnectionId to be
+     * used).
+     *
+     * @return the callConnectionId value.
+     */
+    public String getCallConnectionId() {
+        return this.callConnectionId;
+    }
+
+    /**
+     * Set the callConnectionId property: The call connectionId. (Only one of callLocator or callConnectionId to be
+     * used).
+     *
+     * @param callConnectionId the callConnectionId value to set.
+     * @return the StartCallRecordingRequestInternal object itself.
+     */
+    public StartCallRecordingRequestInternal setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
         return this;
     }
 

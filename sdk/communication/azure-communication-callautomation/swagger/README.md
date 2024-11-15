@@ -29,7 +29,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 tag: package-2024-09-01-preview
 use: '@autorest/java@4.1.29'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/9c3fd0a7ffde6078a46c0953d1e250aa4e3e6dc7/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/6204479165ba24610f678105dce67ed501201b39/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -258,7 +258,12 @@ directive:
 - remove-model: MediaStreamingStarted
 - remove-model: MediaStreamingStopped
 - remove-model: MediaStreamingFailed
-
+- remove-model: CreateCallFailed
+- remove-model: HoldFailed
+- remove-model: AnswerFailed
+- remove-model: RemoveParticipantFailed
+- remove-model: RemoveParticipantSucceeded
+- remove-model: StartRecordingFailed
 
 ```
 
