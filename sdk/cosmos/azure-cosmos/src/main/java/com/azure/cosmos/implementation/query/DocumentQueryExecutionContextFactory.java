@@ -106,7 +106,7 @@ public class DocumentQueryExecutionContextFactory {
                 map(tuple -> {
                     List<Range<String>> targetRanges =
                         tuple.getT1().stream().map(PartitionKeyRange::toRange).collect(Collectors.toList());
-                    return new QueryInfoAndRanges(QueryInfo.EMPTY, HybridSearchQueryInfo.EMPTY, targetRanges, tuple.getT2());
+                    return new QueryInfoAndRanges(QueryInfo.EMPTY, null, targetRanges, tuple.getT2());
                 });
         }
 
@@ -255,7 +255,7 @@ public class DocumentQueryExecutionContextFactory {
             ).map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
 
         return Mono.zip(targetRange, allRanges)
-            .map(tuple -> new QueryInfoAndRanges(queryInfo, HybridSearchQueryInfo.EMPTY, Collections.singletonList(tuple.getT1()), tuple.getT2()));
+            .map(tuple -> new QueryInfoAndRanges(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2()));
     }
 
     synchronized private static void tryCacheQueryPlan(
