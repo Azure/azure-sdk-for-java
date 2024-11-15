@@ -349,7 +349,7 @@ jobs:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
       - task: PowerShell@2
-        displayName: Verify Code Generation
+        displayName: Verify Autorest and TypeSpec Code Generation
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
