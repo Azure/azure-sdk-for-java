@@ -456,11 +456,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     String userData();
 
     /**
-     * Gets the profile of capacity reservation for the virtual machine.
+     * Gets the resource id of capacity reservation for the virtual machine.
      *
-     * @return the profile of capacity reservation for the virtual machine.
+     * @return the resource id of capacity reservation for the virtual machine.
      */
-    CapacityReservationProfile capacityReservation();
+    String capacityReservationGroupId();
 
     // Setters
     //
@@ -1967,7 +1967,7 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @param capacityReservationGroupsId the id of capacity reservation groups
              * @return the next stage of the definition
              */
-            WithCreate withCapacityReservation(String capacityReservationGroupsId);
+            WithCreate withCapacityReservationGroupsId(String capacityReservationGroupsId);
         }
 
         /**
@@ -2645,7 +2645,7 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @param capacityReservationGroupsId the id of capacity reservation groups
              * @return the next stage of the update
              */
-            Update withCapacityReservation(String capacityReservationGroupsId);
+            Update withCapacityReservationGroupsId(String capacityReservationGroupsId);
         }
     }
 

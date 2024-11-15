@@ -1995,8 +1995,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public CapacityReservationProfile capacityReservation() {
-        return this.innerModel().capacityReservation();
+    public String capacityReservationGroupId() {
+        return this.innerModel().capacityReservation().capacityReservationGroup().id();
     }
 
     // CreateUpdateTaskGroup.ResourceCreator.beforeGroupCreateOrUpdate implementation
@@ -2873,10 +2873,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withCapacityReservation(String capacityReservationGroupsId) {
+    public VirtualMachineImpl withCapacityReservationGroupsId(String capacityReservationGroupsId) {
+        if (this.innerModel().capacityReservation() == null) {
+            this.innerModel().withCapacityReservation(new CapacityReservationProfile());
+        }
         this.innerModel()
-            .withCapacityReservation(new CapacityReservationProfile()
-                .withCapacityReservationGroup(new SubResource().withId(capacityReservationGroupsId)));
+            .capacityReservation()
+            .withCapacityReservationGroup(new SubResource().withId(capacityReservationGroupsId));
         return this;
     }
 
