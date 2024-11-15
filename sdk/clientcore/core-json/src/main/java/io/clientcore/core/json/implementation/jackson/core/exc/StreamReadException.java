@@ -1,14 +1,17 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.exc;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonLocation;
+import io.clientcore.core.json.implementation.jackson.core.JsonParseException;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonProcessingException;
 import io.clientcore.core.json.implementation.jackson.core.util.RequestPayload;
 
 /**
  * Intermediate base class for all read-side streaming processing problems, including
  * parsing and input value coercion problems.
  *<p>
- * Added in 2.10 to eventually replace {@link io.clientcore.core.json.implementation.jackson.core.JsonParseException}.
+ * Added in 2.10 to eventually replace {@link JsonParseException}.
  *
  * @since 2.10
  */
@@ -40,27 +43,9 @@ public abstract class StreamReadException extends JsonProcessingException {
         _processor = p;
     }
 
-    // @since 2.13
-    protected StreamReadException(JsonParser p, String msg, JsonLocation loc, Throwable rootCause) {
-        super(msg, loc, rootCause);
-        _processor = p;
-    }
-
     protected StreamReadException(String msg, JsonLocation loc, Throwable rootCause) {
         super(msg, loc, rootCause);
     }
-
-    /**
-     * Fluent method that may be used to assign originating {@link JsonParser},
-     * to be accessed using {@link #getProcessor()}.
-     *<p>
-     * NOTE: `this` instance is modified and no new instance is constructed.
-     *
-     * @param p Parser instance to assign to this exception
-     *
-     * @return This exception instance to allow call chaining
-     */
-    public abstract StreamReadException withParser(JsonParser p);
 
     /**
      * Fluent method that may be used to assign payload to this exception,
@@ -106,7 +91,7 @@ public abstract class StreamReadException extends JsonProcessingException {
     public String getMessage() {
         String msg = super.getMessage();
         if (_requestPayload != null) {
-            msg += "\nRequest payload : " + _requestPayload.toString();
+            msg += "\nRequest payload : " + _requestPayload;
         }
         return msg;
     }

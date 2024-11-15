@@ -69,4 +69,10 @@ public class ConfigsTests {
             System.clearProperty("COSMOS.METRICS_CONFIG");
         }
     }
+
+    @Test(groups = { "emulator" })
+    public void allowUseHttpForVNextEmulator() {
+        Configs config = new Configs();
+        assertThat(config.isInsecureEmulatorConnectionAllowed()).isFalse();
+    }
 }

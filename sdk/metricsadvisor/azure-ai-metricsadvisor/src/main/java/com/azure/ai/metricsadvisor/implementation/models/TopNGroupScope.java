@@ -103,6 +103,9 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

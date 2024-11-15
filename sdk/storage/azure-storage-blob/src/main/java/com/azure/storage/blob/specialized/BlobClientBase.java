@@ -140,7 +140,7 @@ public class BlobClientBase {
     /**
      * Backing REST client for the blob client.
      */
-    protected final AzureBlobStorageImpl azureBlobStorage;
+    final AzureBlobStorageImpl azureBlobStorage;
 
     private final String snapshot;
     private final String versionId;
@@ -149,7 +149,7 @@ public class BlobClientBase {
     /**
      * Encryption scope of the blob.
      */
-    protected final EncryptionScope encryptionScope;
+    final EncryptionScope encryptionScope;
 
     /**
      * Storage account name that contains the blob.

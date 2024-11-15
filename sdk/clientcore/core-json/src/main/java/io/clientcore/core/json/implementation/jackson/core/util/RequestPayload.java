@@ -1,11 +1,13 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.util;
 
+import io.clientcore.core.json.implementation.jackson.core.JsonParseException;
+
 import java.io.IOException;
 
 /**
  * Container object used to contain optional information on content
- * being parsed, passed to {@link io.clientcore.core.json.implementation.jackson.core.JsonParseException} in case of
+ * being parsed, passed to {@link JsonParseException} in case of
  * exception being thrown; this may be useful for caller to display
  * information on failure.
  *
@@ -24,33 +26,11 @@ public class RequestPayload implements java.io.Serializable // just in case, eve
     // Charset if the request payload is set in bytes
     protected String _charset;
 
-    public RequestPayload(byte[] bytes, String charset) {
-        if (bytes == null) {
-            throw new IllegalArgumentException();
-        }
-        _payloadAsBytes = bytes;
-        _charset = (charset == null || charset.isEmpty()) ? "UTF-8" : charset;
-    }
-
     public RequestPayload(CharSequence str) {
         if (str == null) {
             throw new IllegalArgumentException();
         }
         _payloadAsText = str;
-    }
-
-    /**
-     * Returns the raw request payload object i.e, either byte[] or String
-     *
-     * @return Object which is a raw request payload i.e, either byte[] or
-     *         String
-     */
-    public Object getRawPayload() {
-        if (_payloadAsBytes != null) {
-            return _payloadAsBytes;
-        }
-
-        return _payloadAsText;
     }
 
     @Override

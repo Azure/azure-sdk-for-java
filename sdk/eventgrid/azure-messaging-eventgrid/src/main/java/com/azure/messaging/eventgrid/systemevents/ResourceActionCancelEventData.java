@@ -17,8 +17,8 @@ import java.io.UncheckedIOException;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceActionCancel event. This is
- * raised when a resource action operation is canceled.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceActionCancel event. This is raised
+ * when a resource action operation is canceled.
  */
 @Fluent
 public final class ResourceActionCancelEventData implements JsonSerializable<ResourceActionCancelEventData> {
@@ -304,6 +304,9 @@ public final class ResourceActionCancelEventData implements JsonSerializable<Res
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -375,9 +378,8 @@ public final class ResourceActionCancelEventData implements JsonSerializable<Res
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionCancelEventData#getResourceClaims()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionCancelEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -397,9 +399,8 @@ public final class ResourceActionCancelEventData implements JsonSerializable<Res
      *
      * @param claims the claims value to set.
      * @return the ResourceActionCancelEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionCancelEventData#setResourceClaims(Map)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionCancelEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceActionCancelEventData setClaims(String claims) {
@@ -415,9 +416,8 @@ public final class ResourceActionCancelEventData implements JsonSerializable<Res
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionCancelEventData#getResourceHttpRequest()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionCancelEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -434,9 +434,8 @@ public final class ResourceActionCancelEventData implements JsonSerializable<Res
      *
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceActionCancelEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceActionCancelEventData setHttpRequest(String httpRequest) {
@@ -453,9 +452,8 @@ public final class ResourceActionCancelEventData implements JsonSerializable<Res
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionCancelEventData#getResourceAuthorization()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionCancelEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -472,9 +470,8 @@ public final class ResourceActionCancelEventData implements JsonSerializable<Res
      *
      * @param authorization the authorization value to set.
      * @return the ResourceActionCancelEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceActionCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceActionCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceActionCancelEventData setAuthorization(String authorization) {

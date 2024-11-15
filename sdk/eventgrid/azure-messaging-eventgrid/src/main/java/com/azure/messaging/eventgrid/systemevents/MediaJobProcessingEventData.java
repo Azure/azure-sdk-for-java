@@ -17,10 +17,40 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobProcessingEventData extends MediaJobStateChangeEventData {
+    /*
+     * The new state of the Job.
+     */
+    private MediaJobState state;
+
+    /*
+     * The previous state of the Job.
+     */
+    private MediaJobState previousState;
+
     /**
      * Creates an instance of MediaJobProcessingEventData class.
      */
     public MediaJobProcessingEventData() {
+    }
+
+    /**
+     * Get the state property: The new state of the Job.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public MediaJobState getState() {
+        return this.state;
+    }
+
+    /**
+     * Get the previousState property: The previous state of the Job.
+     * 
+     * @return the previousState value.
+     */
+    @Override
+    public MediaJobState getPreviousState() {
+        return this.previousState;
     }
 
     /**
@@ -32,6 +62,9 @@ public final class MediaJobProcessingEventData extends MediaJobStateChangeEventD
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -56,10 +89,10 @@ public final class MediaJobProcessingEventData extends MediaJobStateChangeEventD
                 reader.nextToken();
 
                 if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobProcessingEventData
-                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                    deserializedMediaJobProcessingEventData.previousState
+                        = MediaJobState.fromString(reader.getString());
                 } else if ("state".equals(fieldName)) {
-                    deserializedMediaJobProcessingEventData.setState(MediaJobState.fromString(reader.getString()));
+                    deserializedMediaJobProcessingEventData.state = MediaJobState.fromString(reader.getString());
                 } else if ("correlationData".equals(fieldName)) {
                     Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
                     deserializedMediaJobProcessingEventData.setCorrelationData(correlationData);

@@ -5,7 +5,6 @@ package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
-import com.azure.ai.translation.document.models.SupportedFileFormats;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,12 +16,10 @@ public final class SupportedFormatsTests extends DocumentTranslationClientTestBa
     @Test
     public void testGetDocumentsFormats() {
         // method invocation
-        SupportedFileFormats response = getDocumentTranslationClient().getSupportedFormats(FileFormatType.DOCUMENT);
+        List<FileFormat> responseValue = getDocumentTranslationClient().getSupportedFormats(FileFormatType.DOCUMENT);
 
         // response assertion
-        assertNotNull(response);
-
-        List<FileFormat> responseValue = response.getValue();
+        assertNotNull(responseValue);
         assertFalse(responseValue.isEmpty(), "The supported documents should be greater than 0");
 
         for (FileFormat fileFormat : responseValue) {
@@ -36,12 +33,10 @@ public final class SupportedFormatsTests extends DocumentTranslationClientTestBa
     @Test
     public void testGetGlossariesFormats() {
         // method invocation
-        SupportedFileFormats response = getDocumentTranslationClient().getSupportedFormats(FileFormatType.GLOSSARY);
+        List<FileFormat> responseValue = getDocumentTranslationClient().getSupportedFormats(FileFormatType.GLOSSARY);
 
         // response assertion
-        assertNotNull(response);
-
-        List<FileFormat> responseValue = response.getValue();
+        assertNotNull(responseValue);
         assertFalse(responseValue.isEmpty(), "The supported documents should be greater than 0");
 
         for (FileFormat fileFormat : responseValue) {

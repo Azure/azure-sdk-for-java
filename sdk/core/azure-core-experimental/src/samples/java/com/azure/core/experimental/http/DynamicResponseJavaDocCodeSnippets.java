@@ -4,10 +4,10 @@
 package com.azure.core.experimental.http;
 
 import com.azure.core.util.BinaryData;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import java.io.StringReader;
+import com.azure.json.models.JsonArray;
+import com.azure.json.models.JsonNumber;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 
 /**
  * JavaDoc codesnippets for {@link DynamicResponse}.
@@ -30,10 +30,10 @@ public class DynamicResponseJavaDocCodeSnippets {
         int statusCode = response.getStatusCode();
         if (statusCode == 200) {
             BinaryData responseBody = response.getBody();
-            String responseBodyStr = responseBody.toString();
-            JsonObject deserialized = Json.createReader(new StringReader(responseBodyStr)).readObject();
-            int id = deserialized.getInt("id");
-            String firstTag = deserialized.getJsonArray("tags").get(0).asJsonObject().getString("name");
+            JsonObject deserialized = responseBody.toObject(JsonObject.class);
+            int id = ((JsonNumber) deserialized.getProperty("id")).getValue().intValue();
+            JsonArray tags = ((JsonArray) deserialized.getProperty("tags"));
+            String firstTag = ((JsonString) ((JsonObject) tags.getElement(0)).getProperty("name")).getValue();
         }
         // END: com.azure.core.experimental.http.dynamicresponse.readresponse
     }

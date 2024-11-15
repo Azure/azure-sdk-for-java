@@ -1,6 +1,6 @@
 # Release History
 
-## 12.22.0-beta.2 (Unreleased)
+## 12.23.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.22.0 (2024-11-13)
+
+### Features Added
+- Added support for service version 2025-01-05.
+
+### Breaking Changes
+- When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakePathClientBuilder.pathName(String pathName)`,
+  the path name will be stored exactly as passed in and will not be URL-encoded. For example, if the path name is
+  "foo/bar" and `DataLakeDirectoryClient` is created via `DataLakePathClientBuilder.pathName("foo/bar")`,
+  `DataLakeDirectoryClient.getDirectoryPath()` will return "foo/bar" and the path's url will result in
+  “https://account.dfs.core.windows.net/filesystemname/foo%2Fbar”.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to version `1.54.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.6`.
+- Upgraded `azure-storage-blob` from `12.28.0` to version `12.29.0`.
 
 ## 12.22.0-beta.1 (2024-10-17)
 

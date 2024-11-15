@@ -74,6 +74,9 @@ public final class AcsMicrosoftTeamsAppIdentifier implements JsonSerializable<Ac
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

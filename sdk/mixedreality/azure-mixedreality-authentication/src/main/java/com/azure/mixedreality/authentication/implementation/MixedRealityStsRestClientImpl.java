@@ -20,64 +20,78 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.mixedreality.authentication.implementation.models.GetTokenResponse;
+import com.azure.mixedreality.authentication.implementation.models.GetTokenHeaders;
 import com.azure.mixedreality.authentication.implementation.models.StsTokenResponseMessage;
 import com.azure.mixedreality.authentication.implementation.models.TokenRequestOptions;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the MixedRealityStsRestClient type. */
+/**
+ * Initializes a new instance of the MixedRealityStsRestClient type.
+ */
 public final class MixedRealityStsRestClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MixedRealityStsRestClientService service;
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String host;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the host value.
      */
     public String getHost() {
         return this.host;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -86,7 +100,7 @@ public final class MixedRealityStsRestClientImpl {
 
     /**
      * Initializes an instance of MixedRealityStsRestClient client.
-     *
+     * 
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
@@ -97,7 +111,7 @@ public final class MixedRealityStsRestClientImpl {
 
     /**
      * Initializes an instance of MixedRealityStsRestClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param host server parameter.
      * @param apiVersion Api Version.
@@ -108,7 +122,7 @@ public final class MixedRealityStsRestClientImpl {
 
     /**
      * Initializes an instance of MixedRealityStsRestClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param host server parameter.
@@ -135,37 +149,40 @@ public final class MixedRealityStsRestClientImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 400, 401, 429 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<GetTokenResponse> getToken(@HostParam("$host") String host, @PathParam("accountId") UUID accountId,
-            @HeaderParam("X-MRC-CV") String clientRequestId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<ResponseBase<GetTokenHeaders, StsTokenResponseMessage>> getToken(@HostParam("$host") String host,
+            @PathParam("accountId") UUID accountId, @HeaderParam("X-MRC-CV") String clientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/Accounts/{accountId}/token")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 400, 401, 429 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<StsTokenResponseMessage>> getTokenNoCustomHeaders(@HostParam("$host") String host,
+            @PathParam("accountId") UUID accountId, @HeaderParam("X-MRC-CV") String clientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets an access token to be used with Mixed Reality services.
-     *
+     * 
      * @param accountId The Mixed Reality account identifier.
      * @param tokenRequestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 401, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token to be used with Mixed Reality services on successful completion of {@link Mono}.
+     * @return an access token to be used with Mixed Reality services along with {@link ResponseBase} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetTokenResponse> getTokenWithResponseAsync(UUID accountId, TokenRequestOptions tokenRequestOptions) {
-        final String accept = "application/json";
-        String clientRequestIdInternal = null;
-        if (tokenRequestOptions != null) {
-            clientRequestIdInternal = tokenRequestOptions.getClientRequestId();
-        }
-        String clientRequestId = clientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.getToken(this.getHost(), accountId, clientRequestId,
-            this.getApiVersion(), accept, context));
+    public Mono<ResponseBase<GetTokenHeaders, StsTokenResponseMessage>> getTokenWithResponseAsync(UUID accountId,
+        TokenRequestOptions tokenRequestOptions) {
+        return FluxUtil.withContext(context -> getTokenWithResponseAsync(accountId, tokenRequestOptions, context));
     }
 
     /**
      * Gets an access token to be used with Mixed Reality services.
-     *
+     * 
      * @param accountId The Mixed Reality account identifier.
      * @param tokenRequestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -173,11 +190,12 @@ public final class MixedRealityStsRestClientImpl {
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 401, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token to be used with Mixed Reality services on successful completion of {@link Mono}.
+     * @return an access token to be used with Mixed Reality services along with {@link ResponseBase} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetTokenResponse> getTokenWithResponseAsync(UUID accountId, TokenRequestOptions tokenRequestOptions,
-        Context context) {
+    public Mono<ResponseBase<GetTokenHeaders, StsTokenResponseMessage>> getTokenWithResponseAsync(UUID accountId,
+        TokenRequestOptions tokenRequestOptions, Context context) {
         final String accept = "application/json";
         String clientRequestIdInternal = null;
         if (tokenRequestOptions != null) {
@@ -189,7 +207,7 @@ public final class MixedRealityStsRestClientImpl {
 
     /**
      * Gets an access token to be used with Mixed Reality services.
-     *
+     * 
      * @param accountId The Mixed Reality account identifier.
      * @param tokenRequestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +224,7 @@ public final class MixedRealityStsRestClientImpl {
 
     /**
      * Gets an access token to be used with Mixed Reality services.
-     *
+     * 
      * @param accountId The Mixed Reality account identifier.
      * @param tokenRequestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -221,5 +239,50 @@ public final class MixedRealityStsRestClientImpl {
         Context context) {
         return getTokenWithResponseAsync(accountId, tokenRequestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an access token to be used with Mixed Reality services.
+     * 
+     * @param accountId The Mixed Reality account identifier.
+     * @param tokenRequestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 401, 429.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token to be used with Mixed Reality services along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StsTokenResponseMessage>> getTokenNoCustomHeadersWithResponseAsync(UUID accountId,
+        TokenRequestOptions tokenRequestOptions) {
+        return FluxUtil
+            .withContext(context -> getTokenNoCustomHeadersWithResponseAsync(accountId, tokenRequestOptions, context));
+    }
+
+    /**
+     * Gets an access token to be used with Mixed Reality services.
+     * 
+     * @param accountId The Mixed Reality account identifier.
+     * @param tokenRequestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 401, 429.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token to be used with Mixed Reality services along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StsTokenResponseMessage>> getTokenNoCustomHeadersWithResponseAsync(UUID accountId,
+        TokenRequestOptions tokenRequestOptions, Context context) {
+        final String accept = "application/json";
+        String clientRequestIdInternal = null;
+        if (tokenRequestOptions != null) {
+            clientRequestIdInternal = tokenRequestOptions.getClientRequestId();
+        }
+        String clientRequestId = clientRequestIdInternal;
+        return service.getTokenNoCustomHeaders(this.getHost(), accountId, clientRequestId, this.getApiVersion(), accept,
+            context);
     }
 }

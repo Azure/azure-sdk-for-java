@@ -45,8 +45,8 @@
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.util=ALL-UNNAMED
 
-      --add-opens io.clientcore.http.okhttp/io.clientcore.http.okhttp=ALL-UNNAMED
-      --add-opens io.clientcore.http.okhttp/io.clientcore.http.okhttp.implementation=ALL-UNNAMED
+      --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3=ALL-UNNAMED
+      --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
