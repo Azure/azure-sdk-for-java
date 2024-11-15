@@ -169,9 +169,9 @@ public final class RealtimeResponseFunctionCallItem extends RealtimeResponseItem
      * @param status the status value to set.
      */
     @Generated
-    private RealtimeResponseFunctionCallItem(String object, String id, String name, String callId, String arguments,
+    private RealtimeResponseFunctionCallItem(String id, String name, String callId, String arguments,
         RealtimeItemStatus status) {
-        super(object, id);
+        super(id);
         this.name = name;
         this.callId = callId;
         this.arguments = arguments;

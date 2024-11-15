@@ -37,39 +37,6 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
     private final List<BinaryData> content;
 
     /**
-     * Set the content property
-     *
-     * @param content as a BinaryData
-     * @return the RealtimeRequestUserMessageItem object itself.
-     */
-    public RealtimeRequestUserMessageItem setContent(BinaryData content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
-     * Set content to text prompts class.
-     *
-     * @param content the content value to set.
-     * @return the RealtimeRequestUserMessageItem object itself.
-     */
-    public RealtimeRequestUserMessageItem setTextContent(List<RealtimeRequestTextContentPart> content) {
-        this.content = BinaryData.fromObject(content);
-        return this;
-    }
-
-    /**
-     * Set content to audio prompts class.
-     *
-     * @param audioContent the content value to set.
-     * @return the RealtimeRequestUserMessageItem object itself.
-     */
-    public RealtimeRequestUserMessageItem setAudioContent(List<RealtimeRequestAudioContentPart> audioContent) {
-        this.content = BinaryData.fromObject(audioContent);
-        return this;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -91,8 +58,13 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
         return this.role;
     }
 
-    // @Generated
-    public BinaryData getContent() {
+    /**
+     * Get the content property: The content property.
+     *
+     * @return the content value.
+     */
+    @Generated
+    public List<BinaryData> getContent() {
         return this.content;
     }
 
@@ -132,11 +104,31 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
         return jsonWriter.writeEndObject();
     }
 
+    /**
+     * Creates an instance of RealtimeRequestUserMessageItem class.
+     *
+     * @param content the content value to set.
+     */
+    @Generated
+    public RealtimeRequestUserMessageItem(List<BinaryData> content) {
+        this.content = content;
+    }
+
+    /**
+     * Reads an instance of RealtimeRequestUserMessageItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RealtimeRequestUserMessageItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RealtimeRequestUserMessageItem.
+     */
+    @Generated
     public static RealtimeRequestUserMessageItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             RealtimeItemStatus status = null;
-            BinaryData content = null;
+            List<BinaryData> content = null;
             RealtimeMessageRole role = RealtimeMessageRole.USER;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -146,9 +138,8 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
                 } else if ("status".equals(fieldName)) {
                     status = RealtimeItemStatus.fromString(reader.getString());
                 } else if ("content".equals(fieldName)) {
-                    content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                    // content = reader.readArray(reader1 -> reader1
-                    // .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    content = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("role".equals(fieldName)) {
                     role = RealtimeMessageRole.fromString(reader.getString());
                 } else {
@@ -156,22 +147,11 @@ public final class RealtimeRequestUserMessageItem extends RealtimeRequestMessage
                 }
             }
             RealtimeRequestUserMessageItem deserializedRealtimeRequestUserMessageItem
-                = new RealtimeRequestUserMessageItem();
-            deserializedRealtimeRequestUserMessageItem.setContent(content);
+                = new RealtimeRequestUserMessageItem(content);
             deserializedRealtimeRequestUserMessageItem.setId(id);
             deserializedRealtimeRequestUserMessageItem.setStatus(status);
             deserializedRealtimeRequestUserMessageItem.role = role;
             return deserializedRealtimeRequestUserMessageItem;
         });
-    }
-
-    /**
-     * Creates an instance of RealtimeRequestUserMessageItem class.
-     *
-     * @param content the content value to set.
-     */
-    @Generated
-    public RealtimeRequestUserMessageItem(List<BinaryData> content) {
-        this.content = content;
     }
 }

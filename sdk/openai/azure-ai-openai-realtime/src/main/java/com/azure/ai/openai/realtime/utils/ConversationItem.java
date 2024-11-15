@@ -9,6 +9,7 @@ import com.azure.ai.openai.realtime.models.RealtimeRequestFunctionCallOutputItem
 import com.azure.ai.openai.realtime.models.RealtimeRequestSystemMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem;
+import com.azure.core.util.BinaryData;
 
 import java.util.Arrays;
 
@@ -21,8 +22,9 @@ public class ConversationItem {
      * @return the user message item.
      */
     public static RealtimeClientEventConversationItemCreate createUserMessage(String itemText) {
-        RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem()
-            .setTextContent(Arrays.asList(new RealtimeRequestTextContentPart(itemText)));
+        // `itemText` is not a JSON string, but a prompt. Therefore, BinaryData.fromObject is the appropriate representation.
+        RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem(Arrays.asList(BinaryData.fromObject(
+                new RealtimeRequestTextContentPart(itemText))));
         return new RealtimeClientEventConversationItemCreate(messageItem);
     }
 

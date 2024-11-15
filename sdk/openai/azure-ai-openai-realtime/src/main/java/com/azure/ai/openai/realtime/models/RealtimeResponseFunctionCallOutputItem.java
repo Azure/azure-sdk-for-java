@@ -127,8 +127,8 @@ public final class RealtimeResponseFunctionCallOutputItem extends RealtimeRespon
      * @param output the output value to set.
      */
     @Generated
-    private RealtimeResponseFunctionCallOutputItem(String object, String id, String callId, String output) {
-        super(object, id);
+    private RealtimeResponseFunctionCallOutputItem(String id, String callId, String output) {
+        super(id);
         this.callId = callId;
         this.output = output;
     }
