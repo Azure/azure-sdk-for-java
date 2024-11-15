@@ -161,6 +161,7 @@ public final class RealtimeResponseFunctionCallItem extends RealtimeResponseItem
     /**
      * Creates an instance of RealtimeResponseFunctionCallItem class.
      *
+     * @param object the object value to set.
      * @param id the id value to set.
      * @param name the name value to set.
      * @param callId the callId value to set.
@@ -168,9 +169,9 @@ public final class RealtimeResponseFunctionCallItem extends RealtimeResponseItem
      * @param status the status value to set.
      */
     @Generated
-    private RealtimeResponseFunctionCallItem(String id, String name, String callId, String arguments,
+    private RealtimeResponseFunctionCallItem(String object, String id, String name, String callId, String arguments,
         RealtimeItemStatus status) {
-        super(id);
+        super(object, id);
         this.name = name;
         this.callId = callId;
         this.arguments = arguments;

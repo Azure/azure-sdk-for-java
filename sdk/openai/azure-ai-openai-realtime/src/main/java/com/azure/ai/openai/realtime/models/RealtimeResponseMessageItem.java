@@ -142,15 +142,16 @@ public final class RealtimeResponseMessageItem extends RealtimeResponseItem {
     /**
      * Creates an instance of RealtimeResponseMessageItem class.
      *
+     * @param object the object value to set.
      * @param id the id value to set.
      * @param role the role value to set.
      * @param content the content value to set.
      * @param status the status value to set.
      */
     @Generated
-    private RealtimeResponseMessageItem(String id, RealtimeMessageRole role,
+    private RealtimeResponseMessageItem(String object, String id, RealtimeMessageRole role,
         List<RealtimeContentPart> content, RealtimeItemStatus status) {
-        super(id);
+        super(object, id);
         this.role = role;
         this.content = content;
         this.status = status;
