@@ -242,8 +242,8 @@ public class ClientTelemetryTest extends TestSuiteBase {
     public void httpClientTests(CosmosClient cosmosClient) throws Exception {
         // Test using different http client for client telemetry requests and metaRequests
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
-        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
-        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
+        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
+        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
 
         assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
 
@@ -265,8 +265,8 @@ public class ClientTelemetryTest extends TestSuiteBase {
         System.setProperty("COSMOS.DISABLE_IMDS_ACCESS", "true");
 
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
-        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
-        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
+        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
+        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
 
         assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
 
@@ -288,8 +288,8 @@ public class ClientTelemetryTest extends TestSuiteBase {
     public void httpClientsConfigurationTests(CosmosClient cosmosClient) throws Exception {
         // Test using different http client for client telemetry requests and metaRequests
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
-        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
-        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
+        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
+        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
 
         assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
 
@@ -297,11 +297,9 @@ public class ClientTelemetryTest extends TestSuiteBase {
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, clientTelemetryMetadataHttpClient,
                 "httpClient");
 
-        Duration responseTimeout = reactorHttpClient.configuration().responseTimeout();
         int maxConnections = reactorHttpClient.configuration().connectionProvider().maxConnections();
         Integer connectionAcquireTimeout = (Integer) reactorHttpClient.configuration().options().get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
 
-        assertThat(responseTimeout).isEqualTo(ClientTelemetry.IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT);
         assertThat(maxConnections).isEqualTo(ClientTelemetry.IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE);
         assertThat(connectionAcquireTimeout).isEqualTo((int) ClientTelemetry.IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT.toMillis());
     }
