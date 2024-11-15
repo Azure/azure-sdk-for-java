@@ -1,5 +1,15 @@
 # Release History
 
+## 1.14.2 (2024-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.7`.
+- Upgraded `jna-platform` from `5.6.0` to version `5.13.0`.
+
 ## 1.14.1 (2024-11-04)
 
 ### Other Changes
