@@ -1219,7 +1219,7 @@ public final class SystemEventNames {
 
     /**
      * Schema of the Data property of an event grid event for a
-     * Microsoft.ResourceNotifications.ContainerServiceEventResources.ScheduledEventEmitted event.
+     * Microsoft.ResourceNotifications.ContainerServiceEventResources.ScheduledEventEmitted preview event.
      */
     public static final String RESOURCE_NOTIFICATIONS_CONTAINER_SERVICE_EVENT_RESOURCES_SCHEDULED
         = "Microsoft.ResourceNotifications.ContainerServiceEventResources.ScheduledEventEmitted";

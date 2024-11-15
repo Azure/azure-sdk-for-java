@@ -290,7 +290,6 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
         TemporalAccessor temporal
             = DateTimeFormatter.ISO_DATE_TIME.parseBest(datetimeString, OffsetDateTime::from, LocalDateTime::from);
         return (temporal.query(TemporalQueries.offset()) == null)
-            ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC)
-            : OffsetDateTime.from(temporal);
+            ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC) : OffsetDateTime.from(temporal);
     }
 }

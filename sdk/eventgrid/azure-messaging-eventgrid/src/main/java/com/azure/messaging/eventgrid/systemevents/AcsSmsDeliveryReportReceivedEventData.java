@@ -191,10 +191,8 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
         jsonWriter.writeStringField("deliveryStatusDetails", this.deliveryStatusDetails);
         jsonWriter.writeArrayField("deliveryAttempts", this.deliveryAttempts,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("receivedTimestamp",
-            this.receivedTimestamp == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         jsonWriter.writeStringField("tag", this.tag);
         return jsonWriter.writeEndObject();
     }

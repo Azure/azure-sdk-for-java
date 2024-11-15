@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an event grid event for a
- * Microsoft.ResourceNotifications.ContainerServiceEventResources.ScheduledEventEmitted event.
+ * Microsoft.ResourceNotifications.ContainerServiceEventResources.ScheduledEventEmitted preview event.
  */
 @Fluent
 public final class ResourceNotificationsContainerServiceEventResourcesScheduledEventData

@@ -137,10 +137,8 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
-        jsonWriter.writeStringField("receivedTimestamp",
-            getReceivedTimestamp() == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
+        jsonWriter.writeStringField("receivedTimestamp", getReceivedTimestamp() == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("messageId", this.messageId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());

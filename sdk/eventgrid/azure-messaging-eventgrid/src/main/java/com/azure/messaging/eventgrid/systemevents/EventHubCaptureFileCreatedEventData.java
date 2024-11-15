@@ -264,10 +264,8 @@ public final class EventHubCaptureFileCreatedEventData
         jsonWriter.writeNumberField("eventCount", this.eventCount);
         jsonWriter.writeNumberField("firstSequenceNumber", this.firstSequenceNumber);
         jsonWriter.writeNumberField("lastSequenceNumber", this.lastSequenceNumber);
-        jsonWriter.writeStringField("firstEnqueueTime",
-            this.firstEnqueueTime == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstEnqueueTime));
+        jsonWriter.writeStringField("firstEnqueueTime", this.firstEnqueueTime == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstEnqueueTime));
         jsonWriter.writeStringField("lastEnqueueTime",
             this.lastEnqueueTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastEnqueueTime));
         return jsonWriter.writeEndObject();

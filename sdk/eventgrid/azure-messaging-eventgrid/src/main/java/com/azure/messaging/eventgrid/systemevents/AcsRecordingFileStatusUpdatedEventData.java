@@ -217,10 +217,8 @@ public final class AcsRecordingFileStatusUpdatedEventData
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recordingStorageInfo", this.recordingStorageInfo);
-        jsonWriter.writeStringField("recordingStartTime",
-            this.recordingStartTime == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recordingStartTime));
+        jsonWriter.writeStringField("recordingStartTime", this.recordingStartTime == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recordingStartTime));
         jsonWriter.writeNumberField("recordingDurationMs", this.recordingDurationMs);
         jsonWriter.writeStringField("recordingContentType",
             this.recordingContentType == null ? null : this.recordingContentType.toString());

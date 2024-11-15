@@ -19,7 +19,7 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
     /*
      * Policy status can be Completed/CompletedWithError/Incomplete.
      */
-    private String completionStatus;
+    private StorageLifecycleCompletionStatus completionStatus;
 
     /**
      * Creates an instance of StorageLifecyclePolicyRunSummary class.
@@ -32,7 +32,7 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
      * 
      * @return the completionStatus value.
      */
-    public String getCompletionStatus() {
+    public StorageLifecycleCompletionStatus getCompletionStatus() {
         return this.completionStatus;
     }
 
@@ -42,7 +42,7 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
      * @param completionStatus the completionStatus value to set.
      * @return the StorageLifecyclePolicyRunSummary object itself.
      */
-    public StorageLifecyclePolicyRunSummary setCompletionStatus(String completionStatus) {
+    public StorageLifecyclePolicyRunSummary setCompletionStatus(StorageLifecycleCompletionStatus completionStatus) {
         this.completionStatus = completionStatus;
         return this;
     }
@@ -50,7 +50,8 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("completionStatus", this.completionStatus);
+        jsonWriter.writeStringField("completionStatus",
+            this.completionStatus == null ? null : this.completionStatus.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -60,6 +61,7 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageLifecyclePolicyRunSummary if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageLifecyclePolicyRunSummary.
      */
     public static StorageLifecyclePolicyRunSummary fromJson(JsonReader jsonReader) throws IOException {
@@ -71,7 +73,8 @@ public final class StorageLifecyclePolicyRunSummary implements JsonSerializable<
                 reader.nextToken();
 
                 if ("completionStatus".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyRunSummary.completionStatus = reader.getString();
+                    deserializedStorageLifecyclePolicyRunSummary.completionStatus
+                        = StorageLifecycleCompletionStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
