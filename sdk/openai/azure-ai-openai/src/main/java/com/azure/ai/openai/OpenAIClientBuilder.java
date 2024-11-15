@@ -49,10 +49,7 @@ import java.util.Objects;
 /**
  * A builder for creating a new instance of the OpenAIClient type.
  */
-@ServiceClientBuilder(
-    serviceClients = {
-        OpenAIClient.class,
-        OpenAIAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { OpenAIClient.class, OpenAIAsyncClient.class })
 public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>,
     ConfigurationTrait<OpenAIClientBuilder>, TokenCredentialTrait<OpenAIClientBuilder>,
     KeyCredentialTrait<OpenAIClientBuilder>, EndpointTrait<OpenAIClientBuilder> {

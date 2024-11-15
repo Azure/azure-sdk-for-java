@@ -10,9 +10,6 @@ import com.azure.core.util.ServiceVersion;
  * Service version of OpenAIClient.
  */
 public enum OpenAIServiceVersion implements ServiceVersion {
-
-    V2024_10_01_PREVIEW("2024-10-01-preview"),
-
     /**
      * Enum value 2022-12-01.
      */
