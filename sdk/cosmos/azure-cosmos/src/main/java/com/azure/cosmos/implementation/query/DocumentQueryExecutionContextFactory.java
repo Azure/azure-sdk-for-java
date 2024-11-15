@@ -77,7 +77,7 @@ public class DocumentQueryExecutionContextFactory {
         return collectionCache.resolveCollectionAsync(null, request);
     }
 
-    private static <T> Mono<QueryInfoAndRanges> getPartitionKeyRangesAndQueryInfo(
+    private static <T> Mono<PartitionKeyRangesAndQueryInfos> getPartitionKeyRangesAndQueryInfo(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         SqlQuerySpec query,
@@ -106,7 +106,7 @@ public class DocumentQueryExecutionContextFactory {
                 map(tuple -> {
                     List<Range<String>> targetRanges =
                         tuple.getT1().stream().map(PartitionKeyRange::toRange).collect(Collectors.toList());
-                    return new QueryInfoAndRanges(QueryInfo.EMPTY, null, targetRanges, tuple.getT2());
+                    return new PartitionKeyRangesAndQueryInfos(QueryInfo.EMPTY, null, targetRanges, tuple.getT2());
                 });
         }
 
@@ -162,7 +162,7 @@ public class DocumentQueryExecutionContextFactory {
             });
     }
 
-    private static <T> Mono<QueryInfoAndRanges> getTargetRangesFromQueryPlan(
+    private static <T> Mono<PartitionKeyRangesAndQueryInfos> getTargetRangesFromQueryPlan(
         CosmosQueryRequestOptions cosmosQueryRequestOptions, DocumentCollection collection,
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext,
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo, Instant planFetchStartTime,
@@ -200,9 +200,9 @@ public class DocumentQueryExecutionContextFactory {
             return Mono.zip(targetRange, allRanges)
                 .map(tuple -> {
                     if (partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()) {
-                        return new QueryInfoAndRanges(null, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), Collections.singletonList(tuple.getT1()), tuple.getT2());
+                        return new PartitionKeyRangesAndQueryInfos(null, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), Collections.singletonList(tuple.getT1()), tuple.getT2());
                     } else {
-                        return new QueryInfoAndRanges(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2());
+                        return new PartitionKeyRangesAndQueryInfos(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2());
                     }
                 });
         }
@@ -217,14 +217,14 @@ public class DocumentQueryExecutionContextFactory {
         return Mono.zip(targetRanges, allRanges)
             .map(tuple -> {
                 if (partitionedQueryExecutionInfo.hasHybridSearchQueryInfo()) {
-                    return new QueryInfoAndRanges(null, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), tuple.getT1(), tuple.getT2());
+                    return new PartitionKeyRangesAndQueryInfos(null, partitionedQueryExecutionInfo.getHybridSearchQueryInfo(), tuple.getT1(), tuple.getT2());
                 } else {
-                    return new QueryInfoAndRanges(partitionedQueryExecutionInfo.getQueryInfo(), null, tuple.getT1(), tuple.getT2());
+                    return new PartitionKeyRangesAndQueryInfos(partitionedQueryExecutionInfo.getQueryInfo(), null, tuple.getT1(), tuple.getT2());
                 }
             });
     }
 
-    private static <T> Mono<QueryInfoAndRanges> getTargetRangesFromEmptyQueryPlan(
+    private static <T> Mono<PartitionKeyRangesAndQueryInfos> getTargetRangesFromEmptyQueryPlan(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         DocumentCollection collection,
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext,
@@ -255,7 +255,7 @@ public class DocumentQueryExecutionContextFactory {
             ).map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
 
         return Mono.zip(targetRange, allRanges)
-            .map(tuple -> new QueryInfoAndRanges(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2()));
+            .map(tuple -> new PartitionKeyRangesAndQueryInfos(queryInfo, null, Collections.singletonList(tuple.getT1()), tuple.getT2()));
     }
 
     synchronized private static void tryCacheQueryPlan(
@@ -360,7 +360,7 @@ public class DocumentQueryExecutionContextFactory {
             queryRequestOptionsAccessor.setPartitionKeyDefinition(cosmosQueryRequestOptions, collectionValueHolder.v.getPartitionKey());
             queryRequestOptionsAccessor.setCollectionRid(cosmosQueryRequestOptions, collectionValueHolder.v.getResourceId());
 
-            Mono<QueryInfoAndRanges> queryPlanTask =
+            Mono<PartitionKeyRangesAndQueryInfos> queryPlanTask =
                 getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
                                                   client,
                                                   query,

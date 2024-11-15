@@ -8,13 +8,13 @@ import com.azure.cosmos.implementation.routing.Range;
 
 import java.util.List;
 
-public class QueryInfoAndRanges {
+public class PartitionKeyRangesAndQueryInfos {
     QueryInfo queryInfo;
     HybridSearchQueryInfo hybridSearchQueryInfo;
     List<Range<String>> targetRanges;
     List<Range<String>> allRanges;
 
-    public QueryInfoAndRanges(QueryInfo queryInfo, HybridSearchQueryInfo hybridSearchQueryInfo, List<Range<String>> targetRanges, List<Range<String>> allRanges) {
+    public PartitionKeyRangesAndQueryInfos(QueryInfo queryInfo, HybridSearchQueryInfo hybridSearchQueryInfo, List<Range<String>> targetRanges, List<Range<String>> allRanges) {
         this.queryInfo = queryInfo;
         this.hybridSearchQueryInfo = hybridSearchQueryInfo;
         this.targetRanges = targetRanges;
