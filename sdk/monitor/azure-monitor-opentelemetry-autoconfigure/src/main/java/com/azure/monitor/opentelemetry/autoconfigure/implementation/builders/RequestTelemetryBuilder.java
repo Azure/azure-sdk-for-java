@@ -9,7 +9,7 @@ import reactor.util.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.*;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
 public final class RequestTelemetryBuilder extends AbstractTelemetryBuilder {
 
