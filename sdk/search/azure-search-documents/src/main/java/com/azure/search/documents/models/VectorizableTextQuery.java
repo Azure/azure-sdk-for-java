@@ -30,7 +30,7 @@ public final class VectorizableTextQuery extends VectorQuery {
     /*
      * Can be configured to let a generative model rewrite the query before sending it to be vectorized.
      */
-    private QueryRewritesType queryRewrites;
+    private QueryRewrites queryRewrites;
 
     /**
      * Creates an instance of VectorizableTextQuery class.
@@ -66,7 +66,7 @@ public final class VectorizableTextQuery extends VectorQuery {
      *
      * @return the queryRewrites value.
      */
-    public QueryRewritesType getQueryRewrites() {
+    public QueryRewrites getQueryRewrites() {
         return this.queryRewrites;
     }
 
@@ -77,7 +77,7 @@ public final class VectorizableTextQuery extends VectorQuery {
      * @param queryRewrites the queryRewrites value to set.
      * @return the VectorizableTextQuery object itself.
      */
-    public VectorizableTextQuery setQueryRewrites(QueryRewritesType queryRewrites) {
+    public VectorizableTextQuery setQueryRewrites(QueryRewrites queryRewrites) {
         this.queryRewrites = queryRewrites;
         return this;
     }
@@ -185,7 +185,7 @@ public final class VectorizableTextQuery extends VectorQuery {
             boolean textFound = false;
             String text = null;
             VectorQueryKind kind = VectorQueryKind.TEXT;
-            QueryRewritesType queryRewrites = null;
+            QueryRewrites queryRewrites = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -209,7 +209,7 @@ public final class VectorizableTextQuery extends VectorQuery {
                 } else if ("kind".equals(fieldName)) {
                     kind = VectorQueryKind.fromString(reader.getString());
                 } else if ("queryRewrites".equals(fieldName)) {
-                    queryRewrites = QueryRewritesType.fromString(reader.getString());
+                    queryRewrites = QueryRewrites.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

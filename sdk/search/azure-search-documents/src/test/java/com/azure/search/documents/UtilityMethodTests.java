@@ -9,6 +9,7 @@ import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.QueryRewrites;
 import com.azure.search.documents.models.QueryRewritesType;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -96,6 +97,13 @@ public class UtilityMethodTests {
             // Both QueryRewrites and count provided returns the concatenated string mentioned in docs.
             Arguments.of(new QueryRewrites(QueryRewritesType.GENERATIVE).setCount(5),
                 QueryRewritesType.GENERATIVE + "|count-5"));
+    }
+
+    @Test
+    public void QueryRewritesFromString() {
+        assertEquals(new QueryRewrites(QueryRewritesType.NONE), QueryRewrites.fromString("none"));
+        assertEquals(new QueryRewrites(QueryRewritesType.GENERATIVE), QueryRewrites.fromString("generative"));
+        assertEquals(new QueryRewrites(QueryRewritesType.GENERATIVE).setCount(5), QueryRewrites.fromString("generative|count-5"));
     }
 
 }

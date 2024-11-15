@@ -1433,21 +1433,7 @@ public final class SearchAsyncClient {
         if (queryRewrites == null) {
             return null;
         }
-
-        QueryRewritesType queryRewritesType = queryRewrites.getRewritesType();
-        Integer rewritesCount = queryRewrites.getCount();
-
-        if (queryRewritesType == null) {
-            return null;
-        }
-
-        String queryRewritesTypeString = queryRewritesType.toString();
-
-        if (queryRewritesType == QueryRewritesType.NONE || rewritesCount == null) {
-            return queryRewritesTypeString;
-        }
-
-        return queryRewritesTypeString + '|' + "count-" + rewritesCount;
+        return queryRewrites.toString();
     }
 
     /**

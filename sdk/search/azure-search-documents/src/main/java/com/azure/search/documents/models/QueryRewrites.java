@@ -52,4 +52,49 @@ public class QueryRewrites {
         return this;
     }
 
+    @Override
+    public String toString() {
+        if (rewritesType == null) {
+            return null;
+        }
+
+        String queryRewritesTypeString = rewritesType.toString();
+
+        if (rewritesType == QueryRewritesType.NONE || count == null) {
+            return queryRewritesTypeString;
+        }
+
+        return queryRewritesTypeString + '|' + "count-" + count;
+    }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof QueryRewrites)) {
+            return false;
+        }
+
+        QueryRewrites other = (QueryRewrites) obj;
+        return toString().equals(other.toString());
+    }
+
+    public static QueryRewrites fromString(String str) {
+        if (str == null) {
+            return null;
+        }
+
+        String[] parts = str.split("\\|");
+        QueryRewritesType rewritesType = QueryRewritesType.fromString(parts[0]);
+
+        if (parts.length == 1) {
+            return new QueryRewrites(rewritesType);
+        }
+
+        String[] countParts = parts[1].split("-");
+        return new QueryRewrites(rewritesType).setCount(Integer.parseInt(countParts[1]));
+    }
 }
