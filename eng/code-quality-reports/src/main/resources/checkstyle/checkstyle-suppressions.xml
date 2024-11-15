@@ -132,21 +132,6 @@
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
 
-  <!-- TODO: Synapse access control API does not support PagedResponse and Response. -->
-  <!-- Checkstyle suppressions for naming issues reported in the Synapse artifacts related clients-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]synapse[/\\].*"/>
-  <!-- Suppress the check on synapse code-gen classes -->
-  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*Impl" /> <!-- *Impl infers *ClientImpl -->
-  <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*Impl" /> <!-- *Impl infers *ClientImpl -->
-  <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*Impl" /> <!-- *Impl infers *ClientImpl -->
-  <suppress checks="Indentation" files="com.azure.analytics.synapse.managedprivateendpoints.implementation..*Impl" /> <!-- *Impl infers *ClientImpl -->
-  <suppress checks="Indentation" files="com.azure.analytics.synapse.monitoring.implementation..*Impl" /> <!-- *Impl infers *ClientImpl -->
-
-  <!-- Suppress the long package name in Synapse managed private endpoints -->
-  <suppress checks="PackageName" files="com.azure.analytics.synapse.managedprivateendpoints.*" />
-  <!-- Suppress the long line in endpoint path -->
-  <suppress checks="LineLength" files="com.azure.analytics.synapse.managedprivateendpoints.implementation.ManagedPrivateEndpointsImpl.java"/>
-
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy.java"/>
