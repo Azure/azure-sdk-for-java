@@ -7,7 +7,7 @@ import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.batch.BatchOperationTestBase;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.PhiCategory;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
+        content.setOperation(DeidentificationOperationType.SURROGATE);
 
         DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
@@ -41,7 +41,7 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.TAG);
+        content.setOperation(DeidentificationOperationType.TAG);
 
         DeidentificationResult result = deidentificationClient.deidentifyText(content);
 

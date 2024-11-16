@@ -9,8 +9,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDetails;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.DeidentificationDocumentDetails;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 import reactor.core.publisher.Flux;
@@ -41,13 +41,13 @@ public class AsyncListCompletedFiles {
         sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
             .waitForCompletion()
             .getValue();
-        PagedFlux<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
+        PagedFlux<DeidentificationDocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
 
         reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
             .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items

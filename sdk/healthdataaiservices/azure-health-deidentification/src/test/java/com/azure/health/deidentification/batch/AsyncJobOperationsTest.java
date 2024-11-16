@@ -42,7 +42,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         DeidentificationJob result = deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
@@ -54,7 +54,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         assertNotNull(result.getCreatedAt());
         assertNotNull(result.getLastUpdatedAt());
         assertNull(result.getStartedAt());
-        assertEquals(JobStatus.NOT_STARTED, result.getStatus());
+        assertEquals(DeidentificationJobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
         assertEquals("en-US", result.getCustomizations().getSurrogateLocale());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
@@ -78,7 +78,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
@@ -93,7 +93,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                 assertNotNull(item.getCreatedAt());
                 assertNotNull(item.getLastUpdatedAt());
                 assertNull(item.getStartedAt());
-                assertEquals(JobStatus.NOT_STARTED, item.getStatus());
+                assertEquals(DeidentificationJobStatus.NOT_STARTED, item.getStatus());
                 assertNull(item.getError());
                 assertEquals("en-US", item.getCustomizations().getSurrogateLocale());
                 assertNull(item.getSummary());
@@ -119,13 +119,13 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         PollerFlux<DeidentificationJob, DeidentificationJob> poller
             = setPlaybackPollerFluxPollInterval(deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job));
         DeidentificationJob result = poller.getSyncPoller().waitForCompletion().getValue();
 
-        assertEquals(JobStatus.SUCCEEDED, result.getStatus());
+        assertEquals(DeidentificationJobStatus.SUCCEEDED, result.getStatus());
 
         PagedFlux<BinaryData> reports = deidentificationAsyncClient.listJobDocuments(jobName,
             new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)));
@@ -138,7 +138,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
             .byPage()
             .take(2)).thenConsumeWhile(documentDetailsPagedResponse -> {
                 documentDetailsPagedResponse.getValue().forEach(detailsBinary -> {
-                    DocumentDetails details = detailsBinary.toObject(DocumentDetails.class);
+                    DeidentificationDocumentDetails details = detailsBinary.toObject(DeidentificationDocumentDetails.class);
                     assertFalse(documentIdList.contains(details.getId()));
                     documentIdList.add(details.getId());
                     assertEquals(details.getStatus(), OperationState.SUCCEEDED);
@@ -165,7 +165,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         DeidentificationJob result = deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
@@ -174,7 +174,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob cancelledJob = deidentificationAsyncClient.cancelJob(jobName).block();
 
-        assertEquals(JobStatus.CANCELED, cancelledJob.getStatus());
+        assertEquals(DeidentificationJobStatus.CANCELED, cancelledJob.getStatus());
 
         deidentificationAsyncClient.deleteJob(jobName).block();
 
@@ -199,7 +199,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         assertThrows(HttpResponseException.class,
             () -> deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job)

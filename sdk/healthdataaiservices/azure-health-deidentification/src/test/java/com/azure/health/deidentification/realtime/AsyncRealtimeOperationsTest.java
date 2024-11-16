@@ -5,7 +5,10 @@ package com.azure.health.deidentification.realtime;
 
 import com.azure.health.deidentification.DeidentificationAsyncClient;
 import com.azure.health.deidentification.batch.BatchOperationTestBase;
-import com.azure.health.deidentification.models.*;
+import com.azure.health.deidentification.models.DeidentificationContent;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
+import com.azure.health.deidentification.models.DeidentificationResult;
+import com.azure.health.deidentification.models.PhiCategory;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +27,7 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
+        content.setOperation(DeidentificationOperationType.SURROGATE);
 
         Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();
@@ -41,7 +44,7 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.TAG);
+        content.setOperation(DeidentificationOperationType.TAG);
 
         Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();

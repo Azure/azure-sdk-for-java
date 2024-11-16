@@ -10,10 +10,10 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDetails;
-import com.azure.health.deidentification.models.JobStatus;
+import com.azure.health.deidentification.models.DeidentificationDocumentDetails;
+import com.azure.health.deidentification.models.DeidentificationJobStatus;
 import com.azure.health.deidentification.models.OperationState;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
@@ -58,7 +58,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         assertNotNull(result.getCreatedAt());
         assertNotNull(result.getLastUpdatedAt());
         assertNull(result.getStartedAt());
-        assertEquals(JobStatus.NOT_STARTED, result.getStatus());
+        assertEquals(DeidentificationJobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
         //assertNull(result.getCustomizations());
         assertNull(result.getSummary());
@@ -83,7 +83,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
@@ -100,7 +100,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
                 assertNotNull(currentJob.getCreatedAt());
                 assertNotNull(currentJob.getLastUpdatedAt());
                 assertNull(currentJob.getStartedAt());
-                assertEquals(JobStatus.NOT_STARTED, currentJob.getStatus());
+                assertEquals(DeidentificationJobStatus.NOT_STARTED, currentJob.getStatus());
                 assertNull(currentJob.getError());
                 //assertNull(currentJob.getCustomizations());
                 assertEquals(inputPrefix, currentJob.getSourceLocation().getPrefix());
@@ -129,18 +129,18 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         SyncPoller<DeidentificationJob, DeidentificationJob> poller
             = setPlaybackSyncPollerPollInterval(deidentificationClient.beginDeidentifyDocuments(jobName, job));
         DeidentificationJob result = poller.waitForCompletion().getValue();
-        assertEquals(JobStatus.SUCCEEDED, result.getStatus());
+        assertEquals(DeidentificationJobStatus.SUCCEEDED, result.getStatus());
 
-        PagedIterable<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
-        Iterator<DocumentDetails> iterator = reports.iterator();
+        PagedIterable<DeidentificationDocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
+        Iterator<DeidentificationDocumentDetails> iterator = reports.iterator();
         int results = 0;
         while (iterator.hasNext()) {
-            DocumentDetails currentReport = iterator.next();
+            DeidentificationDocumentDetails currentReport = iterator.next();
             assertEquals(currentReport.getStatus(), OperationState.SUCCEEDED);
             assertTrue(currentReport.getOutput().getLocation().contains(OUTPUT_FOLDER));
             assertEquals(currentReport.getId().length(), 36);
@@ -164,15 +164,15 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
-        assertEquals(JobStatus.NOT_STARTED, result.getStatus());
+        assertEquals(DeidentificationJobStatus.NOT_STARTED, result.getStatus());
 
         DeidentificationJob cancelledJob = deidentificationClient.cancelJob(jobName);
-        assertEquals(JobStatus.CANCELED, cancelledJob.getStatus());
+        assertEquals(DeidentificationJobStatus.CANCELED, cancelledJob.getStatus());
 
         deidentificationClient.deleteJob(jobName);
 
@@ -198,7 +198,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         assertThrows(HttpResponseException.class, () -> deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED));

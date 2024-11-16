@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 
@@ -37,7 +37,7 @@ public class AsyncCreateJob {
         sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
-        job.setOperation(OperationType.SURROGATE);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
