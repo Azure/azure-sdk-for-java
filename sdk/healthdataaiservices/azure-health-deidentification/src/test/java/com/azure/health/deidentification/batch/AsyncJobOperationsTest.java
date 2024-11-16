@@ -138,7 +138,8 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
             .byPage()
             .take(2)).thenConsumeWhile(documentDetailsPagedResponse -> {
                 documentDetailsPagedResponse.getValue().forEach(detailsBinary -> {
-                    DeidentificationDocumentDetails details = detailsBinary.toObject(DeidentificationDocumentDetails.class);
+                    DeidentificationDocumentDetails details
+                        = detailsBinary.toObject(DeidentificationDocumentDetails.class);
                     assertFalse(documentIdList.contains(details.getId()));
                     documentIdList.add(details.getId());
                     assertEquals(details.getStatus(), OperationState.SUCCEEDED);

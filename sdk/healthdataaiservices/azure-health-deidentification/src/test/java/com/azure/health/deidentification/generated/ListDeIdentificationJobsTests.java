@@ -23,8 +23,7 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
     @Disabled
     public void testListDeIdentificationJobsTests() {
         // method invocation
-        PagedIterable<DeidentificationJob> response = deidentificationClient
-            .listJobs();
+        PagedIterable<DeidentificationJob> response = deidentificationClient.listJobs();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

@@ -75,7 +75,7 @@ Calling the realtime endpoint with an input.
 String inputText = "Hello, my name is John Smith.";
 
 DeidentificationContent content = new DeidentificationContent(inputText);
-content.setOperation(OperationType.SURROGATE);
+content.setOperation(DeidentificationOperationType.SURROGATE);
 
 DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
@@ -94,7 +94,7 @@ String inputPrefix = "example_patient_1";
 SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
 
 DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
-job.setOperation(OperationType.SURROGATE);
+job.setOperation(DeidentificationOperationType.SURROGATE);
 
 ```
 ### Process Deidentification Job
@@ -126,9 +126,9 @@ for (DeidentificationJob currentJob : jobs) {
 List the files which are completed by a job.
 
 ```java com.azure.health.deidentification.sync.listcompletedfiles
-PagedIterable<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
+PagedIterable<DeidentificationDocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
 
-for (DocumentDetails currentFile : reports) {
+for (DeidentificationDocumentDetails currentFile : reports) {
     System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getLocation());
     // c45dcd5e-e3ce-4ff2-80b6-a8bbeb47f878 - _output/MyJob-1719954393623/example_patient_1/visit_summary.txt
     // e55a1aa2-8eba-4515-b070-1fd3d005008b - _output/MyJob-1719954393623/example_patient_1/doctor_dictation.txt
