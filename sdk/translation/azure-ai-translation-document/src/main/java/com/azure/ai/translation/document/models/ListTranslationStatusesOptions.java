@@ -224,7 +224,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the translationIds value.
      */
     public List<String> getTranslationIds() {
-        return this.translationIds == null ? Collections.emptyList() : new ArrayList<>(this.translationIds);
+        return this.translationIds == null ? null : new ArrayList<>(this.translationIds);
     }
 
     /**
@@ -244,7 +244,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the statuses value.
      */
     public List<String> getStatuses() {
-        return this.statuses == null ? Collections.emptyList() : new ArrayList<>(this.statuses);
+        return this.statuses == null ? null : new ArrayList<>(this.statuses);
     }
 
     /**
@@ -305,7 +305,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the orderby value.
      */
     public List<String> getOrderby() {
-        return this.orderby == null ? Collections.emptyList() : new ArrayList<>(this.orderby);
+        return this.orderby == null ? null : new ArrayList<>(this.orderby);
     }
 
     /**

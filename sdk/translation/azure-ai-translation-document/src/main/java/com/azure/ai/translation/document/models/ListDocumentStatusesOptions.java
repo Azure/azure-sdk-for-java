@@ -241,7 +241,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the documentIds value.
      */
     public List<String> getDocumentIds() {
-        return this.documentIds == null ? Collections.emptyList() : new ArrayList<>(this.documentIds);
+        return this.documentIds == null ? null : new ArrayList<>(this.documentIds);
     }
 
     /**
@@ -261,7 +261,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the statuses value.
      */
     public List<String> getStatuses() {
-        return this.statuses == null ? Collections.emptyList() : new ArrayList<>(this.statuses);
+        return this.statuses == null ? null : new ArrayList<>(this.statuses);
     }
 
     /**
@@ -322,7 +322,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the orderby value.
      */
     public List<String> getOrderby() {
-        return this.orderby == null ? Collections.emptyList() : new ArrayList<>(this.orderby);
+        return this.orderby == null ? null : new ArrayList<>(this.orderby);
     }
 
     /**

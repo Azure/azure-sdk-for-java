@@ -939,46 +939,45 @@ public final class DocumentTranslationAsyncClient {
     public PagedFlux<DocumentStatusResult>
         listDocumentStatuses(ListDocumentStatusesOptions listDocumentStatusesOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (listDocumentStatusesOptions != null) {
-            if (listDocumentStatusesOptions.getOrderby() != null) {
-                requestOptions.addQueryParam("orderby",
-                    listDocumentStatusesOptions.getOrderby()
-                        .stream()
-                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                        .collect(Collectors.joining(",")),
-                    false);
-            }
-            if (listDocumentStatusesOptions.getSkip() != null) {
-                requestOptions.addQueryParam("skip", String.valueOf(listDocumentStatusesOptions.getSkip()), false);
-            }
-            if (listDocumentStatusesOptions.getTop() != null) {
-                requestOptions.addQueryParam("top", String.valueOf(listDocumentStatusesOptions.getTop()), false);
-            }
-            if (listDocumentStatusesOptions.getCreatedDateTimeUtcStart() != null) {
-                requestOptions.addQueryParam("createdDateTimeUtcStart",
-                    String.valueOf(listDocumentStatusesOptions.getCreatedDateTimeUtcStart()), false);
-            }
-            if (listDocumentStatusesOptions.getCreatedDateTimeUtcEnd() != null) {
-                requestOptions.addQueryParam("createdDateTimeUtcEnd",
-                    String.valueOf(listDocumentStatusesOptions.getCreatedDateTimeUtcEnd()), false);
-            }
-            if (listDocumentStatusesOptions.getDocumentIds() != null) {
-                requestOptions.addQueryParam("ids",
-                    listDocumentStatusesOptions.getDocumentIds()
-                        .stream()
-                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                        .collect(Collectors.joining(",")),
-                    false);
-            }
-            if (listDocumentStatusesOptions.getStatuses() != null) {
-                requestOptions.addQueryParam("statuses",
-                    listDocumentStatusesOptions.getStatuses()
-                        .stream()
-                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                        .collect(Collectors.joining(",")),
-                    false);
-            }
+        if (listDocumentStatusesOptions.getOrderby() != null) {
+            requestOptions.addQueryParam("orderby",
+                listDocumentStatusesOptions.getOrderby()
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
+        if (listDocumentStatusesOptions.getSkip() != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(listDocumentStatusesOptions.getSkip()), false);
+        }
+        if (listDocumentStatusesOptions.getTop() != null) {
+            requestOptions.addQueryParam("top", String.valueOf(listDocumentStatusesOptions.getTop()), false);
+        }
+        if (listDocumentStatusesOptions.getCreatedDateTimeUtcStart() != null) {
+            requestOptions.addQueryParam("createdDateTimeUtcStart",
+                String.valueOf(listDocumentStatusesOptions.getCreatedDateTimeUtcStart()), false);
+        }
+        if (listDocumentStatusesOptions.getCreatedDateTimeUtcEnd() != null) {
+            requestOptions.addQueryParam("createdDateTimeUtcEnd",
+                String.valueOf(listDocumentStatusesOptions.getCreatedDateTimeUtcEnd()), false);
+        }
+        if (listDocumentStatusesOptions.getDocumentIds() != null) {
+            requestOptions.addQueryParam("ids",
+                listDocumentStatusesOptions.getDocumentIds()
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (listDocumentStatusesOptions.getStatuses() != null) {
+            requestOptions.addQueryParam("statuses",
+                listDocumentStatusesOptions.getStatuses()
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+
         PagedFlux<BinaryData> pagedFluxResponse
             = listDocumentStatuses(listDocumentStatusesOptions.getTranslationId(), requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
