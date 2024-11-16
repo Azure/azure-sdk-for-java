@@ -10,12 +10,12 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -94,7 +94,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
     @DataProvider
     public Object[] contextTestConfigs() {
-        return new Object[] {true, false};
+        return new Object[] { true, false };
     }
 
     @DataProvider
@@ -1917,7 +1917,12 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         // Validate a few basic diagnostics properties
         assertThat(diagnosticsContext.getResourceType()).isEqualTo("Document");
         assertThat(diagnosticsContext.getOperationType()).isEqualTo("ReadFeed");
-        assertThat(diagnosticsContext.getAccountName()).isEqualTo(hostName);
+        assertThat(diagnosticsContext.getAccountName())
+            .isEqualTo(
+                ImplementationBridgeHelpers
+                    .CosmosAsyncClientHelper
+                    .getCosmosAsyncClientAccessor()
+                    .getAccountTagValue(this.client));
     }
 
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityChangeFeedProcessorHandler(Map<String, ChangeFeedProcessorItem> receivedDocuments) {
