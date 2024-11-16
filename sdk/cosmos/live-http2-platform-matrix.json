@@ -5,7 +5,7 @@
     "-Pcircuit-breaker-misc-gateway": "CircuitBreakerMiscGateway",
     "Session": "",
     "ubuntu": "",
-    "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }": ""
+    "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }": "http2"
   },
   "include": [
     {

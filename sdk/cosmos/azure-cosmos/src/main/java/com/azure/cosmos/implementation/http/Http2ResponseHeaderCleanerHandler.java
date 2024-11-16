@@ -28,7 +28,7 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
                 // Check for leading whitespace or other prohibited characters
                 if (StringUtils.isNotEmpty(value) && (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
                     // Clean up the header value by trimming or handling as needed
-                    logger.warn("There are extra white space for key {} with value {}", key, value);
+                    logger.trace("There are extra white space for key {} with value {}", key, value);
 
                     // TODO[Http2]: for now just trim the spaces, explore other options for example escape the whitespace
                     headers.set(key, value.toString().trim());
