@@ -131,7 +131,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setLeasePrefix("TEST")
                     .setMaxItemCount(10)
                     .setStartFromBeginning(true)
-                    .setStartTime()
                     .setMaxScaleCount(0) // unlimited
                 )
                 .buildChangeFeedProcessor();

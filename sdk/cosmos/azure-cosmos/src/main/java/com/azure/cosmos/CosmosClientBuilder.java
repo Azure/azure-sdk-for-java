@@ -1270,7 +1270,7 @@ public class CosmosClientBuilder implements
         return this.connectionPolicy;
     }
 
-    private void validateConfig() {
+    void validateConfig() {
         URI uri;
         try {
             uri = new URI(serviceEndpoint);
@@ -1338,7 +1338,10 @@ public class CosmosClientBuilder implements
             return Configs.getEmulatorHost().equals(uri.getHost());
         }
 
-        return "localhost".equals(uri.getHost()) || "::1".equals(uri.getHost()) || "127.0.0.1".equals(uri.getHost());
+        return "localhost".equalsIgnoreCase(uri.getHost())
+            || "[::1]".equals(uri.getHost())
+            || "127.0.0.1".equals(uri.getHost())
+            || "[0:0:0:0:0:0:0:1]".equals(uri.getHost());
     }
 
     private void ifThrowIllegalArgException(boolean value, String error) {

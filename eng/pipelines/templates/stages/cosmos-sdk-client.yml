@@ -157,7 +157,7 @@ extends:
                 SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
                 TimeoutInMinutes: 90
                 TestGoals: 'clean verify'
-                TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.INSECURE_EMULATOR_CONNECTION_ALLOWED=true'
+                TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED=true'
                 PreSteps:
                   - template: /eng/pipelines/templates/stages/cosmos-vnext-emulator-http.yml
       - stage: TestVNextEmulatorHttps
@@ -191,7 +191,7 @@ extends:
                 SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
                 TimeoutInMinutes: 90
                 TestGoals: 'clean verify'
-                TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.EMULATOR_CERTIFICATE_VERIFICATION_DISABLED=true'
+                TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED=true'
                 PreSteps:
                   - template: /eng/pipelines/templates/stages/cosmos-vnext-emulator-https.yml
 
