@@ -13,6 +13,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -239,7 +241,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the documentIds value.
      */
     public List<String> getDocumentIds() {
-        return this.documentIds;
+        return this.documentIds == null ? Collections.emptyList() : new ArrayList<>(this.documentIds);
     }
 
     /**
@@ -249,7 +251,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the ListDocumentStatusesOptions object itself.
      */
     public ListDocumentStatusesOptions setDocumentIds(List<String> documentIds) {
-        this.documentIds = documentIds;
+        this.documentIds = documentIds == null ? null : new ArrayList<>(documentIds);
         return this;
     }
 
@@ -259,7 +261,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the statuses value.
      */
     public List<String> getStatuses() {
-        return this.statuses;
+        return this.statuses == null ? Collections.emptyList() : new ArrayList<>(this.statuses);
     }
 
     /**
@@ -269,7 +271,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the ListDocumentStatusesOptions object itself.
      */
     public ListDocumentStatusesOptions setStatuses(List<String> statuses) {
-        this.statuses = statuses;
+        this.statuses = statuses == null ? null : new ArrayList<>(statuses);
         return this;
     }
 
@@ -320,7 +322,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the orderby value.
      */
     public List<String> getOrderby() {
-        return this.orderby;
+        return this.orderby == null ? Collections.emptyList() : new ArrayList<>(this.orderby);
     }
 
     /**
@@ -331,7 +333,7 @@ public final class ListDocumentStatusesOptions implements JsonSerializable<ListD
      * @return the ListDocumentStatusesOptions object itself.
      */
     public ListDocumentStatusesOptions setOrderby(List<String> orderby) {
-        this.orderby = orderby;
+        this.orderby = orderby == null ? null : new ArrayList<>(orderby);
         return this;
     }
 

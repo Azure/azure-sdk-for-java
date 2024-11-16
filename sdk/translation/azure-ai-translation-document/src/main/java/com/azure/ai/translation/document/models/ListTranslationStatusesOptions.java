@@ -13,6 +13,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -222,7 +224,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the translationIds value.
      */
     public List<String> getTranslationIds() {
-        return this.translationIds;
+        return this.translationIds == null ? Collections.emptyList() : new ArrayList<>(this.translationIds);
     }
 
     /**
@@ -232,7 +234,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the ListTranslationStatusesOptions object itself.
      */
     public ListTranslationStatusesOptions setTranslationIds(List<String> translationIds) {
-        this.translationIds = translationIds;
+        this.translationIds = translationIds == null ? null : new ArrayList<>(translationIds);
         return this;
     }
 
@@ -242,7 +244,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the statuses value.
      */
     public List<String> getStatuses() {
-        return this.statuses;
+        return this.statuses == null ? Collections.emptyList() : new ArrayList<>(this.statuses);
     }
 
     /**
@@ -252,7 +254,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the ListTranslationStatusesOptions object itself.
      */
     public ListTranslationStatusesOptions setStatuses(List<String> statuses) {
-        this.statuses = statuses;
+        this.statuses = statuses == null ? null : new ArrayList<>(statuses);
         return this;
     }
 
@@ -303,7 +305,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the orderby value.
      */
     public List<String> getOrderby() {
-        return this.orderby;
+        return this.orderby == null ? Collections.emptyList() : new ArrayList<>(this.orderby);
     }
 
     /**
@@ -314,7 +316,7 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
      * @return the ListTranslationStatusesOptions object itself.
      */
     public ListTranslationStatusesOptions setOrderby(List<String> orderby) {
-        this.orderby = orderby;
+        this.orderby = orderby == null ? null : new ArrayList<>(orderby);
         return this;
     }
 
