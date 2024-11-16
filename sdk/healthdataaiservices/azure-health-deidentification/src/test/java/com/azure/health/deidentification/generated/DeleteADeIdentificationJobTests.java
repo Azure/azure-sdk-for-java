@@ -13,6 +13,6 @@ public final class DeleteADeIdentificationJobTests extends DeidentificationClien
     @Disabled
     public void testDeleteADeIdentificationJobTests() {
         // method invocation
-        deidentificationClient.deleteJob("documents_smith_1");
+        deidentificationClient.deleteJob("job_smith_documents_1");
     }
 }

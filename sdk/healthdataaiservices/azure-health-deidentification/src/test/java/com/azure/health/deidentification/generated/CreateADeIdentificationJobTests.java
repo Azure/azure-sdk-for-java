@@ -11,7 +11,6 @@ import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.JobCustomizationOptions;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -23,14 +22,12 @@ public final class CreateADeIdentificationJobTests extends DeidentificationClien
     public void testCreateADeIdentificationJobTests() {
         // method invocation
         SyncPoller<DeidentificationJob, DeidentificationJob> response
-            = setPlaybackSyncPollerPollInterval(deidentificationClient.beginDeidentifyDocuments("documents_smith_1",
+            = setPlaybackSyncPollerPollInterval(deidentificationClient.beginDeidentifyDocuments("job_smith_documents_1",
                 new DeidentificationJob(
-                    new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
-                        .setExtensions(Arrays.asList("*")),
-                    new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
+                    new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "documents/"),
+                    new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "_output/")
                         .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
-                            .setCustomizations(new JobCustomizationOptions().setRedactionFormat("[{type}]")
-                                .setSurrogateLocale("en-US"))));
+                            .setCustomizations(new JobCustomizationOptions().setRedactionFormat("[{type}]"))));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

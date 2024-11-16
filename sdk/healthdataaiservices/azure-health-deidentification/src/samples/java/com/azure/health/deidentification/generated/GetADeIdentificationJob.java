@@ -17,7 +17,7 @@ public class GetADeIdentificationJob {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.getjob.getadeidentificationjob
-        DeidentificationJob response = deidentificationClient.getJob("documents_smith_1");
+        DeidentificationJob response = deidentificationClient.getJob("job_smith_documents_1");
         // END:com.azure.health.deidentification.generated.getjob.getadeidentificationjob
     }
 }

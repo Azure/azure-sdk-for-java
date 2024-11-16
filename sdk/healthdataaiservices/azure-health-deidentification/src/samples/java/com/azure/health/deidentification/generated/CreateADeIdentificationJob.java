@@ -14,7 +14,6 @@ import com.azure.health.deidentification.models.JobCustomizationOptions;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.util.Arrays;
 
 public class CreateADeIdentificationJob {
     public static void main(String[] args) {
@@ -23,15 +22,13 @@ public class CreateADeIdentificationJob {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
-        SyncPoller<DeidentificationJob, DeidentificationJob> response = deidentificationClient.beginDeidentifyDocuments(
-            "documents_smith_1",
-            new DeidentificationJob(
-                new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
-                    .setExtensions(Arrays.asList("*")),
-                new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
-                    .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
-                        .setCustomizations(
-                            new JobCustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
+        SyncPoller<DeidentificationJob, DeidentificationJob> response
+            = deidentificationClient.beginDeidentifyDocuments("job_smith_documents_1",
+                new DeidentificationJob(
+                    new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "documents/"),
+                    new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "_output/")
+                        .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
+                            .setCustomizations(new JobCustomizationOptions().setRedactionFormat("[{type}]")));
         // END:com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
     }
 }

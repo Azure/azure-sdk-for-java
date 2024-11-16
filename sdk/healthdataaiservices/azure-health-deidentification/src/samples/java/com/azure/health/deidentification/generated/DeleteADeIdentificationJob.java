@@ -16,7 +16,7 @@ public class DeleteADeIdentificationJob {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.deletejob.deleteadeidentificationjob
-        deidentificationClient.deleteJob("documents_smith_1");
+        deidentificationClient.deleteJob("job_smith_documents_1");
         // END:com.azure.health.deidentification.generated.deletejob.deleteadeidentificationjob
     }
 }

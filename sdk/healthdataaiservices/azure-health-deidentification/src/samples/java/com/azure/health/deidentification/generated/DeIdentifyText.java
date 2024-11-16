@@ -23,8 +23,7 @@ public class DeIdentifyText {
         DeidentificationResult response
             = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
                 .setOperation(DeidentificationOperationType.REDACT)
-                .setCustomizations(
-                    new CustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
+                .setCustomizations(new CustomizationOptions().setRedactionFormat("[{type}]")));
         // END:com.azure.health.deidentification.generated.deidentifytext.deidentifytext
     }
 }
