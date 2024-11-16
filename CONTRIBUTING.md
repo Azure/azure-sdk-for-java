@@ -1,4 +1,10 @@
-Azure SDK for Java Contributing Guide
+[//]: # ({x-version-update-start;MyGroup:MyArtifact;dependency})
+```xml
+  <groupId>MyGroup</groupId>
+  <artifactId>MyArtifact</artifactId>
+  <version>1.0.0-beta.1</version>
+```
+[//]: # ({x-version-update-end})Azure SDK for Java Contributing Guide
 -------------------------------------
 
 Thank you for your interest in contributing to Azure SDK for Java.
