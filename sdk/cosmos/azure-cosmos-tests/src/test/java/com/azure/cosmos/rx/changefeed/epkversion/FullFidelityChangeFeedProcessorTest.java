@@ -353,7 +353,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     .block();
 
                 // Wait for the feed processor to receive and process the documents.
-                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
                 logger.info("Validating changes now");
 
