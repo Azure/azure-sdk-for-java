@@ -41,7 +41,10 @@
     </javaModulesSurefireArgLine>
 
     <jacoco.min.branchcoverage>0.27</jacoco.min.branchcoverage>
-    <doclintMissingInclusion>-</doclintMissingInclusion>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

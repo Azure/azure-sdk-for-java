@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.shared.TestConfigurationSource;
+import io.clientcore.core.util.SharedExecutorService;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.core.util.configuration.ConfigurationBuilder;
 import io.clientcore.core.util.configuration.ConfigurationSource;
@@ -37,9 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -345,13 +345,10 @@ public class OkHttpHttpClientBuilderTests {
          * result in the request we are about to send to be cancelled since the server will wait 5 seconds before
          * returning a response.
          */
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                assertEquals(1, dispatcher.runningCallsCount());
-                dispatcher.cancelAll();
-            }
-        }, 1000);
+        SharedExecutorService.getInstance().schedule(() -> {
+            assertEquals(1, dispatcher.runningCallsCount());
+            dispatcher.cancelAll();
+        }, 1000, TimeUnit.MILLISECONDS);
 
         assertThrows(IOException.class, () -> client.send(new HttpRequest(HttpMethod.GET, dispatcherUri)).close());
     }

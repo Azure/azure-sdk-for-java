@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -22,7 +23,7 @@ package io.clientcore.core.json.implementation.jackson.core;
  * schema details; rather, specific parser and generator implementations need
  * to cast to schema implementations they use. This marker interface is mostly
  * used for tagging "some kind of schema" -- instead of passing opaque
- * {@link java.lang.Object} -- for documentation purposes.
+ * {@link Object} -- for documentation purposes.
  */
 public interface FormatSchema {
     /**

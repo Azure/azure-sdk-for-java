@@ -398,13 +398,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
-  <!-- Incorrect flagging, null is checked in signal.hasValue() -->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer"/>
-    <Method name="~(.*)\$reportSyncReceiveSpan\$(.*)"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
   <!-- Jackson property setter method is private -->
   <Match>
     <Or>
@@ -460,16 +453,8 @@
     <Or>
       <Class
         name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
-      <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
-      <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- This is a false positive. Exception is thrown and caught to map to a different type of exception-->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Names defined in the service. -->
@@ -919,20 +904,6 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
     <Field name="~(cosmosError|status)"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- FormRecognizerException fields re serializable -->
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
-    <Field name="errorInformationList"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- TextAnalyticsException fields re serializable -->
-  <Match>
-    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException"/>
-    <Field name="errors"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -1676,13 +1647,6 @@
     <Method name="encryptAndSerializeProperty"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
-  <!-- Serializing a null value should return null to allow client to handle null cases
-    consistently instead of injecting null payload behavior from the payload. -->
-  <Match>
-    <Class name="com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer"/>
-    <Method name="serialize"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-  </Match>
 
   <!-- Exclude spotbug from non-shipping modules -->
   <Match>
@@ -1829,27 +1793,12 @@
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
-  <!-- EventGrid swagger naming -->
-  <Match>
-    <Or>
-      <Class name="com.azure.messaging.eventgrid.implementation.models.CloudEvent"/>
-      <Class name="com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData"/>
-    </Or>
-  </Match>
-  <Bug pattern="NM_CONFUSING"/>
-
   <!--  This method is made synchronous by blocking and waiting for a result. They do not return
   anything, so it can be ignored. -->
   <Match>
     <Class name="com.microsoft.azure.eventgrid.implementation.EventGridClientImpl"/>
     <Method name="publishEvents"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.metricsadvisor.implementation.models.InfluxDBParameter"/>
-    <Method name="getUserName"/>
-    <Bug pattern="NM_CONFUSING"/>
   </Match>
 
   <!-- False positives -->
@@ -1868,14 +1817,6 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- This is an internal type used to hold the request body which will not be mutated outside this class -->
-  <Match>
-    <Or>
-      <Class name="com.azure.monitor.ingestion.implementation.LogsIngestionRequest"/>
-    </Or>
-    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
-  </Match>
-
   <!-- Machine generated classes for MAA service generate spotBugs errors -->
   <Match>
     <Or>
@@ -1892,18 +1833,6 @@
   <Match>
     <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- Generated implementation of Personalizer is using an inline class -->
-  <Match>
-    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- Some generated base clients in Purview Catalog do not send api-version -->
-  <Match>
-    <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
@@ -1965,13 +1894,6 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
-  <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
-    <Method name="computeHash"/>
-    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
-  </Match>
-
   <!-- Non Shipped code -->
   <Match>
     <Package name="~com\.azure\.(jedis|lettuce|redisson).*"/>
@@ -2004,20 +1926,6 @@
     <Class name="com.azure.sdk.build.tool.util.logging.MojoLogger"/>
     <Field name="instance"/>
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
-  </Match>
-
-   <!-- Returning a new copy of the object is not necessary -->
-  <Match>
-    <Class name="~com\.azure\.ai\.openai\.models\.(AudioTranscriptionOptions|AudioTranslationOptions)"/>
-    <Method name="&lt;init&gt;"/>
-    <Bug pattern="EI_EXPOSE_REP2"/>
-  </Match>
-
-  <!-- False positive, it throws an IllegalArgumentException if non-exist method parameter type passed.-->
-  <Match>
-    <Class name="com.azure.ai.openai.implementation.MultipartDataHelper"/>
-    <Method name="serializeRequest"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
   <!-- Comment to force CI to run Spotbugs against all SDKs -->

@@ -4,6 +4,7 @@
 package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
@@ -70,6 +71,13 @@ public final class ByteBufferBinaryData extends BinaryData {
     public void writeTo(OutputStream outputStream) throws IOException {
         ByteBuffer buffer = toByteBuffer();
         ImplUtils.writeByteBufferToStream(buffer, outputStream);
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
     }
 
     @Override

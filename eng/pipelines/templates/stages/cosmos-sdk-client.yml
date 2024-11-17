@@ -11,9 +11,6 @@ parameters:
 - name: SDKType
   type: string
   default: not-specified
-- name: TargetDocRepoName
-  type: string
-  default: azure-docs-sdk-java
 - name: MatrixFilters
   type: object
   default: []
@@ -215,5 +212,4 @@ extends:
                   - ${{ artifact }}
             TestPipeline: false
             ArtifactName: packages
-            TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 

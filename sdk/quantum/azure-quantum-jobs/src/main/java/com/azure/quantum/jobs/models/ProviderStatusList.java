@@ -29,6 +29,12 @@ public final class ProviderStatusList implements JsonSerializable<ProviderStatus
     private String nextLink;
 
     /**
+     * Creates an instance of {@link ProviderStatusList}.
+     */
+    public ProviderStatusList() {
+    }
+
+    /**
      * Get the value property: The value property.
      *
      * @return the value value.
