@@ -105,6 +105,13 @@ public class ClientTelemetry {
     private static final String USER_AGENT = Utils.getUserAgent();
     private final int clientTelemetrySchedulingSec;
 
+    //IMDS Constants
+    public static final String IMDS_AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
+    public static final Duration IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
+    public static final Duration IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    public static final Duration IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(5);
+    public static final int IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE = 5;
+
     private final IAuthorizationTokenProvider tokenProvider;
     private final String globalDatabaseAccountName;
 
@@ -237,9 +244,10 @@ public class ClientTelemetry {
     private HttpClient getHttpClientForIMDS() {
         // Proxy is not supported for azure instance metadata service
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
-                .withMaxIdleConnectionTimeout(IMDSConfig.DEFAULT_IDLE_CONNECTION_TIMEOUT)
-                .withPoolSize(IMDSConfig.DEFAULT_MAX_CONNECTION_POOL_SIZE)
-                .withNetworkRequestTimeout(IMDSConfig.DEFAULT_NETWORK_REQUEST_TIMEOUT);
+                .withMaxIdleConnectionTimeout(IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT)
+                .withPoolSize(IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE)
+                .withNetworkRequestTimeout(IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT)
+                .withConnectionAcquireTimeout(IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT);
 
         return HttpClient.createFixed(httpClientConfig);
     }
@@ -305,8 +313,7 @@ public class ClientTelemetry {
                         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, targetEndpoint,
                             targetEndpoint.getPort(), httpHeaders)
                             .withBody(tempBuffer);
-                        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
-                            Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
+                        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
                         return httpResponseMono.flatMap(response -> {
                             if (response.statusCode() != HttpConstants.StatusCodes.NO_CONTENT) {
                                 logger.error("Client telemetry request did not succeeded, status code {}, request body {}",
@@ -350,6 +357,10 @@ public class ClientTelemetry {
     }
 
     private Mono<?> loadAzureVmMetaData() {
+        if (Configs.shouldDisableIMDSAccess()) {
+            logger.info("Access to IMDS to get Azure VM metadata is disabled");
+            return Mono.empty();
+        }
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 
         if (metadataSnapshot != null) {
@@ -359,7 +370,7 @@ public class ClientTelemetry {
 
         URI targetEndpoint = null;
         try {
-            targetEndpoint = new URI(IMDSConfig.AZURE_VM_METADATA);
+            targetEndpoint = new URI(IMDS_AZURE_VM_METADATA);
         } catch (URISyntaxException ex) {
             logger.info("Unable to parse azure vm metadata url");
             return Mono.empty();
@@ -370,9 +381,12 @@ public class ClientTelemetry {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
         Mono<HttpResponse> httpResponseMono = this.metadataHttpClient.send(httpRequest);
-        Mono<?> mono = httpResponseMono
-            .flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
-                AzureVMMetadata.class)).doOnSuccess(metadata -> {
+
+        return httpResponseMono
+            .flatMap(HttpResponse::bodyAsString)
+            .map(metadataJson -> parse(metadataJson,
+                AzureVMMetadata.class))
+            .doOnSuccess(metadata -> {
                 azureVmMetaDataSingleton.compareAndSet(null, metadata);
                 this.populateAzureVmMetaData(metadata);
             }).onErrorResume(throwable -> {
@@ -380,8 +394,6 @@ public class ClientTelemetry {
                 logger.debug("Unable to get azure vm metadata", throwable);
                 return Mono.empty();
             });
-
-        return mono;
     }
 
     private static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {
@@ -451,12 +463,5 @@ public class ClientTelemetry {
         percentile.put(PERCENTILE_99, copyHistogram.getValueAtPercentile(PERCENTILE_99));
         percentile.put(PERCENTILE_999, copyHistogram.getValueAtPercentile(PERCENTILE_999));
         payload.getMetricInfo().setPercentiles(percentile);
-    }
-
-    static class IMDSConfig {
-        private static String AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
-        private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
-        private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-        private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
     }
 }
