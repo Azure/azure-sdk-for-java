@@ -11,16 +11,16 @@ import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
-import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceResourceDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
-import com.azure.ai.documentintelligence.models.OperationDetails;
-import com.azure.ai.documentintelligence.models.ResourceDetails;
+import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -442,8 +442,8 @@ public final class DocumentIntelligenceAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getResourceInfoWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getResourceInfoWithResponse(requestOptions);
+    public Response<BinaryData> getResourceDetailsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getResourceDetailsWithResponse(requestOptions);
     }
 
     /**
@@ -535,7 +535,8 @@ public final class DocumentIntelligenceAdministrationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items as paginated response with
+     * {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -845,11 +846,11 @@ public final class DocumentIntelligenceAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CopyAuthorization authorizeModelCopy(AuthorizeCopyRequest authorizeCopyRequest) {
+    public ModelCopyAuthorization authorizeModelCopy(AuthorizeCopyRequest authorizeCopyRequest) {
         // Generated convenience method for authorizeModelCopyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return authorizeModelCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions).getValue()
-            .toObject(CopyAuthorization.class);
+            .toObject(ModelCopyAuthorization.class);
     }
 
     /**
@@ -868,7 +869,7 @@ public final class DocumentIntelligenceAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> beginCopyModelTo(String modelId,
-        CopyAuthorization copyToRequest) {
+        ModelCopyAuthorization copyToRequest) {
         // Generated convenience method for beginCopyModelToWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCopyModelToWithModel(modelId, BinaryData.fromObject(copyToRequest), requestOptions);
@@ -944,10 +945,11 @@ public final class DocumentIntelligenceAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceDetails getResourceInfo() {
-        // Generated convenience method for getResourceInfoWithResponse
+    public DocumentIntelligenceResourceDetails getResourceDetails() {
+        // Generated convenience method for getResourceDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getResourceInfoWithResponse(requestOptions).getValue().toObject(ResourceDetails.class);
+        return getResourceDetailsWithResponse(requestOptions).getValue()
+            .toObject(DocumentIntelligenceResourceDetails.class);
     }
 
     /**
@@ -964,10 +966,11 @@ public final class DocumentIntelligenceAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationDetails getOperation(String operationId) {
+    public DocumentIntelligenceOperationDetails getOperation(String operationId) {
         // Generated convenience method for getOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getOperationWithResponse(operationId, requestOptions).getValue().toObject(OperationDetails.class);
+        return getOperationWithResponse(operationId, requestOptions).getValue()
+            .toObject(DocumentIntelligenceOperationDetails.class);
     }
 
     /**
@@ -978,15 +981,16 @@ public final class DocumentIntelligenceAdministrationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OperationDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items as paginated response with
+     * {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationDetails> listOperations() {
+    public PagedIterable<DocumentIntelligenceOperationDetails> listOperations() {
         // Generated convenience method for listOperations
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listOperations(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(OperationDetails.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentIntelligenceOperationDetails.class));
     }
 
     /**

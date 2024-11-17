@@ -74,7 +74,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * List of warnings encountered while building the classifier.
      */
     @Generated
-    private List<Warning> warnings;
+    private List<DocumentIntelligenceWarning> warnings;
 
     /**
      * Creates an instance of DocumentClassifierDetails class.
@@ -177,7 +177,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * @return the warnings value.
      */
     @Generated
-    public List<Warning> getWarnings() {
+    public List<DocumentIntelligenceWarning> getWarnings() {
         return this.warnings;
     }
 
@@ -222,7 +222,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
             OffsetDateTime expirationDateTime = null;
             OffsetDateTime modifiedDateTime = null;
             String baseClassifierId = null;
-            List<Warning> warnings = null;
+            List<DocumentIntelligenceWarning> warnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -247,7 +247,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
                 } else if ("baseClassifierId".equals(fieldName)) {
                     baseClassifierId = reader.getString();
                 } else if ("warnings".equals(fieldName)) {
-                    warnings = reader.readArray(reader1 -> Warning.fromJson(reader1));
+                    warnings = reader.readArray(reader1 -> DocumentIntelligenceWarning.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

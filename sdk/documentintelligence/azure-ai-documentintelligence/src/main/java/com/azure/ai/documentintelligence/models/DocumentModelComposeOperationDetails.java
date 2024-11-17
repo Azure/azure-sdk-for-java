@@ -19,7 +19,7 @@ import java.util.Map;
  * Get Operation response object.
  */
 @Immutable
-public final class DocumentModelComposeOperationDetails extends OperationDetails {
+public final class DocumentModelComposeOperationDetails extends DocumentIntelligenceOperationDetails {
     /*
      * Type of operation.
      */
@@ -32,6 +32,30 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     @Generated
     private DocumentModelDetails result;
 
+    /*
+     * Encountered error.
+     */
+    @Generated
+    private DocumentIntelligenceError error;
+
+    /*
+     * List of key-value tag attributes associated with the document model.
+     */
+    @Generated
+    private Map<String, String> tags;
+
+    /*
+     * API version used to create this operation.
+     */
+    @Generated
+    private String apiVersion;
+
+    /*
+     * Operation progress (0-100).
+     */
+    @Generated
+    private Integer percentCompleted;
+
     /**
      * Creates an instance of DocumentModelComposeOperationDetails class.
      * 
@@ -41,8 +65,8 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
      * @param resourceLocation the resourceLocation value to set.
      */
     @Generated
-    private DocumentModelComposeOperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
-        OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
+    private DocumentModelComposeOperationDetails(DocumentIntelligenceOperationStatus status,
+        OffsetDateTime createdDateTime, OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
     }
 
@@ -65,6 +89,50 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     @Generated
     public DocumentModelDetails getResult() {
         return this.result;
+    }
+
+    /**
+     * Get the error property: Encountered error.
+     * 
+     * @return the error value.
+     */
+    @Generated
+    @Override
+    public DocumentIntelligenceError getError() {
+        return this.error;
+    }
+
+    /**
+     * Get the tags property: List of key-value tag attributes associated with the document model.
+     * 
+     * @return the tags value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the apiVersion property: API version used to create this operation.
+     * 
+     * @return the apiVersion value.
+     */
+    @Generated
+    @Override
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Get the percentCompleted property: Operation progress (0-100).
+     * 
+     * @return the percentCompleted value.
+     */
+    @Generated
+    @Override
+    public Integer getPercentCompleted() {
+        return this.percentCompleted;
     }
 
     /**
@@ -104,14 +172,14 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     public static DocumentModelComposeOperationDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String operationId = null;
-            OperationStatus status = null;
+            DocumentIntelligenceOperationStatus status = null;
             OffsetDateTime createdDateTime = null;
             OffsetDateTime lastUpdatedDateTime = null;
             String resourceLocation = null;
             Integer percentCompleted = null;
             String apiVersion = null;
             Map<String, String> tags = null;
-            Error error = null;
+            DocumentIntelligenceError error = null;
             OperationKind kind = OperationKind.DOCUMENT_MODEL_COMPOSE;
             DocumentModelDetails result = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -121,7 +189,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
                 if ("operationId".equals(fieldName)) {
                     operationId = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = OperationStatus.fromString(reader.getString());
+                    status = DocumentIntelligenceOperationStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
                     createdDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -137,7 +205,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("error".equals(fieldName)) {
-                    error = Error.fromJson(reader);
+                    error = DocumentIntelligenceError.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     kind = OperationKind.fromString(reader.getString());
                 } else if ("result".equals(fieldName)) {
@@ -150,10 +218,10 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
                 = new DocumentModelComposeOperationDetails(status, createdDateTime, lastUpdatedDateTime,
                     resourceLocation);
             deserializedDocumentModelComposeOperationDetails.setOperationId(operationId);
-            deserializedDocumentModelComposeOperationDetails.setPercentCompleted(percentCompleted);
-            deserializedDocumentModelComposeOperationDetails.setApiVersion(apiVersion);
-            deserializedDocumentModelComposeOperationDetails.setTags(tags);
-            deserializedDocumentModelComposeOperationDetails.setError(error);
+            deserializedDocumentModelComposeOperationDetails.percentCompleted = percentCompleted;
+            deserializedDocumentModelComposeOperationDetails.apiVersion = apiVersion;
+            deserializedDocumentModelComposeOperationDetails.tags = tags;
+            deserializedDocumentModelComposeOperationDetails.error = error;
             deserializedDocumentModelComposeOperationDetails.kind = kind;
             deserializedDocumentModelComposeOperationDetails.result = result;
 

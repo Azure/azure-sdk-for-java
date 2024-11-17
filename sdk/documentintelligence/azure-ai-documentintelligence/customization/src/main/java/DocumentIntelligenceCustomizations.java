@@ -19,32 +19,32 @@ public class DocumentIntelligenceCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        customizeAnalyzeResultOperation(customization, logger);
-        customizeAnalyzeBatchResultOperation(customization, logger);
+        customizeAnalyzeOperation(customization, logger);
+        customizeAnalyzeBatchOperation(customization, logger);
         customizePollingStrategy(customization, logger);
         customizePollingUtils(customization, logger);
     }
 
-    private void customizeAnalyzeResultOperation(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing the AnalyzeResultOperation class");
+    private void customizeAnalyzeOperation(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the AnalyzeOperation class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
-        packageCustomization.getClass("AnalyzeResultOperation")
+        packageCustomization.getClass("AnalyzeOperation")
             .removeAnnotation("Immutable")
             .customizeAst(ast ->
-                ast.getClassByName("AnalyzeResultOperation").ifPresent(clazz -> {
+                ast.getClassByName("AnalyzeOperation").ifPresent(clazz -> {
                     addOperationIdField(clazz);
                     addOperationIdGetter(clazz);
                     addOperationIdSetter(clazz);
                 }));
     }
 
-    private void customizeAnalyzeBatchResultOperation(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing the AnalyzeResultOperation class");
+    private void customizeAnalyzeBatchOperation(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the AnalyzeBatchOperation class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
-        packageCustomization.getClass("AnalyzeBatchResultOperation")
+        packageCustomization.getClass("AnalyzeBatchOperation")
             .removeAnnotation("Immutable")
             .customizeAst(ast ->
-                ast.getClassByName("AnalyzeBatchResultOperation").ifPresent(clazz -> {
+                ast.getClassByName("AnalyzeBatchOperation").ifPresent(clazz -> {
                     addOperationIdField(clazz);
                     addOperationIdGetter(clazz);
                     addOperationIdSetter(clazz);

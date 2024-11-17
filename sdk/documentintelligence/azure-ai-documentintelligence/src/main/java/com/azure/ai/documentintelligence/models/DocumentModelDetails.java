@@ -105,7 +105,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * List of warnings encountered while building the model.
      */
     @Generated
-    private List<Warning> warnings;
+    private List<DocumentIntelligenceWarning> warnings;
 
     /*
      * Number of V100-equivalent GPU hours consumed for model training.
@@ -258,7 +258,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * @return the warnings value.
      */
     @Generated
-    public List<Warning> getWarnings() {
+    public List<DocumentIntelligenceWarning> getWarnings() {
         return this.warnings;
     }
 
@@ -337,7 +337,8 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
                         = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
                     deserializedDocumentModelDetails.docTypes = docTypes;
                 } else if ("warnings".equals(fieldName)) {
-                    List<Warning> warnings = reader.readArray(reader1 -> Warning.fromJson(reader1));
+                    List<DocumentIntelligenceWarning> warnings
+                        = reader.readArray(reader1 -> DocumentIntelligenceWarning.fromJson(reader1));
                     deserializedDocumentModelDetails.warnings = warnings;
                 } else if ("trainingHours".equals(fieldName)) {
                     deserializedDocumentModelDetails.trainingHours = reader.getNullable(JsonReader::getDouble);

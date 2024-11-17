@@ -6,8 +6,8 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.util.polling.SyncPoller;
@@ -20,7 +20,7 @@ public class ClassifyDocumentFromUrl {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.classifydocument.classifydocumentfromurl
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> response = documentIntelligenceClient.beginClassifyDocument(
+        SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginClassifyDocument(
             "classifierId", new ClassifyDocumentRequest().setUrlSource("http://host.com/doc.pdf"),
             StringIndexType.TEXT_ELEMENTS, null, null);
         // END:com.azure.ai.documentintelligence.generated.classifydocument.classifydocumentfromurl

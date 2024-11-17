@@ -6,9 +6,9 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
+import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
@@ -22,7 +22,7 @@ public class CopyDocumentModelTo {
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.copymodelto.copydocumentmodelto
         SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> response
-            = documentIntelligenceAdministrationClient.beginCopyModelTo("sourceModel", new CopyAuthorization(
+            = documentIntelligenceAdministrationClient.beginCopyModelTo("sourceModel", new ModelCopyAuthorization(
                 "/subscriptions/targetSub/resourceGroups/targetRG/providers/Microsoft.CognitiveServices/accounts/targetService",
                 "targetResourceRegion", "targetModel",
                 "https://targetEndpoint.cognitiveservices.azure.com/documentintelligence/documentModels/targetModel",

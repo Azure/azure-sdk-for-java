@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.ResourceDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceResourceDetails;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetResourceDetails {
@@ -16,8 +16,8 @@ public class GetResourceDetails {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.getresourceinfo.getresourcedetails
-        ResourceDetails response = documentIntelligenceAdministrationClient.getResourceInfo();
-        // END:com.azure.ai.documentintelligence.generated.getresourceinfo.getresourcedetails
+        // BEGIN:com.azure.ai.documentintelligence.generated.getresourcedetails.getresourcedetails
+        DocumentIntelligenceResourceDetails response = documentIntelligenceAdministrationClient.getResourceDetails();
+        // END:com.azure.ai.documentintelligence.generated.getresourcedetails.getresourcedetails
     }
 }

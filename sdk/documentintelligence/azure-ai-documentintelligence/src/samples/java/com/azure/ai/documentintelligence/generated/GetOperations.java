@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.OperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -18,7 +18,8 @@ public class GetOperations {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.listoperations.getoperations
-        PagedIterable<OperationDetails> response = documentIntelligenceAdministrationClient.listOperations();
+        PagedIterable<DocumentIntelligenceOperationDetails> response
+            = documentIntelligenceAdministrationClient.listOperations();
         // END:com.azure.ai.documentintelligence.generated.listoperations.getoperations
     }
 }

@@ -7,8 +7,8 @@ package com.azure.ai.documentintelligence.generated;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -20,7 +20,7 @@ public class AnalyzeDocumentFromUrl {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfromurl
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> response = documentIntelligenceClient.beginAnalyzeDocument(
+        SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginAnalyzeDocument(
             "customModel", "1-2,4", "en-US", StringIndexType.TEXT_ELEMENTS, null, null, null, null,
             new AnalyzeDocumentRequest().setUrlSource("http://host.com/doc.pdf"));
         // END:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfromurl

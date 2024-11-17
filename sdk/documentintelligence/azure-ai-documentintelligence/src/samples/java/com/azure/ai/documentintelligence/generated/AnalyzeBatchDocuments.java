@@ -7,12 +7,10 @@ package com.azure.ai.documentintelligence.generated;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.StringIndexType;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -23,7 +21,7 @@ public class AnalyzeBatchDocuments {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.analyzebatchdocuments.analyzebatchdocuments
-        SyncPoller<AnalyzeBatchResultOperation, AnalyzeBatchResult> response
+        SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> response
             = documentIntelligenceClient.beginAnalyzeBatchDocuments("customModel", "1-5", "en-US",
                 StringIndexType.TEXT_ELEMENTS, null, null, null, null,
                 new AnalyzeBatchDocumentsRequest(
@@ -34,16 +32,5 @@ public class AnalyzeBatchDocuments {
                         .setResultPrefix("trainingDocsResult/")
                         .setOverwriteExisting(true));
         // END:com.azure.ai.documentintelligence.generated.analyzebatchdocuments.analyzebatchdocuments
-
-        // Users can store the operation Id
-        String resultId = null;
-        PollResponse<AnalyzeBatchResultOperation> pollResponse = response.poll();
-        while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            resultId = pollResponse.getValue().getOperationId();
-            pollResponse = response.poll();
-        }
-
-        // Get the final result from the new API
-        AnalyzeBatchResultOperation analyzeBatchResult = documentIntelligenceClient.getAnalyzeBatchResult("prebuilt-invoice", resultId);
     }
 }

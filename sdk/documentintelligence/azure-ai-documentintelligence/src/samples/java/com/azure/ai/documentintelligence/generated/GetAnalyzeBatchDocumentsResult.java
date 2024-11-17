@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetAnalyzeBatchDocumentsResult {
@@ -16,7 +16,7 @@ public class GetAnalyzeBatchDocumentsResult {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.getanalyzebatchresult.getanalyzebatchdocumentsresult
-        AnalyzeBatchResultOperation response = documentIntelligenceClient.getAnalyzeBatchResult("prebuilt-invoice",
+        AnalyzeBatchOperation response = documentIntelligenceClient.getAnalyzeBatchResult("prebuilt-invoice",
             "3b31320d-8bab-4f88-b19c-2322a7f11034");
         // END:com.azure.ai.documentintelligence.generated.getanalyzebatchresult.getanalyzebatchdocumentsresult
     }

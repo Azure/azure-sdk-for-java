@@ -6,15 +6,15 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
-import com.azure.ai.documentintelligence.models.ContentFormat;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
+import com.azure.ai.documentintelligence.models.DocumentContentFormat;
 import com.azure.ai.documentintelligence.models.SplitMode;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.annotation.Generated;
@@ -63,8 +63,7 @@ public final class DocumentIntelligenceAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -193,8 +192,7 @@ public final class DocumentIntelligenceAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -260,6 +258,7 @@ public final class DocumentIntelligenceAsyncClient {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -300,7 +299,7 @@ public final class DocumentIntelligenceAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of AnalyzeBatchResultOperation items as paginated response with {@link PagedFlux}.
+     * @return paged collection of AnalyzeBatchOperation items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -334,6 +333,7 @@ public final class DocumentIntelligenceAsyncClient {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -395,8 +395,7 @@ public final class DocumentIntelligenceAsyncClient {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -430,7 +429,7 @@ public final class DocumentIntelligenceAsyncClient {
      * Analyzes document with document model.
      * 
      * @param modelId Unique document model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
@@ -449,9 +448,9 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocument(String modelId, String pages,
-        String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        List<String> queryFields, ContentFormat outputContentFormat, List<AnalyzeOutputOption> output,
+    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocument(String modelId, String pages, String locale,
+        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, List<String> queryFields,
+        DocumentContentFormat outputContentFormat, List<AnalyzeOutputOption> output,
         AnalyzeDocumentRequest analyzeRequest) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -508,7 +507,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocument(String modelId) {
+    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocument(String modelId) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginAnalyzeDocumentWithModelAsync(modelId, requestOptions);
@@ -584,7 +583,7 @@ public final class DocumentIntelligenceAsyncClient {
      * Analyzes batch documents with document model.
      * 
      * @param modelId Unique document model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
@@ -603,9 +602,9 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeBatchResultOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
+    public PollerFlux<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
         String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        List<String> queryFields, ContentFormat outputContentFormat, List<AnalyzeOutputOption> output,
+        List<String> queryFields, DocumentContentFormat outputContentFormat, List<AnalyzeOutputOption> output,
         AnalyzeBatchDocumentsRequest analyzeBatchRequest) {
         // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -662,7 +661,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeBatchResultOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId) {
+    public PollerFlux<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId) {
         // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginAnalyzeBatchDocumentsWithModelAsync(modelId, requestOptions);
@@ -678,11 +677,11 @@ public final class DocumentIntelligenceAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of AnalyzeBatchResultOperation items as paginated response with {@link PagedFlux}.
+     * @return paged collection of AnalyzeBatchOperation items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnalyzeBatchResultOperation> listAnalyzeBatchResults(String modelId) {
+    public PagedFlux<AnalyzeBatchOperation> listAnalyzeBatchResults(String modelId) {
         // Generated convenience method for listAnalyzeBatchResults
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAnalyzeBatchResults(modelId, requestOptions);
@@ -690,13 +689,14 @@ public final class DocumentIntelligenceAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, AnalyzeBatchResultOperation>(
-                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchResultOperation.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, AnalyzeBatchOperation>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchOperation.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
     }
 
@@ -736,11 +736,11 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeBatchResultOperation> getAnalyzeBatchResult(String modelId, String resultId) {
+    public Mono<AnalyzeBatchOperation> getAnalyzeBatchResult(String modelId, String resultId) {
         // Generated convenience method for getAnalyzeBatchResultWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchResultOperation.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchOperation.class));
     }
 
     /**
@@ -750,7 +750,7 @@ public final class DocumentIntelligenceAsyncClient {
      * @param classifyRequest Classify request parameters.
      * @param stringIndexType Method used to compute string offset and length.
      * @param split Document splitting mode.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -761,7 +761,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -793,7 +793,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();

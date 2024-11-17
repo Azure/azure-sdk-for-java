@@ -40,7 +40,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * Format of the analyze result top-level content.
      */
     @Generated
-    private ContentFormat contentFormat;
+    private DocumentContentFormat contentFormat;
 
     /*
      * Concatenate string representation of all textual and visual elements in reading
@@ -101,13 +101,13 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * Extracted documents.
      */
     @Generated
-    private List<Document> documents;
+    private List<AnalyzedDocument> documents;
 
     /*
      * List of warnings encountered.
      */
     @Generated
-    private List<Warning> warnings;
+    private List<DocumentIntelligenceWarning> warnings;
 
     /**
      * Creates an instance of AnalyzeResult class.
@@ -164,7 +164,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @return the contentFormat value.
      */
     @Generated
-    public ContentFormat getContentFormat() {
+    public DocumentContentFormat getContentFormat() {
         return this.contentFormat;
     }
 
@@ -265,7 +265,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @return the documents value.
      */
     @Generated
-    public List<Document> getDocuments() {
+    public List<AnalyzedDocument> getDocuments() {
         return this.documents;
     }
 
@@ -275,7 +275,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @return the warnings value.
      */
     @Generated
-    public List<Warning> getWarnings() {
+    public List<DocumentIntelligenceWarning> getWarnings() {
         return this.warnings;
     }
 
@@ -322,7 +322,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
             StringIndexType stringIndexType = null;
             String content = null;
             List<DocumentPage> pages = null;
-            ContentFormat contentFormat = null;
+            DocumentContentFormat contentFormat = null;
             List<DocumentParagraph> paragraphs = null;
             List<DocumentTable> tables = null;
             List<DocumentFigure> figures = null;
@@ -330,8 +330,8 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
             List<DocumentKeyValuePair> keyValuePairs = null;
             List<DocumentStyle> styles = null;
             List<DocumentLanguage> languages = null;
-            List<Document> documents = null;
-            List<Warning> warnings = null;
+            List<AnalyzedDocument> documents = null;
+            List<DocumentIntelligenceWarning> warnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -347,7 +347,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                 } else if ("pages".equals(fieldName)) {
                     pages = reader.readArray(reader1 -> DocumentPage.fromJson(reader1));
                 } else if ("contentFormat".equals(fieldName)) {
-                    contentFormat = ContentFormat.fromString(reader.getString());
+                    contentFormat = DocumentContentFormat.fromString(reader.getString());
                 } else if ("paragraphs".equals(fieldName)) {
                     paragraphs = reader.readArray(reader1 -> DocumentParagraph.fromJson(reader1));
                 } else if ("tables".equals(fieldName)) {
@@ -363,9 +363,9 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                 } else if ("languages".equals(fieldName)) {
                     languages = reader.readArray(reader1 -> DocumentLanguage.fromJson(reader1));
                 } else if ("documents".equals(fieldName)) {
-                    documents = reader.readArray(reader1 -> Document.fromJson(reader1));
+                    documents = reader.readArray(reader1 -> AnalyzedDocument.fromJson(reader1));
                 } else if ("warnings".equals(fieldName)) {
-                    warnings = reader.readArray(reader1 -> Warning.fromJson(reader1));
+                    warnings = reader.readArray(reader1 -> DocumentIntelligenceWarning.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

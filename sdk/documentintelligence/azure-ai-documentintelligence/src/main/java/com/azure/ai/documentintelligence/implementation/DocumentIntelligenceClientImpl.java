@@ -5,10 +5,10 @@
 package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -386,8 +386,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -449,8 +448,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -512,8 +510,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -577,8 +574,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -642,8 +638,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -687,7 +682,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(String modelId,
+    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(String modelId,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
@@ -699,8 +694,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeOperation.class), TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -709,8 +703,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -754,7 +747,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModel(String modelId,
+    public SyncPoller<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocumentWithModel(String modelId,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
@@ -766,8 +759,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeOperation.class), TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -928,8 +920,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -1000,8 +991,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -1072,8 +1062,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -1147,8 +1136,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -1222,8 +1210,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -1276,7 +1263,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeBatchResultOperation, AnalyzeBatchResult>
+    public PollerFlux<AnalyzeBatchOperation, AnalyzeBatchResult>
         beginAnalyzeBatchDocumentsWithModelAsync(String modelId, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeBatchDocumentsWithResponseAsync(modelId, requestOptions),
@@ -1288,7 +1275,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(AnalyzeBatchResultOperation.class),
+            TypeReference.createInstance(AnalyzeBatchOperation.class),
             TypeReference.createInstance(AnalyzeBatchResult.class));
     }
 
@@ -1298,8 +1285,7 @@ public final class DocumentIntelligenceClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
      * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
@@ -1352,8 +1338,8 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeBatchResultOperation, AnalyzeBatchResult>
-        beginAnalyzeBatchDocumentsWithModel(String modelId, RequestOptions requestOptions) {
+    public SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocumentsWithModel(String modelId,
+        RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeBatchDocumentsWithResponse(modelId, requestOptions),
             new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
@@ -1364,7 +1350,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(AnalyzeBatchResultOperation.class),
+            TypeReference.createInstance(AnalyzeBatchOperation.class),
             TypeReference.createInstance(AnalyzeBatchResult.class));
     }
 
@@ -1375,6 +1361,7 @@ public final class DocumentIntelligenceClientImpl {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1415,8 +1402,8 @@ public final class DocumentIntelligenceClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of AnalyzeBatchResultOperation items along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listAnalyzeBatchResultsSinglePageAsync(String modelId,
@@ -1436,6 +1423,7 @@ public final class DocumentIntelligenceClientImpl {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1476,7 +1464,7 @@ public final class DocumentIntelligenceClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of AnalyzeBatchResultOperation items as paginated response with {@link PagedFlux}.
+     * @return paged collection of AnalyzeBatchOperation items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAnalyzeBatchResultsAsync(String modelId, RequestOptions requestOptions) {
@@ -1494,6 +1482,7 @@ public final class DocumentIntelligenceClientImpl {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1534,7 +1523,7 @@ public final class DocumentIntelligenceClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of AnalyzeBatchResultOperation items along with {@link PagedResponse}.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listAnalyzeBatchResultsSinglePage(String modelId, RequestOptions requestOptions) {
@@ -1552,6 +1541,7 @@ public final class DocumentIntelligenceClientImpl {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1592,7 +1582,7 @@ public final class DocumentIntelligenceClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of AnalyzeBatchResultOperation items as paginated response with {@link PagedIterable}.
+     * @return paged collection of AnalyzeBatchOperation items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAnalyzeBatchResults(String modelId, RequestOptions requestOptions) {
@@ -1650,6 +1640,7 @@ public final class DocumentIntelligenceClientImpl {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1709,6 +1700,7 @@ public final class DocumentIntelligenceClientImpl {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -1770,8 +1762,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1814,8 +1805,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1857,8 +1847,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1907,8 +1896,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1957,8 +1945,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1982,7 +1969,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
+    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
@@ -1994,8 +1981,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeOperation.class), TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -2008,8 +1994,7 @@ public final class DocumentIntelligenceClientImpl {
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
      * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
-     * "1-3,5,7-9"</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -2033,7 +2018,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModel(String classifierId,
+    public SyncPoller<AnalyzeOperation, AnalyzeResult> beginClassifyDocumentWithModel(String classifierId,
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
@@ -2045,8 +2030,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeOperation.class), TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -2056,6 +2040,7 @@ public final class DocumentIntelligenceClientImpl {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2096,8 +2081,8 @@ public final class DocumentIntelligenceClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of AnalyzeBatchResultOperation items along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listAnalyzeBatchResultsNextSinglePageAsync(String nextLink,
@@ -2117,6 +2102,7 @@ public final class DocumentIntelligenceClientImpl {
      * <pre>
      * {@code
      * {
+     *     resultId: String (Optional)
      *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -2157,7 +2143,7 @@ public final class DocumentIntelligenceClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of AnalyzeBatchResultOperation items along with {@link PagedResponse}.
+     * @return paged collection of AnalyzeBatchOperation items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listAnalyzeBatchResultsNextSinglePage(String nextLink,

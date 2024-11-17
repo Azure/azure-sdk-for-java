@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.OperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetOperation {
@@ -17,7 +17,7 @@ public class GetOperation {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.getoperation.getoperation
-        OperationDetails response
+        DocumentIntelligenceOperationDetails response
             = documentIntelligenceAdministrationClient.getOperation("b704bb00-d130-4f3f-a1d8-ca96de3eabb4");
         // END:com.azure.ai.documentintelligence.generated.getoperation.getoperation
     }

@@ -324,7 +324,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getResourceInfo(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getResourceDetails(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -334,7 +334,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getResourceInfoSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getResourceDetailsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -2176,9 +2176,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getResourceInfoWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getResourceDetailsWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getResourceInfo(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getResourceDetails(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -2205,9 +2205,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @return general information regarding the current resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getResourceInfoWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getResourceDetailsWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getResourceInfoSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.getResourceDetailsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -2351,8 +2351,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(RequestOptions requestOptions) {
@@ -2404,7 +2404,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listOperationsAsync(RequestOptions requestOptions) {
@@ -2455,7 +2456,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items along with {@link PagedResponse}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listOperationsSinglePage(RequestOptions requestOptions) {
@@ -2506,7 +2507,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
@@ -3734,8 +3736,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(String nextLink,
@@ -3789,7 +3791,7 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items along with {@link PagedResponse}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listOperationsNextSinglePage(String nextLink, RequestOptions requestOptions) {

@@ -35,13 +35,13 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * Font style.
      */
     @Generated
-    private FontStyle fontStyle;
+    private DocumentFontStyle fontStyle;
 
     /*
      * Font weight.
      */
     @Generated
-    private FontWeight fontWeight;
+    private DocumentFontWeight fontWeight;
 
     /*
      * Foreground color in #rrggbb hexadecimal format.
@@ -107,7 +107,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @return the fontStyle value.
      */
     @Generated
-    public FontStyle getFontStyle() {
+    public DocumentFontStyle getFontStyle() {
         return this.fontStyle;
     }
 
@@ -117,7 +117,7 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * @return the fontWeight value.
      */
     @Generated
-    public FontWeight getFontWeight() {
+    public DocumentFontWeight getFontWeight() {
         return this.fontWeight;
     }
 
@@ -195,8 +195,8 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
             double confidence = 0.0;
             Boolean isHandwritten = null;
             String similarFontFamily = null;
-            FontStyle fontStyle = null;
-            FontWeight fontWeight = null;
+            DocumentFontStyle fontStyle = null;
+            DocumentFontWeight fontWeight = null;
             String color = null;
             String backgroundColor = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -212,9 +212,9 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
                 } else if ("similarFontFamily".equals(fieldName)) {
                     similarFontFamily = reader.getString();
                 } else if ("fontStyle".equals(fieldName)) {
-                    fontStyle = FontStyle.fromString(reader.getString());
+                    fontStyle = DocumentFontStyle.fromString(reader.getString());
                 } else if ("fontWeight".equals(fieldName)) {
-                    fontWeight = FontWeight.fromString(reader.getString());
+                    fontWeight = DocumentFontWeight.fromString(reader.getString());
                 } else if ("color".equals(fieldName)) {
                     color = reader.getString();
                 } else if ("backgroundColor".equals(fieldName)) {

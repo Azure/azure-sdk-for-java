@@ -11,16 +11,16 @@ import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
-import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceResourceDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
-import com.azure.ai.documentintelligence.models.OperationDetails;
-import com.azure.ai.documentintelligence.models.ResourceDetails;
+import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -449,8 +449,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getResourceInfoWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getResourceInfoWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> getResourceDetailsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getResourceDetailsWithResponseAsync(requestOptions);
     }
 
     /**
@@ -542,7 +542,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of OperationDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items as paginated response with
+     * {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -853,12 +854,12 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CopyAuthorization> authorizeModelCopy(AuthorizeCopyRequest authorizeCopyRequest) {
+    public Mono<ModelCopyAuthorization> authorizeModelCopy(AuthorizeCopyRequest authorizeCopyRequest) {
         // Generated convenience method for authorizeModelCopyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return authorizeModelCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CopyAuthorization.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ModelCopyAuthorization.class));
     }
 
     /**
@@ -877,7 +878,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelDetails> beginCopyModelTo(String modelId,
-        CopyAuthorization copyToRequest) {
+        ModelCopyAuthorization copyToRequest) {
         // Generated convenience method for beginCopyModelToWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCopyModelToWithModelAsync(modelId, BinaryData.fromObject(copyToRequest),
@@ -968,11 +969,11 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceDetails> getResourceInfo() {
-        // Generated convenience method for getResourceInfoWithResponse
+    public Mono<DocumentIntelligenceResourceDetails> getResourceDetails() {
+        // Generated convenience method for getResourceDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getResourceInfoWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ResourceDetails.class));
+        return getResourceDetailsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DocumentIntelligenceResourceDetails.class));
     }
 
     /**
@@ -989,11 +990,11 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OperationDetails> getOperation(String operationId) {
+    public Mono<DocumentIntelligenceOperationDetails> getOperation(String operationId) {
         // Generated convenience method for getOperationWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getOperationWithResponse(operationId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OperationDetails.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DocumentIntelligenceOperationDetails.class));
     }
 
     /**
@@ -1004,11 +1005,12 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of OperationDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DocumentIntelligenceOperationDetails items as paginated response with
+     * {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationDetails> listOperations() {
+    public PagedFlux<DocumentIntelligenceOperationDetails> listOperations() {
         // Generated convenience method for listOperations
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listOperations(requestOptions);
@@ -1016,11 +1018,11 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, OperationDetails>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DocumentIntelligenceOperationDetails>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(OperationDetails.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(DocumentIntelligenceOperationDetails.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });

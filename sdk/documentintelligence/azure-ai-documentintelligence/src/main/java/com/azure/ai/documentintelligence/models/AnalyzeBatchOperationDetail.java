@@ -21,7 +21,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
      * Analyze status. succeeded, failed, or skipped
      */
     @Generated
-    private final OperationStatus status;
+    private final DocumentIntelligenceOperationStatus status;
 
     /*
      * URL of the source document.
@@ -39,7 +39,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
      * Encountered error.
      */
     @Generated
-    private Error error;
+    private DocumentIntelligenceError error;
 
     /**
      * Creates an instance of AnalyzeBatchOperationDetail class.
@@ -48,7 +48,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
      * @param sourceUrl the sourceUrl value to set.
      */
     @Generated
-    private AnalyzeBatchOperationDetail(OperationStatus status, String sourceUrl) {
+    private AnalyzeBatchOperationDetail(DocumentIntelligenceOperationStatus status, String sourceUrl) {
         this.status = status;
         this.sourceUrl = sourceUrl;
     }
@@ -59,7 +59,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
      * @return the status value.
      */
     @Generated
-    public OperationStatus getStatus() {
+    public DocumentIntelligenceOperationStatus getStatus() {
         return this.status;
     }
 
@@ -89,7 +89,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
      * @return the error value.
      */
     @Generated
-    public Error getError() {
+    public DocumentIntelligenceError getError() {
         return this.error;
     }
 
@@ -119,22 +119,22 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
     @Generated
     public static AnalyzeBatchOperationDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OperationStatus status = null;
+            DocumentIntelligenceOperationStatus status = null;
             String sourceUrl = null;
             String resultUrl = null;
-            Error error = null;
+            DocumentIntelligenceError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("status".equals(fieldName)) {
-                    status = OperationStatus.fromString(reader.getString());
+                    status = DocumentIntelligenceOperationStatus.fromString(reader.getString());
                 } else if ("sourceUrl".equals(fieldName)) {
                     sourceUrl = reader.getString();
                 } else if ("resultUrl".equals(fieldName)) {
                     resultUrl = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    error = Error.fromJson(reader);
+                    error = DocumentIntelligenceError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
