@@ -115,8 +115,8 @@ public class DocumentIntelligenceCustomizations extends Customization {
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.implementation");
         packageCustomization.getClass("SyncOperationLocationPollingStrategy").customizeAst(ast ->
             ast.getClassByName("SyncOperationLocationPollingStrategy").ifPresent(clazz -> {
-                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeResultOperation");
-                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeBatchOperation");
                 ast.addImport("static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId");
                 addSyncPollOverrideMethod(clazz);
             }));
@@ -124,8 +124,8 @@ public class DocumentIntelligenceCustomizations extends Customization {
         logger.info("Customizing the OperationLocationPollingStrategy class");
         packageCustomization.getClass("OperationLocationPollingStrategy").customizeAst(ast ->
             ast.getClassByName("OperationLocationPollingStrategy").ifPresent(clazz -> {
-                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeResultOperation");
-                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeBatchOperation");
                 ast.addImport("static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId");
                 addAsyncPollOverrideMethod(clazz);
             }));
@@ -147,12 +147,12 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 "        if (operationLocationHeader != null) {",
                 "            operationId = parseOperationId(operationLocationHeader);",
                 "        }",
-                "        if (pollResponse.getValue() instanceof AnalyzeResultOperation) {",
-                "            AnalyzeResultOperation operation = (AnalyzeResultOperation) pollResponse.getValue();",
+                "        if (pollResponse.getValue() instanceof AnalyzeOperation) {",
+                "            AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();",
                 "            operation.setOperationId(operationId);",
                 "        }",
-                "        if (pollResponse.getValue() instanceof AnalyzeBatchResultOperation) {",
-                "            AnalyzeBatchResultOperation operation = (AnalyzeBatchResultOperation) pollResponse.getValue();",
+                "        if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {",
+                "            AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();",
                 "            operation.setOperationId(operationId);",
                 "        }",
                 "        return pollResponse;",
@@ -174,12 +174,12 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 "if (operationLocationHeader != null) {",
                 "    operationId = parseOperationId(operationLocationHeader);",
                 "}",
-                "if (pollResponse.getValue() instanceof AnalyzeResultOperation) {",
-                "    AnalyzeResultOperation operation = (AnalyzeResultOperation) pollResponse.getValue();",
+                "if (pollResponse.getValue() instanceof AnalyzeOperation) {",
+                "    AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();",
                 "    operation.setOperationId(operationId);",
                 "}",
-                "if (pollResponse.getValue() instanceof AnalyzeBatchResultOperation) {",
-                "    AnalyzeBatchResultOperation operation = (AnalyzeBatchResultOperation) pollResponse.getValue();",
+                "if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {",
+                "    AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();",
                 "    operation.setOperationId(operationId);",
                 "}",
                 "return pollResponse;",

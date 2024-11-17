@@ -16,7 +16,7 @@ import java.io.IOException;
  * Batch document analysis parameters.
  */
 @Fluent
-public final class AnalyzeBatchDocumentsRequest implements JsonSerializable<AnalyzeBatchDocumentsRequest> {
+public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<AnalyzeBatchDocumentsOptions> {
     /*
      * Azure Blob Storage location containing the batch documents. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
@@ -50,12 +50,12 @@ public final class AnalyzeBatchDocumentsRequest implements JsonSerializable<Anal
     private Boolean overwriteExisting;
 
     /**
-     * Creates an instance of AnalyzeBatchDocumentsRequest class.
+     * Creates an instance of AnalyzeBatchDocumentsOptions class.
      * 
      * @param resultContainerUrl the resultContainerUrl value to set.
      */
     @Generated
-    public AnalyzeBatchDocumentsRequest(String resultContainerUrl) {
+    public AnalyzeBatchDocumentsOptions(String resultContainerUrl) {
         this.resultContainerUrl = resultContainerUrl;
     }
 
@@ -75,10 +75,10 @@ public final class AnalyzeBatchDocumentsRequest implements JsonSerializable<Anal
      * azureBlobSource or azureBlobFileListSource must be specified.
      * 
      * @param azureBlobSource the azureBlobSource value to set.
-     * @return the AnalyzeBatchDocumentsRequest object itself.
+     * @return the AnalyzeBatchDocumentsOptions object itself.
      */
     @Generated
-    public AnalyzeBatchDocumentsRequest setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
+    public AnalyzeBatchDocumentsOptions setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
         this.azureBlobSource = azureBlobSource;
         return this;
     }
@@ -99,10 +99,10 @@ public final class AnalyzeBatchDocumentsRequest implements JsonSerializable<Anal
      * azureBlobSource or azureBlobFileListSource must be specified.
      * 
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
-     * @return the AnalyzeBatchDocumentsRequest object itself.
+     * @return the AnalyzeBatchDocumentsOptions object itself.
      */
     @Generated
-    public AnalyzeBatchDocumentsRequest
+    public AnalyzeBatchDocumentsOptions
         setAzureBlobFileListSource(AzureBlobFileListContentSource azureBlobFileListSource) {
         this.azureBlobFileListSource = azureBlobFileListSource;
         return this;
@@ -132,10 +132,10 @@ public final class AnalyzeBatchDocumentsRequest implements JsonSerializable<Anal
      * Set the resultPrefix property: Blob name prefix of result files.
      * 
      * @param resultPrefix the resultPrefix value to set.
-     * @return the AnalyzeBatchDocumentsRequest object itself.
+     * @return the AnalyzeBatchDocumentsOptions object itself.
      */
     @Generated
-    public AnalyzeBatchDocumentsRequest setResultPrefix(String resultPrefix) {
+    public AnalyzeBatchDocumentsOptions setResultPrefix(String resultPrefix) {
         this.resultPrefix = resultPrefix;
         return this;
     }
@@ -154,10 +154,10 @@ public final class AnalyzeBatchDocumentsRequest implements JsonSerializable<Anal
      * Set the overwriteExisting property: Overwrite existing analyze result files?.
      * 
      * @param overwriteExisting the overwriteExisting value to set.
-     * @return the AnalyzeBatchDocumentsRequest object itself.
+     * @return the AnalyzeBatchDocumentsOptions object itself.
      */
     @Generated
-    public AnalyzeBatchDocumentsRequest setOverwriteExisting(Boolean overwriteExisting) {
+    public AnalyzeBatchDocumentsOptions setOverwriteExisting(Boolean overwriteExisting) {
         this.overwriteExisting = overwriteExisting;
         return this;
     }
@@ -178,16 +178,16 @@ public final class AnalyzeBatchDocumentsRequest implements JsonSerializable<Anal
     }
 
     /**
-     * Reads an instance of AnalyzeBatchDocumentsRequest from the JsonReader.
+     * Reads an instance of AnalyzeBatchDocumentsOptions from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeBatchDocumentsRequest if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of AnalyzeBatchDocumentsOptions if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeBatchDocumentsRequest.
+     * @throws IOException If an error occurs while reading the AnalyzeBatchDocumentsOptions.
      */
     @Generated
-    public static AnalyzeBatchDocumentsRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static AnalyzeBatchDocumentsOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String resultContainerUrl = null;
             AzureBlobContentSource azureBlobSource = null;
@@ -212,14 +212,14 @@ public final class AnalyzeBatchDocumentsRequest implements JsonSerializable<Anal
                     reader.skipChildren();
                 }
             }
-            AnalyzeBatchDocumentsRequest deserializedAnalyzeBatchDocumentsRequest
-                = new AnalyzeBatchDocumentsRequest(resultContainerUrl);
-            deserializedAnalyzeBatchDocumentsRequest.azureBlobSource = azureBlobSource;
-            deserializedAnalyzeBatchDocumentsRequest.azureBlobFileListSource = azureBlobFileListSource;
-            deserializedAnalyzeBatchDocumentsRequest.resultPrefix = resultPrefix;
-            deserializedAnalyzeBatchDocumentsRequest.overwriteExisting = overwriteExisting;
+            AnalyzeBatchDocumentsOptions deserializedAnalyzeBatchDocumentsOptions
+                = new AnalyzeBatchDocumentsOptions(resultContainerUrl);
+            deserializedAnalyzeBatchDocumentsOptions.azureBlobSource = azureBlobSource;
+            deserializedAnalyzeBatchDocumentsOptions.azureBlobFileListSource = azureBlobFileListSource;
+            deserializedAnalyzeBatchDocumentsOptions.resultPrefix = resultPrefix;
+            deserializedAnalyzeBatchDocumentsOptions.overwriteExisting = overwriteExisting;
 
-            return deserializedAnalyzeBatchDocumentsRequest;
+            return deserializedAnalyzeBatchDocumentsOptions;
         });
     }
 }

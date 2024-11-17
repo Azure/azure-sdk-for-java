@@ -20,10 +20,10 @@ import java.util.Map;
 @Immutable
 public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument> {
     /*
-     * Document type.
+     * AnalyzedDocument type.
      */
     @Generated
-    private final String docType;
+    private final String documentType;
 
     /*
      * Bounding regions covering the document.
@@ -51,31 +51,31 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Creates an instance of AnalyzedDocument class.
-     * 
-     * @param docType the docType value to set.
+     *
+     * @param documentType the documentType value to set.
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
     @Generated
-    private AnalyzedDocument(String docType, List<DocumentSpan> spans, double confidence) {
-        this.docType = docType;
+    private AnalyzedDocument(String documentType, List<DocumentSpan> spans, double confidence) {
+        this.documentType = documentType;
         this.spans = spans;
         this.confidence = confidence;
     }
 
     /**
-     * Get the docType property: Document type.
-     * 
-     * @return the docType value.
+     * Get the documentType property: AnalyzedDocument type.
+     *
+     * @return the documentType value.
      */
     @Generated
-    public String getDocType() {
-        return this.docType;
+    public String getDocumentType() {
+        return this.documentType;
     }
 
     /**
      * Get the boundingRegions property: Bounding regions covering the document.
-     * 
+     *
      * @return the boundingRegions value.
      */
     @Generated
@@ -85,7 +85,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Get the spans property: Location of the document in the reading order concatenated content.
-     * 
+     *
      * @return the spans value.
      */
     @Generated
@@ -95,7 +95,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Get the fields property: Dictionary of named field values.
-     * 
+     *
      * @return the fields value.
      */
     @Generated
@@ -105,7 +105,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Get the confidence property: Confidence of correctly extracting the document.
-     * 
+     *
      * @return the confidence value.
      */
     @Generated
@@ -120,7 +120,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("docType", this.docType);
+        jsonWriter.writeStringField("docType", this.documentType);
         jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeDoubleField("confidence", this.confidence);
         jsonWriter.writeArrayField("boundingRegions", this.boundingRegions,
@@ -131,7 +131,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Reads an instance of AnalyzedDocument from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzedDocument if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -141,7 +141,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
     @Generated
     public static AnalyzedDocument fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String docType = null;
+            String documentType = null;
             List<DocumentSpan> spans = null;
             double confidence = 0.0;
             List<BoundingRegion> boundingRegions = null;
@@ -151,7 +151,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
                 reader.nextToken();
 
                 if ("docType".equals(fieldName)) {
-                    docType = reader.getString();
+                    documentType = reader.getString();
                 } else if ("spans".equals(fieldName)) {
                     spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
                 } else if ("confidence".equals(fieldName)) {
@@ -164,7 +164,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
                     reader.skipChildren();
                 }
             }
-            AnalyzedDocument deserializedAnalyzedDocument = new AnalyzedDocument(docType, spans, confidence);
+            AnalyzedDocument deserializedAnalyzedDocument = new AnalyzedDocument(documentType, spans, confidence);
             deserializedAnalyzedDocument.boundingRegions = boundingRegions;
             deserializedAnalyzedDocument.fields = fields;
 

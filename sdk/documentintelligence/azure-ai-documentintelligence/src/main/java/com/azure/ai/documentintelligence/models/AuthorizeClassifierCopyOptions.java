@@ -17,7 +17,7 @@ import java.util.Map;
  * Request body to authorize document classifier copy.
  */
 @Fluent
-public final class AuthorizeClassifierCopyRequest implements JsonSerializable<AuthorizeClassifierCopyRequest> {
+public final class AuthorizeClassifierCopyOptions implements JsonSerializable<AuthorizeClassifierCopyOptions> {
     /*
      * Unique document classifier name.
      */
@@ -25,7 +25,7 @@ public final class AuthorizeClassifierCopyRequest implements JsonSerializable<Au
     private final String classifierId;
 
     /*
-     * Document classifier description.
+     * AnalyzedDocument classifier description.
      */
     @Generated
     private String description;
@@ -37,18 +37,18 @@ public final class AuthorizeClassifierCopyRequest implements JsonSerializable<Au
     private Map<String, String> tags;
 
     /**
-     * Creates an instance of AuthorizeClassifierCopyRequest class.
-     * 
+     * Creates an instance of AuthorizeClassifierCopyOptions class.
+     *
      * @param classifierId the classifierId value to set.
      */
     @Generated
-    public AuthorizeClassifierCopyRequest(String classifierId) {
+    public AuthorizeClassifierCopyOptions(String classifierId) {
         this.classifierId = classifierId;
     }
 
     /**
      * Get the classifierId property: Unique document classifier name.
-     * 
+     *
      * @return the classifierId value.
      */
     @Generated
@@ -57,8 +57,8 @@ public final class AuthorizeClassifierCopyRequest implements JsonSerializable<Au
     }
 
     /**
-     * Get the description property: Document classifier description.
-     * 
+     * Get the description property: AnalyzedDocument classifier description.
+     *
      * @return the description value.
      */
     @Generated
@@ -67,20 +67,20 @@ public final class AuthorizeClassifierCopyRequest implements JsonSerializable<Au
     }
 
     /**
-     * Set the description property: Document classifier description.
-     * 
+     * Set the description property: AnalyzedDocument classifier description.
+     *
      * @param description the description value to set.
-     * @return the AuthorizeClassifierCopyRequest object itself.
+     * @return the AuthorizeClassifierCopyOptions object itself.
      */
     @Generated
-    public AuthorizeClassifierCopyRequest setDescription(String description) {
+    public AuthorizeClassifierCopyOptions setDescription(String description) {
         this.description = description;
         return this;
     }
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document classifier.
-     * 
+     *
      * @return the tags value.
      */
     @Generated
@@ -90,12 +90,12 @@ public final class AuthorizeClassifierCopyRequest implements JsonSerializable<Au
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document classifier.
-     * 
+     *
      * @param tags the tags value to set.
-     * @return the AuthorizeClassifierCopyRequest object itself.
+     * @return the AuthorizeClassifierCopyOptions object itself.
      */
     @Generated
-    public AuthorizeClassifierCopyRequest setTags(Map<String, String> tags) {
+    public AuthorizeClassifierCopyOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -114,16 +114,16 @@ public final class AuthorizeClassifierCopyRequest implements JsonSerializable<Au
     }
 
     /**
-     * Reads an instance of AuthorizeClassifierCopyRequest from the JsonReader.
-     * 
+     * Reads an instance of AuthorizeClassifierCopyOptions from the JsonReader.
+     *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AuthorizeClassifierCopyRequest if the JsonReader was pointing to an instance of it, or
+     * @return An instance of AuthorizeClassifierCopyOptions if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AuthorizeClassifierCopyRequest.
+     * @throws IOException If an error occurs while reading the AuthorizeClassifierCopyOptions.
      */
     @Generated
-    public static AuthorizeClassifierCopyRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static AuthorizeClassifierCopyOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String classifierId = null;
             String description = null;
@@ -142,12 +142,12 @@ public final class AuthorizeClassifierCopyRequest implements JsonSerializable<Au
                     reader.skipChildren();
                 }
             }
-            AuthorizeClassifierCopyRequest deserializedAuthorizeClassifierCopyRequest
-                = new AuthorizeClassifierCopyRequest(classifierId);
-            deserializedAuthorizeClassifierCopyRequest.description = description;
-            deserializedAuthorizeClassifierCopyRequest.tags = tags;
+            AuthorizeClassifierCopyOptions deserializedAuthorizeClassifierCopyOptions
+                = new AuthorizeClassifierCopyOptions(classifierId);
+            deserializedAuthorizeClassifierCopyOptions.description = description;
+            deserializedAuthorizeClassifierCopyOptions.tags = tags;
 
-            return deserializedAuthorizeClassifierCopyRequest;
+            return deserializedAuthorizeClassifierCopyOptions;
         });
     }
 }

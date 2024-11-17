@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
@@ -24,7 +24,7 @@ public class AnalyzeBatchDocuments {
         SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> response
             = documentIntelligenceClient.beginAnalyzeBatchDocuments("customModel", "1-5", "en-US",
                 StringIndexType.TEXT_ELEMENTS, null, null, null, null,
-                new AnalyzeBatchDocumentsRequest(
+                new AnalyzeBatchDocumentsOptions(
                     "https://myStorageAccount.blob.core.windows.net/myOutputContainer?mySasToken")
                         .setAzureBlobSource(new AzureBlobContentSource(
                             "https://myStorageAccount.blob.core.windows.net/myContainer?mySasToken")

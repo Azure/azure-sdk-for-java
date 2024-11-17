@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Document model info.
+ * AnalyzedDocument model info.
  */
 @Immutable
 public final class DocumentModelDetails implements JsonSerializable<DocumentModelDetails> {
@@ -28,7 +28,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     private String modelId;
 
     /*
-     * Document model description.
+     * AnalyzedDocument model description.
      */
     @Generated
     private String description;
@@ -37,19 +37,19 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * Date and time (UTC) when the document model was created.
      */
     @Generated
-    private OffsetDateTime createdDateTime;
+    private OffsetDateTime createdOn;
 
     /*
      * Date and time (UTC) when the document model will expire.
      */
     @Generated
-    private OffsetDateTime expirationDateTime;
+    private OffsetDateTime expiresOn;
 
     /*
      * Date and time (UTC) when the document model was last modified.
      */
     @Generated
-    private OffsetDateTime modifiedDateTime;
+    private OffsetDateTime modifiedOn;
 
     /*
      * API version used to create this document model.
@@ -99,7 +99,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * Supported document types.
      */
     @Generated
-    private Map<String, DocumentTypeDetails> docTypes;
+    private Map<String, DocumentTypeDetails> documentTypes;
 
     /*
      * List of warnings encountered while building the model.
@@ -122,7 +122,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the modelId property: Unique document model name.
-     * 
+     *
      * @return the modelId value.
      */
     @Generated
@@ -131,8 +131,8 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     }
 
     /**
-     * Get the description property: Document model description.
-     * 
+     * Get the description property: AnalyzedDocument model description.
+     *
      * @return the description value.
      */
     @Generated
@@ -141,38 +141,38 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     }
 
     /**
-     * Get the createdDateTime property: Date and time (UTC) when the document model was created.
-     * 
-     * @return the createdDateTime value.
+     * Get the createdOn property: Date and time (UTC) when the document model was created.
+     *
+     * @return the createdOn value.
      */
     @Generated
-    public OffsetDateTime getCreatedDateTime() {
-        return this.createdDateTime;
+    public OffsetDateTime getCreatedOn() {
+        return this.createdOn;
     }
 
     /**
-     * Get the expirationDateTime property: Date and time (UTC) when the document model will expire.
-     * 
-     * @return the expirationDateTime value.
+     * Get the expiresOn property: Date and time (UTC) when the document model will expire.
+     *
+     * @return the expiresOn value.
      */
     @Generated
-    public OffsetDateTime getExpirationDateTime() {
-        return this.expirationDateTime;
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
-     * Get the modifiedDateTime property: Date and time (UTC) when the document model was last modified.
-     * 
-     * @return the modifiedDateTime value.
+     * Get the modifiedOn property: Date and time (UTC) when the document model was last modified.
+     *
+     * @return the modifiedOn value.
      */
     @Generated
-    public OffsetDateTime getModifiedDateTime() {
-        return this.modifiedDateTime;
+    public OffsetDateTime getModifiedOn() {
+        return this.modifiedOn;
     }
 
     /**
      * Get the apiVersion property: API version used to create this document model.
-     * 
+     *
      * @return the apiVersion value.
      */
     @Generated
@@ -182,7 +182,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @return the tags value.
      */
     @Generated
@@ -192,7 +192,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the buildMode property: Custom document model build mode.
-     * 
+     *
      * @return the buildMode value.
      */
     @Generated
@@ -203,7 +203,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
+     *
      * @return the azureBlobSource value.
      */
     @Generated
@@ -214,7 +214,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     /**
      * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
+     *
      * @return the azureBlobFileListSource value.
      */
     @Generated
@@ -224,7 +224,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the classifierId property: For composed models, the custom classifier to split and classify the input file.
-     * 
+     *
      * @return the classifierId value.
      */
     @Generated
@@ -234,7 +234,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the split property: For composed models, the file splitting behavior.
-     * 
+     *
      * @return the split value.
      */
     @Generated
@@ -243,18 +243,18 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     }
 
     /**
-     * Get the docTypes property: Supported document types.
-     * 
-     * @return the docTypes value.
+     * Get the documentTypes property: Supported document types.
+     *
+     * @return the documentTypes value.
      */
     @Generated
-    public Map<String, DocumentTypeDetails> getDocTypes() {
-        return this.docTypes;
+    public Map<String, DocumentTypeDetails> getDocumentTypes() {
+        return this.documentTypes;
     }
 
     /**
      * Get the warnings property: List of warnings encountered while building the model.
-     * 
+     *
      * @return the warnings value.
      */
     @Generated
@@ -264,7 +264,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the trainingHours property: Number of V100-equivalent GPU hours consumed for model training.
-     * 
+     *
      * @return the trainingHours value.
      */
     @Generated
@@ -288,7 +288,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Reads an instance of DocumentModelDetails from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentModelDetails if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -306,15 +306,15 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
                 if ("modelId".equals(fieldName)) {
                     deserializedDocumentModelDetails.modelId = reader.getString();
                 } else if ("createdDateTime".equals(fieldName)) {
-                    deserializedDocumentModelDetails.createdDateTime = reader
+                    deserializedDocumentModelDetails.createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("description".equals(fieldName)) {
                     deserializedDocumentModelDetails.description = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    deserializedDocumentModelDetails.expirationDateTime = reader
+                    deserializedDocumentModelDetails.expiresOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("modifiedDateTime".equals(fieldName)) {
-                    deserializedDocumentModelDetails.modifiedDateTime = reader
+                    deserializedDocumentModelDetails.modifiedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("apiVersion".equals(fieldName)) {
                     deserializedDocumentModelDetails.apiVersion = reader.getString();
@@ -333,9 +333,9 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
                 } else if ("split".equals(fieldName)) {
                     deserializedDocumentModelDetails.split = SplitMode.fromString(reader.getString());
                 } else if ("docTypes".equals(fieldName)) {
-                    Map<String, DocumentTypeDetails> docTypes
+                    Map<String, DocumentTypeDetails> documentTypes
                         = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
-                    deserializedDocumentModelDetails.docTypes = docTypes;
+                    deserializedDocumentModelDetails.documentTypes = documentTypes;
                 } else if ("warnings".equals(fieldName)) {
                     List<DocumentIntelligenceWarning> warnings
                         = reader.readArray(reader1 -> DocumentIntelligenceWarning.fromJson(reader1));

@@ -25,7 +25,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     private final String modelId;
 
     /*
-     * Document model description.
+     * AnalyzedDocument model description.
      */
     @Generated
     private String description;
@@ -46,7 +46,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * Dictionary mapping supported docTypes to the corresponding document models.
      */
     @Generated
-    private final Map<String, DocumentTypeDetails> docTypes;
+    private final Map<String, DocumentTypeDetails> documentTypes;
 
     /*
      * List of key-value tag attributes associated with the document model.
@@ -56,21 +56,22 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Creates an instance of ComposeDocumentModelRequest class.
-     * 
+     *
      * @param modelId the modelId value to set.
      * @param classifierId the classifierId value to set.
-     * @param docTypes the docTypes value to set.
+     * @param documentTypes the documentTypes value to set.
      */
     @Generated
-    public ComposeDocumentModelRequest(String modelId, String classifierId, Map<String, DocumentTypeDetails> docTypes) {
+    public ComposeDocumentModelRequest(String modelId, String classifierId,
+        Map<String, DocumentTypeDetails> documentTypes) {
         this.modelId = modelId;
         this.classifierId = classifierId;
-        this.docTypes = docTypes;
+        this.documentTypes = documentTypes;
     }
 
     /**
      * Get the modelId property: Unique document model name.
-     * 
+     *
      * @return the modelId value.
      */
     @Generated
@@ -79,8 +80,8 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     }
 
     /**
-     * Get the description property: Document model description.
-     * 
+     * Get the description property: AnalyzedDocument model description.
+     *
      * @return the description value.
      */
     @Generated
@@ -89,8 +90,8 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     }
 
     /**
-     * Set the description property: Document model description.
-     * 
+     * Set the description property: AnalyzedDocument model description.
+     *
      * @param description the description value to set.
      * @return the ComposeDocumentModelRequest object itself.
      */
@@ -102,7 +103,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Get the classifierId property: Custom classifier to split and classify the input file.
-     * 
+     *
      * @return the classifierId value.
      */
     @Generated
@@ -112,7 +113,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Get the split property: File splitting behavior.
-     * 
+     *
      * @return the split value.
      */
     @Generated
@@ -122,7 +123,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Set the split property: File splitting behavior.
-     * 
+     *
      * @param split the split value to set.
      * @return the ComposeDocumentModelRequest object itself.
      */
@@ -133,18 +134,18 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     }
 
     /**
-     * Get the docTypes property: Dictionary mapping supported docTypes to the corresponding document models.
-     * 
-     * @return the docTypes value.
+     * Get the documentTypes property: Dictionary mapping supported docTypes to the corresponding document models.
+     *
+     * @return the documentTypes value.
      */
     @Generated
-    public Map<String, DocumentTypeDetails> getDocTypes() {
-        return this.docTypes;
+    public Map<String, DocumentTypeDetails> getDocumentTypes() {
+        return this.documentTypes;
     }
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @return the tags value.
      */
     @Generated
@@ -154,7 +155,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ComposeDocumentModelRequest object itself.
      */
@@ -173,7 +174,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("modelId", this.modelId);
         jsonWriter.writeStringField("classifierId", this.classifierId);
-        jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("docTypes", this.documentTypes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("split", this.split == null ? null : this.split.toString());
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
@@ -182,7 +183,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Reads an instance of ComposeDocumentModelRequest from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ComposeDocumentModelRequest if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
@@ -194,7 +195,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
         return jsonReader.readObject(reader -> {
             String modelId = null;
             String classifierId = null;
-            Map<String, DocumentTypeDetails> docTypes = null;
+            Map<String, DocumentTypeDetails> documentTypes = null;
             String description = null;
             SplitMode split = null;
             Map<String, String> tags = null;
@@ -207,7 +208,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
                 } else if ("classifierId".equals(fieldName)) {
                     classifierId = reader.getString();
                 } else if ("docTypes".equals(fieldName)) {
-                    docTypes = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
+                    documentTypes = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("split".equals(fieldName)) {
@@ -219,7 +220,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
                 }
             }
             ComposeDocumentModelRequest deserializedComposeDocumentModelRequest
-                = new ComposeDocumentModelRequest(modelId, classifierId, docTypes);
+                = new ComposeDocumentModelRequest(modelId, classifierId, documentTypes);
             deserializedComposeDocumentModelRequest.description = description;
             deserializedComposeDocumentModelRequest.split = split;
             deserializedComposeDocumentModelRequest.tags = tags;

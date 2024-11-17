@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.StringIndexType;
@@ -22,7 +22,7 @@ public class AnalyzeDocumentFromBase64 {
         // BEGIN:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfrombase64
         SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginAnalyzeDocument(
             "prebuilt-layout", "1-2,4", "en-US", StringIndexType.TEXT_ELEMENTS, null, null, null, null,
-            new AnalyzeDocumentRequest().setBase64Source("e2Jhc2U2NEVuY29kZWRQZGZ9".getBytes()));
+            new AnalyzeDocumentOptions().setBase64Source("e2Jhc2U2NEVuY29kZWRQZGZ9".getBytes()));
         // END:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfrombase64
     }
 }

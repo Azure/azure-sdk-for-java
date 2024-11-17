@@ -17,7 +17,7 @@ import java.util.Map;
  * Request body to build a new custom document model.
  */
 @Fluent
-public final class BuildDocumentModelRequest implements JsonSerializable<BuildDocumentModelRequest> {
+public final class BuildDocumentModelOptions implements JsonSerializable<BuildDocumentModelOptions> {
     /*
      * Unique document model name.
      */
@@ -25,7 +25,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     private final String modelId;
 
     /*
-     * Document model description.
+     * AnalyzedDocument model description.
      */
     @Generated
     private String description;
@@ -69,20 +69,20 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     private Boolean allowOverwrite;
 
     /**
-     * Creates an instance of BuildDocumentModelRequest class.
-     * 
+     * Creates an instance of BuildDocumentModelOptions class.
+     *
      * @param modelId the modelId value to set.
      * @param buildMode the buildMode value to set.
      */
     @Generated
-    public BuildDocumentModelRequest(String modelId, DocumentBuildMode buildMode) {
+    public BuildDocumentModelOptions(String modelId, DocumentBuildMode buildMode) {
         this.modelId = modelId;
         this.buildMode = buildMode;
     }
 
     /**
      * Get the modelId property: Unique document model name.
-     * 
+     *
      * @return the modelId value.
      */
     @Generated
@@ -91,8 +91,8 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     }
 
     /**
-     * Get the description property: Document model description.
-     * 
+     * Get the description property: AnalyzedDocument model description.
+     *
      * @return the description value.
      */
     @Generated
@@ -101,20 +101,20 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     }
 
     /**
-     * Set the description property: Document model description.
-     * 
+     * Set the description property: AnalyzedDocument model description.
+     *
      * @param description the description value to set.
-     * @return the BuildDocumentModelRequest object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
     @Generated
-    public BuildDocumentModelRequest setDescription(String description) {
+    public BuildDocumentModelOptions setDescription(String description) {
         this.description = description;
         return this;
     }
 
     /**
      * Get the buildMode property: Custom document model build mode.
-     * 
+     *
      * @return the buildMode value.
      */
     @Generated
@@ -125,7 +125,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
+     *
      * @return the azureBlobSource value.
      */
     @Generated
@@ -136,12 +136,12 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     /**
      * Set the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
+     *
      * @param azureBlobSource the azureBlobSource value to set.
-     * @return the BuildDocumentModelRequest object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
     @Generated
-    public BuildDocumentModelRequest setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
+    public BuildDocumentModelOptions setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
         this.azureBlobSource = azureBlobSource;
         return this;
     }
@@ -149,7 +149,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     /**
      * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
+     *
      * @return the azureBlobFileListSource value.
      */
     @Generated
@@ -160,12 +160,12 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     /**
      * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
+     *
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
-     * @return the BuildDocumentModelRequest object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
     @Generated
-    public BuildDocumentModelRequest
+    public BuildDocumentModelOptions
         setAzureBlobFileListSource(AzureBlobFileListContentSource azureBlobFileListSource) {
         this.azureBlobFileListSource = azureBlobFileListSource;
         return this;
@@ -173,7 +173,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @return the tags value.
      */
     @Generated
@@ -183,12 +183,12 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @param tags the tags value to set.
-     * @return the BuildDocumentModelRequest object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
     @Generated
-    public BuildDocumentModelRequest setTags(Map<String, String> tags) {
+    public BuildDocumentModelOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -196,7 +196,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     /**
      * Get the maxTrainingHours property: Max number of V100-equivalent GPU hours to use for model training.
      * Default=0.5.
-     * 
+     *
      * @return the maxTrainingHours value.
      */
     @Generated
@@ -207,19 +207,19 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     /**
      * Set the maxTrainingHours property: Max number of V100-equivalent GPU hours to use for model training.
      * Default=0.5.
-     * 
+     *
      * @param maxTrainingHours the maxTrainingHours value to set.
-     * @return the BuildDocumentModelRequest object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
     @Generated
-    public BuildDocumentModelRequest setMaxTrainingHours(Double maxTrainingHours) {
+    public BuildDocumentModelOptions setMaxTrainingHours(Double maxTrainingHours) {
         this.maxTrainingHours = maxTrainingHours;
         return this;
     }
 
     /**
      * Get the allowOverwrite property: Allow overwriting an existing model with the same name.
-     * 
+     *
      * @return the allowOverwrite value.
      */
     @Generated
@@ -229,12 +229,12 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
 
     /**
      * Set the allowOverwrite property: Allow overwriting an existing model with the same name.
-     * 
+     *
      * @param allowOverwrite the allowOverwrite value to set.
-     * @return the BuildDocumentModelRequest object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
     @Generated
-    public BuildDocumentModelRequest setAllowOverwrite(Boolean allowOverwrite) {
+    public BuildDocumentModelOptions setAllowOverwrite(Boolean allowOverwrite) {
         this.allowOverwrite = allowOverwrite;
         return this;
     }
@@ -258,16 +258,16 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     }
 
     /**
-     * Reads an instance of BuildDocumentModelRequest from the JsonReader.
-     * 
+     * Reads an instance of BuildDocumentModelOptions from the JsonReader.
+     *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BuildDocumentModelRequest if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of BuildDocumentModelOptions if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BuildDocumentModelRequest.
+     * @throws IOException If an error occurs while reading the BuildDocumentModelOptions.
      */
     @Generated
-    public static BuildDocumentModelRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static BuildDocumentModelOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String modelId = null;
             DocumentBuildMode buildMode = null;
@@ -301,16 +301,16 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
                     reader.skipChildren();
                 }
             }
-            BuildDocumentModelRequest deserializedBuildDocumentModelRequest
-                = new BuildDocumentModelRequest(modelId, buildMode);
-            deserializedBuildDocumentModelRequest.description = description;
-            deserializedBuildDocumentModelRequest.azureBlobSource = azureBlobSource;
-            deserializedBuildDocumentModelRequest.azureBlobFileListSource = azureBlobFileListSource;
-            deserializedBuildDocumentModelRequest.tags = tags;
-            deserializedBuildDocumentModelRequest.maxTrainingHours = maxTrainingHours;
-            deserializedBuildDocumentModelRequest.allowOverwrite = allowOverwrite;
+            BuildDocumentModelOptions deserializedBuildDocumentModelOptions
+                = new BuildDocumentModelOptions(modelId, buildMode);
+            deserializedBuildDocumentModelOptions.description = description;
+            deserializedBuildDocumentModelOptions.azureBlobSource = azureBlobSource;
+            deserializedBuildDocumentModelOptions.azureBlobFileListSource = azureBlobFileListSource;
+            deserializedBuildDocumentModelOptions.tags = tags;
+            deserializedBuildDocumentModelOptions.maxTrainingHours = maxTrainingHours;
+            deserializedBuildDocumentModelOptions.allowOverwrite = allowOverwrite;
 
-            return deserializedBuildDocumentModelRequest;
+            return deserializedBuildDocumentModelOptions;
         });
     }
 }

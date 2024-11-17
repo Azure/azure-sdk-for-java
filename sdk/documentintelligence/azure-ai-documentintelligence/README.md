@@ -1,6 +1,6 @@
 # Azure DocumentIntelligence client library for Java
 
-Azure Document Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine
+Azure AnalyzedDocument Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine
 learning to analyze text and structured data from your documents.
 It includes the following main features:
 
@@ -19,7 +19,7 @@ It includes the following main features:
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
   - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
-- [AI Services or Document Intelligence account][form_recognizer_account] to use this package.
+- [AI Services or AnalyzedDocument Intelligence account][form_recognizer_account] to use this package.
 
 ### Adding the package to your product
 
@@ -57,7 +57,7 @@ Please see the [Migration Guide][migration_guide] for more information about mig
 
 ### Authentication
 
-In order to interact with the Azure Document Intelligence Service you'll need to create an instance of client class,
+In order to interact with the Azure AnalyzedDocument Intelligence Service you'll need to create an instance of client class,
 [DocumentIntelligenceAsyncClient][document_analysis_async_client] or [DocumentIntelligenceClient][document_analysis_sync_client] by using
 [DocumentIntelligenceClientBuilder][document_analysis_client_builder]. To configure a client for use with
 Azure DocumentIntelligence, provide a valid endpoint URI to an Azure DocumentIntelligence resource along with a corresponding key credential,
@@ -131,9 +131,9 @@ The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
 - Build custom document analysis models to analyze text content, fields, and values found in your custom documents. See example [Build a document model](#build-a-document-model).
   A `DocumentModelDetails` is returned indicating the document types that the model can analyze, along with the fields and schemas it will extract.
 - Managing models created in your account by building, listing, deleting, and see the limit of custom models your account. See example [Manage models](#manage-your-models).
-- Copying a custom model from one Document Intelligence resource to another.
+- Copying a custom model from one AnalyzedDocument Intelligence resource to another.
 - Creating a composed model from a collection of existing built models.
-- Listing document model operations associated with the Document Intelligence resource.
+- Listing document model operations associated with the AnalyzedDocument Intelligence resource.
 
 Sample code snippets are provided to illustrate using a DocumentModelAdministrationClient [here](#examples "Examples").
 
@@ -150,11 +150,11 @@ Callers should wait for the operation to be completed by calling `getFinalResult
 
 ## Examples
 
-The following section provides several code snippets covering some of the most common Document Intelligence tasks, including:
+The following section provides several code snippets covering some of the most common AnalyzedDocument Intelligence tasks, including:
 
 * [Analyze Layout](#analyze-layout "Analyze Layout")
 * [Use Prebuilt Models](#use-prebuilt-models)
-* [Build a Document Model](#build-a-document-model "Build a Document Model")
+* [Build a AnalyzedDocument Model](#build-a-document-model "Build a AnalyzedDocument Model")
 * [Analyze Documents using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents using a Custom Model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
 
@@ -165,7 +165,7 @@ File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
         null,
         null,
@@ -174,7 +174,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
         null,
         null,
         null,
-        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
+        new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -214,7 +214,7 @@ for (int i = 0; i < tables.size(); i++) {
 ```
 
 ### Use Prebuilt Models
-Extract fields from select document types such as receipts, invoices, and identity documents using prebuilt models provided by the Document Intelligence service.
+Extract fields from select document types such as receipts, invoices, and identity documents using prebuilt models provided by the AnalyzedDocument Intelligence service.
 Supported prebuilt models are:
 - Analyze receipts using the `prebuilt-receipt` model (fields recognized by the service can be found [here][service_analyze_receipt_fields])
 - Analyze invoices using the `prebuilt-invoice` model (fields recognized by the service can be found [here][service_analyze_invoices_fields]).
@@ -226,7 +226,7 @@ For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocum
 File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
     + "sample-forms/receipts/contoso-allinone.jpg");
 
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
+SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
         null,
         null,
@@ -235,12 +235,12 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
         null,
         null,
         null,
-        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
+        new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
 AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
 for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
-    Document analyzedReceipt = receiptResults.getDocuments().get(i);
+    AnalyzedDocument analyzedReceipt = receiptResults.getDocuments().get(i);
     Map<String, DocumentField> receiptFields = analyzedReceipt.getFields();
     System.out.printf("----------- Analyzing receipt info %d -----------%n", i);
     DocumentField merchantNameField = receiptFields.get("MerchantName");
@@ -293,7 +293,7 @@ in the [service quickstart documentation][quickstart_training].
 
 **Note**
 
-You can use the [Document Intelligence Studio preview][di-studio] for creating a labeled file for your training forms.
+You can use the [AnalyzedDocument Intelligence Studio preview][di-studio] for creating a labeled file for your training forms.
 More details on setting up a container and required file structure can be found in [here][fr_build_training_set].
 
 ```java com.azure.ai.documentintelligence.readme.buildModel
@@ -301,7 +301,7 @@ More details on setting up a container and required file structure can be found 
 String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
-    administrationClient.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
+    administrationClient.beginBuildDocumentModel(new BuildDocumentModelOptions("modelID", DocumentBuildMode.TEMPLATE)
         .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
 DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
@@ -309,10 +309,10 @@ DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult(
 // Model Info
 System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
 System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
-System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedDateTime());
+System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
 
-System.out.println("Document Fields:");
-documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+System.out.println("AnalyzedDocument Fields:");
+documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
     documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
         System.out.printf("Field: %s", field);
         System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -328,23 +328,23 @@ was built on.
 ```java com.azure.ai.documentintelligence.readme.analyzeCustomModel
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
+SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
     "1",
     "en-US",
     StringIndexType.TEXT_ELEMENTS,
     Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
     null,
-    ContentFormat.TEXT,
+    DocumentContentFormat.TEXT,
     null,
-    new AnalyzeDocumentRequest().setUrlSource(documentUrl));
+    new AnalyzeDocumentOptions().setUrlSource(documentUrl));
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
 for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-    final Document analyzedDocument = analyzeResult.getDocuments().get(i);
+    final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
     System.out.printf("----------- Analyzing custom document %d -----------%n", i);
     System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-        analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+        analyzedDocument.getDocumentType(), analyzedDocument.getConfidence());
 }
 
 analyzeResult.getPages().forEach(documentPage -> {
@@ -382,10 +382,10 @@ for (int i = 0; i < tables.size(); i++) {
 ```
 
 ### Manage your models
-Manage the models in your Document Intelligence account.
+Manage the models in your AnalyzedDocument Intelligence account.
 ```java com.azure.ai.documentintelligence.readme.manageModels
 
-ResourceDetails resourceDetails = administrationClient.getResourceInfo();
+DocumentIntelligenceResourceDetails resourceDetails = administrationClient.getResourceDetails();
 System.out.printf("The resource has %s models, and we can have at most %s models.%n",
     resourceDetails.getCustomDocumentModels().getCount(), resourceDetails.getCustomDocumentModels().getLimit());
 
@@ -398,9 +398,9 @@ customDocumentModels.forEach(documentModelInfo -> {
     DocumentModelDetails documentModel = administrationClient.getModel(documentModelInfo.getModelId());
     System.out.printf("Model ID: %s%n", documentModel.getModelId());
     System.out.printf("Model Description: %s%n", documentModel.getDescription());
-    System.out.printf("Model created on: %s%n", documentModel.getCreatedDateTime());
-    if (documentModel.getDocTypes() != null) {
-        documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+    System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
+    if (documentModel.getDocumentTypes() != null) {
+        documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s, ", field);
                 System.out.printf("Field type: %s, ", documentFieldSchema.getType());

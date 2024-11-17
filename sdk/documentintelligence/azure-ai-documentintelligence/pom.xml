@@ -15,8 +15,8 @@
   <artifactId>azure-ai-documentintelligence</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-ai-documentintelligence;current} -->
 
-  <name>Microsoft Azure client library for Document Intelligence</name>
-  <description>This package contains the Microsoft Azure AI Document Intelligence SDK.</description>
+  <name>Microsoft Azure client library for AnalyzedDocument Intelligence</name>
+  <description>This package contains the Microsoft Azure AI AnalyzedDocument Intelligence SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>

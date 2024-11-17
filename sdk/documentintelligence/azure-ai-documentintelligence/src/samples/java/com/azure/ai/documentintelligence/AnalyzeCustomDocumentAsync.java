@@ -3,11 +3,11 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.ContentFormat;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.DocumentContentFormat;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.ai.documentintelligence.models.StringIndexType;
@@ -46,14 +46,14 @@ public class AnalyzeCustomDocumentAsync {
             + "sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller
+        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller
             = client.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
-            ContentFormat.TEXT, null, new AnalyzeDocumentRequest().setBase64Source(fileContent));
+            DocumentContentFormat.TEXT, null, new AnalyzeDocumentOptions().setBase64Source(fileContent));
 
 
         Mono<AnalyzeResult> analyzeDocumentResult = analyzeDocumentPoller
@@ -69,10 +69,10 @@ public class AnalyzeCustomDocumentAsync {
 
         analyzeDocumentResult.subscribe(analyzeResult -> {
             for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-                Document analyzedDocument = analyzeResult.getDocuments().get(i);
+                AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
                 System.out.printf("----------- Analyzing custom document %d -----------%n", i);
                 System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-                    analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+                    analyzedDocument.getDocumentType(), analyzedDocument.getConfidence());
             }
 
             analyzeResult.getPages().forEach(documentPage -> {

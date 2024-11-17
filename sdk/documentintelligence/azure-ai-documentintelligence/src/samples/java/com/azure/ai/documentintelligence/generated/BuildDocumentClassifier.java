@@ -8,7 +8,7 @@ import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClien
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
+import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
@@ -26,7 +26,7 @@ public class BuildDocumentClassifier {
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.buildclassifier.builddocumentclassifier
         SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> response
-            = documentIntelligenceAdministrationClient.beginBuildClassifier(new BuildDocumentClassifierRequest(
+            = documentIntelligenceAdministrationClient.beginBuildClassifier(new BuildDocumentClassifierOptions(
                 "myClassifier",
                 mapOf("formA", new ClassifierDocumentTypeDetails().setAzureBlobSource(
                     new AzureBlobContentSource("https://myStorageAccount.blob.core.windows.net/myContainer?mySasToken")

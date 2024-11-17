@@ -5,10 +5,10 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
-import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
+import com.azure.ai.documentintelligence.models.AnalyzeOutputFormat;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -30,9 +30,9 @@ public class GetAnalyzeResultPdf {
         String modelID = "prebuilt-read";
         byte[] fileBytes = Files.readAllBytes(Paths.get("layout-pageobject.pdf"));
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller = documentIntelligenceClient.beginAnalyzeDocument(
-            modelID, "1-2,4", "en-US", StringIndexType.TEXT_ELEMENTS, null, null, null, Arrays.asList(AnalyzeOutputOption.PDF),
-            new AnalyzeDocumentRequest().setBase64Source(fileBytes));
+        SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller = documentIntelligenceClient.beginAnalyzeDocument(
+            modelID, "1-2,4", "en-US", StringIndexType.TEXT_ELEMENTS, null, null, null, Arrays.asList(AnalyzeOutputFormat.PDF),
+            new AnalyzeDocumentOptions().setBase64Source(fileBytes));
 
         AnalyzeResult analyzeResult = syncPoller.getFinalResult();
         String resultId = syncPoller.poll().getValue().getOperationId();

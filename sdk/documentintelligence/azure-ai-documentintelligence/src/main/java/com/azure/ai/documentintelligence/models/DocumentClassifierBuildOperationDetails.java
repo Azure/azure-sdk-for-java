@@ -58,7 +58,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
 
     /**
      * Creates an instance of DocumentClassifierBuildOperationDetails class.
-     * 
+     *
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
@@ -72,7 +72,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
 
     /**
      * Get the kind property: Type of operation.
-     * 
+     *
      * @return the kind value.
      */
     @Generated
@@ -83,7 +83,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
 
     /**
      * Get the result property: Operation result upon success.
-     * 
+     *
      * @return the result value.
      */
     @Generated
@@ -93,7 +93,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
 
     /**
      * Get the error property: Encountered error.
-     * 
+     *
      * @return the error value.
      */
     @Generated
@@ -104,7 +104,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @return the tags value.
      */
     @Generated
@@ -115,7 +115,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
 
     /**
      * Get the apiVersion property: API version used to create this operation.
-     * 
+     *
      * @return the apiVersion value.
      */
     @Generated
@@ -126,7 +126,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
 
     /**
      * Get the percentCompleted property: Operation progress (0-100).
-     * 
+     *
      * @return the percentCompleted value.
      */
     @Generated
@@ -144,7 +144,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("createdDateTime",
-            getCreatedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDateTime()));
+            getCreatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedOn()));
         jsonWriter.writeStringField("lastUpdatedDateTime",
             getLastUpdatedDateTime() == null
                 ? null
@@ -161,7 +161,7 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
 
     /**
      * Reads an instance of DocumentClassifierBuildOperationDetails from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentClassifierBuildOperationDetails if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.

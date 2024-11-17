@@ -11,8 +11,8 @@
     <relativePath>../../../parents/azure-code-customization-parent</relativePath>
   </parent>
 
-  <name>Microsoft Azure Document Intelligence client for Java</name>
-  <description>This package contains client customization for Microsoft Azure Document Intelligence</description>
+  <name>Microsoft Azure AnalyzedDocument Intelligence client for Java</name>
+  <description>This package contains client customization for Microsoft Azure AnalyzedDocument Intelligence</description>
 
   <groupId>com.azure.tools</groupId>
   <artifactId>azure-documentintelligence-customization</artifactId>

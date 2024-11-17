@@ -60,7 +60,7 @@ public final class ClassifierCopyAuthorization implements JsonSerializable<Class
 
     /**
      * Creates an instance of ClassifierCopyAuthorization class.
-     * 
+     *
      * @param targetResourceId the targetResourceId value to set.
      * @param targetResourceRegion the targetResourceRegion value to set.
      * @param targetClassifierId the targetClassifierId value to set.
@@ -82,7 +82,7 @@ public final class ClassifierCopyAuthorization implements JsonSerializable<Class
     /**
      * Get the targetResourceId property: ID of the target Azure resource where the document classifier should be copied
      * to.
-     * 
+     *
      * @return the targetResourceId value.
      */
     @Generated
@@ -94,7 +94,7 @@ public final class ClassifierCopyAuthorization implements JsonSerializable<Class
      * Get the targetResourceRegion property: Location of the target Azure resource where the document classifier should
      * be copied
      * to.
-     * 
+     *
      * @return the targetResourceRegion value.
      */
     @Generated
@@ -104,7 +104,7 @@ public final class ClassifierCopyAuthorization implements JsonSerializable<Class
 
     /**
      * Get the targetClassifierId property: Identifier of the target document classifier.
-     * 
+     *
      * @return the targetClassifierId value.
      */
     @Generated
@@ -114,7 +114,7 @@ public final class ClassifierCopyAuthorization implements JsonSerializable<Class
 
     /**
      * Get the targetClassifierLocation property: URL of the copied document classifier in the target account.
-     * 
+     *
      * @return the targetClassifierLocation value.
      */
     @Generated
@@ -124,7 +124,7 @@ public final class ClassifierCopyAuthorization implements JsonSerializable<Class
 
     /**
      * Get the accessToken property: Token used to authorize the request.
-     * 
+     *
      * @return the accessToken value.
      */
     @Generated
@@ -134,11 +134,11 @@ public final class ClassifierCopyAuthorization implements JsonSerializable<Class
 
     /**
      * Get the expirationDateTime property: Date/time when the access token expires.
-     * 
+     *
      * @return the expirationDateTime value.
      */
     @Generated
-    public OffsetDateTime getExpirationDateTime() {
+    public OffsetDateTime getExpiresOn() {
         return this.expirationDateTime;
     }
 
@@ -163,7 +163,7 @@ public final class ClassifierCopyAuthorization implements JsonSerializable<Class
 
     /**
      * Reads an instance of ClassifierCopyAuthorization from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClassifierCopyAuthorization if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

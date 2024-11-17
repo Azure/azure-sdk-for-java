@@ -33,7 +33,7 @@ public class ManageCustomModelsAsync {
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many models we have, and what our limit is
-        client.getResourceInfo().subscribe(resourceInfo ->
+        client.getResourceDetails().subscribe(resourceInfo ->
             System.out.printf("The resource has %s  models, and we can have at most %s models.%n",
                 resourceInfo.getCustomDocumentModels().getCount(), resourceInfo.getCustomDocumentModels().getLimit()));
         // Next, we get a paged list of all of our models
@@ -46,8 +46,8 @@ public class ManageCustomModelsAsync {
             client.getModel(documentModelInfo.getModelId()).subscribe(documentModel -> {
                 System.out.printf("Model ID: %s%n", documentModel.getModelId());
                 System.out.printf("Model Description: %s%n", documentModel.getDescription());
-                System.out.printf("Model created on: %s%n", documentModel.getCreatedDateTime());
-                documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+                System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
                     documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s, ", field);
                         System.out.printf("Field type: %s, ", documentFieldSchema.getType());

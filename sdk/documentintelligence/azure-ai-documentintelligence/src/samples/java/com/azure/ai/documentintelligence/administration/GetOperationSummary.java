@@ -5,8 +5,8 @@ package com.azure.ai.documentintelligence.administration;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
-import com.azure.ai.documentintelligence.models.OperationDetails;
 import com.azure.ai.documentintelligence.models.OperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -37,7 +37,7 @@ public class GetOperationSummary {
             System.out.printf("Operation percent completion status: %d%n", modelOperationSummary.getPercentCompleted());
 
             // get the specific operation info
-            OperationDetails modelOperationDetails =
+            DocumentIntelligenceOperationDetails modelOperationDetails =
                 client.getOperation(modelOperationSummary.getOperationId());
             if (OperationStatus.FAILED.equals(modelOperationSummary.getStatus())) {
                 System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());

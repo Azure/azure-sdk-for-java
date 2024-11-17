@@ -64,13 +64,13 @@ public final class DocumentIntelligenceClientImpl {
     private final DocumentIntelligenceClientService service;
 
     /**
-     * The Document Intelligence service endpoint.
+     * The AnalyzedDocument Intelligence service endpoint.
      */
     private final String endpoint;
 
     /**
-     * Gets The Document Intelligence service endpoint.
-     * 
+     * Gets The AnalyzedDocument Intelligence service endpoint.
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -84,7 +84,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public DocumentIntelligenceServiceVersion getServiceVersion() {
@@ -98,7 +98,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -112,7 +112,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -121,8 +121,8 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
-     * @param endpoint The Document Intelligence service endpoint.
+     *
+     * @param endpoint The AnalyzedDocument Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
     public DocumentIntelligenceClientImpl(String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
@@ -132,9 +132,9 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The Document Intelligence service endpoint.
+     * @param endpoint The AnalyzedDocument Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
     public DocumentIntelligenceClientImpl(HttpPipeline httpPipeline, String endpoint,
@@ -144,10 +144,10 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The Document Intelligence service endpoint.
+     * @param endpoint The AnalyzedDocument Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
     public DocumentIntelligenceClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -411,7 +411,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -420,7 +420,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -473,7 +473,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -482,7 +482,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -535,7 +535,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -544,7 +544,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -599,7 +599,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -608,7 +608,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -663,7 +663,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -672,7 +672,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -728,7 +728,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -737,7 +737,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -765,13 +765,13 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -793,13 +793,13 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -820,13 +820,13 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param figureId Figure ID.
@@ -849,13 +849,13 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param figureId Figure ID.
@@ -876,7 +876,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Mark the result of document analysis for deletion.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -896,7 +896,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Mark the result of document analysis for deletion.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -945,7 +945,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -963,7 +963,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1016,7 +1016,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1034,7 +1034,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1087,7 +1087,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1105,7 +1105,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1161,7 +1161,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1179,7 +1179,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1235,7 +1235,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1253,7 +1253,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1310,7 +1310,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1328,7 +1328,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1357,7 +1357,7 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * List batch document analysis results.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1395,7 +1395,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1419,7 +1419,7 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * List batch document analysis results.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1457,7 +1457,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1478,7 +1478,7 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * List batch document analysis results.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1516,7 +1516,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1537,7 +1537,7 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * List batch document analysis results.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1575,7 +1575,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1595,7 +1595,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Mark the batch document analysis result for deletion.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1615,7 +1615,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Mark the batch document analysis result for deletion.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1636,7 +1636,7 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the result of batch document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1674,7 +1674,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1696,7 +1696,7 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the result of batch document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1734,7 +1734,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1760,13 +1760,13 @@ public final class DocumentIntelligenceClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * <tr><td>split</td><td>String</td><td>No</td><td>AnalyzedDocument splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
      * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1775,7 +1775,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1803,13 +1803,13 @@ public final class DocumentIntelligenceClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * <tr><td>split</td><td>String</td><td>No</td><td>AnalyzedDocument splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
      * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1818,7 +1818,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1845,13 +1845,13 @@ public final class DocumentIntelligenceClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * <tr><td>split</td><td>String</td><td>No</td><td>AnalyzedDocument splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
      * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1860,7 +1860,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1894,13 +1894,13 @@ public final class DocumentIntelligenceClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * <tr><td>split</td><td>String</td><td>No</td><td>AnalyzedDocument splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
      * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1909,7 +1909,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1943,13 +1943,13 @@ public final class DocumentIntelligenceClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * <tr><td>split</td><td>String</td><td>No</td><td>AnalyzedDocument splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
      * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1958,7 +1958,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1992,13 +1992,13 @@ public final class DocumentIntelligenceClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * <tr><td>split</td><td>String</td><td>No</td><td>AnalyzedDocument splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
      * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2007,7 +2007,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2036,7 +2036,7 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2074,7 +2074,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2098,7 +2098,7 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2136,7 +2136,7 @@ public final class DocumentIntelligenceClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

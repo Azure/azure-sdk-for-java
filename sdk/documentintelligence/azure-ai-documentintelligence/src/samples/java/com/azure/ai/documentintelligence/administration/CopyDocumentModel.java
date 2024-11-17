@@ -5,8 +5,8 @@ package com.azure.ai.documentintelligence.administration;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
-import com.azure.ai.documentintelligence.models.CopyAuthorization;
+import com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions;
+import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.credential.AzureKeyCredential;
@@ -38,8 +38,8 @@ public class CopyDocumentModel {
         String copiedModelId = "my-copied-model";
 
         // Get authorization to copy the model to target resource
-        CopyAuthorization modelDocumentModelCopyAuthorization
-            = targetClient.authorizeModelCopy(new AuthorizeCopyRequest(copiedModelId));
+        ModelCopyAuthorization modelDocumentModelCopyAuthorization
+            = targetClient.authorizeModelCopy(new AuthorizeModelCopyOptions(copiedModelId));
 
         // The ID of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-ID";
@@ -53,7 +53,7 @@ public class CopyDocumentModel {
 
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n",
             copiedModel.getModelId(),
-            copiedModel.getCreatedDateTime());
+            copiedModel.getCreatedOn());
     }
 }
 

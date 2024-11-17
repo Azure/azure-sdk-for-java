@@ -284,7 +284,7 @@ public interface ApiContract {
              * @param format Format of the Content in which the API is getting imported.
              * @return the next definition stage.
              */
-            WithCreate withFormat(ContentFormat format);
+            WithCreate withFormat(DocumentContentFormat format);
         }
 
         /**

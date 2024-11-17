@@ -56,7 +56,7 @@ public final class ModelCopyAuthorization implements JsonSerializable<ModelCopyA
      * Date/time when the access token expires.
      */
     @Generated
-    private final OffsetDateTime expirationDateTime;
+    private final OffsetDateTime expiresOn;
 
     /**
      * Creates an instance of ModelCopyAuthorization class.
@@ -66,17 +66,17 @@ public final class ModelCopyAuthorization implements JsonSerializable<ModelCopyA
      * @param targetModelId the targetModelId value to set.
      * @param targetModelLocation the targetModelLocation value to set.
      * @param accessToken the accessToken value to set.
-     * @param expirationDateTime the expirationDateTime value to set.
+     * @param expiresOn the expiresOn value to set.
      */
     @Generated
     public ModelCopyAuthorization(String targetResourceId, String targetResourceRegion, String targetModelId,
-        String targetModelLocation, String accessToken, OffsetDateTime expirationDateTime) {
+        String targetModelLocation, String accessToken, OffsetDateTime expiresOn) {
         this.targetResourceId = targetResourceId;
         this.targetResourceRegion = targetResourceRegion;
         this.targetModelId = targetModelId;
         this.targetModelLocation = targetModelLocation;
         this.accessToken = accessToken;
-        this.expirationDateTime = expirationDateTime;
+        this.expiresOn = expiresOn;
     }
 
     /**
@@ -132,13 +132,13 @@ public final class ModelCopyAuthorization implements JsonSerializable<ModelCopyA
     }
 
     /**
-     * Get the expirationDateTime property: Date/time when the access token expires.
+     * Get the expiresOn property: Date/time when the access token expires.
      * 
-     * @return the expirationDateTime value.
+     * @return the expiresOn value.
      */
     @Generated
-    public OffsetDateTime getExpirationDateTime() {
-        return this.expirationDateTime;
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
@@ -154,9 +154,7 @@ public final class ModelCopyAuthorization implements JsonSerializable<ModelCopyA
         jsonWriter.writeStringField("targetModelLocation", this.targetModelLocation);
         jsonWriter.writeStringField("accessToken", this.accessToken);
         jsonWriter.writeStringField("expirationDateTime",
-            this.expirationDateTime == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+            this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
         return jsonWriter.writeEndObject();
     }
 
@@ -177,7 +175,7 @@ public final class ModelCopyAuthorization implements JsonSerializable<ModelCopyA
             String targetModelId = null;
             String targetModelLocation = null;
             String accessToken = null;
-            OffsetDateTime expirationDateTime = null;
+            OffsetDateTime expiresOn = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -193,14 +191,14 @@ public final class ModelCopyAuthorization implements JsonSerializable<ModelCopyA
                 } else if ("accessToken".equals(fieldName)) {
                     accessToken = reader.getString();
                 } else if ("expirationDateTime".equals(fieldName)) {
-                    expirationDateTime = reader
+                    expiresOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
             return new ModelCopyAuthorization(targetResourceId, targetResourceRegion, targetModelId,
-                targetModelLocation, accessToken, expirationDateTime);
+                targetModelLocation, accessToken, expiresOn);
         });
     }
 }

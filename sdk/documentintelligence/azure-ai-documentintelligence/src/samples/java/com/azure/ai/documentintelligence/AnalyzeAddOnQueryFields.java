@@ -3,9 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -37,7 +37,7 @@ public class AnalyzeAddOnQueryFields {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
                 client.beginAnalyzeDocument("prebuilt-layout", null,
                         null,
                         null,
@@ -45,7 +45,7 @@ public class AnalyzeAddOnQueryFields {
                         Arrays.asList("Address", "InvoiceNumber"),
                         null,
                         null,
-                        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
+                        new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

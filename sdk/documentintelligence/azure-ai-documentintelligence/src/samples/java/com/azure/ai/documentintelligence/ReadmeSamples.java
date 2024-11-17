@@ -4,13 +4,13 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
-import com.azure.ai.documentintelligence.models.ContentFormat;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
+import com.azure.ai.documentintelligence.models.DocumentContentFormat;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentField;
@@ -18,7 +18,7 @@ import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTable;
-import com.azure.ai.documentintelligence.models.ResourceDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceResourceDetails;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
@@ -66,7 +66,7 @@ public final class ReadmeSamples {
         Path filePath = layoutDocument.toPath();
         BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
             documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
@@ -75,7 +75,7 @@ public final class ReadmeSamples {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
+                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -120,7 +120,7 @@ public final class ReadmeSamples {
         File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
+        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
             documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
                 null,
                 null,
@@ -129,12 +129,12 @@ public final class ReadmeSamples {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
+                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
-            Document analyzedReceipt = receiptResults.getDocuments().get(i);
+            AnalyzedDocument analyzedReceipt = receiptResults.getDocuments().get(i);
             Map<String, DocumentField> receiptFields = analyzedReceipt.getFields();
             System.out.printf("----------- Analyzing receipt info %d -----------%n", i);
             DocumentField merchantNameField = receiptFields.get("MerchantName");
@@ -183,7 +183,7 @@ public final class ReadmeSamples {
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
-            administrationClient.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
+            administrationClient.beginBuildDocumentModel(new BuildDocumentModelOptions("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
         DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
@@ -191,10 +191,10 @@ public final class ReadmeSamples {
         // Model Info
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
-        System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedDateTime());
+        System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
 
-        System.out.println("Document Fields:");
-        documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.println("AnalyzedDocument Fields:");
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -209,23 +209,23 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.documentintelligence.readme.analyzeCustomModel
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
-            ContentFormat.TEXT,
+            DocumentContentFormat.TEXT,
             null,
-            new AnalyzeDocumentRequest().setUrlSource(documentUrl));
+            new AnalyzeDocumentOptions().setUrlSource(documentUrl));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-            final Document analyzedDocument = analyzeResult.getDocuments().get(i);
+            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
             System.out.printf("----------- Analyzing custom document %d -----------%n", i);
             System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+                analyzedDocument.getDocumentType(), analyzedDocument.getConfidence());
         }
 
         analyzeResult.getPages().forEach(documentPage -> {
@@ -267,7 +267,7 @@ public final class ReadmeSamples {
     public void manageModels() {
         // BEGIN: com.azure.ai.documentintelligence.readme.manageModels
 
-        ResourceDetails resourceDetails = administrationClient.getResourceInfo();
+        DocumentIntelligenceResourceDetails resourceDetails = administrationClient.getResourceDetails();
         System.out.printf("The resource has %s models, and we can have at most %s models.%n",
             resourceDetails.getCustomDocumentModels().getCount(), resourceDetails.getCustomDocumentModels().getLimit());
 
@@ -280,9 +280,9 @@ public final class ReadmeSamples {
             DocumentModelDetails documentModel = administrationClient.getModel(documentModelInfo.getModelId());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
-            System.out.printf("Model created on: %s%n", documentModel.getCreatedDateTime());
-            if (documentModel.getDocTypes() != null) {
-                documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+            System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
+            if (documentModel.getDocumentTypes() != null) {
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
                     documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s, ", field);
                         System.out.printf("Field type: %s, ", documentFieldSchema.getType());

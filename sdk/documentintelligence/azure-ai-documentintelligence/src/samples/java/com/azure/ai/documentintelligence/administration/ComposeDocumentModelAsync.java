@@ -44,10 +44,10 @@ public class ComposeDocumentModelAsync {
 
                 System.out.printf("Model ID: %s%n", documentModel.getModelId());
                 System.out.printf("Model Description: %s%n", documentModel.getDescription());
-                System.out.printf("Composed model created on: %s%n", documentModel.getCreatedDateTime());
+                System.out.printf("Composed model created on: %s%n", documentModel.getCreatedOn());
 
-                System.out.println("Document Fields:");
-                documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+                System.out.println("AnalyzedDocument Fields:");
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
                     documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s", field);
                         System.out.printf("Field type: %s", documentFieldSchema.getType());

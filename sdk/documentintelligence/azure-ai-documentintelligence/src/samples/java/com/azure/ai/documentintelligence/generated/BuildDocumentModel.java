@@ -7,7 +7,7 @@ package com.azure.ai.documentintelligence.generated;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
@@ -26,7 +26,7 @@ public class BuildDocumentModel {
         // BEGIN:com.azure.ai.documentintelligence.generated.builddocumentmodel.builddocumentmodel
         SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> response
             = documentIntelligenceAdministrationClient
-                .beginBuildDocumentModel(new BuildDocumentModelRequest("myCustomModel", DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions("myCustomModel", DocumentBuildMode.TEMPLATE)
                     .setDescription("Custom model description")
                     .setAzureBlobSource(new AzureBlobContentSource(
                         "https://myStorageAccount.blob.core.windows.net/myContainer?mySasToken")

@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.administration;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
+import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
@@ -51,16 +51,16 @@ public class BuildDocumentClassifierAsync {
         ));
 
         SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> classifierPoller =
-            client.beginBuildClassifier(new BuildDocumentClassifierRequest("classifierID", docTypes));
+            client.beginBuildClassifier(new BuildDocumentClassifierOptions("classifierID", docTypes));
 
         DocumentClassifierDetails documentClassifierDetails = classifierPoller.getFinalResult();
 
         // Classifier model Info
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
         System.out.printf("Classifier description: %s%n", documentClassifierDetails.getDescription());
-        System.out.printf("Classifier created on: %s%n", documentClassifierDetails.getCreatedDateTime());
-        System.out.printf("Classifier expires on: %s%n", documentClassifierDetails.getExpirationDateTime());
-        documentClassifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.printf("Classifier created on: %s%n", documentClassifierDetails.getCreatedOn());
+        System.out.printf("Classifier expires on: %s%n", documentClassifierDetails.getExpiresOn());
+        documentClassifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getAzureBlobSource() != null) {
                 System.out.printf("Blob Source container Url: %s", (documentTypeDetails
                     .getAzureBlobSource()).getContainerUrl());

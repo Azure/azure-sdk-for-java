@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
+import com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions;
 import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -19,7 +19,7 @@ public class AuthorizeCopyOfDocumentModel {
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.authorizemodelcopy.authorizecopyofdocumentmodel
         ModelCopyAuthorization response = documentIntelligenceAdministrationClient
-            .authorizeModelCopy(new AuthorizeCopyRequest("targetModel").setDescription("Target model description"));
+            .authorizeModelCopy(new AuthorizeModelCopyOptions("targetModel").setDescription("Target model description"));
         // END:com.azure.ai.documentintelligence.generated.authorizemodelcopy.authorizecopyofdocumentmodel
     }
 }

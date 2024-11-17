@@ -3,10 +3,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.core.credential.AzureKeyCredential;
@@ -43,7 +43,7 @@ public class AnalyzeIdentityDocumentsAsync {
             + "sample-forms/identityDocuments/license.png");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller
+        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocument("prebuilt-idDocument",
             null,
             null,
@@ -51,7 +51,7 @@ public class AnalyzeIdentityDocumentsAsync {
             null,
             null,
             null,
-            null, new AnalyzeDocumentRequest().setBase64Source(fileContent));
+            null, new AnalyzeDocumentOptions().setBase64Source(fileContent));
 
         Mono<AnalyzeResult> identityDocumentPollerResult = analyzeIdentityDocumentPoller
             .last()
@@ -66,7 +66,7 @@ public class AnalyzeIdentityDocumentsAsync {
 
         identityDocumentPollerResult.subscribe(idDocumentResults -> {
             for (int i = 0; i < idDocumentResults.getDocuments().size(); i++) {
-                Document analyzedIDDocument = idDocumentResults.getDocuments().get(i);
+                AnalyzedDocument analyzedIDDocument = idDocumentResults.getDocuments().get(i);
                 Map<String, DocumentField> licenseFields = analyzedIDDocument.getFields();
                 System.out.printf("----------- Analyzed license info for page %d -----------%n", i);
                 DocumentField addressField = licenseFields.get("Address");
@@ -100,7 +100,7 @@ public class AnalyzeIdentityDocumentsAsync {
                 if (dateOfExpirationField != null) {
                     if (DocumentFieldType.DATE == dateOfExpirationField.getType()) {
                         LocalDate expirationDate = dateOfExpirationField.getValueDate();
-                        System.out.printf("Document date of expiration: %s, confidence: %.2f%n",
+                        System.out.printf("AnalyzedDocument date of expiration: %s, confidence: %.2f%n",
                             expirationDate, dateOfExpirationField.getConfidence());
                     }
                 }
@@ -109,7 +109,7 @@ public class AnalyzeIdentityDocumentsAsync {
                 if (documentNumberField != null) {
                     if (DocumentFieldType.STRING == documentNumberField.getType()) {
                         String documentNumber = documentNumberField.getValueString();
-                        System.out.printf("Document number: %s, confidence: %.2f%n",
+                        System.out.printf("AnalyzedDocument number: %s, confidence: %.2f%n",
                             documentNumber, documentNumberField.getConfidence());
                     }
                 }

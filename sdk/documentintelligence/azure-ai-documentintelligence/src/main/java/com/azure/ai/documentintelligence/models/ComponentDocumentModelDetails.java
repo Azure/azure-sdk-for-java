@@ -19,13 +19,13 @@ import java.io.IOException;
 @Fluent
 public final class ComponentDocumentModelDetails implements JsonSerializable<ComponentDocumentModelDetails> {
     /*
-     * Document type.
+     * AnalyzedDocument type.
      */
     @Generated
     private String docType;
 
     /*
-     * Document model to use for analyzing documents with specified type.
+     * AnalyzedDocument model to use for analyzing documents with specified type.
      */
     @Generated
     private final String modelId;
@@ -47,17 +47,17 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
     }
 
     /**
-     * Get the docType property: Document type.
+     * Get the docType property: AnalyzedDocument type.
      *
      * @return the docType value.
      */
     @Generated
-    public String getDocType() {
+    public String getDocumentType() {
         return this.docType;
     }
 
     /**
-     * Set the docType property: Document type.
+     * Set the docType property: AnalyzedDocument type.
      *
      * @param docType the docType value to set.
      * @return the ComponentDocumentModelDetails object itself.
@@ -69,7 +69,7 @@ public final class ComponentDocumentModelDetails implements JsonSerializable<Com
     }
 
     /**
-     * Get the modelId property: Document model to use for analyzing documents with specified type.
+     * Get the modelId property: AnalyzedDocument model to use for analyzing documents with specified type.
      *
      * @return the modelId value.
      */

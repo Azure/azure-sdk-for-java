@@ -16,32 +16,32 @@
 - Added support for the Analyze Batch Documents API with the LRO method `beginAnalyzeBatchDocuments` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
 - Added support for method `getAnalyzeResultPdfWithResponse` and `getAnalyzeResultPdf` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
 - Added support for method `getAnalyzeResultFiguresWithResponse` and `getAnalyzeResultFigures` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
-- Added a model `AnalyzeOutputOption` to specify other kinds of output: either `Pdf` and `Figures`.
+- Added a model `AnalyzeOutputFormat` to specify other kinds of output: either `Pdf` and `Figures`.
 - Added property `Id` to `DocumentFigure` model.
 - Added support for the Copy Classifier API with method `authorizeClassifierCopy` and `authorizeClassifierCopyWithResponse` to
 `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceAdministrationAsyncClient`.
 - Added method `copyClassifierTo` to `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceAdministrationAsyncClient`.
-- Added new enum type to `DocumentBuildMode`: `GENERATIVE`.
+- Added new enum type to `DocumentBuildMode`: `TEMPLATE`.
 - Added property `Warnings` to `AnalyzeResult` model.
 - Added properties `ClassifierId`, `Split`, and `TrainingHours` to `DocumentModelDetails` model.
 - Added properties `ConfidenceThreshold`, `Features`, `MaxDocumentsToAnalyze`, `ModelId`, and `QueryFields` to `DocumentTypeDetails` model.
 - Added properties `AllowOverwrite` and `MaxTrainingHours` to `BuildDocumentModelContent` model.
 - Added parameter `pages` to `ClassifyDocument` overloads in `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
 - Added properties `ClassifierId`, `DocTypes`, and `Split` to `ComposeDocumentModelRequest`.
-- Added property `AllowOverwrite` to `BuildDocumentClassifierRequest`.
-- Added property `operationId` to `AnalyzeResultOperation`.
+- Added property `AllowOverwrite` to `BuildDocumentClassifierOptions`.
+- Added property `operationId` to `AnalyzeOperation`.
 
 ### Breaking Changes
 - `DocumentIntelligenceClient` and `DocumentIntelligenceAdministrationClient` now target service API version `2024-07-31-preview`. Support for `2024-02-29-preview` has been removed.
 - Removed support for extracting lists from analyzed documents:
     - Removed models `DocumentList` and `DocumentListItem`.
     - Removed property `Lists` from `AnalyzeResult`.
-- Changes to the Compose Document API:
+- Changes to the Compose AnalyzedDocument API:
     - Removed model `ComponentDocumentModelDetails`.
     - Removed property `ComponentModels` from `ComposeDocumentModelRequest`.
     - `ComposeDocumentModelRequest` now requires a map of `DocumentTypeDetails` and a classifier ID.
 - Removed model `QuotaDetails`.
-- Removed property `CustomNeuralDocumentModelBuilds` from `ResourceDetails.`
+- Removed property `CustomNeuralDocumentModelBuilds` from `DocumentIntelligenceResourceDetails.`
 - Removed required property `fieldSchema` and from `DocumentTypeDetails` and made it settable.
 - `DocumentFieldType` is now a required property on the constructor of `DocumentFieldSchema`.- 
 
@@ -68,7 +68,7 @@
 - Added a property, `valueSelectionGroup` to `DocumentField` model.
 
 ### Breaking Changes
-- The Azure Document Intelligence Client Library, now targets the Azure AI Document Intelligence service API version `"2024-02-29-preview"`.
+- The Azure AnalyzedDocument Intelligence Client Library, now targets the Azure AI AnalyzedDocument Intelligence service API version `"2024-02-29-preview"`.
 Please note that support for `2023-10-31-preview` has been discontinued.
 
 ### Other Changes
@@ -79,9 +79,9 @@ Please note that support for `2023-10-31-preview` has been discontinued.
 
 ## 1.0.0-beta.1 (2023-11-16)
 
-_**Note: Form Recognizer has been rebranded to Document Intelligence**_
+_**Note: Form Recognizer has been rebranded to AnalyzedDocument Intelligence**_
 
-This marks the first preview of `azure-ai-documentintelligence` client library for the `Azure AI Document
+This marks the first preview of `azure-ai-documentintelligence` client library for the `Azure AI AnalyzedDocument
 Intelligence` service (formerly known as Form Recognizer), targeting service API version `"2023-10-31-preview"`.
 
 It is developer-friendly and idiomatic to the Java ecosystem. The principles that guide our efforts can be found in the
@@ -108,14 +108,14 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 
     ```java
     File document = new File("{your-file-to-analyze}");
-    SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+    SyncPoller<AnalyzeOperation, AnalyzeOperation> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", null,
                     null,
                     null,
                     null,
                     null,
-                    ContentFormat.MARKDOWN,
-                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                    DocumentContentFormat.MARKDOWN,
+                    new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
     ```
     For the complete sample, see [Sample: Markdown](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeLayoutMarkdownOutput.java).
 
@@ -126,14 +126,14 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 
     ```java
     File document = new File("{your-file-to-analyze}");
-    SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+    SyncPoller<AnalyzeOperation, AnalyzeOperation> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", null,
                     null,
                     null,
                     Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
                     Arrays.asList("Address", "InvoiceNumber"),
                     null,
-                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
     ```
     For the complete sample, see [Sample: Query Fields](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnQueryFields.java).
 
@@ -182,7 +182,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
   }
   ...
   ```
-- API shapes have been designed from scratch to support new SDK client for the Document Intelligence service.
+- API shapes have been designed from scratch to support new SDK client for the AnalyzedDocument Intelligence service.
   Please refer to the [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/README.md)
   and [Samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/README.md) 
   for more understanding.
@@ -197,14 +197,14 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 
   ```java
   File document = new File("{your-file-to-analyze}");
-  SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+  SyncPoller<AnalyzeOperation, AnalyzeOperation> analyzeLayoutResultPoller =
           client.beginAnalyzeDocument("prebuilt-layout", null,
                   null,
                   null,
                   Arrays.asList(DocumentAnalysisFeature.FORMULAS),
                   null,
                   null,
-                  new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                  new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
     ```
   
   For the complete sample, see [Sample: KeyValuePair](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnKeyValuePair.java).

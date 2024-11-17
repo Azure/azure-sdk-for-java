@@ -17,7 +17,7 @@ import java.util.Map;
  * Request body to authorize document model copy.
  */
 @Fluent
-public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCopyRequest> {
+public final class AuthorizeModelCopyOptions implements JsonSerializable<AuthorizeModelCopyOptions> {
     /*
      * Unique document model name.
      */
@@ -25,7 +25,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
     private final String modelId;
 
     /*
-     * Document model description.
+     * AnalyzedDocument model description.
      */
     @Generated
     private String description;
@@ -38,17 +38,17 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
 
     /**
      * Creates an instance of AuthorizeCopyRequest class.
-     * 
+     *
      * @param modelId the modelId value to set.
      */
     @Generated
-    public AuthorizeCopyRequest(String modelId) {
+    public AuthorizeModelCopyOptions(String modelId) {
         this.modelId = modelId;
     }
 
     /**
      * Get the modelId property: Unique document model name.
-     * 
+     *
      * @return the modelId value.
      */
     @Generated
@@ -57,8 +57,8 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
     }
 
     /**
-     * Get the description property: Document model description.
-     * 
+     * Get the description property: AnalyzedDocument model description.
+     *
      * @return the description value.
      */
     @Generated
@@ -67,20 +67,20 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
     }
 
     /**
-     * Set the description property: Document model description.
-     * 
+     * Set the description property: AnalyzedDocument model description.
+     *
      * @param description the description value to set.
      * @return the AuthorizeCopyRequest object itself.
      */
     @Generated
-    public AuthorizeCopyRequest setDescription(String description) {
+    public AuthorizeModelCopyOptions setDescription(String description) {
         this.description = description;
         return this;
     }
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @return the tags value.
      */
     @Generated
@@ -90,12 +90,12 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the AuthorizeCopyRequest object itself.
      */
     @Generated
-    public AuthorizeCopyRequest setTags(Map<String, String> tags) {
+    public AuthorizeModelCopyOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -115,7 +115,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
 
     /**
      * Reads an instance of AuthorizeCopyRequest from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AuthorizeCopyRequest if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -123,7 +123,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
      * @throws IOException If an error occurs while reading the AuthorizeCopyRequest.
      */
     @Generated
-    public static AuthorizeCopyRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static AuthorizeModelCopyOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String modelId = null;
             String description = null;
@@ -142,11 +142,11 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
                     reader.skipChildren();
                 }
             }
-            AuthorizeCopyRequest deserializedAuthorizeCopyRequest = new AuthorizeCopyRequest(modelId);
-            deserializedAuthorizeCopyRequest.description = description;
-            deserializedAuthorizeCopyRequest.tags = tags;
+            AuthorizeModelCopyOptions deserializedAuthorizeModelCopyOptions = new AuthorizeModelCopyOptions(modelId);
+            deserializedAuthorizeModelCopyOptions.description = description;
+            deserializedAuthorizeModelCopyOptions.tags = tags;
 
-            return deserializedAuthorizeCopyRequest;
+            return deserializedAuthorizeModelCopyOptions;
         });
     }
 }

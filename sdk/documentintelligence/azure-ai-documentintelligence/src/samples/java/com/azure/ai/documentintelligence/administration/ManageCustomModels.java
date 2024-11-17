@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.administration;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
-import com.azure.ai.documentintelligence.models.ResourceDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceResourceDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
@@ -34,7 +34,7 @@ public class ManageCustomModels {
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many models we have, and what our limit is
-        ResourceDetails resourceDetails = client.getResourceInfo();
+        DocumentIntelligenceResourceDetails resourceDetails = client.getResourceDetails();
         System.out.printf("The resource has %s models, and we can have at most %s models.%n",
             resourceDetails.getCustomDocumentModels().getCount(), resourceDetails.getCustomDocumentModels().getLimit());
 
@@ -48,9 +48,9 @@ public class ManageCustomModels {
             DocumentModelDetails documentModel = client.getModel(modelId.get());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
-            System.out.printf("Model created on: %s%n", documentModel.getCreatedDateTime());
-            if (documentModel.getDocTypes() != null) {
-                documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+            System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
+            if (documentModel.getDocumentTypes() != null) {
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
                     documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s, ", field);
                         System.out.printf("Field type: %s, ", documentFieldSchema.getType());

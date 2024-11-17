@@ -14,33 +14,33 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Document classification parameters.
+ * AnalyzedDocument analysis parameters.
  */
 @Fluent
-public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyDocumentRequest> {
+public final class AnalyzeDocumentOptions implements JsonSerializable<AnalyzeDocumentOptions> {
     /*
-     * Document URL to classify. Either urlSource or base64Source must be specified.
+     * AnalyzedDocument URL to analyze. Either urlSource or base64Source must be specified.
      */
     @Generated
     private String urlSource;
 
     /*
-     * Base64 encoding of the document to classify. Either urlSource or base64Source
+     * Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
      */
     @Generated
     private byte[] base64Source;
 
     /**
-     * Creates an instance of ClassifyDocumentRequest class.
+     * Creates an instance of AnalyzeDocumentOptions class.
      */
     @Generated
-    public ClassifyDocumentRequest() {
+    public AnalyzeDocumentOptions() {
     }
 
     /**
-     * Get the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
-     * 
+     * Get the urlSource property: AnalyzedDocument URL to analyze. Either urlSource or base64Source must be specified.
+     *
      * @return the urlSource value.
      */
     @Generated
@@ -49,21 +49,21 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
     }
 
     /**
-     * Set the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
-     * 
+     * Set the urlSource property: AnalyzedDocument URL to analyze. Either urlSource or base64Source must be specified.
+     *
      * @param urlSource the urlSource value to set.
-     * @return the ClassifyDocumentRequest object itself.
+     * @return the AnalyzeDocumentOptions object itself.
      */
     @Generated
-    public ClassifyDocumentRequest setUrlSource(String urlSource) {
+    public AnalyzeDocumentOptions setUrlSource(String urlSource) {
         this.urlSource = urlSource;
         return this;
     }
 
     /**
-     * Get the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source
+     * Get the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
-     * 
+     *
      * @return the base64Source value.
      */
     @Generated
@@ -72,14 +72,14 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
     }
 
     /**
-     * Set the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source
+     * Set the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
-     * 
+     *
      * @param base64Source the base64Source value to set.
-     * @return the ClassifyDocumentRequest object itself.
+     * @return the AnalyzeDocumentOptions object itself.
      */
     @Generated
-    public ClassifyDocumentRequest setBase64Source(byte[] base64Source) {
+    public AnalyzeDocumentOptions setBase64Source(byte[] base64Source) {
         this.base64Source = CoreUtils.clone(base64Source);
         return this;
     }
@@ -97,31 +97,31 @@ public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyD
     }
 
     /**
-     * Reads an instance of ClassifyDocumentRequest from the JsonReader.
-     * 
+     * Reads an instance of AnalyzeDocumentOptions from the JsonReader.
+     *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ClassifyDocumentRequest if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of AnalyzeDocumentOptions if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ClassifyDocumentRequest.
+     * @throws IOException If an error occurs while reading the AnalyzeDocumentOptions.
      */
     @Generated
-    public static ClassifyDocumentRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static AnalyzeDocumentOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ClassifyDocumentRequest deserializedClassifyDocumentRequest = new ClassifyDocumentRequest();
+            AnalyzeDocumentOptions deserializedAnalyzeDocumentOptions = new AnalyzeDocumentOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("urlSource".equals(fieldName)) {
-                    deserializedClassifyDocumentRequest.urlSource = reader.getString();
+                    deserializedAnalyzeDocumentOptions.urlSource = reader.getString();
                 } else if ("base64Source".equals(fieldName)) {
-                    deserializedClassifyDocumentRequest.base64Source = reader.getBinary();
+                    deserializedAnalyzeDocumentOptions.base64Source = reader.getBinary();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedClassifyDocumentRequest;
+            return deserializedAnalyzeDocumentOptions;
         });
     }
 }

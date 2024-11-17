@@ -5,10 +5,10 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceAdministrationClientImpl;
-import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest;
-import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
-import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions;
+import com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions;
+import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
@@ -51,7 +51,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Initializes an instance of DocumentIntelligenceAdministrationAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -62,7 +62,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -85,7 +85,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -104,7 +104,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -147,7 +147,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -167,7 +167,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -179,9 +179,9 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -194,7 +194,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -214,7 +214,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -227,7 +227,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -247,7 +247,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Gets detailed document model information.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -311,7 +311,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -329,7 +329,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -393,7 +393,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -409,7 +409,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -427,7 +427,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Return information about the current resource.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -438,7 +438,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -456,7 +456,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Gets operation info.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -487,7 +487,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -505,7 +505,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -536,7 +536,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -554,7 +554,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -578,7 +578,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -598,7 +598,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Generates authorization to copy a document classifier to this location with
      * specified classifierId and optional description.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -610,9 +610,9 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -625,7 +625,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -645,7 +645,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Copies document classifier to the target resource, region, and classifierId.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -658,7 +658,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -678,7 +678,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Gets detailed document classifier information.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -712,7 +712,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -731,7 +731,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -765,7 +765,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -781,7 +781,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -798,7 +798,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -811,7 +811,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelDetails>
-        beginBuildDocumentModel(BuildDocumentModelRequest buildRequest) {
+        beginBuildDocumentModel(BuildDocumentModelOptions buildRequest) {
         // Generated convenience method for beginBuildDocumentModelWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginBuildDocumentModelWithModelAsync(BinaryData.fromObject(buildRequest), requestOptions);
@@ -819,7 +819,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -841,7 +841,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -854,7 +854,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelCopyAuthorization> authorizeModelCopy(AuthorizeCopyRequest authorizeCopyRequest) {
+    public Mono<ModelCopyAuthorization> authorizeModelCopy(AuthorizeModelCopyOptions authorizeCopyRequest) {
         // Generated convenience method for authorizeModelCopyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return authorizeModelCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions)
@@ -864,7 +864,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -887,7 +887,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -908,7 +908,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * List all document models.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -939,7 +939,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -959,7 +959,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Return information about the current resource.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -978,7 +978,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Gets operation info.
-     * 
+     *
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -999,7 +999,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Lists all operations.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1030,7 +1030,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Builds a custom document classifier.
-     * 
+     *
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1043,7 +1043,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
-        beginBuildClassifier(BuildDocumentClassifierRequest buildRequest) {
+        beginBuildClassifier(BuildDocumentClassifierOptions buildRequest) {
         // Generated convenience method for beginBuildClassifierWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginBuildClassifierWithModelAsync(BinaryData.fromObject(buildRequest), requestOptions);
@@ -1052,7 +1052,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Generates authorization to copy a document classifier to this location with
      * specified classifierId and optional description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1066,7 +1066,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassifierCopyAuthorization>
-        authorizeClassifierCopy(AuthorizeClassifierCopyRequest authorizeCopyRequest) {
+        authorizeClassifierCopy(AuthorizeClassifierCopyOptions authorizeCopyRequest) {
         // Generated convenience method for authorizeClassifierCopyWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return authorizeClassifierCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions)
@@ -1076,7 +1076,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Copies document classifier to the target resource, region, and classifierId.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1099,7 +1099,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Gets detailed document classifier information.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1120,7 +1120,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * List all document classifiers.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1151,7 +1151,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
 
     /**
      * Deletes document classifier.
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

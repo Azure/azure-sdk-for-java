@@ -17,7 +17,7 @@ import java.util.Map;
  * Request body to build a new custom document classifier.
  */
 @Fluent
-public final class BuildDocumentClassifierRequest implements JsonSerializable<BuildDocumentClassifierRequest> {
+public final class BuildDocumentClassifierOptions implements JsonSerializable<BuildDocumentClassifierOptions> {
     /*
      * Unique document classifier name.
      */
@@ -25,7 +25,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     private final String classifierId;
 
     /*
-     * Document classifier description.
+     * AnalyzedDocument classifier description.
      */
     @Generated
     private String description;
@@ -40,7 +40,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
      * List of document types to classify against.
      */
     @Generated
-    private final Map<String, ClassifierDocumentTypeDetails> docTypes;
+    private final Map<String, ClassifierDocumentTypeDetails> documentTypes;
 
     /*
      * Allow overwriting an existing classifier with the same name.
@@ -49,20 +49,21 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     private Boolean allowOverwrite;
 
     /**
-     * Creates an instance of BuildDocumentClassifierRequest class.
-     * 
+     * Creates an instance of BuildDocumentClassifierOptions class.
+     *
      * @param classifierId the classifierId value to set.
-     * @param docTypes the docTypes value to set.
+     * @param documentTypes the documentTypes value to set.
      */
     @Generated
-    public BuildDocumentClassifierRequest(String classifierId, Map<String, ClassifierDocumentTypeDetails> docTypes) {
+    public BuildDocumentClassifierOptions(String classifierId,
+        Map<String, ClassifierDocumentTypeDetails> documentTypes) {
         this.classifierId = classifierId;
-        this.docTypes = docTypes;
+        this.documentTypes = documentTypes;
     }
 
     /**
      * Get the classifierId property: Unique document classifier name.
-     * 
+     *
      * @return the classifierId value.
      */
     @Generated
@@ -71,8 +72,8 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     }
 
     /**
-     * Get the description property: Document classifier description.
-     * 
+     * Get the description property: AnalyzedDocument classifier description.
+     *
      * @return the description value.
      */
     @Generated
@@ -81,20 +82,20 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     }
 
     /**
-     * Set the description property: Document classifier description.
-     * 
+     * Set the description property: AnalyzedDocument classifier description.
+     *
      * @param description the description value to set.
-     * @return the BuildDocumentClassifierRequest object itself.
+     * @return the BuildDocumentClassifierOptions object itself.
      */
     @Generated
-    public BuildDocumentClassifierRequest setDescription(String description) {
+    public BuildDocumentClassifierOptions setDescription(String description) {
         this.description = description;
         return this;
     }
 
     /**
      * Get the baseClassifierId property: Base classifierId on top of which to train the classifier.
-     * 
+     *
      * @return the baseClassifierId value.
      */
     @Generated
@@ -104,29 +105,29 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
 
     /**
      * Set the baseClassifierId property: Base classifierId on top of which to train the classifier.
-     * 
+     *
      * @param baseClassifierId the baseClassifierId value to set.
-     * @return the BuildDocumentClassifierRequest object itself.
+     * @return the BuildDocumentClassifierOptions object itself.
      */
     @Generated
-    public BuildDocumentClassifierRequest setBaseClassifierId(String baseClassifierId) {
+    public BuildDocumentClassifierOptions setBaseClassifierId(String baseClassifierId) {
         this.baseClassifierId = baseClassifierId;
         return this;
     }
 
     /**
-     * Get the docTypes property: List of document types to classify against.
-     * 
-     * @return the docTypes value.
+     * Get the documentTypes property: List of document types to classify against.
+     *
+     * @return the documentTypes value.
      */
     @Generated
-    public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
-        return this.docTypes;
+    public Map<String, ClassifierDocumentTypeDetails> getDocumentTypes() {
+        return this.documentTypes;
     }
 
     /**
      * Get the allowOverwrite property: Allow overwriting an existing classifier with the same name.
-     * 
+     *
      * @return the allowOverwrite value.
      */
     @Generated
@@ -136,12 +137,12 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
 
     /**
      * Set the allowOverwrite property: Allow overwriting an existing classifier with the same name.
-     * 
+     *
      * @param allowOverwrite the allowOverwrite value to set.
-     * @return the BuildDocumentClassifierRequest object itself.
+     * @return the BuildDocumentClassifierOptions object itself.
      */
     @Generated
-    public BuildDocumentClassifierRequest setAllowOverwrite(Boolean allowOverwrite) {
+    public BuildDocumentClassifierOptions setAllowOverwrite(Boolean allowOverwrite) {
         this.allowOverwrite = allowOverwrite;
         return this;
     }
@@ -154,7 +155,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("classifierId", this.classifierId);
-        jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("docTypes", this.documentTypes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("baseClassifierId", this.baseClassifierId);
         jsonWriter.writeBooleanField("allowOverwrite", this.allowOverwrite);
@@ -162,19 +163,19 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     }
 
     /**
-     * Reads an instance of BuildDocumentClassifierRequest from the JsonReader.
-     * 
+     * Reads an instance of BuildDocumentClassifierOptions from the JsonReader.
+     *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BuildDocumentClassifierRequest if the JsonReader was pointing to an instance of it, or
+     * @return An instance of BuildDocumentClassifierOptions if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BuildDocumentClassifierRequest.
+     * @throws IOException If an error occurs while reading the BuildDocumentClassifierOptions.
      */
     @Generated
-    public static BuildDocumentClassifierRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static BuildDocumentClassifierOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String classifierId = null;
-            Map<String, ClassifierDocumentTypeDetails> docTypes = null;
+            Map<String, ClassifierDocumentTypeDetails> documentTypes = null;
             String description = null;
             String baseClassifierId = null;
             Boolean allowOverwrite = null;
@@ -185,7 +186,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
                 if ("classifierId".equals(fieldName)) {
                     classifierId = reader.getString();
                 } else if ("docTypes".equals(fieldName)) {
-                    docTypes = reader.readMap(reader1 -> ClassifierDocumentTypeDetails.fromJson(reader1));
+                    documentTypes = reader.readMap(reader1 -> ClassifierDocumentTypeDetails.fromJson(reader1));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("baseClassifierId".equals(fieldName)) {
@@ -196,13 +197,13 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
                     reader.skipChildren();
                 }
             }
-            BuildDocumentClassifierRequest deserializedBuildDocumentClassifierRequest
-                = new BuildDocumentClassifierRequest(classifierId, docTypes);
-            deserializedBuildDocumentClassifierRequest.description = description;
-            deserializedBuildDocumentClassifierRequest.baseClassifierId = baseClassifierId;
-            deserializedBuildDocumentClassifierRequest.allowOverwrite = allowOverwrite;
+            BuildDocumentClassifierOptions deserializedBuildDocumentClassifierOptions
+                = new BuildDocumentClassifierOptions(classifierId, documentTypes);
+            deserializedBuildDocumentClassifierOptions.description = description;
+            deserializedBuildDocumentClassifierOptions.baseClassifierId = baseClassifierId;
+            deserializedBuildDocumentClassifierOptions.allowOverwrite = allowOverwrite;
 
-            return deserializedBuildDocumentClassifierRequest;
+            return deserializedBuildDocumentClassifierOptions;
         });
     }
 }

@@ -3,9 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -42,7 +42,7 @@ public class AnalyzeLayoutAsync {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
+        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
@@ -51,7 +51,7 @@ public class AnalyzeLayoutAsync {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
+                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller
@@ -111,7 +111,7 @@ public class AnalyzeLayoutAsync {
 
             // styles
             analyzeLayoutResult.getStyles().forEach(documentStyle
-                -> System.out.printf("Document is handwritten %s.%n", documentStyle.isHandwritten()));
+                -> System.out.printf("AnalyzedDocument is handwritten %s.%n", documentStyle.isHandwritten()));
         });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

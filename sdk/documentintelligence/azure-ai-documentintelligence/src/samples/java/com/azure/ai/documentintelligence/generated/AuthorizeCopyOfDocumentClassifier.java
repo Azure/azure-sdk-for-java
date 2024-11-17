@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest;
+import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions;
 import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -19,7 +19,7 @@ public class AuthorizeCopyOfDocumentClassifier {
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.authorizeclassifiercopy.authorizecopyofdocumentclassifier
         ClassifierCopyAuthorization response = documentIntelligenceAdministrationClient.authorizeClassifierCopy(
-            new AuthorizeClassifierCopyRequest("targetClassifier").setDescription("Target classifier description"));
+            new AuthorizeClassifierCopyOptions("targetClassifier").setDescription("Target classifier description"));
         // END:com.azure.ai.documentintelligence.generated.authorizeclassifiercopy.authorizecopyofdocumentclassifier
     }
 }

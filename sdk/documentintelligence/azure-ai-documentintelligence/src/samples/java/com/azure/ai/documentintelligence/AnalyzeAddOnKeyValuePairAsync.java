@@ -3,9 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.BoundingRegion;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentKeyValueElement;
@@ -43,7 +43,7 @@ public class AnalyzeAddOnKeyValuePairAsync {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
+        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
                         null,
                         null,
@@ -52,7 +52,7 @@ public class AnalyzeAddOnKeyValuePairAsync {
                         null,
                         null,
                         null,
-                        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
+                        new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
                 analyzeLayoutPoller

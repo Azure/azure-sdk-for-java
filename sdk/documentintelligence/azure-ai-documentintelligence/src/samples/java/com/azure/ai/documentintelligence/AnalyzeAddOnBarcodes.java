@@ -3,9 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentBarcode;
 import com.azure.ai.documentintelligence.models.DocumentPage;
@@ -40,7 +40,7 @@ public class AnalyzeAddOnBarcodes {
         File barcodesDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/barcodes.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
@@ -48,7 +48,7 @@ public class AnalyzeAddOnBarcodes {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
+                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

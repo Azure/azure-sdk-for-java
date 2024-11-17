@@ -42,8 +42,8 @@ public class ManageDocumentClassifiers {
             DocumentClassifierDetails documentClassifier = client.getClassifier(documentClassifierDetails.getClassifierId());
             System.out.printf("Classifier ID: %s%n", documentClassifier.getClassifierId());
             System.out.printf("Classifier Description: %s%n", documentClassifier.getDescription());
-            System.out.printf("Classifier created on: %s%n", documentClassifier.getCreatedDateTime());
-            documentClassifier.getDocTypes().forEach((key, documentTypeDetails) -> {
+            System.out.printf("Classifier created on: %s%n", documentClassifier.getCreatedOn());
+            documentClassifier.getDocumentTypes().forEach((key, documentTypeDetails) -> {
                 if (documentTypeDetails.getAzureBlobSource() != null) {
                     System.out.printf("Blob Source container Url: %s%n", (documentTypeDetails
                         .getAzureBlobSource()).getContainerUrl());

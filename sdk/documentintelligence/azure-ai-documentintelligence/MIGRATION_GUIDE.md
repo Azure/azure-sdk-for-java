@@ -1,7 +1,7 @@
 # Guide for migrating to `azure-ai-documentintelligence` from `azure-ai-formrecognizer`
 
-> Note: on July 2023, the Azure Cognitive Services Form Recognizer service was renamed to Azure AI Document Intelligence.
-Any mentions to Form Recognizer or Document Intelligence in documentation refer to the same Azure service.
+> Note: on July 2023, the Azure Cognitive Services Form Recognizer service was renamed to Azure AI AnalyzedDocument Intelligence.
+Any mentions to Form Recognizer or AnalyzedDocument Intelligence in documentation refer to the same Azure service.
 
 This guide is intended to assist in the migration to `azure-ai-documentintelligence` from `azure-ai-formrecognizer`.
 It will focus on side-by-side comparisons for similar operations between the two package versions.
@@ -23,7 +23,7 @@ please refer to the SDK README for [azure-ai-documentintelligence][README] direc
 A natural question to ask when considering whether to adopt a new version of the library is what the benefits of
 doing so would be. As Azure Form Recognizer has matured and been embraced by a more diverse group of developers,
 we have been focused on learning the patterns and practices to best support developer productivity and add value to our
-customers. So We're rebranding the package name to Azure `Document Intelligence`.
+customers. So We're rebranding the package name to Azure `AnalyzedDocument Intelligence`.
 
 ## Features Added
 
@@ -38,14 +38,14 @@ SDK introduces a new enum _ContentFormat_ with value "text" or "markdown" to ind
 
 ```java
 File document = new File("{your-file-to-analyze}");
-SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeOperation, AnalyzeOperation> analyzeLayoutResultPoller =
         client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
                 null,
                 null,
-                ContentFormat.MARKDOWN,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                DocumentContentFormat.MARKDOWN,
+                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
 ```
 For the complete sample, see [Sample: Markdown][Sample-AnalyzeLayoutMarkdownOutput].
 
@@ -57,14 +57,14 @@ existing fields defined by the model as fallback.
 
 ```java
 File document = new File("{your-file-to-analyze}");
-SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeOperation, AnalyzeOperation> analyzeLayoutResultPoller =
         client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
                 Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
                 Arrays.asList("Address", "InvoiceNumber"),
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
 ```
 For the complete sample, see [Sample: Query Fields][Sample-AnalyzeAddOnQueryFields].
 
@@ -93,7 +93,7 @@ Each page is treated as a separate document. Each empty page is kept as its own 
 ## Breaking Changes
 
 ### Clients names updates
-To improve the development experience and address the consistent feedback across the Document Intelligence SDK, this new
+To improve the development experience and address the consistent feedback across the AnalyzedDocument Intelligence SDK, this new
 version of the library introduces two new clients
 `DocumentIntelligenceClient` and the `DocumentIntelligenceAdministrationClient` that provide unified methods for
 analyzing documents and provide support for the new features added by the service in
@@ -126,7 +126,7 @@ Please refer to the [README][README] for more information on these new clients.
 package without necessary changes to your code.
 
 ### API shape changes
-API shapes have been designed from scratch to support new SDK client for the `Document Intelligence` service.
+API shapes have been designed from scratch to support new SDK client for the `AnalyzedDocument Intelligence` service.
 Please refer to the [README][README] and [Samples][README-Samples] for more understanding.
 
 ### Field changes in prebuilt-receipt model
@@ -170,14 +170,14 @@ the _Currency_ field in result has been removed.
 
   ```java
   File document = new File("{your-file-to-analyze}");
-  SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+  SyncPoller<AnalyzeOperation, AnalyzeOperation> analyzeLayoutResultPoller =
           client.beginAnalyzeDocument("prebuilt-layout", null,
                   null,
                   null,
                   Arrays.asList(DocumentAnalysisFeature.FORMULAS),
                   null,
                   null,
-                  new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                  new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
     ```
 
   For the complete sample, see [Sample: KeyValuePair][Sample-AnalyzeAddOnKeyValuePair].
@@ -187,7 +187,7 @@ the _Currency_ field in result has been removed.
 
 ## Additional samples
 
-For additional samples please take a look at the [Document Intelligence Samples][README-Samples]
+For additional samples please take a look at the [AnalyzedDocument Intelligence Samples][README-Samples]
 
 <!-- Links -->
 [DocumentIntelligenceClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/documentanalysis/DocumentIntelligenceClientBuilder.java

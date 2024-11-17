@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence.administration;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationAsyncClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
+import com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -38,7 +38,7 @@ public class CopyDocumentModelAsync {
         String copyModelId = "copy-model-ID";
 
         // Get authorization to copy the model to target resource
-        targetClient.authorizeModelCopy(new AuthorizeCopyRequest(copyModelId))
+        targetClient.authorizeModelCopy(new AuthorizeModelCopyOptions(copyModelId))
             // Start copy operation from the source client
             // The ID of the model that needs to be copied to the target resource
             .subscribe(copyAuthorization -> sourceClient.beginCopyModelTo(copyModelId, copyAuthorization)
@@ -47,13 +47,13 @@ public class CopyDocumentModelAsync {
                     .subscribe(documentModelInfo -> {
                         System.out.printf("Original model has model ID: %s and was created on: %s.%n",
                             documentModelInfo.getModelId(),
-                            documentModelInfo.getCreatedDateTime());
+                            documentModelInfo.getCreatedOn());
 
                         // Get the copied model from the target resource
                         targetClient.getModel(copyAuthorization.getTargetModelId()).subscribe(documentModel ->
                             System.out.printf("Copied model has model ID: %s was created on: %s.%n",
                                 documentModel.getModelId(),
-                                documentModel.getCreatedDateTime()));
+                                documentModel.getCreatedOn()));
                     }));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

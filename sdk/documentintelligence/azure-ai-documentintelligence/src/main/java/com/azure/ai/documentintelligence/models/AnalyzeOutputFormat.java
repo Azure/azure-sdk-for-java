@@ -11,47 +11,47 @@ import java.util.Collection;
 /**
  * Additional output to generate during analysis.
  */
-public final class AnalyzeOutputOption extends ExpandableStringEnum<AnalyzeOutputOption> {
+public final class AnalyzeOutputFormat extends ExpandableStringEnum<AnalyzeOutputFormat> {
     /**
      * Generate searchable PDF output.
      */
     @Generated
-    public static final AnalyzeOutputOption PDF = fromString("pdf");
+    public static final AnalyzeOutputFormat PDF = fromString("pdf");
 
     /**
      * Generate cropped images of detected figures.
      */
     @Generated
-    public static final AnalyzeOutputOption FIGURES = fromString("figures");
+    public static final AnalyzeOutputFormat FIGURES = fromString("figures");
 
     /**
      * Creates a new instance of AnalyzeOutputOption value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public AnalyzeOutputOption() {
+    public AnalyzeOutputFormat() {
     }
 
     /**
      * Creates or finds a AnalyzeOutputOption from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AnalyzeOutputOption.
      */
     @Generated
-    public static AnalyzeOutputOption fromString(String name) {
-        return fromString(name, AnalyzeOutputOption.class);
+    public static AnalyzeOutputFormat fromString(String name) {
+        return fromString(name, AnalyzeOutputFormat.class);
     }
 
     /**
      * Gets known AnalyzeOutputOption values.
-     * 
+     *
      * @return known AnalyzeOutputOption values.
      */
     @Generated
-    public static Collection<AnalyzeOutputOption> values() {
-        return values(AnalyzeOutputOption.class);
+    public static Collection<AnalyzeOutputFormat> values() {
+        return values(AnalyzeOutputFormat.class);
     }
 }

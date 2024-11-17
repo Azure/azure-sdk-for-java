@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Document analysis features to enable.
+ * AnalyzedDocument analysis features to enable.
  */
 public final class DocumentAnalysisFeature extends ExpandableStringEnum<DocumentAnalysisFeature> {
     /**
@@ -56,7 +56,7 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
 
     /**
      * Creates a new instance of DocumentAnalysisFeature value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -66,7 +66,7 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
 
     /**
      * Creates or finds a DocumentAnalysisFeature from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DocumentAnalysisFeature.
      */
@@ -77,7 +77,7 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
 
     /**
      * Gets known DocumentAnalysisFeature values.
-     * 
+     *
      * @return known DocumentAnalysisFeature values.
      */
     @Generated

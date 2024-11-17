@@ -8,7 +8,7 @@ import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
+import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -21,7 +21,7 @@ public class ClassifyDocumentFromUrl {
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.classifydocument.classifydocumentfromurl
         SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginClassifyDocument(
-            "classifierId", new ClassifyDocumentRequest().setUrlSource("http://host.com/doc.pdf"),
+            "classifierId", new ClassifyDocumentOptions().setUrlSource("http://host.com/doc.pdf"),
             StringIndexType.TEXT_ELEMENTS, null, null);
         // END:com.azure.ai.documentintelligence.generated.classifydocument.classifydocumentfromurl
     }

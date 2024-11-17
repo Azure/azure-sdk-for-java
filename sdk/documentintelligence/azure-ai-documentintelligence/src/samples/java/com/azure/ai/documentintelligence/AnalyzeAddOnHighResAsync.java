@@ -3,9 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentStyle;
 import com.azure.ai.documentintelligence.models.DocumentTable;
@@ -43,7 +43,7 @@ public class AnalyzeAddOnHighResAsync {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/highres.png");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
+        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
@@ -52,7 +52,7 @@ public class AnalyzeAddOnHighResAsync {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller
@@ -78,9 +78,9 @@ public class AnalyzeAddOnHighResAsync {
             });
 
             if (isDocumentContainsHandwritten) {
-                System.out.println("Document contains handwritten content");
+                System.out.println("AnalyzedDocument contains handwritten content");
             } else {
-                System.out.println("Document does not contains handwritten content");
+                System.out.println("AnalyzedDocument does not contains handwritten content");
             }
 
             // pages

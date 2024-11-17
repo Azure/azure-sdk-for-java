@@ -5,19 +5,19 @@ package com.azure.ai.documentintelligence.administration;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
+import com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.documentintelligence.models.CopyAuthorization;
+import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
-import com.azure.ai.documentintelligence.models.OperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails;
 import com.azure.ai.documentintelligence.models.OperationStatus;
-import com.azure.ai.documentintelligence.models.ResourceDetails;
+import com.azure.ai.documentintelligence.models.DocumentIntelligenceResourceDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
@@ -63,55 +63,55 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginBuildDocumentModel(BinaryData, RequestOptions)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#BuildDocumentModelRequest
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#BuildDocumentModelOptions
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelDetails documentModelDetails
             = documentIntelligenceAdministrationClient.beginBuildDocumentModel(
-                new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
+                new BuildDocumentModelOptions("modelID", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)))
             .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
-        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedDateTime());
-        documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
                 System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#BuildDocumentModelRequest
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#BuildDocumentModelOptions
     }
 
     /**
-     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getResourceInfo()}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getResourceDetails()}
      */
-    public void getResourceInfo() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfo
-        ResourceDetails resourceDetails = documentIntelligenceAdministrationClient.getResourceInfo();
+    public void getResourceDetails() {
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceDetails
+        DocumentIntelligenceResourceDetails resourceDetails = documentIntelligenceAdministrationClient.getResourceDetails();
         System.out.printf("Max number of models that can be build for this account: %d%n",
             resourceDetails.getCustomDocumentModels().getLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
             resourceDetails.getCustomDocumentModels().getCount());
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfo
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceDetails
     }
 
     /**
-     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getResourceInfoWithResponse(RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getResourceDetailsWithResponse(RequestOptions)}
      */
-    public void getResourceInfoWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfoWithResponse#RequestOptions
-        /*Response<ResourceDetails> response =
-            documentModelAdministrationClient.getResourceInfoWithResponse(new RequestOptions());
+    public void getResourceDetailsWithResponse() {
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceDetailsWithResponse#RequestOptions
+        /*Response<DocumentIntelligenceResourceDetails> response =
+            documentModelAdministrationClient.getResourceDetailsWithResponse(new RequestOptions());
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
-        ResourceDetails resourceDetails = response.getValue();
+        DocumentIntelligenceResourceDetails resourceDetails = response.getValue();
         System.out.printf("Max number of models that can be build for this account: %d%n",
             resourceDetails.getCustomDocumentModels().getLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
             resourceDetails.getCustomDocumentModels().getCount());
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfoWithResponse#RequestOptions
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceDetailsWithResponse#RequestOptions
     }
 
     /**
@@ -139,35 +139,35 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentIntelligenceAdministrationClient#authorizeModelCopy(AuthorizeCopyRequest)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#authorizeModelCopy(AuthorizeModelCopyOptions)}
      */
     public void getCopyAuthorization() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization#AuthorizeCopyRequest
-        CopyAuthorization documentModelCopyAuthorization
-            = documentIntelligenceAdministrationClient.authorizeModelCopy(new AuthorizeCopyRequest("copyModelID"));
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization#AuthorizeModelCopyOptions
+        ModelCopyAuthorization documentModelCopyAuthorization
+            = documentIntelligenceAdministrationClient.authorizeModelCopy(new AuthorizeModelCopyOptions("copyModelID"));
         System.out.printf("Copy Authorization for model id: %s, access token: %s, expiration time: %s, "
                 + "target resource ID; %s, target resource region: %s%n",
             documentModelCopyAuthorization.getTargetModelId(),
             documentModelCopyAuthorization.getAccessToken(),
-            documentModelCopyAuthorization.getExpirationDateTime(),
+            documentModelCopyAuthorization.getExpiresOn(),
             documentModelCopyAuthorization.getTargetResourceId(),
             documentModelCopyAuthorization.getTargetResourceRegion()
         );
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization#AuthorizeCopyRequest
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization#AuthorizeModelCopyOptions
     }
 
     /**
      * Code snippet for {@link DocumentIntelligenceAdministrationClient#authorizeModelCopyWithResponse(BinaryData, RequestOptions)}
      */
     public void getCopyAuthorizationWithResponse() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#AuthorizeCopyRequest-RequestOptions
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#AuthorizeModelCopyOptions-RequestOptions
         /*String modelId = "my-copied-model";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        Response<CopyAuthorization> copyAuthorizationResponse =
+        Response<ModelCopyAuthorization> copyAuthorizationResponse =
             documentModelAdministrationClient.authorizeModelCopyWithResponse(
-                new AuthorizeCopyRequest(modelId)
+                new AuthorizeModelCopyOptions(modelId)
                     .setDescription("model-desc")
                     .setTags(attrs), new RequestOptions());
 
@@ -178,13 +178,13 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 + "expiration time: %s, target resource ID; %s, target resource region: %s%n",
             documentModelCopyAuthorization.getTargetModelId(),
             documentModelCopyAuthorization.getAccessToken(),
-            documentModelCopyAuthorization.getExpirationDateTime(),
+            documentModelCopyAuthorization.getExpiresOn(),
             documentModelCopyAuthorization.getTargetResourceId(),
             documentModelCopyAuthorization.getTargetResourceRegion()
         );
 
          */
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#AuthorizeCopyRequest-RequestOptions
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#AuthorizeModelCopyOptions-RequestOptions
     }
 
     /**
@@ -200,8 +200,8 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
-        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedDateTime());
-        documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -214,21 +214,21 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginCopyModelTo(String, CopyAuthorization)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginCopyModelTo(String, ModelCopyAuthorization)}
      */
     public void beginCopy() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginCopyDocumentModelTo#string-copyAuthorization
         String copyModelId = "copy-model";
         // Get authorization to copy the model to target resource
-        CopyAuthorization documentModelCopyAuthorization
-            = documentIntelligenceAdministrationClient.authorizeModelCopy(new AuthorizeCopyRequest(copyModelId));
+        ModelCopyAuthorization documentModelCopyAuthorization
+            = documentIntelligenceAdministrationClient.authorizeModelCopy(new AuthorizeModelCopyOptions(copyModelId));
         // Start copy operation from the source client
         DocumentModelDetails documentModelDetails
             = documentIntelligenceAdministrationClient.beginCopyModelTo(copyModelId, documentModelCopyAuthorization)
             .getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
             documentModelDetails.getModelId(),
-            documentModelDetails.getCreatedDateTime());
+            documentModelDetails.getCreatedOn());
         // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginCopyDocumentModelTo#string-copyAuthorization
     }
 
@@ -242,7 +242,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Model ID: %s, Model description: %s, Created on: %s.%n",
                     documentModel.getModelId(),
                     documentModel.getDescription(),
-                    documentModel.getCreatedDateTime())
+                    documentModel.getCreatedOn())
             );
         // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listModels
     }
@@ -257,7 +257,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Model ID: %s, Model description: %s, Created on: %s.%n",
                     documentModel.getModelId(),
                     documentModel.getDescription(),
-                    documentModel.getCreatedDateTime())
+                    documentModel.getCreatedOn())
             );
 
          */
@@ -273,8 +273,8 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         DocumentModelDetails documentModelDetails = documentIntelligenceAdministrationClient.getModel(modelId);
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
-        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedDateTime());
-        documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -296,8 +296,8 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         DocumentModelDetails documentModelDetails = response.getValue();
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
-        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedDateTime());
-        documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -315,7 +315,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void getOperation() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getOperation#string
         String operationId = "{operation-id}";
-        OperationDetails operationDetails
+        DocumentIntelligenceOperationDetails operationDetails
             = documentIntelligenceAdministrationClient.getOperation(operationId);
         System.out.printf("Operation ID: %s%n", operationDetails.getOperationId());
         System.out.printf("Operation Status: %s%n", operationDetails.getStatus());
@@ -333,10 +333,10 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void getOperationWithResponse() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getOperationWithResponse#string-RequestOptions
         /*String operationId = "{operation-id}";
-        Response<OperationDetails> response =
+        Response<DocumentIntelligenceOperationDetails> response =
             documentModelAdministrationClient.getOperationWithResponse(operationId, new RequestOptions());
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
-        OperationDetails operationDetails = response.getValue();
+        DocumentIntelligenceOperationDetails operationDetails = response.getValue();
         System.out.printf("Operation ID: %s%n", operationDetails.getOperationId());
         System.out.printf("Operation Status: %s%n", operationDetails.getStatus());
         System.out.printf("Model ID created with this operation: %s%n",
@@ -354,12 +354,12 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void listOperations() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listOperations
-        PagedIterable<OperationDetails>
+        PagedIterable<DocumentIntelligenceOperationDetails>
             modelOperationInfo = documentIntelligenceAdministrationClient.listOperations();
         modelOperationInfo.forEach(modelOperationSummary -> {
             System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
             System.out.printf("Operation Status: %s%n", modelOperationSummary.getStatus());
-            System.out.printf("Operation Created on: %s%n", modelOperationSummary.getCreatedDateTime());
+            System.out.printf("Operation Created on: %s%n", modelOperationSummary.getCreatedOn());
             System.out.printf("Operation Percent completed: %d%n", modelOperationSummary.getPercentCompleted());
             System.out.printf("Operation Last updated on: %s%n", modelOperationSummary.getLastUpdatedDateTime());
             System.out.printf("Operation resource location: %s%n", modelOperationSummary.getResourceLocation());
@@ -372,12 +372,12 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void listOperationsWithContext() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listOperations#RequestOptions
-        /*PagedIterable<OperationDetails>
+        /*PagedIterable<DocumentIntelligenceOperationDetails>
             modelOperationInfo = documentModelAdministrationClient.listOperations(new RequestOptions());
         modelOperationInfo.forEach(modelOperationSummary -> {
             System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
             System.out.printf("Operation Status: %s%n", modelOperationSummary.getStatus());
-            System.out.printf("Operation Created on: %s%n", modelOperationSummary.getCreatedDateTime());
+            System.out.printf("Operation Created on: %s%n", modelOperationSummary.getCreatedOn());
             System.out.printf("Operation Percent completed: %d%n", modelOperationSummary.getPercentCompleted());
             System.out.printf("Operation Last updated on: %s%n", modelOperationSummary.getLastUpdatedDateTime());
             System.out.printf("Operation resource location: %s%n", modelOperationSummary.getResourceLocation());
@@ -388,10 +388,10 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginBuildClassifier(BuildDocumentClassifierRequest)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginBuildClassifier(BuildDocumentClassifierOptions)}
      */
     public void beginBuildClassifier() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#BuildDocumentClassifierRequest
+        // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#BuildDocumentClassifierOptions
         String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> documentTypes = new HashMap<>();
@@ -404,20 +404,20 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
 
         DocumentClassifierDetails classifierDetails
             = documentIntelligenceAdministrationClient.beginBuildClassifier(
-                new BuildDocumentClassifierRequest("classifierID", documentTypes))
+                new BuildDocumentClassifierOptions("classifierID", documentTypes))
             .getFinalResult();
 
         System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
         System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
-        System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedDateTime());
-        System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpirationDateTime());
-        classifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
+        System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
+        classifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getAzureBlobSource() != null) {
                 System.out.printf("Blob Source container Url: %s", (documentTypeDetails
                     .getAzureBlobSource()).getContainerUrl());
             }
         });
-        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#BuildDocumentClassifierRequest
+        // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#BuildDocumentClassifierOptions
     }
 
     /**
@@ -454,7 +454,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Classifier ID: %s, Classifier description: %s, Created on: %s.%n",
                     documentModel.getClassifierId(),
                     documentModel.getDescription(),
-                    documentModel.getCreatedDateTime())
+                    documentModel.getCreatedOn())
             );
         // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.listDocumentClassifiers
     }
@@ -469,8 +469,8 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
             = documentIntelligenceAdministrationClient.getClassifier(classifierId);
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
         System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
-        System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedDateTime());
-        documentClassifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedOn());
+        documentClassifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getAzureBlobSource() != null) {
                 System.out.printf("Blob Source container Url: %s", (documentTypeDetails
                     .getAzureBlobSource()).getContainerUrl());
@@ -496,8 +496,8 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         DocumentClassifierDetails documentClassifierDetails = response.getValue();
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
         System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
-        System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedDateTime());
-        documentClassifierDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+        System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedOn());
+        documentClassifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             if (documentTypeDetails.getContentSource() instanceof AzureBlobContentSource) {
                 System.out.printf("Blob Source container Url: %s", ((AzureBlobContentSource) documentTypeDetails
                     .getContentSource()).getContainerUrl());

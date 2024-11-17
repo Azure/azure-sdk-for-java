@@ -3,10 +3,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.core.credential.AzureKeyCredential;
@@ -38,7 +38,7 @@ public class AnalyzeTaxW2Async {
         String w2Url =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/w2/Sample-W2.jpg";
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeW2Poller =
+        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeW2Poller =
             client.beginAnalyzeDocument("prebuilt-tax.us.w2", null,
                 null,
                 null,
@@ -46,7 +46,7 @@ public class AnalyzeTaxW2Async {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentRequest().setUrlSource(w2Url));
+                new AnalyzeDocumentOptions().setUrlSource(w2Url));
 
         Mono<AnalyzeResult> w2Mono = analyzeW2Poller
             .last()
@@ -63,9 +63,9 @@ public class AnalyzeTaxW2Async {
         w2Mono.subscribe(analyzeTaxResult -> {
 
             for (int i = 0; i < analyzeTaxResult.getDocuments().size(); i++) {
-                Document analyzedTaxDocument = analyzeTaxResult.getDocuments().get(i);
+                AnalyzedDocument analyzedTaxDocument = analyzeTaxResult.getDocuments().get(i);
                 Map<String, DocumentField> taxFields = analyzedTaxDocument.getFields();
-                System.out.printf("----------- Analyzing Document  %d -----------%n", i);
+                System.out.printf("----------- Analyzing AnalyzedDocument  %d -----------%n", i);
                 DocumentField w2FormVariantField = taxFields.get("W2FormVariant");
                 if (w2FormVariantField != null) {
                     if (DocumentFieldType.STRING == w2FormVariantField.getType()) {

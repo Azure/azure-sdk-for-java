@@ -83,7 +83,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Creates an instance of DocumentIntelligenceOperationDetails class.
-     * 
+     *
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
@@ -100,7 +100,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the kind property: Type of operation.
-     * 
+     *
      * @return the kind value.
      */
     @Generated
@@ -110,7 +110,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the operationId property: Operation ID.
-     * 
+     *
      * @return the operationId value.
      */
     @Generated
@@ -120,7 +120,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Set the operationId property: Operation ID.
-     * 
+     *
      * @param operationId the operationId value to set.
      * @return the DocumentIntelligenceOperationDetails object itself.
      */
@@ -132,7 +132,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the status property: Operation status. notStarted, running, completed, or failed.
-     * 
+     *
      * @return the status value.
      */
     @Generated
@@ -142,7 +142,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the percentCompleted property: Operation progress (0-100).
-     * 
+     *
      * @return the percentCompleted value.
      */
     @Generated
@@ -152,7 +152,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Set the percentCompleted property: Operation progress (0-100).
-     * 
+     *
      * @param percentCompleted the percentCompleted value to set.
      * @return the DocumentIntelligenceOperationDetails object itself.
      */
@@ -164,17 +164,17 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the createdDateTime property: Date and time (UTC) when the operation was created.
-     * 
+     *
      * @return the createdDateTime value.
      */
     @Generated
-    public OffsetDateTime getCreatedDateTime() {
+    public OffsetDateTime getCreatedOn() {
         return this.createdDateTime;
     }
 
     /**
      * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
-     * 
+     *
      * @return the lastUpdatedDateTime value.
      */
     @Generated
@@ -184,7 +184,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the resourceLocation property: URL of the resource targeted by this operation.
-     * 
+     *
      * @return the resourceLocation value.
      */
     @Generated
@@ -194,7 +194,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the apiVersion property: API version used to create this operation.
-     * 
+     *
      * @return the apiVersion value.
      */
     @Generated
@@ -204,7 +204,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Set the apiVersion property: API version used to create this operation.
-     * 
+     *
      * @param apiVersion the apiVersion value to set.
      * @return the DocumentIntelligenceOperationDetails object itself.
      */
@@ -216,7 +216,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @return the tags value.
      */
     @Generated
@@ -226,7 +226,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the DocumentIntelligenceOperationDetails object itself.
      */
@@ -238,7 +238,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Get the error property: Encountered error.
-     * 
+     *
      * @return the error value.
      */
     @Generated
@@ -248,7 +248,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Set the error property: Encountered error.
-     * 
+     *
      * @param error the error value to set.
      * @return the DocumentIntelligenceOperationDetails object itself.
      */
@@ -283,7 +283,7 @@ public class DocumentIntelligenceOperationDetails implements JsonSerializable<Do
 
     /**
      * Reads an instance of DocumentIntelligenceOperationDetails from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentIntelligenceOperationDetails if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.

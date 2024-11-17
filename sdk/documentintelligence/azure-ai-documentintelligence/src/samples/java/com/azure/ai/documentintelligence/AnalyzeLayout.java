@@ -3,9 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -36,7 +36,7 @@ public class AnalyzeLayout {
         File selectionMarkDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/forms/selectionMarkForm.pdf");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
@@ -44,7 +44,7 @@ public class AnalyzeLayout {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(selectionMarkDocument.toPath())));
+                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(selectionMarkDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -90,6 +90,6 @@ public class AnalyzeLayout {
 
         // styles
         analyzeLayoutResult.getStyles().forEach(documentStyle
-            -> System.out.printf("Document is handwritten %s%n.", documentStyle.isHandwritten()));
+            -> System.out.printf("AnalyzedDocument is handwritten %s%n.", documentStyle.isHandwritten()));
     }
 }
