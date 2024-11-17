@@ -20,7 +20,7 @@ import java.util.Map;
 @Immutable
 public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument> {
     /*
-     * AnalyzedDocument type.
+     * Document type.
      */
     @Generated
     private final String documentType;
@@ -51,7 +51,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Creates an instance of AnalyzedDocument class.
-     *
+     * 
      * @param documentType the documentType value to set.
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
@@ -64,8 +64,8 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
     }
 
     /**
-     * Get the documentType property: AnalyzedDocument type.
-     *
+     * Get the documentType property: Document type.
+     * 
      * @return the documentType value.
      */
     @Generated
@@ -75,7 +75,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Get the boundingRegions property: Bounding regions covering the document.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -85,7 +85,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Get the spans property: Location of the document in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated
@@ -95,7 +95,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Get the fields property: Dictionary of named field values.
-     *
+     * 
      * @return the fields value.
      */
     @Generated
@@ -105,7 +105,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Get the confidence property: Confidence of correctly extracting the document.
-     *
+     * 
      * @return the confidence value.
      */
     @Generated
@@ -131,7 +131,7 @@ public final class AnalyzedDocument implements JsonSerializable<AnalyzedDocument
 
     /**
      * Reads an instance of AnalyzedDocument from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzedDocument if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

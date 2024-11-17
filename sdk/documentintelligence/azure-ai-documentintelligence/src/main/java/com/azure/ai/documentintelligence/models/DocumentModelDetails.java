@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AnalyzedDocument model info.
+ * Document model info.
  */
 @Immutable
 public final class DocumentModelDetails implements JsonSerializable<DocumentModelDetails> {
@@ -28,7 +28,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     private String modelId;
 
     /*
-     * AnalyzedDocument model description.
+     * Document model description.
      */
     @Generated
     private String description;
@@ -122,7 +122,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the modelId property: Unique document model name.
-     *
+     * 
      * @return the modelId value.
      */
     @Generated
@@ -131,8 +131,8 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     }
 
     /**
-     * Get the description property: AnalyzedDocument model description.
-     *
+     * Get the description property: Document model description.
+     * 
      * @return the description value.
      */
     @Generated
@@ -142,7 +142,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the createdOn property: Date and time (UTC) when the document model was created.
-     *
+     * 
      * @return the createdOn value.
      */
     @Generated
@@ -152,7 +152,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the expiresOn property: Date and time (UTC) when the document model will expire.
-     *
+     * 
      * @return the expiresOn value.
      */
     @Generated
@@ -162,7 +162,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the modifiedOn property: Date and time (UTC) when the document model was last modified.
-     *
+     * 
      * @return the modifiedOn value.
      */
     @Generated
@@ -172,7 +172,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the apiVersion property: API version used to create this document model.
-     *
+     * 
      * @return the apiVersion value.
      */
     @Generated
@@ -182,7 +182,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @return the tags value.
      */
     @Generated
@@ -192,7 +192,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the buildMode property: Custom document model build mode.
-     *
+     * 
      * @return the buildMode value.
      */
     @Generated
@@ -203,7 +203,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * 
      * @return the azureBlobSource value.
      */
     @Generated
@@ -214,7 +214,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     /**
      * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     *
+     * 
      * @return the azureBlobFileListSource value.
      */
     @Generated
@@ -224,7 +224,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the classifierId property: For composed models, the custom classifier to split and classify the input file.
-     *
+     * 
      * @return the classifierId value.
      */
     @Generated
@@ -234,7 +234,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the split property: For composed models, the file splitting behavior.
-     *
+     * 
      * @return the split value.
      */
     @Generated
@@ -244,7 +244,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the documentTypes property: Supported document types.
-     *
+     * 
      * @return the documentTypes value.
      */
     @Generated
@@ -254,7 +254,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the warnings property: List of warnings encountered while building the model.
-     *
+     * 
      * @return the warnings value.
      */
     @Generated
@@ -264,7 +264,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Get the trainingHours property: Number of V100-equivalent GPU hours consumed for model training.
-     *
+     * 
      * @return the trainingHours value.
      */
     @Generated
@@ -288,7 +288,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
 
     /**
      * Reads an instance of DocumentModelDetails from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentModelDetails if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

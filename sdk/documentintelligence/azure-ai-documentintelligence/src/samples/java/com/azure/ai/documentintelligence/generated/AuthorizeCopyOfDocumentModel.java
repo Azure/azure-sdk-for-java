@@ -18,8 +18,8 @@ public class AuthorizeCopyOfDocumentModel {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.authorizemodelcopy.authorizecopyofdocumentmodel
-        ModelCopyAuthorization response = documentIntelligenceAdministrationClient
-            .authorizeModelCopy(new AuthorizeModelCopyOptions("targetModel").setDescription("Target model description"));
+        ModelCopyAuthorization response = documentIntelligenceAdministrationClient.authorizeModelCopy(
+            new AuthorizeModelCopyOptions("targetModel").setDescription("Target model description"));
         // END:com.azure.ai.documentintelligence.generated.authorizemodelcopy.authorizecopyofdocumentmodel
     }
 }

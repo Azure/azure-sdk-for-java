@@ -58,21 +58,21 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
 
     /**
      * Creates an instance of DocumentModelCopyToOperationDetails class.
-     *
+     * 
      * @param status the status value to set.
-     * @param createdDateTime the createdDateTime value to set.
-     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
+     * @param createdOn the createdOn value to set.
+     * @param lastUpdatedOn the lastUpdatedOn value to set.
      * @param resourceLocation the resourceLocation value to set.
      */
     @Generated
-    private DocumentModelCopyToOperationDetails(DocumentIntelligenceOperationStatus status,
-        OffsetDateTime createdDateTime, OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
-        super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
+    private DocumentModelCopyToOperationDetails(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
+        OffsetDateTime lastUpdatedOn, String resourceLocation) {
+        super(status, createdOn, lastUpdatedOn, resourceLocation);
     }
 
     /**
      * Get the kind property: Type of operation.
-     *
+     * 
      * @return the kind value.
      */
     @Generated
@@ -83,7 +83,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
 
     /**
      * Get the result property: Operation result upon success.
-     *
+     * 
      * @return the result value.
      */
     @Generated
@@ -93,7 +93,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
 
     /**
      * Get the error property: Encountered error.
-     *
+     * 
      * @return the error value.
      */
     @Generated
@@ -104,7 +104,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @return the tags value.
      */
     @Generated
@@ -115,7 +115,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
 
     /**
      * Get the apiVersion property: API version used to create this operation.
-     *
+     * 
      * @return the apiVersion value.
      */
     @Generated
@@ -126,7 +126,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
 
     /**
      * Get the percentCompleted property: Operation progress (0-100).
-     *
+     * 
      * @return the percentCompleted value.
      */
     @Generated
@@ -146,9 +146,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
         jsonWriter.writeStringField("createdDateTime",
             getCreatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedOn()));
         jsonWriter.writeStringField("lastUpdatedDateTime",
-            getLastUpdatedDateTime() == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
+            getLastUpdatedOn() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedOn()));
         jsonWriter.writeStringField("resourceLocation", getResourceLocation());
         jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
         jsonWriter.writeStringField("apiVersion", getApiVersion());
@@ -161,7 +159,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
 
     /**
      * Reads an instance of DocumentModelCopyToOperationDetails from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentModelCopyToOperationDetails if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
@@ -173,8 +171,8 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
         return jsonReader.readObject(reader -> {
             String operationId = null;
             DocumentIntelligenceOperationStatus status = null;
-            OffsetDateTime createdDateTime = null;
-            OffsetDateTime lastUpdatedDateTime = null;
+            OffsetDateTime createdOn = null;
+            OffsetDateTime lastUpdatedOn = null;
             String resourceLocation = null;
             Integer percentCompleted = null;
             String apiVersion = null;
@@ -191,10 +189,10 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
                 } else if ("status".equals(fieldName)) {
                     status = DocumentIntelligenceOperationStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime = reader
+                    createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    lastUpdatedDateTime = reader
+                    lastUpdatedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("resourceLocation".equals(fieldName)) {
                     resourceLocation = reader.getString();
@@ -215,8 +213,7 @@ public final class DocumentModelCopyToOperationDetails extends DocumentIntellige
                 }
             }
             DocumentModelCopyToOperationDetails deserializedDocumentModelCopyToOperationDetails
-                = new DocumentModelCopyToOperationDetails(status, createdDateTime, lastUpdatedDateTime,
-                    resourceLocation);
+                = new DocumentModelCopyToOperationDetails(status, createdOn, lastUpdatedOn, resourceLocation);
             deserializedDocumentModelCopyToOperationDetails.setOperationId(operationId);
             deserializedDocumentModelCopyToOperationDetails.percentCompleted = percentCompleted;
             deserializedDocumentModelCopyToOperationDetails.apiVersion = apiVersion;

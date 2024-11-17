@@ -25,7 +25,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
     private final String classifierId;
 
     /*
-     * AnalyzedDocument classifier description.
+     * Document classifier description.
      */
     @Generated
     private String description;
@@ -50,7 +50,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
 
     /**
      * Creates an instance of BuildDocumentClassifierOptions class.
-     *
+     * 
      * @param classifierId the classifierId value to set.
      * @param documentTypes the documentTypes value to set.
      */
@@ -63,7 +63,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
 
     /**
      * Get the classifierId property: Unique document classifier name.
-     *
+     * 
      * @return the classifierId value.
      */
     @Generated
@@ -72,8 +72,8 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
     }
 
     /**
-     * Get the description property: AnalyzedDocument classifier description.
-     *
+     * Get the description property: Document classifier description.
+     * 
      * @return the description value.
      */
     @Generated
@@ -82,8 +82,8 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
     }
 
     /**
-     * Set the description property: AnalyzedDocument classifier description.
-     *
+     * Set the description property: Document classifier description.
+     * 
      * @param description the description value to set.
      * @return the BuildDocumentClassifierOptions object itself.
      */
@@ -95,7 +95,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
 
     /**
      * Get the baseClassifierId property: Base classifierId on top of which to train the classifier.
-     *
+     * 
      * @return the baseClassifierId value.
      */
     @Generated
@@ -105,7 +105,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
 
     /**
      * Set the baseClassifierId property: Base classifierId on top of which to train the classifier.
-     *
+     * 
      * @param baseClassifierId the baseClassifierId value to set.
      * @return the BuildDocumentClassifierOptions object itself.
      */
@@ -117,7 +117,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
 
     /**
      * Get the documentTypes property: List of document types to classify against.
-     *
+     * 
      * @return the documentTypes value.
      */
     @Generated
@@ -127,7 +127,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
 
     /**
      * Get the allowOverwrite property: Allow overwriting an existing classifier with the same name.
-     *
+     * 
      * @return the allowOverwrite value.
      */
     @Generated
@@ -137,7 +137,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
 
     /**
      * Set the allowOverwrite property: Allow overwriting an existing classifier with the same name.
-     *
+     * 
      * @param allowOverwrite the allowOverwrite value to set.
      * @return the BuildDocumentClassifierOptions object itself.
      */
@@ -164,7 +164,7 @@ public final class BuildDocumentClassifierOptions implements JsonSerializable<Bu
 
     /**
      * Reads an instance of BuildDocumentClassifierOptions from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of BuildDocumentClassifierOptions if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * AnalyzedDocument analysis result.
+ * Document analysis result.
  */
 @Immutable
 public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
@@ -25,7 +25,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     private final String apiVersion;
 
     /*
-     * AnalyzedDocument model ID used to produce this result.
+     * Document model ID used to produce this result.
      */
     @Generated
     private final String modelId;
@@ -111,7 +111,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Creates an instance of AnalyzeResult class.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @param modelId the modelId value to set.
      * @param stringIndexType the stringIndexType value to set.
@@ -130,7 +130,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the apiVersion property: API version used to produce this result.
-     *
+     * 
      * @return the apiVersion value.
      */
     @Generated
@@ -139,8 +139,8 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     }
 
     /**
-     * Get the modelId property: AnalyzedDocument model ID used to produce this result.
-     *
+     * Get the modelId property: Document model ID used to produce this result.
+     * 
      * @return the modelId value.
      */
     @Generated
@@ -150,7 +150,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the stringIndexType property: Method used to compute string offset and length.
-     *
+     * 
      * @return the stringIndexType value.
      */
     @Generated
@@ -160,7 +160,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the contentFormat property: Format of the analyze result top-level content.
-     *
+     * 
      * @return the contentFormat value.
      */
     @Generated
@@ -171,7 +171,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /**
      * Get the content property: Concatenate string representation of all textual and visual elements in reading
      * order.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -181,7 +181,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the pages property: Analyzed pages.
-     *
+     * 
      * @return the pages value.
      */
     @Generated
@@ -191,7 +191,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the paragraphs property: Extracted paragraphs.
-     *
+     * 
      * @return the paragraphs value.
      */
     @Generated
@@ -201,7 +201,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the tables property: Extracted tables.
-     *
+     * 
      * @return the tables value.
      */
     @Generated
@@ -211,7 +211,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the figures property: Extracted figures.
-     *
+     * 
      * @return the figures value.
      */
     @Generated
@@ -221,7 +221,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the sections property: Extracted sections.
-     *
+     * 
      * @return the sections value.
      */
     @Generated
@@ -231,7 +231,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the keyValuePairs property: Extracted key-value pairs.
-     *
+     * 
      * @return the keyValuePairs value.
      */
     @Generated
@@ -241,7 +241,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the styles property: Extracted font styles.
-     *
+     * 
      * @return the styles value.
      */
     @Generated
@@ -251,7 +251,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the languages property: Detected languages.
-     *
+     * 
      * @return the languages value.
      */
     @Generated
@@ -261,7 +261,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the documents property: Extracted documents.
-     *
+     * 
      * @return the documents value.
      */
     @Generated
@@ -271,7 +271,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the warnings property: List of warnings encountered.
-     *
+     * 
      * @return the warnings value.
      */
     @Generated
@@ -307,7 +307,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Reads an instance of AnalyzeResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

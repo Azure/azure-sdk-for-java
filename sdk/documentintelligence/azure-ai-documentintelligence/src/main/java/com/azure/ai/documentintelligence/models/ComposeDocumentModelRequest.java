@@ -25,7 +25,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     private final String modelId;
 
     /*
-     * AnalyzedDocument model description.
+     * Document model description.
      */
     @Generated
     private String description;
@@ -56,7 +56,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Creates an instance of ComposeDocumentModelRequest class.
-     *
+     * 
      * @param modelId the modelId value to set.
      * @param classifierId the classifierId value to set.
      * @param documentTypes the documentTypes value to set.
@@ -71,7 +71,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Get the modelId property: Unique document model name.
-     *
+     * 
      * @return the modelId value.
      */
     @Generated
@@ -80,8 +80,8 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     }
 
     /**
-     * Get the description property: AnalyzedDocument model description.
-     *
+     * Get the description property: Document model description.
+     * 
      * @return the description value.
      */
     @Generated
@@ -90,8 +90,8 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     }
 
     /**
-     * Set the description property: AnalyzedDocument model description.
-     *
+     * Set the description property: Document model description.
+     * 
      * @param description the description value to set.
      * @return the ComposeDocumentModelRequest object itself.
      */
@@ -103,7 +103,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Get the classifierId property: Custom classifier to split and classify the input file.
-     *
+     * 
      * @return the classifierId value.
      */
     @Generated
@@ -113,7 +113,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Get the split property: File splitting behavior.
-     *
+     * 
      * @return the split value.
      */
     @Generated
@@ -123,7 +123,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Set the split property: File splitting behavior.
-     *
+     * 
      * @param split the split value to set.
      * @return the ComposeDocumentModelRequest object itself.
      */
@@ -135,7 +135,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Get the documentTypes property: Dictionary mapping supported docTypes to the corresponding document models.
-     *
+     * 
      * @return the documentTypes value.
      */
     @Generated
@@ -145,7 +145,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @return the tags value.
      */
     @Generated
@@ -155,7 +155,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ComposeDocumentModelRequest object itself.
      */
@@ -183,7 +183,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
     /**
      * Reads an instance of ComposeDocumentModelRequest from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ComposeDocumentModelRequest if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

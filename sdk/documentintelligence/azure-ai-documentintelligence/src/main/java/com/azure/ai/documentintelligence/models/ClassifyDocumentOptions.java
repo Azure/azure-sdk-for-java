@@ -14,12 +14,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * AnalyzedDocument classification parameters.
+ * Document classification parameters.
  */
 @Fluent
 public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyDocumentOptions> {
     /*
-     * AnalyzedDocument URL to classify. Either urlSource or base64Source must be specified.
+     * Document URL to classify. Either urlSource or base64Source must be specified.
      */
     @Generated
     private String urlSource;
@@ -39,8 +39,8 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
     }
 
     /**
-     * Get the urlSource property: AnalyzedDocument URL to classify. Either urlSource or base64Source must be specified.
-     *
+     * Get the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
+     * 
      * @return the urlSource value.
      */
     @Generated
@@ -49,8 +49,8 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
     }
 
     /**
-     * Set the urlSource property: AnalyzedDocument URL to classify. Either urlSource or base64Source must be specified.
-     *
+     * Set the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
+     * 
      * @param urlSource the urlSource value to set.
      * @return the ClassifyDocumentOptions object itself.
      */
@@ -63,7 +63,7 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
     /**
      * Get the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source
      * must be specified.
-     *
+     * 
      * @return the base64Source value.
      */
     @Generated
@@ -74,7 +74,7 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
     /**
      * Set the base64Source property: Base64 encoding of the document to classify. Either urlSource or base64Source
      * must be specified.
-     *
+     * 
      * @param base64Source the base64Source value to set.
      * @return the ClassifyDocumentOptions object itself.
      */
@@ -98,7 +98,7 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
 
     /**
      * Reads an instance of ClassifyDocumentOptions from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClassifyDocumentOptions if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

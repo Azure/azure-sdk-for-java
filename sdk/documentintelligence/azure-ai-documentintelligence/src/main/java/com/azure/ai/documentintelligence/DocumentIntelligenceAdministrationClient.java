@@ -45,7 +45,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Initializes an instance of DocumentIntelligenceAdministrationClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -56,7 +56,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -79,7 +79,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -98,7 +98,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -141,7 +141,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -161,7 +161,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -173,9 +173,9 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -188,7 +188,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -208,7 +208,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -221,7 +221,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -241,7 +241,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Gets detailed document model information.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -305,7 +305,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -323,7 +323,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -387,7 +387,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -403,7 +403,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Deletes document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -421,7 +421,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Return information about the current resource.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -432,7 +432,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -449,7 +449,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Gets operation info.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -480,7 +480,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -498,7 +498,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -529,7 +529,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -547,7 +547,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -571,7 +571,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -591,7 +591,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * Generates authorization to copy a document classifier to this location with
      * specified classifierId and optional description.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -603,9 +603,9 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -618,7 +618,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -638,7 +638,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Copies document classifier to the target resource, region, and classifierId.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -651,7 +651,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -671,7 +671,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Gets detailed document classifier information.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -705,7 +705,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -723,7 +723,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -757,7 +757,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -773,7 +773,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Deletes document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -790,7 +790,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Builds a custom document analysis model.
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -811,7 +811,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Creates a new document model from document types of existing document models.
-     *
+     * 
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -833,7 +833,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
-     *
+     * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -855,7 +855,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -877,7 +877,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Gets detailed document model information.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -897,7 +897,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * List all document models.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -916,7 +916,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Deletes document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -935,7 +935,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Return information about the current resource.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -954,7 +954,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Gets operation info.
-     *
+     * 
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -975,7 +975,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Lists all operations.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -995,7 +995,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Builds a custom document classifier.
-     *
+     * 
      * @param buildRequest Build request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1017,7 +1017,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Generates authorization to copy a document classifier to this location with
      * specified classifierId and optional description.
-     *
+     * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1040,7 +1040,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Copies document classifier to the target resource, region, and classifierId.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1063,7 +1063,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Gets detailed document classifier information.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1084,7 +1084,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * List all document classifiers.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1103,7 +1103,7 @@ public final class DocumentIntelligenceAdministrationClient {
 
     /**
      * Deletes document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

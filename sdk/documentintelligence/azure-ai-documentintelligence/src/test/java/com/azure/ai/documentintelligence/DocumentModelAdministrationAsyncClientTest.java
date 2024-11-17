@@ -340,7 +340,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
                         && modelOperationInfo.getKind() != null
                         && modelOperationInfo.getStatus() != null
                         && modelOperationInfo.getCreatedOn() != null
-                        && modelOperationInfo.getLastUpdatedDateTime() != null
+                        && modelOperationInfo.getLastUpdatedOn() != null
                         && modelOperationInfo.getResourceLocation() != null
                         && modelOperationInfo.getPercentCompleted() != null);
                 });

@@ -43,7 +43,7 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
     private DocumentIntelligenceError error;
 
     /*
-     * AnalyzedDocument analysis result.
+     * Document analysis result.
      */
     @Generated
     private AnalyzeResult analyzeResult;
@@ -79,7 +79,7 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
      * @return the createdDateTime value.
      */
     @Generated
-    public OffsetDateTime getCreatedOn() {
+    public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
 
@@ -104,7 +104,7 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
     }
 
     /**
-     * Get the analyzeResult property: AnalyzedDocument analysis result.
+     * Get the analyzeResult property: Document analysis result.
      *
      * @return the analyzeResult value.
      */

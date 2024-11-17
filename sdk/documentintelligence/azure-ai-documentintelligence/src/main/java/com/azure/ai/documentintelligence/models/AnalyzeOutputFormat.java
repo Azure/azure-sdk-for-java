@@ -25,8 +25,8 @@ public final class AnalyzeOutputFormat extends ExpandableStringEnum<AnalyzeOutpu
     public static final AnalyzeOutputFormat FIGURES = fromString("figures");
 
     /**
-     * Creates a new instance of AnalyzeOutputOption value.
-     *
+     * Creates a new instance of AnalyzeOutputFormat value.
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -35,10 +35,10 @@ public final class AnalyzeOutputFormat extends ExpandableStringEnum<AnalyzeOutpu
     }
 
     /**
-     * Creates or finds a AnalyzeOutputOption from its string representation.
-     *
+     * Creates or finds a AnalyzeOutputFormat from its string representation.
+     * 
      * @param name a name to look for.
-     * @return the corresponding AnalyzeOutputOption.
+     * @return the corresponding AnalyzeOutputFormat.
      */
     @Generated
     public static AnalyzeOutputFormat fromString(String name) {
@@ -46,9 +46,9 @@ public final class AnalyzeOutputFormat extends ExpandableStringEnum<AnalyzeOutpu
     }
 
     /**
-     * Gets known AnalyzeOutputOption values.
-     *
-     * @return known AnalyzeOutputOption values.
+     * Gets known AnalyzeOutputFormat values.
+     * 
+     * @return known AnalyzeOutputFormat values.
      */
     @Generated
     public static Collection<AnalyzeOutputFormat> values() {

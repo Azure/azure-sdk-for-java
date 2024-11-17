@@ -25,7 +25,7 @@ public final class AuthorizeClassifierCopyOptions implements JsonSerializable<Au
     private final String classifierId;
 
     /*
-     * AnalyzedDocument classifier description.
+     * Document classifier description.
      */
     @Generated
     private String description;
@@ -38,7 +38,7 @@ public final class AuthorizeClassifierCopyOptions implements JsonSerializable<Au
 
     /**
      * Creates an instance of AuthorizeClassifierCopyOptions class.
-     *
+     * 
      * @param classifierId the classifierId value to set.
      */
     @Generated
@@ -48,7 +48,7 @@ public final class AuthorizeClassifierCopyOptions implements JsonSerializable<Au
 
     /**
      * Get the classifierId property: Unique document classifier name.
-     *
+     * 
      * @return the classifierId value.
      */
     @Generated
@@ -57,8 +57,8 @@ public final class AuthorizeClassifierCopyOptions implements JsonSerializable<Au
     }
 
     /**
-     * Get the description property: AnalyzedDocument classifier description.
-     *
+     * Get the description property: Document classifier description.
+     * 
      * @return the description value.
      */
     @Generated
@@ -67,8 +67,8 @@ public final class AuthorizeClassifierCopyOptions implements JsonSerializable<Au
     }
 
     /**
-     * Set the description property: AnalyzedDocument classifier description.
-     *
+     * Set the description property: Document classifier description.
+     * 
      * @param description the description value to set.
      * @return the AuthorizeClassifierCopyOptions object itself.
      */
@@ -80,7 +80,7 @@ public final class AuthorizeClassifierCopyOptions implements JsonSerializable<Au
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document classifier.
-     *
+     * 
      * @return the tags value.
      */
     @Generated
@@ -90,7 +90,7 @@ public final class AuthorizeClassifierCopyOptions implements JsonSerializable<Au
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document classifier.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AuthorizeClassifierCopyOptions object itself.
      */
@@ -115,7 +115,7 @@ public final class AuthorizeClassifierCopyOptions implements JsonSerializable<Au
 
     /**
      * Reads an instance of AuthorizeClassifierCopyOptions from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AuthorizeClassifierCopyOptions if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

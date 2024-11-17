@@ -68,7 +68,7 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
 
     /**
      * Creates a new instance of ContentFormat value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -77,7 +77,7 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
 
     /**
      * Creates or finds a ContentFormat from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ContentFormat.
      */
@@ -87,7 +87,7 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
 
     /**
      * Gets known ContentFormat values.
-     * 
+     *
      * @return known ContentFormat values.
      */
     public static Collection<ContentFormat> values() {

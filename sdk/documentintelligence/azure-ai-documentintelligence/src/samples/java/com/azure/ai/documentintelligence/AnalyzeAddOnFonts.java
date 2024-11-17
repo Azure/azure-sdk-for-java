@@ -4,13 +4,12 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentFontStyle;
-import com.azure.ai.documentintelligence.models.DocumentStyle;
-import com.azure.ai.documentintelligence.models.DocumentFontStyle;
 import com.azure.ai.documentintelligence.models.DocumentFontWeight;
+import com.azure.ai.documentintelligence.models.DocumentStyle;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;

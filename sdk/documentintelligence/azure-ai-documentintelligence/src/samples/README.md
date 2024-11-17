@@ -9,9 +9,9 @@ products:
 urlFragment: documentintelligence-java-samples
 ---
 
-# Azure AnalyzedDocument Intelligence client library samples for Java
+# Azure Document Intelligence client library samples for Java
 
-Azure AnalyzedDocument Intelligence samples are a set of self-contained Java programs that demonstrate interacting with Azure AnalyzedDocument Intelligence service/ AnalyzedDocument Intelligence
+Azure Document Intelligence samples are a set of self-contained Java programs that demonstrate interacting with Azure Document Intelligence service/ Document Intelligence
 using the client library. Each sample focuses on a specific scenario and can be executed independently.
 
 ## Key concepts
@@ -21,9 +21,9 @@ Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## Examples
-The following sections provide code samples covering common scenario operations with the Azure AnalyzedDocument Intelligence client library.
+The following sections provide code samples covering common scenario operations with the Azure Document Intelligence client library.
 
-All of these samples need the endpoint to your AnalyzedDocument Intelligence resource ([instructions on how to get endpoint][get-endpoint-instructions]), and your AnalyzedDocument Intelligence API key ([instructions on how to get key][get-key-instructions]).
+All of these samples need the endpoint to your Document Intelligence resource ([instructions on how to get endpoint][get-endpoint-instructions]), and your Document Intelligence API key ([instructions on how to get key][get-key-instructions]).
 
 | **File Name**                                                                                                                                    | **Description**                                                                                                                  |
 |--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -47,9 +47,9 @@ All of these samples need the endpoint to your AnalyzedDocument Intelligence res
 | [AnalyzeCustomDocumentFromUrl][analyze_custom_documents] and [AnalyzeCustomDocumentAsync][analyze_custom_documents_async]                        | Analyze forms with your custom model                                                                                             |
 | [BuildDocumentModel][build_model] and [BuildDocumentModelAsync][build_model_async]                                                               | Build a custom document analysis model                                                                                           |
 | [ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]                                             | Manage the custom models in your account                                                                                         |
-| [CopyDocumentModel][copy_model] and [CopyDocumentModelAsync][copy_model_async]                                                                   | Copy custom model from one AnalyzedDocument Intelligence resource to another                                                             |
+| [CopyDocumentModel][copy_model] and [CopyDocumentModelAsync][copy_model_async]                                                                   | Copy custom model from one Document Intelligence resource to another                                                             |
 | [ComposeDocumentModel][compose_model] and [ComposeDocumentModelAsync][compose_model_async]                                                       | Creates a composed model from a collection of existing built models with labels                                                  |
-| [GetOperation][get_operation] and [GetOperationAsync][get_operation_async]                                                                       | Get/list all document model associated with the AnalyzedDocument Intelligence resource                                                   |
+| [GetOperation][get_operation] and [GetOperationAsync][get_operation_async]                                                                       | Get/list all document model associated with the Document Intelligence resource                                                   |
 | [BuildDocumentClassifier][build_classifier] and [BuildDocumentClassifierAsync][build_classifier_async]                                           | Build custom classifier models that combine layout and language features                                                         |
 
 ## Troubleshooting
@@ -57,7 +57,7 @@ Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
 Check out the [API reference documentation][api_reference_doc] to learn more about
-what you can do with the Azure AnalyzedDocument Intelligence client library.
+what you can do with the Azure Document Intelligence client library.
 
 ## Contributing
 If you would like to become an active contributor to this project please refer to our [Contribution

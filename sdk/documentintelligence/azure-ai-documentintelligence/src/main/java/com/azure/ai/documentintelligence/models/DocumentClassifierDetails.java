@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AnalyzedDocument classifier info.
+ * Document classifier info.
  */
 @Immutable
 public final class DocumentClassifierDetails implements JsonSerializable<DocumentClassifierDetails> {
@@ -29,7 +29,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     private String classifierId;
 
     /*
-     * AnalyzedDocument classifier description.
+     * Document classifier description.
      */
     @Generated
     private String description;
@@ -78,7 +78,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Creates an instance of DocumentClassifierDetails class.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @param apiVersion the apiVersion value to set.
      * @param documentTypes the documentTypes value to set.
@@ -93,7 +93,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the classifierId property: Unique document classifier name.
-     *
+     * 
      * @return the classifierId value.
      */
     @Generated
@@ -102,8 +102,8 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     }
 
     /**
-     * Get the description property: AnalyzedDocument classifier description.
-     *
+     * Get the description property: Document classifier description.
+     * 
      * @return the description value.
      */
     @Generated
@@ -113,7 +113,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the createdOn property: Date and time (UTC) when the document classifier was created.
-     *
+     * 
      * @return the createdOn value.
      */
     @Generated
@@ -123,7 +123,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the expiresOn property: Date and time (UTC) when the document classifier will expire.
-     *
+     * 
      * @return the expiresOn value.
      */
     @Generated
@@ -133,7 +133,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the modifiedOn property: Date and time (UTC) when the document model was last modified.
-     *
+     * 
      * @return the modifiedOn value.
      */
     @Generated
@@ -143,7 +143,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the apiVersion property: API version used to create this document classifier.
-     *
+     * 
      * @return the apiVersion value.
      */
     @Generated
@@ -153,7 +153,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the baseClassifierId property: Base classifierId on top of which the classifier was trained.
-     *
+     * 
      * @return the baseClassifierId value.
      */
     @Generated
@@ -163,7 +163,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the documentTypes property: List of document types to classify against.
-     *
+     * 
      * @return the documentTypes value.
      */
     @Generated
@@ -173,7 +173,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Get the warnings property: List of warnings encountered while building the classifier.
-     *
+     * 
      * @return the warnings value.
      */
     @Generated
@@ -202,7 +202,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
 
     /**
      * Reads an instance of DocumentClassifierDetails from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentClassifierDetails if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

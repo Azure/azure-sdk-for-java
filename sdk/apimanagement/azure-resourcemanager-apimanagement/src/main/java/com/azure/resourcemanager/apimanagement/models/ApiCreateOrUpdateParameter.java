@@ -66,7 +66,7 @@ public final class ApiCreateOrUpdateParameter implements JsonSerializable<ApiCre
      * 
      * @return the format value.
      */
-    public DocumentContentFormat format() {
+    public ContentFormat format() {
         return this.innerProperties() == null ? null : this.innerProperties().format();
     }
 
@@ -76,7 +76,7 @@ public final class ApiCreateOrUpdateParameter implements JsonSerializable<ApiCre
      * @param format the format value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withFormat(DocumentContentFormat format) {
+    public ApiCreateOrUpdateParameter withFormat(ContentFormat format) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiCreateOrUpdateProperties();
         }

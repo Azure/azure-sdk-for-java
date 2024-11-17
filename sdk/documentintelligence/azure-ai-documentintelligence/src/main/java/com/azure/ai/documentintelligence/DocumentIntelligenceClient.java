@@ -44,7 +44,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -83,7 +83,7 @@ public final class DocumentIntelligenceClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -92,7 +92,7 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -110,13 +110,13 @@ public final class DocumentIntelligenceClient {
     /**
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -136,13 +136,13 @@ public final class DocumentIntelligenceClient {
     /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param figureId Figure ID.
@@ -162,7 +162,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Mark the result of document analysis for deletion.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -210,7 +210,7 @@ public final class DocumentIntelligenceClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -228,7 +228,7 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -247,7 +247,7 @@ public final class DocumentIntelligenceClient {
     /**
      * List batch document analysis results.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -285,7 +285,7 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -302,7 +302,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Mark the batch document analysis result for deletion.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -322,7 +322,7 @@ public final class DocumentIntelligenceClient {
     /**
      * Gets the result of batch document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -360,7 +360,7 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -385,13 +385,13 @@ public final class DocumentIntelligenceClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
      * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>AnalyzedDocument splitting mode. Allowed values: "auto", "none",
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
      * "perPage".</td></tr>
      * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -400,7 +400,7 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -419,7 +419,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Analyzes document with document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only
@@ -487,7 +487,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Analyzes document with document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -507,7 +507,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Gets the generated searchable PDF output from document analysis.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -528,7 +528,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Gets the generated cropped image of specified figure from document analysis.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param figureId Figure ID.
@@ -550,7 +550,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Mark the result of document analysis for deletion.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,7 +570,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Analyzes batch documents with document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only
@@ -638,7 +638,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Analyzes batch documents with document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -658,7 +658,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * List batch document analysis results.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -679,7 +679,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Mark the batch document analysis result for deletion.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -699,7 +699,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Gets the result of batch document analysis.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -721,11 +721,11 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Classifies document with document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param stringIndexType Method used to compute string offset and length.
-     * @param split AnalyzedDocument splitting mode.
+     * @param split Document splitting mode.
      * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -756,7 +756,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Classifies document with document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

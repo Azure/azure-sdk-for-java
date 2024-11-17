@@ -15,8 +15,8 @@
   <artifactId>azure-ai-documentintelligence</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-ai-documentintelligence;current} -->
 
-  <name>Microsoft Azure client library for AnalyzedDocument Intelligence</name>
-  <description>This package contains the Microsoft Azure AI AnalyzedDocument Intelligence SDK.</description>
+  <name>Microsoft Azure client library for Document Intelligence</name>
+  <description>This package contains the Microsoft Azure AI Document Intelligence SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -33,14 +33,12 @@
   </scm>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.ai.documentintelligence/com.azure.ai.documentintelligence=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <jacoco.min.branchcoverage>0.24</jacoco.min.branchcoverage>
-    <jacoco.min.linecoverage>0.24</jacoco.min.linecoverage>
-    <parallelizeLiveTests>same_thread</parallelizeLiveTests>
     <graalvm.disable>false</graalvm.disable>
 
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>

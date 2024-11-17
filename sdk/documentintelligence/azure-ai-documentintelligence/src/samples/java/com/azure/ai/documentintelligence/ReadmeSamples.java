@@ -60,6 +60,18 @@ public final class ReadmeSamples {
         // END: com.azure.ai.documentanalysis.readme.DocumentAnalysisAsyncClient.withAAD
     }
 
+    /**
+     * Code snippet for creating a {@link DocumentIntelligenceAdministrationClient}
+     */
+    public void createDocumentIntelligenceAdministrationClient() {
+        // BEGIN: com.azure.ai.documentanalysis.readme.DocumentIntelligenceAdministrationClient
+        DocumentIntelligenceAdministrationClient documentIntelligenceAsyncClient = new DocumentIntelligenceAdministrationClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildClient();
+        // END: com.azure.ai.documentanalysis.readme.DocumentIntelligenceAdministrationClient
+    }
+
     public void analyzeLayout() throws IOException {
         // BEGIN: com.azure.ai.documentintelligence.readme.analyzeLayout
         File layoutDocument = new File("local/file_path/filename.png");

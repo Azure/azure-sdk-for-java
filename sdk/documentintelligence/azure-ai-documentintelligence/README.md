@@ -1,6 +1,6 @@
 # Azure DocumentIntelligence client library for Java
 
-Azure AnalyzedDocument Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine
+Azure Document Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine
 learning to analyze text and structured data from your documents.
 It includes the following main features:
 
@@ -19,7 +19,7 @@ It includes the following main features:
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
   - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
-- [AI Services or AnalyzedDocument Intelligence account][form_recognizer_account] to use this package.
+- [AI Services or Document Intelligence account][form_recognizer_account] to use this package.
 
 ### Adding the package to your product
 
@@ -28,7 +28,7 @@ It includes the following main features:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-documentintelligence</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,6 +43,7 @@ This table shows the relationship between SDK versions and supported API version
 | 1.0.0-beta.2 | 2024-02-29-preview               |
 | 1.0.0-beta.3 | 2024-02-29-preview               |
 | 1.0.0-beta.4 | 2024-07-31-preview               |
+| 1.0.0-beta.4 | "2024-11-30"                     |
 
 > Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
 > models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
@@ -57,7 +58,7 @@ Please see the [Migration Guide][migration_guide] for more information about mig
 
 ### Authentication
 
-In order to interact with the Azure AnalyzedDocument Intelligence Service you'll need to create an instance of client class,
+In order to interact with the Azure Document Intelligence Service you'll need to create an instance of client class,
 [DocumentIntelligenceAsyncClient][document_analysis_async_client] or [DocumentIntelligenceClient][document_analysis_sync_client] by using
 [DocumentIntelligenceClientBuilder][document_analysis_client_builder]. To configure a client for use with
 Azure DocumentIntelligence, provide a valid endpoint URI to an Azure DocumentIntelligence resource along with a corresponding key credential,
@@ -73,12 +74,11 @@ DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligence
     .buildClient();
 ```
 or
-```java readme-sample-createDocumentModelAdministrationClient
-DocumentIntelligenceAdministrationClient client =
-    new DocumentIntelligenceAdministrationClientBuilder()
-        .credential(new AzureKeyCredential("{key}"))
-        .endpoint("{endpoint}")
-        .buildClient();
+```java com.azure.ai.documentanalysis.readme.DocumentIntelligenceAdministrationClient
+DocumentIntelligenceAdministrationClient documentIntelligenceAsyncClient = new DocumentIntelligenceAdministrationClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildClient();
 ```
 
 #### Create an Azure DocumentIntelligence client with Azure Active Directory credential
@@ -131,9 +131,9 @@ The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
 - Build custom document analysis models to analyze text content, fields, and values found in your custom documents. See example [Build a document model](#build-a-document-model).
   A `DocumentModelDetails` is returned indicating the document types that the model can analyze, along with the fields and schemas it will extract.
 - Managing models created in your account by building, listing, deleting, and see the limit of custom models your account. See example [Manage models](#manage-your-models).
-- Copying a custom model from one AnalyzedDocument Intelligence resource to another.
+- Copying a custom model from one Document Intelligence resource to another.
 - Creating a composed model from a collection of existing built models.
-- Listing document model operations associated with the AnalyzedDocument Intelligence resource.
+- Listing document model operations associated with the Document Intelligence resource.
 
 Sample code snippets are provided to illustrate using a DocumentModelAdministrationClient [here](#examples "Examples").
 
@@ -150,11 +150,11 @@ Callers should wait for the operation to be completed by calling `getFinalResult
 
 ## Examples
 
-The following section provides several code snippets covering some of the most common AnalyzedDocument Intelligence tasks, including:
+The following section provides several code snippets covering some of the most common Document Intelligence tasks, including:
 
 * [Analyze Layout](#analyze-layout "Analyze Layout")
 * [Use Prebuilt Models](#use-prebuilt-models)
-* [Build a AnalyzedDocument Model](#build-a-document-model "Build a AnalyzedDocument Model")
+* [Build a Document Model](#build-a-document-model "Build a Document Model")
 * [Analyze Documents using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents using a Custom Model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
 
@@ -214,7 +214,7 @@ for (int i = 0; i < tables.size(); i++) {
 ```
 
 ### Use Prebuilt Models
-Extract fields from select document types such as receipts, invoices, and identity documents using prebuilt models provided by the AnalyzedDocument Intelligence service.
+Extract fields from select document types such as receipts, invoices, and identity documents using prebuilt models provided by the Document Intelligence service.
 Supported prebuilt models are:
 - Analyze receipts using the `prebuilt-receipt` model (fields recognized by the service can be found [here][service_analyze_receipt_fields])
 - Analyze invoices using the `prebuilt-invoice` model (fields recognized by the service can be found [here][service_analyze_invoices_fields]).
@@ -293,7 +293,7 @@ in the [service quickstart documentation][quickstart_training].
 
 **Note**
 
-You can use the [AnalyzedDocument Intelligence Studio preview][di-studio] for creating a labeled file for your training forms.
+You can use the [Document Intelligence Studio preview][di-studio] for creating a labeled file for your training forms.
 More details on setting up a container and required file structure can be found in [here][fr_build_training_set].
 
 ```java com.azure.ai.documentintelligence.readme.buildModel
@@ -382,7 +382,7 @@ for (int i = 0; i < tables.size(); i++) {
 ```
 
 ### Manage your models
-Manage the models in your AnalyzedDocument Intelligence account.
+Manage the models in your Document Intelligence account.
 ```java com.azure.ai.documentintelligence.readme.manageModels
 
 DocumentIntelligenceResourceDetails resourceDetails = administrationClient.getResourceDetails();

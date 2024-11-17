@@ -101,7 +101,7 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
      * @return the createdDateTime value.
      */
     @Generated
-    public OffsetDateTime getCreatedOn() {
+    public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
 

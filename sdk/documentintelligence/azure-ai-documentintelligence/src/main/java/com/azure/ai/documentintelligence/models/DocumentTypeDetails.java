@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AnalyzedDocument type info.
+ * Document type info.
  */
 @Fluent
 public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeDetails> {
     /*
-     * AnalyzedDocument model description.
+     * Document model description.
      */
     @Generated
     private String description;
@@ -44,7 +44,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     private Map<String, Double> fieldConfidence;
 
     /*
-     * AnalyzedDocument model to use for analyzing documents with specified type.
+     * Document model to use for analyzing documents with specified type.
      */
     @Generated
     private String modelId;
@@ -81,8 +81,8 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     }
 
     /**
-     * Get the description property: AnalyzedDocument model description.
-     *
+     * Get the description property: Document model description.
+     * 
      * @return the description value.
      */
     @Generated
@@ -91,8 +91,8 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     }
 
     /**
-     * Set the description property: AnalyzedDocument model description.
-     *
+     * Set the description property: Document model description.
+     * 
      * @param description the description value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -104,7 +104,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Get the buildMode property: Custom document model build mode.
-     *
+     * 
      * @return the buildMode value.
      */
     @Generated
@@ -114,7 +114,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Set the buildMode property: Custom document model build mode.
-     *
+     * 
      * @param buildMode the buildMode value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -126,7 +126,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Get the fieldSchema property: Description of the document semantic schema using a JSON Schema style syntax.
-     *
+     * 
      * @return the fieldSchema value.
      */
     @Generated
@@ -136,7 +136,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Set the fieldSchema property: Description of the document semantic schema using a JSON Schema style syntax.
-     *
+     * 
      * @param fieldSchema the fieldSchema value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -148,7 +148,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Get the fieldConfidence property: Estimated confidence for each field.
-     *
+     * 
      * @return the fieldConfidence value.
      */
     @Generated
@@ -158,7 +158,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Set the fieldConfidence property: Estimated confidence for each field.
-     *
+     * 
      * @param fieldConfidence the fieldConfidence value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -169,8 +169,8 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     }
 
     /**
-     * Get the modelId property: AnalyzedDocument model to use for analyzing documents with specified type.
-     *
+     * Get the modelId property: Document model to use for analyzing documents with specified type.
+     * 
      * @return the modelId value.
      */
     @Generated
@@ -179,8 +179,8 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     }
 
     /**
-     * Set the modelId property: AnalyzedDocument model to use for analyzing documents with specified type.
-     *
+     * Set the modelId property: Document model to use for analyzing documents with specified type.
+     * 
      * @param modelId the modelId value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -192,7 +192,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Get the confidenceThreshold property: Only perform analysis if docType confidence is above threshold.
-     *
+     * 
      * @return the confidenceThreshold value.
      */
     @Generated
@@ -202,7 +202,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Set the confidenceThreshold property: Only perform analysis if docType confidence is above threshold.
-     *
+     * 
      * @param confidenceThreshold the confidenceThreshold value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -214,7 +214,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Get the features property: List of optional analysis features.
-     *
+     * 
      * @return the features value.
      */
     @Generated
@@ -224,7 +224,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Set the features property: List of optional analysis features.
-     *
+     * 
      * @param features the features value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -236,7 +236,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Get the queryFields property: List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
-     *
+     * 
      * @return the queryFields value.
      */
     @Generated
@@ -246,7 +246,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Set the queryFields property: List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
-     *
+     * 
      * @param queryFields the queryFields value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -258,7 +258,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Get the maxDocumentsToAnalyze property: Maximum number of documents of specified type to analyze. Default=all.
-     *
+     * 
      * @return the maxDocumentsToAnalyze value.
      */
     @Generated
@@ -268,7 +268,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Set the maxDocumentsToAnalyze property: Maximum number of documents of specified type to analyze. Default=all.
-     *
+     * 
      * @param maxDocumentsToAnalyze the maxDocumentsToAnalyze value to set.
      * @return the DocumentTypeDetails object itself.
      */
@@ -301,7 +301,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
 
     /**
      * Reads an instance of DocumentTypeDetails from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentTypeDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

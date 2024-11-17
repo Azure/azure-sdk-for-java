@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * AnalyzedDocument splitting mode.
+ * Document splitting mode.
  */
 public final class SplitMode extends ExpandableStringEnum<SplitMode> {
     /**
@@ -32,7 +32,7 @@ public final class SplitMode extends ExpandableStringEnum<SplitMode> {
 
     /**
      * Creates a new instance of SplitMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -42,7 +42,7 @@ public final class SplitMode extends ExpandableStringEnum<SplitMode> {
 
     /**
      * Creates or finds a SplitMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SplitMode.
      */
@@ -53,7 +53,7 @@ public final class SplitMode extends ExpandableStringEnum<SplitMode> {
 
     /**
      * Gets known SplitMode values.
-     *
+     * 
      * @return known SplitMode values.
      */
     @Generated

@@ -17,7 +17,7 @@ import java.util.Map;
  * Request body to authorize document model copy.
  */
 @Fluent
-public final class AuthorizeModelCopyOptions implements JsonSerializable<AuthorizeModelCopyOptions> {
+public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCopyRequest> {
     /*
      * Unique document model name.
      */
@@ -37,12 +37,12 @@ public final class AuthorizeModelCopyOptions implements JsonSerializable<Authori
     private Map<String, String> tags;
 
     /**
-     * Creates an instance of AuthorizeModelCopyOptions class.
+     * Creates an instance of AuthorizeCopyRequest class.
      * 
      * @param modelId the modelId value to set.
      */
     @Generated
-    public AuthorizeModelCopyOptions(String modelId) {
+    public AuthorizeCopyRequest(String modelId) {
         this.modelId = modelId;
     }
 
@@ -70,10 +70,10 @@ public final class AuthorizeModelCopyOptions implements JsonSerializable<Authori
      * Set the description property: Document model description.
      * 
      * @param description the description value to set.
-     * @return the AuthorizeModelCopyOptions object itself.
+     * @return the AuthorizeCopyRequest object itself.
      */
     @Generated
-    public AuthorizeModelCopyOptions setDescription(String description) {
+    public AuthorizeCopyRequest setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -92,10 +92,10 @@ public final class AuthorizeModelCopyOptions implements JsonSerializable<Authori
      * Set the tags property: List of key-value tag attributes associated with the document model.
      * 
      * @param tags the tags value to set.
-     * @return the AuthorizeModelCopyOptions object itself.
+     * @return the AuthorizeCopyRequest object itself.
      */
     @Generated
-    public AuthorizeModelCopyOptions setTags(Map<String, String> tags) {
+    public AuthorizeCopyRequest setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -114,16 +114,16 @@ public final class AuthorizeModelCopyOptions implements JsonSerializable<Authori
     }
 
     /**
-     * Reads an instance of AuthorizeModelCopyOptions from the JsonReader.
+     * Reads an instance of AuthorizeCopyRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AuthorizeModelCopyOptions if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of AuthorizeCopyRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AuthorizeModelCopyOptions.
+     * @throws IOException If an error occurs while reading the AuthorizeCopyRequest.
      */
     @Generated
-    public static AuthorizeModelCopyOptions fromJson(JsonReader jsonReader) throws IOException {
+    public static AuthorizeCopyRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String modelId = null;
             String description = null;
@@ -142,11 +142,11 @@ public final class AuthorizeModelCopyOptions implements JsonSerializable<Authori
                     reader.skipChildren();
                 }
             }
-            AuthorizeModelCopyOptions deserializedAuthorizeModelCopyOptions = new AuthorizeModelCopyOptions(modelId);
-            deserializedAuthorizeModelCopyOptions.description = description;
-            deserializedAuthorizeModelCopyOptions.tags = tags;
+            AuthorizeCopyRequest deserializedAuthorizeCopyRequest = new AuthorizeCopyRequest(modelId);
+            deserializedAuthorizeCopyRequest.description = description;
+            deserializedAuthorizeCopyRequest.tags = tags;
 
-            return deserializedAuthorizeModelCopyOptions;
+            return deserializedAuthorizeCopyRequest;
         });
     }
 }
