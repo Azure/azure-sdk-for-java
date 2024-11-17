@@ -4,19 +4,21 @@
 package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
-
-import java.io.ByteArrayInputStream;
-import java.util.zip.ZipInputStream;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipInputStream;
 
 public class LinuxWebAppsTests extends AppServiceTest {
     private String rgName1 = "";
@@ -96,7 +98,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         if (!isPlaybackMode()) {
             ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(logsZip));
             Assertions.assertNotNull(zipInputStream.getNextEntry());
-            byte[] unzipped = IOUtils.toByteArray(zipInputStream);
+            byte[] unzipped = readAllBytes(zipInputStream);
             Assertions.assertTrue(unzipped.length > 0);
         }
 
@@ -111,6 +113,18 @@ public class LinuxWebAppsTests extends AppServiceTest {
         // update to a java 11 image
         webApp = webApp1.update().withBuiltInImage(RuntimeStack.TOMCAT_9_0_JAVA11).apply();
         Assertions.assertNotNull(webApp);
+    }
+
+    private static byte[] readAllBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[8192];
+
+        int read;
+        while ((read = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, read);
+        }
+
+        return outputStream.toByteArray();
     }
 
     @Test

@@ -39,7 +39,7 @@ public enum StreamWriteCapability implements JacksonFeature {
 
     private final int _mask;
 
-    private StreamWriteCapability(boolean defaultState) {
+    StreamWriteCapability(boolean defaultState) {
         _defaultState = defaultState;
         _mask = (1 << ordinal());
     }

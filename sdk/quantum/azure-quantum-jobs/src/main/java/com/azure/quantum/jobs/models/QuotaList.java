@@ -29,6 +29,12 @@ public final class QuotaList implements JsonSerializable<QuotaList> {
     private String nextLink;
 
     /**
+     * Creates an instance of {@link QuotaList}.
+     */
+    public QuotaList() {
+    }
+
+    /**
      * Get the value property: The value property.
      *
      * @return the value value.

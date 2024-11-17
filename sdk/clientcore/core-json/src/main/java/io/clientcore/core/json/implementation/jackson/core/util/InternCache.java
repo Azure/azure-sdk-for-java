@@ -44,13 +44,15 @@ public final class InternCache extends ConcurrentHashMap<String, String> // sinc
             return result;
         }
 
-        /* 18-Sep-2013, tatu: We used to use LinkedHashMap, which has simple LRU
-         *   method. No such functionality exists with CHM; and let's use simplest
-         *   possible limitation: just clear all contents. This because otherwise
-         *   we are simply likely to keep on clearing same, commonly used entries.
+        /*
+         * 18-Sep-2013, tatu: We used to use LinkedHashMap, which has simple LRU
+         * method. No such functionality exists with CHM; and let's use simplest
+         * possible limitation: just clear all contents. This because otherwise
+         * we are simply likely to keep on clearing same, commonly used entries.
          */
         if (size() >= MAX_ENTRIES) {
-            /* Not incorrect wrt well-known double-locking anti-pattern because underlying
+            /*
+             * Not incorrect wrt well-known double-locking anti-pattern because underlying
              * storage gives close enough answer to real one here; and we are
              * more concerned with flooding than starvation.
              */

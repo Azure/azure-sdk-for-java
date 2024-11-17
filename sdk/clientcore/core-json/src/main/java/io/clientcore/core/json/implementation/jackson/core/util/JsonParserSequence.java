@@ -1,10 +1,13 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.util;
 
-import java.io.IOException;
-import java.util.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonToken;
+import io.clientcore.core.json.implementation.jackson.core.base.ParserMinimalBase;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Helper class that can be used to sequence multiple physical
@@ -90,7 +93,7 @@ public class JsonParserSequence extends JsonParserDelegate {
         if (!(first instanceof JsonParserSequence || second instanceof JsonParserSequence)) {
             return new JsonParserSequence(checkForExistingToken, new JsonParser[] { first, second });
         }
-        ArrayList<JsonParser> p = new ArrayList<JsonParser>();
+        ArrayList<JsonParser> p = new ArrayList<>();
         if (first instanceof JsonParserSequence) {
             ((JsonParserSequence) first).addFlattenedActiveParsers(p);
         } else {
@@ -101,7 +104,7 @@ public class JsonParserSequence extends JsonParserDelegate {
         } else {
             p.add(second);
         }
-        return new JsonParserSequence(checkForExistingToken, p.toArray(new JsonParser[p.size()]));
+        return new JsonParserSequence(checkForExistingToken, p.toArray(new JsonParser[0]));
     }
 
     @Deprecated // since 2.8
@@ -122,10 +125,10 @@ public class JsonParserSequence extends JsonParserDelegate {
     }
 
     /*
-    /*******************************************************
-    /* Overridden methods, needed: cases where default
-    /* delegation does not work
-    /*******************************************************
+     * /*******************************************************
+     * /* Overridden methods, needed: cases where default
+     * /* delegation does not work
+     * /*******************************************************
      */
 
     @Override
@@ -153,7 +156,7 @@ public class JsonParserSequence extends JsonParserDelegate {
 
     /**
      * Need to override, re-implement similar to how method defined in
-     * {@link io.clientcore.core.json.implementation.jackson.core.base.ParserMinimalBase}, to keep
+     * {@link ParserMinimalBase}, to keep
      * state correct here.
      */
     @Override
@@ -181,26 +184,15 @@ public class JsonParserSequence extends JsonParserDelegate {
     }
 
     /*
-    /*******************************************************
-    /* Additional extended API
-    /*******************************************************
+     * /*******************************************************
+     * /* Additional extended API
+     * /*******************************************************
      */
-
-    /**
-     * Method that is most useful for debugging or testing;
-     * returns actual number of underlying parsers sequence
-     * was constructed with (nor just ones remaining active)
-     *
-     * @return Number of actual underlying parsers this sequence has
-     */
-    public int containedParsersCount() {
-        return _parsers.length;
-    }
 
     /*
-    /*******************************************************
-    /* Helper methods
-    /*******************************************************
+     * /*******************************************************
+     * /* Helper methods
+     * /*******************************************************
      */
 
     /**

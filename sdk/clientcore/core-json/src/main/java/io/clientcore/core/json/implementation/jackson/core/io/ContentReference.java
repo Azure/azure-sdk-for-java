@@ -1,20 +1,22 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.io;
 
+import io.clientcore.core.json.implementation.jackson.core.JsonLocation;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
  * Abstraction that encloses information about content being processed --
  * input source or output target, streaming or
  * not -- for the purpose of including pertinent information in
- * location (see {@link io.clientcore.core.json.implementation.jackson.core.JsonLocation})
+ * location (see {@link JsonLocation})
  * objections, most commonly to be printed out as part of {@code Exception}
  * messages.
  *
@@ -70,9 +72,9 @@ public class ContentReference
     protected final boolean _isContentTextual;
 
     /*
-    /**********************************************************************
-    /* Life-cycle
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Life-cycle
+     * /**********************************************************************
      */
 
     protected ContentReference(boolean isContentTextual, Object rawContent) {
@@ -130,9 +132,9 @@ public class ContentReference
     }
 
     /*
-    /**********************************************************************
-    /* Serializable overrides
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Serializable overrides
+     * /**********************************************************************
      */
 
     // For JDK serialization: can/should not retain raw content, so need
@@ -151,9 +153,9 @@ public class ContentReference
     }
 
     /*
-    /**********************************************************************
-    /* Basic accessors
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Basic accessors
+     * /**********************************************************************
      */
 
     public boolean hasTextualContent() {
@@ -184,9 +186,9 @@ public class ContentReference
     }
 
     /*
-    /**********************************************************************
-    /* Method for constructing descriptions
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Method for constructing descriptions
+     * /**********************************************************************
      */
 
     /**
@@ -285,7 +287,7 @@ public class ContentReference
         _truncateOffsets(offsets, b.length);
         final int start = offsets[0];
         final int length = Math.min(offsets[1], maxSnippetLen);
-        return new String(b, start, length, Charset.forName("UTF-8"));
+        return new String(b, start, length, StandardCharsets.UTF_8);
     }
 
     // Method that is given alleged start/offset pair and needs to adjust
@@ -313,8 +315,8 @@ public class ContentReference
         // [core#658]: make sure to escape non-printable
         for (int i = 0, end = content.length(); i < end; ++i) {
             // 06-Apr-2021, tatu: Gee... there is no "Character.isPrintable()",
-            //   and from what I can see things get rather complicated trying
-            //   to figure out proper way. Hence, we'll do this
+            // and from what I can see things get rather complicated trying
+            // to figure out proper way. Hence, we'll do this
             char ch = content.charAt(i);
             if (!Character.isISOControl(ch) || !_appendEscaped(sb, ch)) {
                 sb.append(ch);
@@ -339,9 +341,9 @@ public class ContentReference
     }
 
     /*
-    /**********************************************************************
-    /* Standard method overrides
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Standard method overrides
+     * /**********************************************************************
      */
 
     // Just needed for JsonLocation#equals(): although it'd seem we only need
@@ -363,8 +365,8 @@ public class ContentReference
         }
 
         // 16-Jan-2022, tatu: As per [core#739] we'll want to consider some
-        //   but not all content cases with real equality: the concern here is
-        //   to avoid expensive comparisons and/or possible security issues
+        // but not all content cases with real equality: the concern here is
+        // to avoid expensive comparisons and/or possible security issues
         final Object otherRaw = otherSrc._rawContent;
 
         if (_rawContent == null) {

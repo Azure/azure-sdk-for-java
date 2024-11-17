@@ -551,7 +551,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.httpClientInterceptor = null;
             this.reactorHttpClient = httpClient();
 
-            this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
+            this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, configs);
             this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig = isRegionScopedSessionCapturingEnabled;
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
@@ -622,8 +622,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
         return databaseAccount;
-        // TODO: add support for openAsync
-        // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
     }
 
     private void resetSessionContainerIfNeeded(DatabaseAccount databaseAccount) {
