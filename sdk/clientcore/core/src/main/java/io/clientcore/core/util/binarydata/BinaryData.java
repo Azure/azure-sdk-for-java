@@ -4,6 +4,7 @@
 package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
+import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.Closeable;
@@ -712,6 +713,21 @@ public abstract class BinaryData implements Closeable {
             channel.write(buffer);
         }
     }
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link JsonWriter}.
+     * <p>
+     * This method does not close or flush the {@link JsonWriter}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source isn't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryData()} to create a replayable copy.
+     *
+     * @param jsonWriter The {@link JsonWriter} to write the contents of this {@link BinaryData} to.
+     * @throws NullPointerException If {@code jsonWriter} is null.
+     * @throws IOException If an I/O error occurs during writing.
+     */
+    public abstract void writeTo(JsonWriter jsonWriter) throws IOException;
 
     /**
      * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.

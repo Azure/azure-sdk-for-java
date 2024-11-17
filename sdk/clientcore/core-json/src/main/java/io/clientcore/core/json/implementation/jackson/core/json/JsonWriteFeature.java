@@ -1,7 +1,8 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.json;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.FormatFeature;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerator;
 
 /**
  * Token writer features specific to JSON backend.
@@ -71,7 +72,7 @@ public enum JsonWriteFeature implements FormatFeature {
     @SuppressWarnings("deprecation")
     ESCAPE_NON_ASCII(false, JsonGenerator.Feature.ESCAPE_NON_ASCII),
 
-    //23-Nov-2015, tatu: for [core#223], if and when it gets implemented
+    // 23-Nov-2015, tatu: for [core#223], if and when it gets implemented
     /*
      * Feature that specifies handling of UTF-8 content that contains
      * characters beyond BMP (Basic Multilingual Plane), which are
@@ -82,16 +83,16 @@ public enum JsonWriteFeature implements FormatFeature {
      * targets, writing of surrogates as is which is typically converted
      * by {@link java.io.Writer} into 4-byte UTF-8 sequence eventually)
      * is used.
-     *<p>
+     * <p>
      * Note that the original JSON specification suggests use of escaping;
      * but that this is not correct from standard UTF-8 handling perspective.
      * Because of two competing goals, this feature was added to allow either
      * behavior to be used, but defaulting to UTF-8 specification compliant
      * mode.
-     *<p>
+     * <p>
      * Feature is disabled by default.
      */
-    //    ESCAPE_UTF8_SURROGATES(false, JsonGenerator.Feature.ESCAPE_UTF8_SURROGATES),
+    // ESCAPE_UTF8_SURROGATES(false, JsonGenerator.Feature.ESCAPE_UTF8_SURROGATES),
 
     ;
 
@@ -104,23 +105,7 @@ public enum JsonWriteFeature implements FormatFeature {
      */
     final private JsonGenerator.Feature _mappedFeature;
 
-    /**
-     * Method that calculates bit set (flags) of all features that
-     * are enabled by default.
-     *
-     * @return Bit mask of all features that are enabled by default
-     */
-    public static int collectDefaults() {
-        int flags = 0;
-        for (JsonWriteFeature f : values()) {
-            if (f.enabledByDefault()) {
-                flags |= f.getMask();
-            }
-        }
-        return flags;
-    }
-
-    private JsonWriteFeature(boolean defaultState, JsonGenerator.Feature mapTo) {
+    JsonWriteFeature(boolean defaultState, JsonGenerator.Feature mapTo) {
         _defaultState = defaultState;
         _mask = (1 << ordinal());
         _mappedFeature = mapTo;

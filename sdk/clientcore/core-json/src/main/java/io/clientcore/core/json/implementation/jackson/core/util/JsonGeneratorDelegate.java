@@ -1,7 +1,13 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.util;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.Base64Variant;
+import io.clientcore.core.json.implementation.jackson.core.FormatSchema;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerator;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonStreamContext;
+import io.clientcore.core.json.implementation.jackson.core.SerializableString;
+import io.clientcore.core.json.implementation.jackson.core.StreamWriteCapability;
 import io.clientcore.core.json.implementation.jackson.core.io.CharacterEscapes;
 
 import java.io.IOException;
@@ -18,20 +24,16 @@ public class JsonGeneratorDelegate extends JsonGenerator {
 
     /**
      * Whether copy methods
-     * ({@link #copyCurrentEvent}, {@link #copyCurrentStructure}, {@link #writeTree} and {@link #writeObject})
+     * ({@link #copyCurrentEvent}, {@link #copyCurrentStructure}, and {@link #writeObject})
      * are to be called (true), or handled by this object (false).
      */
     protected boolean delegateCopyMethods;
 
     /*
-    /**********************************************************************
-    /* Construction, initialization
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Construction, initialization
+     * /**********************************************************************
      */
-
-    public JsonGeneratorDelegate(JsonGenerator d) {
-        this(d, true);
-    }
 
     /**
      * @param d Underlying generator to delegate calls to
@@ -45,21 +47,10 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, metadata/state access
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, metadata/state access
+     * /**********************************************************************
      */
-
-    @Override
-    public ObjectCodec getCodec() {
-        return delegate.getCodec();
-    }
-
-    @Override
-    public JsonGenerator setCodec(ObjectCodec oc) {
-        delegate.setCodec(oc);
-        return this;
-    }
 
     @Override
     public void setSchema(FormatSchema schema) {
@@ -69,11 +60,6 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     @Override
     public FormatSchema getSchema() {
         return delegate.getSchema();
-    }
-
-    @Override
-    public Version version() {
-        return delegate.version();
     }
 
     @Override
@@ -109,9 +95,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, capability introspection
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, capability introspection
+     * /**********************************************************************
      */
 
     @Override
@@ -150,9 +136,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, configuration
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, configuration
+     * /**********************************************************************
      */
 
     @Override
@@ -173,7 +159,7 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     // final, can't override (and no need to)
-    //public final JsonGenerator configure(Feature f, boolean state)
+    // public final JsonGenerator configure(Feature f, boolean state)
 
     @Override
     public int getFeatureMask() {
@@ -200,27 +186,10 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Configuring generator
-    /**********************************************************************
-      */
-
-    @Override
-    public JsonGenerator setPrettyPrinter(PrettyPrinter pp) {
-        delegate.setPrettyPrinter(pp);
-        return this;
-    }
-
-    @Override
-    public PrettyPrinter getPrettyPrinter() {
-        return delegate.getPrettyPrinter();
-    }
-
-    @Override
-    public JsonGenerator useDefaultPrettyPrinter() {
-        delegate.useDefaultPrettyPrinter();
-        return this;
-    }
+     * /**********************************************************************
+     * /* Configuring generator
+     * /**********************************************************************
+     */
 
     @Override
     public JsonGenerator setHighestNonEscapedChar(int charCode) {
@@ -251,9 +220,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, structural
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, structural
+     * /**********************************************************************
      */
 
     @Override
@@ -338,9 +307,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, text/String values
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, text/String values
+     * /**********************************************************************
      */
 
     @Override
@@ -374,9 +343,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, binary/raw content
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, binary/raw content
+     * /**********************************************************************
      */
 
     @Override
@@ -430,9 +399,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, other value types
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, other value types
+     * /**********************************************************************
      */
 
     @Override
@@ -492,24 +461,24 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, convenience field-write methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, convenience field-write methods
+     * /**********************************************************************
      */
 
     // 04-Oct-2019, tatu: Reminder: these should NOT be delegated, unless matching
-    //    methods in `FilteringGeneratorDelegate` are re-defined to "split" calls again
+    // methods in `FilteringGeneratorDelegate` are re-defined to "split" calls again
 
-    //    public void writeBinaryField(String fieldName, byte[] data) throws IOException {
-    //    public void writeBooleanField(String fieldName, boolean value) throws IOException {
-    //    public void writeNullField(String fieldName) throws IOException {
-    //    public void writeStringField(String fieldName, String value) throws IOException {
-    //    public void writeNumberField(String fieldName, short value) throws IOException {
+    // public void writeBinaryField(String fieldName, byte[] data) throws IOException {
+    // public void writeBooleanField(String fieldName, boolean value) throws IOException {
+    // public void writeNullField(String fieldName) throws IOException {
+    // public void writeStringField(String fieldName, String value) throws IOException {
+    // public void writeNumberField(String fieldName, short value) throws IOException {
 
-    //    public void writeArrayFieldStart(String fieldName) throws IOException {
-    //    public void writeObjectFieldStart(String fieldName) throws IOException {
-    //    public void writeObjectField(String fieldName, Object pojo) throws IOException {
-    //    public void writePOJOField(String fieldName, Object pojo) throws IOException {
+    // public void writeArrayFieldStart(String fieldName) throws IOException {
+    // public void writeObjectFieldStart(String fieldName) throws IOException {
+    // public void writeObjectField(String fieldName, Object pojo) throws IOException {
+    // public void writePOJOField(String fieldName, Object pojo) throws IOException {
 
     // Sole exception being this method as it is not a "combo" method
 
@@ -519,9 +488,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, Native Ids
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, Native Ids
+     * /**********************************************************************
      */
 
     @Override
@@ -545,15 +514,10 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, write methods, serializing Java objects
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, write methods, serializing Java objects
+     * /**********************************************************************
      */
-
-    @Override // since 2.13
-    public void writePOJO(Object pojo) throws IOException {
-        writeObject(pojo);
-    }
 
     @Override
     public void writeObject(Object pojo) throws IOException {
@@ -564,45 +528,14 @@ public class JsonGeneratorDelegate extends JsonGenerator {
         if (pojo == null) {
             writeNull();
         } else {
-            ObjectCodec c = getCodec();
-            if (c != null) {
-                c.writeValue(this, pojo);
-                return;
-            }
             _writeSimpleObject(pojo);
         }
     }
 
-    @Override
-    public void writeTree(TreeNode tree) throws IOException {
-        if (delegateCopyMethods) {
-            delegate.writeTree(tree);
-            return;
-        }
-        // As with 'writeObject()', we are not check if write would work
-        if (tree == null) {
-            writeNull();
-        } else {
-            ObjectCodec c = getCodec();
-            if (c == null) {
-                throw new IllegalStateException("No ObjectCodec defined");
-            }
-            c.writeTree(this, tree);
-        }
-    }
-
     /*
-    /**********************************************************************
-    /* Public API, convenience field write methods
-    /**********************************************************************
-     */
-
-    // // These are fine, just delegate to other methods...
-
-    /*
-    /**********************************************************************
-    /* Public API, copy-through methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, copy-through methods
+     * /**********************************************************************
      */
 
     @Override
@@ -622,9 +555,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, context access
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, context access
+     * /**********************************************************************
      */
 
     @Override
@@ -633,9 +566,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, buffer handling
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, buffer handling
+     * /**********************************************************************
      */
 
     @Override
@@ -654,9 +587,9 @@ public class JsonGeneratorDelegate extends JsonGenerator {
     }
 
     /*
-    /**********************************************************************
-    /* Extended API
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Extended API
+     * /**********************************************************************
      */
 
     @Deprecated // since 2.11
@@ -664,12 +597,4 @@ public class JsonGeneratorDelegate extends JsonGenerator {
         return delegate;
     }
 
-    /**
-     * @return Underlying generator that calls are delegated to
-     *
-     * @since 2.11
-     */
-    public JsonGenerator delegate() {
-        return delegate;
-    }
 }

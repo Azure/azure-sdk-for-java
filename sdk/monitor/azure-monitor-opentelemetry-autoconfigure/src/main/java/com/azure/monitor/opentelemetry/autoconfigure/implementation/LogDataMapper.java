@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MessageTelemetryBuilder;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.*;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;

@@ -1,16 +1,17 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.json;
 
-import java.io.IOException;
-
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerator;
+import io.clientcore.core.json.implementation.jackson.core.SerializableString;
+import io.clientcore.core.json.implementation.jackson.core.StreamWriteCapability;
 import io.clientcore.core.json.implementation.jackson.core.base.GeneratorBase;
 import io.clientcore.core.json.implementation.jackson.core.io.CharTypes;
 import io.clientcore.core.json.implementation.jackson.core.io.CharacterEscapes;
 import io.clientcore.core.json.implementation.jackson.core.io.IOContext;
-import io.clientcore.core.json.implementation.jackson.core.util.DefaultPrettyPrinter;
+import io.clientcore.core.json.implementation.jackson.core.io.SerializedString;
 import io.clientcore.core.json.implementation.jackson.core.util.JacksonFeatureSet;
-import io.clientcore.core.json.implementation.jackson.core.util.VersionUtil;
+
+import java.io.IOException;
 
 /**
  * Intermediate base class shared by JSON-backed generators
@@ -20,9 +21,9 @@ import io.clientcore.core.json.implementation.jackson.core.util.VersionUtil;
  */
 public abstract class JsonGeneratorImpl extends GeneratorBase {
     /*
-    /**********************************************************
-    /* Constants
-    /**********************************************************
+     * /**********************************************************
+     * /* Constants
+     * /**********************************************************
      */
 
     /**
@@ -41,17 +42,17 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
         = DEFAULT_TEXTUAL_WRITE_CAPABILITIES;
 
     /*
-    /**********************************************************
-    /* Configuration, basic I/O
-    /**********************************************************
+     * /**********************************************************
+     * /* Configuration, basic I/O
+     * /**********************************************************
      */
 
     protected final IOContext _ioContext;
 
     /*
-    /**********************************************************
-    /* Configuration, output escaping
-    /**********************************************************
+     * /**********************************************************
+     * /* Configuration, output escaping
+     * /**********************************************************
      */
 
     /**
@@ -81,9 +82,9 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
     protected CharacterEscapes _characterEscapes;
 
     /*
-    /**********************************************************
-    /* Configuration, other
-    /**********************************************************
+     * /**********************************************************
+     * /* Configuration, other
+     * /**********************************************************
      */
 
     /**
@@ -91,7 +92,7 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
      *
      * @since 2.1
      */
-    protected SerializableString _rootValueSeparator = DefaultPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR;
+    protected SerializableString _rootValueSeparator = new SerializedString(" ");
 
     /**
      * Flag that is set if quoting is not to be added around
@@ -102,14 +103,14 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
     protected boolean _cfgUnqNames;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     @SuppressWarnings("deprecation")
-    public JsonGeneratorImpl(IOContext ctxt, int features, ObjectCodec codec) {
-        super(features, codec);
+    public JsonGeneratorImpl(IOContext ctxt, int features) {
+        super(features);
         _ioContext = ctxt;
         if (Feature.ESCAPE_NON_ASCII.enabledIn(features)) {
             // inlined `setHighestNonEscapedChar()`
@@ -119,20 +120,9 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
     }
 
     /*
-    /**********************************************************
-    /* Versioned
-    /**********************************************************
-     */
-
-    @Override
-    public Version version() {
-        return VersionUtil.versionFor(getClass());
-    }
-
-    /*
-    /**********************************************************
-    /* Overridden configuration methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Overridden configuration methods
+     * /**********************************************************
      */
 
     @SuppressWarnings("deprecation")
@@ -164,7 +154,7 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
 
     @Override
     public JsonGenerator setHighestNonEscapedChar(int charCode) {
-        _maximumNonEscapedChar = (charCode < 0) ? 0 : charCode;
+        _maximumNonEscapedChar = Math.max(charCode, 0);
         return this;
     }
 
@@ -205,44 +195,10 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
     }
 
     /*
-    /**********************************************************
-    /* Shared helper methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Shared helper methods
+     * /**********************************************************
      */
-
-    protected void _verifyPrettyValueWrite(String typeMsg, int status) throws IOException {
-        // If we have a pretty printer, it knows what to do:
-        switch (status) {
-            case JsonWriteContext.STATUS_OK_AFTER_COMMA: // array
-                _cfgPrettyPrinter.writeArrayValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AFTER_COLON:
-                _cfgPrettyPrinter.writeObjectFieldValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AFTER_SPACE:
-                _cfgPrettyPrinter.writeRootValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AS_IS:
-                // First entry, but of which context?
-                if (_writeContext.inArray()) {
-                    _cfgPrettyPrinter.beforeArrayValues(this);
-                } else if (_writeContext.inObject()) {
-                    _cfgPrettyPrinter.beforeObjectEntries(this);
-                }
-                break;
-
-            case JsonWriteContext.STATUS_EXPECT_NAME:
-                _reportCantWriteValueExpectName(typeMsg);
-                break;
-
-            default:
-                _throwInternal();
-                break;
-        }
-    }
 
     protected void _reportCantWriteValueExpectName(String typeMsg) throws IOException {
         _reportError(

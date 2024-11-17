@@ -2,13 +2,56 @@
 // Licensed under the MIT License.
 package com.azure.media.videoanalyzer.edge;
 
-import com.azure.media.videoanalyzer.edge.models.*;
+import com.azure.media.videoanalyzer.edge.models.ExtensionProcessorBase;
+import com.azure.media.videoanalyzer.edge.models.HttpExtension;
+import com.azure.media.videoanalyzer.edge.models.ImageFormatBmp;
+import com.azure.media.videoanalyzer.edge.models.ImageProperties;
+import com.azure.media.videoanalyzer.edge.models.ImageScale;
+import com.azure.media.videoanalyzer.edge.models.ImageScaleMode;
+import com.azure.media.videoanalyzer.edge.models.IotHubDeviceConnection;
+import com.azure.media.videoanalyzer.edge.models.IotHubMessageSink;
+import com.azure.media.videoanalyzer.edge.models.IotHubMessageSource;
+import com.azure.media.videoanalyzer.edge.models.LivePipeline;
+import com.azure.media.videoanalyzer.edge.models.LivePipelineActivateRequest;
+import com.azure.media.videoanalyzer.edge.models.LivePipelineDeactivateRequest;
+import com.azure.media.videoanalyzer.edge.models.LivePipelineDeleteRequest;
+import com.azure.media.videoanalyzer.edge.models.LivePipelineGetRequest;
+import com.azure.media.videoanalyzer.edge.models.LivePipelineListRequest;
+import com.azure.media.videoanalyzer.edge.models.LivePipelineProperties;
+import com.azure.media.videoanalyzer.edge.models.LivePipelineSetRequest;
+import com.azure.media.videoanalyzer.edge.models.NodeInput;
+import com.azure.media.videoanalyzer.edge.models.OnvifDeviceDiscoverRequest;
+import com.azure.media.videoanalyzer.edge.models.OnvifDeviceGetRequest;
+import com.azure.media.videoanalyzer.edge.models.OutputSelector;
+import com.azure.media.videoanalyzer.edge.models.OutputSelectorOperator;
+import com.azure.media.videoanalyzer.edge.models.OutputSelectorProperty;
+import com.azure.media.videoanalyzer.edge.models.ParameterDeclaration;
+import com.azure.media.videoanalyzer.edge.models.ParameterDefinition;
+import com.azure.media.videoanalyzer.edge.models.ParameterType;
+import com.azure.media.videoanalyzer.edge.models.PipelineTopology;
+import com.azure.media.videoanalyzer.edge.models.PipelineTopologyDeleteRequest;
+import com.azure.media.videoanalyzer.edge.models.PipelineTopologyGetRequest;
+import com.azure.media.videoanalyzer.edge.models.PipelineTopologyListRequest;
+import com.azure.media.videoanalyzer.edge.models.PipelineTopologyProperties;
+import com.azure.media.videoanalyzer.edge.models.PipelineTopologySetRequest;
+import com.azure.media.videoanalyzer.edge.models.RemoteDeviceAdapter;
+import com.azure.media.videoanalyzer.edge.models.RemoteDeviceAdapterDeleteRequest;
+import com.azure.media.videoanalyzer.edge.models.RemoteDeviceAdapterGetRequest;
+import com.azure.media.videoanalyzer.edge.models.RemoteDeviceAdapterListRequest;
+import com.azure.media.videoanalyzer.edge.models.RemoteDeviceAdapterProperties;
+import com.azure.media.videoanalyzer.edge.models.RemoteDeviceAdapterSetRequest;
+import com.azure.media.videoanalyzer.edge.models.RemoteDeviceAdapterTarget;
+import com.azure.media.videoanalyzer.edge.models.RtspSource;
+import com.azure.media.videoanalyzer.edge.models.SymmetricKeyCredentials;
+import com.azure.media.videoanalyzer.edge.models.UnsecuredEndpoint;
+import com.azure.media.videoanalyzer.edge.models.UsernamePasswordCredentials;
 import com.microsoft.azure.sdk.iot.service.Device;
+import com.microsoft.azure.sdk.iot.service.RegistryManager;
 import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceMethod;
 import com.microsoft.azure.sdk.iot.service.devicetwin.MethodResult;
-import java.io.IOException;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
-import com.microsoft.azure.sdk.iot.service.RegistryManager;
+
+import java.io.IOException;
 import java.util.Arrays;
 
 /***
