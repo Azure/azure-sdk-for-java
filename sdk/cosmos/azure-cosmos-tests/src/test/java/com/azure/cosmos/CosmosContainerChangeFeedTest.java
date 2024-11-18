@@ -75,7 +75,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertThrows;
 import static org.testng.Assert.fail;
@@ -307,7 +306,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         // applying updates
         updateAction.run();
 
-        sleep(3000);
+        Thread.sleep(3000);
 
         for (int i = 0; i < 20; i++) {
             String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
@@ -584,7 +583,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 Instant.now().minus(10, ChronoUnit.SECONDS),
                 FeedRange.forFullRange());
 
-        sleep(1000);
+        Thread.sleep(1000);
 
         String continuation = drainAndValidateChangeFeedResults(options, null, expectedInitialEventCount);
 
@@ -1221,7 +1220,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                             emptyResultCount));
 
                     try {
-                        sleep(1000 / changeFeedRequestOptions.size());
+                        Thread.sleep(1000 / changeFeedRequestOptions.size());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
