@@ -41,7 +41,10 @@
       --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates.implementation=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <doclintMissingInclusion>-</doclintMissingInclusion>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

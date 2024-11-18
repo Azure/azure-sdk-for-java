@@ -67,22 +67,6 @@
         <Method name="getDataFromMessageBody"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
-        <Method name="decode"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.webkey.Base64UrlJsonDeserializer"/>
-        <Method name="deserialize"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
-        <Method name="clone"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
-        <Method name="getX509Thumbprint"/>
-      </And>
-      <And>
         <Class name="com.azure.json.gson.GsonJsonReader"/>
         <Method name="getBinary"/>
       </And>
@@ -94,15 +78,6 @@
         <Class name="com.azure.json.reflect.JacksonJsonReader"/>
         <Method name="getBinary"/>
       </And>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.BackupKeyResult"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.JsonWebKey"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationResult"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationsParameters"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyRestoreParameters"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeySignParameters"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameters"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.RandomBytes"/>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -111,14 +86,6 @@
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
     <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-  </Match>
-
-  <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory"/> <!-- false positive -->
-    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
@@ -398,40 +365,12 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
-  <!-- Jackson property setter method is private -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
-      <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
-      <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
-      <Class name="com.azure.security.keyvault.certificates.models.IssuerProperties"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateIssuer"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
   <Match>
     <Or>
       <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
       <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- Field initialized by jackson property annotation -->
-  <Match>
-    <Class name="com.azure.security.keyvault.keys.models.webkey.JsonWebKey"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
@@ -1801,22 +1740,6 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
-  <!-- False positives -->
-  <Match>
-    <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
-    <Method name="getFilenames"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.security.keyvault.jca.implementation.utils.HttpUtil"/>
-    <Method name="~(get|post)"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
   <!-- Machine generated classes for MAA service generate spotBugs errors -->
   <Match>
     <Or>
@@ -1846,30 +1769,6 @@
   <Match>
     <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
-  </Match>
-
-  <!-- We shouldn't return a zero-length array if null is provided to serialization/deserialization and clone methods. -->
-  <Match>
-    <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
-    <Method name="deserialize"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
-    <Method name="clone"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-  </Match>
-
-  <!-- This is inside Azure Maps Implementation package (codegen), and cannot be modified via a customization. -->
-  <Match>
-    <Class name="com.azure.maps.render.implementation.RenderV2sImpl"/>
-    <Method name="~getMap.*+"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.maps.render.implementation.RendersImpl"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
   <Match>
