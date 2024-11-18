@@ -38,7 +38,6 @@ import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.QueryRewrites;
-import com.azure.search.documents.models.QueryRewritesType;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;

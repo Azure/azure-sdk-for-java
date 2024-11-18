@@ -100,7 +100,7 @@ public class UtilityMethodTests {
     }
 
     @Test
-    public void QueryRewritesFromString() {
+    public void queryRewritesFromString() {
         assertEquals(new QueryRewrites(QueryRewritesType.NONE), QueryRewrites.fromString("none"));
         assertEquals(new QueryRewrites(QueryRewritesType.GENERATIVE), QueryRewrites.fromString("generative"));
         assertEquals(new QueryRewrites(QueryRewritesType.GENERATIVE).setCount(5),

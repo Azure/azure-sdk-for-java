@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
+import java.util.Locale;
+import java.util.Objects;
+
 /**
  * Configuration for how semantic search rewrites a query.
  */
@@ -14,6 +17,7 @@ public class QueryRewrites {
      * Creates a new instance of {@link QueryRewrites}.
      *
      * @param rewritesType The type of query rewrites to perform.
+     * @throws NullPointerException If {@code rewritesType} is null.
      */
     public QueryRewrites(QueryRewritesType rewritesType) {
         this.rewritesType = Objects.requireNonNull(rewritesType, "'rewritesType' cannot be null");
@@ -54,10 +58,6 @@ public class QueryRewrites {
 
     @Override
     public String toString() {
-        if (rewritesType == null) {
-            return null;
-        }
-
         String queryRewritesTypeString = rewritesType.toString();
 
         if (rewritesType == QueryRewritesType.NONE || count == null) {
@@ -69,7 +69,7 @@ public class QueryRewrites {
 
     @Override
     public int hashCode() {
-        return toString().hashCode();
+        return Objects.hash(rewritesType, count);
     }
 
     @Override
@@ -79,23 +79,34 @@ public class QueryRewrites {
         }
 
         QueryRewrites other = (QueryRewrites) obj;
-        return Objects.equals(rewritesType, other.rewritesType)
-            && Objects.equals(count, other.count);
+        return Objects.equals(rewritesType, other.rewritesType) && Objects.equals(count, other.count);
     }
 
+    /**
+     * Parses a {@link QueryRewrites} from a string.
+     * @param str The string to parse.
+     * @return The parsed {@link QueryRewrites}.
+     * @throws IllegalArgumentException If the string is invalid.
+     */
     public static QueryRewrites fromString(String str) {
-        if (str == null) {
+        if (str == null || str.isEmpty()) {
             return null;
         }
 
-        String[] parts = str.split("\\|");
-        QueryRewritesType rewritesType = QueryRewritesType.fromString(parts[0]);
-
-        if (parts.length == 1) {
-            return new QueryRewrites(rewritesType);
+        if (!str.contains("|")) {
+            return new QueryRewrites(QueryRewritesType.fromString(str));
         }
 
+        String[] parts = new String[2];
+
+        parts[0] = str.substring(0, str.indexOf("|"));
+        parts[1] = str.substring(str.indexOf("|") + 1);
+        QueryRewritesType rewritesType = QueryRewritesType.fromString(parts[0]);
         String[] countParts = parts[1].split("-");
+        if (!countParts[0].toLowerCase(Locale.ROOT).equals("count")) {
+            throw new IllegalArgumentException(
+                "Invalid QueryRewrites string option: " + str + ". Accepted QueryRewrites string options: 'count'.");
+        }
         return new QueryRewrites(rewritesType).setCount(Integer.parseInt(countParts[1]));
     }
 }
