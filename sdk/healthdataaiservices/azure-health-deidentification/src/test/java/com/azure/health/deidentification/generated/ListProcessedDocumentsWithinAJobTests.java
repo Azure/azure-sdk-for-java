@@ -18,8 +18,8 @@ public final class ListProcessedDocumentsWithinAJobTests extends Deidentificatio
     @Disabled
     public void testListProcessedDocumentsWithinAJobTests() {
         // method invocation
-        PagedIterable<DeidentificationDocumentDetails> response = deidentificationClient.listJobDocuments(
-            "Replace this value with a string matching RegExp ^[a-zA-Z0-9][a-zA-Z0-9-_]+[a-zA-Z0-9]$");
+        PagedIterable<DeidentificationDocumentDetails> response
+            = deidentificationClient.listJobDocuments("job_smith_documents_1");
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
@@ -30,12 +30,9 @@ public final class ListProcessedDocumentsWithinAJobTests extends Deidentificatio
         // verify property "input"
         DeidentificationDocumentLocation firstItemInput = firstItem.getInput();
         Assertions.assertNotNull(firstItemInput);
-        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container", firstItemInput.getLocation());
+        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container/documents/patient_doc_1",
+            firstItemInput.getLocation());
         Assertions.assertEquals("0x8DB638EEA0CC717", firstItemInput.getEtag());
-        // verify property "output"
-        DeidentificationDocumentLocation firstItemOutput = firstItem.getOutput();
-        Assertions.assertNotNull(firstItemOutput);
-        Assertions.assertEquals("0xAB298APO23099ZL", firstItemOutput.getEtag());
         // verify property "status"
         Assertions.assertEquals(OperationState.FAILED, firstItem.getStatus());
         // verify property "error"

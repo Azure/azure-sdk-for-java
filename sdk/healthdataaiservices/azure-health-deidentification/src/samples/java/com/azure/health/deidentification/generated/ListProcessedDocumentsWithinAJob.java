@@ -18,8 +18,8 @@ public class ListProcessedDocumentsWithinAJob {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
-        PagedIterable<DeidentificationDocumentDetails> response = deidentificationClient.listJobDocuments(
-            "Replace this value with a string matching RegExp ^[a-zA-Z0-9][a-zA-Z0-9-_]+[a-zA-Z0-9]$");
+        PagedIterable<DeidentificationDocumentDetails> response
+            = deidentificationClient.listJobDocuments("job_smith_documents_1");
         // END:com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
     }
 }

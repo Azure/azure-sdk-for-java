@@ -6,13 +6,12 @@ package com.azure.health.deidentification.generated;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.health.deidentification.models.DeidentificationJob;
+import com.azure.health.deidentification.models.DeidentificationJobCustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationJobStatus;
 import com.azure.health.deidentification.models.DeidentificationJobSummary;
 import com.azure.health.deidentification.models.DeidentificationOperationType;
-import com.azure.health.deidentification.models.JobCustomizationOptions;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -23,14 +22,15 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
     @Disabled
     public void testListDeIdentificationJobsTests() {
         // method invocation
-        PagedIterable<DeidentificationJob> response = deidentificationClient.listJobs();
+        PagedIterable<DeidentificationJob> response = deidentificationClient
+            .listJobs();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         DeidentificationJob firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
         // verify property "name"
-        Assertions.assertEquals("documents_smith_1", firstItem.getName());
+        Assertions.assertEquals("job_smith_documents_1", firstItem.getName());
         // verify property "operation"
         Assertions.assertEquals(DeidentificationOperationType.REDACT, firstItem.getOperation());
         // verify property "sourceLocation"
@@ -38,21 +38,18 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         Assertions.assertNotNull(firstItemSourceLocation);
         Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             firstItemSourceLocation.getLocation());
-        Assertions.assertEquals("/documents", firstItemSourceLocation.getPrefix());
-        List<String> firstItemSourceLocationExtensions = firstItemSourceLocation.getExtensions();
-        Assertions.assertEquals("*", firstItemSourceLocationExtensions.iterator().next());
+        Assertions.assertEquals("documents/", firstItemSourceLocation.getPrefix());
         // verify property "targetLocation"
         TargetStorageLocation firstItemTargetLocation = firstItem.getTargetLocation();
         Assertions.assertNotNull(firstItemTargetLocation);
         Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             firstItemTargetLocation.getLocation());
-        Assertions.assertEquals("/documents", firstItemTargetLocation.getPrefix());
+        Assertions.assertEquals("_output/", firstItemTargetLocation.getPrefix());
         Assertions.assertEquals(true, firstItemTargetLocation.isOverwrite());
         // verify property "customizations"
-        JobCustomizationOptions firstItemCustomizations = firstItem.getCustomizations();
+        DeidentificationJobCustomizationOptions firstItemCustomizations = firstItem.getCustomizations();
         Assertions.assertNotNull(firstItemCustomizations);
         Assertions.assertEquals("[{type}]", firstItemCustomizations.getRedactionFormat());
-        Assertions.assertEquals("en-US", firstItemCustomizations.getSurrogateLocale());
         // verify property "status"
         Assertions.assertEquals(DeidentificationJobStatus.SUCCEEDED, firstItem.getStatus());
         // verify property "lastUpdatedAt"
