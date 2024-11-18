@@ -133,13 +133,16 @@ public class ReactorNettyClient implements HttpClient {
             this.httpClient = this.httpClient.wiretap(this.httpClientConfig.getReactorNetworkLogCategory(), LogLevel.INFO);
         }
 
-        this.httpClient = this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
-            .httpResponseDecoder(httpResponseDecoderSpec ->
-                httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
-                    .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
-                    .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
-                    .validateHeaders(true));
+        this.httpClient =
+            this.httpClient
+                .secure(sslContextSpec ->
+                    sslContextSpec.sslContext(configs.getSslContext(httpClientConfig.isServerCertValidationDisabled())))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
+                .httpResponseDecoder(httpResponseDecoderSpec ->
+                    httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
+                        .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
+                        .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
+                        .validateHeaders(true));
     }
 
     @Override
