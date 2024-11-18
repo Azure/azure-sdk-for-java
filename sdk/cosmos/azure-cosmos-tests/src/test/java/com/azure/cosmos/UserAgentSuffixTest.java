@@ -6,12 +6,15 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,20 +32,32 @@ public class UserAgentSuffixTest extends TestSuiteBase {
     public void before_UserAgentSuffixTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-        this.databaseName = asyncContainer.getDatabase().getId();
-        this.containerName = asyncContainer.getId();
+        // create container
+        this.databaseName = getSharedCosmosDatabase(this.client.asyncClient()).getId();
+        this.containerName = UUID.randomUUID().toString();
+
+        logger.info("Creating container in before_UserAgentSuffixTest");
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(this.containerName, "/pk");
+        this.client
+            .getDatabase(this.databaseName)
+            .createContainerIfNotExists(containerProperties);
         logger.info("before_UserAgentSuffixTest - databaseName {}, containerName {}", this.databaseName, this.containerName);
     }
 
     @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        if (this.client != null) {
+            safeDeleteCollection(
+                this.client
+                    .getDatabase(this.databaseName)
+                    .getContainer(this.containerName)
+                    .asyncContainer);
+        }
         safeCloseSyncClient(this.client);
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithoutSpecialCharacter() {
-        logger.info("Inside userAgentSuffixWithoutSpecialCharacter");
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("TestUserAgent")
             .buildClient();
@@ -60,7 +75,6 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithSpecialCharacter() {
-        logger.info("Inside userAgentSuffixWithSpecialCharacter");
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("TéstUserAgent's")
             .buildClient();
@@ -78,7 +92,6 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithUnicodeCharacter() {
-        logger.info("Inside userAgentSuffixWithUnicodeCharacter");
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("UnicodeChar鱀InUserAgent")
             .buildClient();
@@ -96,7 +109,6 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithWhitespaceAndAsciiSpecialChars() {
-        logger.info("Inside userAgentSuffixWithWhitespaceAndAsciiSpecialChars");
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("UserAgent with space$%_^()*&")
             .buildClient();

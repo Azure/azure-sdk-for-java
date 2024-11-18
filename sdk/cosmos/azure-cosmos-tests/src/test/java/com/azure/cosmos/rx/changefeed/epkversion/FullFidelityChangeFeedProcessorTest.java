@@ -1946,7 +1946,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void before_ChangeFeedProcessorTest() {
+    public void before_FullFidelityChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
