@@ -15,16 +15,13 @@ public class GlobalFullTextSearchQueryStatistics {
     private Long documentCount;
     @JsonProperty(Constants.Properties.FULL_TEXT_QUERY_STATISTICS)
     private List<FullTextQueryStatistics> fullTextQueryStatistics;
-    private JsonSerializable jsonSerializable;
 
     public GlobalFullTextSearchQueryStatistics(Document document) {
         this.documentCount = document.getLong(Constants.Properties.DOCUMENT_COUNT);
         this.fullTextQueryStatistics = document.getList(Constants.Properties.FULL_TEXT_QUERY_STATISTICS, FullTextQueryStatistics.class);
     }
 
-    public GlobalFullTextSearchQueryStatistics() {
-        this.jsonSerializable = new JsonSerializable();
-    }
+    public GlobalFullTextSearchQueryStatistics() {}
 
     public Long getDocumentCount() {
         return documentCount;

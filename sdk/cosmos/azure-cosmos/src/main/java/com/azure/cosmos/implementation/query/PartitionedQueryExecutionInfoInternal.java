@@ -67,8 +67,10 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
     }
 
     public HybridSearchQueryInfo getHybridSearchQueryInfo() {
-        return this.hybridSearchQueryInfo != null ? this.hybridSearchQueryInfo
-            :(this.hybridSearchQueryInfo = super.getObject(HYBRID_SEARCH_QUERY_INFO_PROPERTY, HybridSearchQueryInfo.class));
+        if (this.hybridSearchQueryInfo == null) {
+            this.hybridSearchQueryInfo = super.getObject(HYBRID_SEARCH_QUERY_INFO_PROPERTY, HybridSearchQueryInfo.class);
+        }
+        return this.hybridSearchQueryInfo;
     }
 
     public void setHybridSearchQueryInfo(HybridSearchQueryInfo hybridSearchQueryInfo) { this.hybridSearchQueryInfo = hybridSearchQueryInfo; }

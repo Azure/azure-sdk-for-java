@@ -119,7 +119,6 @@ public class PipelinedDocumentQueryExecutionContext<T>
             CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
                 qryOptAccessor.clone(requestOptions);
 
-            qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
             documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
             return HybridSearchDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
         };

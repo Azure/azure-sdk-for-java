@@ -430,6 +430,12 @@ public class DocumentQueryExecutionContextFactory {
                         "with your hybrid or full text search query.");
             }
 
+            if (hybridSearchQueryInfo.hasSkip() && !hybridSearchQueryInfo.hasTake()) {
+                throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a hybrid or full-text query with an offset (Skip) requires a limit (Take) to be specified. " +
+                        "Please ensure both Skip and Take are provided to avoid an invalid query.");
+            }
+
             // Validate the size of Take against MaxItemSizeForHybridSearch
             int maxitemSizeForFullTextSearch = Math.max(Configs.getMaxItemCountForHybridSearchSearch(),
                 qryOptAccessor.getMaxItemCountForHybridSearch(cosmosQueryRequestOptions));

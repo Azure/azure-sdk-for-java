@@ -140,6 +140,8 @@ public final class Constants {
         public static final String HIT_COUNTS = "hitCounts";
         public static final String DOCUMENT_COUNT = "documentCount";
         public static final String FULL_TEXT_QUERY_STATISTICS = "fullTextStatistics";
+        public static final String PAYLOAD = "payload";
+        public static final String COMPONENT_SCORES = "componentScores";
 
         // Vector Embedding Policy
         public static final String VECTOR_EMBEDDING_POLICY = "vectorEmbeddingPolicy";

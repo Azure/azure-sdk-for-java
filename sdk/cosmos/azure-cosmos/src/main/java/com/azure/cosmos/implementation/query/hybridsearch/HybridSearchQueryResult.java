@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query.hybridsearch;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -18,36 +19,40 @@ public class HybridSearchQueryResult<T> extends Document {
 
     public HybridSearchQueryResult(String jsonString) {
         super(jsonString);
+        // Initialize rid
+        this.rid = super.getResourceId();
+        // Initialize componentScores
+        final Object outerObject = super.get(Constants.Properties.PAYLOAD);
+        if (outerObject instanceof ObjectNode) {
+            ObjectNode outerObjectNode = (ObjectNode) outerObject;
+            // Initialize componentScores
+            JsonNode componentScoresNode = outerObjectNode.get(Constants.Properties.COMPONENT_SCORES);
+            if (componentScoresNode != null && componentScoresNode.isArray()) {
+                this.componentScores = new ArrayList<>();
+                for (JsonNode scoreNode : componentScoresNode) {
+                    if (scoreNode != null && scoreNode.isNumber()) {
+                        this.componentScores.add(scoreNode.asDouble());
+                    }
+                }
+            }
+            // Initialize payload
+            JsonNode innerPayloadNode = outerObjectNode.get(Constants.Properties.PAYLOAD);
+            if (innerPayloadNode != null && innerPayloadNode.isObject()) {
+                this.payload = new Document(innerPayloadNode.toString());
+            }
+        }
+
     }
 
     public String getRid() {
-        this.rid = this.rid != null ? this.rid : (this.rid = super.getString("_rid"));
-        super.setId(this.rid);
         return this.rid;
     }
 
     public void setRid(String rid) {
-        this.rid = rid;
+        super.setResourceId(rid);
     }
 
     public List<Double> getComponentScores() {
-        if (this.componentScores == null) {
-            final Object outerObject = super.get("payload");
-
-            if (outerObject instanceof ObjectNode) {
-                JsonNode outerJsonNode = (ObjectNode) outerObject;
-                JsonNode componentScoresNode = outerJsonNode.get("componentScores");
-
-                if (componentScoresNode != null && componentScoresNode.isArray()) {
-                    this.componentScores = new ArrayList<>();
-                    for (JsonNode scoreNode : componentScoresNode) {
-                        if (scoreNode != null && scoreNode.isNumber()) {
-                            this.componentScores.add(scoreNode.asDouble());
-                        }
-                    }
-                }
-            }
-        }
         return this.componentScores;
     }
 
@@ -56,18 +61,7 @@ public class HybridSearchQueryResult<T> extends Document {
     }
 
     public Document getPayload() {
-        if (this.payload != null) {
-            return this.payload;
-        }
-        final Object outerObject = super.get("payload");
-        if (outerObject instanceof ObjectNode) {
-            ObjectNode outerObjectNode = (ObjectNode) outerObject;
-            JsonNode innerObjectNode = outerObjectNode.get("payload");
-            if (innerObjectNode != null && innerObjectNode.isObject()) {
-                this.payload = new Document(innerObjectNode.toString());
-            }
-        }
-        return payload;
+        return this.payload;
     }
 
     public void setPayload(Document payload) {

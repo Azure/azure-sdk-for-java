@@ -14,29 +14,13 @@ public class FullTextQueryStatistics {
     private List<Long> hitCounts;
     @JsonProperty(Constants.Properties.TOTAL_WORD_COUNT)
     private Long totalWordCount;
-    private JsonSerializable jsonSerializable;
 
     public FullTextQueryStatistics(List<Long> hitCounts, Long totalWordCount) {
         this.hitCounts = hitCounts;
         this.totalWordCount = totalWordCount;
     }
 
-    public FullTextQueryStatistics() {
-        this.jsonSerializable = new JsonSerializable();
-    }
-
-    public FullTextQueryStatistics(JsonSerializable jsonSerializable) {
-        this.jsonSerializable = new JsonSerializable();
-        if (jsonSerializable.get(Constants.Properties.HIT_COUNTS) == null) {
-            throw new IllegalArgumentException("Missing required property hitCounts in " + Constants.Properties.HIT_COUNTS);
-        }
-        if (jsonSerializable.get(Constants.Properties.TOTAL_WORD_COUNT) == null) {
-            throw new IllegalArgumentException("Missing required property totalWordCount in " + Constants.Properties.TOTAL_WORD_COUNT);
-        }
-
-        this.hitCounts = jsonSerializable.getList(Constants.Properties.HIT_COUNTS, Long.class);
-        this.totalWordCount = jsonSerializable.getLong(Constants.Properties.TOTAL_WORD_COUNT);
-    }
+    public FullTextQueryStatistics() {}
 
     public List<Long> getHitCounts() {
         return hitCounts;

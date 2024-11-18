@@ -243,10 +243,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return the max number of items for hybrid search.
      */
     public Integer getMaxItemCountForHybridSearch() {
-        if (this.maxItemCountForHybridSearch == null) {
-            this.maxItemCountForHybridSearch = Configs.DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH;
-        }
-        return this.maxItemCountForHybridSearch;
+        return this.maxItemCountForHybridSearch != null ? this.maxItemCountForHybridSearch : Configs.DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH;
     }
 
     /**
