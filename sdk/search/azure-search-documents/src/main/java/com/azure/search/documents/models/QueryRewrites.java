@@ -79,7 +79,8 @@ public class QueryRewrites {
         }
 
         QueryRewrites other = (QueryRewrites) obj;
-        return toString().equals(other.toString());
+        return Objects.equals(rewritesType, other.rewritesType)
+            && Objects.equals(count, other.count);
     }
 
     public static QueryRewrites fromString(String str) {
