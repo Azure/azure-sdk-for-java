@@ -365,14 +365,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
-  <Match>
-    <Or>
-      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
-      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
     <Or>
