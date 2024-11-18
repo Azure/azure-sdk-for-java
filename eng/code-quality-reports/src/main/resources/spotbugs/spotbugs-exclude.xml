@@ -288,15 +288,6 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <Match>
-    <Class name="com.azure.compute.batch.models.CreateTasksErrorException"/>
-    <Or>
-      <Field name="failureTaskList"/>
-      <Field name="pendingTaskList"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
   <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
   <Match>
     <Class name="com.microsoft.azure.storage.blob.SASQueryParameters"/>
@@ -385,21 +376,6 @@
                   DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD,
                   NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS,
                   NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- These methods are called, SpotBugs just can't see through the specific lambda and static class code -->
-  <Match>
-    <Or>
-      <Class
-        name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- Names defined in the service. -->
-  <Match>
-    <Class name="com.azure.data.appconfiguration.models.ConfigurationSetting"/>
-    <Bug pattern="NM_CONFUSING"/>
   </Match>
 
   <!-- Disable some spotbugs rules on perf-tests -->
@@ -1740,30 +1716,6 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
-  <!-- Machine generated classes for MAA service generate spotBugs errors -->
-  <Match>
-    <Or>
-      <Class name="~com.azure.security.attestation.implementation.models.*"/>
-      <Class name="~com.azure.security.attestation.models.*+"/>
-    </Or>
-    <Or>
-      <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-    </Or>
-  </Match>
-
-  <!-- Generated implementation of Anomaly Detector is using an inline class -->
-  <Match>
-    <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
-  <Match>
-    <Class name="~com\.azure\.security\.confidentialledger\.\w+BaseClient"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
   <!-- This is a false positive. The type of TOptions is known because it is set
        in the constructor of the concrete class. -->
   <Match>
@@ -1826,6 +1778,4 @@
     <Field name="instance"/>
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
-
-  <!-- Comment to force CI to run Spotbugs against all SDKs -->
 </FindBugsFilter>
