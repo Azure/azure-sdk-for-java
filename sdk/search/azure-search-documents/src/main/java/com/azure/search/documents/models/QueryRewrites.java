@@ -16,7 +16,7 @@ public class QueryRewrites {
      * @param rewritesType The type of query rewrites to perform.
      */
     public QueryRewrites(QueryRewritesType rewritesType) {
-        this.rewritesType = rewritesType;
+        this.rewritesType = Objects.requireNonNull(rewritesType, "'rewritesType' cannot be null");
     }
 
     /**
