@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Replication properties.
@@ -45,6 +46,11 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
      * The remote region for the other end of the Volume Replication.
      */
     private String remoteVolumeRegion;
+
+    /*
+     * A list of destination replications
+     */
+    private List<DestinationReplication> destinationReplications;
 
     /**
      * Creates an instance of ReplicationObject class.
@@ -168,6 +174,15 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     }
 
     /**
+     * Get the destinationReplications property: A list of destination replications.
+     * 
+     * @return the destinationReplications value.
+     */
+    public List<DestinationReplication> destinationReplications() {
+        return this.destinationReplications;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -175,6 +190,9 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
     public void validate() {
         if (remotePath() != null) {
             remotePath().validate();
+        }
+        if (destinationReplications() != null) {
+            destinationReplications().forEach(e -> e.validate());
         }
     }
 
@@ -221,6 +239,10 @@ public final class ReplicationObject implements JsonSerializable<ReplicationObje
                     deserializedReplicationObject.remotePath = RemotePath.fromJson(reader);
                 } else if ("remoteVolumeRegion".equals(fieldName)) {
                     deserializedReplicationObject.remoteVolumeRegion = reader.getString();
+                } else if ("destinationReplications".equals(fieldName)) {
+                    List<DestinationReplication> destinationReplications
+                        = reader.readArray(reader1 -> DestinationReplication.fromJson(reader1));
+                    deserializedReplicationObject.destinationReplications = destinationReplications;
                 } else {
                     reader.skipChildren();
                 }

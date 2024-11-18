@@ -16,6 +16,12 @@ public class KeyVaultEncode {
     private static final byte TAG_SEQUENCE = 0x30;
 
     /**
+     * Creates a new instance of {@link KeyVaultEncode}.
+     */
+    public KeyVaultEncode() {
+    }
+
+    /**
      * Decode signatures imitating ECUtil
      *
      * @param signature signature get by keyvault

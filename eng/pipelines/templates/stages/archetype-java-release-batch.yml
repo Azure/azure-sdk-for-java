@@ -14,9 +14,6 @@ parameters:
   - name: ArtifactName
     type: string
     default: 'not-specified'
-  - name: TargetDocRepoName
-    type: string
-    default: ''
   - name: EnableIntegrationStage
     type: boolean
     default: true
@@ -338,8 +335,8 @@ stages:
                           - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                             - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
                       WorkingDirectory: $(System.DefaultWorkingDirectory)
-                      TargetDocRepoOwner: 'Azure'
-                      TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                      TargetDocRepoOwner: $(DocRepoOwner)
+                      TargetDocRepoName: $(DocRepoName)
                       Language: 'java'
                       SparseCheckoutPaths:
                         - docs-ref-services/
@@ -476,8 +473,8 @@ stages:
                   - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                     - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
               WorkingDirectory: $(System.DefaultWorkingDirectory)
-              TargetDocRepoOwner: "azure-sdk"
-              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+              TargetDocRepoOwner: $(DocRepoOwner)
+              TargetDocRepoName: $(DocRepoName)
               Language: 'java'
               DailyDocsBuild: true
               SparseCheckoutPaths:
