@@ -12,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.Accounts;
+import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
+import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 
 public final class AccountsImpl implements Accounts {
@@ -82,6 +84,31 @@ public final class AccountsImpl implements Accounts {
 
     public void renewCredentials(String resourceGroupName, String accountName, Context context) {
         this.serviceClient().renewCredentials(resourceGroupName, accountName, context);
+    }
+
+    public void transitionToCmk(String resourceGroupName, String accountName) {
+        this.serviceClient().transitionToCmk(resourceGroupName, accountName);
+    }
+
+    public void transitionToCmk(String resourceGroupName, String accountName, EncryptionTransitionRequest body,
+        Context context) {
+        this.serviceClient().transitionToCmk(resourceGroupName, accountName, body, context);
+    }
+
+    public void getChangeKeyVaultInformation(String resourceGroupName, String accountName) {
+        this.serviceClient().getChangeKeyVaultInformation(resourceGroupName, accountName);
+    }
+
+    public void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context) {
+        this.serviceClient().getChangeKeyVaultInformation(resourceGroupName, accountName, context);
+    }
+
+    public void changeKeyVault(String resourceGroupName, String accountName) {
+        this.serviceClient().changeKeyVault(resourceGroupName, accountName);
+    }
+
+    public void changeKeyVault(String resourceGroupName, String accountName, ChangeKeyVault body, Context context) {
+        this.serviceClient().changeKeyVault(resourceGroupName, accountName, body, context);
     }
 
     public NetAppAccount getById(String id) {
