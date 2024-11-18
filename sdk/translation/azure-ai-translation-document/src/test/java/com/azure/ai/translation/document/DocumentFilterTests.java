@@ -4,6 +4,7 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
+import com.azure.ai.translation.document.models.ListDocumentStatusesOptions;
 import com.azure.ai.translation.document.models.DocumentStatusResult;
 import com.azure.ai.translation.document.models.TranslationSource;
 import com.azure.ai.translation.document.models.TranslationTarget;
@@ -37,9 +38,12 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         // Add Status filter
         List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions
+            = new ListDocumentStatusesOptions(translationStatus.getId()).setStatuses(succeededStatusList);
+
         try {
-            PagedIterable<DocumentStatusResult> response = getDocumentTranslationClient().listDocumentStatuses(
-                translationStatus.getId(), null, null, null, succeededStatusList, null, null, null);
+            PagedIterable<DocumentStatusResult> response
+                = getDocumentTranslationClient().listDocumentStatuses(listDocumentStatusesOptions);
             for (DocumentStatusResult d : response) {
                 String status = d.getStatus().toString();
                 assertTrue(succeededStatusList.contains(status));
@@ -69,9 +73,12 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
             e.printStackTrace();
         }
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions
+            = new ListDocumentStatusesOptions(translationStatus.getId()).setDocumentIds(testIds);
+
         try {
-            PagedIterable<DocumentStatusResult> response = getDocumentTranslationClient()
-                .listDocumentStatuses(translationStatus.getId(), null, null, testIds, null, null, null, null);
+            PagedIterable<DocumentStatusResult> response
+                = getDocumentTranslationClient().listDocumentStatuses(listDocumentStatusesOptions);
             for (DocumentStatusResult d : response) {
                 String id = d.getId();
                 assertTrue(testIds.contains(id));
@@ -91,9 +98,12 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");
         List<String> testCreatedOnDateTimes = new ArrayList<>();
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions
+            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderBy(orderBy);
+
         try {
-            PagedIterable<DocumentStatusResult> response = documentTranslationClient
-                .listDocumentStatuses(translationStatus.getId(), null, null, null, null, null, null, orderBy);
+            PagedIterable<DocumentStatusResult> response
+                = documentTranslationClient.listDocumentStatuses(listDocumentStatusesOptions);
             for (DocumentStatusResult d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 testCreatedOnDateTimes.add(createdDateTimeString);
@@ -103,11 +113,14 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
             e.printStackTrace();
         }
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions1
+            = new ListDocumentStatusesOptions(translationStatus.getId())
+                .setCreatedAfter(getDateTimeOffset(testCreatedOnDateTimes.get(4)));
+
         // Asserting that only the last document is returned
         try {
             PagedIterable<DocumentStatusResult> response
-                = documentTranslationClient.listDocumentStatuses(translationStatus.getId(), null, null, null, null,
-                    getDateTimeOffset(testCreatedOnDateTimes.get(4)), null, null);
+                = documentTranslationClient.listDocumentStatuses(listDocumentStatusesOptions1);
             int itemCount = 0;
             for (DocumentStatusResult ignored : response) {
                 itemCount += 1;
@@ -118,11 +131,14 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
             e.printStackTrace();
         }
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions2
+            = new ListDocumentStatusesOptions(translationStatus.getId())
+                .setCreatedAfter(getDateTimeOffset(testCreatedOnDateTimes.get(2)));
+
         // Asserting that the last 3 docs are returned
         try {
             PagedIterable<DocumentStatusResult> response
-                = documentTranslationClient.listDocumentStatuses(translationStatus.getId(), null, null, null, null,
-                    getDateTimeOffset(testCreatedOnDateTimes.get(2)), null, null);
+                = documentTranslationClient.listDocumentStatuses(listDocumentStatusesOptions2);
             int itemCount = 0;
             for (DocumentStatusResult ignored : response) {
                 itemCount += 1;
@@ -144,9 +160,12 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");
         List<String> testCreatedOnDateTimes = new ArrayList<>();
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions
+            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderBy(orderBy);
+
         try {
-            PagedIterable<DocumentStatusResult> response = documentTranslationClient
-                .listDocumentStatuses(translationStatus.getId(), null, null, null, null, null, null, orderBy);
+            PagedIterable<DocumentStatusResult> response
+                = documentTranslationClient.listDocumentStatuses(listDocumentStatusesOptions);
             for (DocumentStatusResult d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 testCreatedOnDateTimes.add(createdDateTimeString);
@@ -156,11 +175,14 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
             e.printStackTrace();
         }
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions1
+            = new ListDocumentStatusesOptions(translationStatus.getId())
+                .setCreatedBefore(getDateTimeOffset(testCreatedOnDateTimes.get(0)));
+
         // Asserting that only the first document is returned
         try {
             PagedIterable<DocumentStatusResult> response
-                = documentTranslationClient.listDocumentStatuses(translationStatus.getId(), null, null, null, null,
-                    null, getDateTimeOffset(testCreatedOnDateTimes.get(0)), null);
+                = documentTranslationClient.listDocumentStatuses(listDocumentStatusesOptions1);
             int itemCount = 0;
             for (DocumentStatusResult ignored : response) {
                 itemCount += 1;
@@ -171,11 +193,14 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
             e.printStackTrace();
         }
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions2
+            = new ListDocumentStatusesOptions(translationStatus.getId())
+                .setCreatedBefore(getDateTimeOffset(testCreatedOnDateTimes.get(3)));
+
         // Asserting that the first 4/5 docs are returned
         try {
             PagedIterable<DocumentStatusResult> response
-                = documentTranslationClient.listDocumentStatuses(translationStatus.getId(), null, null, null, null,
-                    null, getDateTimeOffset(testCreatedOnDateTimes.get(3)), null);
+                = documentTranslationClient.listDocumentStatuses(listDocumentStatusesOptions2);
             int itemCount = 0;
             for (DocumentStatusResult ignored : response) {
                 itemCount += 1;
@@ -196,9 +221,12 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         // add orderBy filter
         List<String> orderBy = Arrays.asList("createdDateTimeUtc desc");
 
+        ListDocumentStatusesOptions listDocumentStatusesOptions
+            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderBy(orderBy);
+
         try {
-            PagedIterable<DocumentStatusResult> response = documentTranslationClient
-                .listDocumentStatuses(translationStatus.getId(), null, null, null, null, null, null, orderBy);
+            PagedIterable<DocumentStatusResult> response
+                = documentTranslationClient.listDocumentStatuses(listDocumentStatusesOptions);
             LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
             for (DocumentStatusResult d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();

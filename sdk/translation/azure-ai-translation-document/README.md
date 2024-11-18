@@ -376,11 +376,12 @@ String translationId = response.poll().getValue().getId();
 
 // Add Status filter
 List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
+
+ListDocumentStatusesOptions listDocumentStatusesOptions
+    = new ListDocumentStatusesOptions(translationId).setStatuses(succeededStatusList);
 try {
     PagedIterable < DocumentStatusResult> documentStatusResponse = documentTranslationClient
-        .listDocumentStatuses(translationId, null, null, null, succeededStatusList,
-            null,
-            null, null);
+        .listDocumentStatuses(listDocumentStatusesOptions);
     for (DocumentStatusResult documentStatus: documentStatusResponse) {
         String id = documentStatus.getId();
         System.out.println("Document Translation ID is: " + id);
@@ -435,11 +436,11 @@ String translationId = response.poll().getValue().getId();
 
 // Add Status filter
 List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
+ListDocumentStatusesOptions listDocumentStatusesOptions
+    = new ListDocumentStatusesOptions(translationId).setStatuses(succeededStatusList);
 try {
     PagedIterable<DocumentStatusResult> documentStatusResponse = documentTranslationClient
-        .listDocumentStatuses(translationId, null, null, null, succeededStatusList,
-            null,
-            null, null);
+        .listDocumentStatuses(listDocumentStatusesOptions);
     for (DocumentStatusResult documentsStatus: documentStatusResponse) {
         String id = documentsStatus.getId();
         System.out.println("Document Translation ID is: " + id);
