@@ -26,7 +26,7 @@ public final class AnalyzeDocumentOptions implements JsonSerializable<AnalyzeDoc
     private String sourceUrl;
 
     /*
-     * The bytes of the document to analyze. Either sourceUrl or bytesSource
+     * Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
      */
     @Generated
@@ -40,7 +40,7 @@ public final class AnalyzeDocumentOptions implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Get the sourceUrl property: Document URL to analyze. Either sourceUrl or bytesSource must be specified.
+     * Get the sourceUrl property: Document URL to analyze. Either urlSource or base64Source must be specified.
      *
      * @return the sourceUrl value.
      */
@@ -50,7 +50,7 @@ public final class AnalyzeDocumentOptions implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Set the sourceUrl property: Document URL to analyze. Either sourceUrl or bytesSource must be specified.
+     * Set the sourceUrl property: Document URL to analyze. Either urlSource or base64Source must be specified.
      *
      * @param sourceUrl the sourceUrl value to set.
      * @return the AnalyzeDocumentOptions object itself.
@@ -62,7 +62,7 @@ public final class AnalyzeDocumentOptions implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Get the bytesSource property: The bytes of the document to analyze. Either sourceUrl or bytesSource
+     * Get the bytesSource property: Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
      *
      * @return the bytesSource value.
@@ -73,7 +73,7 @@ public final class AnalyzeDocumentOptions implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Set the bytesSource property: The bytes of the document to analyze. Either sourceUrl or bytesSource
+     * Set the bytesSource property: Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
      *
      * @param bytesSource the bytesSource value to set.

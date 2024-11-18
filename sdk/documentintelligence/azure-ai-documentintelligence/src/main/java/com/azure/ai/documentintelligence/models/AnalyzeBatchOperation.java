@@ -34,13 +34,13 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
      * Date and time (UTC) when the operation was submitted.
      */
     @Generated
-    private final OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdOn;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
     @Generated
-    private final OffsetDateTime lastUpdatedDateTime;
+    private final OffsetDateTime lastUpdatedOn;
 
     /*
      * Operation progress (0-100).
@@ -64,15 +64,15 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
      * Creates an instance of AnalyzeBatchOperation class.
      *
      * @param status the status value to set.
-     * @param createdDateTime the createdDateTime value to set.
-     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
+     * @param createdOn the createdOn value to set.
+     * @param lastUpdatedOn the lastUpdatedOn value to set.
      */
     @Generated
-    private AnalyzeBatchOperation(DocumentIntelligenceOperationStatus status, OffsetDateTime createdDateTime,
-        OffsetDateTime lastUpdatedDateTime) {
+    private AnalyzeBatchOperation(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
+        OffsetDateTime lastUpdatedOn) {
         this.status = status;
-        this.createdDateTime = createdDateTime;
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
+        this.createdOn = createdOn;
+        this.lastUpdatedOn = lastUpdatedOn;
     }
 
     /**
@@ -96,23 +96,23 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
     }
 
     /**
-     * Get the createdDateTime property: Date and time (UTC) when the operation was submitted.
+     * Get the createdOn property: Date and time (UTC) when the operation was submitted.
      *
-     * @return the createdDateTime value.
+     * @return the createdOn value.
      */
     @Generated
-    public OffsetDateTime getCreatedDateTime() {
-        return this.createdDateTime;
+    public OffsetDateTime getCreatedOn() {
+        return this.createdOn;
     }
 
     /**
-     * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
+     * Get the lastUpdatedOn property: Date and time (UTC) when the status was last updated.
      *
-     * @return the lastUpdatedDateTime value.
+     * @return the lastUpdatedOn value.
      */
     @Generated
-    public OffsetDateTime getLastUpdatedDateTime() {
-        return this.lastUpdatedDateTime;
+    public OffsetDateTime getLastUpdatedOn() {
+        return this.lastUpdatedOn;
     }
 
     /**
@@ -154,11 +154,9 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
-            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
         jsonWriter.writeStringField("lastUpdatedDateTime",
-            this.lastUpdatedDateTime == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+            this.lastUpdatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedOn));
         jsonWriter.writeStringField("resultId", this.resultId);
         jsonWriter.writeNumberField("percentCompleted", this.percentCompleted);
         jsonWriter.writeJsonField("error", this.error);
@@ -179,8 +177,8 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
     public static AnalyzeBatchOperation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentIntelligenceOperationStatus status = null;
-            OffsetDateTime createdDateTime = null;
-            OffsetDateTime lastUpdatedDateTime = null;
+            OffsetDateTime createdOn = null;
+            OffsetDateTime lastUpdatedOn = null;
             String resultId = null;
             Integer percentCompleted = null;
             DocumentIntelligenceError error = null;
@@ -191,10 +189,10 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
                 if ("status".equals(fieldName)) {
                     status = DocumentIntelligenceOperationStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime = reader
+                    createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    lastUpdatedDateTime = reader
+                    lastUpdatedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("resultId".equals(fieldName)) {
                     resultId = reader.getString();
@@ -209,7 +207,7 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
                 }
             }
             AnalyzeBatchOperation deserializedAnalyzeBatchOperation
-                = new AnalyzeBatchOperation(status, createdDateTime, lastUpdatedDateTime);
+                = new AnalyzeBatchOperation(status, createdOn, lastUpdatedOn);
             deserializedAnalyzeBatchOperation.resultId = resultId;
             deserializedAnalyzeBatchOperation.percentCompleted = percentCompleted;
             deserializedAnalyzeBatchOperation.error = error;
