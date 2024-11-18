@@ -9,6 +9,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.String
 import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_SEND_ERROR;
 
@@ -81,7 +83,7 @@ final class QuickPulseCoordinator implements Runnable {
                 // network error continues, we would want pings to remain in backoff mode instead of pinging every
                 // 5 seconds after the initial failed ping. This adjusts the lastTransmissionTime saved in the pingSender such that the pingSender remains
                 // in an error state (ping once a minute) if the first ping after the failing post also fails.
-                long errorDelayInNs = 40 * 1000000000L;
+                long errorDelayInNs = TimeUnit.SECONDS.toNanos(40);
                 pingSender.resetLastValidRequestTimeNs((long) (dataSender.getLastValidPostRequestTimeNs() - errorDelayInNs));
                 return waitOnErrorInMillis;
 
