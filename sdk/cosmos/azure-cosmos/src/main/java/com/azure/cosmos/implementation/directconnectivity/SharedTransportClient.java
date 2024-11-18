@@ -82,7 +82,7 @@ public class SharedTransportClient extends TransportClient {
             this.transportClient =
                 new RntbdTransportClient(
                     rntbdOptions,
-                    configs.getSslContext(),
+                    configs.getSslContext(connectionPolicy.isServerCertValidationDisabled()),
                     addressResolver,
                     clientTelemetry,
                     globalEndpointManager);

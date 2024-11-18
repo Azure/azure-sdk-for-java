@@ -8,13 +8,13 @@
         "ProfileFlag": "-Pemulator-vnext",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
-        "AdditionalArgs": "-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true -DCOSMOS.INSECURE_EMULATOR_CONNECTION_ALLOWED=true"
+        "AdditionalArgs": "-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       },
       "Emulator VNext Integration Tests On Insecure connection - Java 17": {
         "ProfileFlag": "-Pemulator-vnext",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.17",
-        "AdditionalArgs": "-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true -DCOSMOS.INSECURE_EMULATOR_CONNECTION_ALLOWED=true"
+        "AdditionalArgs": "-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       }
     }
   }
