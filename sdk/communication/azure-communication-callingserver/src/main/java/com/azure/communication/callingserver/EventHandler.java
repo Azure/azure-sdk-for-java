@@ -30,6 +30,12 @@ import java.util.Objects;
 public final class EventHandler {
     private static final ClientLogger LOGGER = new ClientLogger(EventHandler.class);
 
+    /**
+     * Initializes a new instance of EventHandler.
+     */
+    public EventHandler() {
+    }
+
     /***
      * Returns a list of events from request's body.
      *
