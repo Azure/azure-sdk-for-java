@@ -23,7 +23,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
         customizeAnalyzeBatchOperation(customization, logger);
         customizePollingStrategy(customization, logger);
         customizePollingUtils(customization, logger);
-        customizeByteSourceEncoding(customization, logger);
+        // customizeByteSourceEncoding(customization, logger);
     }
 
     private void customizeByteSourceEncoding(LibraryCustomization customization, Logger logger) {

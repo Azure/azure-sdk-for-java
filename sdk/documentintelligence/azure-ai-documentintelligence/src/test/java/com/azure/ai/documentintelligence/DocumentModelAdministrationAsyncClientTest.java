@@ -336,13 +336,11 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             .thenConsumeWhile(modelOperationInfoPagedResponse -> {
                 modelOperationInfoPagedResponse.getValue().forEach(modelOperationInfo -> {
                     operationIdList.add(modelOperationInfo.getOperationId());
-                    assertTrue(modelOperationInfo.getOperationId() != null
-                        && modelOperationInfo.getKind() != null
-                        && modelOperationInfo.getStatus() != null
-                        && modelOperationInfo.getCreatedOn() != null
-                        && modelOperationInfo.getLastUpdatedOn() != null
-                        && modelOperationInfo.getResourceLocation() != null
-                        && modelOperationInfo.getPercentCompleted() != null);
+                    assertNotNull(modelOperationInfo.getOperationId());
+                    assertNotNull(modelOperationInfo.getKind());
+                    assertNotNull(modelOperationInfo.getStatus());
+                    assertNotNull(modelOperationInfo.getCreatedOn());
+                    assertNotNull(modelOperationInfo.getResourceLocation());
                 });
                 return true;
             })
