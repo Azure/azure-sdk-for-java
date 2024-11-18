@@ -33,7 +33,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
      * Customization parameters to override default service behaviors.
      */
     @Generated
-    private CustomizationOptions customizations;
+    private DeidentificationCustomizationOptions customizations;
 
     /**
      * Creates an instance of DeidentificationContent class.
@@ -83,7 +83,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
      * @return the customizations value.
      */
     @Generated
-    public CustomizationOptions getCustomizations() {
+    public DeidentificationCustomizationOptions getCustomizations() {
         return this.customizations;
     }
 
@@ -94,7 +94,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
      * @return the DeidentificationContent object itself.
      */
     @Generated
-    public DeidentificationContent setCustomizations(CustomizationOptions customizations) {
+    public DeidentificationContent setCustomizations(DeidentificationCustomizationOptions customizations) {
         this.customizations = customizations;
         return this;
     }
@@ -126,7 +126,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
         return jsonReader.readObject(reader -> {
             String inputText = null;
             DeidentificationOperationType operation = null;
-            CustomizationOptions customizations = null;
+            DeidentificationCustomizationOptions customizations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -136,7 +136,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
                 } else if ("operation".equals(fieldName)) {
                     operation = DeidentificationOperationType.fromString(reader.getString());
                 } else if ("customizations".equals(fieldName)) {
-                    customizations = CustomizationOptions.fromJson(reader);
+                    customizations = DeidentificationCustomizationOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

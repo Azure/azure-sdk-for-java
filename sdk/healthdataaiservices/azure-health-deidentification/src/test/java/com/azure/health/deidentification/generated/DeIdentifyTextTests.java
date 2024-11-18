@@ -4,8 +4,8 @@
 
 package com.azure.health.deidentification.generated;
 
-import com.azure.health.deidentification.models.CustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationContent;
+import com.azure.health.deidentification.models.DeidentificationCustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.DeidentificationResult;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +21,7 @@ public final class DeIdentifyTextTests extends DeidentificationClientTestBase {
         DeidentificationResult response
             = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
                 .setOperation(DeidentificationOperationType.REDACT)
-                .setCustomizations(new CustomizationOptions().setRedactionFormat("[{type}]")));
+                .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
 
         // response assertion
         Assertions.assertNotNull(response);

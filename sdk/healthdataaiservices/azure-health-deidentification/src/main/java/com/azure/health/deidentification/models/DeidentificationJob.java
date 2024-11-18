@@ -48,7 +48,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * Customization parameters to override default service behaviors.
      */
     @Generated
-    private JobCustomizationOptions customizations;
+    private DeidentificationJobCustomizationOptions customizations;
 
     /*
      * Current status of a job.
@@ -160,7 +160,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * @return the customizations value.
      */
     @Generated
-    public JobCustomizationOptions getCustomizations() {
+    public DeidentificationJobCustomizationOptions getCustomizations() {
         return this.customizations;
     }
 
@@ -171,7 +171,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * @return the DeidentificationJob object itself.
      */
     @Generated
-    public DeidentificationJob setCustomizations(JobCustomizationOptions customizations) {
+    public DeidentificationJob setCustomizations(DeidentificationJobCustomizationOptions customizations) {
         this.customizations = customizations;
         return this;
     }
@@ -273,7 +273,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
             DeidentificationOperationType operation = null;
-            JobCustomizationOptions customizations = null;
+            DeidentificationJobCustomizationOptions customizations = null;
             ResponseError error = null;
             OffsetDateTime startedAt = null;
             DeidentificationJobSummary summary = null;
@@ -298,7 +298,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 } else if ("operation".equals(fieldName)) {
                     operation = DeidentificationOperationType.fromString(reader.getString());
                 } else if ("customizations".equals(fieldName)) {
-                    customizations = JobCustomizationOptions.fromJson(reader);
+                    customizations = DeidentificationJobCustomizationOptions.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
                     error = ResponseError.fromJson(reader);
                 } else if ("startedAt".equals(fieldName)) {

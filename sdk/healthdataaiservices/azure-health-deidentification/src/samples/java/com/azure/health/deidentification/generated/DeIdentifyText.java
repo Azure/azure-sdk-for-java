@@ -7,8 +7,8 @@ package com.azure.health.deidentification.generated;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
-import com.azure.health.deidentification.models.CustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationContent;
+import com.azure.health.deidentification.models.DeidentificationCustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.DeidentificationResult;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,7 +23,7 @@ public class DeIdentifyText {
         DeidentificationResult response
             = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
                 .setOperation(DeidentificationOperationType.REDACT)
-                .setCustomizations(new CustomizationOptions().setRedactionFormat("[{type}]")));
+                .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
         // END:com.azure.health.deidentification.generated.deidentifytext.deidentifytext
     }
 }

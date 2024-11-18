@@ -7,8 +7,8 @@ package com.azure.health.deidentification.generated;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.models.DeidentificationJob;
+import com.azure.health.deidentification.models.DeidentificationJobCustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationOperationType;
-import com.azure.health.deidentification.models.JobCustomizationOptions;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 import org.junit.jupiter.api.Assertions;
@@ -27,7 +27,8 @@ public final class CreateADeIdentificationJobTests extends DeidentificationClien
                     new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "documents/"),
                     new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "_output/")
                         .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
-                            .setCustomizations(new JobCustomizationOptions().setRedactionFormat("[{type}]"))));
+                            .setCustomizations(
+                                new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]"))));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
