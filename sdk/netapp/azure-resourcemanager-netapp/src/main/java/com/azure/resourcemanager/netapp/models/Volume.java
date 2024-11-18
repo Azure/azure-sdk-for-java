@@ -97,7 +97,7 @@ public interface Volume {
     /**
      * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
@@ -202,7 +202,7 @@ public interface Volume {
 
     /**
      * Gets the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection.
+     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
      * 
      * @return the volumeType value.
      */
@@ -215,6 +215,16 @@ public interface Volume {
      * @return the dataProtection value.
      */
     VolumePropertiesDataProtection dataProtection();
+
+    /**
+     * Gets the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @return the acceptGrowCapacityPoolForShortTermCloneSplit value.
+     */
+    AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit();
 
     /**
      * Gets the isRestoring property: Restoring.
@@ -352,7 +362,10 @@ public interface Volume {
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users.
+     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
+     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
+     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
+     * as its last saved value only.
      * 
      * @return the unixPermissions value.
      */
@@ -503,6 +516,20 @@ public interface Volume {
     String originatingResourceId();
 
     /**
+     * Gets the inheritedSizeInBytes property: Space shared by short term clone volume with parent volume in bytes.
+     * 
+     * @return the inheritedSizeInBytes value.
+     */
+    Long inheritedSizeInBytes();
+
+    /**
+     * Gets the language property: Language supported for volume.
+     * 
+     * @return the language value.
+     */
+    VolumeLanguage language();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -605,12 +632,12 @@ public interface Volume {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * For large volumes, valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to
              * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
              * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
              * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
@@ -640,19 +667,19 @@ public interface Volume {
             DefinitionStages.WithServiceLevel, DefinitionStages.WithExportPolicy, DefinitionStages.WithProtocolTypes,
             DefinitionStages.WithSnapshotId, DefinitionStages.WithDeleteBaseSnapshot, DefinitionStages.WithBackupId,
             DefinitionStages.WithNetworkFeatures, DefinitionStages.WithVolumeType, DefinitionStages.WithDataProtection,
-            DefinitionStages.WithIsRestoring, DefinitionStages.WithSnapshotDirectoryVisible,
-            DefinitionStages.WithKerberosEnabled, DefinitionStages.WithSecurityStyle,
-            DefinitionStages.WithSmbEncryption, DefinitionStages.WithSmbAccessBasedEnumeration,
-            DefinitionStages.WithSmbNonBrowsable, DefinitionStages.WithSmbContinuouslyAvailable,
-            DefinitionStages.WithThroughputMibps, DefinitionStages.WithEncryptionKeySource,
-            DefinitionStages.WithKeyVaultPrivateEndpointResourceId, DefinitionStages.WithLdapEnabled,
-            DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
+            DefinitionStages.WithAcceptGrowCapacityPoolForShortTermCloneSplit, DefinitionStages.WithIsRestoring,
+            DefinitionStages.WithSnapshotDirectoryVisible, DefinitionStages.WithKerberosEnabled,
+            DefinitionStages.WithSecurityStyle, DefinitionStages.WithSmbEncryption,
+            DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
+            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
+            DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
+            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
             DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithUnixPermissions,
             DefinitionStages.WithAvsDataStore, DefinitionStages.WithIsDefaultQuotaEnabled,
             DefinitionStages.WithDefaultUserQuotaInKiBs, DefinitionStages.WithDefaultGroupQuotaInKiBs,
             DefinitionStages.WithCapacityPoolResourceId, DefinitionStages.WithProximityPlacementGroup,
             DefinitionStages.WithVolumeSpecName, DefinitionStages.WithPlacementRules,
-            DefinitionStages.WithEnableSubvolumes, DefinitionStages.WithIsLargeVolume {
+            DefinitionStages.WithEnableSubvolumes, DefinitionStages.WithIsLargeVolume, DefinitionStages.WithLanguage {
             /**
              * Executes the create request.
              * 
@@ -796,10 +823,10 @@ public interface Volume {
         interface WithVolumeType {
             /**
              * Specifies the volumeType property: What type of volume is this. For destination volumes in Cross Region
-             * Replication, set type to DataProtection.
+             * Replication, set type to DataProtection. For creating clone volume, set type to ShortTermClone.
              * 
              * @param volumeType What type of volume is this. For destination volumes in Cross Region Replication, set
-             * type to DataProtection.
+             * type to DataProtection. For creating clone volume, set type to ShortTermClone.
              * @return the next definition stage.
              */
             WithCreate withVolumeType(String volumeType);
@@ -818,6 +845,26 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withDataProtection(VolumePropertiesDataProtection dataProtection);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify acceptGrowCapacityPoolForShortTermCloneSplit.
+         */
+        interface WithAcceptGrowCapacityPoolForShortTermCloneSplit {
+            /**
+             * Specifies the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term
+             * clone volume, if the parent pool does not have enough space to accommodate the volume after split, it
+             * will be automatically resized, which will lead to increased billing. To accept capacity pool size auto
+             * grow and create a short term clone volume, set the property as accepted..
+             * 
+             * @param acceptGrowCapacityPoolForShortTermCloneSplit While auto splitting the short term clone volume, if
+             * the parent pool does not have enough space to accommodate the volume after split, it will be
+             * automatically resized, which will lead to increased billing. To accept capacity pool size auto grow and
+             * create a short term clone volume, set the property as accepted.
+             * @return the next definition stage.
+             */
+            WithCreate withAcceptGrowCapacityPoolForShortTermCloneSplit(
+                AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit);
         }
 
         /**
@@ -1063,13 +1110,19 @@ public interface Volume {
              * First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
              * permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for
              * other users in the same group. the fourth for other users not in the group. 0755 - gives
-             * read/write/execute permissions to owner and read/execute to group and other users..
+             * read/write/execute permissions to owner and read/execute to group and other users. Avoid passing null
+             * value for unixPermissions in volume update operation, As per the behavior, If Null value is passed then
+             * user-visible unixPermissions value will became null, and user will not be able to get unixPermissions
+             * value. On safer side, actual unixPermissions value on volume will remain as its last saved value only..
              * 
              * @param unixPermissions UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
              * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission
              * for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users
              * in the same group. the fourth for other users not in the group. 0755 - gives read/write/execute
-             * permissions to owner and read/execute to group and other users.
+             * permissions to owner and read/execute to group and other users. Avoid passing null value for
+             * unixPermissions in volume update operation, As per the behavior, If Null value is passed then
+             * user-visible unixPermissions value will became null, and user will not be able to get unixPermissions
+             * value. On safer side, actual unixPermissions value on volume will remain as its last saved value only.
              * @return the next definition stage.
              */
             WithCreate withUnixPermissions(String unixPermissions);
@@ -1214,6 +1267,19 @@ public interface Volume {
              */
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
         }
+
+        /**
+         * The stage of the Volume definition allowing to specify language.
+         */
+        interface WithLanguage {
+            /**
+             * Specifies the language property: Language supported for volume..
+             * 
+             * @param language Language supported for volume.
+             * @return the next definition stage.
+             */
+            WithCreate withLanguage(VolumeLanguage language);
+        }
     }
 
     /**
@@ -1286,12 +1352,12 @@ public interface Volume {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * For large volumes, valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to
              * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
              * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
              * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
@@ -1606,6 +1672,28 @@ public interface Volume {
     void resetCifsPassword(Context context);
 
     /**
+     * Split clone from parent volume
+     * 
+     * Split operation to convert clone volume to an independent volume.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void splitCloneFromParent();
+
+    /**
+     * Split clone from parent volume
+     * 
+     * Split operation to convert clone volume to an independent volume.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void splitCloneFromParent(Context context);
+
+    /**
      * Break file locks
      * 
      * Break all the file locks on a volume.
@@ -1655,6 +1743,30 @@ public interface Volume {
      */
     GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body,
         Context context);
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume.
+     */
+    ListQuotaReportResponse listQuotaReport();
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume.
+     */
+    ListQuotaReportResponse listQuotaReport(Context context);
 
     /**
      * Break volume replication

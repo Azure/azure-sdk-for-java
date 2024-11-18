@@ -22,7 +22,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"quotaSizeInKiBs\":7422512186401235360,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"oevytlyokr\"},\"location\":\"o\",\"tags\":{\"rxklobdxnazpmk\":\"vnsasbcrymodi\"},\"id\":\"lmv\",\"name\":\"vfxzopjh\",\"type\":\"zxlioh\"}";
+            = "{\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":8259010476237708124,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"ngnbdxxew\"},\"location\":\"invudbch\",\"tags\":{\"crqctmxxdtddmflh\":\"tvq\",\"voxczytpr\":\"ytxzvtznapxbanno\"},\"id\":\"nwvroevytlyokrr\",\"name\":\"o\",\"type\":\"uxvnsasbcrymodi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .getWithResponse("ninvudbchaqdt", "qecrqctmxx", "tddmf", "huytxzvtzn", "pxbannovvoxc",
+            .getWithResponse("nsduugwbsre", "rfqkfuar", "nlvhhtklnvnafvv", "yfedevjbo", "lcqxypokk",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("o", response.location());
-        Assertions.assertEquals("vnsasbcrymodi", response.tags().get("rxklobdxnazpmk"));
-        Assertions.assertEquals(7422512186401235360L, response.quotaSizeInKiBs());
+        Assertions.assertEquals("invudbch", response.location());
+        Assertions.assertEquals("tvq", response.tags().get("crqctmxxdtddmflh"));
+        Assertions.assertEquals(8259010476237708124L, response.quotaSizeInKiBs());
         Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.quotaType());
-        Assertions.assertEquals("oevytlyokr", response.quotaTarget());
+        Assertions.assertEquals("ngnbdxxew", response.quotaTarget());
     }
 }

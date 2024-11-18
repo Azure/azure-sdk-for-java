@@ -33,6 +33,12 @@ public final class PoolPatchProperties implements JsonSerializable<PoolPatchProp
      */
     private Boolean coolAccess;
 
+    /*
+     * Maximum throughput in MiB/s that can be achieved by this pool and this will be accepted as input only for manual
+     * qosType pool with Flexible service level
+     */
+    private Float customThroughputMibps;
+
     /**
      * Creates an instance of PoolPatchProperties class.
      */
@@ -102,6 +108,28 @@ public final class PoolPatchProperties implements JsonSerializable<PoolPatchProp
     }
 
     /**
+     * Get the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @return the customThroughputMibps value.
+     */
+    public Float customThroughputMibps() {
+        return this.customThroughputMibps;
+    }
+
+    /**
+     * Set the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @param customThroughputMibps the customThroughputMibps value to set.
+     * @return the PoolPatchProperties object itself.
+     */
+    public PoolPatchProperties withCustomThroughputMibps(Float customThroughputMibps) {
+        this.customThroughputMibps = customThroughputMibps;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -118,6 +146,7 @@ public final class PoolPatchProperties implements JsonSerializable<PoolPatchProp
         jsonWriter.writeNumberField("size", this.size);
         jsonWriter.writeStringField("qosType", this.qosType == null ? null : this.qosType.toString());
         jsonWriter.writeBooleanField("coolAccess", this.coolAccess);
+        jsonWriter.writeNumberField("customThroughputMibps", this.customThroughputMibps);
         return jsonWriter.writeEndObject();
     }
 
@@ -142,6 +171,8 @@ public final class PoolPatchProperties implements JsonSerializable<PoolPatchProp
                     deserializedPoolPatchProperties.qosType = QosType.fromString(reader.getString());
                 } else if ("coolAccess".equals(fieldName)) {
                     deserializedPoolPatchProperties.coolAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("customThroughputMibps".equals(fieldName)) {
+                    deserializedPoolPatchProperties.customThroughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }
