@@ -10,7 +10,10 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Reque
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;

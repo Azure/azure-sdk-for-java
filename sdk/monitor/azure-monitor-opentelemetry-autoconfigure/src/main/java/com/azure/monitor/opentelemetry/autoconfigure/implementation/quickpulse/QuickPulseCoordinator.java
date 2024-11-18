@@ -165,7 +165,7 @@ final class QuickPulseCoordinator implements Runnable {
     private QuickPulseStatus getQuickPulseStatusFromHeader(String headerValue) {
         if (Strings.isNullOrEmpty(headerValue)) {
             return QuickPulseStatus.ERROR;
-        } else if (headerValue.equalsIgnoreCase("true")) {
+        } else if ("true".equalsIgnoreCase(headerValue)) {
             return QuickPulseStatus.QP_IS_ON;
         } else {
             return QuickPulseStatus.QP_IS_OFF;
