@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DURATION_SYMBOL;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.OFFSETDATETIME_SYMBOL;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,6 +26,7 @@ public class OffsetDateTimeDescribedTypeTests {
         final long expectedTicks = 638673099625931825L;
         final OffsetDateTime input = OffsetDateTime.of(2024, 11,15,
             23, 26, 2, 593182500, ZoneOffset.UTC);
+        final int expectedLength = OFFSETDATETIME_SYMBOL.length() + Long.BYTES;;
 
         // Act
         final OffsetDateTimeDescribedType actualType = new OffsetDateTimeDescribedType(input);
@@ -36,6 +38,8 @@ public class OffsetDateTimeDescribedTypeTests {
 
         final Long actual = (Long) actualType.getDescribed();
         Assertions.assertEquals(expectedTicks, actual);
+
+        Assertions.assertEquals(expectedLength, actualType.size());
     }
 
     @Test

@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import org.apache.qpid.proton.amqp.DescribedType;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +32,7 @@ public class UriDescribedTypeTests {
         final UriDescribedType actual = new UriDescribedType(URI.create(uriString));
 
         // Assert
+        Assertions.assertEquals(URI_SYMBOL, actual.getDescriptor());
         Assertions.assertEquals(expectedLength, actual.size());
     }
 
@@ -44,7 +46,7 @@ public class UriDescribedTypeTests {
         when(describedType.getDescribed()).thenReturn(uriString);
 
         // Act
-        final Object actual = MessageUtils.describedToOrigin(describedType);
+        final URI actual = MessageUtils.describedToOrigin(describedType);
 
         // Assert
         Assertions.assertEquals(uri, actual);
