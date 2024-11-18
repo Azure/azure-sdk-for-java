@@ -64,7 +64,7 @@ public class QueryRewrites {
             return queryRewritesTypeString;
         }
 
-        return queryRewritesTypeString + '|' + "count-" + count;
+        return queryRewritesTypeString + "|count-" + count;
     }
 
     @Override
