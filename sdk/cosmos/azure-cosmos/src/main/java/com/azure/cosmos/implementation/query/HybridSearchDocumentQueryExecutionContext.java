@@ -144,7 +144,10 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
 
             aggregatedGlobalStatistics = Flux.fromIterable(documentProducers)
                 .flatMap(producer -> producer.produceAsync()
-                    .map(documentProducerFeedResponse -> new GlobalFullTextSearchQueryStatistics(documentProducerFeedResponse.pageResult.getResults().get(0))))
+                    .map(documentProducerFeedResponse -> {
+                        List<Document> results = documentProducerFeedResponse.pageResult.getResults();
+                        return new GlobalFullTextSearchQueryStatistics(results.get(0));
+                    }))
                 .collectList()
                 .map(this::aggregateStatistics);
         }
@@ -343,8 +346,16 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             for (int i = 0; i < results.get(0).getComponentScores().size(); i++) {
                 componentScoresInternal.add(new ArrayList<>());
             }
+            List<Double> undefinedComponentScores = new ArrayList<>();
+            for (int i = 0; i < componentScoresInternal.size(); i++) {
+                undefinedComponentScores.add(-999999.0); // Default undefined value
+            }
             for (int i = 0; i < results.size(); i++) {
                 List<Double> componentScores = results.get(i).getComponentScores();
+                // TODO: # Remove this small fix after the backend changes are released to deal with empty component score scenarios
+                if (componentScores.isEmpty()) {
+                    componentScores = undefinedComponentScores;
+                }
                 for (int j = 0; j < componentScores.size(); j++) {
                     ScoreTuple scoreTuple = new ScoreTuple(componentScores.get(j), i);
                     componentScoresInternal.get(j).add(scoreTuple);
