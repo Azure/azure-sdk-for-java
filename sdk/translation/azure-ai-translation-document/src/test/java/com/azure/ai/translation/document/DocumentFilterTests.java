@@ -99,7 +99,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> testCreatedOnDateTimes = new ArrayList<>();
 
         ListDocumentStatusesOptions listDocumentStatusesOptions
-            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderby(orderBy);
+            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderBy(orderBy);
 
         try {
             PagedIterable<DocumentStatusResult> response
@@ -115,7 +115,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         ListDocumentStatusesOptions listDocumentStatusesOptions1
             = new ListDocumentStatusesOptions(translationStatus.getId())
-                .setCreatedDateTimeUtcStart(getDateTimeOffset(testCreatedOnDateTimes.get(4)));
+                .setCreatedAfter(getDateTimeOffset(testCreatedOnDateTimes.get(4)));
 
         // Asserting that only the last document is returned
         try {
@@ -133,7 +133,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         ListDocumentStatusesOptions listDocumentStatusesOptions2
             = new ListDocumentStatusesOptions(translationStatus.getId())
-                .setCreatedDateTimeUtcStart(getDateTimeOffset(testCreatedOnDateTimes.get(2)));
+                .setCreatedAfter(getDateTimeOffset(testCreatedOnDateTimes.get(2)));
 
         // Asserting that the last 3 docs are returned
         try {
@@ -161,7 +161,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> testCreatedOnDateTimes = new ArrayList<>();
 
         ListDocumentStatusesOptions listDocumentStatusesOptions
-            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderby(orderBy);
+            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderBy(orderBy);
 
         try {
             PagedIterable<DocumentStatusResult> response
@@ -177,7 +177,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         ListDocumentStatusesOptions listDocumentStatusesOptions1
             = new ListDocumentStatusesOptions(translationStatus.getId())
-                .setCreatedDateTimeUtcEnd(getDateTimeOffset(testCreatedOnDateTimes.get(0)));
+                .setCreatedBefore(getDateTimeOffset(testCreatedOnDateTimes.get(0)));
 
         // Asserting that only the first document is returned
         try {
@@ -195,7 +195,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         ListDocumentStatusesOptions listDocumentStatusesOptions2
             = new ListDocumentStatusesOptions(translationStatus.getId())
-                .setCreatedDateTimeUtcEnd(getDateTimeOffset(testCreatedOnDateTimes.get(3)));
+                .setCreatedBefore(getDateTimeOffset(testCreatedOnDateTimes.get(3)));
 
         // Asserting that the first 4/5 docs are returned
         try {
@@ -222,7 +222,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> orderBy = Arrays.asList("createdDateTimeUtc desc");
 
         ListDocumentStatusesOptions listDocumentStatusesOptions
-            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderby(orderBy);
+            = new ListDocumentStatusesOptions(translationStatus.getId()).setOrderBy(orderBy);
 
         try {
             PagedIterable<DocumentStatusResult> response

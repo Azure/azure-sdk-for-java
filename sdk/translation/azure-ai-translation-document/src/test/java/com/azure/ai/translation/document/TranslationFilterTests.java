@@ -40,8 +40,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         OffsetDateTime testStartTime = testResourceNamer.now();
 
         ListTranslationStatusesOptions listTranslationStatusesOptions
-            = new ListTranslationStatusesOptions().setStatuses(cancelledStatusList)
-                .setCreatedDateTimeUtcStart(testStartTime);
+            = new ListTranslationStatusesOptions().setStatuses(cancelledStatusList).setCreatedAfter(testStartTime);
 
         try {
             PagedIterable<TranslationStatusResult> translationStatusResult
@@ -96,7 +95,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         List<String> targetIds = createTranslationJobs(1, 1, TranslationStatus.SUCCEEDED);
 
         ListTranslationStatusesOptions listTranslationStatusesOptions
-            = new ListTranslationStatusesOptions().setCreatedDateTimeUtcStart(testStartTime);
+            = new ListTranslationStatusesOptions().setCreatedAfter(testStartTime);
 
         // list translations with filter
         try {
@@ -131,8 +130,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         OffsetDateTime startDateTime = recentTimestamp.atOffset(ZoneOffset.UTC);
 
         ListTranslationStatusesOptions listTranslationStatusesOptions
-            = new ListTranslationStatusesOptions().setCreatedDateTimeUtcStart(startDateTime)
-                .setCreatedDateTimeUtcEnd(endDateTime);
+            = new ListTranslationStatusesOptions().setCreatedAfter(startDateTime).setCreatedBefore(endDateTime);
 
         // add translations with filter
         try {
@@ -170,7 +168,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");
 
         ListTranslationStatusesOptions listTranslationStatusesOptions
-            = new ListTranslationStatusesOptions().setCreatedDateTimeUtcStart(startDateTime).setOrderby(orderBy);
+            = new ListTranslationStatusesOptions().setCreatedAfter(startDateTime).setOrderby(orderBy);
 
         try {
             PagedIterable<TranslationStatusResult> translationStatusResult

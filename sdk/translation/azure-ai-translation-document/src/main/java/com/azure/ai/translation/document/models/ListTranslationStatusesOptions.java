@@ -55,16 +55,16 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
     private Integer skip;
 
     /*
-     * maxpagesize is the maximum items returned in a page. If more items are
+     * maxPageSize is the maximum items returned in a page. If more items are
      * requested via top (or top is not specified and there are more items to be
      * returned), @nextLink will contain the link to the next page.
      * 
      * 
      * Clients MAY request server-driven paging with a specific page size by
-     * specifying a maxpagesize preference. The server SHOULD honor this preference
+     * specifying a maxPageSize preference. The server SHOULD honor this preference
      * if the specified page size is smaller than the server's default page size.
      */
-    private Integer maxpagesize;
+    private Integer maxPageSize;
 
     /*
      * TranslationIds to use in filtering
@@ -79,17 +79,17 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
     /*
      * the start datetime to get items after
      */
-    private OffsetDateTime createdDateTimeUtcStart;
+    private OffsetDateTime createdAfter;
 
     /*
      * the end datetime to get items before
      */
-    private OffsetDateTime createdDateTimeUtcEnd;
+    private OffsetDateTime createdBefore;
 
     /*
      * the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc desc')
      */
-    private List<String> orderby;
+    private List<String> orderBy;
 
     /**
      * Creates an instance of ListTranslationStatusesOptions class.
@@ -184,36 +184,36 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
     }
 
     /**
-     * Get the maxpagesize property: maxpagesize is the maximum items returned in a page. If more items are
+     * Get the maxPageSize property: maxPageSize is the maximum items returned in a page. If more items are
      * requested via top (or top is not specified and there are more items to be
      * returned), &#064;nextLink will contain the link to the next page.
      * 
      * 
      * Clients MAY request server-driven paging with a specific page size by
-     * specifying a maxpagesize preference. The server SHOULD honor this preference
+     * specifying a maxPageSize preference. The server SHOULD honor this preference
      * if the specified page size is smaller than the server's default page size.
      * 
-     * @return the maxpagesize value.
+     * @return the maxPageSize value.
      */
-    public Integer getMaxpagesize() {
-        return this.maxpagesize;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
-     * Set the maxpagesize property: maxpagesize is the maximum items returned in a page. If more items are
+     * Set the maxPageSize property: maxPageSize is the maximum items returned in a page. If more items are
      * requested via top (or top is not specified and there are more items to be
      * returned), &#064;nextLink will contain the link to the next page.
      * 
      * 
      * Clients MAY request server-driven paging with a specific page size by
-     * specifying a maxpagesize preference. The server SHOULD honor this preference
+     * specifying a maxPageSize preference. The server SHOULD honor this preference
      * if the specified page size is smaller than the server's default page size.
      * 
-     * @param maxpagesize the maxpagesize value to set.
+     * @param maxPageSize the maxPageSize value to set.
      * @return the ListTranslationStatusesOptions object itself.
      */
-    public ListTranslationStatusesOptions setMaxpagesize(Integer maxpagesize) {
-        this.maxpagesize = maxpagesize;
+    public ListTranslationStatusesOptions setMaxPageSize(Integer maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 
@@ -258,64 +258,64 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
     }
 
     /**
-     * Get the createdDateTimeUtcStart property: the start datetime to get items after.
+     * Get the createdAfter property: the start datetime to get items after.
      * 
-     * @return the createdDateTimeUtcStart value.
+     * @return the createdAfter value.
      */
-    public OffsetDateTime getCreatedDateTimeUtcStart() {
-        return this.createdDateTimeUtcStart;
+    public OffsetDateTime getCreatedAfter() {
+        return this.createdAfter;
     }
 
     /**
-     * Set the createdDateTimeUtcStart property: the start datetime to get items after.
+     * Set the createdAfter property: the start datetime to get items after.
      * 
-     * @param createdDateTimeUtcStart the createdDateTimeUtcStart value to set.
+     * @param createdAfter the createdAfter value to set.
      * @return the ListTranslationStatusesOptions object itself.
      */
-    public ListTranslationStatusesOptions setCreatedDateTimeUtcStart(OffsetDateTime createdDateTimeUtcStart) {
-        this.createdDateTimeUtcStart = createdDateTimeUtcStart;
+    public ListTranslationStatusesOptions setCreatedAfter(OffsetDateTime createdAfter) {
+        this.createdAfter = createdAfter;
         return this;
     }
 
     /**
-     * Get the createdDateTimeUtcEnd property: the end datetime to get items before.
+     * Get the createdBefore property: the end datetime to get items before.
      * 
-     * @return the createdDateTimeUtcEnd value.
+     * @return the createdBefore value.
      */
-    public OffsetDateTime getCreatedDateTimeUtcEnd() {
-        return this.createdDateTimeUtcEnd;
+    public OffsetDateTime getCreatedBefore() {
+        return this.createdBefore;
     }
 
     /**
-     * Set the createdDateTimeUtcEnd property: the end datetime to get items before.
+     * Set the createdBefore property: the end datetime to get items before.
      * 
-     * @param createdDateTimeUtcEnd the createdDateTimeUtcEnd value to set.
+     * @param createdBefore the createdBefore value to set.
      * @return the ListTranslationStatusesOptions object itself.
      */
-    public ListTranslationStatusesOptions setCreatedDateTimeUtcEnd(OffsetDateTime createdDateTimeUtcEnd) {
-        this.createdDateTimeUtcEnd = createdDateTimeUtcEnd;
+    public ListTranslationStatusesOptions setCreatedBefore(OffsetDateTime createdBefore) {
+        this.createdBefore = createdBefore;
         return this;
     }
 
     /**
-     * Get the orderby property: the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc
+     * Get the orderBy property: the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc
      * desc').
      * 
-     * @return the orderby value.
+     * @return the orderBy value.
      */
-    public List<String> getOrderby() {
-        return this.orderby == null ? null : new ArrayList<>(this.orderby);
+    public List<String> getOrderBy() {
+        return this.orderBy == null ? null : new ArrayList<>(this.orderBy);
     }
 
     /**
-     * Set the orderby property: the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc
+     * Set the orderBy property: the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc
      * desc').
      * 
-     * @param orderby the orderby value to set.
+     * @param orderBy the orderBy value to set.
      * @return the ListTranslationStatusesOptions object itself.
      */
-    public ListTranslationStatusesOptions setOrderby(List<String> orderby) {
-        this.orderby = orderby == null ? null : new ArrayList<>(orderby);
+    public ListTranslationStatusesOptions setOrderby(List<String> orderBy) {
+        this.orderBy = orderBy == null ? null : new ArrayList<>(orderBy);
         return this;
     }
 
@@ -327,19 +327,15 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("top", this.top);
         jsonWriter.writeNumberField("skip", this.skip);
-        jsonWriter.writeNumberField("maxpagesize", this.maxpagesize);
+        jsonWriter.writeNumberField("maxPageSize", this.maxPageSize);
         jsonWriter.writeArrayField("translationIds", this.translationIds,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("createdDateTimeUtcStart",
-            this.createdDateTimeUtcStart == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTimeUtcStart));
-        jsonWriter.writeStringField("createdDateTimeUtcEnd",
-            this.createdDateTimeUtcEnd == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTimeUtcEnd));
-        jsonWriter.writeArrayField("orderby", this.orderby, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("createdAfter",
+            this.createdAfter == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAfter));
+        jsonWriter.writeStringField("createdBefore",
+            this.createdBefore == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdBefore));
+        jsonWriter.writeArrayField("orderby", this.orderBy, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -364,22 +360,22 @@ public final class ListTranslationStatusesOptions implements JsonSerializable<Li
                 } else if ("skip".equals(fieldName)) {
                     deserializedListTranslationStatusesOptions.skip = reader.getNullable(JsonReader::getInt);
                 } else if ("maxpagesize".equals(fieldName)) {
-                    deserializedListTranslationStatusesOptions.maxpagesize = reader.getNullable(JsonReader::getInt);
+                    deserializedListTranslationStatusesOptions.maxPageSize = reader.getNullable(JsonReader::getInt);
                 } else if ("translationIds".equals(fieldName)) {
                     List<String> translationIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedListTranslationStatusesOptions.translationIds = translationIds;
                 } else if ("statuses".equals(fieldName)) {
                     List<String> statuses = reader.readArray(reader1 -> reader1.getString());
                     deserializedListTranslationStatusesOptions.statuses = statuses;
-                } else if ("createdDateTimeUtcStart".equals(fieldName)) {
-                    deserializedListTranslationStatusesOptions.createdDateTimeUtcStart = reader
+                } else if ("createdAfter".equals(fieldName)) {
+                    deserializedListTranslationStatusesOptions.createdAfter = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("createdDateTimeUtcEnd".equals(fieldName)) {
-                    deserializedListTranslationStatusesOptions.createdDateTimeUtcEnd = reader
+                } else if ("createdBefore".equals(fieldName)) {
+                    deserializedListTranslationStatusesOptions.createdBefore = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("orderby".equals(fieldName)) {
                     List<String> orderby = reader.readArray(reader1 -> reader1.getString());
-                    deserializedListTranslationStatusesOptions.orderby = orderby;
+                    deserializedListTranslationStatusesOptions.orderBy = orderby;
                 } else {
                     reader.skipChildren();
                 }

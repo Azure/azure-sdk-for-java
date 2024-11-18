@@ -699,9 +699,9 @@ public final class DocumentTranslationAsyncClient {
         listTranslationStatuses(ListTranslationStatusesOptions listTranslationStatusesOptions) {
         RequestOptions requestOptions = new RequestOptions();
         if (listTranslationStatusesOptions != null) {
-            if (listTranslationStatusesOptions.getOrderby() != null) {
+            if (listTranslationStatusesOptions.getOrderBy() != null) {
                 requestOptions.addQueryParam("orderby",
-                    listTranslationStatusesOptions.getOrderby()
+                    listTranslationStatusesOptions.getOrderBy()
                         .stream()
                         .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                         .collect(Collectors.joining(",")),
@@ -713,13 +713,13 @@ public final class DocumentTranslationAsyncClient {
             if (listTranslationStatusesOptions.getTop() != null) {
                 requestOptions.addQueryParam("top", String.valueOf(listTranslationStatusesOptions.getTop()), false);
             }
-            if (listTranslationStatusesOptions.getCreatedDateTimeUtcStart() != null) {
+            if (listTranslationStatusesOptions.getCreatedAfter() != null) {
                 requestOptions.addQueryParam("createdDateTimeUtcStart",
-                    String.valueOf(listTranslationStatusesOptions.getCreatedDateTimeUtcStart()), false);
+                    String.valueOf(listTranslationStatusesOptions.getCreatedAfter()), false);
             }
-            if (listTranslationStatusesOptions.getCreatedDateTimeUtcEnd() != null) {
+            if (listTranslationStatusesOptions.getCreatedBefore() != null) {
                 requestOptions.addQueryParam("createdDateTimeUtcEnd",
-                    String.valueOf(listTranslationStatusesOptions.getCreatedDateTimeUtcEnd()), false);
+                    String.valueOf(listTranslationStatusesOptions.getCreatedBefore()), false);
             }
             if (listTranslationStatusesOptions.getTranslationIds() != null) {
                 requestOptions.addQueryParam("ids",
@@ -938,9 +938,9 @@ public final class DocumentTranslationAsyncClient {
     public PagedFlux<DocumentStatusResult>
         listDocumentStatuses(ListDocumentStatusesOptions listDocumentStatusesOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (listDocumentStatusesOptions.getOrderby() != null) {
+        if (listDocumentStatusesOptions.getOrderBy() != null) {
             requestOptions.addQueryParam("orderby",
-                listDocumentStatusesOptions.getOrderby()
+                listDocumentStatusesOptions.getOrderBy()
                     .stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
@@ -952,13 +952,13 @@ public final class DocumentTranslationAsyncClient {
         if (listDocumentStatusesOptions.getTop() != null) {
             requestOptions.addQueryParam("top", String.valueOf(listDocumentStatusesOptions.getTop()), false);
         }
-        if (listDocumentStatusesOptions.getCreatedDateTimeUtcStart() != null) {
+        if (listDocumentStatusesOptions.getCreatedAfter() != null) {
             requestOptions.addQueryParam("createdDateTimeUtcStart",
-                String.valueOf(listDocumentStatusesOptions.getCreatedDateTimeUtcStart()), false);
+                String.valueOf(listDocumentStatusesOptions.getCreatedAfter()), false);
         }
-        if (listDocumentStatusesOptions.getCreatedDateTimeUtcEnd() != null) {
+        if (listDocumentStatusesOptions.getCreatedBefore() != null) {
             requestOptions.addQueryParam("createdDateTimeUtcEnd",
-                String.valueOf(listDocumentStatusesOptions.getCreatedDateTimeUtcEnd()), false);
+                String.valueOf(listDocumentStatusesOptions.getCreatedBefore()), false);
         }
         if (listDocumentStatusesOptions.getDocumentIds() != null) {
             requestOptions.addQueryParam("ids",
