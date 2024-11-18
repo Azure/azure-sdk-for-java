@@ -9,8 +9,6 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import org.slf4j.Logger;
 
-import java.util.function.Consumer;
-
 /**
  * This customizes the generated Azure Deidentification client. The following changes are made by this customization:
  * <li>Mark the listJobs() overload with continuationToken parameter in DeidentificationClient as private.</li>
