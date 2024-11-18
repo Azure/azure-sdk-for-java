@@ -79,21 +79,11 @@
             files="com.azure.messaging.servicebus.stress.*\.java"/>
   <suppress checks="MissingJavadocMethod" files="com.azure.messaging.servicebus.stress.*\.java"/>
 
-  <!-- Suppress warning for ServiceClients to have Client in its name as Azure Container Registry has Clientlets which do not follow the same convention. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="(ContainerRepository|RegistryArtifact)(Async)?.java"/>
-
-  <!-- suppress eceptions caught to for tracing-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files="com.azure.containers.containerregistry.ContainerRegistryContentClient.java"/>
-
   <!-- Logger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="(ClientLogger|DefaultLogger|LoggingEventBuilder).java"/>
 
   <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
-
-  <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy.java"/>
 
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files=".*[/\\](implementation|test)[/\\].*"/>
@@ -179,11 +169,6 @@
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
   <!-- ### end: Spring related suppression -->
-
-
-  <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
-  <!-- Suppress DigitalTwins for now -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClient" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]digitaltwins[/\\]core[/\\](DigitalTwinsClient|DigitalTwinsAsyncClient).java"/>
 
   <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
   <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
