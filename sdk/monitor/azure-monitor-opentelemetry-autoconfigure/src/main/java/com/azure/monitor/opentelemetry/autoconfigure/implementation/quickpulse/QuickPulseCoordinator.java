@@ -74,7 +74,6 @@ final class QuickPulseCoordinator implements Runnable {
         QuickPulseStatus qpStatus = dataSender.getQuickPulseStatus();
         collector.setQuickPulseStatus(qpStatus);
         switch (qpStatus) {
-            // TODO: explain more about behavior and what happens because of the increase or without it
             case ERROR:
                 pingMode = true;
                 // Below line is necessary because there is a case where the last valid request is a post
