@@ -1,6 +1,5 @@
 import os
 import re
-import sys
 import yaml
 import logging
 
@@ -23,7 +22,6 @@ def validate_tspconfig(tsp_dir: str) -> bool:
 
     service_dir_pattern = r"sdk/\w+"
     package_dir_pattern = r"azure(-\w+)+"
-    namespace_pattern = r"com\.azure(\.\w+)+"
 
     # SDK automation would make sure these properties exists
     service_dir: str = yaml_json["parameters"]["service-dir"]["default"]
@@ -35,10 +33,8 @@ def validate_tspconfig(tsp_dir: str) -> bool:
             'E.g. "com.azure.ai.openai".'
         )
         return False
-    namespace: str = yaml_json["options"]["@azure-tools/typespec-java"]["namespace"]
 
     # validate service-dir
-    service_dir_segments = service_dir.split("/")
     if not re.fullmatch(service_dir_pattern, service_dir):
         valid = False
         logging.error(
@@ -57,25 +53,5 @@ def validate_tspconfig(tsp_dir: str) -> bool:
             'E.g. "azure-ai-openai". '
             f"Current value: {package_dir}"
         )
-
-    # validate namespace
-    if not re.fullmatch(namespace_pattern, namespace):
-        valid = False
-        logging.error(
-            "[VALIDATE][tspconfig.yaml] "
-            'options.@azure-tools/typespec-java.namespace SHOULD start with "com.azure.". '
-            'E.g. "com.azure.ai.openai". '
-            f"Current value: {namespace}"
-        )
-
-    # validate package_dir matches namespace
-    if valid:
-        expected_package_dir = namespace[4:].replace(".", "-")
-        if expected_package_dir != package_dir:
-            valid = False
-            logging.error(
-                "[VALIDATE][tspconfig.yaml] package_dir does not match namespace. "
-                f'Expected package_dir from namespace "{namespace}" is: {expected_package_dir}'
-            )
 
     return valid
