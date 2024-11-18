@@ -84,7 +84,7 @@ final class QuickPulseCoordinator implements Runnable {
                 // 5 seconds after the initial failed ping. This adjusts the lastTransmissionTime saved in the pingSender such that the pingSender remains
                 // in an error state (ping once a minute) if the first ping after the failing post also fails.
                 long errorDelayInNs = TimeUnit.SECONDS.toNanos(40);
-                pingSender.resetLastValidRequestTimeNs((long) (dataSender.getLastValidPostRequestTimeNs() - errorDelayInNs));
+                pingSender.resetLastValidRequestTimeNs(dataSender.getLastValidPostRequestTimeNs() - errorDelayInNs);
                 return waitOnErrorInMillis;
 
             case QP_IS_OFF:
