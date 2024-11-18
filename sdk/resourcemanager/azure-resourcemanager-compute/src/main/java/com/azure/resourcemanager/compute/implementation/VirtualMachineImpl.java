@@ -2734,6 +2734,7 @@ class VirtualMachineImpl
         updateParameter.withPriority(this.innerModel().priority());
         updateParameter.withEvictionPolicy(this.innerModel().evictionPolicy());
         updateParameter.withUserData(this.innerModel().userData());
+        updateParameter.withCapacityReservation(this.innerModel().capacityReservation());
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {
