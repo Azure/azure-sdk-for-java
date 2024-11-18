@@ -738,7 +738,6 @@ public final class DocumentTranslationAsyncClient {
                     false);
             }
         }
-
         PagedFlux<BinaryData> pagedFluxResponse = listTranslationStatuses(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
@@ -977,7 +976,6 @@ public final class DocumentTranslationAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-
         PagedFlux<BinaryData> pagedFluxResponse
             = listDocumentStatuses(listDocumentStatusesOptions.getTranslationId(), requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
@@ -1052,7 +1050,6 @@ public final class DocumentTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return documents Status Response as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DocumentStatusResult> listDocumentStatuses(String translationId) {
         // Generated convenience method for listDocumentStatuses

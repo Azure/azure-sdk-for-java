@@ -731,7 +731,6 @@ public final class DocumentTranslationClient {
                     false);
             }
         }
-
         return serviceClient.listTranslationStatuses(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TranslationStatusResult.class));
     }
@@ -1004,7 +1003,6 @@ public final class DocumentTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return documents Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentStatusResult> listDocumentStatuses(String translationId) {
         // Generated convenience method for listDocumentStatuses
