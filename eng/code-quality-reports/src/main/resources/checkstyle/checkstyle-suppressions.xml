@@ -94,13 +94,6 @@
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files=".*[/\\](implementation|test)[/\\].*"/>
 
-  <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
-  <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
-  <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
-            files="com.azure.communication.common.implementation.HmacAuthenticationPolicy.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.(CommunicationIdentityClient|CommunicationIdentityAsyncClient).java"/>
-
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-kafka-connect[/\\]src[/\\]test[/\\]"/>
@@ -187,14 +180,6 @@
 
   <!-- Suppress checks on AutoRest generated Attestation service code -->
   <suppress checks="ThrowFromClientLogger" files="com.azure.security.attestation.implementation.models.*\.java"/>
-
-  <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
-  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
-
-  <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
-            files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 
   <!-- Suppress checks for Core Perf package. -->
   <suppress checks="Javadoc" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
