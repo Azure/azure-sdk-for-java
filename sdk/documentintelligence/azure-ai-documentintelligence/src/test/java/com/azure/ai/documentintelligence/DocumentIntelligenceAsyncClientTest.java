@@ -23,7 +23,6 @@ import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
@@ -380,6 +379,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
                         Collections.singletonList(AnalyzeOutputOption.FIGURES),
                         new AnalyzeDocumentRequest().setBase64Source(data))
                     .setPollInterval(durationTestMode);
+
             StepVerifier.create(resultPollerFlux.last()
                 .flatMap(response -> client.getAnalyzeResultFigure(modelID, response.getValue().getOperationId(),
                     response.getValue().getAnalyzeResult().getFigures().get(0).getId())))

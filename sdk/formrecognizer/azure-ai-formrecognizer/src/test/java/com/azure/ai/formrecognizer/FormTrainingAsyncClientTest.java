@@ -643,6 +643,43 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     }
 
     /**
+     * Verifies the create composed model using unlabeled models fails.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginCreateComposedUnlabeledModel(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller1
+                = client
+                    .beginTraining(trainingFilesUrl, useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode))
+                    .getSyncPoller();
+            syncPoller1.waitForCompletion();
+            CustomFormModel model1 = syncPoller1.getFinalResult();
+
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller2
+                = client
+                    .beginTraining(trainingFilesUrl, useTrainingLabels,
+                        new TrainingOptions().setPollInterval(durationTestMode))
+                    .getSyncPoller();
+            syncPoller2.waitForCompletion();
+            CustomFormModel model2 = syncPoller2.getFinalResult();
+
+            final List<String> modelIdList = Arrays.asList(model1.getModelId(), model2.getModelId());
+
+            StepVerifier.create(client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions())
+                .setPollInterval(durationTestMode)).thenAwait().expectErrorSatisfies(throwable -> {
+                    assertEquals(HttpResponseException.class, throwable.getClass());
+                    assertEquals(BAD_REQUEST.code(), ((HttpResponseException) throwable).getResponse().getStatusCode());
+                }).verify(DEFAULT_TIMEOUT);
+
+            client.deleteModel(model1.getModelId()).block();
+            client.deleteModel(model2.getModelId()).block();
+        });
+    }
+
+    /**
      * Verifies the create composed model operation fails when supplied duplicate Ids.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
