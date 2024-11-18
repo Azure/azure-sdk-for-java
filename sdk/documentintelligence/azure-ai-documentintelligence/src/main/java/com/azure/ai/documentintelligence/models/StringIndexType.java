@@ -30,7 +30,7 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
      * Java, and .NET.
      */
     @Generated
-    public static final StringIndexType UTF16CODE_UNIT = fromString("utf16CodeUnit");
+    public static final StringIndexType UTF16_CODE_UNIT = fromString("utf16CodeUnit");
 
     /**
      * Creates a new instance of StringIndexType value.
