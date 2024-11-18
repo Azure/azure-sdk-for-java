@@ -25,13 +25,14 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         super(clientBuilder.contentResponseOnWriteEnabled(true));
     }
 
-    @BeforeClass(groups = { "fast", "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_UserAgentSuffixTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         this.databaseName = asyncContainer.getDatabase().getId();
         this.containerName = asyncContainer.getId();
+        logger.info("before_UserAgentSuffixTest - databaseName {}, containerName {}", this.databaseName, this.containerName);
     }
 
     @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -41,6 +42,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithoutSpecialCharacter() {
+        logger.info("Inside userAgentSuffixWithoutSpecialCharacter");
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("TestUserAgent")
             .buildClient();
@@ -58,6 +60,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithSpecialCharacter() {
+        logger.info("Inside userAgentSuffixWithSpecialCharacter");
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("TéstUserAgent's")
             .buildClient();
@@ -75,6 +78,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithUnicodeCharacter() {
+        logger.info("Inside userAgentSuffixWithUnicodeCharacter");
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("UnicodeChar鱀InUserAgent")
             .buildClient();
@@ -92,6 +96,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithWhitespaceAndAsciiSpecialChars() {
+        logger.info("Inside userAgentSuffixWithWhitespaceAndAsciiSpecialChars");
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("UserAgent with space$%_^()*&")
             .buildClient();
