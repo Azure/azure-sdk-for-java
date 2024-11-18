@@ -72,6 +72,9 @@ public final class SeverityFilterCondition implements JsonSerializable<SeverityF
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

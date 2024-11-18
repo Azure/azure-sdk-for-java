@@ -28,8 +28,7 @@ public final class VolumesRevertRelocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.volumes()
-            .revertRelocation("blembnkbwvqvxkd", "vqihebwtswbzuwf", "duragegizvc", "felisdjub",
-                com.azure.core.util.Context.NONE);
+            .revertRelocation("qryxyn", "nzrdpsovwxz", "ptgoeiybbabp", "hv", com.azure.core.util.Context.NONE);
 
     }
 }

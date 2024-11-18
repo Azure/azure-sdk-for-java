@@ -69,13 +69,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.28.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.29.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.23.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.24.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -254,4 +254,25 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- Library cannot build for Java 16 and below -->
+    <profile>
+      <id>below-java-17</id>
+      <activation>
+        <jdk>[,17)</jdk>
+      </activation>
+      <properties>
+        <jacoco.skip>true</jacoco.skip>
+        <skipCompile>true</skipCompile>
+        <skipTestCompile>true</skipTestCompile>
+        <codesnippet.skip>true</codesnippet.skip>
+        <checkstyle.skip>true</checkstyle.skip>
+        <spotbugs.skip>true</spotbugs.skip>
+        <revapi.skip>true</revapi.skip>
+        <maven.test.skip>true</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
+    </profile>
+  </profiles>
 </project>

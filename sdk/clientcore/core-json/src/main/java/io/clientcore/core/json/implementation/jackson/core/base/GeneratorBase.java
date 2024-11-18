@@ -1,11 +1,13 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.base;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.Base64Variant;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerator;
+import io.clientcore.core.json.implementation.jackson.core.JsonStreamContext;
+import io.clientcore.core.json.implementation.jackson.core.SerializableString;
 import io.clientcore.core.json.implementation.jackson.core.json.DupDetector;
 import io.clientcore.core.json.implementation.jackson.core.json.JsonWriteContext;
-import io.clientcore.core.json.implementation.jackson.core.json.PackageVersion;
-import io.clientcore.core.json.implementation.jackson.core.util.DefaultPrettyPrinter;
+import io.clientcore.core.json.implementation.jackson.core.json.JsonWriteFeature;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,16 +54,14 @@ public abstract class GeneratorBase extends JsonGenerator {
     protected final static int MAX_BIG_DECIMAL_SCALE = 9999;
 
     /*
-    /**********************************************************
-    /* Configuration
-    /**********************************************************
+     * /**********************************************************
+     * /* Configuration
+     * /**********************************************************
      */
-
-    protected ObjectCodec _objectCodec;
 
     /**
      * Bit flag composed of bits that indicate which
-     * {@link io.clientcore.core.json.implementation.jackson.core.JsonGenerator.Feature}s
+     * {@link Feature}s
      * are enabled.
      */
     protected int _features;
@@ -69,14 +69,14 @@ public abstract class GeneratorBase extends JsonGenerator {
     /**
      * Flag set to indicate that implicit conversion from number
      * to JSON String is needed (as per
-     * {@link io.clientcore.core.json.implementation.jackson.core.json.JsonWriteFeature#WRITE_NUMBERS_AS_STRINGS}).
+     * {@link JsonWriteFeature#WRITE_NUMBERS_AS_STRINGS}).
      */
     protected boolean _cfgNumbersAsStrings;
 
     /*
-    /**********************************************************
-    /* State
-    /**********************************************************
+     * /**********************************************************
+     * /* State
+     * /**********************************************************
      */
 
     /**
@@ -93,43 +93,19 @@ public abstract class GeneratorBase extends JsonGenerator {
     protected boolean _closed;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     @SuppressWarnings("deprecation")
-    protected GeneratorBase(int features, ObjectCodec codec) {
+    protected GeneratorBase(int features) {
         super();
         _features = features;
-        _objectCodec = codec;
         DupDetector dups
             = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features) ? DupDetector.rootDetector(this) : null;
         _writeContext = JsonWriteContext.createRootContext(dups);
         _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
-    }
-
-    // @since 2.5
-    @SuppressWarnings("deprecation")
-    protected GeneratorBase(int features, ObjectCodec codec, JsonWriteContext ctxt) {
-        super();
-        _features = features;
-        _objectCodec = codec;
-        _writeContext = ctxt;
-        _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
-    }
-
-    /**
-     * Implemented with standard version number detection algorithm, typically using
-     * a simple generated class, with information extracted from Maven project file
-     * during build.
-     *
-     * @return Version number of the generator (version of the jar that contains
-     *     generator implementation class)
-     */
-    @Override
-    public Version version() {
-        return PackageVersion.VERSION;
     }
 
     @Override
@@ -145,9 +121,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-    /**********************************************************
-    /* Configuration
-    /**********************************************************
+     * /**********************************************************
+     * /* Configuration
+     * /**********************************************************
      */
 
     @Override
@@ -160,7 +136,7 @@ public abstract class GeneratorBase extends JsonGenerator {
         return _features;
     }
 
-    //public JsonGenerator configure(Feature f, boolean state) { }
+    // public JsonGenerator configure(Feature f, boolean state) { }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -255,30 +231,10 @@ public abstract class GeneratorBase extends JsonGenerator {
         }
     }
 
-    @Override
-    public JsonGenerator useDefaultPrettyPrinter() {
-        // Should not override a pretty printer if one already assigned.
-        if (getPrettyPrinter() != null) {
-            return this;
-        }
-        return setPrettyPrinter(_constructDefaultPrettyPrinter());
-    }
-
-    @Override
-    public JsonGenerator setCodec(ObjectCodec oc) {
-        _objectCodec = oc;
-        return this;
-    }
-
-    @Override
-    public ObjectCodec getCodec() {
-        return _objectCodec;
-    }
-
     /*
-    /**********************************************************
-    /* Public API, accessors
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, accessors
+     * /**********************************************************
      */
 
     /**
@@ -292,15 +248,15 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-    /**********************************************************
-    /* Public API, write methods, structural
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, write methods, structural
+     * /**********************************************************
      */
 
-    //public void writeStartArray() throws IOException
-    //public void writeEndArray() throws IOException
-    //public void writeStartObject() throws IOException
-    //public void writeEndObject() throws IOException
+    // public void writeStartArray() throws IOException
+    // public void writeEndArray() throws IOException
+    // public void writeStartObject() throws IOException
+    // public void writeEndObject() throws IOException
 
     @Override // since 2.8
     public void writeStartObject(Object forValue) throws IOException {
@@ -311,9 +267,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-    /**********************************************************
-    /* Public API, write methods, textual
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, write methods, textual
+     * /**********************************************************
      */
 
     @Override
@@ -321,15 +277,15 @@ public abstract class GeneratorBase extends JsonGenerator {
         writeFieldName(name.getValue());
     }
 
-    //public abstract void writeString(String text) throws IOException;
+    // public abstract void writeString(String text) throws IOException;
 
-    //public abstract void writeString(char[] text, int offset, int len) throws IOException;
+    // public abstract void writeString(char[] text, int offset, int len) throws IOException;
 
-    //public abstract void writeString(Reader reader, int len) throws IOException;
+    // public abstract void writeString(Reader reader, int len) throws IOException;
 
-    //public abstract void writeRaw(String text) throws IOException,;
+    // public abstract void writeRaw(String text) throws IOException,;
 
-    //public abstract void writeRaw(char[] text, int offset, int len) throws IOException;
+    // public abstract void writeRaw(char[] text, int offset, int len) throws IOException;
 
     @Override
     public void writeString(SerializableString text) throws IOException {
@@ -368,27 +324,27 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-    /**********************************************************
-    /* Public API, write methods, primitive
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, write methods, primitive
+     * /**********************************************************
      */
 
     // Not implemented at this level, added as placeholders
 
     /*
-    public abstract void writeNumber(int i)
-    public abstract void writeNumber(long l)
-    public abstract void writeNumber(double d)
-    public abstract void writeNumber(float f)
-    public abstract void writeNumber(BigDecimal dec)
-    public abstract void writeBoolean(boolean state)
-    public abstract void writeNull()
-    */
+     * public abstract void writeNumber(int i)
+     * public abstract void writeNumber(long l)
+     * public abstract void writeNumber(double d)
+     * public abstract void writeNumber(float f)
+     * public abstract void writeNumber(BigDecimal dec)
+     * public abstract void writeBoolean(boolean state)
+     * public abstract void writeNull()
+     */
 
     /*
-    /**********************************************************
-    /* Public API, write methods, POJOs, trees
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, write methods, POJOs, trees
+     * /**********************************************************
      */
 
     @Override
@@ -397,36 +353,20 @@ public abstract class GeneratorBase extends JsonGenerator {
             // important: call method that does check value write:
             writeNull();
         } else {
-            /* 02-Mar-2009, tatu: we are NOT to call _verifyValueWrite here,
-             *   because that will be done when codec actually serializes
-             *   contained POJO. If we did call it it would advance state
-             *   causing exception later on
+            /*
+             * 02-Mar-2009, tatu: we are NOT to call _verifyValueWrite here,
+             * because that will be done when codec actually serializes
+             * contained POJO. If we did call it it would advance state
+             * causing exception later on
              */
-            if (_objectCodec != null) {
-                _objectCodec.writeValue(this, value);
-                return;
-            }
             _writeSimpleObject(value);
         }
     }
 
-    @Override
-    public void writeTree(TreeNode rootNode) throws IOException {
-        // As with 'writeObject()', we are not check if write would work
-        if (rootNode == null) {
-            writeNull();
-        } else {
-            if (_objectCodec == null) {
-                throw new IllegalStateException("No ObjectCodec defined");
-            }
-            _objectCodec.writeValue(this, rootNode);
-        }
-    }
-
     /*
-    /**********************************************************
-    /* Public API, low-level output handling
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, low-level output handling
+     * /**********************************************************
      */
 
     @Override
@@ -443,9 +383,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-    /**********************************************************
-    /* Package methods for this, sub-classes
-    /**********************************************************
+     * /**********************************************************
+     * /* Package methods for this, sub-classes
+     * /**********************************************************
      */
 
     /**
@@ -468,19 +408,7 @@ public abstract class GeneratorBase extends JsonGenerator {
     protected abstract void _verifyValueWrite(String typeMsg) throws IOException;
 
     /**
-     * Overridable factory method called to instantiate an appropriate {@link PrettyPrinter}
-     * for case of "just use the default one", when {@link #useDefaultPrettyPrinter()} is called.
-     *
-     * @return Instance of "default" pretty printer to use
-     *
-     * @since 2.6
-     */
-    protected PrettyPrinter _constructDefaultPrettyPrinter() {
-        return new DefaultPrettyPrinter();
-    }
-
-    /**
-     * Helper method used to serialize a {@link java.math.BigDecimal} as a String,
+     * Helper method used to serialize a {@link BigDecimal} as a String,
      * for serialization, taking into account configuration settings
      *
      * @param value BigDecimal value to convert to String
@@ -506,9 +434,9 @@ public abstract class GeneratorBase extends JsonGenerator {
     }
 
     /*
-    /**********************************************************
-    /* UTF-8 related helper method(s)
-    /**********************************************************
+     * /**********************************************************
+     * /* UTF-8 related helper method(s)
+     * /**********************************************************
      */
 
     // @since 2.5
@@ -518,7 +446,6 @@ public abstract class GeneratorBase extends JsonGenerator {
             String msg = String.format("Incomplete surrogate pair: first char 0x%04X, second 0x%04X", surr1, surr2);
             _reportError(msg);
         }
-        int c = 0x10000 + ((surr1 - SURR1_FIRST) << 10) + (surr2 - SURR2_FIRST);
-        return c;
+        return 0x10000 + ((surr1 - SURR1_FIRST) << 10) + (surr2 - SURR2_FIRST);
     }
 }

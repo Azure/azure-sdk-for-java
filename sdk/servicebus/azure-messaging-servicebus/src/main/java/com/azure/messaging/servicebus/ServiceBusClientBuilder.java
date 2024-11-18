@@ -2108,8 +2108,12 @@ public final class ServiceBusClientBuilder
             final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(
                 getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
 
-            final ServiceBusSessionAcquirer sessionAcquirer = new ServiceBusSessionAcquirer(logger, clientIdentifier,
-                entityPath, entityType, receiveMode, retryOptions.getTryTimeout(), connectionCacheWrapper);
+            // For session enabled ServiceBusProcessorClient, the session acquire should be retried if broker timeout
+            // due to no session (see the type ServiceBusSessionAcquirer).
+            final boolean timeoutRetryDisabled = false;
+            final ServiceBusSessionAcquirer sessionAcquirer
+                = new ServiceBusSessionAcquirer(logger, clientIdentifier, entityPath, entityType, receiveMode,
+                    retryOptions.getTryTimeout(), timeoutRetryDisabled, connectionCacheWrapper);
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
                 createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
@@ -2138,9 +2142,8 @@ public final class ServiceBusClientBuilder
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
-            final boolean isSessionReactorReceiveOnV2
-                = v2StackSupport.isSessionReactorAsyncReceiveEnabled(configuration);
-            return buildAsyncClient(true, isSessionReactorReceiveOnV2);
+            final boolean isV2 = v2StackSupport.isSessionReactorAsyncReceiveEnabled(configuration);
+            return buildAsyncClient(false, isV2);
         }
 
         /**
@@ -2157,19 +2160,27 @@ public final class ServiceBusClientBuilder
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverClient buildClient() {
-            final boolean isSessionSyncReceiveOnV2 = v2StackSupport.isSessionSyncReceiveEnabled(configuration);
+            final boolean isV2 = v2StackSupport.isSessionSyncReceiveEnabled(configuration);
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, isSessionSyncReceiveOnV2),
-                isPrefetchDisabled, MessageUtils.getTotalTimeout(retryOptions));
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(true, isV2), isPrefetchDisabled,
+                MessageUtils.getTotalTimeout(retryOptions));
         }
 
-        // Common function to build Session-Enabled Receiver-Client - For Async[Reactor]Client Or to back SyncClient.
-        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean isV2) {
+        /**
+         * Common function to build a {@link ServiceBusSessionReceiverAsyncClient} which is either used directly
+         * as asynchronous client or to back a synchronous {@link ServiceBusSessionReceiverClient}.
+         *
+         * @param isForSyncMode {@code true} if the client is build to back synchronous client.
+         * @param isV2 whether V2 stack should be enabled.
+         *
+         * @return async client to obtain session from session enabled entity.
+         */
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isForSyncMode, boolean isV2) {
             final MessagingEntityType entityType
                 = validateEntityPaths(connectionStringEntityName, topicName, queueName);
             final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName, SubQueue.NONE);
 
-            if (!isAutoCompleteAllowed && enableAutoComplete) {
+            if (isForSyncMode && enableAutoComplete) {
                 LOGGER.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
@@ -2208,12 +2219,16 @@ public final class ServiceBusClientBuilder
                 clientIdentifier = UUID.randomUUID().toString();
             }
 
+            // For ServiceBusSessionReceiverClient, the session acquire should not be retried if broker timeout due to
+            // no session (see the type ServiceBusSessionAcquirer), such timeout are propagated to the acceptNextSession() caller.
+            final boolean timeoutRetryDisabled = isV2 && isForSyncMode;
+
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
                 createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
                 subscriptionName, ReceiverKind.ASYNC_RECEIVER);
             return new ServiceBusSessionReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer,
-                onClientClose, clientIdentifier);
+                onClientClose, clientIdentifier, timeoutRetryDisabled);
         }
     }
 

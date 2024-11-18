@@ -3,16 +3,25 @@
 ### 4.65.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `CosmosFullTextPolicy` in `CosmosContainerProperties` and `CosmosFullTextIndexes` in `IndexingPolicy` to support Full Text Search in Cosmos DB - See [PR 42278](https://github.com/Azure/azure-sdk-for-java/pull/42278)
+* Added two new properties `quantizationSizeInBytes` and `indexingSearchListSize` to the `CosmosVectorIndexSpec` to support Partitioned DiskANN for vector search in Cosmos DB - See [PR 42333](https://github.com/Azure/azure-sdk-for-java/pull/42333)
+* Added system property `COSMOS.LOAD_AZURE_VM_META_DATA` to allow customers to disable/enable loading Azure VM metadata for diagnostics - See [PR 42874](https://github.com/Azure/azure-sdk-for-java/pull/42874)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 * Fixed a Null Pointer Exception in `ContainerThroughputConrolGroupProperties` if defaultGroup is not set. - See [PR 42835](https://github.com/Azure/azure-sdk-for-java/pull/42835)
+* Fixed a Null Pointer Exception in `RoutingMapProviderHelpers#getOverlappingRanges()` in case of Routing map being null - See [PR 42874](https://github.com/Azure/azure-sdk-for-java/pull/42874)
 
 #### Other Changes
 * Enable `JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS` by default for objectMapper. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
 * Added system property `COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS` which allow customer to disable/enable `JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS`. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
 * Added system property `COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT` and `COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER` to allow user config error action on invalid UTF-8 bytes. - See [PR 42520](https://github.com/Azure/azure-sdk-for-java/pull/42520)
+* Added system property `COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED` and system variable `COSMOS_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED` to allow using http connections to connect to CosmosDB emulator. - See [PR 42972](https://github.com/Azure/azure-sdk-for-java/pull/42972)
+  * **NOTE :** Please only use this config during local development or test environment, do not use this in prod env.
+* Added system property `COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED` and system variable `COSMOS_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED` to disable server certification validation to CosmosDB emulator. - See [PR 42972](https://github.com/Azure/azure-sdk-for-java/pull/42972)
+    * **NOTE :** Please only use this config during local development or test environment, do not use this in prod env.
+* Added system property `COSMOS.EMULATOR_HOST` and system variable `COSMOS_EMULATOR_HOST` to config emulator host name. - See [PR 42972](https://github.com/Azure/azure-sdk-for-java/pull/42972)
 
 ### 4.63.4 (2024-10-15)
 

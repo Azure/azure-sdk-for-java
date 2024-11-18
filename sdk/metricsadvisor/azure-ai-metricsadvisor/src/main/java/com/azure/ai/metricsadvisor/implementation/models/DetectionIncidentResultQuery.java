@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -99,6 +100,9 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -127,11 +131,11 @@ public final class DetectionIncidentResultQuery implements JsonSerializable<Dete
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedDetectionIncidentResultQuery.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDetectionIncidentResultQuery.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedDetectionIncidentResultQuery.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDetectionIncidentResultQuery.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("filter".equals(fieldName)) {
                     deserializedDetectionIncidentResultQuery.filter = DetectionIncidentFilterCondition.fromJson(reader);
                 } else {

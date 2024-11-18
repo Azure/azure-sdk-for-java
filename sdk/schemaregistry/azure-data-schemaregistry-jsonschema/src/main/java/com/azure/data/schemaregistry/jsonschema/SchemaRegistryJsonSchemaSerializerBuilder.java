@@ -28,6 +28,12 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
     private JsonSerializer jsonSerializer;
 
     /**
+     * Creates a new instance of {@link SchemaRegistryJsonSchemaSerializerBuilder}.
+     */
+    public SchemaRegistryJsonSchemaSerializerBuilder() {
+    }
+
+    /**
      * <p>If true, the serializer will register schemas against Azure Schema Registry service under the specified
      * group if it fails to find an existing schema to serialize.  See
      * <a href="https://learn.microsoft.com/azure/event-hubs/schema-registry-overview">Azure Schema Registry
@@ -49,7 +55,7 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
 
     /**
      * Specifies schema group for interacting with Azure Schema Registry service.
-     *
+     * <p>
      * If auto-registering schemas, schema will be stored under this group. If not auto-registering, serializer will
      * request schema ID for matching data schema under specified group.
      *

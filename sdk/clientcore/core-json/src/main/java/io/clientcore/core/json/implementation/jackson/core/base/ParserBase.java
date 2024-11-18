@@ -1,21 +1,27 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.base;
 
-import java.io.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Arrays;
-
-import io.clientcore.core.json.implementation.jackson.core.*;
-import io.clientcore.core.json.implementation.jackson.core.io.IOContext;
+import io.clientcore.core.json.implementation.jackson.core.Base64Variant;
+import io.clientcore.core.json.implementation.jackson.core.JsonLocation;
+import io.clientcore.core.json.implementation.jackson.core.JsonParseException;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonProcessingException;
+import io.clientcore.core.json.implementation.jackson.core.JsonToken;
+import io.clientcore.core.json.implementation.jackson.core.StreamReadCapability;
 import io.clientcore.core.json.implementation.jackson.core.io.ContentReference;
+import io.clientcore.core.json.implementation.jackson.core.io.IOContext;
 import io.clientcore.core.json.implementation.jackson.core.io.NumberInput;
 import io.clientcore.core.json.implementation.jackson.core.json.DupDetector;
 import io.clientcore.core.json.implementation.jackson.core.json.JsonReadContext;
-import io.clientcore.core.json.implementation.jackson.core.json.PackageVersion;
+import io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature;
 import io.clientcore.core.json.implementation.jackson.core.util.ByteArrayBuilder;
 import io.clientcore.core.json.implementation.jackson.core.util.JacksonFeatureSet;
 import io.clientcore.core.json.implementation.jackson.core.util.TextBuffer;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  * Intermediate base class used by all Jackson {@link JsonParser}
@@ -28,9 +34,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected final static JacksonFeatureSet<StreamReadCapability> JSON_READ_CAPABILITIES = DEFAULT_READ_CAPABILITIES;
 
     /*
-    /**********************************************************
-    /* Generic I/O state
-    /**********************************************************
+     * /**********************************************************
+     * /* Generic I/O state
+     * /**********************************************************
      */
 
     /**
@@ -47,9 +53,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected boolean _closed;
 
     /*
-    /**********************************************************
-    /* Current input data
-    /**********************************************************
+     * /**********************************************************
+     * /* Current input data
+     * /**********************************************************
      */
 
     // Note: type of actual buffer depends on sub-class, can't include
@@ -65,9 +71,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected int _inputEnd;
 
     /*
-    /**********************************************************
-    /* Current input location information
-    /**********************************************************
+     * /**********************************************************
+     * /* Current input location information
+     * /**********************************************************
      */
 
     /**
@@ -91,10 +97,10 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected int _currInputRowStart;
 
     /*
-    /**********************************************************
-    /* Information about starting location of event
-    /* Reader is pointing to; updated on-demand
-    /**********************************************************
+     * /**********************************************************
+     * /* Information about starting location of event
+     * /* Reader is pointing to; updated on-demand
+     * /**********************************************************
      */
 
     // // // Location info at point when current token was started
@@ -118,9 +124,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected int _tokenInputCol;
 
     /*
-    /**********************************************************
-    /* Parsing state
-    /**********************************************************
+     * /**********************************************************
+     * /* Parsing state
+     * /**********************************************************
      */
 
     /**
@@ -137,9 +143,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected JsonToken _nextToken;
 
     /*
-    /**********************************************************
-    /* Buffer(s) for local name(s) and text content
-    /**********************************************************
+     * /**********************************************************
+     * /* Buffer(s) for local name(s) and text content
+     * /**********************************************************
      */
 
     /**
@@ -229,9 +235,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     protected int _expLength;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     protected ParserBase(IOContext ctxt, int features) {
@@ -241,11 +247,6 @@ public abstract class ParserBase extends ParserMinimalBase {
         DupDetector dups
             = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features) ? DupDetector.rootDetector(this) : null;
         _parsingContext = JsonReadContext.createRootContext(dups);
-    }
-
-    @Override
-    public Version version() {
-        return PackageVersion.VERSION;
     }
 
     @Override
@@ -259,9 +260,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Overrides for Feature handling
-    /**********************************************************
+     * /**********************************************************
+     * /* Overrides for Feature handling
+     * /**********************************************************
      */
 
     @Override
@@ -331,9 +332,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* JsonParser impl
-    /**********************************************************
+     * /**********************************************************
+     * /* JsonParser impl
+     * /**********************************************************
      */
 
     /**
@@ -360,7 +361,7 @@ public abstract class ParserBase extends ParserMinimalBase {
             ctxt = ctxt.getParent();
         }
         // 24-Sep-2013, tatu: Unfortunate, but since we did not expose exceptions,
-        //   need to wrap this here
+        // need to wrap this here
         try {
             ctxt.setCurrentName(name);
         } catch (IOException e) {
@@ -417,9 +418,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Public API, access to token information, text and similar
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, access to token information, text and similar
+     * /**********************************************************
      */
 
     @Override
@@ -448,9 +449,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Public low-level accessors
-    /**********************************************************
+     * /**********************************************************
+     * /* Public low-level accessors
+     * /**********************************************************
      */
 
     public long getTokenCharacterOffset() {
@@ -468,17 +469,17 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Abstract methods for sub-classes to implement
-    /**********************************************************
+     * /**********************************************************
+     * /* Abstract methods for sub-classes to implement
+     * /**********************************************************
      */
 
     protected abstract void _closeInput() throws IOException;
 
     /*
-    /**********************************************************
-    /* Low-level reading, other
-    /**********************************************************
+     * /**********************************************************
+     * /* Low-level reading, other
+     * /**********************************************************
      */
 
     /**
@@ -527,9 +528,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Internal/package methods: shared/reusable builders
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal/package methods: shared/reusable builders
+     * /**********************************************************
      */
 
     public ByteArrayBuilder _getByteArrayBuilder() {
@@ -542,9 +543,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Methods from former JsonNumericParserBase
-    /**********************************************************
+     * /**********************************************************
+     * /* Methods from former JsonNumericParserBase
+     * /**********************************************************
      */
 
     // // // Life-cycle of number-parsing
@@ -594,9 +595,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Numeric accessors of public API
-    /**********************************************************
+     * /**********************************************************
+     * /* Numeric accessors of public API
+     * /**********************************************************
      */
 
     @Override
@@ -675,7 +676,8 @@ public abstract class ParserBase extends ParserMinimalBase {
             return NumberType.BIG_INTEGER;
         }
 
-        /* And then floating point types. Here optimal type
+        /*
+         * And then floating point types. Here optimal type
          * needs to be big decimal, to avoid losing any data?
          * However... using BD is slow, so let's allow returning
          * double as type if no explicit call has been made to access
@@ -729,14 +731,15 @@ public abstract class ParserBase extends ParserMinimalBase {
     @Override
     public float getFloatValue() throws IOException {
         double value = getDoubleValue();
-        /* 22-Jan-2009, tatu: Bounds/range checks would be tricky
-         *   here, so let's not bother even trying...
+        /*
+         * 22-Jan-2009, tatu: Bounds/range checks would be tricky
+         * here, so let's not bother even trying...
          */
         /*
-        if (value < -Float.MAX_VALUE || value > MAX_FLOAT_D) {
-            _reportError("Numeric value ("+getText()+") out of range of Java float");
-        }
-        */
+         * if (value < -Float.MAX_VALUE || value > MAX_FLOAT_D) {
+         * _reportError("Numeric value ("+getText()+") out of range of Java float");
+         * }
+         */
         return (float) value;
     }
 
@@ -767,9 +770,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Conversion from textual to numeric representation
-    /**********************************************************
+     * /**********************************************************
+     * /* Conversion from textual to numeric representation
+     * /**********************************************************
      */
 
     /**
@@ -786,8 +789,8 @@ public abstract class ParserBase extends ParserMinimalBase {
      */
     protected void _parseNumericValue(int expType) throws IOException {
         // 12-Jun-2020, tatu: Sanity check to prevent more cryptic error for this case.
-        //    (note: could alternatively see if TextBuffer has aggregated contents, avoid
-        //    exception -- but that might be more confusing)
+        // (note: could alternatively see if TextBuffer has aggregated contents, avoid
+        // exception -- but that might be more confusing)
         if (_closed) {
             _reportError("Internal error: _parseNumericValue called when parser instance closed");
         }
@@ -797,8 +800,7 @@ public abstract class ParserBase extends ParserMinimalBase {
             final int len = _intLength;
             // First: optimization for simple int
             if (len <= 9) {
-                int i = _textBuffer.contentsAsInt(_numberNegative);
-                _numberInt = i;
+                _numberInt = _textBuffer.contentsAsInt(_numberNegative);
                 _numTypesValid = NR_INT;
                 return;
             }
@@ -837,8 +839,8 @@ public abstract class ParserBase extends ParserMinimalBase {
     // @since 2.6
     protected int _parseIntValue() throws IOException {
         // 12-Jun-2020, tatu: Sanity check to prevent more cryptic error for this case.
-        //    (note: could alternatively see if TextBuffer has aggregated contents, avoid
-        //    exception -- but that might be more confusing)
+        // (note: could alternatively see if TextBuffer has aggregated contents, avoid
+        // exception -- but that might be more confusing)
         if (_closed) {
             _reportError("Internal error: _parseNumericValue called when parser instance closed");
         }
@@ -860,7 +862,8 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     private void _parseSlowFloat(int expType) throws IOException {
-        /* Nope: floating point. Here we need to be careful to get
+        /*
+         * Nope: floating point. Here we need to be careful to get
          * optimal parsing strategy: choice is between accurate but
          * slow (BigDecimal) and lossy but fast (Double). For now
          * let's only use BD when explicitly requested -- it can
@@ -926,9 +929,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Numeric conversions
-    /**********************************************************
+     * /**********************************************************
+     * /* Numeric conversions
+     * /**********************************************************
      */
 
     protected void convertNumberToInt() throws IOException {
@@ -964,7 +967,7 @@ public abstract class ParserBase extends ParserMinimalBase {
 
     protected void convertNumberToLong() throws IOException {
         if ((_numTypesValid & NR_INT) != 0) {
-            _numberLong = (long) _numberInt;
+            _numberLong = _numberInt;
         } else if ((_numTypesValid & NR_BIGINT) != 0) {
             if (BI_MIN_LONG.compareTo(_numberBigInt) > 0 || BI_MAX_LONG.compareTo(_numberBigInt) < 0) {
                 reportOverflowLong();
@@ -987,7 +990,7 @@ public abstract class ParserBase extends ParserMinimalBase {
         _numTypesValid |= NR_LONG;
     }
 
-    protected void convertNumberToBigInteger() throws IOException {
+    protected void convertNumberToBigInteger() {
         if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
             // here it'll just get truncated, no exceptions thrown
             _numberBigInt = _numberBigDecimal.toBigInteger();
@@ -1003,11 +1006,12 @@ public abstract class ParserBase extends ParserMinimalBase {
         _numTypesValid |= NR_BIGINT;
     }
 
-    protected void convertNumberToDouble() throws IOException {
-        /* 05-Aug-2008, tatus: Important note: this MUST start with
-         *   more accurate representations, since we don't know which
-         *   value is the original one (others get generated when
-         *   requested)
+    protected void convertNumberToDouble() {
+        /*
+         * 05-Aug-2008, tatus: Important note: this MUST start with
+         * more accurate representations, since we don't know which
+         * value is the original one (others get generated when
+         * requested)
          */
 
         if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
@@ -1017,7 +1021,7 @@ public abstract class ParserBase extends ParserMinimalBase {
         } else if ((_numTypesValid & NR_LONG) != 0) {
             _numberDouble = (double) _numberLong;
         } else if ((_numTypesValid & NR_INT) != 0) {
-            _numberDouble = (double) _numberInt;
+            _numberDouble = _numberInt;
         } else {
             _throwInternal();
         }
@@ -1025,14 +1029,16 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     protected void convertNumberToBigDecimal() throws IOException {
-        /* 05-Aug-2008, tatus: Important note: this MUST start with
-         *   more accurate representations, since we don't know which
-         *   value is the original one (others get generated when
-         *   requested)
+        /*
+         * 05-Aug-2008, tatus: Important note: this MUST start with
+         * more accurate representations, since we don't know which
+         * value is the original one (others get generated when
+         * requested)
          */
 
         if ((_numTypesValid & NR_DOUBLE) != 0) {
-            /* Let's actually parse from String representation, to avoid
+            /*
+             * Let's actually parse from String representation, to avoid
              * rounding errors that non-decimal floating operations could incur
              */
             _numberBigDecimal = NumberInput.parseBigDecimal(getText());
@@ -1049,9 +1055,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Internal/package methods: Error reporting
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal/package methods: Error reporting
+     * /**********************************************************
      */
 
     protected void _reportMismatchedEndMarker(int actCh, char expCh) throws JsonParseException {
@@ -1078,7 +1084,7 @@ public abstract class ParserBase extends ParserMinimalBase {
      * Method called to report a problem with unquoted control character.
      * Note: it is possible to suppress some instances of
      * exception by enabling
-     * {@link io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_UNESCAPED_CONTROL_CHARS}.
+     * {@link JsonReadFeature#ALLOW_UNESCAPED_CONTROL_CHARS}.
      *
      * @param i Invalid control character
      * @param ctxtDesc Addition description of context to use in exception message
@@ -1101,11 +1107,9 @@ public abstract class ParserBase extends ParserMinimalBase {
      *    invalid (unrecognized) JSON token: called when parser finds something that
      *    looks like unquoted textual token
      *
-     * @throws IOException Not thrown by base implementation but allowed by sub-classes
-     *
      * @since 2.10
      */
-    protected String _validJsonTokenList() throws IOException {
+    protected String _validJsonTokenList() {
         return _validJsonValueList();
     }
 
@@ -1114,12 +1118,10 @@ public abstract class ParserBase extends ParserMinimalBase {
      *    invalid (unrecognized) JSON value: called when parser finds something that
      *    does not look like a value or separator.
      *
-     * @throws IOException Not thrown by base implementation but allowed by sub-classes
-     *
      * @since 2.10
      */
     @SuppressWarnings("deprecation")
-    protected String _validJsonValueList() throws IOException {
+    protected String _validJsonValueList() {
         if (isEnabled(Feature.ALLOW_NON_NUMERIC_NUMBERS)) {
             return "(JSON String, Number (or 'NaN'/'INF'/'+INF'), Array, Object or token 'null', 'true' or 'false')";
         }
@@ -1127,9 +1129,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Base64 handling support
-    /**********************************************************
+     * /**********************************************************
+     * /* Base64 handling support
+     * /**********************************************************
      */
 
     /**
@@ -1196,7 +1198,7 @@ public abstract class ParserBase extends ParserMinimalBase {
 
     /*
      * @param bindex Relative index within base64 character unit; between 0
-     *  and 3 (as unit has exactly 4 characters)
+     * and 3 (as unit has exactly 4 characters)
      */
     protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex, String msg)
         throws IllegalArgumentException {
@@ -1226,9 +1228,9 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Internal/package methods: other
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal/package methods: other
+     * /**********************************************************
      */
 
     /**
@@ -1238,7 +1240,7 @@ public abstract class ParserBase extends ParserMinimalBase {
      */
     @Deprecated
     protected Object _getSourceReference() {
-        if (JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
+        if (Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
             return _ioContext.contentReference().getRawContent();
         }
         return null;
@@ -1253,7 +1255,7 @@ public abstract class ParserBase extends ParserMinimalBase {
      * @since 2.13
      */
     protected ContentReference _contentReference() {
-        if (JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
+        if (Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
             return _ioContext.contentReference();
         }
         return ContentReference.unknown();
@@ -1267,10 +1269,10 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     /*
-    /**********************************************************
-    /* Stuff that was abstract and required before 2.8, but that
-    /* is not mandatory in 2.8 or above.
-    /**********************************************************
+     * /**********************************************************
+     * /* Stuff that was abstract and required before 2.8, but that
+     * /* is not mandatory in 2.8 or above.
+     * /**********************************************************
      */
 
     @Deprecated // since 2.8
@@ -1281,7 +1283,7 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     @Deprecated // since 2.8
-    protected boolean loadMore() throws IOException {
+    protected boolean loadMore() {
         return false;
     }
 

@@ -1,27 +1,35 @@
-# Azure Cognitive Service - Metric Advisor for Java
+# Azure Metrics Advisor for Java
 
 > see https://aka.ms/autorest
 
+This is the AutoRest configuration file for Metrics Advisor.
+
+---
+## Getting Started
+To build the SDK for Metrics Advisor, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --java --use=C:/work/autorest.java
+autorest
 ```
 
 ### Code generation settings
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/MetricsAdvisor/stable/v1.0/MetricsAdvisor.json
-use: '@autorest/java@4.1.26'
+use: '@autorest/java@4.1.39'
 java: true
 output-folder: ..\
 generate-client-as-impl: true

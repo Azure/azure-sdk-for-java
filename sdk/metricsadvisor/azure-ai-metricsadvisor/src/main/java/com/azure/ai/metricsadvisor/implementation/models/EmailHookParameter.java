@@ -48,6 +48,9 @@ public final class EmailHookParameter implements JsonSerializable<EmailHookParam
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

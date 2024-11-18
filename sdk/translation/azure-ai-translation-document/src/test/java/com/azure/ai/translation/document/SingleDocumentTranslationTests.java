@@ -18,8 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -37,8 +35,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
         DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document);
         String targetLanguage = "hi";
 
-        BinaryData response
-            = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);
+        BinaryData response = getSingleDocumentTranslationClient().translate(targetLanguage, documentTranslateContent);
         String translatedResponse = response.toString();
         Assertions.assertNotNull(translatedResponse);
     }
@@ -52,8 +49,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
             = new DocumentTranslateContent(document).setGlossary(glossaryList);
         String targetLanguage = "hi";
 
-        BinaryData response
-            = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);
+        BinaryData response = getSingleDocumentTranslationClient().translate(targetLanguage, documentTranslateContent);
         String translatedResponse = response.toString();
 
         Assertions.assertTrue(translatedResponse.contains("test"), "Glossary 'test' not found in translated response");
@@ -69,7 +65,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
         String targetLanguage = "hi";
 
         HttpResponseException e = assertThrows(HttpResponseException.class,
-            () -> getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent));
+            () -> getSingleDocumentTranslationClient().translate(targetLanguage, documentTranslateContent));
         Assertions.assertEquals(400, e.getResponse().getStatusCode());
     }
 
@@ -86,7 +82,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
                 .setContentType(documentContentType);
 
         } catch (IOException ex) {
-            Logger.getLogger(SingleDocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("An exception occurred while creating documentContent" + ex.getMessage());
         }
         return document;
     }
@@ -118,7 +114,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
                 .setContentType(glossaryContentType);
 
         } catch (IOException ex) {
-            Logger.getLogger(SingleDocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("An exception occurred while getting glossary file details" + ex.getMessage());
         }
         return glossaryFileDetails;
     }

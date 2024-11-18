@@ -34,8 +34,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
-import static com.azure.cosmos.implementation.http.HttpClientConfig.REACTOR_NETWORK_LOG_CATEGORY;
-
 /**
  * HttpClient that is implemented using reactor-netty.
  */
@@ -63,6 +61,7 @@ public class ReactorNettyClient implements HttpClient {
     private HttpClientConfig httpClientConfig;
     private reactor.netty.http.client.HttpClient httpClient;
     private ConnectionProvider connectionProvider;
+    private String reactorNetworkLogCategory;
 
     private ReactorNettyClient() {}
 
@@ -72,6 +71,7 @@ public class ReactorNettyClient implements HttpClient {
     public static ReactorNettyClient create(HttpClientConfig httpClientConfig) {
         ReactorNettyClient reactorNettyClient = new ReactorNettyClient();
         reactorNettyClient.httpClientConfig = httpClientConfig;
+        reactorNettyClient.reactorNetworkLogCategory = httpClientConfig.getReactorNetworkLogCategory();
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient
             .newConnection()
             .observe(getConnectionObserver())
@@ -88,6 +88,7 @@ public class ReactorNettyClient implements HttpClient {
         ReactorNettyClient reactorNettyClient = new ReactorNettyClient();
         reactorNettyClient.connectionProvider = connectionProvider;
         reactorNettyClient.httpClientConfig = httpClientConfig;
+        reactorNettyClient.reactorNetworkLogCategory = httpClientConfig.getReactorNetworkLogCategory();
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient
             .create(connectionProvider)
             .observe(getConnectionObserver())
@@ -128,23 +129,25 @@ public class ReactorNettyClient implements HttpClient {
             );
         }
 
-        if (LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY).isTraceEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
+        if (LoggerFactory.getLogger(reactorNetworkLogCategory).isTraceEnabled()) {
+            this.httpClient = this.httpClient.wiretap(this.httpClientConfig.getReactorNetworkLogCategory(), LogLevel.INFO);
         }
 
-        this.httpClient = this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
-            .httpResponseDecoder(httpResponseDecoderSpec ->
-                httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength())
-                    .maxHeaderSize(configs.getMaxHttpHeaderSize())
-                    .maxChunkSize(configs.getMaxHttpChunkSize())
-                    .validateHeaders(true));
+        this.httpClient =
+            this.httpClient
+                .secure(sslContextSpec ->
+                    sslContextSpec.sslContext(configs.getSslContext(httpClientConfig.isServerCertValidationDisabled())))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
+                .httpResponseDecoder(httpResponseDecoderSpec ->
+                    httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
+                        .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
+                        .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
+                        .validateHeaders(true));
     }
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
-        //  By default, Configs.getHttpsResponseTimeoutInSeconds default value is used as response timeout
-        return send(request, Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
+        return send(request, this.httpClientConfig.getNetworkRequestTimeout());
     }
 
     @Override
@@ -375,17 +378,17 @@ public class ReactorNettyClient implements HttpClient {
      * This changes the logging level of Reactor Netty Http Client.
      */
     public void enableNetworkLogging() {
-        Logger logger = LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY);
+        Logger logger = LoggerFactory.getLogger(this.reactorNetworkLogCategory);
         if (logger.isTraceEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.TRACE);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.TRACE);
         } else if (logger.isDebugEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.DEBUG);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.DEBUG);
         } else if (logger.isInfoEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.INFO);
         } else if (logger.isWarnEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.WARN);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.WARN);
         } else if (logger.isErrorEnabled()) {
-            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.ERROR);
+            this.httpClient = this.httpClient.wiretap(this.reactorNetworkLogCategory, LogLevel.ERROR);
         }
     }
 }

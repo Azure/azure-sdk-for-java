@@ -46,7 +46,6 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * Use global OpenTelemetry SDK configuration:
      * <!-- src_embed com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default -->
      * <pre>
-     *
      * &#47;&#47; configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
      * &#47;&#47; AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;;
      *
@@ -69,14 +68,12 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * &#125;
      *
      * span.end&#40;&#41;;
-     *
      * </pre>
      * <!-- end com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default -->
      *
      * It's also possible to pass custom OpenTelemetry SDK configuration
      * <!-- src_embed com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom -->
      * <pre>
-     *
      * &#47;&#47; configure OpenTelemetry SDK
      * SdkTracerProvider tracerProvider = SdkTracerProvider.builder&#40;&#41;
      *     .addSpanProcessor&#40;BatchSpanProcessor.builder&#40;OtlpGrpcSpanExporter.builder&#40;&#41;.build&#40;&#41;&#41;.build&#40;&#41;&#41;
@@ -116,7 +113,6 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      *
      * &#47;&#47; do more work
      * span.end&#40;&#41;;
-     *
      * </pre>
      * <!-- end com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom -->
      *

@@ -35,8 +35,8 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     private List<String> invalidPeriodGeofenceGeometryId;
 
     /*
-     * True if at least one event is published to the Azure Maps event subscriber, false if no event is published to
-     * the Azure Maps event subscriber.
+     * True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the
+     * Azure Maps event subscriber.
      */
     private Boolean isEventPublished;
 
@@ -47,8 +47,8 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     }
 
     /**
-     * Get the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative
-     * to the user time in the request.
+     * Get the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative to
+     * the user time in the request.
      * 
      * @return the expiredGeofenceGeometryId value.
      */
@@ -57,8 +57,8 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     }
 
     /**
-     * Set the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative
-     * to the user time in the request.
+     * Set the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative to
+     * the user time in the request.
      * 
      * @param expiredGeofenceGeometryId the expiredGeofenceGeometryId value to set.
      * @return the MapsGeofenceEventProperties object itself.
@@ -69,8 +69,8 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     }
 
     /**
-     * Get the geometries property: Lists the fence geometries that either fully contain the coordinate position or
-     * have an overlap with the searchBuffer around the fence.
+     * Get the geometries property: Lists the fence geometries that either fully contain the coordinate position or have
+     * an overlap with the searchBuffer around the fence.
      * 
      * @return the geometries value.
      */
@@ -79,8 +79,8 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     }
 
     /**
-     * Set the geometries property: Lists the fence geometries that either fully contain the coordinate position or
-     * have an overlap with the searchBuffer around the fence.
+     * Set the geometries property: Lists the fence geometries that either fully contain the coordinate position or have
+     * an overlap with the searchBuffer around the fence.
      * 
      * @param geometries the geometries value to set.
      * @return the MapsGeofenceEventProperties object itself.
@@ -135,6 +135,9 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

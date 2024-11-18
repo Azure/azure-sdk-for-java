@@ -1,9 +1,9 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.util;
 
-import java.lang.ref.SoftReference;
-
 import io.clientcore.core.json.implementation.jackson.core.io.JsonStringEncoder;
+
+import java.lang.ref.SoftReference;
 
 /**
  * Helper entity used to control access to simple buffer recyling scheme used for
@@ -22,12 +22,12 @@ public class BufferRecyclers {
      * @since 2.9.6
      */
     public final static String SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS
-        = "io.clientcore.core.json.implementation.jackson.core.util.BufferRecyclers.trackReusableBuffers";
+        = "com.azure.json.implementation.jackson.core.util.BufferRecyclers.trackReusableBuffers";
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     /**
@@ -45,18 +45,17 @@ public class BufferRecyclers {
     }
 
     /*
-    /**********************************************************
-    /* BufferRecyclers for parsers, generators
-    /**********************************************************
+     * /**********************************************************
+     * /* BufferRecyclers for parsers, generators
+     * /**********************************************************
      */
 
     /**
-     * This <code>ThreadLocal</code> contains a {@link java.lang.ref.SoftReference}
+     * This <code>ThreadLocal</code> contains a {@link SoftReference}
      * to a {@link BufferRecycler} used to provide a low-cost
      * buffer recycling between reader and writer instances.
      */
-    final protected static ThreadLocal<SoftReference<BufferRecycler>> _recyclerRef
-        = new ThreadLocal<SoftReference<BufferRecycler>>();
+    final protected static ThreadLocal<SoftReference<BufferRecycler>> _recyclerRef = new ThreadLocal<>();
 
     /**
      * Main accessor to call for accessing possibly recycled {@link BufferRecycler} instance.
@@ -72,38 +71,18 @@ public class BufferRecyclers {
             if (_bufferRecyclerTracker != null) {
                 ref = _bufferRecyclerTracker.wrapAndTrack(br);
             } else {
-                ref = new SoftReference<BufferRecycler>(br);
+                ref = new SoftReference<>(br);
             }
             _recyclerRef.set(ref);
         }
         return br;
     }
 
-    /**
-     * Specialized method that will release all recycled {@link BufferRecycler} if
-     * (and only if) recycler tracking has been enabled
-     * (see {@link #SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS}).
-     * This method is usually called on shutdown of the container like Application Server
-     * to ensure that no references are reachable via {@link ThreadLocal}s as this may cause
-     * unintentional retention of sizable amounts of memory. It may also be called regularly
-     * if GC for some reason does not clear up {@link SoftReference}s aggressively enough.
-     *
-     * @return Number of buffers released, if tracking enabled (zero or more); -1 if tracking not enabled.
-     *
-     * @since 2.9.6
-     */
-    public static int releaseBuffers() {
-        if (_bufferRecyclerTracker != null) {
-            return _bufferRecyclerTracker.releaseBuffers();
-        }
-        return -1;
-    }
-
     /*
-    /**********************************************************************
-    /* Obsolete things re-introduced in 2.12.5 after accidental direct
-    /* removal from 2.10.0
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Obsolete things re-introduced in 2.12.5 after accidental direct
+     * /* removal from 2.10.0
+     * /**********************************************************************
      */
 
     /**
