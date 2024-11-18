@@ -94,7 +94,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             null,
             DocumentContentFormat.TEXT,
                 null,
-            new AnalyzeDocumentOptions().setUrlSource(documentUrl)).getFinalResult()
+            new AnalyzeDocumentOptions().setSourceUrl(documentUrl)).getFinalResult()
             .getDocuments().stream()
             .map(AnalyzedDocument::getFields)
             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
@@ -117,7 +117,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         File document = new File("{local/file_path/fileName.jpg}");
         String classifierId = "{custom_trained_classifier_id}";
 
-        documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())))
+        documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())))
             .getFinalResult()
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocumentType()));
@@ -149,7 +149,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setUrlSource(documentUrl));
+                new AnalyzeDocumentOptions().setSourceUrl(documentUrl));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 

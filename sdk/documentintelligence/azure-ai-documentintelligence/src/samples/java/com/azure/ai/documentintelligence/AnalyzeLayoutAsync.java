@@ -51,7 +51,7 @@ public class AnalyzeLayoutAsync {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(sourceFile.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller

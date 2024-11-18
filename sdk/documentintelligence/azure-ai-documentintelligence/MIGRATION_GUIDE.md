@@ -45,7 +45,7 @@ SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
                 null,
                 null,
                 DocumentContentFormat.MARKDOWN,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
 ```
 For the complete sample, see [Sample: Markdown][Sample-AnalyzeLayoutMarkdownOutput].
 
@@ -64,7 +64,7 @@ SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
                 Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
                 Arrays.asList("Address", "InvoiceNumber"),
                 null,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
 ```
 For the complete sample, see [Sample: Query Fields][Sample-AnalyzeAddOnQueryFields].
 
@@ -177,7 +177,7 @@ the _Currency_ field in result has been removed.
                   Arrays.asList(DocumentAnalysisFeature.FORMULAS),
                   null,
                   null,
-                  new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
+                  new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
     ```
 
   For the complete sample, see [Sample: KeyValuePair][Sample-AnalyzeAddOnKeyValuePair].

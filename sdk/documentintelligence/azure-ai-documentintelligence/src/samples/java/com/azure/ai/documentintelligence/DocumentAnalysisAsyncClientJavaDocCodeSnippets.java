@@ -71,7 +71,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setUrlSource(documentUrl))
+                new AnalyzeDocumentOptions().setSourceUrl(documentUrl))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult ->
@@ -101,7 +101,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
         // Utility method to convert input stream to Binary Data
         BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
 
-        documentIntelligenceAsyncClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())))
+        documentIntelligenceAsyncClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult -> {

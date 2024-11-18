@@ -50,7 +50,7 @@ public class AnalyzeIdentityDocuments {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(licenseDocumentFile.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(licenseDocumentFile.toPath())));
 
         AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
 

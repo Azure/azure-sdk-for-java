@@ -115,7 +115,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
                     null,
                     null,
                     ContentFormat.MARKDOWN,
-                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentRequest().setBytesSource(Files.readAllBytes(document.toPath())));
     ```
     For the complete sample, see [Sample: Markdown](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeLayoutMarkdownOutput.java).
 
@@ -133,7 +133,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
                     Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
                     Arrays.asList("Address", "InvoiceNumber"),
                     null,
-                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentRequest().setBytesSource(Files.readAllBytes(document.toPath())));
     ```
     For the complete sample, see [Sample: Query Fields](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnQueryFields.java).
 
@@ -204,7 +204,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
                   Arrays.asList(DocumentAnalysisFeature.FORMULAS),
                   null,
                   null,
-                  new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                  new AnalyzeDocumentRequest().setBytesSource(Files.readAllBytes(document.toPath())));
     ```
   
   For the complete sample, see [Sample: KeyValuePair](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnKeyValuePair.java).

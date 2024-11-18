@@ -48,7 +48,7 @@ public class AnalyzeInvoicesFromUrl {
             null,
             null,
             null,
-            null, new AnalyzeDocumentOptions().setUrlSource(invoiceUrl));
+            null, new AnalyzeDocumentOptions().setSourceUrl(invoiceUrl));
 
         AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 

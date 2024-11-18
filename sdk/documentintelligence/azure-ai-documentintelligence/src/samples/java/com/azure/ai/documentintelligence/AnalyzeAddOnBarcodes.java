@@ -48,7 +48,7 @@ public class AnalyzeAddOnBarcodes {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(barcodesDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

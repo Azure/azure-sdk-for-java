@@ -47,7 +47,7 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setUrlSource(licenseDocumentUrl));
+                new AnalyzeDocumentOptions().setSourceUrl(licenseDocumentUrl));
 
         Mono<AnalyzeResult> identityDocumentPollerResult = analyzeIdentityDocumentPoller
             .last()

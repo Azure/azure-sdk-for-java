@@ -52,7 +52,7 @@ public class AnalyzeReceiptsAsync {
             null,
             null,
             null,
-            new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
+            new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(sourceFile.toPath())));
 
 
         Mono<AnalyzeResult> receiptResultsMono = analyzeReceiptPoller

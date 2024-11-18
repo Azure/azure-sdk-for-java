@@ -44,7 +44,7 @@ public class AnalyzeLayout {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(selectionMarkDocument.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(selectionMarkDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

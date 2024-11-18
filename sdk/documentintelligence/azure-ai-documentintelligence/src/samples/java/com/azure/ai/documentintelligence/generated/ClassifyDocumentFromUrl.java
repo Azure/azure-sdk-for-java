@@ -21,7 +21,7 @@ public class ClassifyDocumentFromUrl {
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.classifydocument.classifydocumentfromurl
         SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginClassifyDocument(
-            "classifierId", new ClassifyDocumentOptions().setUrlSource("http://host.com/doc.pdf"),
+            "classifierId", new ClassifyDocumentOptions().setSourceUrl("http://host.com/doc.pdf"),
             StringIndexType.TEXT_ELEMENTS, null, null);
         // END:com.azure.ai.documentintelligence.generated.classifydocument.classifydocumentfromurl
     }

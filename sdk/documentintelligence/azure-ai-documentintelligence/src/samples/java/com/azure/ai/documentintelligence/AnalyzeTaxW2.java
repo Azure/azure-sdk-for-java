@@ -46,7 +46,7 @@ public class AnalyzeTaxW2 {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(invoice.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoice.toPath())));
 
         AnalyzeResult analyzeTaxResult = analyzeW2Poller.getFinalResult();
 

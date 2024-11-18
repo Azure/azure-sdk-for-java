@@ -48,7 +48,7 @@ public class AnalyzeReceiptsFromUrlAsync {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setUrlSource(receiptUrl));
+                new AnalyzeDocumentOptions().setSourceUrl(receiptUrl));
 
         Mono<AnalyzeResult> receiptResultsMono = analyzeReceiptPoller
             .last()

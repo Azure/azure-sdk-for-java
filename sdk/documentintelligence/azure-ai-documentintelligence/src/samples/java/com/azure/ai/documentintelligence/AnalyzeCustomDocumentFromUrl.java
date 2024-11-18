@@ -45,7 +45,7 @@ public class AnalyzeCustomDocumentFromUrl {
             null,
             DocumentContentFormat.TEXT,
             null,
-            new AnalyzeDocumentOptions().setUrlSource(documentUrl));
+            new AnalyzeDocumentOptions().setSourceUrl(documentUrl));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 

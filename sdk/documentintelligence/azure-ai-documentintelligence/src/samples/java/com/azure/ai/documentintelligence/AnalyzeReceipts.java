@@ -50,7 +50,7 @@ public class AnalyzeReceipts {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(sourceFile.toPath())));
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 

@@ -45,7 +45,7 @@ public class AnalyzeLayoutMarkdownOutputAsync {
                         null,
                         DocumentContentFormat.MARKDOWN,
                     null,
-                        new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
+                        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
                 analyzeLayoutPoller

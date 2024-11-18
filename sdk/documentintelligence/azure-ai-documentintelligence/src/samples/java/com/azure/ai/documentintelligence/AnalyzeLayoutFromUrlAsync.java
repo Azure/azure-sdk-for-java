@@ -41,7 +41,7 @@ public class AnalyzeLayoutFromUrlAsync {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setUrlSource("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
+                new AnalyzeDocumentOptions().setSourceUrl("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                     + "azure-ai-documentintelligence/src/samples/resources/sample-forms/forms/selectionMarkForm.pdf"));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

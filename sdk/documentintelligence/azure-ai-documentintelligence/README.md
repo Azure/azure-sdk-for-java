@@ -174,7 +174,7 @@ SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
         null,
         null,
         null,
-        new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
+        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(layoutDocument.toPath())));
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -235,7 +235,7 @@ SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
         null,
         null,
         null,
-        new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
+        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(sourceFile.toPath())));
 
 AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
@@ -336,7 +336,7 @@ SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = documentInte
     null,
     DocumentContentFormat.TEXT,
     null,
-    new AnalyzeDocumentOptions().setUrlSource(documentUrl));
+    new AnalyzeDocumentOptions().setSourceUrl(documentUrl));
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 

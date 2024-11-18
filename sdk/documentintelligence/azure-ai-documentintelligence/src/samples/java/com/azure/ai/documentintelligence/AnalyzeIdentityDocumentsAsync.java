@@ -51,7 +51,7 @@ public class AnalyzeIdentityDocumentsAsync {
             null,
             null,
             null,
-            null, new AnalyzeDocumentOptions().setBase64Source(fileContent));
+            null, new AnalyzeDocumentOptions().setBytesSource(fileContent));
 
         Mono<AnalyzeResult> identityDocumentPollerResult = analyzeIdentityDocumentPoller
             .last()

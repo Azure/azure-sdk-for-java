@@ -23,6 +23,35 @@ public class DocumentIntelligenceCustomizations extends Customization {
         customizeAnalyzeBatchOperation(customization, logger);
         customizePollingStrategy(customization, logger);
         customizePollingUtils(customization, logger);
+        customizeByteSourceEncoding(customization, logger);
+    }
+
+    private void customizeByteSourceEncoding(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the ClassifyDocumentOptions class");
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
+        packageCustomization.getClass("ClassifyDocumentOptions")
+            .customizeAst(ast ->
+                ast.getClassByName("ClassifyDocumentOptions").ifPresent(clazz -> {
+                    addBase64EncodingForByteSource(clazz);
+                }));
+
+        logger.info("Customizing the AnalyzeDocumentOptions class");
+        PackageCustomization analyzeModelCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
+        analyzeModelCustomization.getClass("AnalyzeDocumentOptions")
+            .customizeAst(ast ->
+                ast.getClassByName("AnalyzeDocumentOptions").ifPresent(clazz -> {
+                    addBase64EncodingForByteSource(clazz);
+                }));
+    }
+
+    private void addBase64EncodingForByteSource(ClassOrInterfaceDeclaration clazz) {
+        clazz.getMethodsByName("setBytesSource")
+            .get(0)
+            .setBody(StaticJavaParser.parseBlock(String.join("\n",
+            "{",
+            "this.bytesSource = CoreUtils.clone(Base64.getEncoder().encode(bytesSource));",
+            "return this;",
+            "}")));
     }
 
     private void customizeAnalyzeOperation(LibraryCustomization customization, Logger logger) {

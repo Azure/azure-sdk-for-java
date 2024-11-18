@@ -88,7 +88,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-receipt", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateJpegReceiptData(syncPoller.getFinalResult());
@@ -110,7 +110,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-receipt", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setUrlSource(sourceUrl))
+                        new AnalyzeDocumentOptions().setSourceUrl(sourceUrl))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateJpegReceiptData(syncPoller.getFinalResult());
@@ -132,7 +132,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-layout", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
@@ -147,7 +147,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-layout", "1, 2", null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
@@ -165,7 +165,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-layout", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setUrlSource(sourceUrl))
+                        new AnalyzeDocumentOptions().setSourceUrl(sourceUrl))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
@@ -180,7 +180,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-layout", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateGermanContentData(syncPoller.getFinalResult());
@@ -210,7 +210,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument(modelId, null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
 
@@ -240,7 +240,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument(modelId, null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setUrlSource(sourceUrl))
+                        new AnalyzeDocumentOptions().setSourceUrl(sourceUrl))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             adminClient.deleteModel(modelId);
@@ -264,7 +264,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-invoice", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateInvoiceData(syncPoller.getFinalResult());
@@ -284,7 +284,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-invoice", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setUrlSource(sourceUrl))
+                        new AnalyzeDocumentOptions().setSourceUrl(sourceUrl))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateInvoiceData(syncPoller.getFinalResult());
@@ -302,7 +302,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-invoice", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             validateInvoiceData(syncPoller.getFinalResult());
         }, INVOICE_PDF);
@@ -321,7 +321,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-idDocument", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
@@ -341,7 +341,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument("prebuilt-idDocument", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentOptions().setUrlSource(sourceUrl))
+                        new AnalyzeDocumentOptions().setSourceUrl(sourceUrl))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
@@ -383,7 +383,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                     = client
                         .beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
-                            new ClassifyDocumentOptions().setBase64Source(data))
+                            new ClassifyDocumentOptions().setBytesSource(data))
                         .setPollInterval(durationTestMode);
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
@@ -429,7 +429,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                     = client
                         .beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
-                            new ClassifyDocumentOptions().setBase64Source(data))
+                            new ClassifyDocumentOptions().setBytesSource(data))
                         .setPollInterval(durationTestMode);
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
@@ -450,7 +450,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
                     .beginAnalyzeDocument(modelID, null, null, null, null, null, null, Collections.singletonList(PDF),
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             String resultId = syncPoller.poll().getValue().getOperationId();
             syncPoller.waitForCompletion();
@@ -475,7 +475,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 = client
                     .beginAnalyzeDocument(modelID, null, null, null, null, null, null,
                         Collections.singletonList(AnalyzeOutputFormat.FIGURES),
-                        new AnalyzeDocumentOptions().setBase64Source(data))
+                        new AnalyzeDocumentOptions().setBytesSource(data))
                     .setPollInterval(durationTestMode);
             String resultId = syncPoller.poll().getValue().getOperationId();
             syncPoller.waitForCompletion();

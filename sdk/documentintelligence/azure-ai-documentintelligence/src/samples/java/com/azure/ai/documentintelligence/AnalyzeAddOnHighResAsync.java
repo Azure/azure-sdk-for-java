@@ -52,7 +52,7 @@ public class AnalyzeAddOnHighResAsync {
                 null,
                 null,
                 null,
-                new AnalyzeDocumentOptions().setBase64Source(Files.readAllBytes(document.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller

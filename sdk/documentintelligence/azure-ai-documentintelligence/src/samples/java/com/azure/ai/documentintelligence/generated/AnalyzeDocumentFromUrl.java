@@ -22,7 +22,7 @@ public class AnalyzeDocumentFromUrl {
         // BEGIN:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfromurl
         SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginAnalyzeDocument(
             "customModel", "1-2,4", "en-US", StringIndexType.TEXT_ELEMENTS, null, null, null, null,
-            new AnalyzeDocumentOptions().setUrlSource("http://host.com/doc.pdf"));
+            new AnalyzeDocumentOptions().setSourceUrl("http://host.com/doc.pdf"));
         // END:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfromurl
     }
 }

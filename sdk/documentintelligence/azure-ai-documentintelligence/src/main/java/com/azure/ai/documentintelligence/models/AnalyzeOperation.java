@@ -28,13 +28,13 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
      * Date and time (UTC) when the analyze operation was submitted.
      */
     @Generated
-    private final OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdOn;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
     @Generated
-    private final OffsetDateTime lastUpdatedDateTime;
+    private final OffsetDateTime lastUpdatedOn;
 
     /*
      * Encountered error during document analysis.
@@ -52,15 +52,15 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
      * Creates an instance of AnalyzeOperation class.
      *
      * @param status the status value to set.
-     * @param createdDateTime the createdDateTime value to set.
-     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
+     * @param createdOn the createdOn value to set.
+     * @param lastUpdatedOn the lastUpdatedOn value to set.
      */
     @Generated
-    private AnalyzeOperation(DocumentIntelligenceOperationStatus status, OffsetDateTime createdDateTime,
-        OffsetDateTime lastUpdatedDateTime) {
+    private AnalyzeOperation(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
+        OffsetDateTime lastUpdatedOn) {
         this.status = status;
-        this.createdDateTime = createdDateTime;
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
+        this.createdOn = createdOn;
+        this.lastUpdatedOn = lastUpdatedOn;
     }
 
     /**
@@ -74,23 +74,23 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
     }
 
     /**
-     * Get the createdDateTime property: Date and time (UTC) when the analyze operation was submitted.
+     * Get the createdOn property: Date and time (UTC) when the analyze operation was submitted.
      *
-     * @return the createdDateTime value.
+     * @return the createdOn value.
      */
     @Generated
-    public OffsetDateTime getCreatedDateTime() {
-        return this.createdDateTime;
+    public OffsetDateTime getCreatedOn() {
+        return this.createdOn;
     }
 
     /**
-     * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
+     * Get the lastUpdatedOn property: Date and time (UTC) when the status was last updated.
      *
-     * @return the lastUpdatedDateTime value.
+     * @return the lastUpdatedOn value.
      */
     @Generated
-    public OffsetDateTime getLastUpdatedDateTime() {
-        return this.lastUpdatedDateTime;
+    public OffsetDateTime getLastUpdatedOn() {
+        return this.lastUpdatedOn;
     }
 
     /**
@@ -122,11 +122,9 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
-            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
         jsonWriter.writeStringField("lastUpdatedDateTime",
-            this.lastUpdatedDateTime == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+            this.lastUpdatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedOn));
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeJsonField("analyzeResult", this.analyzeResult);
         return jsonWriter.writeEndObject();
@@ -145,8 +143,8 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
     public static AnalyzeOperation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentIntelligenceOperationStatus status = null;
-            OffsetDateTime createdDateTime = null;
-            OffsetDateTime lastUpdatedDateTime = null;
+            OffsetDateTime createdOn = null;
+            OffsetDateTime lastUpdatedOn = null;
             DocumentIntelligenceError error = null;
             AnalyzeResult analyzeResult = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -155,10 +153,10 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
                 if ("status".equals(fieldName)) {
                     status = DocumentIntelligenceOperationStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime = reader
+                    createdOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    lastUpdatedDateTime = reader
+                    lastUpdatedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     error = DocumentIntelligenceError.fromJson(reader);
@@ -168,8 +166,7 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
                     reader.skipChildren();
                 }
             }
-            AnalyzeOperation deserializedAnalyzeOperation
-                = new AnalyzeOperation(status, createdDateTime, lastUpdatedDateTime);
+            AnalyzeOperation deserializedAnalyzeOperation = new AnalyzeOperation(status, createdOn, lastUpdatedOn);
             deserializedAnalyzeOperation.error = error;
             deserializedAnalyzeOperation.analyzeResult = analyzeResult;
             return deserializedAnalyzeOperation;
