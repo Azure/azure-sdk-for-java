@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /** The PlaySource model. */
 @Fluent
@@ -37,7 +40,7 @@ public class OutStreamingData {
      *
      * @return the MediaKind
      */
-    public MediaKind getKind() {
+    MediaKind getMediaKind() {
         return kind;
     }
 
@@ -46,7 +49,7 @@ public class OutStreamingData {
      *
      * @return the audioData
      */
-    public AudioData getAudioData() {
+    AudioData getAudioData() {
         return audioData;
     }
 
@@ -56,7 +59,7 @@ public class OutStreamingData {
      * @param audioData the audioData to set
      * @return the OutStreamingData object itself.
      */
-    public OutStreamingData setAudioData(byte[] audioData) {
+    OutStreamingData setAudioData(byte[] audioData) {
         this.audioData = new AudioData(audioData);
         return this;
     }
@@ -66,8 +69,47 @@ public class OutStreamingData {
      *
      * @return the OutStreamingData object itself.
      */
-    public OutStreamingData setStopAudio() {
+    OutStreamingData setStopAudio() {
         this.stopAudio = new StopAudio();
         return this;
+    }
+
+    /**
+     * Get the streaming data for outbound
+     * @param audioData the audioData to set
+     * @return the string of outstreaming data
+     * 
+     */
+    public static String getStreamingDataForOutbound(byte[] audioData) {
+        OutStreamingData data = new OutStreamingData(MediaKind.AUDIO_DATA);
+        data.setAudioData(audioData);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String serializedData = objectMapper.writeValueAsString(data);
+            return serializedData;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Get the stop audiofor outbound
+     * @return the string of outstreaming data
+     * 
+     */
+    public static String getStopAudioForOutbound() {
+        OutStreamingData data = new OutStreamingData(MediaKind.STOP_AUDIO);
+        data.setStopAudio();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String serializedData = objectMapper.writeValueAsString(data);
+            return serializedData;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

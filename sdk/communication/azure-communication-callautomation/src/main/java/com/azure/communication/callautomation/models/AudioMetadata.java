@@ -8,12 +8,10 @@ import java.io.IOException;
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioMetadataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.AudioMetadataConverter;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 
 /** The MediaStreamingMetadata model. */
-public final class AudioMetadata extends StreamingData<AudioMetadata> {
+public final class AudioMetadata extends StreamingData {
 
     private static final ClientLogger LOGGER = new ClientLogger(AudioMetadata.class);
 
@@ -121,37 +119,24 @@ public final class AudioMetadata extends StreamingData<AudioMetadata> {
         return length;
     }
 
-    @Override
-    public AudioMetadata parse(String data) {
-        // Implementation for parsing audio data
-        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
-            return jsonReader.readObject(reader -> {
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
+    /**
+     * Static class of the parser
+     */
+    public static class Parser implements StreamingDataParser<AudioMetadata> {
 
-                    if ("audioMetadata".equals(fieldName)) {
-                        // Possible return of AudioData
-                        final AudioMetadataConverter audioMetadataInternal = AudioMetadataConverter.fromJson(reader);
-                        if (audioMetadataInternal != null) {
-                            return AudioMetadataContructorProxy.create(audioMetadataInternal);
-                        } else {
-                            return null;
-                        }
-                    } else {
-                        reader.skipChildren();
-                    }
-                }
-
-                return null; // cases triggered.
-            });
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        @Override 
+        public AudioMetadata parse(JsonReader jsonReader) throws IOException {
+            return new AudioMetadata(AudioMetadataConverter.fromJson(jsonReader));
         }
     }
 
+    /**
+     * Converting the channels int type to enum
+     * @param channels channels id for the audio
+     * @return Channels enum
+     */
     private Channels convertToChannelsEnum(Integer channels) {
-        if (0 == channels) {
+        if (1 == channels) {
             return Channels.MONO;
         } else {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported Channels "));

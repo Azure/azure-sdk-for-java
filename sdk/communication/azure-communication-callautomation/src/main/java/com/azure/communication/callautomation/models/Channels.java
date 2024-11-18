@@ -13,7 +13,7 @@ public final class Channels extends ExpandableStringEnum<Channels> {
     /**
      * Display.
      */
-    public static final Channels MONO = fromString("Mono");
+    public static final Channels MONO = fromString("mono");
 
     /**
      * Creates a new instance of Channels value.

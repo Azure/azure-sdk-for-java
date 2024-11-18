@@ -5,19 +5,15 @@ package com.azure.communication.callautomation.models;
 
 import java.io.IOException;
 
+import com.azure.communication.callautomation.StreamingDataParser;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionMetadataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionMetadataConverter;
-import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Metadata for Transcription Streaming.
  */
-public final class TranscriptionMetadata extends StreamingData<TranscriptionMetadata> {
-
-    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionMetadata.class);
+public final class TranscriptionMetadata extends StreamingData {
 
     /*
      * Transcription Subscription Id.
@@ -107,32 +103,17 @@ public final class TranscriptionMetadata extends StreamingData<TranscriptionMeta
         return correlationId;
     }
 
-    @Override
-    public TranscriptionMetadata parse(String data) {
-        // Implementation for parsing audio data
-        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
-            return jsonReader.readObject(reader -> {
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
+    /**
+     * Parser for TranscriptionMetadata
+     */
+    public static class Parser implements StreamingDataParser<TranscriptionMetadata> {
 
-                    if ("transcriptionMetadata".equals(fieldName)) {
-                        // Possible return of AudioData
-                        final TranscriptionMetadataConverter transcriptionMetadataInternal = TranscriptionMetadataConverter.fromJson(reader);
-                        if (transcriptionMetadataInternal != null) {
-                            return TranscriptionMetadataContructorProxy.create(transcriptionMetadataInternal);
-                        } else {
-                            return null;
-                        }
-                    } else {
-                        reader.skipChildren();
-                    }
-                }
-
-                return null; // cases triggered.
-            });
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        /**
+         * parse the base64 json to transcription metadata
+         */
+        @Override 
+        public TranscriptionMetadata parse(JsonReader jsonReader) throws IOException {
+            return new TranscriptionMetadata(TranscriptionMetadataConverter.fromJson(jsonReader));
         }
     }
 }

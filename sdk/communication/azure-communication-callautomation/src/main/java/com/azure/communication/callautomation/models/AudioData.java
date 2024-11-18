@@ -3,13 +3,11 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.StreamingDataParser;
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioDataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -17,10 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
 /** The MediaStreamingAudio model. */
-public final class AudioData extends StreamingData<AudioData> {
-
-    private static final ClientLogger LOGGER = new ClientLogger(AudioData.class);
-    
+public final class AudioData extends StreamingData {
     /*
      * The audio data.
      */
@@ -131,32 +126,14 @@ public final class AudioData extends StreamingData<AudioData> {
         return silent;
     }
 
-    @Override
-    public AudioData parse(String data) {
-        // Implementation for parsing audio data
-        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
-            return jsonReader.readObject(reader -> {
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-
-                    if ("audioData".equals(fieldName)) {
-                        // Possible return of AudioData
-                        final AudioDataConverter audioInternal = AudioDataConverter.fromJson(reader);
-                        if (audioInternal != null) {
-                            return AudioDataContructorProxy.create(audioInternal);
-                        } else {
-                            return null;
-                        }
-                    } else {
-                        reader.skipChildren();
-                    }
-                }
-
-                return null; // cases triggered.
-            });
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+    /**
+     * Parser for AudioData
+     */
+    public static class Parser implements StreamingDataParser<AudioData> {
+        
+        @Override 
+        public AudioData parse(JsonReader jsonReader) throws IOException {
+            return new AudioData(AudioDataConverter.fromJson(jsonReader));
         }
     }
 }

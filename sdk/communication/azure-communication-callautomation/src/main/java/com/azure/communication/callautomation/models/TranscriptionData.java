@@ -7,9 +7,7 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Trans
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 
 import java.util.List;
 import java.io.IOException;
@@ -18,7 +16,7 @@ import java.time.Duration;
 /**
  * The TranscriptionData model.
  */
-public final class TranscriptionData extends StreamingData<TranscriptionData> {
+public final class TranscriptionData extends StreamingData {
 
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionData.class);
 
@@ -200,32 +198,13 @@ public final class TranscriptionData extends StreamingData<TranscriptionData> {
         return resultState;
     }
 
-    @Override
-    public TranscriptionData parse(String data) {
-        // Implementation for parsing audio data
-        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
-            return jsonReader.readObject(reader -> {
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-
-                    if ("transcriptionData".equals(fieldName)) {
-                        // Possible return of AudioData
-                        final TranscriptionDataConverter transcriptionDataInternal = TranscriptionDataConverter.fromJson(reader);
-                        if (transcriptionDataInternal != null) {
-                            return TranscriptionDataContructorProxy.create(transcriptionDataInternal);
-                        } else {
-                            return null;
-                        }
-                    } else {
-                        reader.skipChildren();
-                    }
-                }
-
-                return null; // cases triggered.
-            });
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+    /**
+     * Parser for TranscriptionData
+     */
+    static class Parser implements StreamingDataParser<TranscriptionData> {
+        @Override 
+        public TranscriptionData parse(JsonReader jsonReader) throws IOException {
+            return new TranscriptionData(TranscriptionDataConverter.fromJson(jsonReader));
         }
     }
 }
