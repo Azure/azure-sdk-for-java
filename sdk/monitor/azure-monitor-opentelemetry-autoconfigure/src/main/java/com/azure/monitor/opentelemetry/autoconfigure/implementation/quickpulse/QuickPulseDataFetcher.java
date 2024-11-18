@@ -3,21 +3,17 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
-import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseEnvelope;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseMonitoringDataPoints;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseMetrics;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MetricPoint;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import org.slf4j.MDC;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.function.Supplier;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_SEND_ERROR;
 
@@ -27,11 +23,8 @@ class QuickPulseDataFetcher {
 
     private final QuickPulseDataCollector collector;
 
-    private final ArrayBlockingQueue<HttpRequest> sendQueue;
-    private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private final ArrayBlockingQueue<MonitoringDataPoint> sendQueue;
 
-    private final Supplier<URL> endpointUrl;
-    private final Supplier<String> instrumentationKey;
     private final String roleName;
     private final String instanceName;
     private final String machineName;
@@ -39,19 +32,16 @@ class QuickPulseDataFetcher {
 
     private final String sdkVersion;
 
-    public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<HttpRequest> sendQueue,
-        Supplier<URL> endpointUrl, Supplier<String> instrumentationKey, String roleName, String instanceName,
-        String machineName, String quickPulseId) {
+    public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<MonitoringDataPoint> sendQueue,
+        String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion) {
         this.collector = collector;
         this.sendQueue = sendQueue;
-        this.endpointUrl = endpointUrl;
-        this.instrumentationKey = instrumentationKey;
         this.roleName = roleName;
         this.instanceName = instanceName;
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
+        this.sdkVersion = sdkVersion;
 
-        sdkVersion = getCurrentSdkVersion();
     }
 
     /**
@@ -64,7 +54,7 @@ class QuickPulseDataFetcher {
     }
 
     @SuppressWarnings("try")
-    public void prepareQuickPulseDataForSend(String redirectedEndpoint) {
+    public void prepareQuickPulseDataForSend() {
         try {
             QuickPulseDataCollector.FinalCounters counters = collector.getAndRestart();
 
@@ -72,13 +62,9 @@ class QuickPulseDataFetcher {
                 return;
             }
 
-            Date currentDate = new Date();
-            String endpointPrefix
-                = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
-            HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
-            request.setBody(buildPostEntity(counters));
+            MonitoringDataPoint point = buildMonitoringDataPoint(counters);
 
-            if (!sendQueue.offer(request)) {
+            if (!sendQueue.offer(point)) {
                 logger.verbose("Quick Pulse send queue is full");
             }
         } catch (Throwable e) {
@@ -97,68 +83,51 @@ class QuickPulseDataFetcher {
         }
     }
 
-    // visible for testing
-    String getEndpointUrl(String endpointPrefix) {
-        return endpointPrefix + "/post?ikey=" + instrumentationKey.get();
+    private MonitoringDataPoint buildMonitoringDataPoint(QuickPulseDataCollector.FinalCounters counters) {
+        MonitoringDataPoint point = new MonitoringDataPoint();
+        point.setDocuments(counters.documentList);
+        point.setInstance(instanceName);
+        point.setInvariantVersion(QuickPulse.QP_INVARIANT_VERSION);
+        point.setMachineName(machineName);
+        point.setRoleName(roleName);
+        point.setStreamId(quickPulseId);
+        point.setVersion(sdkVersion);
+        point.setTimestamp(OffsetDateTime.now());
+        point.setMetrics(addMetricsToMonitoringDataPoint(counters));
+        return point;
     }
 
-    // visible for testing
-    String getQuickPulseEndpoint() {
-        return endpointUrl.get().toString() + "QuickPulseService.svc";
-    }
+    private static List<MetricPoint> addMetricsToMonitoringDataPoint(QuickPulseDataCollector.FinalCounters counters) {
+        List<MetricPoint> metricsList = new ArrayList<>();
 
-    private String buildPostEntity(QuickPulseDataCollector.FinalCounters counters) throws IOException {
-        List<QuickPulseEnvelope> envelopes = new ArrayList<>();
-        QuickPulseEnvelope postEnvelope = new QuickPulseEnvelope();
-        postEnvelope.setDocuments(counters.documentList);
-        postEnvelope.setInstance(instanceName);
-        postEnvelope.setInvariantVersion(QuickPulse.QP_INVARIANT_VERSION);
-        postEnvelope.setMachineName(machineName);
-        // FIXME (heya) what about azure functions consumption plan where role name not available yet?
-        postEnvelope.setRoleName(roleName);
-        // For historical reasons, instrumentation key is provided both in the query string and
-        // envelope.
-        postEnvelope.setInstrumentationKey(instrumentationKey.get());
-        postEnvelope.setStreamId(quickPulseId);
-        postEnvelope.setVersion(sdkVersion);
-        postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");
-        postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters));
-        envelopes.add(postEnvelope);
-        QuickPulseMonitoringDataPoints points = new QuickPulseMonitoringDataPoints(envelopes);
-        // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
-        return points.toJsonString().replace("/", "\\/");
-    }
-
-    private static List<QuickPulseMetrics>
-        addMetricsToQuickPulseEnvelope(QuickPulseDataCollector.FinalCounters counters) {
-        List<QuickPulseMetrics> metricsList = new ArrayList<>();
-        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Requests/Sec", counters.requests, 1));
+        Map<String, Double> metrics = new HashMap<>();
+        metrics.put("\\ApplicationInsights\\Requests/Sec", (double) counters.requests);
         if (counters.requests != 0) {
-            metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Request Duration",
-                counters.requestsDuration / counters.requests, counters.requests));
+            metrics.put("\\ApplicationInsights\\Request Duration", counters.requestsDuration / counters.requests);
         }
-        metricsList
-            .add(new QuickPulseMetrics("\\ApplicationInsights\\Requests Failed/Sec", counters.unsuccessfulRequests, 1));
-        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Requests Succeeded/Sec",
-            counters.requests - counters.unsuccessfulRequests, 1));
-        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Dependency Calls/Sec", counters.rdds, 1));
+        metrics.put("\\ApplicationInsights\\Requests Failed/Sec", (double) counters.unsuccessfulRequests);
+        metrics.put("\\ApplicationInsights\\Requests Succeeded/Sec",
+            (double) counters.requests - counters.unsuccessfulRequests);
+        metrics.put("\\ApplicationInsights\\Dependency Calls/Sec", (double) counters.rdds);
         if (counters.rdds != 0) {
-            metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Dependency Call Duration",
-                counters.rddsDuration / counters.rdds, (int) counters.rdds));
+            metrics.put("\\ApplicationInsights\\Dependency Call Duration", counters.rddsDuration / counters.rdds);
         }
-        metricsList.add(
-            new QuickPulseMetrics("\\ApplicationInsights\\Dependency Calls Failed/Sec", counters.unsuccessfulRdds, 1));
-        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Dependency Calls Succeeded/Sec",
-            counters.rdds - counters.unsuccessfulRdds, 1));
-        metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Exceptions/Sec", counters.exceptions, 1));
-        // TODO: remove old memory counter name when service side makes the UI change
-        metricsList.add(new QuickPulseMetrics("\\Memory\\Committed Bytes", counters.processPhysicalMemory, 1));
-        metricsList.add(new QuickPulseMetrics("\\Process\\Physical Bytes", counters.processPhysicalMemory, 1));
-        // TODO: remove old cpu counter name when service side makes the UI change
-        metricsList
-            .add(new QuickPulseMetrics("\\Processor(_Total)\\% Processor Time", counters.processNormalizedCpuUsage, 1));
-        metricsList.add(
-            new QuickPulseMetrics("\\% Process\\Processor Time Normalized", counters.processNormalizedCpuUsage, 1));
+        metrics.put("\\ApplicationInsights\\Dependency Calls Failed/Sec", (double) counters.unsuccessfulRdds);
+        metrics.put("\\ApplicationInsights\\Dependency Calls Succeeded/Sec",
+            (double) counters.rdds - counters.unsuccessfulRequests);
+        metrics.put("\\ApplicationInsights\\Exceptions/Sec", (double) counters.exceptions);
+        metrics.put("\\Memory\\Committed Bytes", (double) counters.processPhysicalMemory); // TODO: remove old memory counter name when service side makes the UI change
+        metrics.put("\\Process\\Physical Bytes", (double) counters.processPhysicalMemory);
+        metrics.put("\\Processor(_Total)\\% Processor Time", counters.processNormalizedCpuUsage); // TODO: remove old cpu counter name when service side makes the UI change
+        metrics.put("\\% Process\\Processor Time Normalized", counters.processNormalizedCpuUsage);
+
+        for (Map.Entry<String, Double> entry : metrics.entrySet()) {
+            MetricPoint point = new MetricPoint();
+            point.setName(entry.getKey());
+            point.setValue(entry.getValue());
+            point.setWeight(1);
+            metricsList.add(point);
+        }
 
         return metricsList;
     }
