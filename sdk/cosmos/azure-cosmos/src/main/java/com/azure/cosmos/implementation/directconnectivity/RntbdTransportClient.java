@@ -139,7 +139,7 @@ public class RntbdTransportClient extends TransportClient {
             final GlobalEndpointManager globalEndpointManager) {
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
-            configs.getSslContext(),
+            configs.getSslContext(connectionPolicy.isServerCertValidationDisabled()),
             addressResolver,
             clientTelemetry,
             globalEndpointManager);
