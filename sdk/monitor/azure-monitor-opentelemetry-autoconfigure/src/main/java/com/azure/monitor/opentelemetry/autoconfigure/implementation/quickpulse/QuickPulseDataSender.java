@@ -29,13 +29,13 @@ class QuickPulseDataSender implements Runnable {
 
     private final LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs;
 
-    private Supplier<URL> endpointUrl;
+    private final Supplier<URL> endpointUrl;
 
     private String redirectEndpointPrefix;
 
     private QuickPulseStatus qpStatus;
 
-    private Supplier<String> instrumentationKey;
+    private final Supplier<String> instrumentationKey;
 
     private static final long TICKS_AT_EPOCH = 621355968000000000L;
 
@@ -68,13 +68,13 @@ class QuickPulseDataSender implements Runnable {
             long sendTime = System.nanoTime();
             String endpointPrefix
                 = Strings.isNullOrEmpty(redirectEndpointPrefix) ? getQuickPulseEndpoint() : redirectEndpointPrefix;
-            // TODO for a future PR: revisit caching & retry mechanism for failed post requests (shouldn't retry), send "cached" data points in the next post
+            // TODO (harskaur): for a future PR revisit caching & retry mechanism for failed post requests (shouldn't retry), send "cached" data points in the next post
             List<MonitoringDataPoint> dataPointList = new ArrayList<>();
             dataPointList.add(point);
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
-                //TODO for a future PR: populate the saved etag here for filtering
+                //TODO (harskaur): for a future PR populate the saved etag here for filtering
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
                     .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "",
                         transmissionTimeInTicks, dataPointList)
@@ -96,7 +96,7 @@ class QuickPulseDataSender implements Runnable {
                 }
 
                 lastValidRequestTimeNs = sendTime;
-                //TODO for a future PR: parse the response body here for filtering
+                //TODO (harskaur): for a future PR parse the response body here for filtering
 
             } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
                 onPostError(sendTime);

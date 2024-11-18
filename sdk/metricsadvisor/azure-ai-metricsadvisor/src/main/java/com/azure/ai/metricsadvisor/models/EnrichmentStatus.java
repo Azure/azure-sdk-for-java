@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -65,6 +66,9 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
         return this.message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,8 +91,8 @@ public final class EnrichmentStatus implements JsonSerializable<EnrichmentStatus
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedEnrichmentStatus.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedEnrichmentStatus.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("status".equals(fieldName)) {
                     deserializedEnrichmentStatus.status = reader.getString();
                 } else if ("message".equals(fieldName)) {

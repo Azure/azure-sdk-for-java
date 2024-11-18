@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.54.1 (2024-11-14)
+
+### Bugs Fixed
+
+- Fixed a bug where when using a `SecurityManager` a recursive call can crash an application. ([#42906](https://github.com/Azure/azure-sdk-for-java/pull/42906))
+
 ## 1.54.0 (2024-11-01)
 
 ### Features Added

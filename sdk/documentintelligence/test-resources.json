@@ -60,6 +60,15 @@
         "signedResource": "c"
       }
     },
+    "batchTrainingResultSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('batchTrainingDataResultContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
+        "signedPermission": "rwl",
+        "signedResource": "c"
+      }
+    },
     "selectionMarkTrainingDataSasProperties": {
       "type": "object",
       "defaultValue": {
@@ -138,6 +147,10 @@
     "DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",
       "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('batchTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('batchTrainingSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('batchTrainingDataResultContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('batchTrainingResultSasProperties')).serviceSasToken)]"
     },
     "DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",

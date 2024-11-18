@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -177,6 +178,9 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -217,8 +221,8 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
                     deserializedAcsRouterWorkerSelector.state
                         = AcsRouterWorkerSelectorState.fromString(reader.getString());
                 } else if ("expirationTime".equals(fieldName)) {
-                    deserializedAcsRouterWorkerSelector.expirationTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsRouterWorkerSelector.expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

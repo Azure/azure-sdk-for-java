@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.6.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,124 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0-beta.1 (2024-11-18)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-preview-2024-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AcceptGrowCapacityPoolForShortTermCloneSplit` was added
+
+* `models.ListQuotaReportResponse` was added
+
+* `models.EncryptionTransitionRequest` was added
+
+* `models.VolumeLanguage` was added
+
+* `models.KeyVaultPrivateEndpoint` was added
+
+* `models.QuotaReport` was added
+
+* `models.DestinationReplication` was added
+
+* `models.ChangeKeyVault` was added
+
+* `models.ReplicationType` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `models.Volume` was modified
+
+* `splitCloneFromParent()` was added
+* `splitCloneFromParent(com.azure.core.util.Context)` was added
+* `listQuotaReport()` was added
+* `acceptGrowCapacityPoolForShortTermCloneSplit()` was added
+* `language()` was added
+* `listQuotaReport(com.azure.core.util.Context)` was added
+* `inheritedSizeInBytes()` was added
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.CapacityPool$Update` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+
+#### `models.Backup` was modified
+
+* `isLargeVolume()` was added
+
+#### `models.EncryptionIdentity` was modified
+
+* `federatedClientId()` was added
+* `withFederatedClientId(java.lang.String)` was added
+
+#### `models.CapacityPool` was modified
+
+* `customThroughputMibps()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withAcceptGrowCapacityPoolForShortTermCloneSplit(models.AcceptGrowCapacityPoolForShortTermCloneSplit)` was added
+* `withLanguage(models.VolumeLanguage)` was added
+
+#### `models.ReplicationObject` was modified
+
+* `destinationReplications()` was added
+
+#### `models.Volumes` was modified
+
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+* `isMultiAdEnabled()` was added
+* `nfsV4IdDomain()` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `models.CapacityPoolPatch` was modified
+
+* `withCustomThroughputMibps(java.lang.Float)` was added
+* `customThroughputMibps()` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `acceptGrowCapacityPoolForShortTermCloneSplit()` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `inheritedSizeInBytes()` was added
+* `withAcceptGrowCapacityPoolForShortTermCloneSplit(models.AcceptGrowCapacityPoolForShortTermCloneSplit)` was added
+* `language()` was added
+
+#### `models.Accounts` was modified
+
+* `getChangeKeyVaultInformation(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `changeKeyVault(java.lang.String,java.lang.String,models.ChangeKeyVault,com.azure.core.util.Context)` was added
+* `transitionToCmk(java.lang.String,java.lang.String,models.EncryptionTransitionRequest,com.azure.core.util.Context)` was added
+* `changeKeyVault(java.lang.String,java.lang.String)` was added
+* `transitionToCmk(java.lang.String,java.lang.String)` was added
+* `getChangeKeyVaultInformation(java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `getChangeKeyVaultInformation(com.azure.core.util.Context)` was added
+* `changeKeyVault()` was added
+* `transitionToCmk()` was added
+* `getChangeKeyVaultInformation()` was added
+* `isMultiAdEnabled()` was added
+* `transitionToCmk(models.EncryptionTransitionRequest,com.azure.core.util.Context)` was added
+* `changeKeyVault(models.ChangeKeyVault,com.azure.core.util.Context)` was added
+* `nfsV4IdDomain()` was added
 
 ## 1.5.1 (2024-10-25)
 

@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */

@@ -1,25 +1,53 @@
-### Getting Started
+# Azure Monitor OpenTelemetry Exporter for Java
 
-[AutoRest](https://github.com/Azure/autorest) is required to generate the models. 
+> see https://aka.ms/autorest
 
-#### Install autorest
+This is the AutoRest configuration file for Monitor OpenTelemetry Exporter.
 
+---
+## Getting Started
+To build the SDK for Monitor OpenTelemetry Exporter, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
+### Setup
 ```ps
 npm install -g autorest
 ```
 
-#### Generate the models
-
+### Generation
 ```ps
 cd <swagger-folder>
-autorest autorest_code.md
+autorest
 ```
 
-In order to use the latest version of autorest, update the `use` directive in the `autorest_code.md` file.
-
-```yml
-use: '@autorest/java@4.1.29'
+## Generate autorest code
+``` yaml
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/applicationinsights/data-plane/Monitor.Exporters/preview/v2.1/swagger.json
+java: true
+use: '@autorest/java@4.1.39'
+output-folder: ../
+models-subpackage: implementation.models
+namespace: com.azure.monitor.opentelemetry.exporter
+generate-client-interfaces: false
+service-interface-as-public: true
+license-header: MICROSOFT_MIT_SMALL
+add-context-parameter: true
+context-client-method-parameter: true
+generate-client-as-impl: true
+artifact-id: azure-monitor-opentelemetry-exporter
+directive:
+    - rename-model:
+        from: TrackResponse
+        to: ExportResult
 ```
+
+### Manual modifications
 
 After the code has been updated, copy the generated models from
 

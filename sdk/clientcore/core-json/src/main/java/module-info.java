@@ -3,6 +3,7 @@
 
 module io.clientcore.core.json {
     exports io.clientcore.core.json;
+    exports io.clientcore.core.json.models;
 
     uses io.clientcore.core.json.JsonProvider;
 }

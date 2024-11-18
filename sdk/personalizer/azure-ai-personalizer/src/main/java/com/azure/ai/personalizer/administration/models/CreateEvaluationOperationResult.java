@@ -13,6 +13,12 @@ public final class CreateEvaluationOperationResult {
     private String evaluationId;
 
     /**
+     * Creates an instance of {@link CreateEvaluationOperationResult}.
+     */
+    public CreateEvaluationOperationResult() {
+    }
+
+    /**
      * Get the evaluationId property.
      *
      * @return the evaluationId value.

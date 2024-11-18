@@ -4,7 +4,6 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionDetailBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;

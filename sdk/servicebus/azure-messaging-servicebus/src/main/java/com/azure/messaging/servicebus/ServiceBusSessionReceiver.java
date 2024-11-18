@@ -33,7 +33,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
- * Represents a session that is received when "any" session is accepted from the service.
+ * Represents a session (in v1 stack) that is received when "any" session is accepted from the service.
  */
 class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiver.class);

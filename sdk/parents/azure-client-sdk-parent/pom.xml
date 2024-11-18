@@ -262,6 +262,8 @@
     <animal.sniffer.skip>true</animal.sniffer.skip>
 
     <animal.sniffer.ignores></animal.sniffer.ignores>
+    <maven.test.skip>false</maven.test.skip>
+    <maven.javadoc.skip>false</maven.javadoc.skip>
   </properties>
 
   <dependencies>
@@ -797,6 +799,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
+            <skip>${maven.javadoc.skip}</skip>
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
@@ -907,6 +910,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
+            <skip>${maven.test.skip}</skip>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">
@@ -956,6 +960,7 @@
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           <configuration>
+            <skip>${maven.test.skip}</skip>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">

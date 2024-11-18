@@ -9,7 +9,10 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import org.slf4j.MDC;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_SEND_ERROR;

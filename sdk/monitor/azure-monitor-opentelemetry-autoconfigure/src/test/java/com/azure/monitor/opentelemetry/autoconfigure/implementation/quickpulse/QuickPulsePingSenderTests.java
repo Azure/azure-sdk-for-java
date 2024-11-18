@@ -15,8 +15,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 

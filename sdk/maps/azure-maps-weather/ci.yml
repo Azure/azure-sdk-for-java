@@ -28,7 +28,7 @@ pr:
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: maps
+    ServiceDirectory: maps/azure-maps-weather
     Artifacts:
       - name: azure-maps-weather
         groupId: com.azure

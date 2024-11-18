@@ -217,10 +217,12 @@ public final class EmbedRequest implements JsonSerializable<EmbedRequest> {
         jsonWriter.writeStringField("model", this.model);
         if (additionalProperties != null) {
             for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(),
-                    additionalProperty.getValue() == null
-                        ? null
-                        : additionalProperty.getValue().toObject(Object.class));
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();

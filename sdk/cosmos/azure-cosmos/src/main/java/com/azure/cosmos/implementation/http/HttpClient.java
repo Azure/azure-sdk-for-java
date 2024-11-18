@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.Configs;
 import reactor.core.publisher.Mono;
 import reactor.netty.resources.ConnectionProvider;
 
@@ -40,24 +39,11 @@ public interface HttpClient {
             throw new IllegalArgumentException("HttpClientConfig is null");
         }
 
-        Duration maxIdleConnectionTimeoutInMillis = httpClientConfig.getConfigs().getMaxIdleConnectionTimeout();
-        if (httpClientConfig.getMaxIdleConnectionTimeout() != null) {
-            maxIdleConnectionTimeoutInMillis = httpClientConfig.getMaxIdleConnectionTimeout();
-        }
-
-        //  Default pool size
-        Integer maxPoolSize = Configs.getDefaultHttpPoolSize();
-        if (httpClientConfig.getMaxPoolSize() != null) {
-            maxPoolSize = httpClientConfig.getMaxPoolSize();
-        }
-
-        Duration connectionAcquireTimeout = httpClientConfig.getConfigs().getConnectionAcquireTimeout();
-
         ConnectionProvider.Builder fixedConnectionProviderBuilder = ConnectionProvider
-            .builder(httpClientConfig.getConfigs().getReactorNettyConnectionPoolName());
-        fixedConnectionProviderBuilder.maxConnections(maxPoolSize);
-        fixedConnectionProviderBuilder.pendingAcquireTimeout(connectionAcquireTimeout);
-        fixedConnectionProviderBuilder.maxIdleTime(maxIdleConnectionTimeoutInMillis);
+            .builder(httpClientConfig.getConnectionPoolName());
+        fixedConnectionProviderBuilder.maxConnections(httpClientConfig.getMaxPoolSize());
+        fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
+        fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 
         return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),
             httpClientConfig);

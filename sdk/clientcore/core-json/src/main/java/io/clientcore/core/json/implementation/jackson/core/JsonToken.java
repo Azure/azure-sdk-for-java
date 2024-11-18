@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -11,12 +12,13 @@ package io.clientcore.core.json.implementation.jackson.core;
  * of parsing JSON content.
  */
 public enum JsonToken {
-    /* Some notes on implementation:
+    /*
+     * Some notes on implementation:
      *
      * - Entries are to be ordered such that start/end array/object
-     *   markers come first, then field name marker (if any), and
-     *   finally scalar value tokens. This is assumed by some
-     *   typing checks.
+     * markers come first, then field name marker (if any), and
+     * finally scalar value tokens. This is assumed by some
+     * typing checks.
      */
 
     /**
@@ -176,10 +178,6 @@ public enum JsonToken {
 
     public final char[] asCharArray() {
         return _serializedChars;
-    }
-
-    public final byte[] asByteArray() {
-        return _serializedBytes;
     }
 
     /**

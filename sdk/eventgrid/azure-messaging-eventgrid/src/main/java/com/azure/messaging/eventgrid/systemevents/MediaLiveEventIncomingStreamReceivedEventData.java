@@ -150,6 +150,9 @@ public final class MediaLiveEventIncomingStreamReceivedEventData
         return this.timescale;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
