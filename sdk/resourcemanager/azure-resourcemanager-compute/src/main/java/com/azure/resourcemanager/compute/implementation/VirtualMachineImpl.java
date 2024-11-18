@@ -1996,7 +1996,10 @@ class VirtualMachineImpl
 
     @Override
     public String capacityReservationGroupId() {
-        return this.innerModel().capacityReservation().capacityReservationGroup().id();
+        if (this.innerModel().capacityReservation() != null) {
+            return this.innerModel().capacityReservation().capacityReservationGroup().id();
+        }
+        return null;
     }
 
     // CreateUpdateTaskGroup.ResourceCreator.beforeGroupCreateOrUpdate implementation
@@ -2735,6 +2738,7 @@ class VirtualMachineImpl
         updateParameter.withEvictionPolicy(this.innerModel().evictionPolicy());
         updateParameter.withUserData(this.innerModel().userData());
         updateParameter.withCapacityReservation(this.innerModel().capacityReservation());
+        updateParameter.withApplicationProfile(this.innerModel().applicationProfile());
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {
