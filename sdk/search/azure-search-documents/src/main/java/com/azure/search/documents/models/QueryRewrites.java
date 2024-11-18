@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
-import java.util.Locale;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -102,11 +102,20 @@ public class QueryRewrites {
         parts[0] = str.substring(0, str.indexOf("|"));
         parts[1] = str.substring(str.indexOf("|") + 1);
         QueryRewritesType rewritesType = QueryRewritesType.fromString(parts[0]);
-        String[] countParts = parts[1].split("-");
-        if (!countParts[0].toLowerCase(Locale.ROOT).equals("count")) {
-            throw new IllegalArgumentException(
-                "Invalid QueryRewrites string option: " + str + ". Accepted QueryRewrites string options: 'count'.");
+        HashMap<String, Object> queryRewriteOptions = new HashMap<>();
+        for (String queryRewriteOption : parts[1].split(",")) {
+            if (queryRewriteOption.contains("-")) {
+                String[] optionParts = queryRewriteOption.split("-");
+                queryRewriteOptions.putIfAbsent(optionParts[0], optionParts[1]);
+            }
         }
-        return new QueryRewrites(rewritesType).setCount(Integer.parseInt(countParts[1]));
+
+        QueryRewrites queryRewrites = new QueryRewrites(rewritesType);
+
+        if (queryRewriteOptions.containsKey("count")) {
+            queryRewrites.setCount(Integer.parseInt(queryRewriteOptions.get("count").toString()));
+        }
+
+        return queryRewrites;
     }
 }
