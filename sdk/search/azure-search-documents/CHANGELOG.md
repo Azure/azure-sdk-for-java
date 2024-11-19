@@ -1,14 +1,25 @@
 # Release History
 
-## 11.8.0-beta.2 (Unreleased)
+## 11.8.0-beta.2 (2024-11-18)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- `VectorSearchCompression` now supports `truncationDimension` which allows for specifying the number of dimensions to 
+  truncate vectors to.
+- `SplitSkill` now supports tokenization.
+- `VectorQuery` now supports `filterOverride` which allow for vector queries to override the broader SearchRequest.filter to allow for vector queries to have more specific configurations
+- `DocumentDebugInfo` is extended with vector scores for the result.
 
 ### Other Changes
+
+- Migrate Search test from local auth to Microsoft Entra authentication.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.4`.
+
 
 ## 11.7.3 (2024-10-27)
 
