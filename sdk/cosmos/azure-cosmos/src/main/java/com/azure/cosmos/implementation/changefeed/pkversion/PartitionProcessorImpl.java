@@ -153,6 +153,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
+                } else {
+                    // still need to checkpoint with the new continuation token
+                    this.checkpointer.checkpointPartition(continuationState);
                 }
                 this.options =
                     CosmosChangeFeedRequestOptions
