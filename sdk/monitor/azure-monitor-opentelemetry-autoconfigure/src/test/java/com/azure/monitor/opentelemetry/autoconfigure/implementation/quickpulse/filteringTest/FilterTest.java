@@ -57,7 +57,7 @@ class FilterTest {
         FilterInfo anyFieldForBoolean = createFilterInfoWithParams(Filter.ANY_FIELD, PredicateType.CONTAINS, "true");
 
 
-        RequestDataColumns request1 = new RequestDataColumns("https://test.com/hiThere", 200L, 200, true, "GET /hiThere");
+        RequestDataColumns request1 = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
         RequestDataColumns request2 = new RequestDataColumns("https://test.com/bye", 200, 200, true, "GET /bye");
         request2.setCustomDimensions(new HashMap<>(Map.of("property", "cool")), null);
 
@@ -76,29 +76,67 @@ class FilterTest {
 
         // request does not contain "hi" in any field & filter is does not contain hi
         filterGroup.setFilters(new ArrayList<FilterInfo>(List.of(anyFieldNotContains)));
-        //derivedMetricInfo.setFilterGroups(new FilterConjunctionGroupInfo[]{conjunctionGroup});
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request2));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request2));
 
         // request contains "cool" in custom dimensions & filter is contains cool
         filterGroup.setFilters(new ArrayList<FilterInfo>(List.of(anyFieldContainsCool)));
-        //derivedMetricInfo.setFilterGroups(new FilterConjunctionGroupInfo[]{conjunctionGroup});
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request2));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request2));
 
         // request contains 200 in duration & filter is contains "200".
         // fields are expected to be treated as string
         filterGroup.setFilters(new ArrayList<FilterInfo>(List.of(anyFieldForNumeric)));
-        //derivedMetricInfo.setFilterGroups(new FilterConjunctionGroupInfo[]{conjunctionGroup});
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request1));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request1));
 
         // request contains true in Success & filter is contains "true".
         // fields are expected to be treated as string
         filterGroup.setFilters(new ArrayList<FilterInfo>(List.of(anyFieldForBoolean)));
-        //derivedMetricInfo.setFilterGroups(new FilterConjunctionGroupInfo[]{conjunctionGroup});
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request1));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request1));
 
+    }
+
+    @Test
+    void testCustomDimensionFilter() {
+        FilterInfo customDimFilter = createFilterInfoWithParams(Filter.CUSTOM_DIM_FIELDNAME_PREFIX + "hi", PredicateType.EQUAL, "hi");
+        List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndOneFilter(customDimFilter);
+        DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM, AggregationType.SUM, "Count()", filterGroups);
+        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
+        Map<String, String> customDims = new HashMap<>(Map.of("property", "hi"));
+        request.setCustomDimensions(customDims, null);
+        FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
+
+        // the asked for field is not in the custom dimensions so return false
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // the asked for field is in the custom dimensions but value does not match
+        customDims.put("hi", "bye");
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // the asked for field is in the custom dimensions and value matches
+        customDims.put("hi","hi");
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // testing not equal predicate. The CustomDimensions.hi value != hi so return true.
+        customDimFilter.setPredicate(PredicateType.NOT_EQUAL);
+        customDims.put("hi", "bye");
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // testing does not contain predicate. The CustomDimensions.hi value does not contain hi so return true.
+        customDimFilter.setPredicate(PredicateType.DOES_NOT_CONTAIN);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // testing contains predicate. The CustomDimensions.hi value contains hi so return true.
+        customDimFilter.setPredicate(PredicateType.CONTAINS);
+        customDims.put("hi", "hi there");
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
     }
 }

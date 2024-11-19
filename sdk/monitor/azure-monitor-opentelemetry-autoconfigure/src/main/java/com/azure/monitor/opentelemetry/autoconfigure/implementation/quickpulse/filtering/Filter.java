@@ -114,18 +114,15 @@ public class Filter {
             Field[] fields = data.getClass().getDeclaredFields();
             for (Field field : fields) {
                 field.setAccessible(true);
-                if (TELEMETRY_COLUMNS_CUSTOM_DIM_FIELD.equals(field.getName())) {
-                    Map<String, String> customDimensions = (Map<String, String>) field.get(data);
-                    for (String value : customDimensions.values()) {
-                        if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
-                            return true;
-                        }
-                    }
-                } else {
-                    String value = String.valueOf(field.get(data));
-                    if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
-                        return true;
-                    }
+                String value = String.valueOf(field.get(data));
+                if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
+                    return true;
+                }
+            }
+            Map<String, String> customDimensions = data.getCustomDimensions();
+            for (String value : customDimensions.values()) {
+                if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
+                    return true;
                 }
             }
         } catch (IllegalAccessException e) {
@@ -136,19 +133,13 @@ public class Filter {
     }
 
     private static boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data) {
-        try {
-            Field customDimensionsField = data.getClass().getDeclaredField(TELEMETRY_COLUMNS_CUSTOM_DIM_FIELD);
-            customDimensionsField.setAccessible(true);
-            Map<String, String> customDimensions = (Map<String, String>) customDimensionsField.get(data);
-            String fieldName = filter.getFieldName().replace(CUSTOM_DIM_FIELDNAME_PREFIX, "");
-            if (customDimensions.containsKey(fieldName)) {
-                String value = customDimensions.get(fieldName);
-                return stringCompare(value, filter.getComparand(), filter.getPredicate());
-            } else {
-                return false; // the asked for field is not present in the custom dimensions
-            }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            return false;
+        Map<String, String> customDimensions = data.getCustomDimensions();
+        String fieldName = filter.getFieldName().replace(CUSTOM_DIM_FIELDNAME_PREFIX, "");
+        if (customDimensions.containsKey(fieldName)) {
+            String value = customDimensions.get(fieldName);
+            return stringCompare(value, filter.getComparand(), filter.getPredicate());
+        } else {
+            return false; // the asked for field is not present in the custom dimensions
         }
     }
 
