@@ -22,6 +22,7 @@ public class Checkpoint {
     private String consumerGroup;
     private String partitionId;
     private Long offset;
+    private String offsetString;
     private Long sequenceNumber;
     private Integer replicationSegment;
 
@@ -115,7 +116,9 @@ public class Checkpoint {
      * Gets the offset of the last successfully processed event to store as checkpoint.
      *
      * @return The offset of the last successfully processed event to store as checkpoint.
+     * @deprecated This method is obsolete and should no longer be used. Please use {@link #getOffsetString()}
      */
+    @Deprecated
     public Long getOffset() {
         return offset;
     }
@@ -125,9 +128,48 @@ public class Checkpoint {
      *
      * @param offset The offset of the last successfully processed event to store as checkpoint.
      * @return The updated {@link Checkpoint} instance.
+     * @deprecated This method is obsolete and should no longer be used. Please use {@link #setOffsetString(String)}.
      */
     public Checkpoint setOffset(Long offset) {
         this.offset = offset;
+        this.offsetString = offset != null ? String.valueOf(offset) : null;
+
+        return this;
+    }
+
+    /**
+     * Gets the offset of the last successfully processed event to store as checkpoint.
+     *
+     * @return Offset of the last successfully processed event to store as checkpoint.
+     *
+     */
+    public String getOffsetString() {
+        return offsetString;
+    }
+
+    /**
+     * Sets the offset of the last successfully processed event to store as checkpoint.
+     *
+     * @param offsetString The offset of the last successfully processed event to store as checkpoint.
+     * @return The updated {@link Checkpoint} instance.
+     */
+    public Checkpoint setOffsetString(String offsetString) {
+        if (offsetString == null) {
+            this.offset = null;
+            this.offsetString = null;
+        } else {
+            this.offsetString = offsetString;
+
+            Long parsed;
+            try {
+                parsed = Long.valueOf(offsetString);
+            } catch (NumberFormatException ex) {
+                parsed = null;
+            }
+
+            this.offset = parsed;
+        }
+
         return this;
     }
 
