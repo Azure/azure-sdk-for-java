@@ -15,6 +15,7 @@ import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventError;
 import com.azure.ai.openai.realtime.models.SendMessageFailedException;
+import com.azure.ai.openai.realtime.models.ServerErrorReceivedException;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -202,15 +203,17 @@ public final class RealtimeAsyncClient implements Closeable {
      * @return the server events.
      */
     public Flux<RealtimeServerEvent> getServerEvents() {
-        return serverEvents.asFlux();
-        // TODO jpalvarezl do we propagate errors as a Flux error?
-        //                .transform(event -> {
-        //                    if (event instanceof RealtimeServerErrorEvent) {
-        //                        return Flux.error(new RuntimeException("Received RealtimeServerErrorEvent: " + ((RealtimeServerErrorEvent) event).getErrorMessage()));
-        //                    } else {
-        //                        return Flux.just(event);
-        //                    }
-        //                });
+        return serverEvents.asFlux()
+            .transform(serverEvents -> serverEvents.flatMap(event -> {
+                if (event instanceof RealtimeServerEventError) {
+                    RealtimeServerEventError errorEvent = (RealtimeServerEventError) event;
+                    logger.atError().addKeyValue("RealtimeServerErrorEvent", event.getEventId()).log(errorEvent.getError().getMessage());
+                    return Flux.error(ServerErrorReceivedException.fromRealtimeServerEventError(errorEvent));
+                } else {
+                    return Flux.just(event);
+                }
+            })
+        );
     }
 
     Mono<Void> start(Runnable postStartTask) {

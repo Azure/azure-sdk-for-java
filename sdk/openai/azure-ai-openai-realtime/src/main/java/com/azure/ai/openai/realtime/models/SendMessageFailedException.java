@@ -16,7 +16,7 @@ public final class SendMessageFailedException extends AzureException {
     private final boolean isTransient;
 
     /**
-     * the "ackId" of request message.
+     * the eventId of request message.
      */
     private final String eventId;
 
