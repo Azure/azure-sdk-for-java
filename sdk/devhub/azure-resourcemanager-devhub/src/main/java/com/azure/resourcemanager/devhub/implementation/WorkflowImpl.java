@@ -246,8 +246,8 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
     WorkflowImpl(WorkflowInner innerObject, com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workflowName = Utils.getValueFromIdByName(innerObject.id(), "workflows");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workflowName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workflows");
     }
 
     public Workflow refresh() {

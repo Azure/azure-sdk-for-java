@@ -18,11 +18,13 @@ import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
 import com.azure.resourcemanager.databox.models.ValidateAddress;
 import com.azure.resourcemanager.databox.models.ValidationRequest;
 
-/** An instance of this class provides access to all the operations defined in ServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicesClient.
+ */
 public interface ServicesClient {
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -37,7 +39,7 @@ public interface ServicesClient {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -54,7 +56,7 @@ public interface ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @param context The context to associate with this operation.
@@ -70,7 +72,7 @@ public interface ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +85,7 @@ public interface ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -99,7 +101,7 @@ public interface ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -114,7 +116,7 @@ public interface ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @param context The context to associate with this operation.
@@ -129,7 +131,7 @@ public interface ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +144,7 @@ public interface ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @param context The context to associate with this operation.
@@ -157,7 +159,7 @@ public interface ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +173,7 @@ public interface ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -187,7 +189,7 @@ public interface ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.

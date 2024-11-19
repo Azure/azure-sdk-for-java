@@ -33,14 +33,14 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
 
     public PagedIterable<StreamingLocator> list(String resourceGroupName, String accountName) {
         PagedIterable<StreamingLocatorInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingLocator> list(String resourceGroupName, String accountName, String filter,
         Integer top, String orderby, Context context) {
         PagedIterable<StreamingLocatorInner> inner
             = this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
     }
 
     public Response<StreamingLocator> getWithResponse(String resourceGroupName, String accountName,
@@ -119,17 +119,17 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
     }
 
     public StreamingLocator getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String streamingLocatorName = Utils.getValueFromIdByName(id, "streamingLocators");
+        String streamingLocatorName = ResourceManagerUtils.getValueFromIdByName(id, "streamingLocators");
         if (streamingLocatorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'streamingLocators'.", id)));
@@ -138,17 +138,17 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
     }
 
     public Response<StreamingLocator> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String streamingLocatorName = Utils.getValueFromIdByName(id, "streamingLocators");
+        String streamingLocatorName = ResourceManagerUtils.getValueFromIdByName(id, "streamingLocators");
         if (streamingLocatorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'streamingLocators'.", id)));
@@ -157,17 +157,17 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String streamingLocatorName = Utils.getValueFromIdByName(id, "streamingLocators");
+        String streamingLocatorName = ResourceManagerUtils.getValueFromIdByName(id, "streamingLocators");
         if (streamingLocatorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'streamingLocators'.", id)));
@@ -176,17 +176,17 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String streamingLocatorName = Utils.getValueFromIdByName(id, "streamingLocators");
+        String streamingLocatorName = ResourceManagerUtils.getValueFromIdByName(id, "streamingLocators");
         if (streamingLocatorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'streamingLocators'.", id)));

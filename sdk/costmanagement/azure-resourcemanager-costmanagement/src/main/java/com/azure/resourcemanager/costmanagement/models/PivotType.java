@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Data type to show in view. */
+/**
+ * Data type to show in view.
+ */
 public final class PivotType extends ExpandableStringEnum<PivotType> {
-    /** Static value Dimension for PivotType. */
+    /**
+     * Static value Dimension for PivotType.
+     */
     public static final PivotType DIMENSION = fromString("Dimension");
 
-    /** Static value TagKey for PivotType. */
+    /**
+     * Static value TagKey for PivotType.
+     */
     public static final PivotType TAG_KEY = fromString("TagKey");
 
     /**
      * Creates a new instance of PivotType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PivotType extends ExpandableStringEnum<PivotType> {
 
     /**
      * Creates or finds a PivotType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PivotType.
      */
-    @JsonCreator
     public static PivotType fromString(String name) {
         return fromString(name, PivotType.class);
     }
 
     /**
      * Gets known PivotType values.
-     *
+     * 
      * @return known PivotType values.
      */
     public static Collection<PivotType> values() {

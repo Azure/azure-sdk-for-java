@@ -54,12 +54,12 @@ public final class ReservationOrdersImpl implements ReservationOrders {
 
     public PagedIterable<ReservationOrderResponse> list() {
         PagedIterable<ReservationOrderResponseInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ReservationOrderResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationOrderResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReservationOrderResponse> list(Context context) {
         PagedIterable<ReservationOrderResponseInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ReservationOrderResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationOrderResponseImpl(inner1, this.manager()));
     }
 
     public ReservationOrderResponse purchase(String reservationOrderId, PurchaseRequest body) {

@@ -20,44 +20,45 @@ public final class PreferencesValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreferencesValidationRequest model = BinaryData.fromString(
-            "{\"validationType\":\"ValidatePreferences\",\"preference\":{\"preferredDataCenterRegion\":[\"dunyg\",\"eqidbqfatpx\",\"lr\"],\"transportPreferences\":{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":true},\"reverseTransportPreferences\":{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":false},\"encryptionPreferences\":{\"doubleEncryption\":\"Enabled\",\"hardwareEncryption\":\"Enabled\"},\"storageAccountAccessTierPreferences\":[\"dmjsjqb\",\"hhyxxrw\",\"yc\",\"duhpk\"]},\"deviceType\":\"DataBoxCustomerDisk\"}")
+            "{\"validationType\":\"ValidatePreferences\",\"preference\":{\"preferredDataCenterRegion\":[\"fwpracstwi\",\"ykhevxccedcpnmdy\",\"dnwzxltjcvnhltiu\"],\"transportPreferences\":{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":false},\"reverseTransportPreferences\":{\"preferredShipmentType\":\"MicrosoftManaged\",\"isUpdated\":false},\"encryptionPreferences\":{\"doubleEncryption\":\"Enabled\",\"hardwareEncryption\":\"Disabled\"},\"storageAccountAccessTierPreferences\":[\"y\",\"wxwlmdjrkvfgb\",\"fvpdbo\",\"acizsjqlhkrr\"]},\"deviceType\":\"DataBoxHeavy\"}")
             .toObject(PreferencesValidationRequest.class);
-        Assertions.assertEquals("dunyg", model.preference().preferredDataCenterRegion().get(0));
+        Assertions.assertEquals("fwpracstwi", model.preference().preferredDataCenterRegion().get(0));
         Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED,
             model.preference().transportPreferences().preferredShipmentType());
-        Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED,
+        Assertions.assertEquals(TransportShipmentTypes.MICROSOFT_MANAGED,
             model.preference().reverseTransportPreferences().preferredShipmentType());
         Assertions.assertEquals(DoubleEncryption.ENABLED,
             model.preference().encryptionPreferences().doubleEncryption());
-        Assertions.assertEquals(HardwareEncryption.ENABLED,
+        Assertions.assertEquals(HardwareEncryption.DISABLED,
             model.preference().encryptionPreferences().hardwareEncryption());
-        Assertions.assertEquals("dmjsjqb", model.preference().storageAccountAccessTierPreferences().get(0));
-        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
+        Assertions.assertEquals("y", model.preference().storageAccountAccessTierPreferences().get(0));
+        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.deviceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PreferencesValidationRequest model = new PreferencesValidationRequest()
-            .withPreference(new Preferences().withPreferredDataCenterRegion(Arrays.asList("dunyg", "eqidbqfatpx", "lr"))
+            .withPreference(new Preferences()
+                .withPreferredDataCenterRegion(Arrays.asList("fwpracstwi", "ykhevxccedcpnmdy", "dnwzxltjcvnhltiu"))
                 .withTransportPreferences(
                     new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.CUSTOMER_MANAGED))
                 .withReverseTransportPreferences(
-                    new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.CUSTOMER_MANAGED))
+                    new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))
                 .withEncryptionPreferences(new EncryptionPreferences().withDoubleEncryption(DoubleEncryption.ENABLED)
-                    .withHardwareEncryption(HardwareEncryption.ENABLED))
-                .withStorageAccountAccessTierPreferences(Arrays.asList("dmjsjqb", "hhyxxrw", "yc", "duhpk")))
-            .withDeviceType(SkuName.DATA_BOX_CUSTOMER_DISK);
+                    .withHardwareEncryption(HardwareEncryption.DISABLED))
+                .withStorageAccountAccessTierPreferences(Arrays.asList("y", "wxwlmdjrkvfgb", "fvpdbo", "acizsjqlhkrr")))
+            .withDeviceType(SkuName.DATA_BOX_HEAVY);
         model = BinaryData.fromObject(model).toObject(PreferencesValidationRequest.class);
-        Assertions.assertEquals("dunyg", model.preference().preferredDataCenterRegion().get(0));
+        Assertions.assertEquals("fwpracstwi", model.preference().preferredDataCenterRegion().get(0));
         Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED,
             model.preference().transportPreferences().preferredShipmentType());
-        Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED,
+        Assertions.assertEquals(TransportShipmentTypes.MICROSOFT_MANAGED,
             model.preference().reverseTransportPreferences().preferredShipmentType());
         Assertions.assertEquals(DoubleEncryption.ENABLED,
             model.preference().encryptionPreferences().doubleEncryption());
-        Assertions.assertEquals(HardwareEncryption.ENABLED,
+        Assertions.assertEquals(HardwareEncryption.DISABLED,
             model.preference().encryptionPreferences().hardwareEncryption());
-        Assertions.assertEquals("dmjsjqb", model.preference().storageAccountAccessTierPreferences().get(0));
-        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
+        Assertions.assertEquals("y", model.preference().storageAccountAccessTierPreferences().get(0));
+        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.deviceType());
     }
 }

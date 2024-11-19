@@ -229,7 +229,7 @@ public final class ServiceFabricManager {
                 .append("-")
                 .append("com.azure.resourcemanager.servicefabric")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))

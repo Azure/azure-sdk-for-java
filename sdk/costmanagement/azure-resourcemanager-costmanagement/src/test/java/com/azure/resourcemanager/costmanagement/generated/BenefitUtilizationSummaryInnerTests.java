@@ -10,8 +10,9 @@ import com.azure.resourcemanager.costmanagement.fluent.models.BenefitUtilization
 public final class BenefitUtilizationSummaryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BenefitUtilizationSummaryInner model = BinaryData.fromString(
-            "{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"iufxqknpir\",\"name\":\"nepttwqmsni\",\"type\":\"fcdmqnrojlpijn\"}")
+        BenefitUtilizationSummaryInner model = BinaryData
+            .fromString(
+                "{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"hy\",\"name\":\"dxravj\",\"type\":\"qdbrxmrgc\"}")
             .toObject(BenefitUtilizationSummaryInner.class);
     }
 

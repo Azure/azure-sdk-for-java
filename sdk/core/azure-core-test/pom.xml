@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
   <packaging>jar</packaging>
-  <version>1.27.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+  <version>1.27.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
 
   <name>Microsoft Azure Java Core Test Library</name>
   <description>This package contains core test types for Azure Java clients.</description>
@@ -63,7 +63,6 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
-    <spotless.skip>false</spotless.skip>
     <animal.sniffer.skip>false</animal.sniffer.skip>
     <animal.sniffer.ignores>java.lang.management.ThreadMXBean,java.lang.management.ThreadInfo,java.lang.management.ManagementFactory</animal.sniffer.ignores>
   </properties>
@@ -72,7 +71,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.55.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- Azure HTTP client implementation dependencies -->
@@ -80,7 +79,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+      <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -95,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.23</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+      <version>1.0.0-beta.25</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
     </dependency>
 
     <!-- Common external testing dependencies -->

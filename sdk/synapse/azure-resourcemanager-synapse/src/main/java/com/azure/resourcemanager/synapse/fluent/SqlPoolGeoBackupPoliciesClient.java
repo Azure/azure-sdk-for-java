@@ -12,13 +12,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.GeoBackupPolicyInner;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyName;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolGeoBackupPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolGeoBackupPoliciesClient.
+ */
 public interface SqlPoolGeoBackupPoliciesClient {
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -32,9 +34,9 @@ public interface SqlPoolGeoBackupPoliciesClient {
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -50,7 +52,7 @@ public interface SqlPoolGeoBackupPoliciesClient {
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -68,7 +70,7 @@ public interface SqlPoolGeoBackupPoliciesClient {
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -85,9 +87,9 @@ public interface SqlPoolGeoBackupPoliciesClient {
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -104,9 +106,9 @@ public interface SqlPoolGeoBackupPoliciesClient {
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

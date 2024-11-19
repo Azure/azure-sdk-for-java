@@ -71,7 +71,8 @@ public final class NumberInput {
      * @return Decoded {@code int} value
      */
     public static int parseInt(String s) {
-        /* Ok: let's keep strategy simple: ignoring optional minus sign,
+        /*
+         * Ok: let's keep strategy simple: ignoring optional minus sign,
          * we'll accept 1 - 9 digits and parse things efficiently;
          * otherwise just defer to JDK parse functionality.
          */
@@ -141,7 +142,7 @@ public final class NumberInput {
         // that is, if we know they must be ints, call int parsing
         int length = s.length();
         if (length <= 9) {
-            return (long) parseInt(s);
+            return parseInt(s);
         }
         // !!! TODO: implement efficient 2-int parsing...
         return Long.parseLong(s);
@@ -172,36 +173,6 @@ public final class NumberInput {
 
         for (int i = 0; i < cmpLen; ++i) {
             int diff = ch[off + i] - cmpStr.charAt(i);
-            if (diff != 0) {
-                return (diff < 0);
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Similar to {@link #inLongRange(char[],int,int,boolean)}, but
-     * with String argument
-     *
-     * @param s String that contains {@code long} value to check
-     * @param negative Whether original number had a minus sign (which is
-     *    NOT passed to this method) or not
-     *
-     * @return {@code True} if specified String representation is within Java
-     *   {@code long} range; {@code false} if not.
-     */
-    public static boolean inLongRange(String s, boolean negative) {
-        String cmp = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
-        int cmpLen = cmp.length();
-        int alen = s.length();
-        if (alen < cmpLen)
-            return true;
-        if (alen > cmpLen)
-            return false;
-
-        // could perhaps just use String.compareTo()?
-        for (int i = 0; i < cmpLen; ++i) {
-            int diff = s.charAt(i) - cmp.charAt(i);
             if (diff != 0) {
                 return (diff < 0);
             }
@@ -301,7 +272,8 @@ public final class NumberInput {
 
     public static double parseDouble(String s) throws NumberFormatException {
         // [JACKSON-486]: avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
-        /* as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
+        /*
+         * as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
          * only in JDK 1.6. In practice, should not really matter.
          */
         if (NASTY_SMALL_DOUBLE.equals(s)) {

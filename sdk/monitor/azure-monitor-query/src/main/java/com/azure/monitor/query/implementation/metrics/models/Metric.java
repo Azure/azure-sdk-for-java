@@ -180,6 +180,9 @@ public final class Metric implements JsonSerializable<Metric> {
         return this.timeseries;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -177,9 +177,9 @@ public final class ViewImpl implements View, View.Definition, View.Update {
     ViewImpl(ViewInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "scope");
-        this.viewName = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.viewName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
     }
 
@@ -209,6 +209,11 @@ public final class ViewImpl implements View, View.Definition, View.Update {
 
     public ViewImpl withScope(String scope) {
         this.innerModel().withScope(scope);
+        return this;
+    }
+
+    public ViewImpl withDateRange(String dateRange) {
+        this.innerModel().withDateRange(dateRange);
         return this;
     }
 

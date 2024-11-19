@@ -14,19 +14,20 @@ public final class EventSourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventSourceUpdateParameters model = BinaryData.fromString(
-            "{\"kind\":\"EventSourceUpdateParameters\",\"tags\":{\"eic\":\"vddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\",\"ciwqvhk\":\"pyeicxm\",\"ghmewuam\":\"ixuigdtopbobj\"}}")
+            "{\"kind\":\"EventSourceUpdateParameters\",\"tags\":{\"onpc\":\"idyjrrfbyaosvexc\",\"eggzfb\":\"hocohslkev\"}}")
             .toObject(EventSourceUpdateParameters.class);
-        Assertions.assertEquals("vddntwn", model.tags().get("eic"));
+        Assertions.assertEquals("idyjrrfbyaosvexc", model.tags().get("onpc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSourceUpdateParameters model = new EventSourceUpdateParameters().withTags(mapOf("eic", "vddntwn",
-            "cyddglmjthjqk", "twnpzaoqvuhrhcf", "ciwqvhk", "pyeicxm", "ghmewuam", "ixuigdtopbobj"));
+        EventSourceUpdateParameters model
+            = new EventSourceUpdateParameters().withTags(mapOf("onpc", "idyjrrfbyaosvexc", "eggzfb", "hocohslkev"));
         model = BinaryData.fromObject(model).toObject(EventSourceUpdateParameters.class);
-        Assertions.assertEquals("vddntwn", model.tags().get("eic"));
+        Assertions.assertEquals("idyjrrfbyaosvexc", model.tags().get("onpc"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

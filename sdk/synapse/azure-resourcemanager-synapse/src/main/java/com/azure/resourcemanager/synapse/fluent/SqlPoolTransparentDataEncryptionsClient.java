@@ -18,9 +18,9 @@ import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionName;
 public interface SqlPoolTransparentDataEncryptionsClient {
     /**
      * Get a SQL pool's transparent data encryption configuration
-     *
-     * <p>Get a SQL pool's transparent data encryption configuration.
-     *
+     * 
+     * Get a SQL pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -37,9 +37,9 @@ public interface SqlPoolTransparentDataEncryptionsClient {
 
     /**
      * Get a SQL pool's transparent data encryption configuration
-     *
-     * <p>Get a SQL pool's transparent data encryption configuration.
-     *
+     * 
+     * Get a SQL pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -55,9 +55,9 @@ public interface SqlPoolTransparentDataEncryptionsClient {
 
     /**
      * Creates or updates a Sql pool's transparent data encryption configuration
-     *
-     * <p>Creates or updates a Sql pool's transparent data encryption configuration.
-     *
+     * 
+     * Creates or updates a Sql pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -76,9 +76,9 @@ public interface SqlPoolTransparentDataEncryptionsClient {
 
     /**
      * Creates or updates a Sql pool's transparent data encryption configuration
-     *
-     * <p>Creates or updates a Sql pool's transparent data encryption configuration.
-     *
+     * 
+     * Creates or updates a Sql pool's transparent data encryption configuration.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -95,17 +95,17 @@ public interface SqlPoolTransparentDataEncryptionsClient {
 
     /**
      * SQL pool's transparent data encryption configurations
-     *
-     * <p>Get list of SQL pool's transparent data encryption configurations.
-     *
+     * 
+     * Get list of SQL pool's transparent data encryption configurations.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TransparentDataEncryptionInner> list(String resourceGroupName, String workspaceName,
@@ -113,9 +113,9 @@ public interface SqlPoolTransparentDataEncryptionsClient {
 
     /**
      * SQL pool's transparent data encryption configurations
-     *
-     * <p>Get list of SQL pool's transparent data encryption configurations.
-     *
+     * 
+     * Get list of SQL pool's transparent data encryption configurations.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -123,8 +123,8 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TransparentDataEncryptionInner> list(String resourceGroupName, String workspaceName,

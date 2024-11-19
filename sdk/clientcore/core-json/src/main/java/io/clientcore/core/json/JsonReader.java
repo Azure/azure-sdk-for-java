@@ -418,7 +418,7 @@ public abstract class JsonReader implements Closeable {
      */
     private void appendJson(StringBuilder buffer, JsonToken token) throws IOException {
         // TODO (alzimmer): Think of making this a protected method. This will allow for optimizations such as where
-        //  Jackson can read text directly into a StringBuilder which removes a String copy.
+        // Jackson can read text directly into a StringBuilder which removes a String copy.
         if (token == JsonToken.FIELD_NAME) {
             buffer.append("\"");
             ENCODER.quoteAsString(getFieldName(), buffer);

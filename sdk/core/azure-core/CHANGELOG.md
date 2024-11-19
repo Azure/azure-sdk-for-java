@@ -1,6 +1,6 @@
 # Release History
 
-## 1.54.0-beta.1 (Unreleased)
+## 1.55.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.54.1 (2024-11-14)
+
+### Bugs Fixed
+
+- Fixed a bug where when using a `SecurityManager` a recursive call can crash an application. ([#42906](https://github.com/Azure/azure-sdk-for-java/pull/42906))
+
+## 1.54.0 (2024-11-01)
+
+### Features Added
+
+- Added `HttpLogOptions.getAllowHttpHeaderNames()`, `HttpLogOptions.setAllowedHeaderNames(Set<HttpHeaderNames>)`, and
+  `HttpLogOptions.addAllowedHeaderName(HttpHeaderName)`.
+
+### Bugs Fixed
+
+- Fixed a bug where `Duration.between` could result in an exception if `OffsetDateTime.MAX` was used.
+
+### Other Changes
+
+- Deprecated `String`-based equivalent APIs in `HttpLogOptions` for allowed header names.
+- Deprecated `HttpLogOptions.prettyPrintBody`.
+
+#### Dependency Updates
+
+- Updated Reactor from `3.4.38` to `3.4.41`.
 
 ## 1.53.0 (2024-10-01)
 

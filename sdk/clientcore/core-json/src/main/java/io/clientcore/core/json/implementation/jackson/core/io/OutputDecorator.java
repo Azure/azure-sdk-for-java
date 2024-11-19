@@ -1,7 +1,12 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.io;
 
-import java.io.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonFactory;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.io.Writer;
 
 /**
  * Handler class that can be used to decorate output destinations.
@@ -10,10 +15,10 @@ import java.io.*;
  * processing during write operations.
  */
 @SuppressWarnings("serial")
-public abstract class OutputDecorator implements java.io.Serializable // since 2.1
+public abstract class OutputDecorator implements Serializable // since 2.1
 {
     /**
-     * Method called by {@link io.clientcore.core.json.implementation.jackson.core.JsonFactory} instance when
+     * Method called by {@link JsonFactory} instance when
      * creating generator for given {@link OutputStream}, when this decorator
      * has been registered.
      *
@@ -28,7 +33,7 @@ public abstract class OutputDecorator implements java.io.Serializable // since 2
     public abstract OutputStream decorate(IOContext ctxt, OutputStream out) throws IOException;
 
     /**
-     * Method called by {@link io.clientcore.core.json.implementation.jackson.core.JsonFactory} instance when
+     * Method called by {@link JsonFactory} instance when
      * creating generator for given {@link Writer}, when this decorator
      * has been registered.
      *

@@ -34,17 +34,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.TransformInner;
 import com.azure.resourcemanager.mediaservices.models.TransformCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TransformsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TransformsClient.
+ */
 public final class TransformsClientImpl implements TransformsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TransformsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of TransformsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TransformsClientImpl(AzureMediaServicesImpl client) {
@@ -61,8 +67,7 @@ public final class TransformsClientImpl implements TransformsClient {
     @ServiceInterface(name = "AzureMediaServicesTr")
     public interface TransformsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TransformCollection>> list(@HostParam("$host") String endpoint,
@@ -72,8 +77,7 @@ public final class TransformsClientImpl implements TransformsClient {
             @QueryParam("$orderby") String orderby, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TransformInner>> get(@HostParam("$host") String endpoint,
@@ -83,8 +87,7 @@ public final class TransformsClientImpl implements TransformsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TransformInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -95,8 +98,7 @@ public final class TransformsClientImpl implements TransformsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -106,8 +108,7 @@ public final class TransformsClientImpl implements TransformsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TransformInner>> update(@HostParam("$host") String endpoint,
@@ -127,9 +128,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * List Transforms
-     *
-     * <p>Lists the Transforms in the account.
-     *
+     * 
+     * Lists the Transforms in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
@@ -137,8 +138,8 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Transform items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of Transform items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransformInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -170,9 +171,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * List Transforms
-     *
-     * <p>Lists the Transforms in the account.
-     *
+     * 
+     * Lists the Transforms in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
@@ -181,8 +182,8 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Transform items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of Transform items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransformInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -214,9 +215,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * List Transforms
-     *
-     * <p>Lists the Transforms in the account.
-     *
+     * 
+     * Lists the Transforms in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
@@ -235,9 +236,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * List Transforms
-     *
-     * <p>Lists the Transforms in the account.
-     *
+     * 
+     * Lists the Transforms in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,9 +256,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * List Transforms
-     *
-     * <p>Lists the Transforms in the account.
-     *
+     * 
+     * Lists the Transforms in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
@@ -277,9 +278,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * List Transforms
-     *
-     * <p>Lists the Transforms in the account.
-     *
+     * 
+     * Lists the Transforms in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,9 +297,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * List Transforms
-     *
-     * <p>Lists the Transforms in the account.
-     *
+     * 
+     * Lists the Transforms in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
@@ -317,9 +318,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Get Transform
-     *
-     * <p>Gets a Transform.
-     *
+     * 
+     * Gets a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -359,9 +360,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Get Transform
-     *
-     * <p>Gets a Transform.
-     *
+     * 
+     * Gets a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -401,9 +402,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Get Transform
-     *
-     * <p>Gets a Transform.
-     *
+     * 
+     * Gets a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -420,9 +421,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Get Transform
-     *
-     * <p>Gets a Transform.
-     *
+     * 
+     * Gets a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -440,9 +441,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Get Transform
-     *
-     * <p>Gets a Transform.
-     *
+     * 
+     * Gets a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -458,9 +459,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Create or Update Transform
-     *
-     * <p>Creates or updates a new Transform.
-     *
+     * 
+     * Creates or updates a new Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -469,8 +470,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * as by transcoding or by extracting insights along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TransformInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName,
@@ -508,9 +508,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Create or Update Transform
-     *
-     * <p>Creates or updates a new Transform.
-     *
+     * 
+     * Creates or updates a new Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -520,8 +520,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * as by transcoding or by extracting insights along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TransformInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName,
@@ -558,9 +557,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Create or Update Transform
-     *
-     * <p>Creates or updates a new Transform.
-     *
+     * 
+     * Creates or updates a new Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -569,7 +568,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights on successful completion of {@link Mono}.
+     * as by transcoding or by extracting insights on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TransformInner> createOrUpdateAsync(String resourceGroupName, String accountName, String transformName,
@@ -580,9 +579,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Create or Update Transform
-     *
-     * <p>Creates or updates a new Transform.
-     *
+     * 
+     * Creates or updates a new Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -592,7 +591,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights along with {@link Response}.
+     * as by transcoding or by extracting insights along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransformInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
@@ -603,9 +602,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Create or Update Transform
-     *
-     * <p>Creates or updates a new Transform.
-     *
+     * 
+     * Creates or updates a new Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -614,7 +613,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights.
+     * as by transcoding or by extracting insights.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransformInner createOrUpdate(String resourceGroupName, String accountName, String transformName,
@@ -625,9 +624,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Delete Transform
-     *
-     * <p>Deletes a Transform.
-     *
+     * 
+     * Deletes a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -667,9 +666,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Delete Transform
-     *
-     * <p>Deletes a Transform.
-     *
+     * 
+     * Deletes a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -709,9 +708,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Delete Transform
-     *
-     * <p>Deletes a Transform.
-     *
+     * 
+     * Deletes a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -727,9 +726,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Delete Transform
-     *
-     * <p>Deletes a Transform.
-     *
+     * 
+     * Deletes a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -747,9 +746,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Delete Transform
-     *
-     * <p>Deletes a Transform.
-     *
+     * 
+     * Deletes a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -764,9 +763,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Update Transform
-     *
-     * <p>Updates a Transform.
-     *
+     * 
+     * Updates a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -775,8 +774,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * as by transcoding or by extracting insights along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TransformInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
@@ -814,9 +812,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Update Transform
-     *
-     * <p>Updates a Transform.
-     *
+     * 
+     * Updates a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -826,8 +824,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * as by transcoding or by extracting insights along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TransformInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
@@ -864,9 +861,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Update Transform
-     *
-     * <p>Updates a Transform.
-     *
+     * 
+     * Updates a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -875,7 +872,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights on successful completion of {@link Mono}.
+     * as by transcoding or by extracting insights on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TransformInner> updateAsync(String resourceGroupName, String accountName, String transformName,
@@ -886,9 +883,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Update Transform
-     *
-     * <p>Updates a Transform.
-     *
+     * 
+     * Updates a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -898,7 +895,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights along with {@link Response}.
+     * as by transcoding or by extracting insights along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransformInner> updateWithResponse(String resourceGroupName, String accountName,
@@ -908,9 +905,9 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Update Transform
-     *
-     * <p>Updates a Transform.
-     *
+     * 
+     * Updates a Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -919,7 +916,7 @@ public final class TransformsClientImpl implements TransformsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights.
+     * as by transcoding or by extracting insights.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransformInner update(String resourceGroupName, String accountName, String transformName,
@@ -929,14 +926,13 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Transform items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of Transform items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransformInner>> listNextSinglePageAsync(String nextLink) {
@@ -956,15 +952,14 @@ public final class TransformsClientImpl implements TransformsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Transform items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of Transform items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransformInner>> listNextSinglePageAsync(String nextLink, Context context) {

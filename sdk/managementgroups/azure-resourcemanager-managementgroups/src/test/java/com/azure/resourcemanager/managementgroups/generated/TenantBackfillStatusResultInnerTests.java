@@ -11,7 +11,7 @@ public final class TenantBackfillStatusResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TenantBackfillStatusResultInner model
-            = BinaryData.fromString("{\"tenantId\":\"bzpfzab\",\"status\":\"NotStartedButGroupsExist\"}")
+            = BinaryData.fromString("{\"tenantId\":\"utiiswacf\",\"status\":\"Cancelled\"}")
                 .toObject(TenantBackfillStatusResultInner.class);
     }
 

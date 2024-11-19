@@ -93,4 +93,10 @@ public abstract class AzureContextUtils {
      */
     public static final String PASSWORDLESS_KAFKA_PROPERTIES_BEAN_POST_PROCESSOR_BEAN_NAME =
         "azurePasswordlessKafkaPropertiesBeanPostProcessor";
+
+    /**
+     * Bean name of the SpringTokenCredentialProviderContextProvider for the passwordless token credential acquisition.
+     */
+    public static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CONTEXT_BEAN_NAME =
+        "springTokenCredentialProviderContextProvider";
 }

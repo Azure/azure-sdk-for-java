@@ -1,12 +1,48 @@
 # Release History
 
-## 5.18.0-beta.1 (unreleased)
+## 5.19.0-beta.1 (Unreleased)
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Features Added
+- Support customize StaticConnectionStringProvider<AzureServiceType.EventHubs> bean. [#42919](https://github.com/Azure/azure-sdk-for-java/pull/42919).
+
+#### Bugs Fixed
+- Fix error: Event Hubs connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
+
+## 5.18.0 (2024-11-05)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.11, 3.3.0-3.3.5. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>11) and 3.3.m (m>5) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Support to configure token credential bean name. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+
+#### Bugs Fixed
+- Fix primitive type prop (isManagedIdentityEnabled) copy issue. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+- Fix to support multiple JDBC datasource prop passwordless. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+
 #### Breaking Changes
 - Change the default Service Bus JMS connection factory to `JmsPoolConnectionFactory` from `CachingConnectionFactory`. Set `spring.jms.cache.enabled=true` to continue using `CachingConnectionFactory` [#42306](https://github.com/Azure/azure-sdk-for-java/pull/42306).
+
+### Spring Cloud Stream Service Bus Binder
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Features Added
+- Support propagating the custom beans for Service Bus binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Features Added
+- Support propagating the custom beans for Event Hubs binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5180-2024-11-05) for more details.
 
 ## 5.17.1 (2024-10-11)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.10, 3.3.0-3.3.4. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>10) and 3.3.m (m>4) should be supported, but they aren't tested with this release.)

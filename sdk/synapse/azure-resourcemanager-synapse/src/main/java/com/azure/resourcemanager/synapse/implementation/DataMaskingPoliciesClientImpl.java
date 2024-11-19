@@ -27,17 +27,23 @@ import com.azure.resourcemanager.synapse.fluent.DataMaskingPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingPolicyInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient.
+ */
 public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataMaskingPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of DataMaskingPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataMaskingPoliciesClientImpl(SynapseManagementClientImpl client) {
@@ -54,8 +60,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
     @ServiceInterface(name = "SynapseManagementCli")
     public interface DataMaskingPoliciesService {
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataMaskingPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -67,8 +72,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataMaskingPolicyInner>> get(@HostParam("$host") String endpoint,
@@ -81,7 +85,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -129,7 +133,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -176,7 +180,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -195,7 +199,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -215,7 +219,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -234,7 +238,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -275,7 +279,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -316,7 +320,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -333,7 +337,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -351,7 +355,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

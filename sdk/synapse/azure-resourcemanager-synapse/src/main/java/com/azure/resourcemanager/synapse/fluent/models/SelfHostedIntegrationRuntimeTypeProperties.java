@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.LinkedIntegrationRuntimeType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The self-hosted integration runtime properties. */
+/**
+ * The self-hosted integration runtime properties.
+ */
 @Fluent
-public final class SelfHostedIntegrationRuntimeTypeProperties {
+public final class SelfHostedIntegrationRuntimeTypeProperties
+    implements JsonSerializable<SelfHostedIntegrationRuntimeTypeProperties> {
     /*
      * Linked integration runtime type from data factory
      */
-    @JsonProperty(value = "linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
 
-    /** Creates an instance of SelfHostedIntegrationRuntimeTypeProperties class. */
+    /**
+     * Creates an instance of SelfHostedIntegrationRuntimeTypeProperties class.
+     */
     public SelfHostedIntegrationRuntimeTypeProperties() {
     }
 
     /**
      * Get the linkedInfo property: Linked integration runtime type from data factory.
-     *
+     * 
      * @return the linkedInfo value.
      */
     public LinkedIntegrationRuntimeType linkedInfo() {
@@ -32,7 +40,7 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
 
     /**
      * Set the linkedInfo property: Linked integration runtime type from data factory.
-     *
+     * 
      * @param linkedInfo the linkedInfo value to set.
      * @return the SelfHostedIntegrationRuntimeTypeProperties object itself.
      */
@@ -43,12 +51,50 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (linkedInfo() != null) {
             linkedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedInfo", this.linkedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelfHostedIntegrationRuntimeTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelfHostedIntegrationRuntimeTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SelfHostedIntegrationRuntimeTypeProperties.
+     */
+    public static SelfHostedIntegrationRuntimeTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SelfHostedIntegrationRuntimeTypeProperties deserializedSelfHostedIntegrationRuntimeTypeProperties
+                = new SelfHostedIntegrationRuntimeTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedInfo".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeTypeProperties.linkedInfo
+                        = LinkedIntegrationRuntimeType.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSelfHostedIntegrationRuntimeTypeProperties;
+        });
     }
 }

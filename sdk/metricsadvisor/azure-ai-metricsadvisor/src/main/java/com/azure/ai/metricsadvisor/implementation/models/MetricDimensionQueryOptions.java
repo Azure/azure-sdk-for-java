@@ -72,6 +72,9 @@ public final class MetricDimensionQueryOptions implements JsonSerializable<Metri
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

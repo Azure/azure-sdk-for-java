@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeploymentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeploymentsClient.
+ */
 public final class DeploymentsClientImpl implements DeploymentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeploymentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CognitiveServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of DeploymentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DeploymentsClientImpl(CognitiveServicesManagementClientImpl client) {
@@ -112,14 +118,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployments associated with the Cognitive Services account along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
@@ -149,7 +155,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
@@ -157,7 +163,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployments associated with the Cognitive Services account along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -188,14 +194,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
-     *     PagedFlux}.
+     * @return the deployments associated with the Cognitive Services account as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeploymentInner> listAsync(String resourceGroupName, String accountName) {
@@ -205,15 +211,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
-     *     PagedFlux}.
+     * @return the deployments associated with the Cognitive Services account as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeploymentInner> listAsync(String resourceGroupName, String accountName, Context context) {
@@ -223,14 +229,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the deployments associated with the Cognitive Services account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentInner> list(String resourceGroupName, String accountName) {
@@ -239,15 +245,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the deployments associated with the Cognitive Services account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentInner> list(String resourceGroupName, String accountName, Context context) {
@@ -256,7 +262,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -264,7 +270,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deployments associated with the Cognitive Services account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeploymentInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -296,7 +302,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -305,7 +311,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deployments associated with the Cognitive Services account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeploymentInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -336,7 +342,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -344,7 +350,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deployments associated with the Cognitive Services account on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeploymentInner> getAsync(String resourceGroupName, String accountName, String deploymentName) {
@@ -354,7 +360,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -372,7 +378,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -388,7 +394,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -396,8 +402,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account deployment along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -435,7 +441,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -444,8 +450,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account deployment along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account deployment along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -481,7 +487,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -502,7 +508,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -525,7 +531,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -544,7 +550,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -564,7 +570,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -583,7 +589,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -603,7 +609,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -621,7 +627,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -640,7 +646,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -679,7 +685,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -718,7 +724,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -737,7 +743,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -759,7 +765,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -776,7 +782,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -794,7 +800,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -811,7 +817,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -830,7 +836,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -845,7 +851,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -861,14 +867,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentInner>> listNextSinglePageAsync(String nextLink) {
@@ -888,15 +893,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentInner>> listNextSinglePageAsync(String nextLink, Context context) {

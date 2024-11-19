@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateEndpointConnectionsPrivateLinkHubs. */
+/**
+ * Resource collection API of PrivateEndpointConnectionsPrivateLinkHubs.
+ */
 public interface PrivateEndpointConnectionsPrivateLinkHubs {
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -38,7 +40,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -53,7 +55,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.

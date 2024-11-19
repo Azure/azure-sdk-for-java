@@ -151,7 +151,9 @@ def generate_changelog_and_breaking_change(
     logging.info("[CHANGELOG] changelog output: {0}".format(stdout))
 
     config = json.loads(stdout)
-    return (config.get("breaking", False), config.get("changelog", ""))
+    breaking_changes = config.get("breakingChanges", [])
+    breaking = True if len(breaking_changes) > 0 else False
+    return breaking, config.get("changelog", ""), breaking_changes
 
 
 def update_changelog(changelog_file, changelog):
@@ -188,41 +190,44 @@ def update_changelog(changelog_file, changelog):
 def compare_with_maven_package(
     sdk_root: str, group_id: str, service: str, previous_version: str, current_version: str, module: str
 ):
+    breaking = False
+    changelog = ""
+    breaking_changes = []
+
     if previous_version == current_version or previous_version is None:
         logging.info("[Changelog][Skip] no previous version")
-        return False, ""
-
-    logging.info(
-        "[Changelog] Compare stable version {0} with current version {1}".format(previous_version, current_version)
-    )
-
-    r = requests.get(
-        MAVEN_URL.format(
-            group_id=group_id.replace(".", "/"),
-            artifact_id=module,
-            version=previous_version,
+    else:
+        logging.info(
+            "[Changelog] Compare stable version {0} with current version {1}".format(previous_version, current_version)
         )
-    )
-    r.raise_for_status()
-    old_jar_fd, old_jar = tempfile.mkstemp(".jar")
-    try:
-        with os.fdopen(old_jar_fd, "wb") as tmp:
-            tmp.write(r.content)
-        new_jar = os.path.join(
-            sdk_root,
-            JAR_FORMAT.format(service=service, artifact_id=module, version=current_version),
+
+        r = requests.get(
+            MAVEN_URL.format(
+                group_id=group_id.replace(".", "/"),
+                artifact_id=module,
+                version=previous_version,
+            )
         )
-        if not os.path.exists(new_jar):
-            raise Exception("Cannot found built jar in {0}".format(new_jar))
-        breaking, changelog = generate_changelog_and_breaking_change(sdk_root, old_jar, new_jar)
-        if changelog is not None:
-            changelog_file = os.path.join(sdk_root, CHANGELOG_FORMAT.format(service=service, artifact_id=module))
-            update_changelog(changelog_file, changelog)
-        else:
-            logging.error("[Changelog][Skip] Cannot get changelog")
-    finally:
-        os.remove(old_jar)
-    return breaking, changelog
+        r.raise_for_status()
+        old_jar_fd, old_jar = tempfile.mkstemp(".jar")
+        try:
+            with os.fdopen(old_jar_fd, "wb") as tmp:
+                tmp.write(r.content)
+            new_jar = os.path.join(
+                sdk_root,
+                JAR_FORMAT.format(service=service, artifact_id=module, version=current_version),
+            )
+            if not os.path.exists(new_jar):
+                raise Exception("Cannot found built jar in {0}".format(new_jar))
+            breaking, changelog, breaking_changes = generate_changelog_and_breaking_change(sdk_root, old_jar, new_jar)
+            if changelog is not None:
+                changelog_file = os.path.join(sdk_root, CHANGELOG_FORMAT.format(service=service, artifact_id=module))
+                update_changelog(changelog_file, changelog)
+            else:
+                logging.error("[Changelog][Skip] Cannot get changelog")
+        finally:
+            os.remove(old_jar)
+    return breaking, changelog, breaking_changes
 
 
 def get_version(

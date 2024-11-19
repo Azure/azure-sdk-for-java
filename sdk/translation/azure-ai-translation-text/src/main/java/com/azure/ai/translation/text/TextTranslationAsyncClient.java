@@ -115,7 +115,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -125,9 +125,9 @@ public final class TextTranslationAsyncClient {
      * ]
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -196,7 +196,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -206,9 +206,9 @@ public final class TextTranslationAsyncClient {
      * ]
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -266,7 +266,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -276,9 +276,9 @@ public final class TextTranslationAsyncClient {
      * ]
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -321,7 +321,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -331,9 +331,9 @@ public final class TextTranslationAsyncClient {
      * ]
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -393,7 +393,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -404,9 +404,9 @@ public final class TextTranslationAsyncClient {
      * ]
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -1087,7 +1087,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1257,13 +1257,13 @@ public final class TextTranslationAsyncClient {
         if (scopes == null) {
             return null;
         }
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (LanguageScope scope : scopes) {
-            if (!result.isEmpty()) {
-                result += ",";
+            if (result.length() > 0) {
+                result.append(",");
             }
-            result += scope.toString();
+            result.append(scope.toString());
         }
-        return result;
+        return result.toString();
     }
 }

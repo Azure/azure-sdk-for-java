@@ -27,14 +27,16 @@ public final class BenefitRecommendationsImpl implements BenefitRecommendations 
 
     public PagedIterable<BenefitRecommendationModel> list(String billingScope) {
         PagedIterable<BenefitRecommendationModelInner> inner = this.serviceClient().list(billingScope);
-        return Utils.mapPage(inner, inner1 -> new BenefitRecommendationModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new BenefitRecommendationModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BenefitRecommendationModel> list(String billingScope, String filter, String orderby,
         String expand, Context context) {
         PagedIterable<BenefitRecommendationModelInner> inner
             = this.serviceClient().list(billingScope, filter, orderby, expand, context);
-        return Utils.mapPage(inner, inner1 -> new BenefitRecommendationModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new BenefitRecommendationModelImpl(inner1, this.manager()));
     }
 
     private BenefitRecommendationsClient serviceClient() {

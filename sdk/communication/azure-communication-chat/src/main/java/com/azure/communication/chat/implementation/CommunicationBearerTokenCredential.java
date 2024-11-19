@@ -11,7 +11,7 @@ import com.azure.core.credential.TokenRequestContext;
 import reactor.core.publisher.Mono;
 
 /**
- * This class serves as a CommunicationTokenCredential wrapper that 
+ * This class serves as a CommunicationTokenCredential wrapper that
  * allows using BearerAuthenticationPolicy in different clients
  */
 public class CommunicationBearerTokenCredential implements TokenCredential {
@@ -20,7 +20,7 @@ public class CommunicationBearerTokenCredential implements TokenCredential {
     /**
      * Creates a CommunicationTokenCredential
      *
-     * @param communicationTokenCredential The {@link CommunicationTokenCredential} to use 
+     * @param communicationTokenCredential The {@link CommunicationTokenCredential} to use
      * in the BearerAuthenticationPolicy.
      */
     public CommunicationBearerTokenCredential(CommunicationTokenCredential communicationTokenCredential) {
@@ -30,5 +30,10 @@ public class CommunicationBearerTokenCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return credential.getToken();
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        return credential.getToken().block();
     }
 }

@@ -8,22 +8,23 @@ import com.azure.resourcemanager.managedapplications.models.JitRequestDefinition
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for JitRequests Update. */
+/**
+ * Samples for JitRequests Update.
+ */
 public final class JitRequestsUpdateSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateJitRequest.json
+     * x-ms-original-file:
+     * specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/updateJitRequest.json
      */
     /**
      * Sample code: Update jit request.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
     public static void updateJitRequest(com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
-        JitRequestDefinition resource =
-            manager
-                .jitRequests()
-                .getByResourceGroupWithResponse("rg", "myJitRequest", com.azure.core.util.Context.NONE)
-                .getValue();
+        JitRequestDefinition resource = manager.jitRequests()
+            .getByResourceGroupWithResponse("rg", "myJitRequest", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("department", "Finance")).apply();
     }
 

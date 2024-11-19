@@ -1,18 +1,29 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.base;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.Base64Variant;
+import io.clientcore.core.json.implementation.jackson.core.JsonParseException;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonStreamContext;
+import io.clientcore.core.json.implementation.jackson.core.JsonToken;
+import io.clientcore.core.json.implementation.jackson.core.JsonTokenId;
 import io.clientcore.core.json.implementation.jackson.core.exc.InputCoercionException;
 import io.clientcore.core.json.implementation.jackson.core.io.JsonEOFException;
 import io.clientcore.core.json.implementation.jackson.core.io.NumberInput;
 import io.clientcore.core.json.implementation.jackson.core.util.ByteArrayBuilder;
-import io.clientcore.core.json.implementation.jackson.core.util.VersionUtil;
 
-import static io.clientcore.core.json.implementation.jackson.core.JsonTokenId.*;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+
+import static io.clientcore.core.json.implementation.jackson.core.JsonTokenId.ID_EMBEDDED_OBJECT;
+import static io.clientcore.core.json.implementation.jackson.core.JsonTokenId.ID_FALSE;
+import static io.clientcore.core.json.implementation.jackson.core.JsonTokenId.ID_NULL;
+import static io.clientcore.core.json.implementation.jackson.core.JsonTokenId.ID_NUMBER_FLOAT;
+import static io.clientcore.core.json.implementation.jackson.core.JsonTokenId.ID_NUMBER_INT;
+import static io.clientcore.core.json.implementation.jackson.core.JsonTokenId.ID_STRING;
+import static io.clientcore.core.json.implementation.jackson.core.JsonTokenId.ID_TRUE;
 
 /**
  * Intermediate base class used by all Jackson {@link JsonParser}
@@ -30,10 +41,7 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static int INT_CR = '\r';
     protected final static int INT_SPACE = 0x0020;
 
-    // Markup
-    protected final static int INT_LBRACKET = '[';
     protected final static int INT_RBRACKET = ']';
-    protected final static int INT_LCURLY = '{';
     protected final static int INT_RCURLY = '}';
     protected final static int INT_QUOTE = '"';
     protected final static int INT_APOS = '\'';
@@ -61,15 +69,10 @@ public abstract class ParserMinimalBase extends JsonParser {
      */
     protected final static byte[] NO_BYTES = new byte[0];
 
-    /**
-     * @since 2.9
-     */
-    protected final static int[] NO_INTS = new int[0];
-
     /*
-    /**********************************************************
-    /* Constants and fields of former 'JsonNumericParserBase'
-    /**********************************************************
+     * /**********************************************************
+     * /* Constants and fields of former 'JsonNumericParserBase'
+     * /**********************************************************
      */
 
     protected final static int NR_UNKNOWN = 0;
@@ -106,21 +109,21 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static BigDecimal BD_MIN_INT = new BigDecimal(BI_MIN_INT);
     protected final static BigDecimal BD_MAX_INT = new BigDecimal(BI_MAX_INT);
 
-    protected final static long MIN_INT_L = (long) Integer.MIN_VALUE;
-    protected final static long MAX_INT_L = (long) Integer.MAX_VALUE;
+    protected final static long MIN_INT_L = Integer.MIN_VALUE;
+    protected final static long MAX_INT_L = Integer.MAX_VALUE;
 
     // These are not very accurate, but have to do... (for bounds checks)
 
     protected final static double MIN_LONG_D = (double) Long.MIN_VALUE;
     protected final static double MAX_LONG_D = (double) Long.MAX_VALUE;
 
-    protected final static double MIN_INT_D = (double) Integer.MIN_VALUE;
-    protected final static double MAX_INT_D = (double) Integer.MAX_VALUE;
+    protected final static double MIN_INT_D = Integer.MIN_VALUE;
+    protected final static double MAX_INT_D = Integer.MAX_VALUE;
 
     /*
-    /**********************************************************
-    /* Misc other constants
-    /**********************************************************
+     * /**********************************************************
+     * /* Misc other constants
+     * /**********************************************************
      */
 
     /**
@@ -132,9 +135,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static int MAX_ERROR_TOKEN_LENGTH = 256;
 
     /*
-    /**********************************************************
-    /* Minimal generally useful state
-    /**********************************************************
+     * /**********************************************************
+     * /* Minimal generally useful state
+     * /**********************************************************
      */
 
     /**
@@ -151,13 +154,10 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected JsonToken _lastClearedToken;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
-
-    protected ParserMinimalBase() {
-    }
 
     protected ParserMinimalBase(int features) {
         super(features);
@@ -167,22 +167,22 @@ public abstract class ParserMinimalBase extends JsonParser {
     // public abstract Version version();
 
     /*
-    /**********************************************************
-    /* Configuration overrides if any
-    /**********************************************************
+     * /**********************************************************
+     * /* Configuration overrides if any
+     * /**********************************************************
      */
 
     // from base class:
 
-    //public void enableFeature(Feature f)
-    //public void disableFeature(Feature f)
-    //public void setFeature(Feature f, boolean state)
-    //public boolean isFeatureEnabled(Feature f)
+    // public void enableFeature(Feature f)
+    // public void disableFeature(Feature f)
+    // public void setFeature(Feature f, boolean state)
+    // public boolean isFeatureEnabled(Feature f)
 
     /*
-    /**********************************************************
-    /* JsonParser impl
-    /**********************************************************
+     * /**********************************************************
+     * /* JsonParser impl
+     * /**********************************************************
      */
 
     @Override
@@ -269,7 +269,8 @@ public abstract class ParserMinimalBase extends JsonParser {
             JsonToken t = nextToken();
             if (t == null) {
                 _handleEOF();
-                /* given constraints, above should never return;
+                /*
+                 * given constraints, above should never return;
                  * however, FindBugs doesn't know about it and
                  * complains... so let's add dummy break here
                  */
@@ -300,8 +301,8 @@ public abstract class ParserMinimalBase extends JsonParser {
      */
     protected abstract void _handleEOF() throws JsonParseException;
 
-    //public JsonToken getCurrentToken()
-    //public boolean hasCurrentToken()
+    // public JsonToken getCurrentToken()
+    // public boolean hasCurrentToken()
 
     @Override
     public abstract String getCurrentName() throws IOException;
@@ -315,14 +316,14 @@ public abstract class ParserMinimalBase extends JsonParser {
     @Override
     public abstract JsonStreamContext getParsingContext();
 
-    //    public abstract JsonLocation getTokenLocation();
+    // public abstract JsonLocation getTokenLocation();
 
-    //   public abstract JsonLocation getCurrentLocation();
+    // public abstract JsonLocation getCurrentLocation();
 
     /*
-    /**********************************************************
-    /* Public API, token state overrides
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, token state overrides
+     * /**********************************************************
      */
 
     @Override
@@ -342,9 +343,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     public abstract void overrideCurrentName(String name);
 
     /*
-    /**********************************************************
-    /* Public API, access to token information, text
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, access to token information, text
+     * /**********************************************************
      */
 
     @Override
@@ -363,18 +364,18 @@ public abstract class ParserMinimalBase extends JsonParser {
     public abstract int getTextOffset() throws IOException;
 
     /*
-    /**********************************************************
-    /* Public API, access to token information, binary
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, access to token information, binary
+     * /**********************************************************
      */
 
     @Override
     public abstract byte[] getBinaryValue(Base64Variant b64variant) throws IOException;
 
     /*
-    /**********************************************************
-    /* Public API, access with conversion/coercion
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, access with conversion/coercion
+     * /**********************************************************
      */
 
     @Override
@@ -556,9 +557,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     /*
-    /**********************************************************
-    /* Base64 decoding
-    /**********************************************************
+     * /**********************************************************
+     * /* Base64 decoding
+     * /**********************************************************
      */
 
     /**
@@ -581,9 +582,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     /*
-    /**********************************************************
-    /* Coercion helper methods (overridable)
-    /**********************************************************
+     * /**********************************************************
+     * /* Coercion helper methods (overridable)
+     * /**********************************************************
      */
 
     /**
@@ -605,9 +606,9 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     /*
-    /**********************************************************
-    /* Error reporting
-    /**********************************************************
+     * /**********************************************************
+     * /* Error reporting
+     * /**********************************************************
      */
 
     protected void reportUnexpectedNumberChar(int ch, String comment) throws JsonParseException {
@@ -772,12 +773,12 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     /*
-    /**********************************************************
-    /* Error reporting, generic
-    /**********************************************************
+     * /**********************************************************
+     * /* Error reporting, generic
+     * /**********************************************************
      */
 
-    protected final static String _getCharDesc(int ch) {
+    protected static String _getCharDesc(int ch) {
         char c = (char) ch;
         if (Character.isISOControl(c)) {
             return "(CTRL-CHAR, code " + ch + ")";
@@ -807,7 +808,7 @@ public abstract class ParserMinimalBase extends JsonParser {
     }
 
     protected final void _throwInternal() {
-        VersionUtil.throwInternal();
+        throw new RuntimeException("Internal error: this code path should never get executed");
     }
 
     protected final JsonParseException _constructError(String msg, Throwable t) {
@@ -825,10 +826,6 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     @Deprecated // since 2.11
     protected static String _ascii(byte[] b) {
-        try {
-            return new String(b, "US-ASCII");
-        } catch (IOException e) { // never occurs
-            throw new RuntimeException(e);
-        }
+        return new String(b, StandardCharsets.US_ASCII);
     }
 }

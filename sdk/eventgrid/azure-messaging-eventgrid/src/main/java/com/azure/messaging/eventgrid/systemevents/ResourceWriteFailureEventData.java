@@ -17,8 +17,8 @@ import java.io.UncheckedIOException;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteFailure event. This is
- * raised when a resource create or update operation fails.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteFailure event. This is raised
+ * when a resource create or update operation fails.
  */
 @Fluent
 public final class ResourceWriteFailureEventData implements JsonSerializable<ResourceWriteFailureEventData> {
@@ -304,6 +304,9 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -375,9 +378,8 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteFailureEventData#getResourceClaims()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteFailureEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -397,9 +399,8 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @param claims the claims value to set.
      * @return the ResourceWriteFailureEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteFailureEventData#setResourceClaims(Map)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteFailureEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceWriteFailureEventData setClaims(String claims) {
@@ -415,9 +416,8 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteFailureEventData#getResourceHttpRequest()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteFailureEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -434,9 +434,8 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteFailureEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceWriteFailureEventData setHttpRequest(String httpRequest) {
@@ -453,9 +452,8 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteFailureEventData#getResourceAuthorization()} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteFailureEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -472,9 +470,8 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @param authorization the authorization value to set.
      * @return the ResourceWriteFailureEventData object itself.
-     * @deprecated This method is no longer supported since v4.9.0.
-     * <p>
-     * Use {@link ResourceWriteFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * @deprecated This method is no longer supported since v4.9.0. <p> Use
+     * {@link ResourceWriteFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceWriteFailureEventData setAuthorization(String authorization) {

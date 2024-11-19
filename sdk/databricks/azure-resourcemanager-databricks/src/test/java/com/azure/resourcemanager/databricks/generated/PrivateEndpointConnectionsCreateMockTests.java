@@ -6,49 +6,30 @@ package com.azure.resourcemanager.databricks.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databricks.AzureDatabricksManager;
 import com.azure.resourcemanager.databricks.models.PrivateEndpoint;
 import com.azure.resourcemanager.databricks.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.databricks.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.databricks.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.databricks.models.PrivateLinkServiceConnectionStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"xvy\"},\"groupIds\":[\"gkopkwhojvpajqgx\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ocmbqfqvmkcxoza\",\"actionsRequired\":\"helxprglya\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ckcb\",\"name\":\"uejrjxgc\",\"type\":\"qibrhosxsdqrhzoy\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"rxbpyb\"},\"groupIds\":[\"bjf\",\"twss\",\"t\",\"tpvjzbexilzznfqq\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"pmqtaru\",\"actionsRequired\":\"jmkcjhwqytj\"},\"provisioningState\":\"Succeeded\"},\"id\":\"n\",\"name\":\"jewgdrjerv\",\"type\":\"aen\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AzureDatabricksManager manager = AzureDatabricksManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
@@ -56,23 +37,22 @@ public final class PrivateEndpointConnectionsCreateMockTests {
 
         PrivateEndpointConnection response
             = manager.privateEndpointConnections()
-                .define("qsluicp")
-                .withExistingWorkspace("mgxcxrslpm", "twuoegrpkhjwni")
+                .define("qzvszjf")
+                .withExistingWorkspace("xjyngudivk", "tswb")
                 .withProperties(
                     new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
-                        .withGroupIds(Arrays.asList("fy"))
+                        .withGroupIds(Arrays.asList("xivetvt", "qaqtdoqmcbxvwvxy"))
                         .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                            .withDescription("pfvmwyhrfou")
-                            .withActionsRequired("taakc")))
+                            .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                            .withDescription("bhsfxob")
+                            .withActionsRequired("tkblmpewww")))
                 .create();
 
-        Assertions.assertEquals("gkopkwhojvpajqgx", response.properties().groupIds().get(0));
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals("bjf", response.properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ocmbqfqvmkcxoza",
-            response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("helxprglya",
+        Assertions.assertEquals("pmqtaru", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("jmkcjhwqytj",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

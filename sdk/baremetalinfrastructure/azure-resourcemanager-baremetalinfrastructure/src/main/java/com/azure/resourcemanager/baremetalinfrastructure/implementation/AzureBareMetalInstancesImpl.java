@@ -90,23 +90,23 @@ public final class AzureBareMetalInstancesImpl implements AzureBareMetalInstance
 
     public PagedIterable<AzureBareMetalInstance> list() {
         PagedIterable<AzureBareMetalInstanceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureBareMetalInstance> list(Context context) {
         PagedIterable<AzureBareMetalInstanceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureBareMetalInstance> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AzureBareMetalInstanceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureBareMetalInstance> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<AzureBareMetalInstanceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBareMetalInstanceImpl(inner1, this.manager()));
     }
 
     public Response<AzureBareMetalInstance> getByResourceGroupWithResponse(String resourceGroupName,

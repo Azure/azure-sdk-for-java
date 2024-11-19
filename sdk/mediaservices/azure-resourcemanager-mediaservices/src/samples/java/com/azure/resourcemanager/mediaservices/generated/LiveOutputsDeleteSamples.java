@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-/** Samples for LiveOutputs Delete. */
+/**
+ * Samples for LiveOutputs Delete.
+ */
 public final class LiveOutputsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/liveoutput-delete.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/liveoutput-
+     * delete.json
      */
     /**
      * Sample code: Delete a LiveOutput.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
     public static void deleteALiveOutput(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager
-            .liveOutputs()
-            .delete(
-                "mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1", com.azure.core.util.Context.NONE);
+        manager.liveOutputs()
+            .delete("mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1",
+                com.azure.core.util.Context.NONE);
     }
 }

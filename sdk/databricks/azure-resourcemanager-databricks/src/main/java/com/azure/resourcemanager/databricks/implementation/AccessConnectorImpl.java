@@ -131,8 +131,8 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
         com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectorName = Utils.getValueFromIdByName(innerObject.id(), "accessConnectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessConnectors");
     }
 
     public AccessConnector refresh() {

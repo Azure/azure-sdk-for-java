@@ -48,7 +48,7 @@ public class AvroParser {
     private List<AvroObject> objects;
 
     private final boolean partialRead; /* Whether the Avro Parser will read the Header and Block off different
-                                     streams. This is custom functionality for Changefeed. */
+                                       streams. This is custom functionality for Changefeed. */
 
     /**
      * Constructs a new Avro Parser object.
@@ -149,8 +149,8 @@ public class AvroParser {
             return Flux.empty();
         }
         AvroSchema schema = this.state.peekFromStack();
-        while ((schema instanceof AvroCompositeSchema) || ((schema instanceof AvroSimpleSchema)
-            && ((AvroSimpleSchema) schema).canProgress())) {
+        while ((schema instanceof AvroCompositeSchema)
+            || ((schema instanceof AvroSimpleSchema) && ((AvroSimpleSchema) schema).canProgress())) {
             if (schema instanceof AvroSimpleSchema) {
                 ((AvroSimpleSchema) schema).progress();
             }

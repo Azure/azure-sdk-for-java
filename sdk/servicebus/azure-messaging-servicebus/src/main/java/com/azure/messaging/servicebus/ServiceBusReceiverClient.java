@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
@@ -639,7 +640,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final Flux<ServiceBusReceivedMessage> messagesFlux
             = tracer.traceSyncReceive("ServiceBus.receiveMessages", emitter.asFlux());
         // messagesFlux is already a hot publisher, so it's ok to subscribe
-        messagesFlux.subscribe();
+        MessageUtils.subscribe(messagesFlux);
 
         return new IterableStream<>(messagesFlux);
     }
@@ -966,7 +967,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         Flux<T> cached = flux.cache();
 
         // Subscribe to message flux so we can kick off this operation
-        cached.subscribe();
+        MessageUtils.subscribe(cached);
         return new IterableStream<>(cached);
     }
 }

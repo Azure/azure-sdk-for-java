@@ -85,13 +85,15 @@ public final class AppendBlobClient extends BlobClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
-    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = BlobConstants.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW
+        = BlobConstants.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      * For versions 2022-11-02 and above.
      */
-    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = BlobConstants.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE
+        = BlobConstants.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
      */
@@ -130,8 +132,8 @@ public final class AppendBlobClient extends BlobClientBase {
     AppendBlobClient(AppendBlobAsyncClient asyncClient, HttpPipeline pipeline, String url,
         BlobServiceVersion serviceVersion, String accountName, String containerName, String blobName, String snapshot,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId) {
-        super(asyncClient, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, versionId);
+        super(asyncClient, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot,
+            customerProvidedKey, encryptionScope, versionId);
         this.appendBlobAsyncClient = asyncClient;
     }
 
@@ -163,8 +165,7 @@ public final class AppendBlobClient extends BlobClientBase {
     public AppendBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
-            finalCustomerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -196,7 +197,8 @@ public final class AppendBlobClient extends BlobClientBase {
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         AppendBlobRequestConditions requestConditions = null;
         if (!overwrite) {
-            requestConditions = new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            requestConditions
+                = new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         } else {
             // creating new blob to overwrite existing blob
             create(true);
@@ -295,7 +297,8 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        return this.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+        return this.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers)
+            .setMetadata(metadata)
             .setRequestConditions(requestConditions), timeout, context);
     }
 
@@ -334,20 +337,22 @@ public final class AppendBlobClient extends BlobClientBase {
         Context context) {
         AppendBlobCreateOptions finalOptions = (options == null) ? new AppendBlobCreateOptions() : options;
         BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
-            ? new BlobRequestConditions() : finalOptions.getRequestConditions();
+            ? new BlobRequestConditions()
+            : finalOptions.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy = finalOptions.getImmutabilityPolicy() == null
-            ? new BlobImmutabilityPolicy() : finalOptions.getImmutabilityPolicy();
-        Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation = () ->
-            this.azureBlobStorage.getAppendBlobs().createWithResponse(containerName, blobName, 0, null,
-                finalOptions.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+            ? new BlobImmutabilityPolicy()
+            : finalOptions.getImmutabilityPolicy();
+        Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation = () -> this.azureBlobStorage.getAppendBlobs()
+            .createWithResponse(containerName, blobName, 0, null, finalOptions.getMetadata(),
+                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 ModelHelper.tagsToString(finalOptions.getTags()), immutabilityPolicy.getExpiryTime(),
                 immutabilityPolicy.getPolicyMode(), finalOptions.hasLegalHold(), finalOptions.getHeaders(),
                 getCustomerProvidedKey(), encryptionScope, finalContext);
-        ResponseBase<AppendBlobsCreateHeaders, Void> response = sendRequest(operation, timeout,
-            BlobStorageException.class);
+        ResponseBase<AppendBlobsCreateHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
         AppendBlobsCreateHeaders hd = response.getDeserializedHeaders();
         AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
             hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), null, null,
@@ -410,8 +415,8 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout,
         Context context) {
         AppendBlobCreateOptions finalOptions = options == null ? new AppendBlobCreateOptions() : options;
-        finalOptions.setRequestConditions(new AppendBlobRequestConditions()
-            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+        finalOptions.setRequestConditions(
+            new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
             return createWithResponse(finalOptions, timeout, context);
         } catch (BlobStorageException e) {
@@ -580,8 +585,10 @@ public final class AppendBlobClient extends BlobClientBase {
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
             new AppendBlobAppendBlockFromUrlOptions(sourceUrl).setSourceRange(sourceRange)
-                .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
-                .setSourceRequestConditions(sourceRequestConditions), context);
+                .setSourceContentMd5(sourceContentMd5)
+                .setDestinationRequestConditions(destRequestConditions)
+                .setSourceRequestConditions(sourceRequestConditions),
+            context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -616,10 +623,10 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return The information of the append blob operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options, Duration timeout,
-        Context context) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
-            options, context);
+    public Response<AppendBlobItem> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options,
+        Duration timeout, Context context) {
+        Mono<Response<AppendBlobItem>> response
+            = appendBlobAsyncClient.appendBlockFromUrlWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -666,14 +673,15 @@ public final class AppendBlobClient extends BlobClientBase {
         AppendBlobSealOptions finalOptions = (options == null) ? new AppendBlobSealOptions() : options;
 
         AppendBlobRequestConditions requestConditions = (finalOptions.getRequestConditions() == null)
-            ? new AppendBlobRequestConditions() : finalOptions.getRequestConditions();
+            ? new AppendBlobRequestConditions()
+            : finalOptions.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<Void>> operation = () ->
-            this.azureBlobStorage.getAppendBlobs().sealNoCustomHeadersWithResponse(containerName, blobName, null, null,
-                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(), finalContext);
+        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getAppendBlobs()
+            .sealNoCustomHeadersWithResponse(containerName, blobName, null, null, requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getAppendPosition(), finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 

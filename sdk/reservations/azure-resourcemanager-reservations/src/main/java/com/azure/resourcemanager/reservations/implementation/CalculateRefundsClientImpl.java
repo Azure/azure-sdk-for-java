@@ -27,17 +27,23 @@ import com.azure.resourcemanager.reservations.fluent.models.CalculateRefundRespo
 import com.azure.resourcemanager.reservations.models.CalculateRefundRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CalculateRefundsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CalculateRefundsClient.
+ */
 public final class CalculateRefundsClientImpl implements CalculateRefundsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CalculateRefundsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of CalculateRefundsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CalculateRefundsClientImpl(AzureReservationApiImpl client) {
@@ -65,16 +71,16 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of calculate refund containing refund information of reservation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(String reservationOrderId,
@@ -101,9 +107,9 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @param context The context to associate with this operation.
@@ -111,7 +117,7 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of calculate refund containing refund information of reservation along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(String reservationOrderId,
@@ -137,16 +143,16 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of calculate refund containing refund information of reservation on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CalculateRefundResponseInner> postAsync(String reservationOrderId, CalculateRefundRequest body) {
@@ -155,17 +161,17 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of calculate refund containing refund information of reservation along with {@link
-     *     Response}.
+     * @return the response of calculate refund containing refund information of reservation along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CalculateRefundResponseInner> postWithResponse(String reservationOrderId,
@@ -175,9 +181,9 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

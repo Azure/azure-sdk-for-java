@@ -29,17 +29,23 @@ import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRunt
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IntegrationRuntimeNodesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationRuntimeNodesClient.
+ */
 public final class IntegrationRuntimeNodesClientImpl implements IntegrationRuntimeNodesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeNodesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeNodesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeNodesClientImpl(SynapseManagementClientImpl client) {
@@ -56,8 +62,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeNodesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> get(@HostParam("$host") String endpoint,
@@ -67,8 +72,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> update(@HostParam("$host") String endpoint,
@@ -79,8 +83,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -92,9 +95,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Get integration runtime node
-     *
-     * <p>Get an integration runtime node.
-     *
+     * 
+     * Get an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -139,9 +142,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Get integration runtime node
-     *
-     * <p>Get an integration runtime node.
-     *
+     * 
+     * Get an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -186,9 +189,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Get integration runtime node
-     *
-     * <p>Get an integration runtime node.
-     *
+     * 
+     * Get an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -207,9 +210,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Get integration runtime node
-     *
-     * <p>Get an integration runtime node.
-     *
+     * 
+     * Get an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -229,9 +232,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Get integration runtime node
-     *
-     * <p>Get an integration runtime node.
-     *
+     * 
+     * Get an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -250,9 +253,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Create integration runtime node
-     *
-     * <p>Create an integration runtime node.
-     *
+     * 
+     * Create an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -262,7 +265,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of Self-hosted integration runtime node along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> updateWithResponseAsync(String resourceGroupName,
@@ -307,9 +310,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Create integration runtime node
-     *
-     * <p>Create an integration runtime node.
-     *
+     * 
+     * Create an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -320,7 +323,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of Self-hosted integration runtime node along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> updateWithResponseAsync(String resourceGroupName,
@@ -363,9 +366,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Create integration runtime node
-     *
-     * <p>Create an integration runtime node.
-     *
+     * 
+     * Create an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -386,9 +389,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Create integration runtime node
-     *
-     * <p>Create an integration runtime node.
-     *
+     * 
+     * Create an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -410,9 +413,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Create integration runtime node
-     *
-     * <p>Create an integration runtime node.
-     *
+     * 
+     * Create an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -433,9 +436,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Delete integration runtime node
-     *
-     * <p>Delete an integration runtime node.
-     *
+     * 
+     * Delete an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -481,9 +484,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Delete integration runtime node
-     *
-     * <p>Delete an integration runtime node.
-     *
+     * 
+     * Delete an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -528,9 +531,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Delete integration runtime node
-     *
-     * <p>Delete an integration runtime node.
-     *
+     * 
+     * Delete an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -549,9 +552,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Delete integration runtime node
-     *
-     * <p>Delete an integration runtime node.
-     *
+     * 
+     * Delete an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -571,9 +574,9 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Delete integration runtime node
-     *
-     * <p>Delete an integration runtime node.
-     *
+     * 
+     * Delete an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

@@ -58,6 +58,9 @@ parameters:
   - name: EnvVars
     type: object
     default: {}
+  - name: VersionOverride
+    type: string
+    default: $(VersionOverride)
 
 jobs:
   - job: 'Build'
@@ -67,6 +70,7 @@ jobs:
       Codeql.Enabled: true
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
+      SDKType: ${{ parameters.SDKType }}
 
     pool:
       name: $(LINUXPOOL)
@@ -199,7 +203,6 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
           arguments: >
             -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
-            -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
           pwsh: true
           workingDirectory: $(Pipeline.Workspace)
         displayName: Update package properties with namespaces
@@ -415,3 +418,4 @@ jobs:
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
         EnvVars: ${{ parameters.EnvVars }}
+        VersionOverride: ${{ parameters.VersionOverride }}

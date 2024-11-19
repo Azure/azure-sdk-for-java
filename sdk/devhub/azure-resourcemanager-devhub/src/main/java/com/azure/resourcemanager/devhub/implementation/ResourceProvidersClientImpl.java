@@ -32,17 +32,23 @@ import com.azure.resourcemanager.devhub.models.GitHubOAuthCallRequest;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DeveloperHubServiceClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(DeveloperHubServiceClientImpl client) {
@@ -97,14 +103,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters GitHubOAuth request object.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuthWithResponseAsync(String location,
@@ -132,15 +138,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters GitHubOAuth request object.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuthWithResponseAsync(String location,
@@ -167,13 +173,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GitHubOAuthInfoResponseInner> gitHubOAuthAsync(String location) {
@@ -183,15 +189,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters GitHubOAuth request object.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App along with {@link
-     *     Response}.
+     * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubOAuthInfoResponseInner> gitHubOAuthWithResponse(String location,
@@ -201,7 +207,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -216,7 +222,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param code The code response from authenticating the GitHub App.
      * @param state The state response from authenticating the GitHub App.
@@ -224,7 +230,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return singleton response of GitHubOAuth containing along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubOAuthResponseInner>> gitHubOAuthCallbackWithResponseAsync(String location, String code,
@@ -255,7 +261,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param code The code response from authenticating the GitHub App.
      * @param state The state response from authenticating the GitHub App.
@@ -264,7 +270,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return singleton response of GitHubOAuth containing along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubOAuthResponseInner>> gitHubOAuthCallbackWithResponseAsync(String location, String code,
@@ -294,7 +300,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param code The code response from authenticating the GitHub App.
      * @param state The state response from authenticating the GitHub App.
@@ -311,7 +317,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param code The code response from authenticating the GitHub App.
      * @param state The state response from authenticating the GitHub App.
@@ -329,7 +335,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param code The code response from authenticating the GitHub App.
      * @param state The state response from authenticating the GitHub App.
@@ -345,13 +351,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from List GitHubOAuth operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubOAuthListResponseInner>> listGitHubOAuthWithResponseAsync(String location) {
@@ -375,14 +381,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from List GitHubOAuth operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubOAuthListResponseInner>> listGitHubOAuthWithResponseAsync(String location,
@@ -406,7 +412,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -420,7 +426,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,7 +441,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -449,14 +455,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generate preview dockerfile and manifests.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
-     *     string&gt; along with {@link Response} on successful completion of {@link Mono}.
+     * string&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Map<String, String>>> generatePreviewArtifactsWithResponseAsync(String location,
@@ -486,15 +492,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generate preview dockerfile and manifests.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
-     *     string&gt; along with {@link Response} on successful completion of {@link Mono}.
+     * string&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Map<String, String>>> generatePreviewArtifactsWithResponseAsync(String location,
@@ -523,14 +529,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generate preview dockerfile and manifests.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
-     *     string&gt; on successful completion of {@link Mono}.
+     * string&gt; on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Map<String, String>> generatePreviewArtifactsAsync(String location,
@@ -541,15 +547,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generate preview dockerfile and manifests.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
-     *     string&gt; along with {@link Response}.
+     * string&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Map<String, String>> generatePreviewArtifactsWithResponse(String location,
@@ -559,14 +565,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generate preview dockerfile and manifests.
-     *
+     * 
      * @param location The name of Azure region.
-     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
-     *     string&gt;.
+     * string&gt;.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Map<String, String> generatePreviewArtifacts(String location, ArtifactGenerationProperties parameters) {

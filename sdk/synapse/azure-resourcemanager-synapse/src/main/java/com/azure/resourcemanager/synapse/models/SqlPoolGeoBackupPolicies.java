@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolGeoBackupPolicies. */
+/**
+ * Resource collection API of SqlPoolGeoBackupPolicies.
+ */
 public interface SqlPoolGeoBackupPolicies {
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -27,9 +29,9 @@ public interface SqlPoolGeoBackupPolicies {
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -44,9 +46,9 @@ public interface SqlPoolGeoBackupPolicies {
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -62,9 +64,9 @@ public interface SqlPoolGeoBackupPolicies {
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -79,9 +81,9 @@ public interface SqlPoolGeoBackupPolicies {
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,9 +94,9 @@ public interface SqlPoolGeoBackupPolicies {
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +108,7 @@ public interface SqlPoolGeoBackupPolicies {
 
     /**
      * Begins definition for a new GeoBackupPolicy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new GeoBackupPolicy definition.
      */

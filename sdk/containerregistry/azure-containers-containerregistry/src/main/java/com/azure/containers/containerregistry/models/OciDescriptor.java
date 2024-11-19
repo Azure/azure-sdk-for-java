@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** Docker V2 image layer descriptor including config and layers. */
+/**
+ * Docker V2 image layer descriptor including config and layers.
+ */
 @Fluent
 public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
     /*
@@ -40,13 +42,15 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
      */
     private OciAnnotations annotations;
 
-    /** Creates an instance of OciDescriptor class. */
+    /**
+     * Creates an instance of OciDescriptor class.
+     */
     public OciDescriptor() {
     }
 
     /**
      * Get the mediaType property: Layer media type.
-     *
+     * 
      * @return the mediaType value.
      */
     public String getMediaType() {
@@ -55,7 +59,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Set the mediaType property: Layer media type.
-     *
+     * 
      * @param mediaType the mediaType value to set.
      * @return the OciDescriptor object itself.
      */
@@ -66,7 +70,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Get the sizeInBytes property: Layer size.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long getSizeInBytes() {
@@ -75,7 +79,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Set the sizeInBytes property: Layer size.
-     *
+     * 
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the OciDescriptor object itself.
      */
@@ -86,7 +90,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Get the digest property: Layer digest.
-     *
+     * 
      * @return the digest value.
      */
     public String getDigest() {
@@ -95,7 +99,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Set the digest property: Layer digest.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the OciDescriptor object itself.
      */
@@ -106,7 +110,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Get the urls property: Specifies a list of URIs from which this object may be downloaded.
-     *
+     * 
      * @return the urls value.
      */
     public List<String> getUrls() {
@@ -115,7 +119,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Set the urls property: Specifies a list of URIs from which this object may be downloaded.
-     *
+     * 
      * @param urls the urls value to set.
      * @return the OciDescriptor object itself.
      */
@@ -126,7 +130,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Get the annotations property: Additional information provided through arbitrary metadata.
-     *
+     * 
      * @return the annotations value.
      */
     public OciAnnotations getAnnotations() {
@@ -135,7 +139,7 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Set the annotations property: Additional information provided through arbitrary metadata.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the OciDescriptor object itself.
      */
@@ -144,6 +148,9 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -157,10 +164,10 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Reads an instance of OciDescriptor from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of OciDescriptor if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the OciDescriptor.
      */
     public static OciDescriptor fromJson(JsonReader jsonReader) throws IOException {

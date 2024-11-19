@@ -63,33 +63,35 @@ public final class ApplicationTypeVersionsImpl implements ApplicationTypeVersion
         String applicationTypeName) {
         PagedIterable<ApplicationTypeVersionResourceInner> inner
             = this.serviceClient().list(resourceGroupName, clusterName, applicationTypeName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationTypeVersionResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationTypeVersionResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplicationTypeVersionResource> list(String resourceGroupName, String clusterName,
         String applicationTypeName, Context context) {
         PagedIterable<ApplicationTypeVersionResourceInner> inner
             = this.serviceClient().list(resourceGroupName, clusterName, applicationTypeName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationTypeVersionResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationTypeVersionResourceImpl(inner1, this.manager()));
     }
 
     public ApplicationTypeVersionResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String applicationTypeName = Utils.getValueFromIdByName(id, "applicationTypes");
+        String applicationTypeName = ResourceManagerUtils.getValueFromIdByName(id, "applicationTypes");
         if (applicationTypeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applicationTypes'.", id)));
         }
-        String version = Utils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
         if (version == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -99,22 +101,22 @@ public final class ApplicationTypeVersionsImpl implements ApplicationTypeVersion
     }
 
     public Response<ApplicationTypeVersionResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String applicationTypeName = Utils.getValueFromIdByName(id, "applicationTypes");
+        String applicationTypeName = ResourceManagerUtils.getValueFromIdByName(id, "applicationTypes");
         if (applicationTypeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applicationTypes'.", id)));
         }
-        String version = Utils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
         if (version == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -123,22 +125,22 @@ public final class ApplicationTypeVersionsImpl implements ApplicationTypeVersion
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String applicationTypeName = Utils.getValueFromIdByName(id, "applicationTypes");
+        String applicationTypeName = ResourceManagerUtils.getValueFromIdByName(id, "applicationTypes");
         if (applicationTypeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applicationTypes'.", id)));
         }
-        String version = Utils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
         if (version == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
@@ -147,22 +149,22 @@ public final class ApplicationTypeVersionsImpl implements ApplicationTypeVersion
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String applicationTypeName = Utils.getValueFromIdByName(id, "applicationTypes");
+        String applicationTypeName = ResourceManagerUtils.getValueFromIdByName(id, "applicationTypes");
         if (applicationTypeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applicationTypes'.", id)));
         }
-        String version = Utils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
         if (version == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));

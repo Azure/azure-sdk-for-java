@@ -114,7 +114,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         TestUtils.getTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
-    void buildBatchModelRunner(Consumer<String> testRunner) {
+    void buildBatchModelRunner(BiConsumer<String, String> testRunner) {
         TestUtils.getBatchTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
@@ -199,8 +199,6 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertNotNull(itemsMap.get("Amount").getConfidence());
         assertEquals(LocalDate.of(2017, 6, 18), itemsMap.get("Date").getValueDate());
         assertNotNull(itemsMap.get("Date").getConfidence());
-        assertEquals("34278587", itemsMap.get("ProductCode").getValueString());
-        assertNotNull(itemsMap.get("ProductCode").getConfidence());
         Assertions.assertNotNull(analyzeResult.getPages());
     }
 
@@ -290,7 +288,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[][] table = new int[][] { { 5, 4, 20 }, { 4, 2, 8 } };
+        int[][] table = new int[][] { { 5, 4, 20 }, { 3, 2, 6 } };
         Assertions.assertEquals(2, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             int j = 0;

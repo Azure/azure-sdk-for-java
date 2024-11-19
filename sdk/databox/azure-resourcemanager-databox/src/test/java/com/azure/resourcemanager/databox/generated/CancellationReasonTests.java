@@ -12,14 +12,14 @@ public final class CancellationReasonTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CancellationReason model
-            = BinaryData.fromString("{\"reason\":\"kiidzyex\"}").toObject(CancellationReason.class);
-        Assertions.assertEquals("kiidzyex", model.reason());
+            = BinaryData.fromString("{\"reason\":\"dkzzewkfvhqcrail\"}").toObject(CancellationReason.class);
+        Assertions.assertEquals("dkzzewkfvhqcrail", model.reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CancellationReason model = new CancellationReason().withReason("kiidzyex");
+        CancellationReason model = new CancellationReason().withReason("dkzzewkfvhqcrail");
         model = BinaryData.fromObject(model).toObject(CancellationReason.class);
-        Assertions.assertEquals("kiidzyex", model.reason());
+        Assertions.assertEquals("dkzzewkfvhqcrail", model.reason());
     }
 }

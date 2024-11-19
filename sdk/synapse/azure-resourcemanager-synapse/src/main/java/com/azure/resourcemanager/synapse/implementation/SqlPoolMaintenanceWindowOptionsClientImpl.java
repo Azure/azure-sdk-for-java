@@ -25,17 +25,23 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMaintenanceWindowOptionsC
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowOptionsInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowOptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowOptionsClient.
+ */
 public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolMaintenanceWindowOptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolMaintenanceWindowOptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolMaintenanceWindowOptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolMaintenanceWindowOptionsClientImpl(SynapseManagementClientImpl client) {
@@ -52,8 +58,7 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolMaintenanceWindowOptionsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/maintenanceWindowOptions/current")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/maintenanceWindowOptions/current")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceWindowOptionsInner>> get(@HostParam("$host") String endpoint,
@@ -66,9 +71,9 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -77,7 +82,7 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool's available maintenance windows along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(String resourceGroupName,
@@ -114,9 +119,9 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -126,7 +131,7 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool's available maintenance windows along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(String resourceGroupName,
@@ -162,9 +167,9 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -183,9 +188,9 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -205,9 +210,9 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

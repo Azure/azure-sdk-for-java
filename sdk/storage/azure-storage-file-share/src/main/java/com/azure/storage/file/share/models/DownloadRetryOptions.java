@@ -45,9 +45,8 @@ public final class DownloadRetryOptions {
      */
     public DownloadRetryOptions setMaxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,
-                    "options.maxRetryRequests", 0, Integer.MAX_VALUE)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE, "options.maxRetryRequests", 0, Integer.MAX_VALUE)));
         }
 
         this.maxRetryRequests = maxRetryRequests;

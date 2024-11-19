@@ -31,6 +31,8 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import static java.util.Collections.singletonMap;
+
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
  * context propagation. Singleton OpenTelemetry tracer capable of starting and exporting spans.
@@ -79,11 +81,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             // to resolve the actual io.opentelemetry.context.Context.
             applicationContextClass = Class.forName("#io.opentelemetry.context.Context".substring(1));
             convertAppToAgentContextMethod = agentCtxStorageClass.getMethod("getAgentContext", applicationContextClass);
-        } catch (ReflectiveOperationException t) {
+        } catch (Throwable t) {
             // it's expected if we're not running in the agent
             LOGGER.verbose("Failed to resolve AgentContextStorage.getAgentContext or one of its dependencies", t);
-        } catch (RuntimeException t) {
-            throw LOGGER.logExceptionAsError(t);
         }
     }
 
@@ -150,15 +150,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             spanBuilder.setStartTimestamp(options.getStartTimestamp());
         }
 
-        Span span = spanBuilder.startSpan();
-        if (span.isRecording()) {
-            // If span is sampled in, add additional attributes
-
-            String tracingNamespace = getAzNamespace(context);
-            if (tracingNamespace != null) {
-                OpenTelemetryUtils.addAttribute(span, AZ_TRACING_NAMESPACE_KEY, tracingNamespace);
-            }
+        String tracingNamespace = getAzNamespace(context);
+        if (tracingNamespace != null) {
+            Attributes attributes
+                = OpenTelemetryUtils.convert(singletonMap(AZ_TRACING_NAMESPACE_KEY, tracingNamespace));
+            spanBuilder.setAllAttributes(attributes);
         }
+
+        Span span = spanBuilder.startSpan();
 
         return context.addData(PARENT_TRACE_CONTEXT_KEY,
             (traceContext != null ? traceContext : io.opentelemetry.context.Context.current()).with(span));

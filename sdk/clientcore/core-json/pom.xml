@@ -59,6 +59,8 @@
     <jacoco.min.linecoverage>0.85</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
   </properties>
 
   <dependencies>

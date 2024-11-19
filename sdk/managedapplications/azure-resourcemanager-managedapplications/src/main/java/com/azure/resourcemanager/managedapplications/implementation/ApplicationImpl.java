@@ -226,8 +226,8 @@ public final class ApplicationImpl implements Application, Application.Definitio
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.applicationName = Utils.getValueFromIdByName(innerObject.id(), "applications");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
     }
 
     public Application refresh() {

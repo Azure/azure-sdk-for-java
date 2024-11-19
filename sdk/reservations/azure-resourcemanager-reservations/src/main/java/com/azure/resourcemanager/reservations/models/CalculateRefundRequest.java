@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request containing information needed for calculating refund. */
+/**
+ * Request containing information needed for calculating refund.
+ */
 @Fluent
-public final class CalculateRefundRequest {
+public final class CalculateRefundRequest implements JsonSerializable<CalculateRefundRequest> {
     /*
      * Fully qualified identifier of the reservation order being returned
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Properties needed for calculate refund including the scope and the reservation to be returned.
      */
-    @JsonProperty(value = "properties")
     private CalculateRefundRequestProperties properties;
 
-    /** Creates an instance of CalculateRefundRequest class. */
+    /**
+     * Creates an instance of CalculateRefundRequest class.
+     */
     public CalculateRefundRequest() {
     }
 
     /**
      * Get the id property: Fully qualified identifier of the reservation order being returned.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +43,7 @@ public final class CalculateRefundRequest {
 
     /**
      * Set the id property: Fully qualified identifier of the reservation order being returned.
-     *
+     * 
      * @param id the id value to set.
      * @return the CalculateRefundRequest object itself.
      */
@@ -49,7 +55,7 @@ public final class CalculateRefundRequest {
     /**
      * Get the properties property: Properties needed for calculate refund including the scope and the reservation to be
      * returned.
-     *
+     * 
      * @return the properties value.
      */
     public CalculateRefundRequestProperties properties() {
@@ -59,7 +65,7 @@ public final class CalculateRefundRequest {
     /**
      * Set the properties property: Properties needed for calculate refund including the scope and the reservation to be
      * returned.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CalculateRefundRequest object itself.
      */
@@ -70,12 +76,51 @@ public final class CalculateRefundRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CalculateRefundRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CalculateRefundRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CalculateRefundRequest.
+     */
+    public static CalculateRefundRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CalculateRefundRequest deserializedCalculateRefundRequest = new CalculateRefundRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCalculateRefundRequest.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCalculateRefundRequest.properties = CalculateRefundRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCalculateRefundRequest;
+        });
     }
 }

@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreak
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +32,7 @@ public class Configs {
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
     private final SslContext sslContext;
+    private final SslContext sslContextWithCertValidationDisabled;
 
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
@@ -255,27 +256,56 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
+    private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
+    private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
+    private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
+
+    // Config to indicate whether allow http connections
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final boolean DEFAULT_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = false;
+    private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = "COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
+    private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED_VARIABLE = "COSMOS_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
+
+    // Config to indicate whether disable server certificate validation for emulator
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final boolean DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED = false;
+    private static final String EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED = "COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED";
+    private static final String EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED_VARIABLE = "COSMOS_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED";
+
+    // Config to indicate emulator host name
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final String DEFAULT_EMULATOR_HOST = StringUtils.EMPTY;
+    private static final String EMULATOR_HOST = "COSMOS.EMULATOR_HOST";
+    private static final String EMULATOR_HOST_VARIABLE = "COSMOS_EMULATOR_HOST";
 
     public Configs() {
-        this.sslContext = sslContextInit();
+        this.sslContext = sslContextInit(false);
+        this.sslContextWithCertValidationDisabled = sslContextInit(true);
     }
 
     public static int getCPUCnt() {
         return CPU_CNT;
     }
 
-    private SslContext sslContextInit() {
+    private SslContext sslContextInit(boolean serverCertVerificationDisabled) {
         try {
-            SslProvider sslProvider = SslContext.defaultClientProvider();
-            return SslContextBuilder.forClient().sslProvider(sslProvider).build();
+            SslContextBuilder sslContextBuilder =
+                SslContextBuilder
+                    .forClient()
+                    .sslProvider(SslContext.defaultClientProvider());
+            if (serverCertVerificationDisabled) {
+                sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
+            }
+
+            return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
             throw new IllegalStateException(sslException);
         }
     }
 
-    public SslContext getSslContext() {
-        return this.sslContext;
+    public SslContext getSslContext(boolean serverCertValidationDisabled) {
+        return serverCertValidationDisabled ? this.sslContextWithCertValidationDisabled : this.sslContext;
     }
 
     public Protocol getProtocol() {
@@ -326,43 +356,43 @@ public class Configs {
         return getJVMConfigAsInt(MAX_DIRECT_HTTPS_POOL_SIZE, DEFAULT_DIRECT_HTTPS_POOL_SIZE);
     }
 
-    public int getMaxHttpHeaderSize() {
-        return getJVMConfigAsInt(MAX_HTTP_HEADER_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_REQUEST_HEADER_SIZE);
-    }
-
-    public int getMaxHttpInitialLineLength() {
-        return getJVMConfigAsInt(MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES, DEFAULT_MAX_HTTP_INITIAL_LINE_LENGTH);
-    }
-
-    public int getMaxHttpChunkSize() {
-        return getJVMConfigAsInt(MAX_HTTP_CHUNK_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_CHUNK_SIZE_IN_BYTES);
-    }
-
-    public int getMaxHttpBodyLength() {
-        return getJVMConfigAsInt(MAX_HTTP_BODY_LENGTH_IN_BYTES, DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES);
+    public int getGlobalEndpointManagerMaxInitializationTimeInSeconds() {
+        return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
     }
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
     }
 
+    public static int getMaxHttpHeaderSize() {
+        return getJVMConfigAsInt(MAX_HTTP_HEADER_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_REQUEST_HEADER_SIZE);
+    }
+
+    public static int getMaxHttpInitialLineLength() {
+        return getJVMConfigAsInt(MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES, DEFAULT_MAX_HTTP_INITIAL_LINE_LENGTH);
+    }
+
+    public static int getMaxHttpChunkSize() {
+        return getJVMConfigAsInt(MAX_HTTP_CHUNK_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_CHUNK_SIZE_IN_BYTES);
+    }
+
+    public static int getMaxHttpBodyLength() {
+        return getJVMConfigAsInt(MAX_HTTP_BODY_LENGTH_IN_BYTES, DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES);
+    }
+
     public static int getClientTelemetrySchedulingInSec() {
         return getJVMConfigAsInt(CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS, DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS);
     }
 
-    public int getGlobalEndpointManagerMaxInitializationTimeInSeconds() {
-        return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
-    }
-
-    public String getReactorNettyConnectionPoolName() {
+    public static String getReactorNettyConnectionPoolName() {
         return REACTOR_NETTY_CONNECTION_POOL_NAME;
     }
 
-    public Duration getMaxIdleConnectionTimeout() {
+    public static Duration getMaxIdleConnectionTimeout() {
         return MAX_IDLE_CONNECTION_TIMEOUT;
     }
 
-    public Duration getConnectionAcquireTimeout() {
+    public static Duration getConnectionAcquireTimeout() {
         return CONNECTION_ACQUIRE_TIMEOUT;
     }
 
@@ -394,12 +424,12 @@ public class Configs {
     public static int getDefaultHttpPoolSize() {
         String valueFromSystemProperty = System.getProperty(HTTP_DEFAULT_CONNECTION_POOL_SIZE);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
@@ -408,12 +438,12 @@ public class Configs {
     public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {
         String valueFromSystemProperty = System.getProperty(DEFAULT_E2E_FOR_NON_POINT_DISABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Boolean.valueOf(valueFromSystemProperty);
+            return Boolean.parseBoolean(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(DEFAULT_E2E_FOR_NON_POINT_DISABLED_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Boolean.valueOf(valueFromEnvVariable);
+            return Boolean.parseBoolean(valueFromEnvVariable);
         }
 
         return DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT;
@@ -422,12 +452,12 @@ public class Configs {
     public static boolean isIdValueValidationEnabled() {
         String valueFromSystemProperty = System.getProperty(PREVENT_INVALID_ID_CHARS);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return !Boolean.valueOf(valueFromSystemProperty);
+            return !Boolean.parseBoolean(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(PREVENT_INVALID_ID_CHARS_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return!Boolean.valueOf(valueFromEnvVariable);
+            return!Boolean.parseBoolean(valueFromEnvVariable);
         }
 
         return DEFAULT_PREVENT_INVALID_ID_CHARS;
@@ -436,12 +466,12 @@ public class Configs {
     public static int getMaxHttpRequestTimeout() {
         String valueFromSystemProperty = System.getProperty(HTTP_MAX_REQUEST_TIMEOUT);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(HTTP_MAX_REQUEST_TIMEOUT_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_HTTP_MAX_REQUEST_TIMEOUT;
@@ -522,7 +552,7 @@ public class Configs {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
         } else {
-            return Integer.valueOf(val);
+            return Integer.parseInt(val);
         }
     }
 
@@ -530,7 +560,7 @@ public class Configs {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
         } else {
-            return Boolean.valueOf(val);
+            return Boolean.parseBoolean(val);
         }
     }
 
@@ -812,5 +842,44 @@ public class Configs {
                 firstNonNull(
                     emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER)),
                     DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
+    }
+
+    public static boolean shouldDisableIMDSAccess() {
+        String shouldDisableIMDSAccess =
+            System.getProperty(
+                COSMOS_DISABLE_IMDS_ACCESS,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(COSMOS_DISABLE_IMDS_ACCESS_VARIABLE)),
+                    String.valueOf(COSMOS_DISABLE_IMDS_ACCESS_DEFAULT)));
+
+        return Boolean.parseBoolean(shouldDisableIMDSAccess);
+    }
+
+    public static boolean isHttpConnectionWithoutTLSAllowed() {
+        String httpForEmulatorAllowed = System.getProperty(
+            HTTP_CONNECTION_WITHOUT_TLS_ALLOWED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP_CONNECTION_WITHOUT_TLS_ALLOWED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED)));
+
+        return Boolean.parseBoolean(httpForEmulatorAllowed);
+    }
+
+    public static boolean isEmulatorServerCertValidationDisabled() {
+        String certVerificationDisabledConfig = System.getProperty(
+            EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED_VARIABLE)),
+                String.valueOf(DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED)));
+
+        return Boolean.parseBoolean(certVerificationDisabledConfig);
+    }
+
+    public static String getEmulatorHost() {
+        return System.getProperty(
+            EMULATOR_HOST,
+            firstNonNull(
+                emptyToNull(System.getenv().get(EMULATOR_HOST_VARIABLE)),
+                DEFAULT_EMULATOR_HOST));
     }
 }

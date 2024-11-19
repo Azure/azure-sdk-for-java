@@ -11,7 +11,7 @@ public enum ItemWriteStrategy {
     ITEM_OVERWRITE_IF_NOT_MODIFIED("ItemOverwriteIfNotModified"),
     ITEM_PATCH("ItemPatch");
 
-    // TODO[GA] Add ItemBulkUpdate
+    // TODO[Post-GA] Add ItemBulkUpdate
     private final String name;
 
     ItemWriteStrategy(String name) {

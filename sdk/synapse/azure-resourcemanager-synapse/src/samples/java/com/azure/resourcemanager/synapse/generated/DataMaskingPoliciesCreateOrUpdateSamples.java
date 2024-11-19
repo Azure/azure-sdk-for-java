@@ -6,19 +6,21 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.resourcemanager.synapse.models.DataMaskingState;
 
-/** Samples for DataMaskingPolicies CreateOrUpdate. */
+/**
+ * Samples for DataMaskingPolicies CreateOrUpdate.
+ */
 public final class DataMaskingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingPolicyCreateOrUpdateMin.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * DataMaskingPolicyCreateOrUpdateMin.json
      */
     /**
      * Sample code: Create or update data masking policy min.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createOrUpdateDataMaskingPolicyMin(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .dataMaskingPolicies()
+        manager.dataMaskingPolicies()
             .define()
             .withExistingSqlPool("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331")
             .withDataMaskingState(DataMaskingState.ENABLED)
@@ -26,16 +28,16 @@ public final class DataMaskingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingPolicyCreateOrUpdateMax.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * DataMaskingPolicyCreateOrUpdateMax.json
      */
     /**
      * Sample code: Create or update data masking policy max.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createOrUpdateDataMaskingPolicyMax(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .dataMaskingPolicies()
+        manager.dataMaskingPolicies()
             .define()
             .withExistingSqlPool("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331")
             .withDataMaskingState(DataMaskingState.ENABLED)

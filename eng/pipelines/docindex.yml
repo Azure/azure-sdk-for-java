@@ -10,9 +10,7 @@ jobs:
     timeoutInMinutes: 180
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
-      DailyDocRepoLocation: $(Pipeline.Workspace)/daily
-      DocRepoOwner: Azure
-      DocRepoName: azure-docs-sdk-java
+
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -26,9 +24,6 @@ jobs:
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
-            - Name: azure-sdk/$(DocRepoName)
-              WorkingDirectory: $(DailyDocRepoLocation)
-
 
       - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
@@ -95,6 +90,14 @@ jobs:
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
 
+      - pwsh: |
+          $ErrorActionPreference = "Continue"
+          git checkout "origin/$(DailyDocsBranchName)" 2>&1 | Out-Null
+          $LASTEXITCODE = 0 # This ignores any error from git checkout
+          git status
+        displayName: Checkout daily branch if it exists
+        workingDirectory: $(DocRepoLocation)
+
       - task: Powershell@2
         inputs:
           pwsh: true
@@ -107,21 +110,21 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
-          arguments: -DocRepoLocation $(DailyDocRepoLocation)
+          arguments: -DocRepoLocation $(DocRepoLocation)
         displayName: Update Docs Onboarding for Daily docs
       - task: Powershell@2
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
-          arguments: -DocRepoLocation $(DailyDocRepoLocation)
+          arguments: -DocRepoLocation $(DocRepoLocation)
         displayName: Generate Service Level Readme for Daily docs
       - task: Powershell@2
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsToc.ps1
           arguments: >-
-            -DocRepoLocation $(DailyDocRepoLocation)
-            -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
+            -DocRepoLocation $(DocRepoLocation)
+            -OutputLocation $(DocRepoLocation)/docs-ref-mapping/reference-unified.yml
         displayName: Generate ToC for Daily docs
 
       - task: Powershell@2
@@ -138,8 +141,8 @@ jobs:
           BaseRepoOwner: $(DocRepoOwner)
           CommitMsg: "Update targeting packages based on release metadata. (Daily docs)"
           TargetRepoName: $(DocRepoName)
-          TargetRepoOwner: azure-sdk
-          WorkingDirectory: $(DailyDocRepoLocation)
+          TargetRepoOwner: $(DocRepoOwner)
+          WorkingDirectory: $(DocRepoLocation)
           ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
           PushArgs: -f
 

@@ -18,7 +18,7 @@ import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnection
 public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +32,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -47,7 +47,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -63,7 +63,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.

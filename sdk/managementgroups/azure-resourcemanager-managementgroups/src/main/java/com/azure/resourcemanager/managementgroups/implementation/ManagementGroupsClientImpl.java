@@ -46,17 +46,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagementGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementGroupsClient.
+ */
 public final class ManagementGroupsClientImpl implements ManagementGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagementGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ManagementGroupsApiImpl client;
 
     /**
      * Initializes an instance of ManagementGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagementGroupsClientImpl(ManagementGroupsApiImpl client) {
@@ -146,17 +152,17 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List management groups for the authenticated user.
-     *
+     * 
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * value to bypass existing caches.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to list management groups along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementGroupInfoInner>> listSinglePageAsync(String cacheControl, String skiptoken) {
@@ -175,18 +181,18 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List management groups for the authenticated user.
-     *
+     * 
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * value to bypass existing caches.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to list management groups along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementGroupInfoInner>> listSinglePageAsync(String cacheControl, String skiptoken,
@@ -205,17 +211,17 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List management groups for the authenticated user.
-     *
+     * 
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * value to bypass existing caches.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list management groups as paginated response with {@link
-     *     PagedFlux}.
+     * @return describes the result of the request to list management groups as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementGroupInfoInner> listAsync(String cacheControl, String skiptoken) {
@@ -225,11 +231,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List management groups for the authenticated user.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list management groups as paginated response with {@link
-     *     PagedFlux}.
+     * @return describes the result of the request to list management groups as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementGroupInfoInner> listAsync() {
@@ -241,18 +247,18 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List management groups for the authenticated user.
-     *
+     * 
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * value to bypass existing caches.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list management groups as paginated response with {@link
-     *     PagedFlux}.
+     * @return describes the result of the request to list management groups as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementGroupInfoInner> listAsync(String cacheControl, String skiptoken, Context context) {
@@ -262,11 +268,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List management groups for the authenticated user.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list management groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return describes the result of the request to list management groups as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementGroupInfoInner> list() {
@@ -277,18 +283,18 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List management groups for the authenticated user.
-     *
+     * 
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * value to bypass existing caches.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to list management groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return describes the result of the request to list management groups as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementGroupInfoInner> list(String cacheControl, String skiptoken, Context context) {
@@ -297,17 +303,17 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the details of the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param expand The $expand=children query string parameter allows clients to request inclusion of children in the
-     *     response payload. $expand=path includes the path from the root group to the current group. $expand=ancestors
-     *     includes the ancestor Ids of the current group.
+     * response payload. $expand=path includes the path from the root group to the current group. $expand=ancestors
+     * includes the ancestor Ids of the current group.
      * @param recurse The $recurse=true query string parameter allows clients to request inclusion of entire hierarchy
-     *     in the response payload. Note that $expand=children must be passed up if $recurse is set to true.
+     * in the response payload. Note that $expand=children must be passed up if $recurse is set to true.
      * @param filter A filter which allows the exclusion of subscriptions from results (i.e. '$filter=children.childType
-     *     ne Subscription').
+     * ne Subscription').
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -332,17 +338,17 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the details of the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param expand The $expand=children query string parameter allows clients to request inclusion of children in the
-     *     response payload. $expand=path includes the path from the root group to the current group. $expand=ancestors
-     *     includes the ancestor Ids of the current group.
+     * response payload. $expand=path includes the path from the root group to the current group. $expand=ancestors
+     * includes the ancestor Ids of the current group.
      * @param recurse The $recurse=true query string parameter allows clients to request inclusion of entire hierarchy
-     *     in the response payload. Note that $expand=children must be passed up if $recurse is set to true.
+     * in the response payload. Note that $expand=children must be passed up if $recurse is set to true.
      * @param filter A filter which allows the exclusion of subscriptions from results (i.e. '$filter=children.childType
-     *     ne Subscription').
+     * ne Subscription').
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -367,7 +373,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the details of the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -386,17 +392,17 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the details of the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param expand The $expand=children query string parameter allows clients to request inclusion of children in the
-     *     response payload. $expand=path includes the path from the root group to the current group. $expand=ancestors
-     *     includes the ancestor Ids of the current group.
+     * response payload. $expand=path includes the path from the root group to the current group. $expand=ancestors
+     * includes the ancestor Ids of the current group.
      * @param recurse The $recurse=true query string parameter allows clients to request inclusion of entire hierarchy
-     *     in the response payload. Note that $expand=children must be passed up if $recurse is set to true.
+     * in the response payload. Note that $expand=children must be passed up if $recurse is set to true.
      * @param filter A filter which allows the exclusion of subscriptions from results (i.e. '$filter=children.childType
-     *     ne Subscription').
+     * ne Subscription').
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -411,7 +417,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the details of the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -428,13 +434,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -464,13 +471,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -500,13 +508,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -522,9 +531,10 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -543,13 +553,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -567,9 +578,10 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -585,13 +597,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -606,13 +619,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -626,9 +640,10 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -645,13 +660,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -666,9 +682,10 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -684,13 +701,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Create or update a management group. If a management group is already created and a subsequent create request is
-     * issued with different properties, the management group properties will be updated.
-     *
+     * Create or update a management group.
+     * If a management group is already created and a subsequent create request is issued with different properties, the
+     * management group properties will be updated.
+     * 
      * @param groupId Management Group ID.
      * @param createManagementGroupRequest Management group creation parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -705,11 +723,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Update a management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param patchGroupRequest Management group patch parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -740,11 +758,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Update a management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param patchGroupRequest Management group patch parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -775,7 +793,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Update a management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param patchGroupRequest Management group patch parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -792,11 +810,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Update a management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param patchGroupRequest Management group patch parameters.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -811,7 +829,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Update a management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param patchGroupRequest Management group patch parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -826,11 +844,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -853,11 +872,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -881,11 +901,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -901,8 +922,9 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -920,11 +942,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -942,8 +965,9 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -958,11 +982,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -976,11 +1001,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -992,8 +1018,9 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1007,11 +1034,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1024,8 +1052,9 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1039,11 +1068,12 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
     }
 
     /**
-     * Delete management group. If a management group contains child resources, the request will fail.
-     *
+     * Delete management group.
+     * If a management group contains child resources, the request will fail.
+     * 
      * @param groupId Management Group ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1057,17 +1087,17 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List all entities that descend from a management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view descendants along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DescendantInfoInner>> getDescendantsSinglePageAsync(String groupId, String skiptoken,
@@ -1090,18 +1120,18 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List all entities that descend from a management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view descendants along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DescendantInfoInner>> getDescendantsSinglePageAsync(String groupId, String skiptoken,
@@ -1124,11 +1154,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List all entities that descend from a management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1143,7 +1173,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List all entities that descend from a management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1160,11 +1190,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List all entities that descend from a management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1181,7 +1211,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List all entities that descend from a management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1197,11 +1227,11 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * List all entities that descend from a management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1217,16 +1247,15 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to list management groups along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementGroupInfoInner>> listNextSinglePageAsync(String nextLink,
@@ -1249,17 +1278,16 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to list management groups along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementGroupInfoInner>> listNextSinglePageAsync(String nextLink, String cacheControl,
@@ -1280,14 +1308,13 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view descendants along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DescendantInfoInner>> getDescendantsNextSinglePageAsync(String nextLink) {
@@ -1308,15 +1335,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view descendants along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DescendantInfoInner>> getDescendantsNextSinglePageAsync(String nextLink,

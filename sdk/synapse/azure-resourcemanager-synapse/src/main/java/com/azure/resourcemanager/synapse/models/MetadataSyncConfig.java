@@ -6,46 +6,48 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
 
-/** An immutable client-side representation of MetadataSyncConfig. */
+/**
+ * An immutable client-side representation of MetadataSyncConfig.
+ */
 public interface MetadataSyncConfig {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the enabled property: Indicates whether the metadata sync is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     Boolean enabled();
 
     /**
      * Gets the syncIntervalInMinutes property: The Sync Interval in minutes.
-     *
+     * 
      * @return the syncIntervalInMinutes value.
      */
     Integer syncIntervalInMinutes();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner object.
-     *
+     * 
      * @return the inner object.
      */
     MetadataSyncConfigInner innerModel();

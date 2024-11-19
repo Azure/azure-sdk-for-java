@@ -13,18 +13,18 @@ public final class DescendantInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DescendantInfoInner model = BinaryData.fromString(
-            "{\"id\":\"ivkwlzuvccfwnfnb\",\"type\":\"fionl\",\"name\":\"x\",\"properties\":{\"displayName\":\"gtzxdpn\",\"parent\":{\"id\":\"qwxrjfeallnw\"}}}")
+            "{\"id\":\"xsbkyvpyca\",\"type\":\"z\",\"name\":\"zka\",\"properties\":{\"displayName\":\"wbcrnwbmehhseyv\",\"parent\":{\"id\":\"rts\"}}}")
             .toObject(DescendantInfoInner.class);
-        Assertions.assertEquals("gtzxdpn", model.displayName());
-        Assertions.assertEquals("qwxrjfeallnw", model.parent().id());
+        Assertions.assertEquals("wbcrnwbmehhseyv", model.displayName());
+        Assertions.assertEquals("rts", model.parent().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DescendantInfoInner model = new DescendantInfoInner().withDisplayName("gtzxdpn")
-            .withParent(new DescendantParentGroupInfo().withId("qwxrjfeallnw"));
+        DescendantInfoInner model = new DescendantInfoInner().withDisplayName("wbcrnwbmehhseyv")
+            .withParent(new DescendantParentGroupInfo().withId("rts"));
         model = BinaryData.fromObject(model).toObject(DescendantInfoInner.class);
-        Assertions.assertEquals("gtzxdpn", model.displayName());
-        Assertions.assertEquals("qwxrjfeallnw", model.parent().id());
+        Assertions.assertEquals("wbcrnwbmehhseyv", model.displayName());
+        Assertions.assertEquals("rts", model.parent().id());
     }
 }

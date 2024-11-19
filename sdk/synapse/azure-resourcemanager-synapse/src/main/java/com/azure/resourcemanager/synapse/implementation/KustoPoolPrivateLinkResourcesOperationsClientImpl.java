@@ -36,15 +36,19 @@ import reactor.core.publisher.Mono;
  */
 public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
     implements KustoPoolPrivateLinkResourcesOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolPrivateLinkResourcesOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolPrivateLinkResourcesOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolPrivateLinkResourcesOperationsClientImpl(SynapseManagementClientImpl client) {
@@ -61,8 +65,7 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolPrivateLinkResourcesOperationsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/privateLinkResources")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResources>> list(@HostParam("$host") String endpoint,
@@ -74,7 +77,7 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -82,7 +85,7 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto Private Link Resources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KustoPoolPrivateLinkResourcesInner>> listSinglePageAsync(String resourceGroupName,
@@ -117,7 +120,7 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -126,7 +129,7 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto Private Link Resources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KustoPoolPrivateLinkResourcesInner>> listSinglePageAsync(String resourceGroupName,
@@ -161,7 +164,7 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -178,7 +181,7 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -196,15 +199,15 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto Private Link Resources operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto Private Link Resources operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KustoPoolPrivateLinkResourcesInner> list(String resourceGroupName, String workspaceName,
@@ -214,7 +217,7 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -222,8 +225,8 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto Private Link Resources operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto Private Link Resources operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KustoPoolPrivateLinkResourcesInner> list(String resourceGroupName, String workspaceName,

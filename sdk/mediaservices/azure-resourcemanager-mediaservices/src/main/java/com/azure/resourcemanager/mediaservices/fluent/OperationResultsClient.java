@@ -10,13 +10,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackInner;
 import com.azure.resourcemanager.mediaservices.models.OperationResultsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in OperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationResultsClient.
+ */
 public interface OperationResultsClient {
     /**
      * Get operation result.
-     *
-     * <p>Get asset track operation result.
-     *
+     * 
+     * Get asset track operation result.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -34,9 +36,9 @@ public interface OperationResultsClient {
 
     /**
      * Get operation result.
-     *
-     * <p>Get asset track operation result.
-     *
+     * 
+     * Get asset track operation result.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.

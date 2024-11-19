@@ -7,13 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Libraries. */
+/**
+ * Resource collection API of Libraries.
+ */
 public interface Libraries {
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.
@@ -28,9 +30,9 @@ public interface Libraries {
 
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.

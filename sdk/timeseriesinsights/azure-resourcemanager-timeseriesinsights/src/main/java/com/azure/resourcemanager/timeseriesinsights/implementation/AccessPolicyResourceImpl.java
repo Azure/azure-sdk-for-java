@@ -128,9 +128,9 @@ public final class AccessPolicyResourceImpl
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "environments");
-        this.accessPolicyName = Utils.getValueFromIdByName(innerObject.id(), "accessPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
+        this.accessPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessPolicies");
     }
 
     public AccessPolicyResource refresh() {

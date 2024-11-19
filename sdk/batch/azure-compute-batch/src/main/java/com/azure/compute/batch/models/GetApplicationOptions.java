@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for getting information about a Batch Application.
  */
 public class GetApplicationOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link GetApplicationOptions}.
+     */
+    public GetApplicationOptions() {
+    }
 }

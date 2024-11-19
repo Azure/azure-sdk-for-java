@@ -5,56 +5,54 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that are associated with an Azure Table output.
  */
 @Fluent
-public final class AzureTableOutputDataSourceProperties {
+public final class AzureTableOutputDataSourceProperties
+    implements JsonSerializable<AzureTableOutputDataSourceProperties> {
     /*
      * The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*
      * The name of the Azure Table. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "table")
     private String table;
 
     /*
      * This element indicates the name of a column from the SELECT statement in the query that will be used as the
      * partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "partitionKey")
     private String partitionKey;
 
     /*
      * This element indicates the name of a column from the SELECT statement in the query that will be used as the row
      * key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "rowKey")
     private String rowKey;
 
     /*
      * If specified, each item in the array is the name of a column to remove (if present) from output event entities.
      */
-    @JsonProperty(value = "columnsToRemove")
     private List<String> columnsToRemove;
 
     /*
      * The number of rows to write to the Azure Table at a time.
      */
-    @JsonProperty(value = "batchSize")
     private Integer batchSize;
 
     /**
@@ -126,8 +124,8 @@ public final class AzureTableOutputDataSourceProperties {
     }
 
     /**
-     * Get the partitionKey property: This element indicates the name of a column from the SELECT statement in the
-     * query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
+     * Get the partitionKey property: This element indicates the name of a column from the SELECT statement in the query
+     * that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      * 
      * @return the partitionKey value.
      */
@@ -136,8 +134,8 @@ public final class AzureTableOutputDataSourceProperties {
     }
 
     /**
-     * Set the partitionKey property: This element indicates the name of a column from the SELECT statement in the
-     * query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
+     * Set the partitionKey property: This element indicates the name of a column from the SELECT statement in the query
+     * that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      * 
      * @param partitionKey the partitionKey value to set.
      * @return the AzureTableOutputDataSourceProperties object itself.
@@ -217,5 +215,62 @@ public final class AzureTableOutputDataSourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("table", this.table);
+        jsonWriter.writeStringField("partitionKey", this.partitionKey);
+        jsonWriter.writeStringField("rowKey", this.rowKey);
+        jsonWriter.writeArrayField("columnsToRemove", this.columnsToRemove,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("batchSize", this.batchSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureTableOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureTableOutputDataSourceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureTableOutputDataSourceProperties.
+     */
+    public static AzureTableOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureTableOutputDataSourceProperties deserializedAzureTableOutputDataSourceProperties
+                = new AzureTableOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedAzureTableOutputDataSourceProperties.accountName = reader.getString();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedAzureTableOutputDataSourceProperties.accountKey = reader.getString();
+                } else if ("table".equals(fieldName)) {
+                    deserializedAzureTableOutputDataSourceProperties.table = reader.getString();
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedAzureTableOutputDataSourceProperties.partitionKey = reader.getString();
+                } else if ("rowKey".equals(fieldName)) {
+                    deserializedAzureTableOutputDataSourceProperties.rowKey = reader.getString();
+                } else if ("columnsToRemove".equals(fieldName)) {
+                    List<String> columnsToRemove = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureTableOutputDataSourceProperties.columnsToRemove = columnsToRemove;
+                } else if ("batchSize".equals(fieldName)) {
+                    deserializedAzureTableOutputDataSourceProperties.batchSize = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureTableOutputDataSourceProperties;
+        });
     }
 }

@@ -235,6 +235,9 @@ public final class MetadataTable implements JsonSerializable<MetadataTable> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

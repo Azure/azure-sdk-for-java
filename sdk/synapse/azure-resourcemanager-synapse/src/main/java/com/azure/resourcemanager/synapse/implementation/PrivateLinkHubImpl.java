@@ -135,8 +135,8 @@ public final class PrivateLinkHubImpl implements PrivateLinkHub, PrivateLinkHub.
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateLinkHubName = Utils.getValueFromIdByName(innerObject.id(), "privateLinkHubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.privateLinkHubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateLinkHubs");
     }
 
     public PrivateLinkHub refresh() {

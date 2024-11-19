@@ -7,13 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationRuntimeAuthKeysOperations. */
+/**
+ * Resource collection API of IntegrationRuntimeAuthKeysOperations.
+ */
 public interface IntegrationRuntimeAuthKeysOperations {
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -30,9 +32,9 @@ public interface IntegrationRuntimeAuthKeysOperations {
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -47,9 +49,9 @@ public interface IntegrationRuntimeAuthKeysOperations {
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -64,9 +66,9 @@ public interface IntegrationRuntimeAuthKeysOperations {
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

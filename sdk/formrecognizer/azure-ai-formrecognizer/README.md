@@ -60,7 +60,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>4.1.11</version>
+    <version>4.1.12</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -73,7 +73,7 @@ This table shows the relationship between SDK versions and supported API version
 | 3.0.x          | 2.0                                        |
 | 3.1.X - 3.1.12 | 2.0, 2.1 (default)                         |
 | 4.0.0          | 2.0, 2.1, 2022-08-31 (default)             |
-| 4.1.0          | 2.0, 2.1, 2022-08-31, 2023-07-31 (default) |
+| 4.1.0 >        | 2.0, 2.1, 2022-08-31, 2023-07-31 (default) |
 
 > Note: Starting with version 4.0.X, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
@@ -168,7 +168,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.3</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

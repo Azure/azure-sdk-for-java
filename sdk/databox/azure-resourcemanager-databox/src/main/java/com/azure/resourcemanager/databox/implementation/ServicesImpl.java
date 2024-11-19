@@ -40,14 +40,14 @@ public final class ServicesImpl implements Services {
         AvailableSkuRequest availableSkuRequest) {
         PagedIterable<SkuInformationInner> inner
             = this.serviceClient().listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest);
-        return Utils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(String resourceGroupName, String location,
         AvailableSkuRequest availableSkuRequest, Context context) {
         PagedIterable<SkuInformationInner> inner = this.serviceClient()
             .listAvailableSkusByResourceGroup(resourceGroupName, location, availableSkuRequest, context);
-        return Utils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
     }
 
     public Response<AddressValidationOutput> validateAddressWithResponse(String location,

@@ -16,19 +16,19 @@ public final class TransformOutputTests {
     public void testDeserialize() throws Exception {
         TransformOutput model = BinaryData
             .fromString(
-                "{\"onError\":\"ContinueJob\",\"relativePriority\":\"High\",\"preset\":{\"@odata.type\":\"Preset\"}}")
+                "{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}}")
             .toObject(TransformOutput.class);
         Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.onError());
-        Assertions.assertEquals(Priority.HIGH, model.relativePriority());
+        Assertions.assertEquals(Priority.NORMAL, model.relativePriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TransformOutput model = new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
-            .withRelativePriority(Priority.HIGH)
+            .withRelativePriority(Priority.NORMAL)
             .withPreset(new Preset());
         model = BinaryData.fromObject(model).toObject(TransformOutput.class);
         Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.onError());
-        Assertions.assertEquals(Priority.HIGH, model.relativePriority());
+        Assertions.assertEquals(Priority.NORMAL, model.relativePriority());
     }
 }

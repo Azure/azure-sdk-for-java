@@ -5,61 +5,63 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Objects;
 
-/** Information about payment related to a reservation order. */
+/**
+ * Information about payment related to a reservation order.
+ */
 @Fluent
-public final class PaymentDetail {
+public final class PaymentDetail implements JsonSerializable<PaymentDetail> {
     /*
      * Date when the payment needs to be done.
      */
-    @JsonProperty(value = "dueDate")
     private LocalDate dueDate;
 
     /*
      * Date when the transaction is completed. Is null when it is scheduled.
      */
-    @JsonProperty(value = "paymentDate")
     private LocalDate paymentDate;
 
     /*
      * Amount in pricing currency. Tax not included.
      */
-    @JsonProperty(value = "pricingCurrencyTotal")
     private Price pricingCurrencyTotal;
 
     /*
      * Amount charged in Billing currency. Tax not included. Is null for future payments
      */
-    @JsonProperty(value = "billingCurrencyTotal")
     private Price billingCurrencyTotal;
 
     /*
      * Shows the Account that is charged for this payment.
      */
-    @JsonProperty(value = "billingAccount")
     private String billingAccount;
 
     /*
      * Describes whether the payment is completed, failed, cancelled or scheduled in the future.
      */
-    @JsonProperty(value = "status")
     private PaymentStatus status;
 
     /*
      * The extendedStatusInfo property.
      */
-    @JsonProperty(value = "extendedStatusInfo")
     private ExtendedStatusInfo extendedStatusInfo;
 
-    /** Creates an instance of PaymentDetail class. */
+    /**
+     * Creates an instance of PaymentDetail class.
+     */
     public PaymentDetail() {
     }
 
     /**
      * Get the dueDate property: Date when the payment needs to be done.
-     *
+     * 
      * @return the dueDate value.
      */
     public LocalDate dueDate() {
@@ -68,7 +70,7 @@ public final class PaymentDetail {
 
     /**
      * Set the dueDate property: Date when the payment needs to be done.
-     *
+     * 
      * @param dueDate the dueDate value to set.
      * @return the PaymentDetail object itself.
      */
@@ -79,7 +81,7 @@ public final class PaymentDetail {
 
     /**
      * Get the paymentDate property: Date when the transaction is completed. Is null when it is scheduled.
-     *
+     * 
      * @return the paymentDate value.
      */
     public LocalDate paymentDate() {
@@ -88,7 +90,7 @@ public final class PaymentDetail {
 
     /**
      * Set the paymentDate property: Date when the transaction is completed. Is null when it is scheduled.
-     *
+     * 
      * @param paymentDate the paymentDate value to set.
      * @return the PaymentDetail object itself.
      */
@@ -99,7 +101,7 @@ public final class PaymentDetail {
 
     /**
      * Get the pricingCurrencyTotal property: Amount in pricing currency. Tax not included.
-     *
+     * 
      * @return the pricingCurrencyTotal value.
      */
     public Price pricingCurrencyTotal() {
@@ -108,7 +110,7 @@ public final class PaymentDetail {
 
     /**
      * Set the pricingCurrencyTotal property: Amount in pricing currency. Tax not included.
-     *
+     * 
      * @param pricingCurrencyTotal the pricingCurrencyTotal value to set.
      * @return the PaymentDetail object itself.
      */
@@ -120,7 +122,7 @@ public final class PaymentDetail {
     /**
      * Get the billingCurrencyTotal property: Amount charged in Billing currency. Tax not included. Is null for future
      * payments.
-     *
+     * 
      * @return the billingCurrencyTotal value.
      */
     public Price billingCurrencyTotal() {
@@ -130,7 +132,7 @@ public final class PaymentDetail {
     /**
      * Set the billingCurrencyTotal property: Amount charged in Billing currency. Tax not included. Is null for future
      * payments.
-     *
+     * 
      * @param billingCurrencyTotal the billingCurrencyTotal value to set.
      * @return the PaymentDetail object itself.
      */
@@ -141,7 +143,7 @@ public final class PaymentDetail {
 
     /**
      * Get the billingAccount property: Shows the Account that is charged for this payment.
-     *
+     * 
      * @return the billingAccount value.
      */
     public String billingAccount() {
@@ -150,7 +152,7 @@ public final class PaymentDetail {
 
     /**
      * Set the billingAccount property: Shows the Account that is charged for this payment.
-     *
+     * 
      * @param billingAccount the billingAccount value to set.
      * @return the PaymentDetail object itself.
      */
@@ -162,7 +164,7 @@ public final class PaymentDetail {
     /**
      * Get the status property: Describes whether the payment is completed, failed, cancelled or scheduled in the
      * future.
-     *
+     * 
      * @return the status value.
      */
     public PaymentStatus status() {
@@ -172,7 +174,7 @@ public final class PaymentDetail {
     /**
      * Set the status property: Describes whether the payment is completed, failed, cancelled or scheduled in the
      * future.
-     *
+     * 
      * @param status the status value to set.
      * @return the PaymentDetail object itself.
      */
@@ -183,7 +185,7 @@ public final class PaymentDetail {
 
     /**
      * Get the extendedStatusInfo property: The extendedStatusInfo property.
-     *
+     * 
      * @return the extendedStatusInfo value.
      */
     public ExtendedStatusInfo extendedStatusInfo() {
@@ -192,7 +194,7 @@ public final class PaymentDetail {
 
     /**
      * Set the extendedStatusInfo property: The extendedStatusInfo property.
-     *
+     * 
      * @param extendedStatusInfo the extendedStatusInfo value to set.
      * @return the PaymentDetail object itself.
      */
@@ -203,7 +205,7 @@ public final class PaymentDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -216,5 +218,61 @@ public final class PaymentDetail {
         if (extendedStatusInfo() != null) {
             extendedStatusInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dueDate", Objects.toString(this.dueDate, null));
+        jsonWriter.writeStringField("paymentDate", Objects.toString(this.paymentDate, null));
+        jsonWriter.writeJsonField("pricingCurrencyTotal", this.pricingCurrencyTotal);
+        jsonWriter.writeJsonField("billingCurrencyTotal", this.billingCurrencyTotal);
+        jsonWriter.writeStringField("billingAccount", this.billingAccount);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("extendedStatusInfo", this.extendedStatusInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PaymentDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PaymentDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PaymentDetail.
+     */
+    public static PaymentDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PaymentDetail deserializedPaymentDetail = new PaymentDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dueDate".equals(fieldName)) {
+                    deserializedPaymentDetail.dueDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("paymentDate".equals(fieldName)) {
+                    deserializedPaymentDetail.paymentDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("pricingCurrencyTotal".equals(fieldName)) {
+                    deserializedPaymentDetail.pricingCurrencyTotal = Price.fromJson(reader);
+                } else if ("billingCurrencyTotal".equals(fieldName)) {
+                    deserializedPaymentDetail.billingCurrencyTotal = Price.fromJson(reader);
+                } else if ("billingAccount".equals(fieldName)) {
+                    deserializedPaymentDetail.billingAccount = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedPaymentDetail.status = PaymentStatus.fromString(reader.getString());
+                } else if ("extendedStatusInfo".equals(fieldName)) {
+                    deserializedPaymentDetail.extendedStatusInfo = ExtendedStatusInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPaymentDetail;
+        });
     }
 }

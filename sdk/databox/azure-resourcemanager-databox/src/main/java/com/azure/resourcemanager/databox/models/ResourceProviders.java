@@ -7,13 +7,15 @@ package com.azure.resourcemanager.databox.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @param context The context to associate with this operation.
@@ -27,9 +29,9 @@ public interface ResourceProviders {
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

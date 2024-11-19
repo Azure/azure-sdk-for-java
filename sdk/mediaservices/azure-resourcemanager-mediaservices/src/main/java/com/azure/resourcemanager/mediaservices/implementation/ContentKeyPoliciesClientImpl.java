@@ -36,17 +36,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyPro
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContentKeyPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContentKeyPoliciesClient.
+ */
 public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContentKeyPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of ContentKeyPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContentKeyPoliciesClientImpl(AzureMediaServicesImpl client) {
@@ -63,8 +69,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     @ServiceInterface(name = "AzureMediaServicesCo")
     public interface ContentKeyPoliciesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/contentKeyPolicies")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContentKeyPolicyCollection>> list(@HostParam("$host") String endpoint,
@@ -75,8 +80,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/contentKeyPolicies/{contentKeyPolicyName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContentKeyPolicyInner>> get(@HostParam("$host") String endpoint,
@@ -86,8 +90,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/contentKeyPolicies/{contentKeyPolicyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContentKeyPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -99,8 +102,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/contentKeyPolicies/{contentKeyPolicyName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -110,8 +112,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/contentKeyPolicies/{contentKeyPolicyName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContentKeyPolicyInner>> update(@HostParam("$host") String endpoint,
@@ -123,8 +124,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/contentKeyPolicies/{contentKeyPolicyName}/getPolicyPropertiesWithSecrets")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/contentKeyPolicies/{contentKeyPolicyName}/getPolicyPropertiesWithSecrets")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContentKeyPolicyPropertiesInner>> getPolicyPropertiesWithSecrets(
@@ -144,20 +144,20 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of ContentKeyPolicy items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContentKeyPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -189,21 +189,21 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of ContentKeyPolicy items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContentKeyPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -235,14 +235,14 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -258,9 +258,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,14 +279,14 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,9 +303,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,14 +323,14 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,9 +346,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy
-     *
-     * <p>Get the details of a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -356,7 +356,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Content Key Policy in the Media Services account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContentKeyPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -390,9 +390,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy
-     *
-     * <p>Get the details of a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -401,7 +401,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Content Key Policy in the Media Services account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContentKeyPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -434,17 +434,17 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy
-     *
-     * <p>Get the details of a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Content Key Policy in the Media Services account on successful completion of {@link
-     *     Mono}.
+     * @return the details of a Content Key Policy in the Media Services account on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ContentKeyPolicyInner> getAsync(String resourceGroupName, String accountName,
@@ -455,9 +455,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy
-     *
-     * <p>Get the details of a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -475,9 +475,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy
-     *
-     * <p>Get the details of a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -493,9 +493,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Create or update an Content Key Policy
-     *
-     * <p>Create or update a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Create or update a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -542,9 +542,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Create or update an Content Key Policy
-     *
-     * <p>Create or update a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Create or update a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -591,9 +591,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Create or update an Content Key Policy
-     *
-     * <p>Create or update a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Create or update a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -612,9 +612,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Create or update an Content Key Policy
-     *
-     * <p>Create or update a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Create or update a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -634,9 +634,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Create or update an Content Key Policy
-     *
-     * <p>Create or update a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Create or update a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -655,9 +655,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Delete a Content Key Policy
-     *
-     * <p>Deletes a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -698,9 +698,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Delete a Content Key Policy
-     *
-     * <p>Deletes a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -741,9 +741,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Delete a Content Key Policy
-     *
-     * <p>Deletes a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -760,9 +760,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Delete a Content Key Policy
-     *
-     * <p>Deletes a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -780,9 +780,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Delete a Content Key Policy
-     *
-     * <p>Deletes a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -797,9 +797,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Update a Content Key Policy
-     *
-     * <p>Updates an existing Content Key Policy in the Media Services account.
-     *
+     * 
+     * Updates an existing Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -846,9 +846,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Update a Content Key Policy
-     *
-     * <p>Updates an existing Content Key Policy in the Media Services account.
-     *
+     * 
+     * Updates an existing Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -895,9 +895,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Update a Content Key Policy
-     *
-     * <p>Updates an existing Content Key Policy in the Media Services account.
-     *
+     * 
+     * Updates an existing Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -916,9 +916,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Update a Content Key Policy
-     *
-     * <p>Updates an existing Content Key Policy in the Media Services account.
-     *
+     * 
+     * Updates an existing Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -938,9 +938,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Update a Content Key Policy
-     *
-     * <p>Updates an existing Content Key Policy in the Media Services account.
-     *
+     * 
+     * Updates an existing Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -959,9 +959,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy with secrets
-     *
-     * <p>Get a Content Key Policy including secret values.
-     *
+     * 
+     * Get a Content Key Policy including secret values.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -969,7 +969,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Content Key Policy including secret values along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContentKeyPolicyPropertiesInner>> getPolicyPropertiesWithSecretsWithResponseAsync(
@@ -1004,9 +1004,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy with secrets
-     *
-     * <p>Get a Content Key Policy including secret values.
-     *
+     * 
+     * Get a Content Key Policy including secret values.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -1015,7 +1015,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Content Key Policy including secret values along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContentKeyPolicyPropertiesInner>> getPolicyPropertiesWithSecretsWithResponseAsync(
@@ -1048,9 +1048,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy with secrets
-     *
-     * <p>Get a Content Key Policy including secret values.
-     *
+     * 
+     * Get a Content Key Policy including secret values.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -1068,9 +1068,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy with secrets
-     *
-     * <p>Get a Content Key Policy including secret values.
-     *
+     * 
+     * Get a Content Key Policy including secret values.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -1089,9 +1089,9 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get a Content Key Policy with secrets
-     *
-     * <p>Get a Content Key Policy including secret values.
-     *
+     * 
+     * Get a Content Key Policy including secret values.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -1109,14 +1109,13 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of ContentKeyPolicy items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContentKeyPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -1136,15 +1135,14 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of ContentKeyPolicy items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContentKeyPolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {

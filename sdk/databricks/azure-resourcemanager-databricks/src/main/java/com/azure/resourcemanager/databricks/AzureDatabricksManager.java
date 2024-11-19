@@ -47,8 +47,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to AzureDatabricksManager. The Microsoft Azure management APIs allow end users to operate on Azure
- * Databricks Workspace / Access Connector resources.
+ * Entry point to AzureDatabricksManager.
+ * The Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace / Access Connector
+ * resources.
  */
 public final class AzureDatabricksManager {
     private Workspaces workspaces;
@@ -79,7 +80,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Creates an instance of AzureDatabricks service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the AzureDatabricks service API instance.
@@ -92,7 +93,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Creates an instance of AzureDatabricks service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the AzureDatabricks service API instance.
@@ -105,14 +106,16 @@ public final class AzureDatabricksManager {
 
     /**
      * Gets a Configurable instance that can be used to create AzureDatabricksManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new AzureDatabricksManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -184,8 +187,8 @@ public final class AzureDatabricksManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -227,7 +230,7 @@ public final class AzureDatabricksManager {
                 .append("-")
                 .append("com.azure.resourcemanager.databricks")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -275,7 +278,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Gets the resource collection API of Workspaces. It manages Workspace.
-     *
+     * 
      * @return Resource collection API of Workspaces.
      */
     public Workspaces workspaces() {
@@ -287,7 +290,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -299,7 +302,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Gets the resource collection API of PrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResources.
      */
     public PrivateLinkResources privateLinkResources() {
@@ -311,7 +314,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
@@ -324,7 +327,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Gets the resource collection API of OutboundNetworkDependenciesEndpoints.
-     *
+     * 
      * @return Resource collection API of OutboundNetworkDependenciesEndpoints.
      */
     public OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints() {
@@ -337,7 +340,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Gets the resource collection API of VNetPeerings. It manages VirtualNetworkPeering.
-     *
+     * 
      * @return Resource collection API of VNetPeerings.
      */
     public VNetPeerings vNetPeerings() {
@@ -349,7 +352,7 @@ public final class AzureDatabricksManager {
 
     /**
      * Gets the resource collection API of AccessConnectors. It manages AccessConnector.
-     *
+     * 
      * @return Resource collection API of AccessConnectors.
      */
     public AccessConnectors accessConnectors() {
@@ -360,8 +363,10 @@ public final class AzureDatabricksManager {
     }
 
     /**
-     * @return Wrapped service client AzureDatabricksManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client AzureDatabricksManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AzureDatabricksManagementClient.
      */
     public AzureDatabricksManagementClient serviceClient() {
         return this.clientObject;

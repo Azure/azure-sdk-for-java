@@ -11,7 +11,7 @@ public final class JobStagesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobStages model = BinaryData.fromString(
-            "{\"stageName\":\"Failed_IssueReportedAtCustomer\",\"displayName\":\"od\",\"stageStatus\":\"WaitingForCustomerActionForCleanUp\",\"stageTime\":\"2021-03-03T09:41:38Z\",\"jobStageDetails\":\"datanohjt\"}")
+            "{\"stageName\":\"Failed_IssueReportedAtCustomer\",\"displayName\":\"cdgea\",\"stageStatus\":\"CustomerActionPerformedForCleanUp\",\"stageTime\":\"2020-12-21T00:56:57Z\",\"jobStageDetails\":\"datati\"}")
             .toObject(JobStages.class);
     }
 

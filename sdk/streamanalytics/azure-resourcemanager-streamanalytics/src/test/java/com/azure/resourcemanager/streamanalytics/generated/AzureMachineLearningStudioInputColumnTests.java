@@ -12,20 +12,22 @@ public final class AzureMachineLearningStudioInputColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMachineLearningStudioInputColumn model
-            = BinaryData.fromString("{\"name\":\"fxoblytkb\",\"dataType\":\"pe\",\"mapTo\":121264437}")
+            = BinaryData.fromString("{\"name\":\"fsubcgjbirxbpy\",\"dataType\":\"rfbjf\",\"mapTo\":157171235}")
                 .toObject(AzureMachineLearningStudioInputColumn.class);
-        Assertions.assertEquals("fxoblytkb", model.name());
-        Assertions.assertEquals("pe", model.dataType());
-        Assertions.assertEquals(121264437, model.mapTo());
+        Assertions.assertEquals("fsubcgjbirxbpy", model.name());
+        Assertions.assertEquals("rfbjf", model.dataType());
+        Assertions.assertEquals(157171235, model.mapTo());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMachineLearningStudioInputColumn model
-            = new AzureMachineLearningStudioInputColumn().withName("fxoblytkb").withDataType("pe").withMapTo(121264437);
+            = new AzureMachineLearningStudioInputColumn().withName("fsubcgjbirxbpy")
+                .withDataType("rfbjf")
+                .withMapTo(157171235);
         model = BinaryData.fromObject(model).toObject(AzureMachineLearningStudioInputColumn.class);
-        Assertions.assertEquals("fxoblytkb", model.name());
-        Assertions.assertEquals("pe", model.dataType());
-        Assertions.assertEquals(121264437, model.mapTo());
+        Assertions.assertEquals("fsubcgjbirxbpy", model.name());
+        Assertions.assertEquals("rfbjf", model.dataType());
+        Assertions.assertEquals(157171235, model.mapTo());
     }
 }

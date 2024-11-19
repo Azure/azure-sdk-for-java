@@ -13,7 +13,7 @@ public final class ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlContr
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity model
-            = BinaryData.fromString("{\"desiredState\":\"Enabled\",\"actualState\":\"Unknown\"}")
+            = BinaryData.fromString("{\"desiredState\":\"Enabled\",\"actualState\":\"Disabling\"}")
                 .toObject(ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity.class);
         Assertions.assertEquals(DesiredState.ENABLED, model.desiredState());
     }

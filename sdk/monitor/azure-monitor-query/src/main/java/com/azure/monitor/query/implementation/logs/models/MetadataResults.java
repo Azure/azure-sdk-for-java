@@ -176,8 +176,8 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
     }
 
     /**
-     * Get the queries property: The list of saved queries stored on the workspace, or introduced by solutions,
-     * resource types, etc.
+     * Get the queries property: The list of saved queries stored on the workspace, or introduced by solutions, resource
+     * types, etc.
      * 
      * @return the queries value.
      */
@@ -186,8 +186,8 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
     }
 
     /**
-     * Set the queries property: The list of saved queries stored on the workspace, or introduced by solutions,
-     * resource types, etc.
+     * Set the queries property: The list of saved queries stored on the workspace, or introduced by solutions, resource
+     * types, etc.
      * 
      * @param queries the queries value to set.
      * @return the MetadataResults object itself.
@@ -279,6 +279,9 @@ public final class MetadataResults implements JsonSerializable<MetadataResults> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

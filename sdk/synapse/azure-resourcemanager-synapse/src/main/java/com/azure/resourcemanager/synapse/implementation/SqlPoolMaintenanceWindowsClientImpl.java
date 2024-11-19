@@ -27,17 +27,23 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMaintenanceWindowsClient;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowsInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowsClient.
+ */
 public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMaintenanceWindowsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolMaintenanceWindowsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolMaintenanceWindowsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolMaintenanceWindowsClientImpl(SynapseManagementClientImpl client) {
@@ -54,8 +60,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolMaintenanceWindowsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/maintenancewindows/current")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/maintenancewindows/current")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceWindowsInner>> get(@HostParam("$host") String endpoint,
@@ -66,8 +71,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/maintenancewindows/current")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/maintenancewindows/current")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -80,7 +84,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -125,7 +129,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -170,7 +174,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -189,7 +193,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -209,7 +213,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -228,7 +232,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -279,7 +283,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -329,7 +333,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -349,7 +353,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -370,7 +374,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

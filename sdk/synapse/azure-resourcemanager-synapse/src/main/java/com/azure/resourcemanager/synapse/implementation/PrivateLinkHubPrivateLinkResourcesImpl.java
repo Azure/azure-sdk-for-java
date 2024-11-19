@@ -30,14 +30,14 @@ public final class PrivateLinkHubPrivateLinkResourcesImpl implements PrivateLink
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String privateLinkHubName) {
         PagedIterable<PrivateLinkResourceInner> inner
             = this.serviceClient().list(resourceGroupName, privateLinkHubName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String privateLinkHubName,
         Context context) {
         PagedIterable<PrivateLinkResourceInner> inner
             = this.serviceClient().list(resourceGroupName, privateLinkHubName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String privateLinkHubName,

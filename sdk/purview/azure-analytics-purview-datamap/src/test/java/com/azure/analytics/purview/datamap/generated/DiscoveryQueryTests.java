@@ -12,9 +12,8 @@ import com.azure.analytics.purview.datamap.models.SearchFacetSort;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
 import com.azure.analytics.purview.datamap.models.SearchSortOrder;
 import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -25,18 +24,14 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryTests() throws IOException {
+    public void testDiscoveryQueryTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setKeywords("fakeTokenPlaceholder")
             .setLimit(10)
-            .setOrderby(Arrays.asList(
-                JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize("{\"name\":\"ASC\"}", Object.class, SerializerEncoding.JSON),
-                JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize("{\"updateTime\":\"DESC\"}", Object.class, SerializerEncoding.JSON)))
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize("{\"and\":[{\"objectType\":\"Files\"},{\"entityType\":\"azure_blob_path\"}]}",
-                    Object.class, SerializerEncoding.JSON))
+            .setOrderby(Arrays.asList(BinaryData.fromBytes("{name=ASC}".getBytes(StandardCharsets.UTF_8)),
+                BinaryData.fromBytes("{updateTime=DESC}".getBytes(StandardCharsets.UTF_8))))
+            .setFilter(BinaryData
+                .fromBytes("{and=[{objectType=Files}, {entityType=azure_blob_path}]}".getBytes(StandardCharsets.UTF_8)))
             .setFacets(Arrays.asList(
                 new SearchFacetItem().setCount(0)
                     .setFacet("assetType")

@@ -6,7 +6,7 @@ appVersion: v0.2
 annotations:
   stressTest: 'true'  # enable auto-discovery of this test via `find-all-stress-packages.ps1`
   namespace: 'java-eh' # kubernetes namespace that stress test package will be installed
-
+  matrixSelection: 'all'
 dependencies:
   - name: stress-test-addons
     version: ~0.3.0

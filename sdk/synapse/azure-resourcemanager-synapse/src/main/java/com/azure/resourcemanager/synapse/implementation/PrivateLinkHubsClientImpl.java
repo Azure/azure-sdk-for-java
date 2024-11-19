@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkHubsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkHubsClient.
+ */
 public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkHubsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkHubsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkHubsClientImpl(SynapseManagementClientImpl client) {
@@ -67,8 +73,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
     @ServiceInterface(name = "SynapseManagementCli")
     public interface PrivateLinkHubsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkHubInfoListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
@@ -77,8 +82,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs/{privateLinkHubName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkHubInner>> getByResourceGroup(@HostParam("$host") String endpoint,
@@ -88,8 +92,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs/{privateLinkHubName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkHubInner>> update(@HostParam("$host") String endpoint,
@@ -100,8 +103,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs/{privateLinkHubName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkHubInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -112,8 +114,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs/{privateLinkHubName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -149,7 +150,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,7 +183,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,7 +218,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -232,7 +233,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,7 +249,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -262,7 +263,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +278,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,7 +315,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -351,7 +352,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,7 +368,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -384,7 +385,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -399,7 +400,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
@@ -444,7 +445,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
@@ -488,7 +489,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
@@ -506,7 +507,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
@@ -524,7 +525,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
@@ -542,7 +543,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Creates or updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
@@ -587,7 +588,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Creates or updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
@@ -631,7 +632,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Creates or updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
@@ -649,7 +650,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Creates or updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
@@ -668,7 +669,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Creates or updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
@@ -686,7 +687,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -723,7 +724,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -760,7 +761,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -777,7 +778,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -797,7 +798,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -812,7 +813,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -829,7 +830,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -845,7 +846,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -862,7 +863,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -876,7 +877,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -891,7 +892,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of privateLinkHubs along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -918,7 +919,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -945,7 +946,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of privateLinkHubs as paginated response with {@link PagedFlux}.
@@ -957,7 +958,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -972,7 +973,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of privateLinkHubs as paginated response with {@link PagedIterable}.
@@ -984,7 +985,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -998,9 +999,8 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1026,9 +1026,8 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1054,9 +1053,8 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1080,9 +1078,8 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

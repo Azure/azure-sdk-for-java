@@ -13,14 +13,16 @@ import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventSourceRes
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceCreateOrUpdateParameters;
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in EventSourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EventSourcesClient.
+ */
 public interface EventSourcesClient {
     /**
      * Create or update an event source under the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName Name of the event source.
      * @param parameters Parameters for creating an event source resource.
      * @param context The context to associate with this operation.
@@ -35,10 +37,10 @@ public interface EventSourcesClient {
 
     /**
      * Create or update an event source under the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName Name of the event source.
      * @param parameters Parameters for creating an event source resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,12 +54,12 @@ public interface EventSourcesClient {
 
     /**
      * Gets the event source with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,12 +72,12 @@ public interface EventSourcesClient {
 
     /**
      * Gets the event source with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -86,12 +88,12 @@ public interface EventSourcesClient {
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,12 +107,12 @@ public interface EventSourcesClient {
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,12 +125,12 @@ public interface EventSourcesClient {
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,12 +143,12 @@ public interface EventSourcesClient {
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -157,10 +159,10 @@ public interface EventSourcesClient {
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group
      * and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,10 +176,10 @@ public interface EventSourcesClient {
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group
      * and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

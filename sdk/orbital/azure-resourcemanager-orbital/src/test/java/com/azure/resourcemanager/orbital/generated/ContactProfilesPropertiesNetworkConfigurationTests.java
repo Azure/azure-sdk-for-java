@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactProfilesPropertiesNetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactProfilesPropertiesNetworkConfiguration model = BinaryData.fromString("{\"subnetId\":\"jj\"}")
+        ContactProfilesPropertiesNetworkConfiguration model = BinaryData.fromString("{\"subnetId\":\"t\"}")
             .toObject(ContactProfilesPropertiesNetworkConfiguration.class);
-        Assertions.assertEquals("jj", model.subnetId());
+        Assertions.assertEquals("t", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContactProfilesPropertiesNetworkConfiguration model
-            = new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("jj");
+            = new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("t");
         model = BinaryData.fromObject(model).toObject(ContactProfilesPropertiesNetworkConfiguration.class);
-        Assertions.assertEquals("jj", model.subnetId());
+        Assertions.assertEquals("t", model.subnetId());
     }
 }

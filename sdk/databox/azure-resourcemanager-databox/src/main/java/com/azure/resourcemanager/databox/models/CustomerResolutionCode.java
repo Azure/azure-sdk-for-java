@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for CustomerResolutionCode. */
+/**
+ * Defines values for CustomerResolutionCode.
+ */
 public enum CustomerResolutionCode {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value MoveToCleanUpDevice. */
+    /**
+     * Enum value MoveToCleanUpDevice.
+     */
     MOVE_TO_CLEAN_UP_DEVICE("MoveToCleanUpDevice"),
 
-    /** Enum value Resume. */
+    /**
+     * Enum value Resume.
+     */
     RESUME("Resume"),
 
-    /** Enum value Restart. */
+    /**
+     * Enum value Restart.
+     */
     RESTART("Restart"),
 
-    /** Enum value ReachOutToOperation. */
+    /**
+     * Enum value ReachOutToOperation.
+     */
     REACH_OUT_TO_OPERATION("ReachOutToOperation");
 
-    /** The actual serialized value for a CustomerResolutionCode instance. */
+    /**
+     * The actual serialized value for a CustomerResolutionCode instance.
+     */
     private final String value;
 
     CustomerResolutionCode(String value) {
@@ -33,11 +44,10 @@ public enum CustomerResolutionCode {
 
     /**
      * Parses a serialized value to a CustomerResolutionCode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CustomerResolutionCode object, or null if unable to parse.
      */
-    @JsonCreator
     public static CustomerResolutionCode fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum CustomerResolutionCode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

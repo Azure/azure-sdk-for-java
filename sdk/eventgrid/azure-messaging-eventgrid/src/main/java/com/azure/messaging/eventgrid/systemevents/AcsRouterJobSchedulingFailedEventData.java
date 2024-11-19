@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -92,8 +93,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     }
 
     /**
-     * Get the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector
-     * Expired.
+     * Get the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector Expired.
      * 
      * @return the expiredRequestedWorkerSelectors value.
      */
@@ -102,8 +102,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     }
 
     /**
-     * Set the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector
-     * Expired.
+     * Set the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector Expired.
      * 
      * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
@@ -208,6 +207,9 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -271,8 +273,8 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
                     deserializedAcsRouterJobSchedulingFailedEventData.expiredRequestedWorkerSelectors
                         = expiredRequestedWorkerSelectors;
                 } else if ("scheduledOn".equals(fieldName)) {
-                    deserializedAcsRouterJobSchedulingFailedEventData.scheduledOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsRouterJobSchedulingFailedEventData.scheduledOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("failureReason".equals(fieldName)) {
                     deserializedAcsRouterJobSchedulingFailedEventData.failureReason = reader.getString();
                 } else {

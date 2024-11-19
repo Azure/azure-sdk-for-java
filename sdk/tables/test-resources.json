@@ -16,8 +16,10 @@
         }
     },
     "variables": {
-        "mgmtApiVersion": "2022-05-01",
-        "authorizationApiVersion": "2018-09-01-preview",
+        "storageMgmtApiVersion": "2022-05-01",
+        "cosmosMgmtApiVersion": "2024-05-15",
+        "cosmosAuthorizationApiVersion": "2023-07-01-preview",
+        "storageAuthorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')]",
         "location": "[resourceGroup().location]",
         "primaryAccountName": "[concat(parameters('baseName'), 'prim')]",
@@ -37,13 +39,22 @@
             "virtualNetworkRules": [],
             "ipRules": [],
             "defaultAction": "Allow"
-        }
+        },
+      "customCosmosRoleName": "Azure Cosmos DB SDK role for Table Data Plane",
+      "customCosmosRoleDescription": "Azure Cosmos DB SDK role for Table Data Plane",
+      "customCosmosRoleActions": [
+        "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+        "Microsoft.DocumentDB/databaseAccounts/tables/*",
+        "Microsoft.DocumentDB/databaseAccounts/tables/containers/*",
+        "Microsoft.DocumentDB/databaseAccounts/tables/containers/entities/*",
+        "Microsoft.DocumentDB/databaseAccounts/throughputSettings/read"
+      ]
     },
     "resources": [
         {
             "condition": "[equals(parameters('endpointType'),'storage')]",
             "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "[variables('authorizationApiVersion')]",
+            "apiVersion": "[variables('storageAuthorizationApiVersion')]",
             "name": "[guid(concat('tableDataContributorRoleId', resourceGroup().id))]",
             "properties": {
                 "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
@@ -53,7 +64,7 @@
         {
             "condition": "[equals(parameters('endpointType'),'storage')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('mgmtApiVersion')]",
+            "apiVersion": "[variables('storageMgmtApiVersion')]",
             "name": "[variables('primaryAccountName')]",
             "location": "[variables('location')]",
             "sku": {
@@ -72,7 +83,7 @@
         {
             "condition": "[equals(parameters('endpointType'),'cosmos')]",
             "type": "Microsoft.DocumentDB/databaseAccounts",
-            "apiVersion": "2020-04-01",
+            "apiVersion": "[variables('CosmosMgmtApiVersion')]",
             "name": "[variables('primaryAccountName')]",
             "location": "[variables('location')]",
             "tags": {
@@ -111,12 +122,47 @@
                 ],
                 "ipRules": []
             }
+        },
+        {
+          "condition": "[equals(parameters('endpointType'),'cosmos')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('primaryAccountName'))]"
+          ],
+          "type": "Microsoft.DocumentDB/databaseAccounts/tableRoleDefinitions",
+          "apiVersion": "[variables('CosmosMgmtApiVersion')]",
+          "name": "[concat(variables('primaryAccountName'), '/', guid(variables('customCosmosRoleName')))]",
+          "properties": {
+            "roleName": "[variables('customCosmosRoleName')]",
+            "description": "[variables('customCosmosRoleDescription')]",
+            "permissions": [
+              {
+                "dataActions": "[variables('customCosmosRoleActions')]"
+              }
+            ],
+            "assignableScopes": [
+              "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.DocumentDB/databaseAccounts/', variables('primaryAccountName'))]"
+            ]
+          }
+        },
+        {
+          "condition": "[equals(parameters('endpointType'),'cosmos')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.DocumentDB/databaseAccounts/tableRoleDefinitions', variables('primaryAccountName'), guid(variables('customCosmosRoleName')))]"
+          ],
+          "type": "Microsoft.DocumentDB/databaseAccounts/tableRoleAssignments",
+          "apiVersion": "[variables('CosmosMgmtApiVersion')]",
+          "name": "[concat(variables('primaryAccountName'), '/', guid(variables('customCosmosRoleName')))]",
+          "properties": {
+            "scope": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.DocumentDB/databaseAccounts/', variables('primaryAccountName'))]",
+            "roleDefinitionId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/tableRoleDefinitions', variables('primaryAccountName'), guid(variables('customCosmosRoleName')))]",
+            "principalId": "[parameters('testApplicationOid')]"
+          }
         }
     ],
     "outputs": {
         "TABLES_CONNECTION_STRING": {
             "type": "string",
-            "value": "[if(equals(parameters('endpointType'), 'storage'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('mgmtApiVersion')).keys[0].value, ';EndpointSuffix=core.windows.net/;'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('primaryAccountName')), '2020-04-01').primaryMasterKey, ';EndpointSuffix=cosmos.azure.com:443/;'))]",
+            "value": "[if(equals(parameters('endpointType'), 'storage'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageMgmtApiVersion')).keys[0].value, ';EndpointSuffix=core.windows.net/;'), concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('primaryAccountName')), '2020-04-01').primaryMasterKey, ';EndpointSuffix=cosmos.azure.com:443/;'))]"
         },
         "TABLES_ENDPOINT": {
           "type": "string",

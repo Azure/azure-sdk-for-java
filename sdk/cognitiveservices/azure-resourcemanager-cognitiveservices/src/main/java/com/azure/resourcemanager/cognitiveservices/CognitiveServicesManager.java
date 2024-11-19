@@ -56,7 +56,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to CognitiveServicesManager. Cognitive Services Management Client. */
+/**
+ * Entry point to CognitiveServicesManager.
+ * Cognitive Services Management Client.
+ */
 public final class CognitiveServicesManager {
     private Accounts accounts;
 
@@ -96,7 +99,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Creates an instance of CognitiveServices service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the CognitiveServices service API instance.
@@ -109,7 +112,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Creates an instance of CognitiveServices service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the CognitiveServices service API instance.
@@ -122,14 +125,16 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets a Configurable instance that can be used to create CognitiveServicesManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new CognitiveServicesManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -201,8 +206,8 @@ public final class CognitiveServicesManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -244,7 +249,7 @@ public final class CognitiveServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.cognitiveservices")
                 .append("/")
-                .append("1.1.0-beta.1");
+                .append("1.1.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -292,7 +297,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of Accounts. It manages Account.
-     *
+     * 
      * @return Resource collection API of Accounts.
      */
     public Accounts accounts() {
@@ -304,7 +309,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of DeletedAccounts.
-     *
+     * 
      * @return Resource collection API of DeletedAccounts.
      */
     public DeletedAccounts deletedAccounts() {
@@ -316,7 +321,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of ResourceSkus.
-     *
+     * 
      * @return Resource collection API of ResourceSkus.
      */
     public ResourceSkus resourceSkus() {
@@ -328,7 +333,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of Usages.
-     *
+     * 
      * @return Resource collection API of Usages.
      */
     public Usages usages() {
@@ -340,7 +345,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -352,7 +357,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -364,7 +369,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of CommitmentTiers.
-     *
+     * 
      * @return Resource collection API of CommitmentTiers.
      */
     public CommitmentTiers commitmentTiers() {
@@ -376,7 +381,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of Models.
-     *
+     * 
      * @return Resource collection API of Models.
      */
     public Models models() {
@@ -388,7 +393,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
@@ -401,7 +406,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of PrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResources.
      */
     public PrivateLinkResources privateLinkResources() {
@@ -413,7 +418,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of Deployments. It manages Deployment.
-     *
+     * 
      * @return Resource collection API of Deployments.
      */
     public Deployments deployments() {
@@ -425,7 +430,7 @@ public final class CognitiveServicesManager {
 
     /**
      * Gets the resource collection API of CommitmentPlans. It manages CommitmentPlan, CommitmentPlanAccountAssociation.
-     *
+     * 
      * @return Resource collection API of CommitmentPlans.
      */
     public CommitmentPlans commitmentPlans() {
@@ -436,8 +441,10 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * @return Wrapped service client CognitiveServicesManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client CognitiveServicesManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client CognitiveServicesManagementClient.
      */
     public CognitiveServicesManagementClient serviceClient() {
         return this.clientObject;

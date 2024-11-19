@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-/** Samples for CommitmentPlans DeleteAssociation. */
+/**
+ * Samples for CommitmentPlans DeleteAssociation.
+ */
 public final class CommitmentPlansDeleteAssociationSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/DeleteSharedCommitmentPlanAssociation.json
+     * x-ms-original-file:
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/
+     * DeleteSharedCommitmentPlanAssociation.json
      */
     /**
      * Sample code: DeleteCommitmentPlan.
-     *
+     * 
      * @param manager Entry point to CognitiveServicesManager.
      */
-    public static void deleteCommitmentPlan(
-        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager
-            .commitmentPlans()
-            .deleteAssociation(
-                "resourceGroupName",
-                "commitmentPlanName",
-                "commitmentPlanAssociationName",
+    public static void
+        deleteCommitmentPlan(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.commitmentPlans()
+            .deleteAssociation("resourceGroupName", "commitmentPlanName", "commitmentPlanAssociationName",
                 com.azure.core.util.Context.NONE);
     }
 }
