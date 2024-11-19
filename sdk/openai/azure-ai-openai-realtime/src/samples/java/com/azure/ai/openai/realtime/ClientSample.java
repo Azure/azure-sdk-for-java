@@ -62,7 +62,7 @@ public class ClientSample {
         // Send audio file
         AudioFile audioFile = new AudioFile(FileUtils.openResourceFile("arc-easy-q237-tts.wav"))
                 .setBytesPerSample(16)
-                .setSampleRate(44100);
+                .setSampleRate(22500);
         FileUtils.sendAudioFileAsync(client, audioFile).block();
 
         try {
