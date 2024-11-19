@@ -3,38 +3,46 @@ package com.azure.ai.openai.realtime;
 import com.azure.ai.openai.realtime.implementation.AudioFile;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
+import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventErrorError;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStarted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartAdded;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
 import com.azure.ai.openai.realtime.models.ServerErrorReceivedException;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Sinks;
 
-import java.time.Duration;
 import java.util.Arrays;
 
 public class ClientSample {
     public static void main(String[] args) {
-        String openaiKey = Configuration.getGlobalConfiguration().get("OPENAI_KEY");
-        String modelName = Configuration.getGlobalConfiguration().get("OPENAI_MODEL");
+//        String openaiKey = Configuration.getGlobalConfiguration().get("OPENAI_KEY");
+//        String modelName = Configuration.getGlobalConfiguration().get("OPENAI_MODEL");
+//
+//        RealtimeAsyncClient client = new RealtimeClientBuilder()
+//            .credential(new KeyCredential(openaiKey))
+//            .deploymentOrModelName(modelName)
+//            .buildAsyncClient();
+
+
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
+        String deploymentOrModelId = Configuration.getGlobalConfiguration().get("MODEL_OR_DEPLOYMENT_NAME");
 
         RealtimeAsyncClient client = new RealtimeClientBuilder()
-            .credential(new KeyCredential(openaiKey))
-            .deploymentOrModelName(modelName)
-            .buildAsyncClient();
+                .endpoint(endpoint)
+                .deploymentOrModelName(deploymentOrModelId)
+                .credential(new AzureKeyCredential(azureOpenaiKey))
+                .buildAsyncClient();
 
         Sinks.Many<RealtimeEventHandler.UserInputRequest> requestUserInput = Sinks.many().multicast().onBackpressureBuffer();
 
@@ -60,7 +68,7 @@ public class ClientSample {
         ).block();
 
         // Send audio file
-        AudioFile audioFile = new AudioFile(FileUtils.openResourceFile("arc-easy-q237-tts.wav"))
+        AudioFile audioFile = new AudioFile(FileUtils.openResourceFile("arc-easy-q237-tts-24khz-16PCM.wav"))
                 .setBytesPerSample(16)
                 .setSampleRate(22500);
         FileUtils.sendAudioFileAsync(client, audioFile).block();
