@@ -55,7 +55,7 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
     public static final MediaStreamingStatusDetails SERVICE_TIMEOUT = fromString("serviceTimeout");
 
     /** Static value initialWebSocketConnectionFailed for MediaStreamingStatusDetails. */
-    public static final MediaStreamingStatusDetails INITIAL_WEB_SOCKET_CONNECTION_FAILED
+    public static final MediaStreamingStatusDetails INITIAL_WEBSOCKET_CONNECTION_FAILED
         = fromString("initialWebSocketConnectionFailed");
 
     /**
