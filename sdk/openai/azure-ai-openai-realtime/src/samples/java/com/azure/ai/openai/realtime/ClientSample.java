@@ -1,10 +1,12 @@
 package com.azure.ai.openai.realtime;
 
+import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
+import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventErrorError;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartAdded;
@@ -17,6 +19,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
+import java.util.Arrays;
 
 public class ClientSample {
     public static void main(String[] args) {
@@ -45,9 +48,12 @@ public class ClientSample {
                                 .setPrefixPaddingMs(300)
                                 .setSilenceDurationMs(200)
                 ).setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings(
-                        RealtimeAudioInputTranscriptionModel.WHISPER_1))
+                        RealtimeAudioInputTranscriptionModel.WHISPER_1)
+                ).setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
             )
+        ).then(FileUtils.sendAudioFileAsync(client, FileUtils.openResourceFile("arc-easy-q237-tts.wav"))
         ).block();
+
 
         try {
             client.stop().block();
