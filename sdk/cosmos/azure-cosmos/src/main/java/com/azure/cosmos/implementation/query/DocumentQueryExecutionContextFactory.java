@@ -436,7 +436,7 @@ public class DocumentQueryExecutionContextFactory {
                         "Please ensure limit is greater than offset.");
             }
 
-            int pageSize = hybridSearchQueryInfo.hasSkip() ? hybridSearchQueryInfo.getTake() - hybridSearchQueryInfo.getSkip() : hybridSearchQueryInfo.getTake();
+            int pageSize = hybridSearchQueryInfo.hasSkip() ? hybridSearchQueryInfo.getTake() + hybridSearchQueryInfo.getSkip() : hybridSearchQueryInfo.getTake();
             int maxitemSizeForFullTextSearch = Math.max(Configs.getMaxItemCountForHybridSearchSearch(),
                 qryOptAccessor.getMaxItemCountForHybridSearch(cosmosQueryRequestOptions));
 
