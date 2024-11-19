@@ -34,6 +34,7 @@ import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
@@ -264,6 +265,18 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.buildFileClient();
     }
 
+    protected ShareFileAsyncClient getFileAsyncClient(final String shareName, final String fileName,
+        Boolean allowTrailingDot, Boolean allowSourceTrailingDot) {
+        ShareFileClientBuilder builder = fileBuilderHelper(shareName, fileName);
+        if (allowTrailingDot != null) {
+            builder.allowTrailingDot(allowTrailingDot);
+        }
+        if (allowSourceTrailingDot != null) {
+            builder.allowSourceTrailingDot(allowSourceTrailingDot);
+        }
+        return builder.buildFileAsyncClient();
+    }
+
     protected ShareFileClientBuilder getFileClientBuilder(String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder().endpoint(endpoint);
         for (HttpPipelinePolicy policy : policies) {
@@ -295,6 +308,14 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static ShareLeaseClient createLeaseClient(ShareClient shareClient, String leaseId) {
         return new ShareLeaseClientBuilder().shareClient(shareClient).leaseId(leaseId).buildClient();
+    }
+
+    protected static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient, String leaseId) {
+        return new ShareLeaseClientBuilder().shareAsyncClient(shareClient).leaseId(leaseId).buildAsyncClient();
+    }
+
+    protected static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient) {
+        return createLeaseClient(shareClient, null);
     }
 
     protected ShareServiceClient getOAuthServiceClient(ShareServiceClientBuilder builder) {
@@ -393,6 +414,15 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
     }
 
+    protected Mono<String> setupFileLeaseCondition(ShareFileAsyncClient fc, String leaseID) {
+        if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
+            return createLeaseClient(fc).acquireLease()
+                .map(responseLeaseId -> Objects.equals(leaseID, RECEIVED_LEASE_ID) ? responseLeaseId : leaseID);
+        } else {
+            return Mono.just(leaseID);
+        }
+    }
+
     /**
      * Validates the presence of headers that are present on a large number of responses. These headers are generally
      * random and can really only be checked as not null.
@@ -417,6 +447,15 @@ public class FileShareTestBase extends TestProxyTestBase {
                 .getValue();
         } else {
             return leaseID;
+        }
+    }
+
+    protected Mono<String> setupShareLeaseAsyncCondition(ShareAsyncClient sc, String leaseID) {
+        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
+            return createLeaseClient(sc).acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1))
+                .map(response -> response.getValue());
+        } else {
+            return Mono.just(leaseID);
         }
     }
 
