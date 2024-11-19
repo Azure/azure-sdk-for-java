@@ -80,7 +80,8 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
         return decoder.encode(event);
     }
 
-    protected String toJson(RealtimeServerEvent event) {
+    // TODO jpalvarezl: should be removed but it's really useful
+    public static String toJson(RealtimeServerEvent event) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             event.toJson(writer).flush();

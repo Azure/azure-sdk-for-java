@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.realtime;
 
+import com.azure.ai.openai.realtime.implementation.AudioFile;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.core.credential.KeyCredential;
@@ -41,7 +42,7 @@ public class NonAzureLowLevelClient {
                     if (userInputRequest instanceof RealtimeEventHandler.SessionUpdateRequest) {
                         return client.sendMessage(RealtimeEventHandler.sessionUpdate());
                     } else if (userInputRequest instanceof RealtimeEventHandler.SendAudioRequest) {
-                        return FileUtils.sendAudioFileAsync(client, FileUtils.openResourceFile("audio_weather_alaw.wav"));
+                        return FileUtils.sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("audio_weather_alaw.wav")));
                     } else if (userInputRequest instanceof RealtimeEventHandler.EndSession) {
                         return Mono.empty();
                     } else {

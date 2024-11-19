@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.realtime;
 
+import com.azure.ai.openai.realtime.implementation.AudioFile;
 import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemCreate;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemDelete;
@@ -71,7 +72,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
         }).assertNext(event -> {
             assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
         })
-            .then(() -> FileUtils.sendAudioFileAsync(client, FileUtils.openResourceFile("audio_weather_alaw.wav"))
+            .then(() -> FileUtils.sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("audio_weather_alaw.wav")))
                 .block())
             .thenConsumeWhile(event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
                 Assertions::assertNotNull)
@@ -238,7 +239,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
             client.sendMessage(sessionConfig).block();
             FileUtils
                 .sendAudioFileAsync(client,
-                    FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav"))
+                    new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")))
                 .block();
             StepVerifier.create(client.getServerEvents())
                 .thenConsumeWhile(
@@ -291,7 +292,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
             .block();
 
         FileUtils
-            .sendAudioFileAsync(client, FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav"))
+            .sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")))
             .block();
         client.sendMessage(ConversationItem.createUserMessage("Hello, assistant!")).block();
 

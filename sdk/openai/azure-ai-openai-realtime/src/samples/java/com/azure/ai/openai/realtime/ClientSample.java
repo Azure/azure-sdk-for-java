@@ -1,5 +1,6 @@
 package com.azure.ai.openai.realtime;
 
+import com.azure.ai.openai.realtime.implementation.AudioFile;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
@@ -8,11 +9,15 @@ import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventErrorError;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStarted;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartAdded;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
 import com.azure.ai.openai.realtime.models.ServerErrorReceivedException;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -39,23 +44,29 @@ public class ClientSample {
         disposables.add(client.getServerEvents().subscribe(realtimeServerEvent ->
             consumeServerEvent(realtimeServerEvent, requestUserInput), ClientSample::consumeError));
 
-        // Configure the session
         client.start().block();
+
+        // Configure the session
         client.sendMessage(new RealtimeClientEventSessionUpdate(
-                new RealtimeRequestSession().setTurnDetection(
-                        new RealtimeServerVadTurnDetection()
-                                .setThreshold(0.5)
-                                .setPrefixPaddingMs(300)
-                                .setSilenceDurationMs(200)
-                ).setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings(
-                        RealtimeAudioInputTranscriptionModel.WHISPER_1)
-                ).setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
-            )
-        ).then(FileUtils.sendAudioFileAsync(client, FileUtils.openResourceFile("arc-easy-q237-tts.wav"))
+                    new RealtimeRequestSession().setTurnDetection(
+                            new RealtimeServerVadTurnDetection()
+                                    .setThreshold(0.5)
+                                    .setPrefixPaddingMs(300)
+                                    .setSilenceDurationMs(200)
+                    ).setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings(
+                            RealtimeAudioInputTranscriptionModel.WHISPER_1)
+                    ).setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
+                )
         ).block();
 
+        // Send audio file
+        AudioFile audioFile = new AudioFile(FileUtils.openResourceFile("arc-easy-q237-tts.wav"))
+                .setBytesPerSample(16)
+                .setSampleRate(44100);
+        FileUtils.sendAudioFileAsync(client, audioFile).block();
 
         try {
+            Thread.sleep(10000);
             client.stop().block();
             client.close();
             disposables.dispose();
@@ -65,11 +76,16 @@ public class ClientSample {
     }
 
     private static void consumeServerEvent(RealtimeServerEvent serverEvent, Sinks.Many<RealtimeEventHandler.UserInputRequest> requestUserInput) {
-        if (serverEvent instanceof RealtimeServerEventResponseContentPartAdded) {
-            RealtimeServerEventResponseContentPartAdded contentPartAdded = (RealtimeServerEventResponseContentPartAdded) serverEvent;
-            contentPartAdded.getPart();
+        if (serverEvent.getType().toString().startsWith("input_audio")) {
+            System.out.println("Input audio event of type:" + "\"" + serverEvent.getType() + "\" and its JSON:");
+            System.out.println(RealtimeClientTestBase.toJson(serverEvent));
+        } else if (serverEvent instanceof RealtimeServerEventResponseDone) {
+            RealtimeServerEventResponseDone responseDone = (RealtimeServerEventResponseDone) serverEvent;
+            System.out.println("Response done JSON: " + RealtimeClientTestBase.toJson(responseDone));
+        } else {
+            System.out.println(serverEvent.getType().toString() + " and its JSON:");
+            System.out.println(RealtimeClientTestBase.toJson(serverEvent));
         }
-        System.out.println(serverEvent.getType().toString());
     }
 
     private static void consumeError(Throwable error) {

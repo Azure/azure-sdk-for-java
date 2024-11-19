@@ -1,5 +1,6 @@
 package com.azure.ai.openai.realtime;
 
+import com.azure.ai.openai.realtime.implementation.AudioFile;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
@@ -59,7 +60,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         client.addOnSessionUpdatedEventHandler(sessionUpdated -> {
             assertNotNull(sessionUpdated);
             sessionUpdatedEventFired.set(true);
-            FileUtils.sendAudioFile(client, FileUtils.openResourceFile("audio_weather_alaw.wav"));
+            FileUtils.sendAudioFile(client, new AudioFile(FileUtils.openResourceFile("audio_weather_alaw.wav")));
         });
 
         client.addOnResponseDoneEventHandler(responseDone -> {
@@ -277,7 +278,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         getWeatherToolRunner((weatherTool, sessionConfig) -> {
             client.sendMessage(sessionConfig);
             FileUtils.sendAudioFile(client,
-                FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav"));
+                new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")));
 
             client.addOnSessionUpdatedEventHandler(sessionUpdate -> {
                 assertNotNull(sessionUpdate);
@@ -338,7 +339,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         client.start();
         client.sendMessage(new RealtimeClientEventSessionUpdate(
             new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
-        FileUtils.sendAudioFile(client, FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav"));
+        FileUtils.sendAudioFile(client, new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")));
         client.sendMessage(ConversationItem.createUserMessage("Hello, assistant!"));
 
         client.addOnInputAudioBufferSpeechStartedEventHandler(event -> {
