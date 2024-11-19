@@ -14,10 +14,6 @@
 - Added a new skill: `DocumentIntelligenceLayoutSkill` that extracts content and layout information (as markdown), via Azure AI Services, from files within the enrichment pipeline.
 - Added 2 subtypes of `CognitiveServiceAccounts`: `AzureCognitiveServiceAccount` and `AzureCognitiveServiceAccountKey`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
