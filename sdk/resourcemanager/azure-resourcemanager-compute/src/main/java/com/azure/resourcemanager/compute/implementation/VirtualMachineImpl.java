@@ -1996,7 +1996,8 @@ class VirtualMachineImpl
 
     @Override
     public String capacityReservationGroupId() {
-        if (this.innerModel().capacityReservation() != null) {
+        if (this.innerModel().capacityReservation() != null
+            && this.innerModel().capacityReservation().capacityReservationGroup() != null) {
             return this.innerModel().capacityReservation().capacityReservationGroup().id();
         }
         return null;
