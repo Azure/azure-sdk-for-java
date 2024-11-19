@@ -16,7 +16,6 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTrans
 import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
 import com.azure.ai.openai.realtime.models.RealtimeVoice;
 import com.azure.ai.openai.realtime.models.ServerErrorReceivedException;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 import reactor.core.Disposable;
@@ -27,7 +26,6 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -95,7 +93,7 @@ public class ClientSample {
         )
         ).block();
 
-        // Send audio file
+        // Send audio file with our prompt
         AudioFile audioFile = new AudioFile(FileUtils.openResourceFile("arc-easy-q237-tts-24khz-16PCM.wav"))
                 .setBytesPerSample(16)
                 .setSampleRate(24000);
@@ -107,6 +105,7 @@ public class ClientSample {
             client.close();
             disposables.dispose();
 
+            // File cleanup
             Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_DATA_FILE));
 //            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_WAV_FILE));
 
