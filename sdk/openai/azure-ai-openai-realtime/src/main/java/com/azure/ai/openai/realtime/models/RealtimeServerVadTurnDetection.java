@@ -33,14 +33,12 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
     /*
      * The prefix_padding_ms property.
      */
-    @Generated
-    private Duration prefixPaddingMs;
+    private Integer prefixPaddingMs;
 
     /*
      * The silence_duration_ms property.
      */
-    @Generated
-    private Duration silenceDurationMs;
+    private Integer silenceDurationMs;
 
     /**
      * Creates an instance of RealtimeServerVadTurnDetection class.
@@ -87,8 +85,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
      *
      * @return the prefixPaddingMs value.
      */
-    @Generated
-    public Duration getPrefixPaddingMs() {
+    public Integer getPrefixPaddingMs() {
         return this.prefixPaddingMs;
     }
 
@@ -98,8 +95,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
      * @param prefixPaddingMs the prefixPaddingMs value to set.
      * @return the RealtimeServerVadTurnDetection object itself.
      */
-    @Generated
-    public RealtimeServerVadTurnDetection setPrefixPaddingMs(Duration prefixPaddingMs) {
+    public RealtimeServerVadTurnDetection setPrefixPaddingMs(Integer prefixPaddingMs) {
         this.prefixPaddingMs = prefixPaddingMs;
         return this;
     }
@@ -109,8 +105,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
      *
      * @return the silenceDurationMs value.
      */
-    @Generated
-    public Duration getSilenceDurationMs() {
+    public Integer getSilenceDurationMs() {
         return this.silenceDurationMs;
     }
 
@@ -120,8 +115,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
      * @param silenceDurationMs the silenceDurationMs value to set.
      * @return the RealtimeServerVadTurnDetection object itself.
      */
-    @Generated
-    public RealtimeServerVadTurnDetection setSilenceDurationMs(Duration silenceDurationMs) {
+    public RealtimeServerVadTurnDetection setSilenceDurationMs(Integer silenceDurationMs) {
         this.silenceDurationMs = silenceDurationMs;
         return this;
     }
@@ -129,14 +123,17 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("threshold", this.threshold);
-        jsonWriter.writeStringField("prefix_padding_ms", CoreUtils.durationToStringWithDays(this.prefixPaddingMs));
-        jsonWriter.writeStringField("silence_duration_ms", CoreUtils.durationToStringWithDays(this.silenceDurationMs));
+        if (this.prefixPaddingMs != null) {
+            jsonWriter.writeNumberField("prefix_padding_ms", this.prefixPaddingMs);
+        }
+        if (this.silenceDurationMs != null) {
+            jsonWriter.writeNumberField("silence_duration_ms", this.silenceDurationMs);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -161,12 +158,11 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
                 } else if ("threshold".equals(fieldName)) {
                     deserializedRealtimeServerVadTurnDetection.threshold = reader.getNullable(JsonReader::getDouble);
                 } else if ("prefix_padding_ms".equals(fieldName)) {
-                    // TODO jpalvarezl: Figure out how to appropriately encode milliseconds in Duration in TypeSpec
                     deserializedRealtimeServerVadTurnDetection.prefixPaddingMs
-                        = reader.getNullable(nonNullReader -> Duration.ofMillis(nonNullReader.getLong()));
+                        = reader.getNullable(nonNullReader -> new Integer(nonNullReader.getInt()));
                 } else if ("silence_duration_ms".equals(fieldName)) {
                     deserializedRealtimeServerVadTurnDetection.silenceDurationMs
-                        = reader.getNullable(nonNullReader -> Duration.ofMillis(nonNullReader.getLong()));
+                        = reader.getNullable(nonNullReader -> new Integer(nonNullReader.getInt()));
                 } else {
                     reader.skipChildren();
                 }

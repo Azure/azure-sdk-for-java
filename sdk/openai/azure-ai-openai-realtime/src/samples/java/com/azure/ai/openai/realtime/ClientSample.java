@@ -42,8 +42,8 @@ public class ClientSample {
                 new RealtimeRequestSession().setTurnDetection(
                         new RealtimeServerVadTurnDetection()
                                 .setThreshold(0.5)
-                                .setPrefixPaddingMs(Duration.ofMillis(300))
-                                .setSilenceDurationMs(Duration.ofMillis(200))
+                                .setPrefixPaddingMs(300)
+                                .setSilenceDurationMs(200)
                 ).setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings(
                         RealtimeAudioInputTranscriptionModel.WHISPER_1))
             )
