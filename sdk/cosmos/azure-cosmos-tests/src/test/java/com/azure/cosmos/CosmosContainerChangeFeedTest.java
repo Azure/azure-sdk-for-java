@@ -152,14 +152,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator", "fast" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
     }
 
-    @AfterMethod(groups = { "emulator" })
+    @AfterMethod(groups = { "emulator", "fast" })
     public void afterTest() throws Exception {
         if (this.createdContainer != null) {
             try {
@@ -172,14 +172,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @BeforeMethod(groups = { "emulator" })
+    @BeforeMethod(groups = { "emulator", "fast" })
     public void beforeTest() throws Exception {
         this.createdContainer = null;
         this.createdAsyncContainer = null;
         this.partitionKeyToDocuments.clear();
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator", "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
