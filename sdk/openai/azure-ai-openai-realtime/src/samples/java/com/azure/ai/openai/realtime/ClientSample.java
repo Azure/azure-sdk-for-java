@@ -73,7 +73,7 @@ public class ClientSample {
             client.getServerEvents()
                 .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioTranscriptDone)
                 .ofType(RealtimeServerEventResponseAudioTranscriptDelta.class)
-                .subscribe(ClientSample::consumeAudioTranscriptDelta, ClientSample::consumeError, ClientSample::onAudioTranscriptDeltaCompleted)
+                .subscribe(ClientSample::consumeAudioTranscriptDelta, ClientSample::consumeError, ClientSample::onAudioResponseTranscriptCompleted)
         ));
 
         client.start().block();
@@ -139,7 +139,7 @@ public class ClientSample {
         System.out.print(audioTranscriptDelta.getDelta());
     }
 
-    private static void onAudioTranscriptDeltaCompleted() {
+    private static void onAudioResponseTranscriptCompleted() {
         System.out.println("\nAudio transcript complete.");
     }
 
