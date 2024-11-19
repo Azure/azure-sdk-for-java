@@ -64,7 +64,7 @@ public final class SecretAttributes implements JsonSerializable<SecretAttributes
      * at the end of the retention interval.
      */
     @Generated
-    private DeletionRecoveryLevel recoveryLevel;
+    private String recoveryLevel;
 
     /**
      * Creates an instance of SecretAttributes class.
@@ -200,7 +200,7 @@ public final class SecretAttributes implements JsonSerializable<SecretAttributes
      * @return the recoveryLevel value.
      */
     @Generated
-    public DeletionRecoveryLevel getRecoveryLevel() {
+    public String getRecoveryLevel() {
         return this.recoveryLevel;
     }
 
@@ -246,7 +246,7 @@ public final class SecretAttributes implements JsonSerializable<SecretAttributes
                 } else if ("recoverableDays".equals(fieldName)) {
                     deserializedSecretAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
                 } else if ("recoveryLevel".equals(fieldName)) {
-                    deserializedSecretAttributes.recoveryLevel = DeletionRecoveryLevel.fromString(reader.getString());
+                    deserializedSecretAttributes.recoveryLevel = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

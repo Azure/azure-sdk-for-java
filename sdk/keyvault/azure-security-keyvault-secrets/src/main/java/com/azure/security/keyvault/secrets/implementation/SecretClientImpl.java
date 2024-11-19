@@ -156,90 +156,90 @@ public final class SecretClientImpl {
     @ServiceInterface(name = "SecretClient")
     public interface SecretClientService {
 
-        @Put("/secrets/{secretName}")
+        @Put("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> setSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
             RequestOptions requestOptions, Context context);
 
-        @Put("/secrets/{secretName}")
+        @Put("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> setSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
             RequestOptions requestOptions, Context context);
 
-        @Delete("/secrets/{secretName}")
+        @Delete("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/secrets/{secretName}")
+        @Delete("/secrets/{secret-name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Patch("/secrets/{secretName}/{secretVersion}")
+        @Patch("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
-            @PathParam("secretVersion") String secretVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
+            @PathParam("secret-version") String secretVersion, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
-        @Patch("/secrets/{secretName}/{secretVersion}")
+        @Patch("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
-            @PathParam("secretVersion") String secretVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
+            @PathParam("secret-version") String secretVersion, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
-        @Get("/secrets/{secretName}/{secretVersion}")
+        @Get("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
-            @PathParam("secretVersion") String secretVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
+            @PathParam("secret-version") String secretVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/secrets/{secretName}/{secretVersion}")
+        @Get("/secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
-            @PathParam("secretVersion") String secretVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
+            @PathParam("secret-version") String secretVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/secrets")
@@ -262,24 +262,24 @@ public final class SecretClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/secrets/{secretName}/versions")
+        @Get("/secrets/{secret-name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSecretVersions(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/secrets/{secretName}/versions")
+        @Get("/secrets/{secret-name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSecretVersionsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deletedsecrets")
@@ -302,84 +302,84 @@ public final class SecretClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/deletedsecrets/{secretName}")
+        @Get("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/deletedsecrets/{secretName}")
+        @Get("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/deletedsecrets/{secretName}")
+        @Delete("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/deletedsecrets/{secretName}")
+        @Delete("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> purgeDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/deletedsecrets/{secretName}/recover")
+        @Post("/deletedsecrets/{secret-name}/recover")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> recoverDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/deletedsecrets/{secretName}/recover")
+        @Post("/deletedsecrets/{secret-name}/recover")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> recoverDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/secrets/{secretName}/backup")
+        @Post("/secrets/{secret-name}/backup")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> backupSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/secrets/{secretName}/backup")
+        @Post("/secrets/{secret-name}/backup")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> backupSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @PathParam("secretName") String secretName,
+            @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/secrets/restore")
@@ -485,7 +485,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      * }
      * }</pre>
@@ -504,7 +504,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -556,7 +556,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      * }
      * }</pre>
@@ -575,7 +575,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -624,7 +624,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -674,7 +674,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -722,7 +722,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -744,7 +744,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -793,7 +793,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -815,7 +815,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -862,7 +862,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -910,7 +910,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -958,7 +958,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -966,7 +966,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -981,8 +981,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of SecretItem items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> getSecretsSinglePageAsync(RequestOptions requestOptions) {
@@ -1014,7 +1013,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1022,7 +1021,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1037,7 +1036,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of SecretItem items as paginated response with {@link PagedFlux}.
+     * @return the secret list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> getSecretsAsync(RequestOptions requestOptions) {
@@ -1068,7 +1067,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1076,7 +1075,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1091,7 +1090,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of SecretItem items along with {@link PagedResponse}.
+     * @return the secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getSecretsSinglePage(RequestOptions requestOptions) {
@@ -1122,7 +1121,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1130,7 +1129,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1145,7 +1144,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of SecretItem items as paginated response with {@link PagedIterable}.
+     * @return the secret list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> getSecrets(RequestOptions requestOptions) {
@@ -1175,7 +1174,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1183,7 +1182,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1231,7 +1230,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1239,7 +1238,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1285,7 +1284,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1293,7 +1292,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1339,7 +1338,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1347,7 +1346,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1393,7 +1392,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1401,7 +1400,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1419,8 +1418,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DeletedSecretItem items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the deleted secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> getDeletedSecretsSinglePageAsync(RequestOptions requestOptions) {
@@ -1451,7 +1449,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1459,7 +1457,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1477,7 +1475,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DeletedSecretItem items as paginated response with {@link PagedFlux}.
+     * @return the deleted secret list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> getDeletedSecretsAsync(RequestOptions requestOptions) {
@@ -1507,7 +1505,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1515,7 +1513,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1533,7 +1531,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DeletedSecretItem items along with {@link PagedResponse}.
+     * @return the deleted secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getDeletedSecretsSinglePage(RequestOptions requestOptions) {
@@ -1563,7 +1561,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -1571,7 +1569,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1589,7 +1587,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DeletedSecretItem items as paginated response with {@link PagedIterable}.
+     * @return the deleted secret list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> getDeletedSecrets(RequestOptions requestOptions) {
@@ -1619,7 +1617,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1669,7 +1667,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1762,7 +1760,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1809,7 +1807,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1920,7 +1918,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1974,7 +1972,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2007,7 +2005,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -2015,7 +2013,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2031,8 +2029,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of SecretItem items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> getSecretsNextSinglePageAsync(String nextLink,
@@ -2053,7 +2050,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -2061,7 +2058,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2077,7 +2074,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of SecretItem items along with {@link PagedResponse}.
+     * @return the secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getSecretsNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -2096,7 +2093,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -2104,7 +2101,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2140,7 +2137,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -2148,7 +2145,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2183,7 +2180,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -2191,7 +2188,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2210,8 +2207,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DeletedSecretItem items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the deleted secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> getDeletedSecretsNextSinglePageAsync(String nextLink,
@@ -2231,7 +2227,7 @@ public final class SecretClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -2239,7 +2235,7 @@ public final class SecretClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2258,7 +2254,7 @@ public final class SecretClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DeletedSecretItem items along with {@link PagedResponse}.
+     * @return the deleted secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getDeletedSecretsNextSinglePage(String nextLink, RequestOptions requestOptions) {

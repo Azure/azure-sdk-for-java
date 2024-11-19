@@ -171,6 +171,7 @@ public final class DeletedSecretItem implements JsonSerializable<DeletedSecretIt
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeJsonField("attributes", this.attributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("contentType", this.contentType);
@@ -184,7 +185,6 @@ public final class DeletedSecretItem implements JsonSerializable<DeletedSecretIt
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedSecretItem if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DeletedSecretItem.
      */
     @Generated

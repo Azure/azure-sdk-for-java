@@ -65,7 +65,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      * }
      * }</pre>
@@ -84,7 +84,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -132,7 +132,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -179,7 +179,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -201,7 +201,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -247,7 +247,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -294,7 +294,7 @@ public final class SecretClient {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -302,7 +302,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -317,7 +317,7 @@ public final class SecretClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of SecretItem items as paginated response with {@link PagedIterable}.
+     * @return the secret list result as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -344,7 +344,7 @@ public final class SecretClient {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -352,7 +352,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -395,7 +395,7 @@ public final class SecretClient {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     id: String (Optional)
      *     attributes (Optional): {
      *         enabled: Boolean (Optional)
      *         nbf: Long (Optional)
@@ -403,7 +403,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -421,7 +421,7 @@ public final class SecretClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DeletedSecretItem items as paginated response with {@link PagedIterable}.
+     * @return the deleted secret list result as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -448,7 +448,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -517,7 +517,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -596,7 +596,7 @@ public final class SecretClient {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         recoveryLevel: String (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -743,7 +743,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of SecretItem items as paginated response with {@link PagedIterable}.
+     * @return the secret list result as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -770,7 +770,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of SecretItem items as paginated response with {@link PagedIterable}.
+     * @return the secret list result as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -851,7 +851,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DeletedSecretItem items as paginated response with {@link PagedIterable}.
+     * @return the deleted secret list result as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -877,7 +877,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DeletedSecretItem items as paginated response with {@link PagedIterable}.
+     * @return the deleted secret list result as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
