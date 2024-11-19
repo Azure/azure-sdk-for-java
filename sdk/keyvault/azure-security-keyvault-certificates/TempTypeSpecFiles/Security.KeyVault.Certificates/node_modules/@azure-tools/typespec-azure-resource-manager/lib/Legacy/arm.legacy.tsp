@@ -1,0 +1,1 @@
+import "./managed-identity.tsp";
