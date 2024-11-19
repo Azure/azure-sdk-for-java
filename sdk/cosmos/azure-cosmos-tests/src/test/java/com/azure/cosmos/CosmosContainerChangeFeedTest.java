@@ -880,7 +880,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT)
     public void changeFeedQueryCompleteAfterEndLSN(
         int throughput,
         boolean shouldContinuouslyIngestItems,
@@ -932,7 +932,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryEndLSNHangDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNHangDataProvider", timeOut = 100 * TIMEOUT)
     public void changeFeedQueryCompleteAfterEndLSNHang(
             int throughput,
             int partitionCount,
