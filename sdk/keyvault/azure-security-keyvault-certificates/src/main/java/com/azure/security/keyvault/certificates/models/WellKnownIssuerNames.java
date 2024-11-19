@@ -10,6 +10,11 @@ import com.azure.security.keyvault.certificates.CertificateClient;
  * Represents well known issuer names to refer in {@link CertificatePolicy}
  */
 public class WellKnownIssuerNames {
+    /**
+     * Creates a new instance of {@link WellKnownIssuerNames}.
+     */
+    public WellKnownIssuerNames() {
+    }
 
     /**
      * Create a self-issued certificate.

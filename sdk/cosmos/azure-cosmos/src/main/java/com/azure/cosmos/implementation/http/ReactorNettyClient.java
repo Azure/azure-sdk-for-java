@@ -8,7 +8,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
-import io.netty.handler.ssl.SslHandler;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
@@ -79,7 +78,7 @@ public class ReactorNettyClient implements HttpClient {
             .newConnection()
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
-        reactorNettyClient.configureChannelPipelineHandlers(httpClientConfig.isHttp2Enabled());
+        reactorNettyClient.configureChannelPipelineHandlers();
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
     }
@@ -96,7 +95,7 @@ public class ReactorNettyClient implements HttpClient {
             .create(connectionProvider)
             .observe(getConnectionObserver())
             .resolver(DefaultAddressResolverGroup.INSTANCE);
-        reactorNettyClient.configureChannelPipelineHandlers(httpClientConfig.isHttp2Enabled());
+        reactorNettyClient.configureChannelPipelineHandlers();
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
     }
@@ -121,7 +120,7 @@ public class ReactorNettyClient implements HttpClient {
         }
     }
 
-    private void configureChannelPipelineHandlers(boolean http2Enabled) {
+    private void configureChannelPipelineHandlers() {
         Configs configs = this.httpClientConfig.getConfigs();
 
         if (this.httpClientConfig.getProxy() != null) {
@@ -136,17 +135,28 @@ public class ReactorNettyClient implements HttpClient {
             this.httpClient = this.httpClient.wiretap(this.httpClientConfig.getReactorNetworkLogCategory(), LogLevel.INFO);
         }
 
-        this.httpClient = this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
-            .httpResponseDecoder(httpResponseDecoderSpec ->
-                httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
-                    .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
-                    .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
-                    .validateHeaders(true));
+        this.httpClient =
+            this.httpClient
+                .secure(sslContextSpec ->
+                    sslContextSpec.sslContext(
+                        configs.getSslContext(
+                            httpClientConfig.isServerCertValidationDisabled(),
+                            false)))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
+                .httpResponseDecoder(httpResponseDecoderSpec ->
+                    httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
+                        .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
+                        .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
+                        .validateHeaders(true));
 
-        if (http2Enabled) {
+        if (httpClientConfig.isHttp2Enabled()) {
             this.httpClient = this.httpClient
-                .secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContextWithHttp2Enabled()))
+                .secure(sslContextSpec ->
+                    sslContextSpec.sslContext(
+                        configs.getSslContext(
+                            httpClientConfig.isServerCertValidationDisabled(),
+                            httpClientConfig.isHttp2Enabled()
+                        )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:

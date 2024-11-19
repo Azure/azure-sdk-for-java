@@ -669,6 +669,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
         try {
+
             this.httpClientInterceptor = httpClientInterceptor;
             if (httpClientInterceptor != null) {
                 this.reactorHttpClient = httpClientInterceptor.apply(httpClient());
@@ -830,6 +831,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
             .withProxy(this.connectionPolicy.getProxy())
             .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
+            .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
             .withHttp2Enabled(Configs.isHttp2Enabled());
 
         if (connectionSharingAcrossClientsEnabled) {

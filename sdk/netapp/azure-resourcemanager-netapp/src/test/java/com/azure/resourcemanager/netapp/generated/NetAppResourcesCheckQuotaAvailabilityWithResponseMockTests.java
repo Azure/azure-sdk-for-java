@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"flbqvgaq\"}";
+        String responseStr = "{\"isAvailable\":true,\"reason\":\"Invalid\",\"message\":\"bjoxs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CheckAvailabilityResponse response = manager.netAppResources()
-            .checkQuotaAvailabilityWithResponse("vyi",
-                new QuotaAvailabilityRequest().withName("zqodfvpgshox")
-                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES)
-                    .withResourceGroup("gbpfgz"),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        CheckAvailabilityResponse response
+            = manager.netAppResources()
+                .checkQuotaAvailabilityWithResponse("gdslqxihhrmoo", new QuotaAvailabilityRequest().withName("z")
+                    .withType(
+                        CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
+                    .withResourceGroup("eypxiutcxapzhyr"), com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals(false, response.isAvailable());
+        Assertions.assertEquals(true, response.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.INVALID, response.reason());
-        Assertions.assertEquals("flbqvgaq", response.message());
+        Assertions.assertEquals("bjoxs", response.message());
     }
 }

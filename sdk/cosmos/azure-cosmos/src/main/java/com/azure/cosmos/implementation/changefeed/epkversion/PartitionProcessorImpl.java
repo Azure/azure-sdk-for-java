@@ -152,6 +152,9 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
+                } else {
+                    // still need to checkpoint with the new continuation token
+                    this.checkpointer.checkpointPartition(continuationState).block();
                 }
 
                 this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);

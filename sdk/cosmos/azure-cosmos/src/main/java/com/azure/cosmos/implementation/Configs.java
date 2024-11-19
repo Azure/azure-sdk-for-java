@@ -5,12 +5,10 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
-import io.netty.handler.codec.http2.Http2SecurityUtil;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +33,7 @@ public class Configs {
     public static final String SPECULATION_TYPE = "COSMOS_SPECULATION_TYPE";
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
-    private final SslContext sslContext;
-    private final SslContext sslContextWithHttp2Enabled;
+
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
     // * Java property naming conventions as illustrated by the name/value pairs returned by System.getProperties.
@@ -262,34 +259,42 @@ public class Configs {
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
     private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
-    // Config to indicate whether allow insecure connections, for example allow http connection or disable cert verification
+
+    // Config to indicate whether allow http connections
     // Please note that this config should only during development or test, please do not use in prod env
-    private static final boolean DEFAULT_INSECURE_EMULATOR_CONNECTION_ALLOWED = false;
-    private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED = "COSMOS.INSECURE_EMULATOR_CONNECTION_ALLOWED";
-    private static final String INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE = "COSMOS_INSECURE_EMULATOR_CONNECTION_ALLOWED";
+    private static final boolean DEFAULT_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = false;
+    private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = "COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
+    private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED_VARIABLE = "COSMOS_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
+
+    // Config to indicate whether disable server certificate validation for emulator
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final boolean DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED = false;
+    private static final String EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED = "COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED";
+    private static final String EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED_VARIABLE = "COSMOS_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED";
+
+    // Config to indicate emulator host name
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final String DEFAULT_EMULATOR_HOST = StringUtils.EMPTY;
+    private static final String EMULATOR_HOST = "COSMOS.EMULATOR_HOST";
+    private static final String EMULATOR_HOST_VARIABLE = "COSMOS_EMULATOR_HOST";
 
     // Flag to indicate whether enabled http2 for gateway, Please do not use it, only for internal testing purpose
     private static final boolean DEFAULT_HTTP2_ENABLED = false;
     private static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
     private static final String HTTP2_ENABLED_VARIABLE = "COSMOS_HTTP2_ENABLED";
 
-    public Configs() {
-        this.sslContext = sslContextInit(false);
-        this.sslContextWithHttp2Enabled = sslContextInit(true);
-    }
-
     public static int getCPUCnt() {
         return CPU_CNT;
     }
 
-    private SslContext sslContextInit(boolean http2Enabled) {
+    private SslContext sslContextInit(boolean serverCertVerificationDisabled, boolean http2Enabled) {
         try {
             SslContextBuilder sslContextBuilder =
                 SslContextBuilder
                     .forClient()
                     .sslProvider(SslContext.defaultClientProvider());
 
-            if (isInsecureEmulatorConnectionAllowed()) {
+            if (serverCertVerificationDisabled) {
                 sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
             }
 
@@ -312,12 +317,8 @@ public class Configs {
         }
     }
 
-    public SslContext getSslContext() {
-        return this.sslContext;
-    }
-
-    public SslContext getSslContextWithHttp2Enabled() {
-        return this.sslContextWithHttp2Enabled;
+    public SslContext getSslContext(boolean serverCertValidationDisabled, boolean http2Enabled) {
+        return sslContextInit(serverCertValidationDisabled, http2Enabled);
     }
 
     public Protocol getProtocol() {
@@ -867,12 +868,12 @@ public class Configs {
         return Boolean.parseBoolean(shouldDisableIMDSAccess);
     }
 
-    public static boolean isInsecureEmulatorConnectionAllowed() {
+    public static boolean isHttpConnectionWithoutTLSAllowed() {
         String httpForEmulatorAllowed = System.getProperty(
-            INSECURE_EMULATOR_CONNECTION_ALLOWED,
+            HTTP_CONNECTION_WITHOUT_TLS_ALLOWED,
             firstNonNull(
-                emptyToNull(System.getenv().get(INSECURE_EMULATOR_CONNECTION_ALLOWED_VARIABLE)),
-                String.valueOf(DEFAULT_INSECURE_EMULATOR_CONNECTION_ALLOWED)));
+                emptyToNull(System.getenv().get(HTTP_CONNECTION_WITHOUT_TLS_ALLOWED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED)));
 
         return Boolean.parseBoolean(httpForEmulatorAllowed);
     }
@@ -885,5 +886,23 @@ public class Configs {
                 String.valueOf(DEFAULT_HTTP2_ENABLED)));
 
         return Boolean.parseBoolean(httpEnabledConfig);
+    }
+
+    public static boolean isEmulatorServerCertValidationDisabled() {
+        String certVerificationDisabledConfig = System.getProperty(
+            EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED_VARIABLE)),
+                String.valueOf(DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED)));
+
+        return Boolean.parseBoolean(certVerificationDisabledConfig);
+    }
+
+    public static String getEmulatorHost() {
+        return System.getProperty(
+            EMULATOR_HOST,
+            firstNonNull(
+                emptyToNull(System.getenv().get(EMULATOR_HOST_VARIABLE)),
+                DEFAULT_EMULATOR_HOST));
     }
 }

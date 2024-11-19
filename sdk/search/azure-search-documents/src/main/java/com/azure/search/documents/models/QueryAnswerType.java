@@ -15,7 +15,9 @@ import java.util.Collection;
  * character `|` followed by the `count-&lt;number of answers&gt;` option after the answers parameter value, such as
  * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe character
  * `|` followed by the `threshold-&lt;confidence threshold&gt;` option after the answers parameter value, such as
- * `extractive|threshold-0.9`. Default threshold is 0.7.
+ * `extractive|threshold-0.9`. Default threshold is 0.7. The maximum character length of answers can be configured by
+ * appending the pipe character '|' followed by the 'count-&lt;number of maximum character length&gt;', such as
+ * 'extractive|maxcharlength-600'.
  */
 public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType> {
     /**
