@@ -12,6 +12,12 @@ public class GetBatchNodeFilePropertiesOptions extends BatchBaseOptions {
     private OffsetDateTime ifUnmodifiedSince;
 
     /**
+     * Creates an instance of {@link GetBatchNodeFilePropertiesOptions}.
+     */
+    public GetBatchNodeFilePropertiesOptions() {
+    }
+
+    /**
      * Gets a timestamp indicating the last modified time of the resource known to the client. The operation will be
      * performed only if the resource on the service has been modified since the specified time.
      *

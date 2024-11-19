@@ -1282,11 +1282,18 @@
       ]
     },
     {
+      "filename": "sdk/tables/**",
+      "words": [
+        "mmspecial"
+      ]
+    },
+    {
       "filename": "sdk/tables/azure-data-tables/**",
       "words": [
         "upserts",
         "upserted",
-        "raud"
+        "raud",
+        "mmspecial"
       ]
     },
     {

@@ -35,7 +35,6 @@ import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -248,7 +247,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
 
         // Test metadataHttpClient is used for IMDS requests
-        HttpClientUnderTestWrapper clientTelemetryMetadataHttpClientWrapper = new HttpClientUnderTestWrapper(clientTelemetryHttpClient);
+        HttpClientUnderTestWrapper clientTelemetryMetadataHttpClientWrapper = new HttpClientUnderTestWrapper(clientTelemetryMetadataHttpClient);
         ReflectionUtils.setClientTelemetryMetadataHttpClient(clientTelemetry, clientTelemetryMetadataHttpClientWrapper.getSpyHttpClient());
         AtomicReference<AzureVMMetadata> vmMetadata = ReflectionUtils.getAzureVMMetadata(clientTelemetry);
         vmMetadata.set(null);
@@ -271,7 +270,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
 
         // Test metadataHttpClient is used for IMDS requests
-        HttpClientUnderTestWrapper clientTelemetryMetadataHttpClientWrapper = new HttpClientUnderTestWrapper(clientTelemetryHttpClient);
+        HttpClientUnderTestWrapper clientTelemetryMetadataHttpClientWrapper = new HttpClientUnderTestWrapper(clientTelemetryMetadataHttpClient);
         ReflectionUtils.setClientTelemetryMetadataHttpClient(clientTelemetry, clientTelemetryMetadataHttpClientWrapper.getSpyHttpClient());
         AtomicReference<AzureVMMetadata> vmMetadata = ReflectionUtils.getAzureVMMetadata(clientTelemetry);
         vmMetadata.set(null);

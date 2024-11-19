@@ -30,9 +30,7 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     */
 
     protected TableServiceClientBuilder getClientBuilder(boolean enableTenantDiscovery) {
-        return TestUtils.isCosmosTest()
-            ? getClientBuilderWithConnectionString(enableTenantDiscovery)
-            : getClientBuilderWithEntra(enableTenantDiscovery);
+        return getClientBuilderWithEntra(enableTenantDiscovery);
     }
 
     protected TableServiceClientBuilder getClientBuilderWithEntra(boolean enableTenantDiscovery) {

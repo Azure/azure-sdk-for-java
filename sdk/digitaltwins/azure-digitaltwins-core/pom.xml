@@ -39,6 +39,10 @@
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
       --add-opens com.azure.digitaltwins.core/com.azure.digitaltwins.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

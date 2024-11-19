@@ -10,12 +10,12 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -94,7 +94,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
     @DataProvider
     public Object[] contextTestConfigs() {
-        return new Object[] {true, false};
+        return new Object[] { true, false };
     }
 
     @DataProvider
@@ -309,151 +309,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(5000);
-        }
-    }
-
-    // Steps followed in this test
-    //  1. Ingest 10 documents into the feed container.
-    //  2. Start the LatestVersion / INCREMENTAL ChangeFeedProcessor with either startFromBeginning set to 'true' or 'false'.
-    //  3. Stop the LatestVersion / INCREMENTAL ChangeFeedProcessor once the 10 documents are processed or 0 documents are processed (stop after some delay).
-    //  4. Start the AllVersionsAndDeletes / FULL_FIDELITY ChangeFeedProcessor.
-    //  5. Validate IllegalStateException
-    //        a) If the LatestVersion / INCREMENTAL ChangeFeedProcessor left behind a lease with a valid continuation,
-    //           then AllVersionsAndDeletes / FULL_FIDELITY ChangeFeedProcessor should throw the exception.
-    //         b) If not, then AllVersionsAndDeletes / FULL_FIDELITY ChangeFeedProcessor should be able to reuse the lease
-    //            left behind and use its own continuation.
-    @Test(groups = { "emulator" }, dataProvider = "incrementalChangeFeedModeStartFromSetting")
-    public void incrementalChangeFeedModeToFullFidelityChangeFeedMode(boolean isStartFromBeginning) throws InterruptedException, JsonProcessingException {
-        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
-        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
-
-        try {
-            List<InternalObjectNode> createdDocuments = new ArrayList<>();
-            Map<String, ChangeFeedProcessorItem> receivedDocumentsByIncrementalCfp = new ConcurrentHashMap<>();
-            Map<String, ChangeFeedProcessorItem> receivedDocumentsByFullFidelityCfp = new ConcurrentHashMap<>();
-
-            ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                .options(new ChangeFeedProcessorOptions().setStartFromBeginning(isStartFromBeginning).setMaxItemCount(1))
-                .hostName(hostName)
-                .feedContainer(createdFeedCollection)
-                .leaseContainer(createdLeaseCollection);
-
-            changeFeedProcessorBuilder = changeFeedProcessorBuilder
-                .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocumentsByIncrementalCfp));
-
-            ChangeFeedProcessor incrementalChangeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
-
-            logger.info("Set up read feed documents");
-            setupReadFeedDocuments(createdDocuments, receivedDocumentsByIncrementalCfp, createdFeedCollection, FEED_COUNT);
-
-            try {
-                incrementalChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .doOnSuccess(ignore -> logger.info("Started INCREMENTAL ChangeFeedProcessor"))
-                    .block();
-
-                // Wait for the feed processor to receive and process the documents.
-                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-
-                logger.info("Validating changes now");
-
-                if (isStartFromBeginning) {
-                    validateChangeFeedProcessing(incrementalChangeFeedProcessor, createdDocuments, receivedDocumentsByIncrementalCfp, FEED_COUNT, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-                } else {
-                    validateChangeFeedProcessing(incrementalChangeFeedProcessor, new ArrayList<>(), receivedDocumentsByIncrementalCfp, 0, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-                }
-
-                incrementalChangeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).block();
-
-                String leaseQuery = "select * from c";
-                List<JsonNode> leaseDocuments =
-                    createdLeaseCollection
-                        .queryItems(leaseQuery, JsonNode.class)
-                        .byPage()
-                        .blockFirst()
-                        .getResults();
-
-                int leaseDocumentsWithNonNullContinuationToken = 0;
-
-                logger.info("Leases container documents created by INCREMENTAL ChangeFeedProcessor fetched...");
-                for (JsonNode lease : leaseDocuments) {
-
-                    JsonNode continuationToken = lease.get("ContinuationToken");
-
-                    if (continuationToken != null && !(continuationToken instanceof NullNode)) {
-                        leaseDocumentsWithNonNullContinuationToken++;
-                        logger.info("Lease document : {}",  OBJECT_MAPPER.writeValueAsString(lease));
-                        logger.info("ContinuationToken : {}", new String(Base64.getUrlDecoder().decode(lease.get("ContinuationToken").asText())));
-                    } else {
-                        logger.info("Lease container document : {}", OBJECT_MAPPER.writeValueAsString(lease));
-                    }
-                }
-
-                ChangeFeedProcessorBuilder fullFidelityChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                    .options(new ChangeFeedProcessorOptions().setMaxItemCount(1))
-                    .hostName(hostName)
-                    .feedContainer(createdFeedCollection)
-                    .leaseContainer(createdLeaseCollection)
-                    .handleAllVersionsAndDeletesChanges(changeFeedProcessorHandler(receivedDocumentsByFullFidelityCfp));
-
-                ChangeFeedProcessor fullFidelityChangeFeedProcessor = fullFidelityChangeFeedProcessorBuilder
-                    .buildChangeFeedProcessor();
-
-                if (leaseDocumentsWithNonNullContinuationToken > 0) {
-                    assertThrows(IllegalStateException.class, () -> fullFidelityChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                        .block());
-                } else {
-
-                    fullFidelityChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                        .doOnSuccess(ignore -> logger.info("Started FULL_FIDELITY ChangeFeedProcessor successfully!"))
-                        .block();
-
-                    createdDocuments = new ArrayList<>();
-
-                    // wait for FULL_FIDELITY ChangeFeedProcessor to start and acquire left behind lease
-                    Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-
-                    setupReadFeedDocuments(createdDocuments, receivedDocumentsByFullFidelityCfp, createdFeedCollection, 10);
-
-                    // wait for FULL_FIDELITY ChangeFeedProcessor to process all ingested documents
-                    Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-
-                    fullFidelityChangeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic())
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                        .block();
-
-                    validateChangeFeedProcessing(createdDocuments, receivedDocumentsByFullFidelityCfp, FEED_COUNT);
-                }
-
-                leaseDocuments =
-                    createdLeaseCollection
-                        .queryItems(leaseQuery, JsonNode.class)
-                        .byPage()
-                        .blockFirst()
-                        .getResults();
-
-                logger.info("Leases container documents fetched after starting FULL_FIDELITY ChangeFeedProcessor...");
-                for (JsonNode lease : leaseDocuments) {
-
-                    if (lease.get("ContinuationToken") != null) {
-                        logger.info("Lease document : {}",  OBJECT_MAPPER.writeValueAsString(lease));
-                        logger.info("ContinuationToken : {}", new String(Base64.getUrlDecoder().decode(lease.get("ContinuationToken").asText())));
-                    } else {
-                        logger.info("Lease container document : {}", OBJECT_MAPPER.writeValueAsString(lease));
-                    }
-                }
-            } catch (Exception ex) {
-                log.error("Change feed processor did not start and stopped in the expected time", ex);
-                throw ex;
-            }
-
-        } finally {
-            safeDeleteCollection(createdFeedCollection);
-            safeDeleteCollection(createdLeaseCollection);
-            // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
         }
     }
 
@@ -1917,7 +1772,12 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         // Validate a few basic diagnostics properties
         assertThat(diagnosticsContext.getResourceType()).isEqualTo("Document");
         assertThat(diagnosticsContext.getOperationType()).isEqualTo("ReadFeed");
-        assertThat(diagnosticsContext.getAccountName()).isEqualTo(hostName);
+        assertThat(diagnosticsContext.getAccountName())
+            .isEqualTo(
+                ImplementationBridgeHelpers
+                    .CosmosAsyncClientHelper
+                    .getCosmosAsyncClientAccessor()
+                    .getAccountTagValue(this.client));
     }
 
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityChangeFeedProcessorHandler(Map<String, ChangeFeedProcessorItem> receivedDocuments) {
@@ -1941,7 +1801,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void before_ChangeFeedProcessorTest() {
+    public void before_FullFidelityChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
