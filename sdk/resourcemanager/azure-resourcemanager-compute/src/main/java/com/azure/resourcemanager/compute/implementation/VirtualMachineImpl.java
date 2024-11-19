@@ -2878,13 +2878,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withCapacityReservationGroupsId(String capacityReservationGroupsId) {
+    public VirtualMachineImpl withCapacityReservationGroup(String capacityReservationGroupId) {
         if (this.innerModel().capacityReservation() == null) {
             this.innerModel().withCapacityReservation(new CapacityReservationProfile());
         }
         this.innerModel()
             .capacityReservation()
-            .withCapacityReservationGroup(new SubResource().withId(capacityReservationGroupsId));
+            .withCapacityReservationGroup(new SubResource().withId(capacityReservationGroupId));
         return this;
     }
 

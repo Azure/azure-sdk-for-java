@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported `capacityReservation` and `withCapacityReservation` methods for `VirtualMachine`.
+- Supported `capacityReservationGroupId` and `withCapacityReservationGroup` methods for `VirtualMachine`.
 
 ## 2.44.0 (2024-10-25)
 

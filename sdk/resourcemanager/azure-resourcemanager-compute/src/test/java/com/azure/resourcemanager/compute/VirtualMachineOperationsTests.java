@@ -179,7 +179,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .create();
 
         // Update virtual machine with capacity reservation group
-        vm.update().withCapacityReservationGroupsId(crgForUpdate.id()).apply();
+        vm.update().withCapacityReservationGroup(crgForUpdate.id()).apply();
         Assertions.assertEquals(crgForUpdate.id(), vm.capacityReservationGroupId());
         computeManager.virtualMachines().deleteById(vm.id());
 
@@ -197,13 +197,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminPassword(password())
             .withNewDataDisk(127)
             .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
-            .withCapacityReservationGroupsId(crgForCreate.id())
+            .withCapacityReservationGroup(crgForCreate.id())
             .create();
 
         Assertions.assertEquals(crgForCreate.id(), vm.capacityReservationGroupId());
 
         // Update virtual machine with another capacity reservation group
-        vm.update().withCapacityReservationGroupsId(crgForUpdate.id()).apply();
+        vm.update().withCapacityReservationGroup(crgForUpdate.id()).apply();
 
         Assertions.assertEquals(crgForUpdate.id(), vm.capacityReservationGroupId());
     }

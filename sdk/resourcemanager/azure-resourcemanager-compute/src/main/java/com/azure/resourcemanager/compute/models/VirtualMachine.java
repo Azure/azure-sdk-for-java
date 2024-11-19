@@ -456,9 +456,9 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     String userData();
 
     /**
-     * Gets the resource id of capacity reservation for the virtual machine.
+     * Gets resource id of capacity reservation group for the virtual machine.
      *
-     * @return the resource id of capacity reservation for the virtual machine.
+     * @return the resource id of capacity reservation group for the virtual machine.
      */
     String capacityReservationGroupId();
 
@@ -1962,12 +1962,12 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
         /** The stage of a virtual machine definition allowing to specify capacity reservation configurations. */
         interface WithCapacityReservation {
             /**
-             * Specifies the id of capacity reservation groups for the virtual machine.
+             * Specifies resource id of capacity reservation group for the virtual machine.
              *
-             * @param capacityReservationGroupsId the id of capacity reservation groups
+             * @param capacityReservationGroupId the resource id of capacity reservation group
              * @return the next stage of the definition
              */
-            WithCreate withCapacityReservationGroupsId(String capacityReservationGroupsId);
+            WithCreate withCapacityReservationGroup(String capacityReservationGroupId);
         }
 
         /**
@@ -2640,12 +2640,12 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
         /** The stage of the virtual machine update allowing to capacity reservation configurations. */
         interface WithCapacityReservation {
             /**
-             * Specifies the id of capacity reservation groups for the virtual machine.
+             * Specifies resource id of capacity reservation group for the virtual machine.
              *
-             * @param capacityReservationGroupsId the id of capacity reservation groups
+             * @param capacityReservationGroupId the resource id of capacity reservation group
              * @return the next stage of the update
              */
-            Update withCapacityReservationGroupsId(String capacityReservationGroupsId);
+            Update withCapacityReservationGroup(String capacityReservationGroupId);
         }
     }
 
