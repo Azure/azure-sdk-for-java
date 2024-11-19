@@ -178,7 +178,8 @@ public class Configs {
     private static final String MAX_ITEM_COUNT_FOR_VECTOR_SEARCH = "COSMOS.MAX_ITEM_SIZE_FOR_VECTOR_SEARCH";
     public static final int DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH = 50000;
 
-    private static final String MAX_ITEM_COUNT_FOR_HYBRID_SEARCH = "COSMOS_MAX_ITEM_SIZE_FOR_HYBRID_SEARCH";
+    private static final String MAX_ITEM_COUNT_FOR_HYBRID_SEARCH = "COSMOS.MAX_ITEM_SIZE_FOR_HYBRID_SEARCH";
+    private static final String MAX_ITEM_COUNT_FOR_HYBRID_SEARCH_VARIABLE = "COSMOS_MAX_ITEM_SIZE_FOR_HYBRID_SEARCH";
     public static final int DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH = 1000;
 
     private static final String AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY = "COSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY";
@@ -578,10 +579,16 @@ public class Configs {
     }
 
     public static int getMaxItemCountForHybridSearchSearch() {
-        return Integer.parseInt(System.getProperty(MAX_ITEM_COUNT_FOR_HYBRID_SEARCH,
-            firstNonNull(
-                emptyToNull(System.getenv().get(MAX_ITEM_COUNT_FOR_HYBRID_SEARCH)),
-                String.valueOf(DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH))));
+        String valueFromSystemProperty = System.getProperty(MAX_ITEM_COUNT_FOR_HYBRID_SEARCH);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromSystemVariable = System.getProperty(MAX_ITEM_COUNT_FOR_HYBRID_SEARCH_VARIABLE);
+        if (valueFromSystemVariable != null && !valueFromSystemVariable.isEmpty()) {
+            return Integer.parseInt(valueFromSystemVariable);
+        }
+        return DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH;
     }
 
     public static boolean getAzureCosmosNonStreamingOrderByDisabled() {

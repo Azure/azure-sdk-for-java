@@ -7,7 +7,9 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.query.HybridSearchBadRequestException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosFullTextIndex;
 import com.azure.cosmos.models.CosmosFullTextPath;
@@ -21,6 +23,7 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -42,6 +45,7 @@ import static com.azure.cosmos.rx.TestSuiteBase.createDatabase;
 import static com.azure.cosmos.rx.TestSuiteBase.safeClose;
 import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @Ignore("TODO: Ignore these test cases until the public emulator is released.")
 public class HybridSearchQueryTest {
@@ -91,13 +95,13 @@ public class HybridSearchQueryTest {
         }
     }
 
-    @AfterClass(groups = {"query"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"query", "split"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(database);
         safeClose(client);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
     public void hybridQueryTest() {
 
         String query = "SELECT TOP 10 c.id, c.text, c.title FROM c WHERE FullTextContains(c.text, 'John') OR " +
@@ -145,7 +149,76 @@ public class HybridSearchQueryTest {
         validateResults(Arrays.asList("21", "75", "37", "24", "26", "35", "49", "87", "55", "9"), resultDocs);
     }
 
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void wrongHybridQueryTest() {
+        String query = "";
+        try {
+            query = "SELECT c.id, RRF(VectorDistance(c.vector, [1,2,3]), FullTextScore(c.text, “test”) FROM c";
+            container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+                .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+                .collectList().block();
+            fail("Attempting to project RRF in a query should fail.");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage()).contains("Syntax error, invalid token");
+        }
 
+        try {
+            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK FullTextScore(c.title, ['John']) DESC";
+            container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+                .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+                .collectList().block();
+            fail("Attempting to set an ordering direction in a full text score query should fail.");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage()).contains("Specifying a sort order (ASC or DESC) in the ORDER BY RANK clause is not allowed.");
+        }
+
+        try {
+            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) DESC";
+            container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+                .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+                .collectList().block();
+            fail("Attempting to set an ordering direction in a hybrid search query should fail.");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage()).contains("Specifying a sort order (ASC or DESC) in the ORDER BY RANK clause is not allowed.");
+        }
+
+        try {
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3]))";
+            container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+                .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+                .collectList().block();
+            fail("Attempting to run a hybrid search query without a top(Take) value should fail.");
+        } catch (HybridSearchBadRequestException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage()).contains("Executing a hybrid or full text query without Top or Limit can consume a large number of RUs " +
+                "very fast and have long runtimes.");
+        }
+
+        try {
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 5";
+            container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+                .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+                .collectList().block();
+            fail("Attempting to run a hybrid search query with a limit(Take) value smaller than the offset(Limit) value.");
+        } catch (HybridSearchBadRequestException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage()).contains("Executing a hybrid or full-text query with an offset(Skip) greater than or equal to limit(Take).");
+        }
+
+        try {
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 10";
+            container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+                .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+                .collectList().block();
+            fail("Attempting to run a hybrid search query with a limit(Take) value equal to the offset(Limit) value.");
+        } catch (HybridSearchBadRequestException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage()).contains("Executing a hybrid or full-text query with an offset(Skip) greater than or equal to limit(Take).");
+        }
+    }
 
     private IndexingPolicy populateIndexingPolicy() {
         IndexingPolicy indexingPolicy = new IndexingPolicy();

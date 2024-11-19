@@ -422,30 +422,30 @@ public class DocumentQueryExecutionContextFactory {
         boolean getLazyFeedResponse = Boolean.FALSE;
 
         if (hybridSearchQueryInfo!=null) {
-            // Validate the TOP for non-streaming order-by queries
+            // Validate the TOP for hybrid search queries
             if (!hybridSearchQueryInfo.hasTake()) {
                 throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
-                    "Executing a hybrid or full text query without Top can consume a large number of RUs " +
+                    "Executing a hybrid or full text query without Top or Limit can consume a large number of RUs " +
                         "very fast and have long runtimes. Please ensure you are using the above filter " +
                         "with your hybrid or full text search query.");
             }
 
-            if (hybridSearchQueryInfo.hasSkip() && !hybridSearchQueryInfo.hasTake()) {
+            if (hybridSearchQueryInfo.getSkip() >= hybridSearchQueryInfo.getTake()) {
                 throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
-                    "Executing a hybrid or full-text query with an offset (Skip) requires a limit (Take) to be specified. " +
-                        "Please ensure both Skip and Take are provided to avoid an invalid query.");
+                    "Executing a hybrid or full-text query with an offset(Skip) greater than or equal to limit(Take). " +
+                        "Please ensure limit is greater than offset.");
             }
 
-            // Validate the size of Take against MaxItemSizeForHybridSearch
+            int pageSize = hybridSearchQueryInfo.hasSkip() ? hybridSearchQueryInfo.getTake() - hybridSearchQueryInfo.getSkip() : hybridSearchQueryInfo.getTake();
             int maxitemSizeForFullTextSearch = Math.max(Configs.getMaxItemCountForHybridSearchSearch(),
                 qryOptAccessor.getMaxItemCountForHybridSearch(cosmosQueryRequestOptions));
-            if (hybridSearchQueryInfo.getTake() > maxitemSizeForFullTextSearch) {
+
+            if (pageSize > maxitemSizeForFullTextSearch) {
                 throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
                     "Executing a hybrid or full text search query with TOP larger than the maxItemSizeForHybridSearch " +
                         "is not allowed");
             }
-
-            initialPageSize = hybridSearchQueryInfo.getTake();
+            initialPageSize = pageSize;
         } else {
 
             getLazyFeedResponse = queryInfo.hasTop();
