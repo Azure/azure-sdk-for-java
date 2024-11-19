@@ -244,6 +244,11 @@
 
     <!-- Skips Spotless running code style formatting verification. -->
     <spotless.check.skip>false</spotless.check.skip>
+
+    <!-- Toggle OpenRewrite -->
+    <rewrite.skip>false</rewrite.skip>
+    <rewrite.apply.skip>false</rewrite.apply.skip>
+    <rewrite.check.skip>false</rewrite.check.skip>
   </properties>
 
   <dependencies>
@@ -1114,7 +1119,37 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+
+        <plugin>
+          <groupId>org.openrewrite.maven</groupId>
+          <artifactId>rewrite-maven-plugin</artifactId>
+          <version>5.7.1</version>
+          <configuration>
+            <activeRecipes>
+              <!-- Define the default recipe -->
+              <recipe>com.azure.rewrite.java.core.MigrateAzureCoreSamplesToAzureCoreV2</recipe>
+            </activeRecipes>
+            <rewriteSkip>${rewrite.apply.skip}</rewriteSkip>
+            <checkstyleDetectionEnabled>${checkstyle.skip}</checkstyleDetectionEnabled>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>dryRun</goal>
+                <goal>run</goal>
+              </goals>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>rewrite-java-core</artifactId>
+              <version>1.0.0</version>
+            </dependency>
+          </dependencies>
+        </plugin>
       </plugins>
+
     </pluginManagement>
   </build>
 
@@ -1752,6 +1787,15 @@
       <properties>
         <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
       </properties>
+    </profile>
+
+    <profile>
+      <id>rewrite-migration</id>
+      <activation>
+        <property>
+          <name>!rewrite.skip</name>
+        </property>
+      </activation>
     </profile>
   </profiles>
 </project>
