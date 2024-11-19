@@ -2,24 +2,29 @@
 
 ## 11.8.0-beta.2 (2024-11-18)
 
-### Features Added
+### Features Added 
 
-- `VectorSearchCompression` now supports `truncationDimension` which allows for specifying the number of dimensions to 
-  truncate vectors to.
-- `SplitSkill` now supports tokenization.
-- `VectorQuery` now supports `filterOverride` which allow for vector queries to override the broader SearchRequest.filter to allow for vector queries to have more specific configurations
-- `DocumentDebugInfo` is extended with vector scores for the result.
+- `FacetResults` is now a recursive data structure to support hierarchical aggregation and facet filtering.
+- `QueryAnswer` now supports a `maxCharLength` option to limit the character length of the answer.
+- `QueryCaption` now supports a `maxCharLength` option to limit the character length of the caption.
+- `VectorizableTextQuery` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
+- `SemanticSearchOptions` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
+- `VectorSearchCompression` now supports configuring the `rescoringOptoins`.
+- `IndexingParametersConfiguration` now supports two additional options for `MarkdownParsingSubmode` and `MarkdownHeaderDepth`.
+- Added a new skill: `DocumentIntelligenceLayoutSkill` that extracts content and layout information (as markdown), via Azure AI Services, from files within the enrichment pipeline.
+- Added 2 subtypes of `CognitiveServiceAccounts`: `AzureCognitiveServiceAccount` and `AzureCognitiveServiceAccountKey`.
+
+### Breaking Changes
+
+### Bugs Fixed
 
 ### Other Changes
-
-- Migrate Search test from local auth to Microsoft Entra authentication.
 
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.52.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.7`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.4`.
-
 
 ## 11.7.3 (2024-10-27)
 
