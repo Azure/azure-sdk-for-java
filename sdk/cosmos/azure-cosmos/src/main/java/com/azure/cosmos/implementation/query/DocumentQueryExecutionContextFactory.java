@@ -430,7 +430,7 @@ public class DocumentQueryExecutionContextFactory {
                         "with your hybrid or full text search query.");
             }
 
-            if (hybridSearchQueryInfo.getSkip() >= hybridSearchQueryInfo.getTake()) {
+            if (hybridSearchQueryInfo.hasSkip() && hybridSearchQueryInfo.getSkip() >= hybridSearchQueryInfo.getTake()) {
                 throw new HybridSearchBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
                     "Executing a hybrid or full-text query with an offset(Skip) greater than or equal to limit(Take). " +
                         "Please ensure limit is greater than offset.");

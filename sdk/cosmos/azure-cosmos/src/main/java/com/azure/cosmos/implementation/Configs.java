@@ -584,7 +584,7 @@ public class Configs {
             return Integer.parseInt(valueFromSystemProperty);
         }
 
-        String valueFromSystemVariable = System.getProperty(MAX_ITEM_COUNT_FOR_HYBRID_SEARCH_VARIABLE);
+        String valueFromSystemVariable = System.getenv(MAX_ITEM_COUNT_FOR_HYBRID_SEARCH_VARIABLE);
         if (valueFromSystemVariable != null && !valueFromSystemVariable.isEmpty()) {
             return Integer.parseInt(valueFromSystemVariable);
         }
