@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class FileUtils {
 
@@ -56,5 +57,9 @@ public class FileUtils {
 
     public static Path openResourceFile(String fileName) {
         return Paths.get("src", "test", "resources", fileName);
+    }
+
+    public static void writeToFile(Path destinationFile, byte[] data) throws IOException {
+        Files.write(destinationFile, data, StandardOpenOption.WRITE, StandardOpenOption.APPEND, StandardOpenOption.CREATE, StandardOpenOption.SYNC);
     }
 }
