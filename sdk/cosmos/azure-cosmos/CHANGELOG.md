@@ -3,6 +3,7 @@
 ### 4.65.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for Hybrid Search and Full text queries and new query features `HybridSearch` and `CountIf` in CosmosDB - See [42885](https://github.com/Azure/azure-sdk-for-java/pull/42885)
 * Added `CosmosFullTextPolicy` in `CosmosContainerProperties` and `CosmosFullTextIndexes` in `IndexingPolicy` to support Full Text Search in Cosmos DB - See [PR 42278](https://github.com/Azure/azure-sdk-for-java/pull/42278)
 * Added two new properties `quantizationSizeInBytes` and `indexingSearchListSize` to the `CosmosVectorIndexSpec` to support Partitioned DiskANN for vector search in Cosmos DB - See [PR 42333](https://github.com/Azure/azure-sdk-for-java/pull/42333)
 
