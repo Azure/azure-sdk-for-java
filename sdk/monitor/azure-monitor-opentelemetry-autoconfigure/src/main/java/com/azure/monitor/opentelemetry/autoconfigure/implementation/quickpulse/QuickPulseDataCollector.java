@@ -7,14 +7,14 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Conte
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.StackFrame;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseDependencyDocument;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseDocument;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseExceptionDocument;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseRequestDocument;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
@@ -24,7 +24,6 @@ import java.lang.management.MemoryUsage;
 import java.lang.management.OperatingSystemMXBean;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -141,24 +140,16 @@ final class QuickPulseDataCollector {
         if (success != null && !success) { // success should not be null
             counters.unsuccessfulRdds.incrementAndGet();
         }
-        QuickPulseDependencyDocument quickPulseDependencyDocument = new QuickPulseDependencyDocument();
-        quickPulseDependencyDocument.setDocumentType("RemoteDependency");
-        quickPulseDependencyDocument.setType("DependencyTelemetryDocument");
-        quickPulseDependencyDocument.setOperationId(telemetry.getId());
-        quickPulseDependencyDocument.setVersion("1.0");
-        quickPulseDependencyDocument.setName(telemetry.getName());
-        quickPulseDependencyDocument.setCommandName(telemetry.getData());
-        quickPulseDependencyDocument.setTarget(telemetry.getTarget());
-        quickPulseDependencyDocument.setSuccess(telemetry.isSuccess());
-        quickPulseDependencyDocument.setDuration(Duration.ofMillis(durationMillis).toString());
-        quickPulseDependencyDocument.setResultCode(telemetry.getResultCode());
-        quickPulseDependencyDocument.setOperationName(telemetry.getId());
-        quickPulseDependencyDocument.setDependencyTypeName(telemetry.getType());
-        quickPulseDependencyDocument
-            .setProperties(aggregateProperties(telemetry.getProperties(), telemetry.getMeasurements()));
+        RemoteDependency dependencyDoc = new RemoteDependency();
+        dependencyDoc.setName(telemetry.getName());
+        dependencyDoc.setCommandName(telemetry.getData());
+        dependencyDoc.setDuration(Duration.ofMillis(durationMillis).toString());
+        dependencyDoc.setResultCode(telemetry.getResultCode());
+        dependencyDoc.setProperties(setCustomDimensions(telemetry.getProperties(), telemetry.getMeasurements()));
+
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(quickPulseDependencyDocument);
+                counters.documentList.add(dependencyDoc);
             }
         }
     }
@@ -170,32 +161,18 @@ final class QuickPulseDataCollector {
         }
 
         counters.exceptions.addAndGet(itemCount);
-        QuickPulseExceptionDocument quickPulseExceptionDocument = new QuickPulseExceptionDocument();
-        quickPulseExceptionDocument.setDocumentType("Exception");
-        quickPulseExceptionDocument.setType("ExceptionTelemetryDocument");
-        quickPulseExceptionDocument.setOperationId(exceptionData.getProblemId());
-        quickPulseExceptionDocument.setVersion("1.0");
+
         List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
-        StringBuilder exceptions = new StringBuilder();
-        if (exceptionList != null && exceptionList.size() > 0) {
-            List<StackFrame> parsedStack = exceptionList.get(0).getParsedStack();
-            String stack = exceptionList.get(0).getStack();
-            if (parsedStack != null && parsedStack.size() > 0) {
-                for (StackFrame stackFrame : parsedStack) {
-                    if (stackFrame != null && stackFrame.getAssembly() != null) {
-                        exceptions.append(stackFrame.getAssembly()).append("\n");
-                    }
-                }
-            } else if (stack != null && stack.length() > 0) {
-                exceptions.append(stack);
-            }
-            quickPulseExceptionDocument.setException(exceptions.toString());
-            quickPulseExceptionDocument.setExceptionMessage(exceptionList.get(0).getMessage());
-            quickPulseExceptionDocument.setExceptionType(exceptionList.get(0).getTypeName());
+        Exception exceptionDoc = new Exception();
+        if (exceptionList != null && !exceptionList.isEmpty()) {
+            exceptionDoc.setExceptionMessage(exceptionList.get(0).getMessage());
+            exceptionDoc.setExceptionType(exceptionList.get(0).getTypeName());
         }
+        exceptionDoc.setProperties(setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements()));
+
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(quickPulseExceptionDocument);
+                counters.documentList.add(exceptionDoc);
             }
         }
     }
@@ -210,36 +187,43 @@ final class QuickPulseDataCollector {
         if (!requestTelemetry.isSuccess()) {
             counters.unsuccessfulRequests.incrementAndGet();
         }
-        QuickPulseRequestDocument quickPulseRequestDocument = new QuickPulseRequestDocument();
-        quickPulseRequestDocument.setDocumentType("Request");
-        quickPulseRequestDocument.setType("RequestTelemetryDocument");
-        quickPulseRequestDocument.setOperationId(requestTelemetry.getId());
-        quickPulseRequestDocument.setVersion("1.0");
-        quickPulseRequestDocument.setSuccess(requestTelemetry.isSuccess());
-        quickPulseRequestDocument.setDuration(Duration.ofMillis(durationMillis).toString());
-        quickPulseRequestDocument.setResponseCode(requestTelemetry.getResponseCode());
-        quickPulseRequestDocument.setOperationName(operationName);
-        quickPulseRequestDocument.setName(requestTelemetry.getName());
-        quickPulseRequestDocument.setUrl(requestTelemetry.getUrl());
-        quickPulseRequestDocument
-            .setProperties(aggregateProperties(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
+
+        Request requestDoc = new Request();
+        requestDoc.setDuration(Duration.ofMillis(durationMillis).toString());
+        requestDoc.setResponseCode(requestTelemetry.getResponseCode());
+        requestDoc.setName(requestTelemetry.getName());
+        requestDoc.setUrl(requestTelemetry.getUrl());
+        requestDoc
+            .setProperties(setCustomDimensions(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(quickPulseRequestDocument);
+                counters.documentList.add(requestDoc);
             }
         }
     }
 
-    private static Map<String, String> aggregateProperties(@Nullable Map<String, String> properties,
+    private static List<KeyValuePairString> setCustomDimensions(@Nullable Map<String, String> properties,
         @Nullable Map<String, Double> measurements) {
-        Map<String, String> aggregatedProperties = new HashMap<>();
-        if (measurements != null) {
-            measurements.forEach((k, v) -> aggregatedProperties.put(k, String.valueOf(v)));
-        }
+        List<KeyValuePairString> customDims = new ArrayList<>();
+
         if (properties != null) {
-            aggregatedProperties.putAll(properties);
+            for (Map.Entry<String, String> entry : properties.entrySet()) {
+                KeyValuePairString kvPair = new KeyValuePairString();
+                kvPair.setKey(entry.getKey());
+                kvPair.setValue(entry.getValue());
+                customDims.add(kvPair);
+            }
         }
-        return aggregatedProperties;
+
+        if (measurements != null) {
+            for (Map.Entry<String, Double> entry : measurements.entrySet()) {
+                KeyValuePairString kvPair = new KeyValuePairString();
+                kvPair.setKey(entry.getKey());
+                kvPair.setValue(entry.getValue().toString());
+                customDims.add(kvPair);
+            }
+        }
+        return customDims;
     }
 
     // TODO (trask) optimization: move live metrics request capture to OpenTelemetry layer so don't
@@ -319,7 +303,7 @@ final class QuickPulseDataCollector {
         final int unsuccessfulRdds;
         final long processPhysicalMemory;
         final double processNormalizedCpuUsage;
-        final List<QuickPulseDocument> documentList = new ArrayList<>();
+        final List<DocumentIngress> documentList = new ArrayList<>();
 
         private FinalCounters(Counters currentCounters) {
 
@@ -390,7 +374,7 @@ final class QuickPulseDataCollector {
 
         final AtomicLong rddsAndDuations = new AtomicLong(0);
         final AtomicInteger unsuccessfulRdds = new AtomicInteger(0);
-        final List<QuickPulseDocument> documentList = new ArrayList<>();
+        final List<DocumentIngress> documentList = new ArrayList<>();
 
         static long encodeCountAndDuration(long count, long duration) {
             if (count > MAX_COUNT || duration > MAX_DURATION) {

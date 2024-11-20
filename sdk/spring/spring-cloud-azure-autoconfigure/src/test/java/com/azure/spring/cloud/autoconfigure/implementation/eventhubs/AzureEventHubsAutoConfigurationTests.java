@@ -81,6 +81,19 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     }
 
     @Test
+    void configureWithNamespaceAndEmptyConnectionString() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=",
+                "spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class);
+            });
+    }
+
+    @Test
     void configureWithNamespace() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")

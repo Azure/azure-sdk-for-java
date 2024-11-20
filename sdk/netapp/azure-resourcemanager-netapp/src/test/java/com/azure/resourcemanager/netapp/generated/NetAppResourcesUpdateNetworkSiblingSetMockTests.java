@@ -23,7 +23,7 @@ public final class NetAppResourcesUpdateNetworkSiblingSetMockTests {
     @Test
     public void testUpdateNetworkSiblingSet() throws Exception {
         String responseStr
-            = "{\"networkSiblingSetId\":\"sqvdaeyygux\",\"subnetId\":\"jsqzhzbezk\",\"networkSiblingSetStateId\":\"msidxasicddyvv\",\"networkFeatures\":\"Basic_Standard\",\"provisioningState\":\"Canceled\",\"nicInfoList\":[{\"ipAddress\":\"wa\",\"volumeResourceIds\":[\"gat\",\"eaahhvjhhn\",\"kzyb\",\"jjidjk\"]},{\"ipAddress\":\"xkyxvxevblbj\",\"volumeResourceIds\":[\"ljlageuaulxu\",\"smjbnkppxyn\",\"nlsvxeiz\"]}]}";
+            = "{\"networkSiblingSetId\":\"yxgncxykxhdjhli\",\"subnetId\":\"bcxf\",\"networkSiblingSetStateId\":\"cporxvxcjz\",\"networkFeatures\":\"Standard\",\"provisioningState\":\"Canceled\",\"nicInfoList\":[{\"ipAddress\":\"tgqscjavftjuh\",\"volumeResourceIds\":[\"zkmtgguwpijrajci\",\"m\",\"ghfcfiwrxgkneuvy\"]},{\"ipAddress\":\"zqodfvpgshox\",\"volumeResourceIds\":[\"bpfgzdj\",\"xvzflbqv\"]},{\"ipAddress\":\"qvlgafcqusrdvetn\",\"volumeResourceIds\":[\"tutnwlduycvuzhyr\",\"ewipm\",\"ekdxuku\"]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class NetAppResourcesUpdateNetworkSiblingSetMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkSiblingSet response = manager.netAppResources()
-            .updateNetworkSiblingSet("gcealzxwh",
-                new UpdateNetworkSiblingSetRequest().withNetworkSiblingSetId("ansym")
-                    .withSubnetId("yqhlwigdivbkbx")
-                    .withNetworkSiblingSetStateId("omfaj")
+            .updateNetworkSiblingSet("cse",
+                new UpdateNetworkSiblingSetRequest().withNetworkSiblingSetId("hwwn")
+                    .withSubnetId("jhlfzswpchwahf")
+                    .withNetworkSiblingSetStateId("ousnfepgfewe")
                     .withNetworkFeatures(NetworkFeatures.BASIC_STANDARD),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sqvdaeyygux", response.networkSiblingSetId());
-        Assertions.assertEquals("jsqzhzbezk", response.subnetId());
-        Assertions.assertEquals("msidxasicddyvv", response.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.BASIC_STANDARD, response.networkFeatures());
-        Assertions.assertEquals("gat", response.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("yxgncxykxhdjhli", response.networkSiblingSetId());
+        Assertions.assertEquals("bcxf", response.subnetId());
+        Assertions.assertEquals("cporxvxcjz", response.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.STANDARD, response.networkFeatures());
+        Assertions.assertEquals("zkmtgguwpijrajci", response.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

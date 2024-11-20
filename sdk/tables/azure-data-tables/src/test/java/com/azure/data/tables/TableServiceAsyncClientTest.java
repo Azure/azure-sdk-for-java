@@ -361,7 +361,6 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
-
         final OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("a");
         final TableAccountSasService services = new TableAccountSasService().setTableAccess(true);

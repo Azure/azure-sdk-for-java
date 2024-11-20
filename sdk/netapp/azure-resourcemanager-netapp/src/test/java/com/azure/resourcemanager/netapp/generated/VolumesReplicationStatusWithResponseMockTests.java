@@ -23,7 +23,7 @@ public final class VolumesReplicationStatusWithResponseMockTests {
     @Test
     public void testReplicationStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"healthy\":true,\"relationshipStatus\":\"Unknown\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"cpilj\",\"errorMessage\":\"hzvechndbnwieho\"}";
+            = "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Broken\",\"totalProgress\":\"mexiitdfuxt\",\"errorMessage\":\"siibmiybnnustgn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class VolumesReplicationStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ReplicationStatus response = manager.volumes()
-            .replicationStatusWithResponse("atutmzlbiojlvfhr", "bpneqvcwwyyurm", "chpp", "prsnmokayzejn",
+            .replicationStatusWithResponse("qltfaey", "inmfgvxirp", "hriypoqeyhlqhy", "prlpy",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.healthy());
-        Assertions.assertEquals(RelationshipStatus.UNKNOWN, response.relationshipStatus());
-        Assertions.assertEquals(MirrorState.MIRRORED, response.mirrorState());
-        Assertions.assertEquals("cpilj", response.totalProgress());
-        Assertions.assertEquals("hzvechndbnwieho", response.errorMessage());
+        Assertions.assertEquals(false, response.healthy());
+        Assertions.assertEquals(RelationshipStatus.IDLE, response.relationshipStatus());
+        Assertions.assertEquals(MirrorState.BROKEN, response.mirrorState());
+        Assertions.assertEquals("mexiitdfuxt", response.totalProgress());
+        Assertions.assertEquals("siibmiybnnustgn", response.errorMessage());
     }
 }

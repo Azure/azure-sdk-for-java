@@ -36,6 +36,8 @@ import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageConstants;
 import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
+import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.TablesConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +115,7 @@ final class BuilderHelper {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else if (tokenCredential != null) {
             credentialPolicy = new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential, enableTenantDiscovery,
-                StorageConstants.STORAGE_SCOPE);
+                TableUtils.isCosmosEndpoint(endpoint) ? TablesConstants.COSMOS_SCOPE : StorageConstants.STORAGE_SCOPE);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "

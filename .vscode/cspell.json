@@ -148,6 +148,7 @@
     "sdk/keyvault/test-resources/test-resources.json",
     "sdk/keyvault/test-resources-jca/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
+    "sdk/formrecognizer/test-resources.json",
     "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/documentintelligence/test-resources.json",
     "sdk/maps/azure-maps-render/**",
@@ -1282,11 +1283,18 @@
       ]
     },
     {
+      "filename": "sdk/tables/**",
+      "words": [
+        "mmspecial"
+      ]
+    },
+    {
       "filename": "sdk/tables/azure-data-tables/**",
       "words": [
         "upserts",
         "upserted",
-        "raud"
+        "raud",
+        "mmspecial"
       ]
     },
     {

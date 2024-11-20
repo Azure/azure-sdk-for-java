@@ -36,10 +36,12 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -137,7 +139,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
 
-    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.gatewayClient).isNull();
         gatewayClient = new CosmosClientBuilder()
@@ -168,7 +170,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         containerDirect = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
 
-    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         if (this.gatewayClient != null) {
             this.gatewayClient.close();
@@ -240,27 +242,40 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     // Validate the diagnostics string from ChangeFeedProcessor all versions and deletes mode (pull model).
     // Currently all versions and deletes only works with gateway mode.
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void queryChangeFeedAllVersionsAndDeletes() throws Exception {
-        CosmosAsyncContainer cosmosContainer = cosmosAsyncContainer;
+    public void queryChangeFeedAllVersionsAndDeletes() {
+        // create container with full fidelity change feed configured
 
-        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromNow(FeedRange.forFullRange());
-        options.allVersionsAndDeletes();
+        String testContainerName = UUID.randomUUID().toString();
+        CosmosAsyncDatabase databaseWithGatewayClient = containerGateway.asyncContainer.getDatabase();
 
-        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
-            .queryChangeFeed(options, JsonNode.class)
-            .byPage()
-            .toIterable()
-            .iterator();
+        try {
+            logger.info("queryChangeFeedAllVersionsAndDeletes - create container with allVersionsAndDeletes changeFeed policy");
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerName, "/id");
+            containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)));
+            databaseWithGatewayClient.createContainer(containerProperties).block();
+            CosmosAsyncContainer testContainer = databaseWithGatewayClient.getContainer(testContainerName);
 
-        if (results.hasNext()) {
-            FeedResponse<JsonNode> response = results.next();
-            String diagnostics = response.getCosmosDiagnostics().toString();
-            assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
-            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
-            assertThat(diagnostics).contains("gatewayStatisticsList");
-            assertThat(diagnostics).contains("\"operationType\":\"ReadFeed\"");
-            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromNow(FeedRange.forFullRange());
+            options.allVersionsAndDeletes();
+
+            Iterator<FeedResponse<JsonNode>> results = testContainer
+                .queryChangeFeed(options, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
+
+            if (results.hasNext()) {
+                FeedResponse<JsonNode> response = results.next();
+                String diagnostics = response.getCosmosDiagnostics().toString();
+                assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+                assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
+                assertThat(diagnostics).contains("gatewayStatisticsList");
+                assertThat(diagnostics).contains("\"operationType\":\"ReadFeed\"");
+                assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
+            }
+        } finally {
+            safeDeleteCollection(databaseWithGatewayClient.getContainer(testContainerName));
         }
     }
 
@@ -1539,8 +1554,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("addressResolutionStatistics");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"inflightRequest\":false");
             assertThat(readResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
-            assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"exceptionMessage\":\"io.netty" +
-                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused");
+            assertThat(readResourceResponse.getDiagnostics().toString()).contains("Connection refused");
         } catch (Exception ex) {
             logger.error("Error in test addressResolutionStatistics", ex);
             fail("This test should not throw exception " + ex);
