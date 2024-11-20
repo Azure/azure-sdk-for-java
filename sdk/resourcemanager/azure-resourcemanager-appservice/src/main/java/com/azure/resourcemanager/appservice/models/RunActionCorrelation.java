@@ -72,7 +72,6 @@ public final class RunActionCorrelation extends RunCorrelation {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
