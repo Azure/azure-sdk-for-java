@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.query.IndexProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -162,10 +163,5 @@ public final class CosmosVectorIndexSpec {
                 vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
         }
         return vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
-    }
-
-    public enum IndexProperty {
-        INDEXING_SEARCH_LIST_SIZE,
-        QUANTIZATION_SIZE_IN_BYTES;
     }
 }
