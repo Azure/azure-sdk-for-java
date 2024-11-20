@@ -2,24 +2,13 @@ package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.implementation.AudioFile;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
-import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
-import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
-import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
-import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventErrorError;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDelta;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDone;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDelta;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
-import com.azure.ai.openai.realtime.models.RealtimeVoice;
-import com.azure.ai.openai.realtime.models.ServerErrorReceivedException;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
-import reactor.core.Disposable;
-import reactor.core.Disposables;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -29,37 +18,40 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 
 /**
  * This sample showcases sending a prompt in audio and what techniques can be utilized to collect the response both
  * in its audio form and text transcript.
  * {@link #consumeAudioDelta(RealtimeServerEventResponseAudioDelta)} will collect the chunks of audio sent by the service.
  * This audio defaults to 16PCM 24 kHz samples. The server provides this data as a base64 encoded string which is returned
- * as a byte array. The audio response generation will be signaled by a {@link RealtimeServerEventResponseAudioDone} event.
- * We take advantage of this event to signal the completion of the {@link reactor.core.publisher.Flux} we crafted by using
- * {@link reactor.core.publisher.Flux#takeUntil(java.util.function.Predicate)}. and {@link reactor.core.publisher.Flux#ofType(Class)}.
- * {@link #onAudioResponseCompleted()} is passed as the `onComplete` method to the {@link reactor.core.publisher.Flux#subscribe()} method.
+ * as a byte array.
+ * We set event listeners for the following events:
+ *   - {@link RealtimeServerEventResponseAudioDelta} to collect the audio data chunks
+ *   - {@link RealtimeServerEventResponseAudioDone} to signal the completion of the audio response
+ *   - {@link RealtimeServerEventResponseAudioTranscriptDelta} to collect the text transcript data chunks
+ *   - {@link RealtimeServerEventResponseAudioTranscriptDone} to signal the completion of the audio transcript response
  * In this method, we attached the WAV file headers, since the server omits them, and write the file into {@link #AUDIO_RESPONSE_WAV_FILE}.
  * Similarly, for the text transcript, we consume the {@link RealtimeServerEventResponseAudioTranscriptDelta} events and print them
  * without interspersing line breaks. This will render the text as it was emitted by the server. We signal the completion of the
  * transcript generation by listening for a {@link RealtimeServerEventResponseAudioTranscriptDone} event and print to console
  * "Audio transcript complete."
  */
-public class AudioCollection {
+public class AudioCollectionSync {
 
-    private static final String AUDIO_RESPONSE_DATA_FILE = "audio_response.data";
-    private static final String AUDIO_RESPONSE_WAV_FILE = "audio_response.wav";
+    private static final String AUDIO_RESPONSE_DATA_FILE = "audio_response_sync.data";
+    private static final String AUDIO_RESPONSE_WAV_FILE = "audio_response_sync.wav";
 
     /**
      * This sample showcases sending a prompt in audio and what techniques can be utilized to collect the response both
      * in its audio form and text transcript.
      * {@link #consumeAudioDelta(RealtimeServerEventResponseAudioDelta)} will collect the chunks of audio sent by the service.
      * This audio defaults to 16PCM 24 kHz samples. The server provides this data as a base64 encoded string which is returned
-     * as a byte array. The audio response generation will be signaled by a {@link RealtimeServerEventResponseAudioDone} event.
-     * We take advantage of this event to signal the completion of the {@link reactor.core.publisher.Flux} we crafted by using
-     * {@link reactor.core.publisher.Flux#takeUntil(java.util.function.Predicate)}. and {@link reactor.core.publisher.Flux#ofType(Class)}.
-     * {@link #onAudioResponseCompleted()} is passed as the `onComplete` method to the {@link reactor.core.publisher.Flux#subscribe()} method.
+     * as a byte array.
+     * We set event listeners for the following events:
+     *   - {@link RealtimeServerEventResponseAudioDelta} to collect the audio data chunks
+     *   - {@link RealtimeServerEventResponseAudioDone} to signal the completion of the audio response
+     *   - {@link RealtimeServerEventResponseAudioTranscriptDelta} to collect the text transcript data chunks
+     *   - {@link RealtimeServerEventResponseAudioTranscriptDone} to signal the completion of the audio transcript response
      * In this method, we attached the WAV file headers, since the server omits them, and write the file into {@link #AUDIO_RESPONSE_WAV_FILE}.
      * Similarly, for the text transcript, we consume the {@link RealtimeServerEventResponseAudioTranscriptDelta} events and print them
      * without interspersing line breaks. This will render the text as it was emitted by the server. We signal the completion of the
@@ -69,54 +61,32 @@ public class AudioCollection {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        RealtimeAsyncClient client = buildClient(true);
-
-        // We have a composite disposable to collect our subscriptions
-        Disposable.Composite disposables = Disposables.composite();
+        RealtimeClient client = buildClient(false);
 
         // Setup event consumers for our server events of interest:
         //   - RealtimeServerEventResponseAudioDelta
+        //   - RealtimeServerEventResponseAudioDone
         //   - RealtimeServerEventResponseAudioTranscriptDelta
-        disposables.addAll(Arrays.asList(
-            client.getServerEvents()
-                .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioDone)
-                .ofType(RealtimeServerEventResponseAudioDelta.class)
-                .subscribe(AudioCollection::consumeAudioDelta, AudioCollection::consumeError, AudioCollection::onAudioResponseCompleted),
-            client.getServerEvents()
-                .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioTranscriptDone)
-                .ofType(RealtimeServerEventResponseAudioTranscriptDelta.class)
-                .subscribe(AudioCollection::consumeAudioTranscriptDelta, AudioCollection::consumeError, AudioCollection::onAudioResponseTranscriptCompleted)
-        ));
+        //   - RealtimeServerEventResponseAudioTranscriptDone
+        client.addOnResponseAudioDoneEventHandler(audioDoneEvent -> onAudioResponseCompleted());
+        client.addOnResponseAudioDeltaEventHandler(AudioCollectionSync::consumeAudioDelta);
+        client.addOnResponseAudioTranscriptDoneEventHandler(audioTranscriptDoneEvent -> onAudioResponseTranscriptCompleted());
+        client.addOnResponseAudioTranscriptDeltaEventHandler(AudioCollectionSync::consumeAudioTranscriptDelta);
 
         // Initializing connection to server
-        client.start().block();
-
-        // Configure the realtime session
-        client.sendMessage(new RealtimeClientEventSessionUpdate(
-            new RealtimeRequestSession()
-                .setVoice(RealtimeVoice.ALLOY)
-                .setTurnDetection(
-                    new RealtimeServerVadTurnDetection()
-                            .setThreshold(0.5)
-                            .setPrefixPaddingMs(300)
-                            .setSilenceDurationMs(200)
-            ).setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings(
-                    RealtimeAudioInputTranscriptionModel.WHISPER_1)
-            ).setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
-        )).block();
+        client.start();
 
         // Send audio file with our prompt
         AudioFile audioFile = new AudioFile(FileUtils.openResourceFile("arc-easy-q237-tts-24khz-16PCM.wav"))
                 .setBytesPerSample(16)
                 .setSampleRate(24000);
-        FileUtils.sendAudioFileAsync(client, audioFile).block();
+        FileUtils.sendAudioFile(client, audioFile);
 
         try {
             // We await for subscriptions that we didn't block on
             Thread.sleep(10000);
-            client.stop().block();
+            client.stop();
             client.close();
-            disposables.dispose();
 
             // File cleanup
             Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_DATA_FILE));
@@ -128,30 +98,30 @@ public class AudioCollection {
     }
 
     /**
-     * Builds a RealtimeAsyncClient based on the configuration settings defined in the environment variables.
+     * Builds a RealtimeClient based on the configuration settings defined in the environment variables.
      * @param isAzure is set to `true` will build the client assuming an Azure backend, whereas `false` builds the client
      *                for the OpenAI backend.
-     * @return an instance of {@link RealtimeAsyncClient}.
+     * @return an instance of {@link RealtimeClient}.
      */
-    private static RealtimeAsyncClient buildClient(boolean isAzure) {
+    private static RealtimeClient buildClient(boolean isAzure) {
         if (isAzure) {
             String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
             String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
             String deploymentOrModelId = Configuration.getGlobalConfiguration().get("MODEL_OR_DEPLOYMENT_NAME");
 
             return new RealtimeClientBuilder()
-                .endpoint(endpoint)
-                .deploymentOrModelName(deploymentOrModelId)
-                .credential(new AzureKeyCredential(azureOpenaiKey))
-                .buildAsyncClient();
+                    .endpoint(endpoint)
+                    .deploymentOrModelName(deploymentOrModelId)
+                    .credential(new AzureKeyCredential(azureOpenaiKey))
+                    .buildClient();
         } else {
             String openaiKey = Configuration.getGlobalConfiguration().get("OPENAI_KEY");
             String modelName = Configuration.getGlobalConfiguration().get("OPENAI_MODEL");
 
             return new RealtimeClientBuilder()
-                .credential(new KeyCredential(openaiKey))
-                .deploymentOrModelName(modelName)
-                .buildAsyncClient();
+                    .credential(new KeyCredential(openaiKey))
+                    .deploymentOrModelName(modelName)
+                    .buildClient();
         }
     }
 
@@ -204,24 +174,5 @@ public class AudioCollection {
      */
     private static void onAudioResponseTranscriptCompleted() {
         System.out.println("\nAudio transcript complete.");
-    }
-
-    /**
-     * Error handler. We are particularly interested in the {@link ServerErrorReceivedException} which describes errors
-     * sent by the server as an event, but mapped into an exception for ease of use.
-     *
-     * @param error The error that occurred while consuming the server sent events.
-     */
-    private static void consumeError(Throwable error) {
-        if (error instanceof ServerErrorReceivedException) {
-            ServerErrorReceivedException serverError = (ServerErrorReceivedException) error;
-            RealtimeServerEventErrorError errorDetails = serverError.getErrorDetails();
-            System.out.println("Error type: " + errorDetails.getType());
-            System.out.println("Error code: " + errorDetails.getCode());
-            System.out.println("Error parameter: " + errorDetails.getParam());
-            System.out.println("Error message: " + errorDetails.getMessage());
-        } else {
-            System.out.println(error.getMessage());
-        }
     }
 }

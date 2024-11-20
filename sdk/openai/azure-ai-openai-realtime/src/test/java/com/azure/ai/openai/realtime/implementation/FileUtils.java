@@ -35,7 +35,7 @@ public class FileUtils {
         }
 
         int samplesPerChunk = audioFile.getSampleRate() * audioFile.getChunkDurationMillis() / 1000;
-        int bytesPerChunk = 4 * samplesPerChunk * audioFile.getBytesPerSample();
+        int bytesPerChunk = samplesPerChunk * audioFile.getBytesPerSample();
         for (int i = 0; i < audioBytes.length; i += bytesPerChunk) {
             int end = Math.min(audioBytes.length, i + bytesPerChunk);
             byte[] chunk = new byte[end - i];
@@ -61,7 +61,7 @@ public class FileUtils {
         }
 
         int samplesPerChunk = audioFile.getSampleRate() * audioFile.getChunkDurationMillis() / 1000;
-        int bytesPerChunk = 4 * samplesPerChunk * audioFile.getBytesPerSample();
+        int bytesPerChunk = samplesPerChunk * audioFile.getBytesPerSample();
 
         for (int i = 0; i < audioBytes.length; i += bytesPerChunk) {
             int end = Math.min(audioBytes.length, i + bytesPerChunk);

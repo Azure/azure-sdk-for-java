@@ -57,11 +57,9 @@ public final class RealtimeClient implements Closeable {
      * Starts the client for connecting to the server.
      */
     public synchronized void start() {
-        asyncClient.start(() -> {
-            this.asyncClient.getServerEvents()
-                .publishOn(Schedulers.boundedElastic())
-                .subscribe(event -> eventHandlerCollection.fireEvent(event.getType().toString(), event));
-        }).block();
+        asyncClient.start(() -> this.asyncClient.getServerEvents()
+            .publishOn(Schedulers.boundedElastic())
+            .subscribe(event -> eventHandlerCollection.fireEvent(event.getType().toString(), event))).block();
     }
 
     /**
