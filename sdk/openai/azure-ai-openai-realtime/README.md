@@ -152,7 +152,49 @@ compile(group: 'com.azure', name: 'azure-ai-openai-realtime', version: '1.0.0-be
 
 ### Authentication
 
-TODO
+In order to interact with the Azure OpenAI Service you'll need to create an instance of client class,
+[RealtimeAsyncClient][realtime_client_async] or [RealtimeClient][realtime_client_sync] by using
+[RealtimeClientBuilder][realtime_client_builder]. To configure a client for use with
+Azure OpenAI, provide a valid endpoint URI to an Azure OpenAI resource along with a corresponding key credential and
+token credential.
+
+#### Example: Azure OpenAI
+
+Get an Azure OpenAI `key` credential form the Azure Portal.
+
+```java readme-sample-createSyncAzureClientKeyCredential
+RealtimeClient client = new RealtimeClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildClient();
+```
+
+Alternatively, to build an async client:
+
+```java readme-sample-createAsyncAzureClientKeyCredential
+RealtimeAsyncClient client = new RealtimeClientBuilder()
+    .credential(new KeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildAsyncClient();
+```
+
+#### Example: non-Azure OpenAI
+
+If we omit the `endpoint` parameter, the client built will assume we are operating agains the non-Azure OpenAI server
+
+```java readme-sample-createSyncNonAzureClientKeyCredential
+RealtimeClient client = new RealtimeClientBuilder()
+    .credential(new KeyCredential("{key}"))
+    .buildClient();
+```
+
+Alternatively, to build an async client:
+
+```java readme-sample-createAsyncNonAzureClientKeyCredential
+RealtimeAsyncClient client = new RealtimeClientBuilder()
+    .credential(new KeyCredential("{key}"))
+    .buildAsyncClient();
+```
 
 ## Key concepts
 
@@ -171,7 +213,61 @@ For a more detailed guide please refer to the [Azure OpenAI realtime][aoai_sampl
 
 ## Examples
 
-TODO
+We can setup the Realtime session to return both text and audio.
+```java readme-sample-sessionUpdate
+client.sendMessage(new RealtimeClientEventSessionUpdate(
+    new RealtimeRequestSession()
+        .setVoice(RealtimeVoice.ALLOY)
+        .setTurnDetection(
+            new RealtimeServerVadTurnDetection()
+                .setThreshold(0.5)
+                .setPrefixPaddingMs(300)
+                .setSilenceDurationMs(200)
+        ).setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings(
+            RealtimeAudioInputTranscriptionModel.WHISPER_1)
+        ).setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
+));
+```
+
+With the Azure OpenAI Realtime Audio client library, one can provide a prompt as an audio file.
+
+```java readme-sample-uploadAudioFile
+RealtimeClient client = new RealtimeClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildClient();
+
+String audioFilePath = "{path to audio file}";
+byte[] audioBytes = Files.readAllBytes(Paths.get(audioFilePath));
+        
+client.addOnResponseDoneEventHandler(event -> {
+    System.out.println("Response done");
+});
+
+client.start();
+client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(audioBytes));
+```
+
+To consume the text and audio produced by the server we setup the following callbacks in an async scenario.
+
+```java readme-sample-consumeSpecificEventsAsync
+RealtimeAsyncClient client = new RealtimeClientBuilder()
+    .credential(new KeyCredential("{key}"))
+    .buildAsyncClient();
+
+Disposable.Composite disposables = Disposables.composite();
+
+disposables.addAll(Arrays.asList(
+    client.getServerEvents()
+        .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioDone)
+        .ofType(RealtimeServerEventResponseAudioDelta.class)
+        .subscribe(this::consumeAudioDelta, this::consumeError, this::onAudioResponseCompleted),
+    client.getServerEvents()
+        .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioTranscriptDone)
+        .ofType(RealtimeServerEventResponseAudioTranscriptDelta.class)
+        .subscribe(this::consumeAudioTranscriptDelta, this::consumeError, this::onAudioResponseTranscriptCompleted)
+));
+```
 
 ## Troubleshooting
 
@@ -216,3 +312,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai-realtime/src/samples
 [quickstart]: https://learn.microsoft.com/azure/ai-services/openai/realtime-audio-quickstart
+[realtime_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-realtime/src/main/java/com/azure/ai/openai/realtime/RealtimeAsyncClient.java
+[realtime_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-realtime/src/main/java/com/azure/ai/openai/realtime/RealtimeClient.java
+[realtime_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-realtime/src/main/java/com/azure/ai/openai/realtime/RealtimeClientBuilder.java
