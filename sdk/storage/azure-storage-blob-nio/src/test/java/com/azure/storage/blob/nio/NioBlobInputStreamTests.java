@@ -40,8 +40,8 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        fileBytes = getRandomByteArray(5 * 1024 * 1024);
-        sourceFile = getRandomFile(fileBytes);
+        fileBytes = getPseudoRandomByteArray(5 * 1024 * 1024);
+        sourceFile = getPseudoRandomFile(fileBytes);
 
         cc.create();
         bc = cc.getBlobClient(generateBlobName());

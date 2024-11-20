@@ -67,7 +67,7 @@ public class NioBlobOutputStreamTests extends BlobNioTestBase {
         cc.getBlobClient(bc.getBlobName()).getAppendBlobClient().create();
 
         // Write enough data to force making network requests.
-        nioStream.write(getRandomByteArray(MAX_SINGLE_UPLOAD_SIZE + 1));
+        nioStream.write(getPseudoRandomByteArray(MAX_SINGLE_UPLOAD_SIZE + 1));
         // Issue a spurious request: A more reliable way than sleeping to ensure the previous stage block has enough
         // time to round trip.
         bc.getProperties();
@@ -78,7 +78,7 @@ public class NioBlobOutputStreamTests extends BlobNioTestBase {
     @Test
     public void writeArray() throws IOException {
         int dataSize = 100;
-        byte[] data = getRandomByteArray(dataSize);
+        byte[] data = getPseudoRandomByteArray(dataSize);
         nioStream.write(data);
         nioStream.close();
 
@@ -97,7 +97,7 @@ public class NioBlobOutputStreamTests extends BlobNioTestBase {
          Write enough data to force making network requests. The error will not be thrown until the next time a method
          on the stream is called.
          */
-        nioStream.write(getRandomByteArray(MAX_SINGLE_UPLOAD_SIZE + 1));
+        nioStream.write(getPseudoRandomByteArray(MAX_SINGLE_UPLOAD_SIZE + 1));
         // Issue a spurious request: A more reliable way than sleeping to ensure the previous stage block has enough
         // time to round trip.
         bc.getProperties();
@@ -109,7 +109,7 @@ public class NioBlobOutputStreamTests extends BlobNioTestBase {
     @CsvSource(value = { "0,100", "20,80", "20,40" })
     public void writeOffsetLen(int offset, int len) throws IOException {
         int dataSize = 100;
-        byte[] data = getRandomByteArray(dataSize);
+        byte[] data = getPseudoRandomByteArray(dataSize);
 
         nioStream.write(data, offset, len);
         nioStream.close();
@@ -132,7 +132,7 @@ public class NioBlobOutputStreamTests extends BlobNioTestBase {
         cc.getBlobClient(bc.getBlobName()).getAppendBlobClient().create();
 
         // Write enough data to force making network requests.
-        nioStream.write(getRandomByteArray(MAX_SINGLE_UPLOAD_SIZE + 1));
+        nioStream.write(getPseudoRandomByteArray(MAX_SINGLE_UPLOAD_SIZE + 1));
         // Issue a spurious request: A more reliable way than sleeping to ensure the previous stage block has enough
         // time to round trip.
         bc.getProperties();
@@ -168,7 +168,7 @@ public class NioBlobOutputStreamTests extends BlobNioTestBase {
         cc.getBlobClient(bc.getBlobName()).getAppendBlobClient().create();
 
         // Write enough data to force making network requests.
-        nioStream.write(getRandomByteArray(MAX_SINGLE_UPLOAD_SIZE + 1));
+        nioStream.write(getPseudoRandomByteArray(MAX_SINGLE_UPLOAD_SIZE + 1));
         // Issue a spurious request: A more reliable way than sleeping to ensure the previous stage block has enough
         // time to round trip.
         bc.getProperties();

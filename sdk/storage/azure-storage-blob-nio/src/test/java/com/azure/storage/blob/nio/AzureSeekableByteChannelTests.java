@@ -53,8 +53,8 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     protected void beforeTest() {
         super.beforeTest();
         sourceFileSize = 5 * 1024 * 1024;
-        fileBytes = getRandomByteArray(sourceFileSize);
-        sourceFile = getRandomFile(fileBytes);
+        fileBytes = getPseudoRandomByteArray(sourceFileSize);
+        sourceFile = getPseudoRandomFile(fileBytes);
 
         cc.create();
         bc = cc.getBlobClient(generateBlobName());
@@ -263,7 +263,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     public void positionSizeWrite() throws IOException {
         resetForLargeSource();
         int bufferSize = sourceFileSize / 10;
-        ByteBuffer src = getRandomData(bufferSize);
+        ByteBuffer src = getPseudoRandomData(bufferSize);
 
         assertEquals(0, writeByteChannel.position());
         assertEquals(0, writeByteChannel.size());

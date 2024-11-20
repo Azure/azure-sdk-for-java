@@ -366,7 +366,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             if (destinationIsDir) {
                 fs.provider().createDirectory(destPath);
             } else { // source is file
-                destinationClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20);
+                destinationClient.upload(new ByteArrayInputStream(getPseudoRandomByteArray(20)), 20);
             }
         }
         fs.provider()
@@ -385,7 +385,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         basicSetupForCopyTest(fs);
 
         // Create resources as necessary
-        sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20);
+        sourceClient.upload(new ByteArrayInputStream(getPseudoRandomByteArray(20)), 20);
         if (!destinationIsVirtual) {
             fs.provider().createDirectory(destPath);
         }
@@ -407,7 +407,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         basicSetupForCopyTest(fs);
 
         // Create resources as necessary
-        sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20);
+        sourceClient.upload(new ByteArrayInputStream(getPseudoRandomByteArray(20)), 20);
         if (destinationIsDir) {
             fs.provider().createDirectory(destPath);
         } else {
@@ -478,7 +478,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         BlobClient destinationClient = destPath.toBlobClient();
 
         // Create resources as necessary
-        sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20);
+        sourceClient.upload(new ByteArrayInputStream(getPseudoRandomByteArray(20)), 20);
 
         assertThrows(IOException.class,
             () -> fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES));
@@ -738,7 +738,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         compareInputStreams(bc.openInputStream(), DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         // Defaults should allow us to open to an existing file and overwrite the destination.
-        byte[] randomData = getRandomByteArray(100);
+        byte[] randomData = getPseudoRandomByteArray(100);
         nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()));
         nioStream.write(randomData);
         nioStream.close();
@@ -826,7 +826,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         BlockBlobClient bc
             = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName()).getBlockBlobClient();
         OutputStream nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()));
-        byte[] data = getRandomByteArray(dataSize);
+        byte[] data = getPseudoRandomByteArray(dataSize);
 
         nioStream.write(data);
         nioStream.close();
@@ -1067,7 +1067,7 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             .newByteChannel(fs.getPath(bc.getBlobName()), new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
                 StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)));
 
-        nioChannel.write(getRandomData(dataSize));
+        nioChannel.write(getPseudoRandomData(dataSize));
         nioChannel.close();
 
         assertEquals(blockCount, bc.listBlocks(BlockListType.COMMITTED).getCommittedBlocks().size());

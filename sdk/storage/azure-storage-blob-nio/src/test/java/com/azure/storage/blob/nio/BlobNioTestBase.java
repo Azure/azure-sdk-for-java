@@ -203,21 +203,21 @@ public class BlobNioTestBase extends TestProxyTestBase {
         }
     }
 
-    protected byte[] getRandomByteArray(int size) {
-        return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
+    protected byte[] getPseudoRandomByteArray(int size) {
+        return StorageCommonTestUtils.getPseudoRandomByteArray(size);
     }
 
     /*
      Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
-    protected ByteBuffer getRandomData(int size) {
-        return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
+    protected ByteBuffer getPseudoRandomData(int size) {
+        return StorageCommonTestUtils.getPseudoRandomData(size);
     }
 
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
-    protected File getRandomFile(byte[] bytes) {
+    protected File getPseudoRandomFile(byte[] bytes) {
         try {
             File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
             file.deleteOnExit();
