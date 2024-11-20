@@ -43,20 +43,42 @@ import reactor.core.publisher.Sinks;
 
 import java.util.Arrays;
 
+/**
+ * Utility class to handle Realtime server events. {@link #consumeServerEvent(RealtimeServerEvent, Sinks.Many)} consumes
+ * all the available server events available at the time of writing this.
+ * The {@link Sinks.Many} is used to single to the consumer, to issue a new client input. This is used in samples, so it's
+ * catering specifically to the use case, but it showcases a potential way to signal the need for more user input in
+ * asynchronous scenarios.
+ */
 public final class RealtimeEventHandler {
 
     public static class UserInputRequest {
     }
 
+    /**
+     * Sent when the service is ready to receive a session update request.
+     */
     public static final class SessionUpdateRequest extends UserInputRequest {
     }
 
+    /**
+     * Sent when the service is ready to receive audio input.
+     */
     public static final class SendAudioRequest extends UserInputRequest {
     }
 
+    /**
+     * Sent when the service is done responding to a request, signaling the user to close the session.
+     */
     public static final class EndSession extends UserInputRequest {
     }
 
+    /**
+     * Consumes the server event and emits a new user input request if necessary.
+     *
+     * @param serverEvent The server event to consume.
+     * @param requestUserInput The sink to emit a new user input request.
+     */
     public static void consumeServerEvent(RealtimeServerEvent serverEvent,
         Sinks.Many<RealtimeEventHandler.UserInputRequest> requestUserInput) {
         System.out.println("Server event received: " + serverEvent.getType().getValue());
@@ -243,6 +265,10 @@ public final class RealtimeEventHandler {
         }
     }
 
+    /**
+     * Creates a session update event for the purpose of tests
+     * @return a session update request event from the client.
+     */
     public static RealtimeClientEventSessionUpdate sessionUpdate() {
         return new RealtimeClientEventSessionUpdate(new RealtimeRequestSession()
             .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT, RealtimeRequestSessionModality.AUDIO))

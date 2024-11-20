@@ -14,8 +14,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
+/**
+ * Utility class to send files in consecutive chunks to the Realtime service.
+ */
 public class FileUtils {
 
+    /**
+     * Sends the audio file to the Realtime service in consecutive chunks. For async usage.
+     *
+     * @param client The Realtime async client.
+     * @param audioFile A representation of the audio file to send
+     * @return A Mono that signals success when it returns {@link Void}, or an error otherwise.
+     */
     public static Mono<Void> sendAudioFileAsync(RealtimeAsyncClient client, AudioFile audioFile) {
         byte[] audioBytes;
         try {
@@ -36,6 +46,12 @@ public class FileUtils {
         return Mono.empty();
     }
 
+    /**
+     * Sends the audio file to the Realtime service in consecutive chunks. For sync usage.
+     *
+     * @param client The Realtime client.
+     * @param audioFile A representation of the audio file to send
+     */
     public static void sendAudioFile(RealtimeClient client, AudioFile audioFile) {
         byte[] audioBytes;
         try {
@@ -55,10 +71,23 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Returns the {@link Path} to a file in the test resources folder.
+     *
+     * @param fileName The name of the file to open.
+     * @return The path to the file.
+     */
     public static Path openResourceFile(String fileName) {
         return Paths.get("src", "test", "resources", fileName);
     }
 
+    /**
+     * Writes a byte array into a new file (if it doesn't exist) in append mode.
+     *
+     * @param destinationFile The path to the file to write to.
+     * @param data The data to write.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
     public static void writeToFile(Path destinationFile, byte[] data) throws IOException {
         Files.write(destinationFile, data, StandardOpenOption.WRITE, StandardOpenOption.APPEND, StandardOpenOption.CREATE, StandardOpenOption.SYNC);
     }
