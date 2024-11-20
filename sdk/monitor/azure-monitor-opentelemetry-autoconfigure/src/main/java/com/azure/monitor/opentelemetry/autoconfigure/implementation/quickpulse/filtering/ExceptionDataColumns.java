@@ -28,4 +28,19 @@ public class ExceptionDataColumns extends TelemetryColumns{
         this.Message = message;
         this.StackTrace = stackTrace;
     }
+
+    // To be used in tests only
+    public void setMessage(String message) {
+        this.Message = message;
+    }
+
+    // To be used in tests only
+    public String getMessage() {
+        return this.Message;
+    }
+
+    // To be used in tests only
+    public String getStackTrace() {
+        return this.StackTrace;
+    }
 }

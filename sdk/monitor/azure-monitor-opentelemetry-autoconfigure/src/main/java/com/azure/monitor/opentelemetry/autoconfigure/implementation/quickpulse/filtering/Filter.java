@@ -25,6 +25,7 @@ public class Filter {
         });
     }
 
+    // To be used when checking telemetry against metric charts filters
     public static boolean checkMetricFilters(DerivedMetricInfo derivedMetricInfo, TelemetryColumns data) {
         if (derivedMetricInfo.getFilterGroups().isEmpty()) {
             // This should never happen - even when a user does not add filter pills to the derived metric,
@@ -41,6 +42,8 @@ public class Filter {
         return matched;
     }
 
+    // To be used when checking telemetry against document filters. This also gets reused in the logic for checking metrics
+    // charts filters.
     public static boolean checkFilterConjunctionGroup(FilterConjunctionGroupInfo filterConjunctionGroupInfo, TelemetryColumns data) {
         // All of the filters need to match for this to return true (and operation).
         for (FilterInfo filter : filterConjunctionGroupInfo.getFilters()) {
@@ -170,7 +173,7 @@ public class Filter {
         }
 
         // Parse seconds and minutes
-        int seconds = parseInt(parts[2]);
+        long microseconds = (long) (Double.parseDouble(parts[2]) * 1000000L);
         int minutes = parseInt(parts[1]);
 
         // Split the first part by "." to get days and hours
@@ -182,12 +185,12 @@ public class Filter {
         int hours = parseInt(firstPart[1]);
         int days = parseInt(firstPart[0]);
 
-        if (seconds == Integer.MIN_VALUE || minutes == Integer.MIN_VALUE || hours == Integer.MIN_VALUE || days == Integer.MIN_VALUE) {
+        if (minutes == Integer.MIN_VALUE || hours == Integer.MIN_VALUE || days == Integer.MIN_VALUE) {
             return Long.MIN_VALUE; // Return a special value to indicate an error
         }
 
         // Calculate the total microseconds
-        return (seconds * 1000000L)
+        return microseconds
             + (minutes * 60L * 1000000L)
             + (hours * 60L * 60L * 1000000L)
             + (days * 24L * 60L * 60L * 1000000L);

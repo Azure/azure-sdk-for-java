@@ -15,4 +15,14 @@ public class TraceDataColumns extends TelemetryColumns{
         super();
         this.Message = message;
     }
+
+    // to be used in tests only
+    public void setMessage(String message) {
+        this.Message = message;
+    }
+
+    // To be used in tests only
+    public String getMessage() {
+        return this.Message;
+    }
 }

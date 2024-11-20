@@ -35,4 +35,49 @@ public class RequestDataColumns extends TelemetryColumns {
         this.Name = name;
     }
 
+    // To be used in tests only
+    public void setSuccess(boolean success) {
+        this.Success = success;
+    }
+
+    // To be used in tests only
+    public void setResponseCode(int responseCode) {
+        this.ResponseCode = responseCode;
+    }
+
+    // To be used in tests only
+    public void setDuration(long duration) {
+        this.Duration = duration;
+    }
+
+    // To be used in tests only
+    public void setUrl(String url) {
+        this.Url = url;
+    }
+
+    // To be used in tests only
+    public String getUrl() {
+        return this.Url;
+    }
+
+    // To be used in tests only
+    public long getDuration() {
+        return this.Duration;
+    }
+
+    // To be used in tests only
+    public int getResponseCode() {
+        return this.ResponseCode;
+    }
+
+    // To be used in tests only
+    public boolean getSuccess() {
+        return this.Success;
+    }
+
+    // To be used in tests only
+    public String getName() {
+        return this.Name;
+    }
+
 }

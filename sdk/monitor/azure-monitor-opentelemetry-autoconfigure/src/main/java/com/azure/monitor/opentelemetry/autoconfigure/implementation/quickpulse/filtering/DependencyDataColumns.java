@@ -43,5 +43,53 @@ public class DependencyDataColumns extends TelemetryColumns {
         this.Data = data;
     }
 
+    // To be used in tests only
+    public void setSuccess(boolean success) {
+        this.Success = success;
+    }
+
+    // To be used in tests only
+    public void setResultCode(int responseCode) {
+        this.ResultCode = responseCode;
+    }
+
+    // To be used in tests only
+    public void setDuration(long duration) {
+        this.Duration = duration;
+    }
+
+    // to be used in tests only
+    public void setData(String data) {
+        this.Data = data;
+    }
+
+    public String getTarget() {
+        return this.Target;
+    }
+
+    public long getDuration() {
+        return this.Duration;
+    }
+
+    public boolean getSuccess() {
+        return this.Success;
+    }
+
+    public String getName() {
+        return this.Name;
+    }
+
+    public String getData() {
+        return this.Data;
+    }
+
+    public String getType() {
+        return this.Type;
+    }
+
+    public int getResultCode() {
+        return this.ResultCode;
+    }
+
 
 }

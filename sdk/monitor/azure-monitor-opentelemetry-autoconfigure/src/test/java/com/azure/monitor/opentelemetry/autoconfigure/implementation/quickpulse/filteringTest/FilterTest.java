@@ -1,20 +1,19 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filteringTest;
 
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.RequestDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MessageTelemetryBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.RequestTelemetryBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.*;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.*;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
+import io.vertx.core.cli.annotations.Description;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FilterTest {
 
@@ -40,8 +39,7 @@ class FilterTest {
     private List<FilterConjunctionGroupInfo> createListWithOneFilterConjunctionGroupAndOneFilter(FilterInfo filter) {
         List<FilterConjunctionGroupInfo> result = new ArrayList<>();
         FilterConjunctionGroupInfo group = new FilterConjunctionGroupInfo();
-        List<FilterInfo> filters = new ArrayList<>();
-        filters.add(filter);
+        List<FilterInfo> filters = new ArrayList<>(List.of(filter));
         group.setFilters(filters);
         result.add(group);
         return result;
@@ -49,6 +47,7 @@ class FilterTest {
 
 
     @Test
+    @Description("This tests if the any field (*) filter can filter telemetry correctly, with various combos of predicates & column types")
     void testAnyFieldFilter() {
         FilterInfo anyFieldContainsHi = createFilterInfoWithParams(Filter.ANY_FIELD, PredicateType.CONTAINS, "hi");
         FilterInfo anyFieldNotContains = createFilterInfoWithParams(Filter.ANY_FIELD, PredicateType.DOES_NOT_CONTAIN, "hi");
@@ -99,6 +98,7 @@ class FilterTest {
     }
 
     @Test
+    @Description("This tests if the custom dimension filter works correctly, with various predicates")
     void testCustomDimensionFilter() {
         FilterInfo customDimFilter = createFilterInfoWithParams(Filter.CUSTOM_DIM_FIELDNAME_PREFIX + "hi", PredicateType.EQUAL, "hi");
         List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndOneFilter(customDimFilter);
@@ -114,17 +114,20 @@ class FilterTest {
 
         // the asked for field is in the custom dimensions but value does not match
         customDims.put("hi", "bye");
+        request.setCustomDimensions(customDims, null);
         assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
         assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
 
         // the asked for field is in the custom dimensions and value matches
         customDims.put("hi","hi");
+        request.setCustomDimensions(customDims, null);
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
 
         // testing not equal predicate. The CustomDimensions.hi value != hi so return true.
         customDimFilter.setPredicate(PredicateType.NOT_EQUAL);
         customDims.put("hi", "bye");
+        request.setCustomDimensions(customDims, null);
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
 
@@ -136,7 +139,282 @@ class FilterTest {
         // testing contains predicate. The CustomDimensions.hi value contains hi so return true.
         customDimFilter.setPredicate(PredicateType.CONTAINS);
         customDims.put("hi", "hi there");
+        request.setCustomDimensions(customDims, null);
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
     }
+
+    @Test
+    @Description("This tests if filters on known boolean columns (Success) work correctly, with various predicates and telemetry types")
+    void testBooleanFilter() {
+        FilterInfo booleanFilter = createFilterInfoWithParams(KnownRequestColumns.success, PredicateType.EQUAL, "true");
+        List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndOneFilter(booleanFilter);
+        DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM, AggregationType.SUM, "Count()", filterGroups);
+        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
+        DependencyDataColumns dependency = new DependencyDataColumns("test.com", 200, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y");
+        FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
+
+        // Request Success filter matches
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // Request Success filter does not match
+        request.setSuccess(false);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // Request Success filter matches for != predicate
+        booleanFilter.setPredicate(PredicateType.NOT_EQUAL);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // Dependency Success filter matches
+        derivedMetricInfo.setTelemetryType("Dependency");
+        booleanFilter.setPredicate(PredicateType.EQUAL);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+
+        // Dependency Success filter does not match
+        dependency.setSuccess(false);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+
+        // Dependency Success filter matches for != predicate
+        booleanFilter.setPredicate(PredicateType.NOT_EQUAL);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+    }
+
+    @Test
+    @Description("This tests if filtering works on known numeric columns, with various predicates and telemetry types")
+    void testNumericFilters() {
+        FilterInfo numericFilter = createFilterInfoWithParams(KnownRequestColumns.responseCode, PredicateType.EQUAL, "200");
+        List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndOneFilter(numericFilter);
+        DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM, AggregationType.SUM, "Count()", filterGroups);
+        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 1234567890000L, 200, true, "GET /hiThere");
+        DependencyDataColumns dependency = new DependencyDataColumns("test.com", 1234567890000L, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y");
+        FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
+
+        // Request ResponseCode filter matches
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // Request ResponseCode filter does not match
+        request.setResponseCode(404);
+        request.setSuccess(false);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // Dependency ResultCode filter matches
+        derivedMetricInfo.setTelemetryType("Dependency");
+        numericFilter.setFieldName(KnownDependencyColumns.resultCode);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+
+        // Dependency ResultCode filter does not match
+        dependency.setResultCode(404);
+        dependency.setSuccess(false);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+
+        // Dependency Duration filter matches
+        numericFilter.setFieldName(KnownDependencyColumns.duration);
+        // 14 days, 6 hrs, 56 miutes, 7.89 seconds (1234567890 ms is the matching value for what the user would put in filtering UI)
+        // the UI sends the following string down to SDK
+        numericFilter.setComparand("14.6:56:7.89");
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+
+        // Dependency duration filter does not match
+        dependency.setDuration(400);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+
+        // Request Duration filter matches
+        numericFilter.setFieldName(KnownRequestColumns.duration);
+        derivedMetricInfo.setTelemetryType("Request");
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // Dependency duration filter does not match
+        request.setDuration(400);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // != predicate
+        numericFilter.setPredicate(PredicateType.NOT_EQUAL);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // < predicate
+        numericFilter.setPredicate(PredicateType.LESS_THAN);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // <= predicate
+        numericFilter.setPredicate(PredicateType.LESS_THAN_OR_EQUAL);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // > predicate
+        numericFilter.setPredicate(PredicateType.GREATER_THAN);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // >= predicate
+        numericFilter.setPredicate(PredicateType.GREATER_THAN_OR_EQUAL);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+    }
+
+    @Test
+    @Description("This tests if filtering works on a known string column from each telemetry type, with various predicates")
+    void testStringFilters() {
+        FilterInfo stringFilter = createFilterInfoWithParams(KnownRequestColumns.url, PredicateType.CONTAINS, "hi");
+        List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndOneFilter(stringFilter);
+        DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM, AggregationType.SUM, "Count()", filterGroups);
+        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
+        DependencyDataColumns dependency = new DependencyDataColumns("test.com", 200, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y");
+        TraceDataColumns trace = new TraceDataColumns("hi there");
+        ExceptionDataColumns exception = new ExceptionDataColumns("Exception Message hi", "Stack Trace");
+        FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
+
+        // Request Url filter matches
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // Request Url filter does not match
+        request.setUrl("https://test.com/bye");
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // Dependency Data filter matches
+        derivedMetricInfo.setTelemetryType("Dependency");
+        stringFilter.setFieldName(KnownDependencyColumns.data);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+
+        // Dependency Data filter does not match
+        dependency.setData("https://test.com/bye");
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, dependency));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, dependency));
+
+        // Trace Message filter matches
+        derivedMetricInfo.setTelemetryType("Trace");
+        stringFilter.setFieldName("Message");
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, trace));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, trace));
+
+        // Trace Message filter does not match
+        trace.setMessage("bye");
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, trace));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, trace));
+
+        // Exception Message filter matches. Note that fieldName is "Message" here and that's intended (we remove the Exception. prefix when validating config)
+        derivedMetricInfo.setTelemetryType("Exception");
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, exception));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, exception));
+
+        // Exception Message filter does not match
+        exception.setMessage("Exception Message");
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, exception));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, exception));
+
+        // != predicate
+        stringFilter.setPredicate(PredicateType.NOT_EQUAL);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, exception));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, exception));
+
+        // not contains
+        stringFilter.setPredicate(PredicateType.DOES_NOT_CONTAIN);
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, exception));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, exception));
+
+        // equal
+        stringFilter.setPredicate(PredicateType.EQUAL);
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, exception));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, exception));
+    }
+
+    @Test
+    @Description("If a FilterConjunctionGroupInfo has an empty list of filters, telemetry should match")
+    void testEmptyFilterConjunctionGroupInfo() {
+        // create empty filter list
+        FilterConjunctionGroupInfo filterGroup = new FilterConjunctionGroupInfo();
+        filterGroup.setFilters(new ArrayList<FilterInfo>());
+        List<FilterConjunctionGroupInfo> filterGroups = new ArrayList<FilterConjunctionGroupInfo>(List.of(filterGroup));
+
+        DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM, AggregationType.SUM, "Count()", filterGroups);
+        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
+
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+    }
+
+    @Test
+    @Description("If there are multiple filters in a FilterConjunctionGroupInfo, then telemetry should only match if all conditions satisfied")
+    void testMultipleFiltersInGroup() {
+        FilterInfo filter1 = createFilterInfoWithParams(KnownRequestColumns.url, PredicateType.CONTAINS, "hi");
+        FilterInfo filter2 = createFilterInfoWithParams(KnownRequestColumns.responseCode, PredicateType.EQUAL, "200");
+        FilterConjunctionGroupInfo filterGroup = new FilterConjunctionGroupInfo();
+        filterGroup.setFilters(new ArrayList<>(List.of(filter1, filter2)));
+        List<FilterConjunctionGroupInfo> filterGroups = new ArrayList<>(List.of(filterGroup));
+
+        DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM, AggregationType.SUM, "Count()", filterGroups);
+        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
+
+        // matches both filters
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+
+        // only one filter matches, the entire conjunction group should return false
+        request.setUrl("https://test.com/bye");
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+    }
+
+    @Test
+    @Description("Test the constructors for child classes of TelemetryColumns")
+    void testConstructors() {
+        TelemetryItem requestItem = QuickPulseTestBase.createRequestTelemetry("GET /hiThere", new Date(), 1234567890L, "200", true);
+        TelemetryItem dependencyItem = QuickPulseTestBase.createRemoteDependencyTelemetry("GET /hiThere", "https://test.com/hiThere?x=y" , 400, true);
+
+        TelemetryExceptionData exceptionItem = new TelemetryExceptionData();
+        TelemetryExceptionDetails details = new TelemetryExceptionDetails();
+        details.setMessage("A message");
+        details.setStack("A stack trace");
+        exceptionItem.setExceptions(new ArrayList<TelemetryExceptionDetails>(List.of(details)));
+
+        MessageData traceItem = new MessageData();
+        traceItem.setMessage("A message");
+
+        MonitorDomain requestData = requestItem.getData().getBaseData();
+        RequestDataColumns requestDataColumns = new RequestDataColumns((RequestData) requestData);
+
+        MonitorDomain dependencyData = dependencyItem.getData().getBaseData();
+        DependencyDataColumns dependencyDataColumns = new DependencyDataColumns((RemoteDependencyData) dependencyData);
+
+        ExceptionDataColumns exceptionData = new ExceptionDataColumns(exceptionItem);
+        TraceDataColumns traceDataColumns = new TraceDataColumns(traceItem);
+
+        assertTrue(requestDataColumns.getSuccess());
+        assertEquals(requestDataColumns.getDuration(), 1234567890000L);
+        assertEquals(requestDataColumns.getResponseCode(), 200);
+        assertEquals(requestDataColumns.getName(), "GET /hiThere");
+        assertEquals(requestDataColumns.getUrl(), "foo");
+
+        assertTrue(dependencyDataColumns.getSuccess());
+        assertEquals(dependencyDataColumns.getData(), "https://test.com/hiThere?x=y");
+        assertEquals(dependencyDataColumns.getName(), "GET /hiThere");
+        assertEquals(dependencyDataColumns.getType(), null );
+        assert
+
+
+
+
+
+    }
+
 }
+
+
