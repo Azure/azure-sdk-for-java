@@ -159,12 +159,12 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
         ShareCreateOptions options = new ShareCreateOptions().setAccessTier(ShareAccessTier.PREMIUM);
 
-        StepVerifier
-            .create(client.createWithResponse(options)
-                .then(client.getProperties())
-                .doFinally(signalType -> client.delete().subscribe()))
+        StepVerifier.create(client.createWithResponse(options).then(client.getProperties()))
             .assertNext(r -> assertEquals(ShareAccessTier.PREMIUM.toString(), r.getAccessTier()))
             .verifyComplete();
+
+        //cleanup
+        client.delete().block();
     }
 
     @Test
@@ -193,22 +193,18 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     @Test
     public void createSnapshotMetadata() {
         String shareSnapshotName = generatePathName();
-        StepVerifier.create(primaryShareAsyncClient.create()
-            .then(primaryShareAsyncClient.createSnapshotWithResponse(testMetadata))
-            .flatMap(it -> {
+        StepVerifier
+            .create(
+                primaryShareAsyncClient.create().then(primaryShareAsyncClient.createSnapshotWithResponse(testMetadata)))
+            .assertNext(it -> {
                 FileShareTestHelper.assertResponseStatusCode(it, 201);
                 ShareClient shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName)
                     .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
                     .snapshot(it.getValue().getSnapshot())
                     .buildClient();
-                return Mono.just(it);
-            })).assertNext(it -> {
-                ShareClient shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName)
-                    .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
-                    .snapshot(it.getValue().getSnapshot())
-                    .buildClient();
                 assertEquals(it.getValue().getSnapshot(), shareSnapshotClient.getSnapshotId());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -231,8 +227,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     public void createIfNotExistsShareThatAlreadyExists() {
         ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
         Mono<Response<ShareInfo>> initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions());
-        Mono<Response<ShareInfo>> secondResponse
-            = initialResponse.then(client.createIfNotExistsWithResponse(new ShareCreateOptions()));
+        Mono<Response<ShareInfo>> secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions());
 
         StepVerifier.create(initialResponse).assertNext(response -> {
             assertNotNull(response);
@@ -242,7 +237,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(secondResponse).assertNext(response -> {
             assertNotNull(response);
             FileShareTestHelper.assertResponseStatusCode(response, 409);
-        }).then(() -> client.delete().subscribe()).verifyComplete();
+        }).verifyComplete();
+
+        //cleanup
+        client.delete().block();
     }
 
     @ParameterizedTest
@@ -275,7 +273,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     @Test
     public void deleteShare() {
         StepVerifier.create(primaryShareAsyncClient.create().then(primaryShareAsyncClient.deleteWithResponse()))
-            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202))
             .verifyComplete();
     }
 
@@ -299,9 +297,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void deleteIfExistsShare() {
-        primaryShareAsyncClient.create();
-        StepVerifier.create(primaryShareAsyncClient.deleteIfExistsWithResponse(null))
-            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201));
+        StepVerifier
+            .create(primaryShareAsyncClient.create().then(primaryShareAsyncClient.deleteIfExistsWithResponse(null)))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202))
+            .verifyComplete();
     }
 
     @Test
@@ -312,7 +311,11 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertNotNull(response);
             assertFalse(response.getValue());
             FileShareTestHelper.assertResponseStatusCode(response, 404);
-        }).then(() -> client.exists()).assertNext(exists -> assertNotEquals(Boolean.TRUE, exists)).verifyComplete();
+        }).verifyComplete();
+
+        StepVerifier.create(client.exists())
+            .assertNext(exists -> assertNotEquals(Boolean.TRUE, exists))
+            .verifyComplete();
     }
 
     @Test
@@ -356,17 +359,13 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     public void getPropertiesPremium(String protocol, ShareRootSquash rootSquash) {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol);
 
-        Mono<ShareAsyncClient> premiumShareMono
-            = premiumFileServiceAsyncClient
-                .createShareWithResponse(generateShareName(),
-                    new ShareCreateOptions().setMetadata(testMetadata)
-                        .setProtocols(enabledProtocol)
-                        .setRootSquash(rootSquash),
-                    null)
-                .map(Response::getValue);
+        String shareName = generateShareName();
+        Mono<ShareAsyncClient> premiumShareMono = premiumFileServiceAsyncClient.createShareWithResponse(shareName,
+            new ShareCreateOptions().setMetadata(testMetadata).setProtocols(enabledProtocol).setRootSquash(rootSquash),
+            null).map(Response::getValue);
 
-        StepVerifier.create(premiumShareMono.flatMap(premiumShare -> premiumShare.getPropertiesWithResponse()
-            .doFinally(signalType -> premiumShare.delete().subscribe()))).assertNext(it -> {
+        StepVerifier.create(premiumShareMono.flatMap(premiumShare -> premiumShare.getPropertiesWithResponse()))
+            .assertNext(it -> {
                 FileShareTestHelper.assertResponseStatusCode(it, 200);
                 assertNotNull(it.getValue());
                 assertEquals(testMetadata, it.getValue().getMetadata());
@@ -375,7 +374,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 assertNotNull(it.getValue().getNextAllowedQuotaDowngradeTime());
                 assertEquals(enabledProtocol.toString(), it.getValue().getProtocols().toString());
                 assertEquals(rootSquash, it.getValue().getRootSquash());
-            }).verifyComplete();
+            })
+            .verifyComplete();
+
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     @PlaybackOnly
@@ -385,19 +387,22 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             = Arrays.asList(ShareRootSquash.ALL_SQUASH, ShareRootSquash.NO_ROOT_SQUASH, ShareRootSquash.ROOT_SQUASH);
 
         for (ShareRootSquash rootSquash : rootSquashes) {
+            String shareName = generateShareName();
             Mono<ShareAsyncClient> premiumShareClientMono = premiumFileServiceAsyncClient
-                .createShareWithResponse(generateShareName(),
+                .createShareWithResponse(shareName,
                     new ShareCreateOptions().setProtocols(new ShareProtocols().setNfsEnabled(true)), null)
                 .map(Response::getValue);
 
             StepVerifier
                 .create(premiumShareClientMono.flatMap(premiumShareClient -> premiumShareClient
                     .setProperties(new ShareSetPropertiesOptions().setRootSquash(rootSquash))
-                    .then(premiumShareClient.getProperties())
-                    .doFinally(signalType -> premiumShareClient.delete().subscribe())))
+                    .then(premiumShareClient.getProperties())))
                 .assertNext(it -> assertEquals(rootSquash, it.getRootSquash()))
                 .verifyComplete();
         }
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -422,13 +427,12 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
         ShareSetPropertiesOptions options = new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.PREMIUM);
 
-        StepVerifier
-            .create(client.create()
-                .then(client.setProperties(options))
-                .then(client.getProperties())
-                .doFinally(signalType -> client.delete().subscribe()))
+        StepVerifier.create(client.create().then(client.setProperties(options)).then(client.getProperties()))
             .assertNext(r -> assertEquals(ShareAccessTier.PREMIUM.toString(), r.getAccessTier()))
             .verifyComplete();
+
+        //cleanup
+        client.delete().block();
     }
 
     @Test
@@ -600,9 +604,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 new ShareDirectoryCreateOptions()));
 
         Mono<Response<ShareDirectoryAsyncClient>> secondResponseMono
-            = initialResponseMono.onErrorResume(e -> Mono.empty())
-                .then(client.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
-                    new ShareDirectoryCreateOptions()));
+            = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions());
 
         StepVerifier.create(initialResponseMono).assertNext(initialResponse -> {
             assertNotNull(initialResponse);
@@ -615,7 +617,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
 
         // cleanup
-        client.delete().subscribe();
+        client.delete().block();
     }
 
     @Test
@@ -964,52 +966,47 @@ public class ShareAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void defaultAudience() {
-        StepVerifier.create(primaryShareAsyncClient.create()).assertNext(response -> {
-            ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(
-                new ShareClientBuilder().shareName(shareName).shareTokenIntent(ShareTokenIntent.BACKUP)).audience(null) // should default to "https://storage.azure.com/"
-                    .buildAsyncClient();
-
-            String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
-                + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
-                + "188441444-3053964)S:NO_ACCESS_CONTROL";
-
-            StepVerifier.create(aadShareClient.createPermission(permission))
-                .assertNext(r -> assertNotNull(r))
-                .verifyComplete();
-        }).verifyComplete();
-    }
-
-    @Test
-    public void storageAccountAudience() {
-        StepVerifier.create(primaryShareAsyncClient.create()).assertNext(response -> {
-            ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.createShareServiceAccountAudience(primaryShareAsyncClient.getAccountName()))
+        ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(
+            new ShareClientBuilder().shareName(shareName).shareTokenIntent(ShareTokenIntent.BACKUP)).audience(null) // should default to "https://storage.azure.com/"
                 .buildAsyncClient();
-
-            String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
-                + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
-                + "188441444-3053964)S:NO_ACCESS_CONTROL";
-
-            StepVerifier.create(aadShareClient.createPermission(permission))
-                .assertNext(r -> assertNotNull(r))
-                .verifyComplete();
-        }).verifyComplete();
-    }
-
-    @Test
-    public void audienceError() {
-        Mono<ShareAsyncClient> createMono = primaryShareAsyncClient.create()
-            .then(Mono.just(getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.createShareServiceAccountAudience("badaudience"))
-                .buildAsyncClient()));
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
             + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
-        StepVerifier.create(createMono.flatMap(aadShareClient -> aadShareClient.createPermission(permission)))
+        StepVerifier.create(primaryShareAsyncClient.create().then(aadShareClient.createPermission(permission)))
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(ShareAudience.createShareServiceAccountAudience(primaryShareAsyncClient.getAccountName()))
+            .buildAsyncClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        StepVerifier.create(primaryShareAsyncClient.create().then(aadShareClient.createPermission(permission)))
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(ShareAudience.createShareServiceAccountAudience("badaudience"))
+            .buildAsyncClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        StepVerifier.create(primaryShareAsyncClient.create().then(aadShareClient.createPermission(permission)))
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
                 assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
@@ -1021,17 +1018,16 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         String url = String.format("https://%s.file.core.windows.net/", primaryShareAsyncClient.getAccountName());
         ShareAudience audience = ShareAudience.fromString(url);
 
-        Mono<ShareAsyncClient> createMono = primaryShareAsyncClient.create()
-            .then(Mono.just(getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(audience)
-                .buildAsyncClient()));
+        ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(audience)
+            .buildAsyncClient();
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
             + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
-        StepVerifier.create(createMono.flatMap(aadShareClient -> aadShareClient.createPermission(permission)))
+        StepVerifier.create(primaryShareAsyncClient.create().then(aadShareClient.createPermission(permission)))
             .assertNext(r -> assertNotNull(r))
             .verifyComplete();
     }
@@ -1057,7 +1053,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             }).verifyComplete();
 
         //cleanup
-        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().subscribe();
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     private static Stream<Arguments> createEnableSnapshotVirtualDirectoryAccessSupplier() {
@@ -1094,7 +1090,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
 
         //cleanup
-        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().subscribe();
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -1115,7 +1111,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
 
         //cleanup
-        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().subscribe();
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -1149,7 +1145,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
 
         //cleanup
-        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().subscribe();
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     @PlaybackOnly
