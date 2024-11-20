@@ -48,7 +48,107 @@ This client library is currently made available **only in our dev feed**. For de
 
 ### Adding the package to your project
 
-TODO
+This project is currently only available in the dev feed. For detailed instructions on how to set up your project to consume the dev feed
+please visit the [dev feed documentation page.][dev_feed_instructions] Here you can find the steps for the `maven` and `gradle setup.
+
+#### Maven dev feed setup
+
+##### Step 1: get a PAT (Personal Access Token)
+
+generate a [Personal Access Token](https://dev.azure.com/azure-sdk/_details/security/tokens) with *Packaging* read & write scopes.
+
+##### Step 2: Project setup
+
+Add the repo to **both** your pom.xml's `<repositories>` and `<distributionManagement>` sections
+
+```xml
+<repository>
+  <id>azure-sdk-for-java</id>
+  <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+  <releases>
+    <enabled>true</enabled>
+  </releases>
+  <snapshots>
+    <enabled>true</enabled>
+  </snapshots>
+</repository>
+```
+
+Add or edit the `settings.xml` file in `${user.home}/.m2`
+
+```xml
+    <server>
+      <id>azure-sdk-for-java</id>
+      <username>azure-sdk</username>
+      <password>[PERSONAL_ACCESS_TOKEN]</password>
+    </server>
+```
+
+Replace `[PERSONAL_ACCESS_TOKEN]` in the `<password>` tag with the PAT you generated in [step 1.](#step-1-get-a-pat-personal-access-token)
+
+Then run 
+
+```commandline
+mvn install
+```
+
+##### Step 3: Add project dependency
+
+Add to your project's pom.xml file
+
+[//]: # ({x-version-update-start;com.azure:azure-ai-openai-realtime;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-openai-realtime</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+#### Gradle setup
+
+##### Step 1: get a PAT (Identical to the step for Maven setup)
+
+generate a [Personal Access Token](https://dev.azure.com/azure-sdk/_details/security/tokens) with *Packaging* read & write scopes.
+
+##### Step 2: Project setup
+
+Add this section to your `build.gradle` file in **both** the `repositories` and `publishing.repositories` containers.
+
+```groovy
+maven {
+    url 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1'
+    name 'azure-sdk-for-java'
+    credentials(PasswordCredentials)
+    authentication {
+        basic(BasicAuthentication)
+    }
+}
+```
+
+Add or edit the `gradle.properties` file in `${user.home}/.gradle`
+
+```groovy
+azure-sdk-for-javaUsername=azure-sdk
+azure-sdk-for-javaPassword=PERSONAL_ACCESS_TOKEN
+```
+
+Replace `PERSONAL_ACCESS_TOKEN` being assign to `azure-sdk-for-javaPassword` with the PAT you generated in [step 1.](#step-1-get-a-pat-personal-access-token)
+
+Then run
+
+```commandline
+gradle build
+```
+
+##### Step 3: Add project dependency
+
+Add to your project setup
+
+```groovy
+compile(group: 'com.azure', name: 'azure-ai-openai-realtime', version: '1.0.0-beta.1')
+```
 
 ### Authentication
 
