@@ -50,7 +50,7 @@ public class LocalKeyTests extends BlobCryptographyTestBase {
 
     @Test
     public void uploadDownload() {
-        byte[] inputArray = getRandomByteArray(Constants.KB);
+        byte[] inputArray = getPseudoRandomByteArray(Constants.KB);
         InputStream stream = new ByteArrayInputStream(inputArray);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
@@ -62,7 +62,7 @@ public class LocalKeyTests extends BlobCryptographyTestBase {
 
     @Test
     public void encryptionNotANoop() {
-        byte[] inputArray = getRandomByteArray(Constants.KB);
+        byte[] inputArray = getPseudoRandomByteArray(Constants.KB);
         InputStream stream = new ByteArrayInputStream(inputArray);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 

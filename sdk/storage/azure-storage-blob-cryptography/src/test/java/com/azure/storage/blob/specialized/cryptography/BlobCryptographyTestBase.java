@@ -132,16 +132,20 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
             .buildClient();
     }
 
-    protected ByteBuffer getRandomData(int size) {
-        return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
+    protected ByteBuffer getPseudoRandomData(int size) {
+        return StorageCommonTestUtils.getPseudoRandomData(size);
     }
 
     protected byte[] getRandomByteArray(int size) {
         return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
     }
 
-    protected File getRandomFile(int size) throws IOException {
-        return StorageCommonTestUtils.getRandomFile(size, testResourceNamer);
+    protected byte[] getPseudoRandomByteArray(int size) {
+        return StorageCommonTestUtils.getPseudoRandomByteArray(size);
+    }
+
+    protected File getPseudoRandomFile(int size) throws IOException {
+        return StorageCommonTestUtils.getPseudoRandomFile(size);
     }
 
     protected EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,

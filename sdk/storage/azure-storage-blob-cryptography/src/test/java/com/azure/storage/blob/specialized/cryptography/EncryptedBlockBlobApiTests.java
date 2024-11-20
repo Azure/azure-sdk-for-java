@@ -160,7 +160,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             4 * 1024 * 1024 - 10,
             8 * 1024 * 1024 })
     public void v2DownloadTest(int dataSize) {
-        ByteBuffer data = getRandomData(dataSize);
+        ByteBuffer data = getPseudoRandomData(dataSize);
         bec = getEncryptionClient(EncryptionVersion.V2);
         bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data)), null, null);
         ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
@@ -255,7 +255,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ValueSource(ints = { 3000, 5 * 1024 * 1024 - 10, 20 * 1024 * 1024 - 10 })
     public void encryptionV2ManualDecryption(int dataSize) throws IOException, GeneralSecurityException {
         bec = getEncryptionClient(EncryptionVersion.V2);
-        byte[] data = getRandomByteArray(dataSize);
+        byte[] data = getPseudoRandomByteArray(dataSize);
 
         bec.upload(BinaryData.fromBytes(data));
 
@@ -311,7 +311,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // or do not align on encryption boundaries.
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         for (int i = 0; i < byteBufferCount; i++) {
-            ByteBuffer buffer = getRandomData(size);
+            ByteBuffer buffer = getPseudoRandomData(size);
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
             os.write(bytes, 0, bytes.length);
@@ -362,7 +362,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
         assertArraysEqual(outStream.toByteArray(), decryptStream.toByteArray());
 
-        byte[] data = getRandomByteArray(20 * Constants.MB);
+        byte[] data = getPseudoRandomByteArray(20 * Constants.MB);
         BlobClient uploadClient = new BlobClientBuilder().endpoint(ENV.getPrimaryAccount().getBlobEndpoint())
             .containerName("clientsideencryptionv2crossplat")
             .blobName("java_plaintext_1")
@@ -413,7 +413,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         for (int i = 0; i < byteBufferCount; i++) {
-            ByteBuffer buffer = getRandomData(1024);
+            ByteBuffer buffer = getPseudoRandomData(1024);
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
             outputStream.write(bytes, 0, bytes.length);
@@ -560,7 +560,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public void encryptedUploadFile(EncryptionVersion version) throws IOException {
         bec = getEncryptionClient(version);
 
-        byte[] data = getRandomByteArray(Constants.MB);
+        byte[] data = getPseudoRandomByteArray(Constants.MB);
         File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
         Files.write(file.toPath(), data);
 
@@ -695,7 +695,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // or do not align on encryption boundaries.
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         for (int i = 0; i < byteBufferCount; i++) {
-            ByteBuffer buffer = getRandomData(size);
+            ByteBuffer buffer = getPseudoRandomData(size);
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
             os.write(bytes, 0, bytes.length);
@@ -736,7 +736,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
                 cc.getBlobContainerUrl()).blobName(blobName).buildEncryptedBlobClient();
 
         int streamSize = Constants.KB + 1;
-        byte[] data = getRandomByteArray(streamSize);
+        byte[] data = getPseudoRandomByteArray(streamSize);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
 
         // Upload with v8
@@ -782,7 +782,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     // TODO: cross platform v2 tests
     @Test
     public void encryptedClientFileUploadOverwriteFalse() throws IOException {
-        File file = getRandomFile(Constants.KB);
+        File file = getPseudoRandomFile(Constants.KB);
         bec.uploadFromFile(file.toPath().toString());
 
         assertThrows(IllegalArgumentException.class, () -> bec.uploadFromFile(file.toPath().toString()));
@@ -791,7 +791,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     @Test
     public void encryptedClientFileUploadOverwriteTrue() throws IOException {
-        File file = getRandomFile(Constants.KB);
+        File file = getPseudoRandomFile(Constants.KB);
 
         bec.uploadFromFile(file.toPath().toString());
         assertDoesNotThrow(() -> bec.uploadFromFile(file.toPath().toString(), true));
@@ -815,9 +815,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     @Test
     public void bufferedUploadNonMarkableStream() throws IOException {
-        File file = getRandomFile(10);
+        File file = getPseudoRandomFile(10);
         FileInputStream fileStream = new FileInputStream(file);
-        File outFile = getRandomFile(10);
+        File outFile = getPseudoRandomFile(10);
 
         bec.upload(fileStream, file.length());
 
@@ -933,7 +933,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("downloadRangeV2Supplier")
     public void downloadRangeV2(int offset, int count) {
         bec = getEncryptionClient(EncryptionVersion.V2);
-        byte[] data = getRandomByteArray(20 * Constants.MB);
+        byte[] data = getPseudoRandomByteArray(20 * Constants.MB);
         bec.upload(BinaryData.fromBytes(data));
         BlobRange range = new BlobRange(offset, (long) count);
 
@@ -1088,7 +1088,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadFile(int fileSize, EncryptionVersion version) throws IOException {
-        File file = getRandomFile(fileSize);
+        File file = getPseudoRandomFile(fileSize);
         bec = getEncryptionClient(version);
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
@@ -1110,7 +1110,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("downloadFileSupplier")
     public void downloadStream(int fileSize, EncryptionVersion version) throws IOException {
-        byte[] data = getRandomByteArray(fileSize);
+        byte[] data = getPseudoRandomByteArray(fileSize);
         File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
         Files.write(file.toPath(), data);
 
@@ -1156,7 +1156,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             .blobClient(blobServiceClient.createBlobContainer(containerName).getBlobClient(generateBlobName()))
             .buildEncryptedBlobClient();
 
-        File file = getRandomFile(fileSize);
+        File file = getPseudoRandomFile(fileSize);
         encryptedBlobClient.uploadFromFile(file.toPath().toString());
         File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
         Files.deleteIfExists(outFile.toPath());
@@ -1177,7 +1177,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("downloadFileRangeSupplier")
     public void downloadFileRange(BlobRange range, EncryptionVersion version) throws IOException {
-        File file = getRandomFile(DATA.getDefaultDataSize());
+        File file = getPseudoRandomFile(DATA.getDefaultDataSize());
         bec = getEncryptionClient(version);
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(testResourceNamer.randomName(prefix, 60));
@@ -1209,7 +1209,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void downloadFileRangeFail() throws IOException {
-        File file = getRandomFile(DATA.getDefaultDataSize());
+        File file = getPseudoRandomFile(DATA.getDefaultDataSize());
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
@@ -1224,7 +1224,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void downloadFileCountNull() throws IOException {
-        File file = getRandomFile(DATA.getDefaultDataSize());
+        File file = getPseudoRandomFile(DATA.getDefaultDataSize());
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
@@ -1243,7 +1243,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("validACSupplier")
     public void downloadFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseId) throws IOException {
-        File file = getRandomFile(DATA.getDefaultDataSize());
+        File file = getPseudoRandomFile(DATA.getDefaultDataSize());
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
@@ -1275,7 +1275,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("invalidACSupplier")
     public void downloadFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseId) throws IOException {
-        File file = getRandomFile(DATA.getDefaultDataSize());
+        File file = getPseudoRandomFile(DATA.getDefaultDataSize());
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
@@ -1307,7 +1307,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void downloadFileEtagLock() throws IOException {
-        File file = getRandomFile(Constants.MB);
+        File file = getPseudoRandomFile(Constants.MB);
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(prefix);
         Files.deleteIfExists(file.toPath());
@@ -1375,7 +1375,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @ValueSource(ints = { 100, 8 * 1026 * 1024 + 10 })
     public void downloadFileProgressReceiver(int fileSize) throws IOException {
-        File file = getRandomFile(fileSize);
+        File file = getPseudoRandomFile(fileSize);
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
@@ -1411,7 +1411,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @ValueSource(ints = { 100, 8 * 1026 * 1024 + 10 })
     public void downloadFileProgressListener(int fileSize) throws IOException {
-        File file = getRandomFile(fileSize);
+        File file = getPseudoRandomFile(fileSize);
         bec.uploadFromFile(file.toPath().toString());
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
@@ -1465,7 +1465,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @Test
     public void encryptionUploadISOverwriteFails() {
         bec.upload(DATA.getDefaultBinaryData());
-        byte[] randomData = getRandomByteArray(Constants.KB);
+        byte[] randomData = getPseudoRandomByteArray(Constants.KB);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
         assertThrows(BlobStorageException.class, () -> bec.upload(input));
@@ -1475,7 +1475,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public void encryptionUploadISOverwrite() {
         bec.upload(DATA.getDefaultBinaryData());
 
-        byte[] randomData = getRandomByteArray(Constants.KB);
+        byte[] randomData = getPseudoRandomByteArray(Constants.KB);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
         bec.upload(input, Constants.KB, true);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -1487,7 +1487,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     // This test checks that encryption is not just a no-op
     @Test
     public void encryptionUploadISNotANoop() {
-        ByteBuffer byteBuffer = getRandomData(Constants.KB);
+        ByteBuffer byteBuffer = getPseudoRandomData(Constants.KB);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
         bec.upload(new ByteArrayInputStream(byteBuffer.array()), byteBuffer.remaining());
@@ -1499,7 +1499,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void encryptionUploadISLargeData() {
-        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        byte[] randomData = getPseudoRandomByteArray(20 * Constants.MB);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
         ParallelTransferOptions pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB);
@@ -1515,7 +1515,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @CsvSource(value = { "0,,0", "1024,,0", "1048576,,0", "3145728,1048576,4" })
     public void encryptionUploadISNumBlocks(int size, Long maxUploadSize, int numBlocks) {
-        byte[] randomData = getRandomByteArray(size);
+        byte[] randomData = getPseudoRandomByteArray(size);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
         ParallelTransferOptions pto
             = new ParallelTransferOptions().setBlockSizeLong(maxUploadSize).setMaxSingleUploadSizeLong(maxUploadSize);
@@ -1532,7 +1532,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     @Test
     public void encryptionUploadISNoLength() {
-        byte[] randomData = getRandomByteArray(Constants.KB);
+        byte[] randomData = getPseudoRandomByteArray(Constants.KB);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
         bec.upload(input);
@@ -1544,7 +1544,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     @Test
     public void encryptionUploadISNoLengthWithOptions() {
-        byte[] randomData = getRandomByteArray(Constants.KB);
+        byte[] randomData = getPseudoRandomByteArray(Constants.KB);
         ByteArrayInputStream payloadAsInputStream = new ByteArrayInputStream(randomData);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         BlobParallelUploadOptions blobParallelUploadOptions = new BlobParallelUploadOptions(payloadAsInputStream);
@@ -1631,7 +1631,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("encryptionDataCaseInsensitivitySupplier")
     public void encryptionDataCaseInsensitivity(String newKey, EncryptionVersion version) {
-        byte[] data = getRandomByteArray(Constants.KB);
+        byte[] data = getPseudoRandomByteArray(Constants.KB);
         bec = getEncryptionClient(version, generateBlobName());
         bec.upload(BinaryData.fromBytes(data));
         // change casing of encryption data key
@@ -1657,9 +1657,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public void encryptionDataCaseInsensitivityDownloadToFile(String newKey, EncryptionVersion version)
         throws IOException {
         bec = getEncryptionClient(version, generateBlobName());
-        File file = getRandomFile(Constants.KB);
+        File file = getPseudoRandomFile(Constants.KB);
         FileInputStream fileStream = new FileInputStream(file);
-        File outFile = getRandomFile(Constants.KB);
+        File outFile = getPseudoRandomFile(Constants.KB);
         if (outFile.exists()) {
             outFile.delete();
         }
@@ -1673,7 +1673,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // call with downloadToFile to test code path for non-specified BlobRange
         bec.downloadToFile(outFile.toPath().toString(), true);
         compareFiles(file, outFile, 0, file.length());
-        File outFile2 = getRandomFile(Constants.KB);
+        File outFile2 = getPseudoRandomFile(Constants.KB);
         if (outFile2.exists()) {
             outFile2.delete();
         }
@@ -1686,7 +1686,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
     public void uploadAndDownloadDifferentRegionLength(int regionLength, int dataSize) {
-        ByteBuffer data = getRandomData(dataSize);
+        ByteBuffer data = getPseudoRandomData(dataSize);
         bec = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
                 .blobName(generateBlobName())
@@ -1704,7 +1704,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("uploadAndDownloadFileDifferentRegionLengthSupplier")
     public void uploadAndDownloadToFileDifferentRegionLength(int regionLength, int fileSize) throws IOException {
-        File file = getRandomFile(fileSize);
+        File file = getPseudoRandomFile(fileSize);
         bec = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
                 .blobName(generateBlobName())
@@ -1726,7 +1726,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
     public void uploadAndDownloadRegionLengthWithDiffBlobClients(int regionLength, int dataSize) {
-        ByteBuffer data = getRandomData(dataSize);
+        ByteBuffer data = getPseudoRandomData(dataSize);
         String blobName = generateBlobName();
         bec = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
@@ -1752,7 +1752,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("uploadAndDownloadV21WithOlderVersionsSupplier")
     public void uploadAndDownloadV21WithOlderVersions(int regionLength, int dataSize, EncryptionVersion version) {
-        ByteBuffer data = getRandomData(dataSize);
+        ByteBuffer data = getPseudoRandomData(dataSize);
         String blobName = generateBlobName();
         bec = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)

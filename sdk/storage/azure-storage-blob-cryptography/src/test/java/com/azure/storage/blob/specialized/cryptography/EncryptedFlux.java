@@ -98,7 +98,7 @@ class EncryptedFlux extends Flux<ByteBuffer> {
 
     EncryptedFlux(int testCase, AsyncKeyEncryptionKey key, BlobCryptographyTestBase base) throws InvalidKeyException {
         this.testCase = testCase;
-        this.plainText = base.getRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
+        this.plainText = base.getPseudoRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
         String blobName = base.generateBlobName();
 
         EncryptedBlob encryptedBlob

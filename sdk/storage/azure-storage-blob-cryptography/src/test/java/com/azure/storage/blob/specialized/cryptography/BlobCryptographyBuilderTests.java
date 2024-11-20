@@ -89,7 +89,7 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     @Test
     public void encryptedClientIntegrity() throws IOException {
         cc.create();
-        File file = getRandomFile(Constants.KB);
+        File file = getPseudoRandomFile(Constants.KB);
         beac.uploadFromFile(file.toPath().toString()).block();
 
         compareDataToFile(beac.download(), file);

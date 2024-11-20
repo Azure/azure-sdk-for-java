@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.zip.CRC32;
 
@@ -52,9 +53,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public final class StorageCommonTestUtils {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
+
+    private static final byte[] PSEUDO_RANDOM_DATA = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
-    private static final HttpClient VERTX_HTTP_CLIENT;;
+    private static final HttpClient VERTX_HTTP_CLIENT;
     private static final HttpClient JDK_HTTP_HTTP_CLIENT;
 
     static {
@@ -274,6 +278,31 @@ public final class StorageCommonTestUtils {
     }
 
     /**
+     * Gets a pseudo random byte array of the given size.
+     * <p>
+     * Unlike {@link #getRandomByteArray(int, TestResourceNamer)} this doesn't rely on {@link Random} to generate data,
+     * but instead repeats a pattern of 15 bytes.
+     *
+     * @param size The size of the byte array.
+     * @return The pseudo random byte array.
+     */
+    public static byte[] getPseudoRandomByteArray(int size) {
+        byte[] data = new byte[size];
+        int repetitions = size / PSEUDO_RANDOM_DATA.length;
+        int remaining = size % PSEUDO_RANDOM_DATA.length;
+
+        for (int i = 0; i < repetitions; i++) {
+            System.arraycopy(PSEUDO_RANDOM_DATA, 0, data, i * PSEUDO_RANDOM_DATA.length, PSEUDO_RANDOM_DATA.length);
+        }
+
+        if (remaining > 0) {
+            System.arraycopy(PSEUDO_RANDOM_DATA, 0, data, repetitions * PSEUDO_RANDOM_DATA.length, remaining);
+        }
+
+        return data;
+    }
+
+    /**
      * Gets a random ByteBuffer of the given size.
      *
      * @param size The size of the ByteBuffer.
@@ -285,6 +314,19 @@ public final class StorageCommonTestUtils {
     }
 
     /**
+     * Gets a pseudo random ByteBuffer of the given size.
+     * <p>
+     * Unlike {@link #getRandomData(int, TestResourceNamer)} this doesn't rely on {@link Random} to generate data,
+     * but instead repeats a pattern of 15 bytes.
+     *
+     * @param size The size of the ByteBuffer.
+     * @return The pseudo random ByteBuffer.
+     */
+    public static ByteBuffer getPseudoRandomData(int size) {
+        return ByteBuffer.wrap(getPseudoRandomByteArray(size));
+    }
+
+    /**
      * Gets a random file of the given size.
      *
      * @param size The size of the file.
@@ -293,13 +335,31 @@ public final class StorageCommonTestUtils {
      * @throws IOException If an I/O error occurs.
      */
     public static File getRandomFile(int size, TestResourceNamer testResourceNamer) throws IOException {
+        return getRandomFileShared(size, s -> getRandomByteArray(s, testResourceNamer));
+    }
+
+    /**
+     * Gets a pseudo random file of the given size.
+     * <p>
+     * Unlike {@link #getRandomFile(int, TestResourceNamer)} this doesn't rely on {@link Random} to generate data,
+     * but instead repeats a pattern of 15 bytes.
+     *
+     * @param size The size of the file.
+     * @return The pseudo random file.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static File getPseudoRandomFile(int size) throws IOException {
+        return getRandomFileShared(size, StorageCommonTestUtils::getPseudoRandomByteArray);
+    }
+
+    private static File getRandomFileShared(int size, Function<Integer, byte[]> dataCreator) throws IOException {
         try {
             File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
             file.deleteOnExit();
 
             if (size > Constants.MB) {
                 try (FileOutputStream fos = new FileOutputStream(file)) {
-                    byte[] data = getRandomByteArray(Constants.MB, testResourceNamer);
+                    byte[] data = dataCreator.apply(Constants.MB);
                     int mbChunks = size / Constants.MB;
                     int remaining = size % Constants.MB;
                     for (int i = 0; i < mbChunks; i++) {
@@ -311,7 +371,7 @@ public final class StorageCommonTestUtils {
                     }
                 }
             } else {
-                Files.write(file.toPath(), getRandomByteArray(size, testResourceNamer));
+                Files.write(file.toPath(), dataCreator.apply(size));
             }
 
             return file;

@@ -76,7 +76,7 @@ public class KeyVaultKeyAsyncTests extends BlobCryptographyTestBase {
 
     @Test
     public void uploadDownload() {
-        byte[] inputArray = getRandomByteArray(Constants.KB);
+        byte[] inputArray = getPseudoRandomByteArray(Constants.KB);
 
         StepVerifier
             .create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
@@ -87,7 +87,7 @@ public class KeyVaultKeyAsyncTests extends BlobCryptographyTestBase {
 
     @Test
     public void encryptionNotANoop() {
-        byte[] inputArray = getRandomByteArray(Constants.KB);
+        byte[] inputArray = getPseudoRandomByteArray(Constants.KB);
 
         StepVerifier
             .create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)

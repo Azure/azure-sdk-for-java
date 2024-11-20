@@ -16,7 +16,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class EncryptedBlobLengthTests extends BlobCryptographyTestBase {
+public class EncryptedBlobLengthTests {
 
     //to prevent having to cast int -> long everywhere
     private static final long FOUR_MB = 4 * Constants.MB;

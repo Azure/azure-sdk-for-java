@@ -45,7 +45,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void encryptedBlobOutputStreamNotANoop() throws IOException {
-        byte[] data = getRandomByteArray(10 * Constants.MB);
+        byte[] data = getPseudoRandomByteArray(10 * Constants.MB);
         ByteArrayOutputStream os = new ByteArrayOutputStream(10 * Constants.MB);
 
         try (OutputStream outputStream = bec.getBlobOutputStream()) {
@@ -60,7 +60,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void encryptedBlobOutputStream() throws IOException {
-        byte[] data = getRandomByteArray(10 * Constants.MB);
+        byte[] data = getPseudoRandomByteArray(10 * Constants.MB);
 
         try (OutputStream outputStream = bec.getBlobOutputStream()) {
             outputStream.write(data);
@@ -72,7 +72,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void encryptedBlobOutputStreamDefaultNoOverwrite() throws IOException {
-        byte[] data = getRandomByteArray(10 * Constants.MB);
+        byte[] data = getPseudoRandomByteArray(10 * Constants.MB);
 
         try (OutputStream outputStream1 = bec.getBlobOutputStream()) {
             outputStream1.write(data);
@@ -84,7 +84,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void encryptedBlobOutputStreamDefaultNoOverwriteInterrupted() throws IOException {
-        byte[] data = getRandomByteArray(10 * Constants.MB);
+        byte[] data = getPseudoRandomByteArray(10 * Constants.MB);
 
         OutputStream outputStream1 = bec.getBlobOutputStream();
         try (OutputStream outputStream2 = bec.getBlobOutputStream()) {
@@ -102,7 +102,7 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
     @LiveOnly
     @Test
     public void encryptedBlobOutputStreamOverwrite() throws IOException {
-        byte[] randomData = getRandomByteArray(10 * Constants.MB);
+        byte[] randomData = getPseudoRandomByteArray(10 * Constants.MB);
         bec.upload(DATA.getDefaultInputStream());
 
         try (OutputStream outputStream = bec.getBlobOutputStream(true)) {
