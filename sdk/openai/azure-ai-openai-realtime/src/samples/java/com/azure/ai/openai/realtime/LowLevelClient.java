@@ -55,7 +55,6 @@ public class LowLevelClient {
         // We block here until an EndSession request is sent by our RealtimeEventHandler.consumeServerEvent handler
         requestUserInput.asFlux()
                 .ofType(RealtimeEventHandler.EndSession.class)
-//                .timeout(Duration.ofSeconds(5))
                 .blockFirst();
 
         try {

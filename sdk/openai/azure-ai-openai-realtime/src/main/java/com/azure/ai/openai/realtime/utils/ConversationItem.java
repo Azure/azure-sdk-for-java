@@ -22,7 +22,8 @@ public class ConversationItem {
      * @return the user message item.
      */
     public static RealtimeClientEventConversationItemCreate createUserMessage(String itemText) {
-        // `itemText` is not a JSON string, but a prompt. Therefore, BinaryData.fromObject is the appropriate representation.
+        // `itemText` is not a JSON string, but a prompt represented as a JSON Object.
+        // Therefore, BinaryData.fromObject is the appropriate representation.
         RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem(Arrays.asList(BinaryData.fromObject(
                 new RealtimeRequestTextContentPart(itemText))));
         return new RealtimeClientEventConversationItemCreate(messageItem);
