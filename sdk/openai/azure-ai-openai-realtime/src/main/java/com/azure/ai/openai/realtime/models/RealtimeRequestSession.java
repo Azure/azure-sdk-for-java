@@ -329,11 +329,22 @@ public final class RealtimeRequestSession implements JsonSerializable<RealtimeRe
         return this;
     }
 
+    /**
+     * Set the maxResponseOutputTokens property: The max_response_output_tokens property.
+     *
+     * @param maxResponseOutputTokens the maxResponseOutputTokens value to set.
+     * @return the RealtimeRequestSession object itself.
+     */
     public RealtimeRequestSession setMaxResponseOutputTokens(int maxResponseOutputTokens) {
         this.maxResponseOutputTokens = BinaryData.fromObject(maxResponseOutputTokens);
         return this;
     }
 
+    /**
+     * Set the maxResponseOutputTokens property: The max_response_output_tokens property. Sets no limits to the token usage.
+     *
+     * @return the RealtimeRequestSession object itself.
+     */
     public RealtimeRequestSession setMaxResponseOutputTokensToInf() {
         this.maxResponseOutputTokens = BinaryData.fromObject("inf");
         return this;

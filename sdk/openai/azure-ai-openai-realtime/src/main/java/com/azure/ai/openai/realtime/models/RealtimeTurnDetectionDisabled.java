@@ -25,8 +25,9 @@ public final class RealtimeTurnDetectionDisabled extends RealtimeTurnDetection {
      */
     private RealtimeTurnDetectionType type = RealtimeTurnDetectionType.fromString("none");
 
-    /*
-     * Creates new instance of RealtimeTurnDetectionDisabled.
+    /**
+     * Creates an instance of RealtimeTurnDetectionDisabled. Only accepted in Azure OpenAI services. Non-Azure OpenAI
+     * will fail the request if this is used. In that case, don't set the turn detection in your session configuration.
      */
     public RealtimeTurnDetectionDisabled() {
     }

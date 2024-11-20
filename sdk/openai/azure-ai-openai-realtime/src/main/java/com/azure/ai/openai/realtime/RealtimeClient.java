@@ -49,6 +49,11 @@ public final class RealtimeClient implements Closeable {
     private final RealtimeAsyncClient asyncClient;
     private final EventHandlerCollection eventHandlerCollection = new EventHandlerCollection();
 
+    /**
+     * Creates a new instance of the RealtimeClient.
+     *
+     * @param asyncClient The async version of the client.
+     */
     RealtimeClient(RealtimeAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }

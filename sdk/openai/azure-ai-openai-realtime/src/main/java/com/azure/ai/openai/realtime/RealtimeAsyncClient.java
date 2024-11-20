@@ -16,6 +16,7 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventError;
 import com.azure.ai.openai.realtime.models.SendMessageFailedException;
 import com.azure.ai.openai.realtime.models.ServerErrorReceivedException;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -31,6 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+@ServiceClient(builder = RealtimeClientBuilder.class)
 public final class RealtimeAsyncClient implements Closeable {
 
     // logging
@@ -67,6 +69,15 @@ public final class RealtimeAsyncClient implements Closeable {
     private Sinks.Many<RealtimeServerEvent> serverEvents
         = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
+    /**
+     * Creates a RealtimeAsyncClient.
+     *
+     * @param webSocketClient The WebSocket client.
+     * @param cec The client endpoint configuration containing base URL, headers and other information.
+     * @param applicationId The application ID.
+     * @param retryStrategy The retry strategy. Unused for now
+     * @param authenticationProvider The authentication provider. Currently only supports KeyCredential and TokenCredential
+     */
     RealtimeAsyncClient(WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId,
         RetryStrategy retryStrategy, AuthenticationProvider authenticationProvider) {
         updateLogger(applicationId, null);
@@ -203,17 +214,17 @@ public final class RealtimeAsyncClient implements Closeable {
      * @return the server events.
      */
     public Flux<RealtimeServerEvent> getServerEvents() {
-        return serverEvents.asFlux()
-            .transform(serverEvents -> serverEvents.flatMap(event -> {
-                if (event instanceof RealtimeServerEventError) {
-                    RealtimeServerEventError errorEvent = (RealtimeServerEventError) event;
-                    logger.atError().addKeyValue("RealtimeServerErrorEvent", event.getEventId()).log(errorEvent.getError().getMessage());
-                    return Flux.error(ServerErrorReceivedException.fromRealtimeServerEventError(errorEvent));
-                } else {
-                    return Flux.just(event);
-                }
-            })
-        );
+        return serverEvents.asFlux().transform(serverEvents -> serverEvents.flatMap(event -> {
+            if (event instanceof RealtimeServerEventError) {
+                RealtimeServerEventError errorEvent = (RealtimeServerEventError) event;
+                logger.atError()
+                    .addKeyValue("RealtimeServerErrorEvent", event.getEventId())
+                    .log(errorEvent.getError().getMessage());
+                return Flux.error(ServerErrorReceivedException.fromRealtimeServerEventError(errorEvent));
+            } else {
+                return Flux.just(event);
+            }
+        }));
     }
 
     Mono<Void> start(Runnable postStartTask) {

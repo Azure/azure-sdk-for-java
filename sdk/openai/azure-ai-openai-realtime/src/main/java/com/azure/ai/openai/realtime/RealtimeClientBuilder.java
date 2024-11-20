@@ -23,7 +23,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Map;
 
 @ServiceClientBuilder(serviceClients = { RealtimeAsyncClient.class, RealtimeClient.class })
-public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientBuilder> {
+public final class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientBuilder> {
 
     private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
 
@@ -49,57 +49,134 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
     private RetryOptions retryOptions;
     private WebSocketClient webSocketClient;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RealtimeClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
 
+    /**
+     * Sets the {@link ClientOptions} used to configure the service client.
+     *
+     * @param clientOptions the {@link ClientOptions} used to configure the service client.
+     * @return the {@link RealtimeClientBuilder}.
+     */
     public RealtimeClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
 
+    /**
+     * Sets the {@link WebSocketClient} used to connect to the service.
+     *
+     * @param webSocketClient the {@link WebSocketClient} used to connect to the service.
+     * @return the {@link RealtimeClientBuilder}.
+     */
+    public RealtimeClientBuilder webSocketClient(WebSocketClient webSocketClient) {
+        this.webSocketClient = webSocketClient;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for all the requests made through the client. Currently unused.
+     *
+     * @param retryOptions the {@link RetryOptions} for all the requests made through the client.
+     * @return the {@link RealtimeClientBuilder}.
+     */
     public RealtimeClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
 
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return the {@link RealtimeClientBuilder}.
+     */
     public RealtimeClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
 
+    /**
+     * Sets the {@link KeyCredential} used for authentication. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link KeyCredential} type.
+     *
+     * @param keyCredential the {@link KeyCredential} to be used for authentication.
+     * @return the {@link RealtimeClientBuilder}.
+     */
     public RealtimeClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;
     }
 
+    /**
+     * Sets the service endpoint that will be connected to by clients. Not setting this, will default to the OpenAI service.
+     *
+     * @param endpoint The URL of the service endpoint.
+     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
+     *      operations.
+     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
+     */
     public RealtimeClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
 
+    /**
+     * Sets the deployment name in the case of Azure or the model name in case of OpenAI.
+     *
+     * @param deploymentOrModelName the deployment or model name.
+     * @return the {@link RealtimeClientBuilder}.
+     */
     public RealtimeClientBuilder deploymentOrModelName(String deploymentOrModelName) {
         this.deploymentOrModelName = deploymentOrModelName;
         return this;
     }
 
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the OpenAIClientBuilder.
+     */
     public RealtimeClientBuilder serviceVersion(OpenAIServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
 
+    /**
+     * Builds a new instance of the {@link RealtimeAsyncClient}.
+     *
+     * @return a new instance of the {@link RealtimeAsyncClient}.
+     */
     public RealtimeAsyncClient buildAsyncClient() {
         String applicationId = CoreUtils.getApplicationId(clientOptions, null);
         return new RealtimeAsyncClient(webSocketClient, getClientEndpointConfiguration(), applicationId,
             getRetryStrategy(), getAuthenticationProvider());
     }
 
+    /**
+     * Builds a new instance of the {@link RealtimeClient}.
+     *
+     * @return a new instance of the {@link RealtimeClient}.
+     */
     public RealtimeClient buildClient() {
         return new RealtimeClient(buildAsyncClient());
     }
 
+    /**
+     * Creates an instance of the {@link AuthenticationProvider} based on the provided credential type.
+     *
+     * @return the {@link AuthenticationProvider}.
+     */
     private AuthenticationProvider getAuthenticationProvider() {
         if (useNonAzureOpenAIService()) {
             return new AuthenticationProvider(keyCredential, false);
@@ -113,6 +190,10 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
         }
     }
 
+    /**
+     * Creates the {@link RetryStrategy}.
+     * @return the {@link RetryStrategy}.
+     */
     private RetryStrategy getRetryStrategy() {
         RetryStrategy retryStrategy;
         if (retryOptions != null) {
@@ -131,6 +212,11 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
         return retryStrategy;
     }
 
+    /**
+     * Creates the {@link ClientEndpointConfiguration}.
+     *
+     * @return the {@link ClientEndpointConfiguration}.
+     */
     private ClientEndpointConfiguration getClientEndpointConfiguration() {
         // user-agent
         final String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
@@ -154,6 +240,9 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
         return endpoint == null || endpoint.startsWith(OPENAI_BASE_URL);
     }
 
+    /**
+     * Creates a new instance of the {@link RealtimeClientBuilder}.
+     */
     public RealtimeClientBuilder() {
         this.properties = CoreUtils.getProperties(PROPERTIES);
     }

@@ -352,7 +352,8 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
         client.sendMessage(new RealtimeClientEventSessionUpdate(
             new RealtimeRequestSession().setTurnDetection(new RealtimeTurnDetectionDisabled())
                 .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
-        FileUtils.sendAudioFile(client, new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")));
+        FileUtils.sendAudioFile(client,
+            new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")));
         client.sendMessage(ConversationItem.createUserMessage("Hello, assistant!"));
 
         client.addOnInputAudioBufferSpeechStartedEventHandler(event -> {

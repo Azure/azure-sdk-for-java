@@ -149,8 +149,8 @@ public final class RealtimeResponseMessageItem extends RealtimeResponseItem {
      * @param status the status value to set.
      */
     @Generated
-    private RealtimeResponseMessageItem(String id, RealtimeMessageRole role,
-        List<RealtimeContentPart> content, RealtimeItemStatus status) {
+    private RealtimeResponseMessageItem(String id, RealtimeMessageRole role, List<RealtimeContentPart> content,
+        RealtimeItemStatus status) {
         super(id);
         this.role = role;
         this.content = content;

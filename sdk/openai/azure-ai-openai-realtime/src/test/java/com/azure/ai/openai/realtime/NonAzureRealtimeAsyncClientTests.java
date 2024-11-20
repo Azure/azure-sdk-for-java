@@ -73,7 +73,8 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
             System.out.println("event type: " + event.getType());
             assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
         }).then(() -> {
-            FileUtils.sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("audio_weather_alaw.wav"))).block();
+            FileUtils.sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("audio_weather_alaw.wav")))
+                .block();
         })
             .thenConsumeWhile(event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
                 event -> System.out.println("event type: " + event.getType()))
@@ -106,7 +107,8 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
         }).assertNext(event -> {
             assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
             // send prompt
-            RealtimeClientEventConversationItemCreate conversationItem = ConversationItem.createUserMessage("Hello, assistant! Tell me a joke.");
+            RealtimeClientEventConversationItemCreate conversationItem
+                = ConversationItem.createUserMessage("Hello, assistant! Tell me a joke.");
 
             client.sendMessage(conversationItem).block();
 
@@ -296,7 +298,8 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
             .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT)))).block();
 
         FileUtils
-            .sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")))
+            .sendAudioFileAsync(client,
+                new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")))
             .block();
         client.sendMessage(ConversationItem.createUserMessage("Hello, assistant!")).block();
 

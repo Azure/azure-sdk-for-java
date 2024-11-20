@@ -72,7 +72,8 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
         }).assertNext(event -> {
             assertInstanceOf(RealtimeServerEventSessionUpdated.class, event);
         })
-            .then(() -> FileUtils.sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("audio_weather_alaw.wav")))
+            .then(() -> FileUtils
+                .sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("audio_weather_alaw.wav")))
                 .block())
             .thenConsumeWhile(event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
                 Assertions::assertNotNull)
@@ -292,7 +293,8 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
             .block();
 
         FileUtils
-            .sendAudioFileAsync(client, new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")))
+            .sendAudioFileAsync(client,
+                new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")))
             .block();
         client.sendMessage(ConversationItem.createUserMessage("Hello, assistant!")).block();
 

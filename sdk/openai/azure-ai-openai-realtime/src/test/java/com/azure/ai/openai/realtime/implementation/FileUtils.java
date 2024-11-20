@@ -89,6 +89,7 @@ public class FileUtils {
      * @throws IOException If an I/O error occurs while writing to the file.
      */
     public static void writeToFile(Path destinationFile, byte[] data) throws IOException {
-        Files.write(destinationFile, data, StandardOpenOption.WRITE, StandardOpenOption.APPEND, StandardOpenOption.CREATE, StandardOpenOption.SYNC);
+        Files.write(destinationFile, data, StandardOpenOption.WRITE, StandardOpenOption.APPEND,
+            StandardOpenOption.CREATE, StandardOpenOption.SYNC);
     }
 }

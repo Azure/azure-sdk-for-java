@@ -308,9 +308,9 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
 
                 if (currentResponseDoneCount < 1) {
                     assertTrue(responseDoneEvent.getResponse()
-                            .getOutput()
-                            .stream()
-                            .anyMatch(outputItem -> outputItem instanceof RealtimeResponseFunctionCallItem));
+                        .getOutput()
+                        .stream()
+                        .anyMatch(outputItem -> outputItem instanceof RealtimeResponseFunctionCallItem));
                 }
             });
         });
@@ -339,7 +339,8 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         client.start();
         client.sendMessage(new RealtimeClientEventSessionUpdate(
             new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
-        FileUtils.sendAudioFile(client, new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")));
+        FileUtils.sendAudioFile(client,
+            new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")));
         client.sendMessage(ConversationItem.createUserMessage("Hello, assistant!"));
 
         client.addOnInputAudioBufferSpeechStartedEventHandler(event -> {
@@ -375,7 +376,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         pause(2000);
         client.stop();
 
-//        assertFalse(responseDoneEventFired.get());
+        //        assertFalse(responseDoneEventFired.get());
         assertFalse(speechStartedEventFired.get());
         assertFalse(speechStoppedEventFired.get());
         assertFalse(transcriptionCompletedEventFired.get());

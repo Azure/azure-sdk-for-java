@@ -13,7 +13,11 @@ import com.azure.core.util.BinaryData;
 
 import java.util.Arrays;
 
-public class ConversationItem {
+/**
+ * Convenience class grouping methods to create different text-based conversation items with different
+ * {@link com.azure.ai.openai.realtime.models.RealtimeMessageRole} roles.
+ */
+public final class ConversationItem {
 
     /**
      * Create a user message item.
@@ -24,8 +28,8 @@ public class ConversationItem {
     public static RealtimeClientEventConversationItemCreate createUserMessage(String itemText) {
         // `itemText` is not a JSON string, but a prompt represented as a JSON Object.
         // Therefore, BinaryData.fromObject is the appropriate representation.
-        RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem(Arrays.asList(BinaryData.fromObject(
-                new RealtimeRequestTextContentPart(itemText))));
+        RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem(
+            Arrays.asList(BinaryData.fromObject(new RealtimeRequestTextContentPart(itemText))));
         return new RealtimeClientEventConversationItemCreate(messageItem);
     }
 
