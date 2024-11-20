@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appconfiguration.fluent.models.PrivateEndpointConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A reference to a related private endpoint connection. */
+/**
+ * A reference to a related private endpoint connection.
+ */
 @Fluent
-public final class PrivateEndpointConnectionReference {
+public final class PrivateEndpointConnectionReference implements JsonSerializable<PrivateEndpointConnectionReference> {
     /*
      * The resource ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The properties of a private endpoint connection.
      */
-    @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties innerProperties;
 
-    /** Creates an instance of PrivateEndpointConnectionReference class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionReference class.
+     */
     public PrivateEndpointConnectionReference() {
     }
 
     /**
      * Get the id property: The resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class PrivateEndpointConnectionReference {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class PrivateEndpointConnectionReference {
 
     /**
      * Get the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -68,7 +72,7 @@ public final class PrivateEndpointConnectionReference {
 
     /**
      * Get the innerProperties property: The properties of a private endpoint connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateEndpointConnectionProperties innerProperties() {
@@ -77,7 +81,7 @@ public final class PrivateEndpointConnectionReference {
 
     /**
      * Get the provisioningState property: The provisioning status of the private endpoint connection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -86,7 +90,7 @@ public final class PrivateEndpointConnectionReference {
 
     /**
      * Get the privateEndpoint property: The resource of private endpoint.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
@@ -95,7 +99,7 @@ public final class PrivateEndpointConnectionReference {
 
     /**
      * Set the privateEndpoint property: The resource of private endpoint.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionReference object itself.
      */
@@ -110,7 +114,7 @@ public final class PrivateEndpointConnectionReference {
     /**
      * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -120,7 +124,7 @@ public final class PrivateEndpointConnectionReference {
     /**
      * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionReference object itself.
      */
@@ -135,12 +139,56 @@ public final class PrivateEndpointConnectionReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionReference if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionReference.
+     */
+    public static PrivateEndpointConnectionReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionReference deserializedPrivateEndpointConnectionReference
+                = new PrivateEndpointConnectionReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionReference.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionReference.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionReference.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionReference.innerProperties
+                        = PrivateEndpointConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionReference;
+        });
     }
 }

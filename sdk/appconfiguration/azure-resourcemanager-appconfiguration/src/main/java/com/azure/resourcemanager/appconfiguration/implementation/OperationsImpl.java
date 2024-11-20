@@ -54,12 +54,12 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<OperationDefinition> list() {
         PagedIterable<OperationDefinitionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationDefinition> list(String skipToken, Context context) {
         PagedIterable<OperationDefinitionInner> inner = this.serviceClient().list(skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
     }
 
     public Response<NameAvailabilityStatus> regionalCheckNameAvailabilityWithResponse(String location,
