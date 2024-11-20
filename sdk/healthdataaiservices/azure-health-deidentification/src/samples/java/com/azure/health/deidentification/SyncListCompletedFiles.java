@@ -15,8 +15,6 @@ import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SyncListCompletedFiles {
     public static void main(String[] args) {
@@ -32,11 +30,7 @@ public class SyncListCompletedFiles {
         DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
 
         String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
-        List<String> extensions = new ArrayList<>();
-        extensions.add("*");
-
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
-        sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
         job.setOperation(DeidentificationOperationType.SURROGATE);
@@ -49,8 +43,6 @@ public class SyncListCompletedFiles {
 
         for (DeidentificationDocumentDetails currentFile : reports) {
             System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getLocation());
-            // c45dcd5e-e3ce-4ff2-80b6-a8bbeb47f878 - _output/MyJob-1719954393623/example_patient_1/visit_summary.txt
-            // e55a1aa2-8eba-4515-b070-1fd3d005008b - _output/MyJob-1719954393623/example_patient_1/doctor_dictation.txt
         }
         // END: com.azure.health.deidentification.sync.listcompletedfiles
     }

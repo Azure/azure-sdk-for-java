@@ -13,14 +13,12 @@ import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AsyncCreateJob {
     public static void main(String[] args) {
         // BEGIN: com.azure.health.deidentification.async.createjob
         String jobName = "MyJob-" + Instant.now().toEpochMilli();
-        String outputFolder = "_output";
+        String outputFolder = "_output/";
         String inputPrefix = "example_patient_1";
 
         DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
@@ -30,11 +28,7 @@ public class AsyncCreateJob {
         DeidentificationAsyncClient deidentificationClient = deidentificationClientbuilder.buildAsyncClient();
 
         String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
-        List<String> extensions = new ArrayList<>();
-        extensions.add("*");
-
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
-        sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
         job.setOperation(DeidentificationOperationType.SURROGATE);
