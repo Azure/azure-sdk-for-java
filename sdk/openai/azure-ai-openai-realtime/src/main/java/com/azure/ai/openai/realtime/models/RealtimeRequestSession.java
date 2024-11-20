@@ -341,7 +341,8 @@ public final class RealtimeRequestSession implements JsonSerializable<RealtimeRe
     }
 
     /**
-     * Set the maxResponseOutputTokens property: The max_response_output_tokens property. Sets no limits to the token usage.
+     * Set the maxResponseOutputTokens property: The max_response_output_tokens property. Sets no limits to the token
+     * usage.
      *
      * @return the RealtimeRequestSession object itself.
      */

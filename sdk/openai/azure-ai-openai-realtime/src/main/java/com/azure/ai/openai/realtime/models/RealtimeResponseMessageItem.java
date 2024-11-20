@@ -151,9 +151,9 @@ public final class RealtimeResponseMessageItem extends RealtimeResponseItem {
     @Generated
     private RealtimeResponseMessageItem(String id, RealtimeMessageRole role, List<RealtimeContentPart> content,
         RealtimeItemStatus status) {
-        super(id);
-        this.role = role;
-        this.content = content;
-        this.status = status;
+            super(id);
+            this.role = role;
+            this.content = content;
+            this.status = status;
     }
 }
