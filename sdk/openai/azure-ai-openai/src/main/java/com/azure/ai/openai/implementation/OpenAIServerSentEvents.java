@@ -6,6 +6,7 @@ package com.azure.ai.openai.implementation;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import java.io.ByteArrayOutputStream;
@@ -20,6 +21,7 @@ import java.util.List;
 public final class OpenAIServerSentEvents<T> {
 
     private static final List<String> STREAM_COMPLETION_EVENT = Arrays.asList("data: [DONE]", "data:[DONE]");
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     private final Flux<ByteBuffer> source;
     private final Class<T> type;
     private ByteArrayOutputStream outStream;
@@ -83,13 +85,24 @@ public final class OpenAIServerSentEvents<T> {
             dataValue = split[1].substring(1);
         }
 
-        T value = SERIALIZER.deserializeFromBytes(dataValue.getBytes(StandardCharsets.UTF_8),
-            TypeReference.createInstance(type));
-        if (value == null) {
-            throw new IllegalStateException("Failed to deserialize the data value " + dataValue);
+        if (!isValidJson(dataValue)) {
+            throw new IllegalStateException("Invalid Json format " + dataValue);
+        } else {
+            T value = SERIALIZER.deserializeFromBytes(dataValue.getBytes(StandardCharsets.UTF_8),
+                TypeReference.createInstance(type));
+            if (value == null) {
+                throw new IllegalStateException("Failed to deserialize the data value " + dataValue);
+            }
+            values.add(value);
         }
+    }
 
-        values.add(value);
-
+    private static boolean isValidJson(String jsonString) {
+        try {
+            objectMapper.readTree(jsonString);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
