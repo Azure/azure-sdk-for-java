@@ -820,15 +820,18 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
         if (this.functionCall != null) {
-            jsonWriter.writeRawField("function_call", this.functionCall.toString());
+            jsonWriter.writeFieldName("function_call");
+            this.functionCall.writeTo(jsonWriter);
         }
         jsonWriter.writeNumberField("max_tokens", this.maxTokens);
+        jsonWriter.writeNumberField("max_completion_tokens", this.maxCompletionTokens);
         jsonWriter.writeNumberField("temperature", this.temperature);
         jsonWriter.writeNumberField("top_p", this.topP);
         jsonWriter.writeMapField("logit_bias", this.logitBias, (writer, element) -> writer.writeInt(element));
@@ -838,6 +841,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         jsonWriter.writeNumberField("presence_penalty", this.presencePenalty);
         jsonWriter.writeNumberField("frequency_penalty", this.frequencyPenalty);
         jsonWriter.writeBooleanField("stream", this.stream);
+        jsonWriter.writeJsonField("stream_options", this.streamOptions);
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeArrayField("data_sources", this.dataSources, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("enhancements", this.enhancements);
@@ -847,8 +851,10 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         jsonWriter.writeJsonField("response_format", this.responseFormat);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         if (this.toolChoice != null) {
-            jsonWriter.writeRawField("tool_choice", this.toolChoice.toString());
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
         }
+        jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         return jsonWriter.writeEndObject();
     }
 

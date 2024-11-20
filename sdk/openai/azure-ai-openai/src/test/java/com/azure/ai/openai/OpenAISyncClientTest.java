@@ -173,6 +173,9 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(3);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, resultCompletions);
+            CompletionsUsage usage = resultCompletions.getUsage();
+            assertNotNull(usage);
+            assertTrue(usage.getCompletionTokens() <= 3);
         });
     }
 
@@ -188,6 +191,18 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                     .setStreamOptions(new ChatCompletionStreamOptions().setIncludeUsage(true))
             );
             assertChatCompletions(1, resultChatCompletions);
+        });
+    }
+
+    @Disabled("Unrecognized request argument supplied: max_completion_tokens")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
+            ChatCompletions resultChatCompletions
+                = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10));
+            assertTrue(resultChatCompletions.getUsage().getCompletionTokens() <= 10);
         });
     }
 

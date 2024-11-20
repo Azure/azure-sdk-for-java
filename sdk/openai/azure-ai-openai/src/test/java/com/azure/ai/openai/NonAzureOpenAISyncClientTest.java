@@ -172,6 +172,9 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 .setMaxTokens(2);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, resultCompletions);
+            CompletionsUsage usage = resultCompletions.getUsage();
+            assertNotNull(usage);
+            assertTrue(usage.getCompletionTokens() <= 3);
         });
     }
 
@@ -188,17 +191,14 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void maxCompletionTokensInChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
             ChatCompletions resultChatCompletions
-                = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(100));
-//            assertChatCompletions(1, resultChatCompletions);
-            int completionTokens = resultChatCompletions.getUsage().getCompletionTokens();
-            assertTrue(completionTokens <= 10);
+                = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10));
+            assertTrue(resultChatCompletions.getUsage().getCompletionTokens() <= 10);
         });
     }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
