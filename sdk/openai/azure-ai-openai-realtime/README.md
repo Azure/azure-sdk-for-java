@@ -35,6 +35,25 @@ sequenceDiagram
 
 Note that `/realtime` is in **public preview**. API changes, code updates, and occasional service disruptions are expected.
 
+This client library is currently made available **only in our dev feed**. For detailed instructions see the [dev feed documentation.][dev_feed_instructions]
+
+## Getting started
+
+### Prerequisites
+
+- [Java Development Kit (JDK)][jdk] with version 8 or above
+- [Azure Subscription][azure_subscription]
+- [Azure OpenAI access][azure_openai_access]
+- [Quickstart: GPT-4o Realtime API for speech and audio (Preview)][quickstart]
+
+### Adding the package to your project
+
+TODO
+
+### Authentication
+
+TODO
+
 ## Key concepts
 
 For a more detailed guide please refer to the [Azure OpenAI realtime][aoai_samples_readme] general API guide.
@@ -52,7 +71,7 @@ For a more detailed guide please refer to the [Azure OpenAI realtime][aoai_sampl
 
 ## Examples
 
-
+TODO
 
 ## Troubleshooting
 
@@ -81,14 +100,19 @@ reduce the dependency size, refer to the [performance tuning][performance_tuning
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes (`git commit -am 'Add some feature'`)
-1. Push to the branch (`git push origin my-new-feature`)
-1. Create new Pull Request
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 <!-- LINKS -->
 [aoai_samples_readme]: https://github.com/Azure-Samples/aoai-realtime-audio-sdk/blob/main/README.md
 [aoai_samples_readme_api_concepts]: https://github.com/Azure-Samples/aoai-realtime-audio-sdk/blob/main/README.md#api-concepts
+[azure_subscription]: https://azure.microsoft.com/free/
+[azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[dev_feed_instructions]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#dev-feed
 [log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai-realtime/src/samples
+[quickstart]: https://learn.microsoft.com/azure/ai-services/openai/realtime-audio-quickstart

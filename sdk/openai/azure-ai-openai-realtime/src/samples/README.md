@@ -34,8 +34,6 @@ Cookbook:
 - [Low level event handling (Azure)][low_level_client_azure]
 - [Low level event handling (non-Azure)][low_level_client_non_azure]
 
-OpenAI (Non Azure):
-
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
