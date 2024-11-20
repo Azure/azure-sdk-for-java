@@ -15,6 +15,12 @@ public abstract class PlaySource implements JsonSerializable<PlaySource> {
     private String playSourceCacheId;
 
     /**
+     * Creates an instance of {@link PlaySource}.
+     */
+    public PlaySource() {
+    }
+
+    /**
      * Get the playSourceCacheId property: Defines the identifier to be used for caching related media.
      *
      * @return the playSourceCacheId value.

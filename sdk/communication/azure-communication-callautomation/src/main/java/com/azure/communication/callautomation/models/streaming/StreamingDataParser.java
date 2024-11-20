@@ -27,6 +27,12 @@ import java.nio.charset.StandardCharsets;
 public final class StreamingDataParser {
     private static final ClientLogger LOGGER = new ClientLogger(StreamingDataParser.class);
 
+    /**
+     * Creates an instance of {@link StreamingDataParser}.
+     */
+    public StreamingDataParser() {
+    }
+
     /***
      * Parses StreamingData such as Audio, Transcription or Captions from BinaryData.
      *

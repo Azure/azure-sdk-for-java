@@ -31,7 +31,10 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
         return fromString(name, RecognizeInputType.class);
     }
 
-    /** @return known RecognizeInputTypeInternal values. */
+    /**
+     * Get the collection of RecognizeInputTypeInternal values.
+     * @return known RecognizeInputTypeInternal values.
+     */
     public static Collection<RecognizeInputType> values() {
         return values(RecognizeInputType.class);
     }
