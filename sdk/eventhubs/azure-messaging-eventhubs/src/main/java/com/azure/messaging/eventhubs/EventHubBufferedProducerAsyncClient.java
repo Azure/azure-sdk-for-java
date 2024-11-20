@@ -351,6 +351,9 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         if (options.getPartitionKey() != null) {
             return partitionIdsMono.flatMap(ids -> {
                 final String partitionId = partitionResolver.assignForPartitionKey(options.getPartitionKey(), ids);
+
+                eventData.setPartitionKey(options.getPartitionKey());
+
                 final EventHubBufferedPartitionProducer producer = partitionProducers.get(partitionId);
                 if (producer == null) {
                     return monoError(logger,

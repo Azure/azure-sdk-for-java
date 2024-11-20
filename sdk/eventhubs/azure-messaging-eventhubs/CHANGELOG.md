@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Set partition key when publishing events with `EventHubsBufferedProducerClient`. ([#42700](https://github.com/Azure/azure-sdk-for-java/issues/42700))
+
 ### Other Changes
 
 ## 5.19.1 (2024-10-27)

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
@@ -451,6 +452,13 @@ public class EventData extends MessageContent {
      */
     Context getContext() {
         return context;
+    }
+
+    EventData setPartitionKey(String partitionKey) {
+        Map<String, Object> messageAnnotations = annotatedMessage.getMessageAnnotations();
+        messageAnnotations.put(AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
+
+        return this;
     }
 
     /**
