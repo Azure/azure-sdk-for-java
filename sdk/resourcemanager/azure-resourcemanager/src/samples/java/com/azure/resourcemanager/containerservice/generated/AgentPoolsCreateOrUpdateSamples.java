@@ -30,7 +30,7 @@ import java.util.Map;
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_EnableFIPS.json
      */
     /**
@@ -49,12 +49,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withOsType(OSType.LINUX)
                     .withOrchestratorVersion("")
                     .withEnableFips(true),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPools_Update.json
      */
     /**
@@ -78,12 +78,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withScaleSetPriority(ScaleSetPriority.SPOT)
                     .withScaleSetEvictionPolicy(ScaleSetEvictionPolicy.DELETE)
                     .withNodeTaints(Arrays.asList("Key1=Value1:NoSchedule")),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_GPUMIG.json
      */
     /**
@@ -118,12 +118,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                         .withTransparentHugePageDefrag("madvise")
                         .withSwapFileSizeMB(1500))
                     .withGpuInstanceProfile(GpuInstanceProfile.MIG2G),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_WindowsOSSKU.json
      */
     /**
@@ -142,12 +142,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withOsType(OSType.WINDOWS)
                     .withOsSku(OSSku.WINDOWS2022)
                     .withOrchestratorVersion("1.23.3"),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_DedicatedHostGroup.json
      */
     /**
@@ -166,12 +166,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                 .withOrchestratorVersion("")
                 .withHostGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1"),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_Update.json
      */
     /**
@@ -195,12 +195,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withTags(mapOf("name1", "val1"))
                     .withNodeLabels(mapOf("key1", "fakeTokenPlaceholder"))
                     .withNodeTaints(Arrays.asList("Key1=Value1:NoSchedule")),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_WindowsDisableOutboundNAT.json
      */
     /**
@@ -221,12 +221,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withOsSku(OSSku.WINDOWS2022)
                     .withOrchestratorVersion("1.23.8")
                     .withWindowsProfile(new AgentPoolWindowsProfile().withDisableOutboundNat(true)),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPools_Start.json
      */
     /**
@@ -240,13 +240,13 @@ public final class AgentPoolsCreateOrUpdateSamples {
             .serviceClient()
             .getAgentPools()
             .createOrUpdate("rg1", "clustername1", "agentpool1",
-                new AgentPoolInner().withPowerState(new PowerState().withCode(Code.RUNNING)),
+                new AgentPoolInner().withPowerState(new PowerState().withCode(Code.RUNNING)), null, null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_Spot.json
      */
     /**
@@ -269,12 +269,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withTags(mapOf("name1", "val1"))
                     .withNodeLabels(mapOf("key1", "fakeTokenPlaceholder"))
                     .withNodeTaints(Arrays.asList("Key1=Value1:NoSchedule")),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_Ephemeral.json
      */
     /**
@@ -294,12 +294,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withOsDiskType(OSDiskType.EPHEMERAL)
                     .withOsType(OSType.LINUX)
                     .withOrchestratorVersion(""),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_EnableEncryptionAtHost.json
      */
     /**
@@ -319,12 +319,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withOsType(OSType.LINUX)
                     .withOrchestratorVersion("")
                     .withEnableEncryptionAtHost(true),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_EnableUltraSSD.json
      */
     /**
@@ -343,12 +343,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withOsType(OSType.LINUX)
                     .withOrchestratorVersion("")
                     .withEnableUltraSsd(true),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_WasmWasi.json
      */
     /**
@@ -370,12 +370,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withOsType(OSType.LINUX)
                     .withMode(AgentPoolMode.USER)
                     .withOrchestratorVersion(""),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_Snapshot.json
      */
     /**
@@ -395,12 +395,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                 .withEnableFips(true)
                 .withCreationData(new CreationData().withSourceResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1")),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_PPG.json
      */
     /**
@@ -419,12 +419,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                 .withOrchestratorVersion("")
                 .withProximityPlacementGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/proximityPlacementGroups/ppg1"),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_CustomNodeConfig.json
      */
     /**
@@ -459,12 +459,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                         .withTransparentHugePageEnabled("always")
                         .withTransparentHugePageDefrag("madvise")
                         .withSwapFileSizeMB(1500)),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPools_Stop.json
      */
     /**
@@ -478,13 +478,13 @@ public final class AgentPoolsCreateOrUpdateSamples {
             .serviceClient()
             .getAgentPools()
             .createOrUpdate("rg1", "clustername1", "agentpool1",
-                new AgentPoolInner().withPowerState(new PowerState().withCode(Code.STOPPED)),
+                new AgentPoolInner().withPowerState(new PowerState().withCode(Code.STOPPED)), null, null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_CRG.json
      */
     /**
@@ -504,12 +504,12 @@ public final class AgentPoolsCreateOrUpdateSamples {
                 .withOrchestratorVersion("")
                 .withCapacityReservationGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-08-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * AgentPoolsCreate_OSSKU.json
      */
     /**
@@ -544,7 +544,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
                         .withTransparentHugePageEnabled("always")
                         .withTransparentHugePageDefrag("madvise")
                         .withSwapFileSizeMB(1500)),
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

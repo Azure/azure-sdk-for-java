@@ -323,7 +323,8 @@ public class KubernetesClusterImpl extends
             () -> this.manager()
                 .serviceClient()
                 .getAgentPools()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), agentPoolName, agentPool.innerModel())
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), agentPoolName, agentPool.innerModel(),
+                    null, null)
                 .block(),
             AgentPoolDataImpl::new, AgentPoolInner.class, null, Context.NONE);
     }
