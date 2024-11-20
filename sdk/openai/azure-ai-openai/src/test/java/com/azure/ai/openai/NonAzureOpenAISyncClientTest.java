@@ -13,6 +13,7 @@ import com.azure.ai.openai.models.Batch;
 import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.BatchStatus;
 import com.azure.ai.openai.models.ChatChoice;
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolSelection;
@@ -57,6 +58,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -166,7 +168,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
-            completionsOptions.setMaxTokens(3);
+            completionsOptions
+                .setMaxTokens(2);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, resultCompletions);
         });
@@ -185,13 +188,43 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void maxCompletionTokensInChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
+            ChatCompletions resultChatCompletions
+                = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(100));
+//            assertChatCompletions(1, resultChatCompletions);
+            int completionTokens = resultChatCompletions.getUsage().getCompletionTokens();
+            assertTrue(completionTokens <= 10);
+        });
+    }
+
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
             IterableStream<ChatCompletions> resultChatCompletions
-                = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
+                = client.getChatCompletionsStream(deploymentId,
+                new ChatCompletionsOptions(chatMessages)
+                    .setStreamOptions(new ChatCompletionStreamOptions().setIncludeUsage(true))
+                    .setMaxCompletionTokens(10));
             assertTrue(resultChatCompletions.stream().toArray().length > 1);
             resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+
+
+            List<ChatCompletions> collect = resultChatCompletions.stream().collect(Collectors.toList());
+
+
+            int size = collect.size();
+            for (int i = 0; i < size; i++) {
+                ChatCompletions chatCompletions = collect.get(i);
+                int completionTokens = chatCompletions.getUsage().getCompletionTokens();
+                assertTrue(completionTokens <= 10);
+            }
+
+
         });
     }
 

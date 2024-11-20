@@ -242,7 +242,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatCompletionsRunner(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
-        testRunner.accept("gpt-35-turbo-1106", getChatMessages());
+        testRunner.accept("gpt-4o", getChatMessages());
     }
 
     void getChatCompletionsStructuredOutputInResponseFormatRunner(
@@ -271,7 +271,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatCompletionsRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
-        testRunner.accept("gpt-3.5-turbo", getChatMessages());
+        testRunner.accept("gpt-4o", getChatMessages());
     }
 
     void getChatCompletionsWithResponseRunnerForNonAzure(
