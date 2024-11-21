@@ -5,6 +5,16 @@
 - Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2024-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
 
 #### `models.Usage` was modified
 
@@ -221,23 +231,11 @@
 * `calculateModelCapacity(models.CalculateModelCapacityParameter)` was added
 * `calculateModelCapacityWithResponse(models.CalculateModelCapacityParameter,com.azure.core.util.Context)` was added
 
-#### `models.RegenerateKeyParameters` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.AzureEntityResource` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `id()` was added
 * `name()` was added
 * `type()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.OperationListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.CommitmentPlanAccountAssociation$Definition` was modified
 
@@ -247,11 +245,6 @@
 
 * `withTags(java.util.Map)` was added
 
-#### `models.Sku` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.AccountModel` was modified
 
 * `isDefaultVersion()` was added
@@ -260,114 +253,20 @@
 * `skus()` was added
 * `source()` was added
 
-#### `models.ResourceSkuRestrictions` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.ApiProperties` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.VirtualNetworkRule` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.ThrottlingRule` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.OperationDisplay` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.CommitmentCost` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.CheckSkuAvailabilityParameter` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.PatchResourceTagsAndSku` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.PrivateLinkResource` was modified
 
 * `id()` was added
 * `name()` was added
 * `type()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.SkuAvailability` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.SkuCapability` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.NetworkRuleSet` was modified
 
 * `withBypass(models.ByPassSelection)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `bypass()` was added
-
-#### `models.RequestMatchPattern` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.CommitmentPlanListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.AccountListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.Usage` was modified
 
 * `innerModel()` was added
-
-#### `models.Encryption` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.CommitmentQuota` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.AccountModelListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.CommitmentTierListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.RegionSetting` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.Deployment$Update` was modified
 
@@ -378,21 +277,6 @@
 
 * `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.CommitmentPeriod` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.PrivateEndpoint` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.UserOwnedStorage` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `CognitiveServicesManager` was modified
 
@@ -408,38 +292,24 @@
 * `defenderForAISettings()` was added
 * `raiBlocklistItems()` was added
 
-#### `models.CheckDomainAvailabilityParameter` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.UsageListResult` was modified
 
 * `nextLink()` was added
-
-#### `models.CommitmentPlanAccountAssociationListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.DeploymentModel` was modified
 
 * `withPublisher(java.lang.String)` was added
 * `sourceAccount()` was added
 * `publisher()` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `withSource(java.lang.String)` was added
 * `withSourceAccount(java.lang.String)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `source()` was added
 
 #### `models.AccountProperties` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `amlWorkspace()` was added
 * `abusePenalty()` was added
 * `withAmlWorkspace(models.UserOwnedAmlWorkspace)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `withRaiMonitorConfig(models.RaiMonitorConfig)` was added
 * `raiMonitorConfig()` was added
 
@@ -448,36 +318,9 @@
 * `sku()` was added
 * `tags()` was added
 
-#### `models.PrivateEndpointConnectionProperties` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.ResourceSkuRestrictionInfo` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.CommitmentPlanAssociation` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.SkuChangeInfo` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.KeyVaultProperties` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.DeploymentProperties` was modified
 
 * `currentCapacity()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 * `rateLimits()` was added
 * `dynamicThrottlingEnabled()` was added
 * `withCapacitySettings(models.DeploymentCapacitySettings)` was added
@@ -488,76 +331,14 @@
 * `versionUpgradeOption()` was added
 * `withCurrentCapacity(java.lang.Integer)` was added
 
-#### `models.QuotaLimit` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.UserAssignedIdentity` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.Deployments` was modified
 
 * `listSkus(java.lang.String,java.lang.String,java.lang.String)` was added
 * `listSkus(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
-#### `models.MetricName` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.ResourceSkuListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.DeploymentScaleSettings` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.AccountSku` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.MultiRegionSettings` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.PatchResourceTags` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.CallRateLimit` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.CommitmentPlanProperties` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `provisioningIssues()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.ModelDeprecationInfo` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.PrivateLinkServiceConnectionState` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.PrivateLinkResourceProperties` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.CommitmentPlanAccountAssociation` was modified
 
@@ -567,16 +348,6 @@
 
 * `withTags(java.util.Map)` was added
 * `withSku(models.Sku)` was added
-
-#### `models.IpRule` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.DeploymentListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.1.0-beta.2 (2024-10-31)
 
