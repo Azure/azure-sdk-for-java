@@ -1,12 +1,15 @@
 # Release History
 
-## 12.4.7 (2024-11-21)
+## 12.5.0 (2024-11-21)
 
 ### Features Added
 
 - Added support for Microsoft Entra authentication when using the Tables SDK with Azure Cosmos endpoints.
 
 ### Other Changes
+
+- Removed handwritten translation layer between generated and custom types.
+- Add serialization support using `azure-xml`.
 
 #### Dependency Updates
 
