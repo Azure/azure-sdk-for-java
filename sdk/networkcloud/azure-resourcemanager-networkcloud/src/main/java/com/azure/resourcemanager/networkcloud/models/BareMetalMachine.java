@@ -11,56 +11,55 @@ import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineInne
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of BareMetalMachine. */
+/**
+ * An immutable client-side representation of BareMetalMachine.
+ */
 public interface BareMetalMachine {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Gets the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @return the extendedLocation value.
      */
     ExtendedLocation extendedLocation();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
@@ -68,7 +67,7 @@ public interface BareMetalMachine {
     /**
      * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
-     *
+     * 
      * @return the associatedResourceIds value.
      */
     List<String> associatedResourceIds();
@@ -76,81 +75,73 @@ public interface BareMetalMachine {
     /**
      * Gets the bmcConnectionString property: The connection string for the baseboard management controller including IP
      * address and protocol.
-     *
+     * 
      * @return the bmcConnectionString value.
      */
     String bmcConnectionString();
 
     /**
-     * Gets the bmcCredentials property: AdministrativeCredentials represents the admin credentials for the device
-     * requiring password-based authentication.
-     *
-     * <p>The credentials of the baseboard management controller on this bare metal machine.
-     *
+     * Gets the bmcCredentials property: The credentials of the baseboard management controller on this bare metal
+     * machine.
+     * 
      * @return the bmcCredentials value.
      */
     AdministrativeCredentials bmcCredentials();
 
     /**
      * Gets the bmcMacAddress property: The MAC address of the BMC device.
-     *
+     * 
      * @return the bmcMacAddress value.
      */
     String bmcMacAddress();
 
     /**
      * Gets the bootMacAddress property: The MAC address of a NIC connected to the PXE network.
-     *
+     * 
      * @return the bootMacAddress value.
      */
     String bootMacAddress();
 
     /**
      * Gets the clusterId property: The resource ID of the cluster this bare metal machine is associated with.
-     *
+     * 
      * @return the clusterId value.
      */
     String clusterId();
 
     /**
      * Gets the cordonStatus property: The cordon status of the bare metal machine.
-     *
+     * 
      * @return the cordonStatus value.
      */
     BareMetalMachineCordonStatus cordonStatus();
 
     /**
      * Gets the detailedStatus property: The more detailed status of the bare metal machine.
-     *
+     * 
      * @return the detailedStatus value.
      */
     BareMetalMachineDetailedStatus detailedStatus();
 
     /**
      * Gets the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     String detailedStatusMessage();
 
     /**
-     * Gets the hardwareInventory property: HardwareInventory represents the hardware configuration of this machine as
-     * exposed to the customer, including information acquired from the model/sku information and from the ironic
-     * inspector.
-     *
-     * <p>The hardware inventory, including information acquired from the model/sku information and from the ironic
-     * inspector.
-     *
+     * Gets the hardwareInventory property: The hardware inventory, including information acquired from the model/sku
+     * information and from the ironic inspector.
+     * 
      * @return the hardwareInventory value.
      */
     HardwareInventory hardwareInventory();
 
     /**
-     * Gets the hardwareValidationStatus property: HardwareValidationStatus represents the latest hardware validation
-     * details performed for this bare metal machine.
-     *
-     * <p>The details of the latest hardware validation performed for this bare metal machine.
-     *
+     * Gets the hardwareValidationStatus property: The details of the latest hardware validation performed for this bare
+     * metal machine.
+     * 
      * @return the hardwareValidationStatus value.
      */
     HardwareValidationStatus hardwareValidationStatus();
@@ -158,7 +149,7 @@ public interface BareMetalMachine {
     /**
      * Gets the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
      * of the resource IDs for the HybridAksClusters that have nodes hosted on this bare metal machine.
-     *
+     * 
      * @return the hybridAksClustersAssociatedIds value.
      */
     List<String> hybridAksClustersAssociatedIds();
@@ -166,35 +157,50 @@ public interface BareMetalMachine {
     /**
      * Gets the kubernetesNodeName property: The name of this machine represented by the host object in the Cluster's
      * Kubernetes control plane.
-     *
+     * 
      * @return the kubernetesNodeName value.
      */
     String kubernetesNodeName();
 
     /**
      * Gets the kubernetesVersion property: The version of Kubernetes running on this machine.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     String kubernetesVersion();
 
     /**
+     * Gets the machineClusterVersion property: The cluster version that has been applied to this machine during
+     * deployment or a version update.
+     * 
+     * @return the machineClusterVersion value.
+     */
+    String machineClusterVersion();
+
+    /**
      * Gets the machineDetails property: The custom details provided by the customer.
-     *
+     * 
      * @return the machineDetails value.
      */
     String machineDetails();
 
     /**
      * Gets the machineName property: The OS-level hostname assigned to this machine.
-     *
+     * 
      * @return the machineName value.
      */
     String machineName();
 
     /**
+     * Gets the machineRoles property: The list of roles that are assigned to the cluster node running on this machine.
+     * 
+     * @return the machineRoles value.
+     */
+    List<String> machineRoles();
+
+    /**
      * Gets the machineSkuId property: The unique internal identifier of the bare metal machine SKU.
-     *
+     * 
      * @return the machineSkuId value.
      */
     String machineSkuId();
@@ -202,7 +208,7 @@ public interface BareMetalMachine {
     /**
      * Gets the oamIpv4Address property: The IPv4 address that is assigned to the bare metal machine during the cluster
      * deployment.
-     *
+     * 
      * @return the oamIpv4Address value.
      */
     String oamIpv4Address();
@@ -210,35 +216,35 @@ public interface BareMetalMachine {
     /**
      * Gets the oamIpv6Address property: The IPv6 address that is assigned to the bare metal machine during the cluster
      * deployment.
-     *
+     * 
      * @return the oamIpv6Address value.
      */
     String oamIpv6Address();
 
     /**
      * Gets the osImage property: The image that is currently provisioned to the OS disk.
-     *
+     * 
      * @return the osImage value.
      */
     String osImage();
 
     /**
      * Gets the powerState property: The power state derived from the baseboard management controller.
-     *
+     * 
      * @return the powerState value.
      */
     BareMetalMachinePowerState powerState();
 
     /**
      * Gets the provisioningState property: The provisioning state of the bare metal machine.
-     *
+     * 
      * @return the provisioningState value.
      */
     BareMetalMachineProvisioningState provisioningState();
 
     /**
      * Gets the rackId property: The resource ID of the rack where this bare metal machine resides.
-     *
+     * 
      * @return the rackId value.
      */
     String rackId();
@@ -246,28 +252,42 @@ public interface BareMetalMachine {
     /**
      * Gets the rackSlot property: The rack slot in which this bare metal machine is located, ordered from the bottom up
      * i.e. the lowest slot is 1.
-     *
+     * 
      * @return the rackSlot value.
      */
     long rackSlot();
 
     /**
      * Gets the readyState property: The indicator of whether the bare metal machine is ready to receive workloads.
-     *
+     * 
      * @return the readyState value.
      */
     BareMetalMachineReadyState readyState();
 
     /**
+     * Gets the runtimeProtectionStatus property: The runtime protection status of the bare metal machine.
+     * 
+     * @return the runtimeProtectionStatus value.
+     */
+    RuntimeProtectionStatus runtimeProtectionStatus();
+
+    /**
+     * Gets the secretRotationStatus property: The list of statuses that represent secret rotation activity.
+     * 
+     * @return the secretRotationStatus value.
+     */
+    List<SecretRotationStatus> secretRotationStatus();
+
+    /**
      * Gets the serialNumber property: The serial number of the bare metal machine.
-     *
+     * 
      * @return the serialNumber value.
      */
     String serialNumber();
 
     /**
      * Gets the serviceTag property: The discovered value of the machine's service tag.
-     *
+     * 
      * @return the serviceTag value.
      */
     String serviceTag();
@@ -275,40 +295,42 @@ public interface BareMetalMachine {
     /**
      * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * the resource IDs for the VirtualMachines that are hosted on this bare metal machine.
-     *
+     * 
      * @return the virtualMachinesAssociatedIds value.
      */
     List<String> virtualMachinesAssociatedIds();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineInner object.
-     *
+     * 
      * @return the inner object.
      */
     BareMetalMachineInner innerModel();
 
-    /** The entirety of the BareMetalMachine definition. */
+    /**
+     * The entirety of the BareMetalMachine definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
         DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
         DefinitionStages.WithBmcConnectionString, DefinitionStages.WithBmcCredentials,
@@ -317,17 +339,23 @@ public interface BareMetalMachine {
         DefinitionStages.WithRackSlot, DefinitionStages.WithSerialNumber, DefinitionStages.WithCreate {
     }
 
-    /** The BareMetalMachine definition stages. */
+    /**
+     * The BareMetalMachine definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the BareMetalMachine definition. */
+        /**
+         * The first stage of the BareMetalMachine definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify location. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -335,153 +363,169 @@ public interface BareMetalMachine {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify parent resource. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify extendedLocation. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify extendedLocation.
+         */
         interface WithExtendedLocation {
             /**
-             * Specifies the extendedLocation property: ExtendedLocation represents the Azure custom location where the
-             * resource will be created.
-             *
-             * <p>The extended location of the cluster associated with the resource..
-             *
-             * @param extendedLocation ExtendedLocation represents the Azure custom location where the resource will be
-             *     created.
-             *     <p>The extended location of the cluster associated with the resource.
+             * Specifies the extendedLocation property: The extended location of the cluster associated with the
+             * resource..
+             * 
+             * @param extendedLocation The extended location of the cluster associated with the resource.
              * @return the next definition stage.
              */
             WithBmcConnectionString withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify bmcConnectionString. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify bmcConnectionString.
+         */
         interface WithBmcConnectionString {
             /**
              * Specifies the bmcConnectionString property: The connection string for the baseboard management controller
              * including IP address and protocol..
-             *
+             * 
              * @param bmcConnectionString The connection string for the baseboard management controller including IP
-             *     address and protocol.
+             * address and protocol.
              * @return the next definition stage.
              */
             WithBmcCredentials withBmcConnectionString(String bmcConnectionString);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify bmcCredentials. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify bmcCredentials.
+         */
         interface WithBmcCredentials {
             /**
-             * Specifies the bmcCredentials property: AdministrativeCredentials represents the admin credentials for the
-             * device requiring password-based authentication.
-             *
-             * <p>The credentials of the baseboard management controller on this bare metal machine..
-             *
-             * @param bmcCredentials AdministrativeCredentials represents the admin credentials for the device requiring
-             *     password-based authentication.
-             *     <p>The credentials of the baseboard management controller on this bare metal machine.
+             * Specifies the bmcCredentials property: The credentials of the baseboard management controller on this
+             * bare metal machine..
+             * 
+             * @param bmcCredentials The credentials of the baseboard management controller on this bare metal machine.
              * @return the next definition stage.
              */
             WithBmcMacAddress withBmcCredentials(AdministrativeCredentials bmcCredentials);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify bmcMacAddress. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify bmcMacAddress.
+         */
         interface WithBmcMacAddress {
             /**
              * Specifies the bmcMacAddress property: The MAC address of the BMC device..
-             *
+             * 
              * @param bmcMacAddress The MAC address of the BMC device.
              * @return the next definition stage.
              */
             WithBootMacAddress withBmcMacAddress(String bmcMacAddress);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify bootMacAddress. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify bootMacAddress.
+         */
         interface WithBootMacAddress {
             /**
              * Specifies the bootMacAddress property: The MAC address of a NIC connected to the PXE network..
-             *
+             * 
              * @param bootMacAddress The MAC address of a NIC connected to the PXE network.
              * @return the next definition stage.
              */
             WithMachineDetails withBootMacAddress(String bootMacAddress);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify machineDetails. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify machineDetails.
+         */
         interface WithMachineDetails {
             /**
              * Specifies the machineDetails property: The custom details provided by the customer..
-             *
+             * 
              * @param machineDetails The custom details provided by the customer.
              * @return the next definition stage.
              */
             WithMachineName withMachineDetails(String machineDetails);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify machineName. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify machineName.
+         */
         interface WithMachineName {
             /**
              * Specifies the machineName property: The OS-level hostname assigned to this machine..
-             *
+             * 
              * @param machineName The OS-level hostname assigned to this machine.
              * @return the next definition stage.
              */
             WithMachineSkuId withMachineName(String machineName);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify machineSkuId. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify machineSkuId.
+         */
         interface WithMachineSkuId {
             /**
              * Specifies the machineSkuId property: The unique internal identifier of the bare metal machine SKU..
-             *
+             * 
              * @param machineSkuId The unique internal identifier of the bare metal machine SKU.
              * @return the next definition stage.
              */
             WithRackId withMachineSkuId(String machineSkuId);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify rackId. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify rackId.
+         */
         interface WithRackId {
             /**
              * Specifies the rackId property: The resource ID of the rack where this bare metal machine resides..
-             *
+             * 
              * @param rackId The resource ID of the rack where this bare metal machine resides.
              * @return the next definition stage.
              */
             WithRackSlot withRackId(String rackId);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify rackSlot. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify rackSlot.
+         */
         interface WithRackSlot {
             /**
              * Specifies the rackSlot property: The rack slot in which this bare metal machine is located, ordered from
              * the bottom up i.e. the lowest slot is 1..
-             *
+             * 
              * @param rackSlot The rack slot in which this bare metal machine is located, ordered from the bottom up
-             *     i.e. the lowest slot is 1.
+             * i.e. the lowest slot is 1.
              * @return the next definition stage.
              */
             WithSerialNumber withRackSlot(long rackSlot);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify serialNumber. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify serialNumber.
+         */
         interface WithSerialNumber {
             /**
              * Specifies the serialNumber property: The serial number of the bare metal machine..
-             *
+             * 
              * @param serialNumber The serial number of the bare metal machine.
              * @return the next definition stage.
              */
@@ -492,81 +536,107 @@ public interface BareMetalMachine {
          * The stage of the BareMetalMachine definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithMachineClusterVersion {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             BareMetalMachine create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             BareMetalMachine create(Context context);
         }
 
-        /** The stage of the BareMetalMachine definition allowing to specify tags. */
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify machineClusterVersion.
+         */
+        interface WithMachineClusterVersion {
+            /**
+             * Specifies the machineClusterVersion property: The cluster version that has been applied to this machine
+             * during deployment or a version update..
+             * 
+             * @param machineClusterVersion The cluster version that has been applied to this machine during deployment
+             * or a version update.
+             * @return the next definition stage.
+             */
+            WithCreate withMachineClusterVersion(String machineClusterVersion);
+        }
     }
 
     /**
      * Begins update for the BareMetalMachine resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     BareMetalMachine.Update update();
 
-    /** The template for BareMetalMachine update. */
+    /**
+     * The template for BareMetalMachine update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithMachineDetails {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         BareMetalMachine apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         BareMetalMachine apply(Context context);
     }
 
-    /** The BareMetalMachine update stages. */
+    /**
+     * The BareMetalMachine update stages.
+     */
     interface UpdateStages {
-        /** The stage of the BareMetalMachine update allowing to specify tags. */
+        /**
+         * The stage of the BareMetalMachine update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: The Azure resource tags that will replace the existing ones..
-             *
+             * 
              * @param tags The Azure resource tags that will replace the existing ones.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the BareMetalMachine update allowing to specify machineDetails. */
+        /**
+         * The stage of the BareMetalMachine update allowing to specify machineDetails.
+         */
         interface WithMachineDetails {
             /**
              * Specifies the machineDetails property: The details provided by the customer during the creation of rack
-             * manifests that allows for custom data to be associated with this machine..
-             *
-             * @param machineDetails The details provided by the customer during the creation of rack manifests that
-             *     allows for custom data to be associated with this machine.
+             * manifests
+             * that allows for custom data to be associated with this machine..
+             * 
+             * @param machineDetails The details provided by the customer during the creation of rack manifests
+             * that allows for custom data to be associated with this machine.
              * @return the next definition stage.
              */
             Update withMachineDetails(String machineDetails);
@@ -575,14 +645,14 @@ public interface BareMetalMachine {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     BareMetalMachine refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -590,9 +660,9 @@ public interface BareMetalMachine {
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -601,9 +671,9 @@ public interface BareMetalMachine {
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param bareMetalMachineCordonParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -615,9 +685,9 @@ public interface BareMetalMachine {
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -626,9 +696,9 @@ public interface BareMetalMachine {
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param bareMetalMachinePowerOffParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -641,9 +711,9 @@ public interface BareMetalMachine {
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -652,9 +722,9 @@ public interface BareMetalMachine {
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -665,9 +735,9 @@ public interface BareMetalMachine {
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -676,9 +746,9 @@ public interface BareMetalMachine {
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param bareMetalMachineReplaceParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -690,9 +760,9 @@ public interface BareMetalMachine {
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -701,9 +771,9 @@ public interface BareMetalMachine {
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -714,10 +784,10 @@ public interface BareMetalMachine {
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param bareMetalMachineRunCommandParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -728,10 +798,10 @@ public interface BareMetalMachine {
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param bareMetalMachineRunCommandParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -744,11 +814,10 @@ public interface BareMetalMachine {
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param bareMetalMachineRunDataExtractsParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -760,11 +829,10 @@ public interface BareMetalMachine {
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param bareMetalMachineRunDataExtractsParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -777,11 +845,11 @@ public interface BareMetalMachine {
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param bareMetalMachineRunReadCommandsParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -793,11 +861,11 @@ public interface BareMetalMachine {
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param bareMetalMachineRunReadCommandsParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -810,9 +878,9 @@ public interface BareMetalMachine {
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -821,9 +889,9 @@ public interface BareMetalMachine {
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -834,9 +902,9 @@ public interface BareMetalMachine {
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -845,9 +913,9 @@ public interface BareMetalMachine {
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

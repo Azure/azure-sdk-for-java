@@ -6,195 +6,187 @@ package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
 import com.azure.resourcemanager.networkcloud.models.ClusterConnectionStatus;
 import com.azure.resourcemanager.networkcloud.models.ClusterDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerConnectionStatus;
 import com.azure.resourcemanager.networkcloud.models.ClusterProvisioningState;
+import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchive;
 import com.azure.resourcemanager.networkcloud.models.ClusterType;
+import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
+import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
+import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ClusterProperties represents the properties of a cluster. */
+/**
+ * ClusterProperties represents the properties of a cluster.
+ */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
-     * RackDefinition represents details regarding the rack.
-     *
      * The rack definition that is intended to reflect only a single rack in a single rack cluster, or an aggregator
      * rack in a multi-rack cluster.
      */
-    @JsonProperty(value = "aggregatorOrSingleRackDefinition", required = true)
     private RackDefinition aggregatorOrSingleRackDefinition;
 
     /*
      * The resource ID of the Log Analytics Workspace that will be used for storing relevant logs.
      */
-    @JsonProperty(value = "analyticsWorkspaceId")
     private String analyticsWorkspaceId;
 
     /*
      * The list of cluster runtime version upgrades available for this cluster.
      */
-    @JsonProperty(value = "availableUpgradeVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ClusterAvailableUpgradeVersion> availableUpgradeVersions;
 
     /*
-     * ClusterCapacity represents various details regarding compute capacity.
-     *
      * The capacity supported by this cluster.
      */
-    @JsonProperty(value = "clusterCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterCapacity clusterCapacity;
 
     /*
      * The latest heartbeat status between the cluster manager and the cluster.
      */
-    @JsonProperty(value = "clusterConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterConnectionStatus clusterConnectionStatus;
 
     /*
-     * ExtendedLocation represents the Azure custom location where the resource will be created.
-     *
      * The extended location (custom location) that represents the cluster's control plane location. This extended
-     * location is used to route the requests of child objects of the cluster that are handled by the platform
-     * operator.
+     * location is used to route the requests of child objects of the cluster that are handled by the platform operator.
      */
-    @JsonProperty(value = "clusterExtendedLocation", access = JsonProperty.Access.WRITE_ONLY)
     private ExtendedLocation clusterExtendedLocation;
 
     /*
      * The customer-provided location information to identify where the cluster resides.
      */
-    @JsonProperty(value = "clusterLocation")
     private String clusterLocation;
 
     /*
      * The latest connectivity status between cluster manager and the cluster.
      */
-    @JsonProperty(value = "clusterManagerConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterManagerConnectionStatus clusterManagerConnectionStatus;
 
     /*
      * The resource ID of the cluster manager that manages this cluster. This is set by the Cluster Manager when the
      * cluster is created.
      */
-    @JsonProperty(value = "clusterManagerId", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterManagerId;
 
     /*
-     * ServicePrincipalInformation represents the details of the service principal to be used by the cluster during Arc
-     * Appliance installation.
-     *
      * The service principal to be used by the cluster during Arc Appliance installation.
      */
-    @JsonProperty(value = "clusterServicePrincipal")
     private ServicePrincipalInformation clusterServicePrincipal;
 
     /*
      * The type of rack configuration for the cluster.
      */
-    @JsonProperty(value = "clusterType", required = true)
     private ClusterType clusterType;
 
     /*
      * The current runtime version of the cluster.
      */
-    @JsonProperty(value = "clusterVersion", required = true)
     private String clusterVersion;
 
     /*
-     * ValidationThreshold indicates allowed machine and node hardware and deployment failures.
-     *
+     * The settings for commands run in this cluster, such as bare metal machine run read only commands and data
+     * extracts.
+     */
+    private CommandOutputSettings commandOutputSettings;
+
+    /*
      * The validation threshold indicating the allowable failures of compute machines during environment validation and
      * deployment.
      */
-    @JsonProperty(value = "computeDeploymentThreshold")
     private ValidationThreshold computeDeploymentThreshold;
 
     /*
      * The list of rack definitions for the compute racks in a multi-rack
      * cluster, or an empty list in a single-rack cluster.
      */
-    @JsonProperty(value = "computeRackDefinitions")
     private List<RackDefinition> computeRackDefinitions;
 
     /*
      * The current detailed status of the cluster.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
-     * ExtendedLocation represents the Azure custom location where the resource will be created.
-     *
      * Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom
      * location) that represents the Hybrid AKS control plane location. This extended location is used when creating
      * provisioned clusters (Hybrid AKS clusters).
      */
-    @JsonProperty(value = "hybridAksExtendedLocation", access = JsonProperty.Access.WRITE_ONLY)
     private ExtendedLocation hybridAksExtendedLocation;
 
     /*
-     * ManagedResourceGroupConfiguration represents the configuration of the resource group managed by Azure.
-     *
      * The configuration of the managed resource group associated with the resource.
      */
-    @JsonProperty(value = "managedResourceGroupConfiguration")
     private ManagedResourceGroupConfiguration managedResourceGroupConfiguration;
 
     /*
      * The count of Manual Action Taken (MAT) events that have not been validated.
      */
-    @JsonProperty(value = "manualActionCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long manualActionCount;
 
     /*
      * The resource ID of the Network Fabric associated with the cluster.
      */
-    @JsonProperty(value = "networkFabricId", required = true)
     private String networkFabricId;
 
     /*
      * The provisioning state of the cluster.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterProvisioningState provisioningState;
+
+    /*
+     * The settings for cluster runtime protection.
+     */
+    private RuntimeProtectionConfiguration runtimeProtectionConfiguration;
+
+    /*
+     * The configuration for use of a key vault to store secrets for later retrieval by the operator.
+     */
+    private ClusterSecretArchive secretArchive;
 
     /*
      * The support end date of the runtime version of the cluster.
      */
-    @JsonProperty(value = "supportExpiryDate", access = JsonProperty.Access.WRITE_ONLY)
     private String supportExpiryDate;
+
+    /*
+     * The strategy for updating the cluster.
+     */
+    private ClusterUpdateStrategy updateStrategy;
 
     /*
      * The list of workload resource IDs that are hosted within this cluster.
      */
-    @JsonProperty(value = "workloadResourceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> workloadResourceIds;
 
-    /** Creates an instance of ClusterProperties class. */
+    /**
+     * Creates an instance of ClusterProperties class.
+     */
     public ClusterProperties() {
     }
 
     /**
-     * Get the aggregatorOrSingleRackDefinition property: RackDefinition represents details regarding the rack.
-     *
-     * <p>The rack definition that is intended to reflect only a single rack in a single rack cluster, or an aggregator
-     * rack in a multi-rack cluster.
-     *
+     * Get the aggregatorOrSingleRackDefinition property: The rack definition that is intended to reflect only a single
+     * rack in a single rack cluster, or an aggregator rack in a multi-rack cluster.
+     * 
      * @return the aggregatorOrSingleRackDefinition value.
      */
     public RackDefinition aggregatorOrSingleRackDefinition() {
@@ -202,11 +194,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the aggregatorOrSingleRackDefinition property: RackDefinition represents details regarding the rack.
-     *
-     * <p>The rack definition that is intended to reflect only a single rack in a single rack cluster, or an aggregator
-     * rack in a multi-rack cluster.
-     *
+     * Set the aggregatorOrSingleRackDefinition property: The rack definition that is intended to reflect only a single
+     * rack in a single rack cluster, or an aggregator rack in a multi-rack cluster.
+     * 
      * @param aggregatorOrSingleRackDefinition the aggregatorOrSingleRackDefinition value to set.
      * @return the ClusterProperties object itself.
      */
@@ -218,7 +208,7 @@ public final class ClusterProperties {
     /**
      * Get the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be used for
      * storing relevant logs.
-     *
+     * 
      * @return the analyticsWorkspaceId value.
      */
     public String analyticsWorkspaceId() {
@@ -228,7 +218,7 @@ public final class ClusterProperties {
     /**
      * Set the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be used for
      * storing relevant logs.
-     *
+     * 
      * @param analyticsWorkspaceId the analyticsWorkspaceId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -240,7 +230,7 @@ public final class ClusterProperties {
     /**
      * Get the availableUpgradeVersions property: The list of cluster runtime version upgrades available for this
      * cluster.
-     *
+     * 
      * @return the availableUpgradeVersions value.
      */
     public List<ClusterAvailableUpgradeVersion> availableUpgradeVersions() {
@@ -248,10 +238,8 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the clusterCapacity property: ClusterCapacity represents various details regarding compute capacity.
-     *
-     * <p>The capacity supported by this cluster.
-     *
+     * Get the clusterCapacity property: The capacity supported by this cluster.
+     * 
      * @return the clusterCapacity value.
      */
     public ClusterCapacity clusterCapacity() {
@@ -261,7 +249,7 @@ public final class ClusterProperties {
     /**
      * Get the clusterConnectionStatus property: The latest heartbeat status between the cluster manager and the
      * cluster.
-     *
+     * 
      * @return the clusterConnectionStatus value.
      */
     public ClusterConnectionStatus clusterConnectionStatus() {
@@ -269,12 +257,10 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the clusterExtendedLocation property: ExtendedLocation represents the Azure custom location where the
-     * resource will be created.
-     *
-     * <p>The extended location (custom location) that represents the cluster's control plane location. This extended
-     * location is used to route the requests of child objects of the cluster that are handled by the platform operator.
-     *
+     * Get the clusterExtendedLocation property: The extended location (custom location) that represents the cluster's
+     * control plane location. This extended location is used to route the requests of child objects of the cluster that
+     * are handled by the platform operator.
+     * 
      * @return the clusterExtendedLocation value.
      */
     public ExtendedLocation clusterExtendedLocation() {
@@ -284,7 +270,7 @@ public final class ClusterProperties {
     /**
      * Get the clusterLocation property: The customer-provided location information to identify where the cluster
      * resides.
-     *
+     * 
      * @return the clusterLocation value.
      */
     public String clusterLocation() {
@@ -294,7 +280,7 @@ public final class ClusterProperties {
     /**
      * Set the clusterLocation property: The customer-provided location information to identify where the cluster
      * resides.
-     *
+     * 
      * @param clusterLocation the clusterLocation value to set.
      * @return the ClusterProperties object itself.
      */
@@ -306,7 +292,7 @@ public final class ClusterProperties {
     /**
      * Get the clusterManagerConnectionStatus property: The latest connectivity status between cluster manager and the
      * cluster.
-     *
+     * 
      * @return the clusterManagerConnectionStatus value.
      */
     public ClusterManagerConnectionStatus clusterManagerConnectionStatus() {
@@ -316,7 +302,7 @@ public final class ClusterProperties {
     /**
      * Get the clusterManagerId property: The resource ID of the cluster manager that manages this cluster. This is set
      * by the Cluster Manager when the cluster is created.
-     *
+     * 
      * @return the clusterManagerId value.
      */
     public String clusterManagerId() {
@@ -324,11 +310,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the clusterServicePrincipal property: ServicePrincipalInformation represents the details of the service
-     * principal to be used by the cluster during Arc Appliance installation.
-     *
-     * <p>The service principal to be used by the cluster during Arc Appliance installation.
-     *
+     * Get the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
+     * installation.
+     * 
      * @return the clusterServicePrincipal value.
      */
     public ServicePrincipalInformation clusterServicePrincipal() {
@@ -336,11 +320,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the clusterServicePrincipal property: ServicePrincipalInformation represents the details of the service
-     * principal to be used by the cluster during Arc Appliance installation.
-     *
-     * <p>The service principal to be used by the cluster during Arc Appliance installation.
-     *
+     * Set the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
+     * installation.
+     * 
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterProperties object itself.
      */
@@ -351,7 +333,7 @@ public final class ClusterProperties {
 
     /**
      * Get the clusterType property: The type of rack configuration for the cluster.
-     *
+     * 
      * @return the clusterType value.
      */
     public ClusterType clusterType() {
@@ -360,7 +342,7 @@ public final class ClusterProperties {
 
     /**
      * Set the clusterType property: The type of rack configuration for the cluster.
-     *
+     * 
      * @param clusterType the clusterType value to set.
      * @return the ClusterProperties object itself.
      */
@@ -371,7 +353,7 @@ public final class ClusterProperties {
 
     /**
      * Get the clusterVersion property: The current runtime version of the cluster.
-     *
+     * 
      * @return the clusterVersion value.
      */
     public String clusterVersion() {
@@ -380,7 +362,7 @@ public final class ClusterProperties {
 
     /**
      * Set the clusterVersion property: The current runtime version of the cluster.
-     *
+     * 
      * @param clusterVersion the clusterVersion value to set.
      * @return the ClusterProperties object itself.
      */
@@ -390,12 +372,31 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the computeDeploymentThreshold property: ValidationThreshold indicates allowed machine and node hardware and
-     * deployment failures.
-     *
-     * <p>The validation threshold indicating the allowable failures of compute machines during environment validation
-     * and deployment.
-     *
+     * Get the commandOutputSettings property: The settings for commands run in this cluster, such as bare metal machine
+     * run read only commands and data extracts.
+     * 
+     * @return the commandOutputSettings value.
+     */
+    public CommandOutputSettings commandOutputSettings() {
+        return this.commandOutputSettings;
+    }
+
+    /**
+     * Set the commandOutputSettings property: The settings for commands run in this cluster, such as bare metal machine
+     * run read only commands and data extracts.
+     * 
+     * @param commandOutputSettings the commandOutputSettings value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withCommandOutputSettings(CommandOutputSettings commandOutputSettings) {
+        this.commandOutputSettings = commandOutputSettings;
+        return this;
+    }
+
+    /**
+     * Get the computeDeploymentThreshold property: The validation threshold indicating the allowable failures of
+     * compute machines during environment validation and deployment.
+     * 
      * @return the computeDeploymentThreshold value.
      */
     public ValidationThreshold computeDeploymentThreshold() {
@@ -403,12 +404,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the computeDeploymentThreshold property: ValidationThreshold indicates allowed machine and node hardware and
-     * deployment failures.
-     *
-     * <p>The validation threshold indicating the allowable failures of compute machines during environment validation
-     * and deployment.
-     *
+     * Set the computeDeploymentThreshold property: The validation threshold indicating the allowable failures of
+     * compute machines during environment validation and deployment.
+     * 
      * @param computeDeploymentThreshold the computeDeploymentThreshold value to set.
      * @return the ClusterProperties object itself.
      */
@@ -420,7 +418,7 @@ public final class ClusterProperties {
     /**
      * Get the computeRackDefinitions property: The list of rack definitions for the compute racks in a multi-rack
      * cluster, or an empty list in a single-rack cluster.
-     *
+     * 
      * @return the computeRackDefinitions value.
      */
     public List<RackDefinition> computeRackDefinitions() {
@@ -430,7 +428,7 @@ public final class ClusterProperties {
     /**
      * Set the computeRackDefinitions property: The list of rack definitions for the compute racks in a multi-rack
      * cluster, or an empty list in a single-rack cluster.
-     *
+     * 
      * @param computeRackDefinitions the computeRackDefinitions value to set.
      * @return the ClusterProperties object itself.
      */
@@ -441,7 +439,7 @@ public final class ClusterProperties {
 
     /**
      * Get the detailedStatus property: The current detailed status of the cluster.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public ClusterDetailedStatus detailedStatus() {
@@ -450,7 +448,7 @@ public final class ClusterProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -458,13 +456,10 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the hybridAksExtendedLocation property: ExtendedLocation represents the Azure custom location where the
-     * resource will be created.
-     *
-     * <p>Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom
-     * location) that represents the Hybrid AKS control plane location. This extended location is used when creating
-     * provisioned clusters (Hybrid AKS clusters).
-     *
+     * Get the hybridAksExtendedLocation property: Field Deprecated. This field will not be populated in an upcoming
+     * version. The extended location (custom location) that represents the Hybrid AKS control plane location. This
+     * extended location is used when creating provisioned clusters (Hybrid AKS clusters).
+     * 
      * @return the hybridAksExtendedLocation value.
      */
     public ExtendedLocation hybridAksExtendedLocation() {
@@ -472,11 +467,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the managedResourceGroupConfiguration property: ManagedResourceGroupConfiguration represents the
-     * configuration of the resource group managed by Azure.
-     *
-     * <p>The configuration of the managed resource group associated with the resource.
-     *
+     * Get the managedResourceGroupConfiguration property: The configuration of the managed resource group associated
+     * with the resource.
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedResourceGroupConfiguration managedResourceGroupConfiguration() {
@@ -484,11 +477,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the managedResourceGroupConfiguration property: ManagedResourceGroupConfiguration represents the
-     * configuration of the resource group managed by Azure.
-     *
-     * <p>The configuration of the managed resource group associated with the resource.
-     *
+     * Set the managedResourceGroupConfiguration property: The configuration of the managed resource group associated
+     * with the resource.
+     * 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the ClusterProperties object itself.
      */
@@ -500,7 +491,7 @@ public final class ClusterProperties {
 
     /**
      * Get the manualActionCount property: The count of Manual Action Taken (MAT) events that have not been validated.
-     *
+     * 
      * @return the manualActionCount value.
      */
     public Long manualActionCount() {
@@ -509,7 +500,7 @@ public final class ClusterProperties {
 
     /**
      * Get the networkFabricId property: The resource ID of the Network Fabric associated with the cluster.
-     *
+     * 
      * @return the networkFabricId value.
      */
     public String networkFabricId() {
@@ -518,7 +509,7 @@ public final class ClusterProperties {
 
     /**
      * Set the networkFabricId property: The resource ID of the Network Fabric associated with the cluster.
-     *
+     * 
      * @param networkFabricId the networkFabricId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -529,7 +520,7 @@ public final class ClusterProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ClusterProvisioningState provisioningState() {
@@ -537,8 +528,51 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the runtimeProtectionConfiguration property: The settings for cluster runtime protection.
+     * 
+     * @return the runtimeProtectionConfiguration value.
+     */
+    public RuntimeProtectionConfiguration runtimeProtectionConfiguration() {
+        return this.runtimeProtectionConfiguration;
+    }
+
+    /**
+     * Set the runtimeProtectionConfiguration property: The settings for cluster runtime protection.
+     * 
+     * @param runtimeProtectionConfiguration the runtimeProtectionConfiguration value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties
+        withRuntimeProtectionConfiguration(RuntimeProtectionConfiguration runtimeProtectionConfiguration) {
+        this.runtimeProtectionConfiguration = runtimeProtectionConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the secretArchive property: The configuration for use of a key vault to store secrets for later retrieval by
+     * the operator.
+     * 
+     * @return the secretArchive value.
+     */
+    public ClusterSecretArchive secretArchive() {
+        return this.secretArchive;
+    }
+
+    /**
+     * Set the secretArchive property: The configuration for use of a key vault to store secrets for later retrieval by
+     * the operator.
+     * 
+     * @param secretArchive the secretArchive value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withSecretArchive(ClusterSecretArchive secretArchive) {
+        this.secretArchive = secretArchive;
+        return this;
+    }
+
+    /**
      * Get the supportExpiryDate property: The support end date of the runtime version of the cluster.
-     *
+     * 
      * @return the supportExpiryDate value.
      */
     public String supportExpiryDate() {
@@ -546,8 +580,28 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the updateStrategy property: The strategy for updating the cluster.
+     * 
+     * @return the updateStrategy value.
+     */
+    public ClusterUpdateStrategy updateStrategy() {
+        return this.updateStrategy;
+    }
+
+    /**
+     * Set the updateStrategy property: The strategy for updating the cluster.
+     * 
+     * @param updateStrategy the updateStrategy value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withUpdateStrategy(ClusterUpdateStrategy updateStrategy) {
+        this.updateStrategy = updateStrategy;
+        return this;
+    }
+
+    /**
      * Get the workloadResourceIds property: The list of workload resource IDs that are hosted within this cluster.
-     *
+     * 
      * @return the workloadResourceIds value.
      */
     public List<String> workloadResourceIds() {
@@ -556,13 +610,14 @@ public final class ClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (aggregatorOrSingleRackDefinition() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property aggregatorOrSingleRackDefinition in model ClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aggregatorOrSingleRackDefinition in model ClusterProperties"));
         } else {
             aggregatorOrSingleRackDefinition().validate();
         }
@@ -579,12 +634,16 @@ public final class ClusterProperties {
             clusterServicePrincipal().validate();
         }
         if (clusterType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property clusterType in model ClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property clusterType in model ClusterProperties"));
         }
         if (clusterVersion() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property clusterVersion in model ClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clusterVersion in model ClusterProperties"));
+        }
+        if (commandOutputSettings() != null) {
+            commandOutputSettings().validate();
         }
         if (computeDeploymentThreshold() != null) {
             computeDeploymentThreshold().validate();
@@ -599,10 +658,134 @@ public final class ClusterProperties {
             managedResourceGroupConfiguration().validate();
         }
         if (networkFabricId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property networkFabricId in model ClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFabricId in model ClusterProperties"));
+        }
+        if (runtimeProtectionConfiguration() != null) {
+            runtimeProtectionConfiguration().validate();
+        }
+        if (secretArchive() != null) {
+            secretArchive().validate();
+        }
+        if (updateStrategy() != null) {
+            updateStrategy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("aggregatorOrSingleRackDefinition", this.aggregatorOrSingleRackDefinition);
+        jsonWriter.writeStringField("clusterType", this.clusterType == null ? null : this.clusterType.toString());
+        jsonWriter.writeStringField("clusterVersion", this.clusterVersion);
+        jsonWriter.writeStringField("networkFabricId", this.networkFabricId);
+        jsonWriter.writeStringField("analyticsWorkspaceId", this.analyticsWorkspaceId);
+        jsonWriter.writeStringField("clusterLocation", this.clusterLocation);
+        jsonWriter.writeJsonField("clusterServicePrincipal", this.clusterServicePrincipal);
+        jsonWriter.writeJsonField("commandOutputSettings", this.commandOutputSettings);
+        jsonWriter.writeJsonField("computeDeploymentThreshold", this.computeDeploymentThreshold);
+        jsonWriter.writeArrayField("computeRackDefinitions", this.computeRackDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        jsonWriter.writeJsonField("runtimeProtectionConfiguration", this.runtimeProtectionConfiguration);
+        jsonWriter.writeJsonField("secretArchive", this.secretArchive);
+        jsonWriter.writeJsonField("updateStrategy", this.updateStrategy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregatorOrSingleRackDefinition".equals(fieldName)) {
+                    deserializedClusterProperties.aggregatorOrSingleRackDefinition = RackDefinition.fromJson(reader);
+                } else if ("clusterType".equals(fieldName)) {
+                    deserializedClusterProperties.clusterType = ClusterType.fromString(reader.getString());
+                } else if ("clusterVersion".equals(fieldName)) {
+                    deserializedClusterProperties.clusterVersion = reader.getString();
+                } else if ("networkFabricId".equals(fieldName)) {
+                    deserializedClusterProperties.networkFabricId = reader.getString();
+                } else if ("analyticsWorkspaceId".equals(fieldName)) {
+                    deserializedClusterProperties.analyticsWorkspaceId = reader.getString();
+                } else if ("availableUpgradeVersions".equals(fieldName)) {
+                    List<ClusterAvailableUpgradeVersion> availableUpgradeVersions
+                        = reader.readArray(reader1 -> ClusterAvailableUpgradeVersion.fromJson(reader1));
+                    deserializedClusterProperties.availableUpgradeVersions = availableUpgradeVersions;
+                } else if ("clusterCapacity".equals(fieldName)) {
+                    deserializedClusterProperties.clusterCapacity = ClusterCapacity.fromJson(reader);
+                } else if ("clusterConnectionStatus".equals(fieldName)) {
+                    deserializedClusterProperties.clusterConnectionStatus
+                        = ClusterConnectionStatus.fromString(reader.getString());
+                } else if ("clusterExtendedLocation".equals(fieldName)) {
+                    deserializedClusterProperties.clusterExtendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("clusterLocation".equals(fieldName)) {
+                    deserializedClusterProperties.clusterLocation = reader.getString();
+                } else if ("clusterManagerConnectionStatus".equals(fieldName)) {
+                    deserializedClusterProperties.clusterManagerConnectionStatus
+                        = ClusterManagerConnectionStatus.fromString(reader.getString());
+                } else if ("clusterManagerId".equals(fieldName)) {
+                    deserializedClusterProperties.clusterManagerId = reader.getString();
+                } else if ("clusterServicePrincipal".equals(fieldName)) {
+                    deserializedClusterProperties.clusterServicePrincipal
+                        = ServicePrincipalInformation.fromJson(reader);
+                } else if ("commandOutputSettings".equals(fieldName)) {
+                    deserializedClusterProperties.commandOutputSettings = CommandOutputSettings.fromJson(reader);
+                } else if ("computeDeploymentThreshold".equals(fieldName)) {
+                    deserializedClusterProperties.computeDeploymentThreshold = ValidationThreshold.fromJson(reader);
+                } else if ("computeRackDefinitions".equals(fieldName)) {
+                    List<RackDefinition> computeRackDefinitions
+                        = reader.readArray(reader1 -> RackDefinition.fromJson(reader1));
+                    deserializedClusterProperties.computeRackDefinitions = computeRackDefinitions;
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedClusterProperties.detailedStatus = ClusterDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedClusterProperties.detailedStatusMessage = reader.getString();
+                } else if ("hybridAksExtendedLocation".equals(fieldName)) {
+                    deserializedClusterProperties.hybridAksExtendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedClusterProperties.managedResourceGroupConfiguration
+                        = ManagedResourceGroupConfiguration.fromJson(reader);
+                } else if ("manualActionCount".equals(fieldName)) {
+                    deserializedClusterProperties.manualActionCount = reader.getNullable(JsonReader::getLong);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState
+                        = ClusterProvisioningState.fromString(reader.getString());
+                } else if ("runtimeProtectionConfiguration".equals(fieldName)) {
+                    deserializedClusterProperties.runtimeProtectionConfiguration
+                        = RuntimeProtectionConfiguration.fromJson(reader);
+                } else if ("secretArchive".equals(fieldName)) {
+                    deserializedClusterProperties.secretArchive = ClusterSecretArchive.fromJson(reader);
+                } else if ("supportExpiryDate".equals(fieldName)) {
+                    deserializedClusterProperties.supportExpiryDate = reader.getString();
+                } else if ("updateStrategy".equals(fieldName)) {
+                    deserializedClusterProperties.updateStrategy = ClusterUpdateStrategy.fromJson(reader);
+                } else if ("workloadResourceIds".equals(fieldName)) {
+                    List<String> workloadResourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterProperties.workloadResourceIds = workloadResourceIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
+    }
 }
