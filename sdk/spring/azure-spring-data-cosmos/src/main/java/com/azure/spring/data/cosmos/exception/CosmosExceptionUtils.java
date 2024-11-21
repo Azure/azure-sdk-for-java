@@ -28,7 +28,7 @@ public class CosmosExceptionUtils {
      * @param responseDiagnosticsProcessor response diagnostics processor
      * @param <T> type class of Mono
      * @return Mono instance
-     * @throws CosmosException | CosmosAccessException for operations on cosmos db
+     * @throws CosmosAccessException for operations on cosmos db
      */
     public static <T> Mono<T> exceptionHandler(String message, Throwable throwable,
                                                ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
