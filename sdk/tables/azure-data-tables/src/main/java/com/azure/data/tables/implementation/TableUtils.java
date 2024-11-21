@@ -8,21 +8,37 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.tables.implementation.models.AccessPolicy;
+import com.azure.data.tables.implementation.models.CorsRule;
+import com.azure.data.tables.implementation.models.GeoReplication;
+import com.azure.data.tables.implementation.models.Logging;
+import com.azure.data.tables.implementation.models.Metrics;
+import com.azure.data.tables.implementation.models.RetentionPolicy;
+import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TableServiceJsonError;
 import com.azure.data.tables.implementation.models.TableServiceJsonErrorException;
 import com.azure.data.tables.implementation.models.TableServiceOdataError;
 import com.azure.data.tables.implementation.models.TableServiceOdataErrorMessage;
+import com.azure.data.tables.implementation.models.TableServiceStats;
+import com.azure.data.tables.models.TableAccessPolicy;
+import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceError;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableServiceGeoReplication;
+import com.azure.data.tables.models.TableServiceGeoReplicationStatus;
+import com.azure.data.tables.models.TableServiceLogging;
+import com.azure.data.tables.models.TableServiceMetrics;
+import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.models.TableServiceRetentionPolicy;
+import com.azure.data.tables.models.TableServiceStatistics;
+import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionFailedException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.time.Duration;
@@ -30,9 +46,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -43,6 +62,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";
     private static final String DELIMITER_CONTINUATION_TOKEN = ";";
+    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 5;
 
     private TableUtils() {
         throw new UnsupportedOperationException("Cannot instantiate TablesUtils");
@@ -131,6 +151,23 @@ public final class TableUtils {
     }
 
     /**
+     * Blocks an asynchronous response with an optional timeout.
+     *
+     * @param response Asynchronous response to block.
+     * @param timeout Optional timeout.
+     * @param <T> Return type of the asynchronous response.
+     * @return The value of the asynchronous response.
+     * @throws RuntimeException If the asynchronous response doesn't complete before the timeout expires.
+     */
+    public static <T> T blockWithOptionalTimeout(Mono<T> response, Duration timeout) {
+        if (timeout == null) {
+            return response.block();
+        } else {
+            return response.block(timeout);
+        }
+    }
+
+    /**
      * Deserializes a given {@link Response HTTP response} including headers to a given class.
      *
      * @param statusCode The status code which will trigger exception swallowing.
@@ -139,8 +176,7 @@ public final class TableUtils {
      * @param <E> The class of the exception to swallow.
      * @return A {@link Mono} that contains the deserialized response.
      */
-    public static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCode(int statusCode,
-        E httpResponseException, ClientLogger logger) {
+    public static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCode(int statusCode, E httpResponseException, ClientLogger logger) {
         HttpResponse httpResponse = httpResponseException.getResponse();
 
         if (httpResponse.getStatusCode() == statusCode) {
@@ -149,6 +185,10 @@ public final class TableUtils {
         }
 
         return monoError(logger, httpResponseException);
+    }
+
+    public static boolean hasTimeout(Duration timeout) {
+        return timeout != null && !timeout.isZero() && !timeout.isNegative();
     }
 
     /**
@@ -257,7 +297,7 @@ public final class TableUtils {
             return null;
         }
 
-        if (stringToEncode.isEmpty()) {
+        if (stringToEncode.length() == 0) {
             return "";
         }
 
@@ -297,6 +337,153 @@ public final class TableUtils {
         }
     }
 
+    public static ExecutorService getThreadPoolWithShutdownHook() {
+        return CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(),
+            Duration.ofSeconds(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS));
+    }
+
+    public static TableServiceProperties toTableServiceProperties(
+        com.azure.data.tables.implementation.models.TableServiceProperties tableServiceProperties) {
+
+        if (tableServiceProperties == null) {
+            return null;
+        }
+
+        return new TableServiceProperties()
+            .setLogging(toTableServiceLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCorsRules(tableServiceProperties.getCors().stream().map(TableUtils::toTablesServiceCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    static TableServiceRetentionPolicy toTableServiceRetentionPolicy(RetentionPolicy retentionPolicy) {
+        if (retentionPolicy == null) {
+            return null;
+        }
+
+        return new TableServiceRetentionPolicy()
+            .setEnabled(retentionPolicy.isEnabled())
+            .setDaysToRetain(retentionPolicy.getDays());
+    }
+
+    static TableServiceMetrics toTableServiceMetrics(Metrics metrics) {
+        if (metrics == null) {
+            return null;
+        }
+
+        return new TableServiceMetrics()
+            .setVersion(metrics.getVersion())
+            .setEnabled(metrics.isEnabled())
+            .setIncludeApis(metrics.isIncludeAPIs())
+            .setRetentionPolicy(toTableServiceRetentionPolicy(metrics.getRetentionPolicy()));
+    }
+
+    static TableServiceCorsRule toTablesServiceCorsRule(CorsRule corsRule) {
+        if (corsRule == null) {
+            return null;
+        }
+
+        return new TableServiceCorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
+
+    static TableServiceLogging toTableServiceLogging(Logging logging) {
+        if (logging == null) {
+            return null;
+        }
+
+        return new TableServiceLogging()
+            .setAnalyticsVersion(logging.getVersion())
+            .setDeleteLogged(logging.isDelete())
+            .setReadLogged(logging.isRead())
+            .setWriteLogged(logging.isWrite())
+            .setRetentionPolicy(toTableServiceRetentionPolicy(logging.getRetentionPolicy()));
+    }
+
+    public static com.azure.data.tables.implementation.models.TableServiceProperties toImplTableServiceProperties(
+        TableServiceProperties tableServiceProperties) {
+
+        return new com.azure.data.tables.implementation.models.TableServiceProperties()
+            .setLogging(toLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCors(tableServiceProperties.getCorsRules() == null ? null
+                : tableServiceProperties.getCorsRules().stream()
+                .map(TableUtils::toCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    static Logging toLogging(TableServiceLogging tableServiceLogging) {
+        if (tableServiceLogging == null) {
+            return null;
+        }
+
+        return new Logging()
+            .setVersion(tableServiceLogging.getAnalyticsVersion())
+            .setDelete(tableServiceLogging.isDeleteLogged())
+            .setRead(tableServiceLogging.isReadLogged())
+            .setWrite(tableServiceLogging.isWriteLogged())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceLogging.getRetentionPolicy()));
+    }
+
+    static RetentionPolicy toRetentionPolicy(TableServiceRetentionPolicy tableServiceRetentionPolicy) {
+        if (tableServiceRetentionPolicy == null) {
+            return null;
+        }
+
+        return new RetentionPolicy()
+            .setEnabled(tableServiceRetentionPolicy.isEnabled())
+            .setDays(tableServiceRetentionPolicy.getDaysToRetain());
+    }
+
+    static Metrics toMetrics(TableServiceMetrics tableServiceMetrics) {
+        if (tableServiceMetrics == null) {
+            return null;
+        }
+
+        return new Metrics()
+            .setVersion(tableServiceMetrics.getVersion())
+            .setEnabled(tableServiceMetrics.isEnabled())
+            .setIncludeAPIs(tableServiceMetrics.isIncludeApis())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceMetrics.getTableServiceRetentionPolicy()));
+    }
+
+    static CorsRule toCorsRule(TableServiceCorsRule corsRule) {
+        if (corsRule == null) {
+            return null;
+        }
+
+        return new CorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
+
+    public static TableServiceStatistics toTableServiceStatistics(TableServiceStats tableServiceStats) {
+        if (tableServiceStats == null) {
+            return null;
+        }
+
+        return new TableServiceStatistics(toTableServiceGeoReplication(tableServiceStats.getGeoReplication()));
+    }
+
+    static TableServiceGeoReplication toTableServiceGeoReplication(GeoReplication geoReplication) {
+        if (geoReplication == null) {
+            return null;
+        }
+
+        return new TableServiceGeoReplication(
+            TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
+            geoReplication.getLastSyncTime());
+    }
+
     // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
     // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
     public static String escapeSingleQuotes(String input) {
@@ -305,6 +492,47 @@ public final class TableUtils {
         }
 
         return input.replace("'", "''");
+    }
+
+    public static TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
+        if (signedIdentifier == null) {
+            return null;
+        }
+
+        return new TableSignedIdentifier(signedIdentifier.getId())
+            .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
+    }
+
+    static TableAccessPolicy toTableAccessPolicy(AccessPolicy accessPolicy) {
+        if (accessPolicy == null) {
+            return null;
+        }
+
+        return new TableAccessPolicy()
+            .setExpiresOn(accessPolicy.getExpiry())
+            .setStartsOn(accessPolicy.getStart())
+            .setPermissions(accessPolicy.getPermission());
+    }
+
+    public static SignedIdentifier toSignedIdentifier(TableSignedIdentifier tableSignedIdentifier) {
+        if (tableSignedIdentifier == null) {
+            return null;
+        }
+
+        return new SignedIdentifier()
+            .setId(tableSignedIdentifier.getId())
+            .setAccessPolicy(toAccessPolicy(tableSignedIdentifier.getAccessPolicy()));
+    }
+
+    static AccessPolicy toAccessPolicy(TableAccessPolicy tableAccessPolicy) {
+        if (tableAccessPolicy == null) {
+            return null;
+        }
+
+        return new AccessPolicy()
+            .setExpiry(tableAccessPolicy.getExpiresOn())
+            .setStart(tableAccessPolicy.getStartsOn())
+            .setPermission(tableAccessPolicy.getPermissions());
     }
 
     public static Exception interpretException(Exception ex) {
@@ -335,15 +563,13 @@ public final class TableUtils {
         return keys;
     }
 
-    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, Duration timeout,
-        ClientLogger logger) {
-        return callWithOptionalTimeout(callable, timeout, logger, false);
+    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
+        return callWithOptionalTimeout(callable, threadPool, timeout, logger, false);
     }
 
-    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, Duration timeout,
-        ClientLogger logger, boolean skip409Logging) {
+    public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger, boolean skip409Logging) {
         try {
-            return callHandler(callable, timeout, logger);
+            return callHandler(callable, threadPool, timeout, logger);
         } catch (Throwable thrown) {
             Throwable exception = mapThrowableToTableServiceException(thrown);
             if (exception instanceof TableServiceException) {
@@ -359,37 +585,19 @@ public final class TableUtils {
         }
     }
 
-    public static <T> PagedIterable<T> callIterableWithOptionalTimeout(Supplier<PagedIterable<T>> callable,
-        Duration timeout, ClientLogger logger) {
+    public static <T> PagedIterable<T> callIterableWithOptionalTimeout(Supplier<PagedIterable<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
         try {
-            return callHandler(callable, timeout, logger);
+            return callHandler(callable, threadPool, timeout, logger);
         } catch (Exception thrown) {
             Throwable exception = mapThrowableToTableServiceException(thrown);
             throw logger.logExceptionAsError((RuntimeException) exception);
         }
     }
 
-    public static <T> T requestWithOptionalTimeout(Supplier<T> request, Duration timeout)
-        throws ExecutionException, InterruptedException, TimeoutException {
-        return hasTimeout(timeout)
-            ? getResultWithTimeout(SharedExecutorService.getInstance().submit(request::get), timeout)
-            : request.get();
-    }
-
-    /**
-     * Checks whether the timeout exists (is not null and has a positive duration).
-     *
-     * @param timeout The timeout to check.
-     * @return Whether the timeout exists (is not null and has a positive duration).
-     */
-    private static boolean hasTimeout(Duration timeout) {
-        return timeout != null && (timeout.getSeconds() | timeout.getNano()) > 0;
-    }
-
-    private static <T> T callHandler(Supplier<T> callable, Duration timeout, ClientLogger logger) throws Exception {
+    private static <T> T callHandler(Supplier<T> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) throws Exception {
         try {
             return hasTimeout(timeout)
-                ? getResultWithTimeout(SharedExecutorService.getInstance().submit(callable::get), timeout)
+                ? getResultWithTimeout(threadPool.submit(callable::get), timeout)
                 : callable.get();
         } catch (ExecutionException | InterruptedException | TimeoutException ex) {
 
@@ -399,16 +607,6 @@ public final class TableUtils {
             } else {
                 throw logger.logExceptionAsError(new RuntimeException(ex));
             }
-        }
-    }
-
-    public static boolean isCosmosEndpoint(String endpoint) {
-        try {
-            URI endpointUrl = new URI(endpoint);
-            String host = endpointUrl.getHost();
-            return host.contains(".cosmos.") || host.contains(".cosmosdb.");
-        } catch (Exception e) {
-            return false;
         }
     }
 }

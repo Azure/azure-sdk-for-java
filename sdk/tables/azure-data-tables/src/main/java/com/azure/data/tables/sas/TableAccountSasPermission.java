@@ -63,50 +63,40 @@ public final class TableAccountSasPermission {
                 case 'r':
                     permissions.readPermission = true;
                     break;
-
                 case 'w':
                     permissions.writePermission = true;
                     break;
-
                 case 'd':
                     permissions.deletePermission = true;
                     break;
-
                 case 'x':
                     permissions.deleteVersionPermission = true;
                     break;
-
                 case 'l':
                     permissions.listPermission = true;
                     break;
-
                 case 'a':
                     permissions.addPermission = true;
                     break;
-
                 case 'c':
                     permissions.createPermission = true;
                     break;
-
                 case 'u':
                     permissions.updatePermission = true;
                     break;
-
                 case 'p':
                     permissions.processMessagesPermission = true;
                     break;
-
                 case 't':
                     permissions.tagsPermission = true;
                     break;
-
                 case 'f':
                     permissions.filterTagsPermission = true;
                     break;
-
                 default:
-                    throw new IllegalArgumentException(String.format(Locale.ROOT,
-                        StorageConstants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permissionsString, c));
+                    throw new IllegalArgumentException(
+                        String.format(Locale.ROOT, StorageConstants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                            "Permissions", permissionsString, c));
             }
         }
 
@@ -341,6 +331,7 @@ public final class TableAccountSasPermission {
 
         return this;
     }
+
 
     /**
      * Returns the filter tags permission status. Used to filter blobs by their tags.

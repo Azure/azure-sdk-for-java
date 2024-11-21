@@ -167,11 +167,15 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * @see TableClient
  * @see com.azure.data.tables
  */
-@ServiceClientBuilder(serviceClients = { TableClient.class, TableAsyncClient.class })
-public final class TableClientBuilder
-    implements TokenCredentialTrait<TableClientBuilder>, AzureNamedKeyCredentialTrait<TableClientBuilder>,
-    ConnectionStringTrait<TableClientBuilder>, AzureSasCredentialTrait<TableClientBuilder>,
-    HttpTrait<TableClientBuilder>, ConfigurationTrait<TableClientBuilder>, EndpointTrait<TableClientBuilder> {
+@ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
+public final class TableClientBuilder implements
+    TokenCredentialTrait<TableClientBuilder>,
+    AzureNamedKeyCredentialTrait<TableClientBuilder>,
+    ConnectionStringTrait<TableClientBuilder>,
+    AzureSasCredentialTrait<TableClientBuilder>,
+    HttpTrait<TableClientBuilder>,
+    ConfigurationTrait<TableClientBuilder>,
+    EndpointTrait<TableClientBuilder> {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
     private static final TablesMultipartSerializer TRANSACTIONAL_BATCH_SERIALIZER = new TablesMultipartSerializer();
 
@@ -246,8 +250,8 @@ public final class TableClientBuilder
                 }
 
                 if (connectionStringEndpoint.endsWith("/")) {
-                    connectionStringEndpoint
-                        = connectionStringEndpoint.substring(0, connectionStringEndpoint.length() - 1);
+                    connectionStringEndpoint =
+                        connectionStringEndpoint.substring(0, connectionStringEndpoint.length() - 1);
                 }
 
                 if (!endpoint.equals(connectionStringEndpoint)) {
@@ -259,21 +263,18 @@ public final class TableClientBuilder
             StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
             if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
-                namedKeyCredential = (azureNamedKeyCredential != null)
-                    ? azureNamedKeyCredential
+                namedKeyCredential = (azureNamedKeyCredential != null) ? azureNamedKeyCredential
                     : new AzureNamedKeyCredential(authSettings.getAccount().getName(),
-                        authSettings.getAccount().getAccessKey());
+                    authSettings.getAccount().getAccessKey());
             } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
                 sasToken = (sasToken != null) ? sasToken : authSettings.getSasToken();
             }
         }
 
-        HttpPipeline pipeline = (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential,
-                azureSasCredential, tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions,
-                clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger,
-                enableTenantDiscovery);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
+            tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
+            perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
 
         return new TableClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER,
             TRANSACTIONAL_BATCH_SERIALIZER);
@@ -323,8 +324,8 @@ public final class TableClientBuilder
                 }
 
                 if (connectionStringEndpoint.endsWith("/")) {
-                    connectionStringEndpoint
-                        = connectionStringEndpoint.substring(0, connectionStringEndpoint.length() - 1);
+                    connectionStringEndpoint =
+                        connectionStringEndpoint.substring(0, connectionStringEndpoint.length() - 1);
                 }
 
                 if (!endpoint.equals(connectionStringEndpoint)) {
@@ -336,21 +337,18 @@ public final class TableClientBuilder
             StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
             if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
-                namedKeyCredential = (azureNamedKeyCredential != null)
-                    ? azureNamedKeyCredential
+                namedKeyCredential = (azureNamedKeyCredential != null) ? azureNamedKeyCredential
                     : new AzureNamedKeyCredential(authSettings.getAccount().getName(),
-                        authSettings.getAccount().getAccessKey());
+                    authSettings.getAccount().getAccessKey());
             } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
                 sasToken = (sasToken != null) ? sasToken : authSettings.getSasToken();
             }
         }
 
-        HttpPipeline pipeline = (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential,
-                azureSasCredential, tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions,
-                clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger,
-                enableTenantDiscovery);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
+            tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
+            perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
 
         return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER,
             TRANSACTIONAL_BATCH_SERIALIZER);

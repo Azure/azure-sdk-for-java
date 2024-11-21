@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 
 final class EntityHelper {
     private static final HashSet<String> TABLE_ENTITY_METHODS = Arrays.stream(TableEntity.class.getMethods())
-        .map(Method::getName)
-        .collect(Collectors.toCollection(HashSet::new));
+        .map(Method::getName).collect(Collectors.toCollection(HashSet::new));
 
     private EntityHelper() {
     }
@@ -39,8 +38,7 @@ final class EntityHelper {
             }
 
             // A method starting with `is` is only a getter if it returns a boolean
-            if (m.getName().startsWith("is")
-                && m.getReturnType() != Boolean.class
+            if (m.getName().startsWith("is") && m.getReturnType() != Boolean.class
                 && m.getReturnType() != boolean.class) {
                 continue;
             }
@@ -53,8 +51,8 @@ final class EntityHelper {
                 // Invoke the getter and store the value in the properties map
                 entity.getProperties().put(propName, m.invoke(entity));
             } catch (ReflectiveOperationException | IllegalArgumentException e) {
-                logger.logThrowableAsWarning(new ReflectiveOperationException(
-                    String.format("Failed to get property '%s' on type '%s'", propName, myClass.getName()), e));
+                logger.logThrowableAsWarning(new ReflectiveOperationException(String.format(
+                    "Failed to get property '%s' on type '%s'", propName, myClass.getName()), e));
             }
         }
     }
@@ -71,13 +69,12 @@ final class EntityHelper {
             // Create a new instance of the provided `TableEntity` subclass by calling its two-argument constructor that
             // accepts the partitionKey and rowKey. If the developer implemented their own custom constructor instead,
             // this will fail.
-            result = clazz.getDeclaredConstructor(String.class, String.class)
-                .newInstance(entity.getPartitionKey(), entity.getRowKey());
+            result = clazz.getDeclaredConstructor(String.class, String.class).newInstance(entity.getPartitionKey(),
+                entity.getRowKey());
         } catch (ReflectiveOperationException | SecurityException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String
-                .format("Failed to instantiate type '%s'. It must contain a constructor that accepts two arguments: "
-                    + "the partition key and row key.", clazz.getName()),
-                e));
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "Failed to instantiate type '%s'. It must contain a constructor that accepts two arguments: "
+                    + "the partition key and row key.", clazz.getName()), e));
         }
 
         // Copy all of the properties from the provided `TableEntity` into the new instance
@@ -110,9 +107,8 @@ final class EntityHelper {
                 try {
                     value = Enum.valueOf(paramType.asSubclass(Enum.class), (String) value);
                 } catch (IllegalArgumentException e) {
-                    logger.logThrowableAsWarning(new IllegalArgumentException(
-                        String.format("Failed to convert '%s' to value of enum '%s'", propName, paramType.getName()),
-                        e));
+                    logger.logThrowableAsWarning(new IllegalArgumentException(String.format(
+                        "Failed to convert '%s' to value of enum '%s'", propName, paramType.getName()), e));
                     continue;
                 }
             }
@@ -121,8 +117,8 @@ final class EntityHelper {
                 // Invoke the setter with the value of the property
                 m.invoke(result, value);
             } catch (ReflectiveOperationException | IllegalArgumentException e) {
-                logger.logThrowableAsWarning(new ReflectiveOperationException(
-                    String.format("Failed to set property '%s' on type '%s'", propName, clazz.getName()), e));
+                logger.logThrowableAsWarning(new ReflectiveOperationException(String.format(
+                    "Failed to set property '%s' on type '%s'", propName, clazz.getName()), e));
             }
         }
 

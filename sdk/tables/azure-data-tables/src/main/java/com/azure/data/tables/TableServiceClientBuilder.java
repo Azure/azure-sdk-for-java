@@ -160,11 +160,15 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * @see TableServiceClient
  * @see com.azure.data.tables
  */
-@ServiceClientBuilder(serviceClients = { TableServiceClient.class, TableServiceAsyncClient.class })
-public final class TableServiceClientBuilder implements TokenCredentialTrait<TableServiceClientBuilder>,
-    AzureNamedKeyCredentialTrait<TableServiceClientBuilder>, ConnectionStringTrait<TableServiceClientBuilder>,
-    AzureSasCredentialTrait<TableServiceClientBuilder>, HttpTrait<TableServiceClientBuilder>,
-    ConfigurationTrait<TableServiceClientBuilder>, EndpointTrait<TableServiceClientBuilder> {
+@ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
+public final class TableServiceClientBuilder implements
+    TokenCredentialTrait<TableServiceClientBuilder>,
+    AzureNamedKeyCredentialTrait<TableServiceClientBuilder>,
+    ConnectionStringTrait<TableServiceClientBuilder>,
+    AzureSasCredentialTrait<TableServiceClientBuilder>,
+    HttpTrait<TableServiceClientBuilder>,
+    ConfigurationTrait<TableServiceClientBuilder>,
+    EndpointTrait<TableServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -210,6 +214,7 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
         HttpPipeline pipeline = prepareClient();
         return new TableServiceClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
+
 
     /**
      * Creates a {@link TableServiceAsyncClient} based on options set in the builder.
@@ -259,8 +264,8 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
                 }
 
                 if (connectionStringEndpoint.endsWith("/")) {
-                    connectionStringEndpoint
-                        = connectionStringEndpoint.substring(0, connectionStringEndpoint.length() - 1);
+                    connectionStringEndpoint =
+                        connectionStringEndpoint.substring(0, connectionStringEndpoint.length() - 1);
                 }
 
                 if (!endpoint.equals(connectionStringEndpoint)) {
@@ -272,21 +277,18 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
             StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
             if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
-                namedKeyCredential = (azureNamedKeyCredential != null)
-                    ? azureNamedKeyCredential
+                namedKeyCredential = (azureNamedKeyCredential != null) ? azureNamedKeyCredential
                     : new AzureNamedKeyCredential(authSettings.getAccount().getName(),
-                        authSettings.getAccount().getAccessKey());
+                    authSettings.getAccount().getAccessKey());
             } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
                 sasToken = (sasToken != null) ? sasToken : authSettings.getSasToken();
             }
         }
 
-        HttpPipeline pipeline = (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential,
-                azureSasCredential, tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions,
-                clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger,
-                enableTenantDiscovery);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
+            tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
+            perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
 
         return pipeline;
     }

@@ -24,19 +24,20 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     protected TableServiceClientBuilder getClientBuilder(String connectionString) {
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
             .connectionString(connectionString);
-    
+
         return configureTestClientBuilder(tableServiceClientBuilder);
     }
     */
 
     protected TableServiceClientBuilder getClientBuilder(boolean enableTenantDiscovery) {
-        return getClientBuilderWithEntra(enableTenantDiscovery);
+        return TestUtils.isCosmosTest() ? getClientBuilderWithConnectionString(enableTenantDiscovery)
+            : getClientBuilderWithEntra(enableTenantDiscovery);
     }
 
     protected TableServiceClientBuilder getClientBuilderWithEntra(boolean enableTenantDiscovery) {
-        final TableServiceClientBuilder tableServiceClientBuilder
-            = new TableServiceClientBuilder().credential(TestUtils.getTestTokenCredential(interceptorManager))
-                .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
+        final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
+            .credential(TestUtils.getTestTokenCredential(interceptorManager))
+            .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
 
         if (enableTenantDiscovery) {
             tableServiceClientBuilder.enableTenantDiscovery();
@@ -57,7 +58,8 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     }
 
     private TableServiceClientBuilder configureTestClientBuilder(TableServiceClientBuilder tableServiceClientBuilder) {
-        tableServiceClientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        tableServiceClientBuilder
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();

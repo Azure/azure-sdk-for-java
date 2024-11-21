@@ -66,7 +66,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
     private TableServiceClient serviceClient;
 
     protected HttpClient buildAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient).skipRequest((ignored1, ignored2) -> false)
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
             .assertSync()
             .build();
     }
@@ -104,8 +105,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             credential = new MockTokenCredential();
         } else {
-            // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
-            // contained in the response the server provides to a first "naive" unauthenticated request.
+        // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
+        // contained in the response the server provides to a first "naive" unauthenticated request.
             credential = new ClientSecretCredentialBuilder()
                 .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
                 .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
@@ -271,8 +272,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         serviceClient.createTable(tableName3);
 
         // Act & Assert
-        Iterator<PagedResponse<TableItem>> iterator
-            = serviceClient.listTables(options, null, null).iterableByPage().iterator();
+        Iterator<PagedResponse<TableItem>> iterator =
+            serviceClient.listTables(options, null, null).iterableByPage().iterator();
         assertTrue(iterator.hasNext());
         assertEquals(2, iterator.next().getValue().size());
     }
@@ -297,15 +298,25 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         final TableAccountSasResourceType resourceTypes = new TableAccountSasResourceType().setObject(true);
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_ONLY;
 
-        final TableAccountSasSignatureValues sasSignatureValues
-            = new TableAccountSasSignatureValues(expiryTime, permissions, services, resourceTypes).setProtocol(protocol)
+        final TableAccountSasSignatureValues sasSignatureValues =
+            new TableAccountSasSignatureValues(expiryTime, permissions, services, resourceTypes)
+                .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
         TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
         final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
-        assertTrue(sas.startsWith(
-            "sv=2019-02-02" + "&ss=t" + "&srt=o" + "&se=2021-12-12T00%3A00%3A00Z" + "&sp=r" + "&spr=https" + "&sig="));
+        assertTrue(
+            sas.startsWith(
+                "sv=2019-02-02"
+                    + "&ss=t"
+                    + "&srt=o"
+                    + "&se=2021-12-12T00%3A00%3A00Z"
+                    + "&sp=r"
+                    + "&spr=https"
+                    + "&sig="
+            )
+        );
     }
 
     @Test
@@ -319,8 +330,9 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         final OffsetDateTime startTime = OffsetDateTime.of(2015, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasIpRange ipRange = TableSasIpRange.parse("a-b");
 
-        final TableAccountSasSignatureValues sasSignatureValues
-            = new TableAccountSasSignatureValues(expiryTime, permissions, services, resourceTypes).setProtocol(protocol)
+        final TableAccountSasSignatureValues sasSignatureValues =
+            new TableAccountSasSignatureValues(expiryTime, permissions, services, resourceTypes)
+                .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion())
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange);
@@ -328,8 +340,19 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
         final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
-        assertTrue(sas.startsWith("sv=2019-02-02" + "&ss=t" + "&srt=o" + "&st=2015-01-01T00%3A00%3A00Z"
-            + "&se=2021-12-12T00%3A00%3A00Z" + "&sp=rdau" + "&sip=a-b" + "&spr=https%2Chttp" + "&sig="));
+        assertTrue(
+            sas.startsWith(
+                "sv=2019-02-02"
+                    + "&ss=t"
+                    + "&srt=o"
+                    + "&st=2015-01-01T00%3A00%3A00Z"
+                    + "&se=2021-12-12T00%3A00%3A00Z"
+                    + "&sp=rdau"
+                    + "&sip=a-b"
+                    + "&spr=https%2Chttp"
+                    + "&sig="
+            )
+        );
     }
 
     @Test
@@ -340,8 +363,9 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         final TableAccountSasResourceType resourceTypes = new TableAccountSasResourceType().setObject(true);
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_ONLY;
 
-        final TableAccountSasSignatureValues sasSignatureValues
-            = new TableAccountSasSignatureValues(expiryTime, permissions, services, resourceTypes).setProtocol(protocol)
+        final TableAccountSasSignatureValues sasSignatureValues =
+            new TableAccountSasSignatureValues(expiryTime, permissions, services, resourceTypes)
+                .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
         TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
@@ -365,8 +389,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 tableClientBuilder.addPolicy(recordPolicy);
             }
 
-            tableClientBuilder.addPolicy(
-                new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500), Duration.ofSeconds(100))));
+            tableClientBuilder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
         }
 
         // Create a new client authenticated with the SAS token.
@@ -385,33 +409,40 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
     @Test
     public void setGetProperties() {
-        Assumptions.assumeFalse(IS_COSMOS_TEST, "Setting and getting properties is not supported on Cosmos endpoints.");
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and getting properties is not supported on Cosmos endpoints.");
 
-        TableServiceRetentionPolicy retentionPolicy
-            = new TableServiceRetentionPolicy().setDaysToRetain(5).setEnabled(true);
+        TableServiceRetentionPolicy retentionPolicy = new TableServiceRetentionPolicy()
+            .setDaysToRetain(5)
+            .setEnabled(true);
 
-        TableServiceLogging logging = new TableServiceLogging().setReadLogged(true)
+        TableServiceLogging logging = new TableServiceLogging()
+            .setReadLogged(true)
             .setAnalyticsVersion("1.0")
             .setRetentionPolicy(retentionPolicy);
 
         List<TableServiceCorsRule> corsRules = new ArrayList<>();
-        corsRules.add(new TableServiceCorsRule().setAllowedMethods("GET,PUT,HEAD")
+        corsRules.add(new TableServiceCorsRule()
+            .setAllowedMethods("GET,PUT,HEAD")
             .setAllowedOrigins("*")
             .setAllowedHeaders("x-ms-version")
             .setExposedHeaders("x-ms-client-request-id")
             .setMaxAgeInSeconds(10));
 
-        TableServiceMetrics hourMetrics = new TableServiceMetrics().setEnabled(true)
+        TableServiceMetrics hourMetrics = new TableServiceMetrics()
+            .setEnabled(true)
             .setVersion("1.0")
             .setRetentionPolicy(retentionPolicy)
             .setIncludeApis(true);
 
-        TableServiceMetrics minuteMetrics = new TableServiceMetrics().setEnabled(true)
+        TableServiceMetrics minuteMetrics = new TableServiceMetrics()
+            .setEnabled(true)
             .setVersion("1.0")
             .setRetentionPolicy(retentionPolicy)
             .setIncludeApis(true);
 
-        TableServiceProperties sentProperties = new TableServiceProperties().setLogging(logging)
+        TableServiceProperties sentProperties = new TableServiceProperties()
+            .setLogging(logging)
             .setCorsRules(corsRules)
             .setMinuteMetrics(minuteMetrics)
             .setHourMetrics(hourMetrics);
@@ -443,7 +474,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
         String secondaryEndpoint = primaryEndpoint.getScheme() + "://" + secondaryHostJoiner;
 
-        TableServiceClient secondaryClient = new TableServiceClientBuilder().endpoint(secondaryEndpoint)
+        TableServiceClient secondaryClient = new TableServiceClientBuilder()
+            .endpoint(secondaryEndpoint)
             .serviceVersion(serviceClient.getServiceVersion())
             .pipeline(serviceClient.getHttpPipeline())
             .buildClient();

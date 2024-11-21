@@ -4,38 +4,38 @@
 
 package com.azure.data.tables.implementation.models;
 
+import java.util.List;
+
 import com.azure.core.util.CoreUtils;
-import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
-import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * A wrapper around List&lt;TableSignedIdentifier&gt; which provides top-level metadata for serialization.
+ * A wrapper around List&lt;SignedIdentifier&gt; which provides top-level metadata for serialization.
  */
-public final class TableSignedIdentifierWrapper implements XmlSerializable<TableSignedIdentifierWrapper> {
-    private final List<TableSignedIdentifier> signedIdentifiers;
+public final class SignedIdentifierWrapper implements XmlSerializable<SignedIdentifierWrapper> {
+    private final List<SignedIdentifier> signedIdentifiers;
 
     /**
-     * Creates an instance of TableSignedIdentifierWrapper.
+     * Creates an instance of SignedIdentifierWrapper.
      * 
      * @param signedIdentifiers the list.
      */
-    public TableSignedIdentifierWrapper(List<TableSignedIdentifier> signedIdentifiers) {
+    public SignedIdentifierWrapper(List<SignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
     }
 
     /**
-     * Get the List&lt;TableSignedIdentifier&gt; contained in this wrapper.
+     * Get the List&lt;SignedIdentifier&gt; contained in this wrapper.
      * 
-     * @return the List&lt;TableSignedIdentifier&gt;.
+     * @return the List&lt;SignedIdentifier&gt;.
      */
-    public List<TableSignedIdentifier> items() {
+    public List<SignedIdentifier> items() {
         return signedIdentifiers;
     }
 
@@ -49,22 +49,22 @@ public final class TableSignedIdentifierWrapper implements XmlSerializable<Table
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifiers" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (signedIdentifiers != null) {
-            for (TableSignedIdentifier element : signedIdentifiers) {
+            for (SignedIdentifier element : signedIdentifiers) {
                 xmlWriter.writeXml(element, "SignedIdentifier");
             }
         }
         return xmlWriter.writeEndElement();
     }
 
-    public static TableSignedIdentifierWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+    public static SignedIdentifierWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
-    public static TableSignedIdentifierWrapper fromXml(XmlReader xmlReader, String rootElementName)
+    public static SignedIdentifierWrapper fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifiers" : rootElementName;
         return xmlReader.readObject(rootElementName, reader -> {
-            List<TableSignedIdentifier> items = null;
+            List<SignedIdentifier> items = null;
 
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
@@ -74,12 +74,12 @@ public final class TableSignedIdentifierWrapper implements XmlSerializable<Table
                         items = new ArrayList<>();
                     }
 
-                    items.add(TableSignedIdentifier.fromXml(reader));
+                    items.add(SignedIdentifier.fromXml(reader));
                 } else {
                     reader.nextElement();
                 }
             }
-            return new TableSignedIdentifierWrapper(items);
+            return new SignedIdentifierWrapper(items);
         });
     }
 }
