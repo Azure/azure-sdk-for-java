@@ -6,11 +6,11 @@ package com.azure.health.deidentification.generated;
 
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
-import com.azure.health.deidentification.models.SourceStorageLocation;
-import com.azure.health.deidentification.models.TargetStorageLocation;
+import com.azure.health.deidentification.DeidentificationJob;
+import com.azure.health.deidentification.DocumentDataType;
+import com.azure.health.deidentification.OperationType;
+import com.azure.health.deidentification.SourceStorageLocation;
+import com.azure.health.deidentification.TargetStorageLocation;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

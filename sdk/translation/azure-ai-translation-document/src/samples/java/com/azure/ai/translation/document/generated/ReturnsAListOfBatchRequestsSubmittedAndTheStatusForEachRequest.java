@@ -4,8 +4,8 @@
 
 package com.azure.ai.translation.document.generated;
 
-import com.azure.ai.translation.document.DocumentTranslationClient;
-import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
+import clientcustomizations.DocumentTranslationClient;
+import clientcustomizations.DocumentTranslationClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;

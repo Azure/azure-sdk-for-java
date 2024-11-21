@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasGlossary;
+import com.azure.analytics.purview.datamap.AtlasGlossary;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

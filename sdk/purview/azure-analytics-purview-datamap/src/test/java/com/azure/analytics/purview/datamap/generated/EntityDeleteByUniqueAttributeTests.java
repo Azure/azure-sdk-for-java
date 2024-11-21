@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.EntityMutationResult;
+import com.azure.analytics.purview.datamap.EntityMutationResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

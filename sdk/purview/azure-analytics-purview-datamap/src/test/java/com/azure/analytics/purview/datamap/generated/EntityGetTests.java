@@ -4,9 +4,9 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasEntity;
-import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
-import com.azure.analytics.purview.datamap.models.EntityStatus;
+import com.azure.analytics.purview.datamap.AtlasEntity;
+import com.azure.analytics.purview.datamap.AtlasEntityWithExtInfo;
+import com.azure.analytics.purview.datamap.EntityStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

@@ -4,11 +4,11 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.ContactSearchResultValue;
-import com.azure.analytics.purview.datamap.models.SuggestOptions;
-import com.azure.analytics.purview.datamap.models.SuggestResult;
-import com.azure.analytics.purview.datamap.models.SuggestResultValue;
-import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
+import com.azure.analytics.purview.datamap.ContactSearchResultValue;
+import com.azure.analytics.purview.datamap.SuggestOptions;
+import com.azure.analytics.purview.datamap.SuggestResult;
+import com.azure.analytics.purview.datamap.SuggestResultValue;
+import com.azure.analytics.purview.datamap.TermSearchResultValue;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.List;

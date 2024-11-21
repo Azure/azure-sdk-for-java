@@ -4,9 +4,9 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasEnumDef;
-import com.azure.analytics.purview.datamap.models.AtlasEnumElementDef;
-import com.azure.analytics.purview.datamap.models.TypeCategory;
+import com.azure.analytics.purview.datamap.AtlasEnumDef;
+import com.azure.analytics.purview.datamap.AtlasEnumElementDef;
+import com.azure.analytics.purview.datamap.TypeCategory;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

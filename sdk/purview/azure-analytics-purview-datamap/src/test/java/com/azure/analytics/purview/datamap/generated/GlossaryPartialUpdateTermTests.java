@@ -4,12 +4,12 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasGlossaryHeader;
-import com.azure.analytics.purview.datamap.models.AtlasGlossaryTerm;
-import com.azure.analytics.purview.datamap.models.AtlasRelatedTermHeader;
-import com.azure.analytics.purview.datamap.models.AtlasTermCategorizationHeader;
-import com.azure.analytics.purview.datamap.models.ResourceLink;
-import com.azure.analytics.purview.datamap.models.TermStatus;
+import com.azure.analytics.purview.datamap.AtlasGlossaryHeader;
+import com.azure.analytics.purview.datamap.AtlasGlossaryTerm;
+import com.azure.analytics.purview.datamap.AtlasRelatedTermHeader;
+import com.azure.analytics.purview.datamap.AtlasTermCategorizationHeader;
+import com.azure.analytics.purview.datamap.ResourceLink;
+import com.azure.analytics.purview.datamap.TermStatus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

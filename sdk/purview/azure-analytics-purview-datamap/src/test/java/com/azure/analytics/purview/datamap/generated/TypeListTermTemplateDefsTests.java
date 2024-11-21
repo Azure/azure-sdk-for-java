@@ -4,16 +4,16 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasAttributeDef;
-import com.azure.analytics.purview.datamap.models.AtlasClassificationDef;
-import com.azure.analytics.purview.datamap.models.AtlasEntityDef;
-import com.azure.analytics.purview.datamap.models.AtlasEnumDef;
-import com.azure.analytics.purview.datamap.models.AtlasRelationshipDef;
-import com.azure.analytics.purview.datamap.models.AtlasStructDef;
-import com.azure.analytics.purview.datamap.models.AtlasTypesDef;
-import com.azure.analytics.purview.datamap.models.CardinalityValue;
-import com.azure.analytics.purview.datamap.models.TermTemplateDef;
-import com.azure.analytics.purview.datamap.models.TypeCategory;
+import com.azure.analytics.purview.datamap.AtlasAttributeDef;
+import com.azure.analytics.purview.datamap.AtlasClassificationDef;
+import com.azure.analytics.purview.datamap.AtlasEntityDef;
+import com.azure.analytics.purview.datamap.AtlasEnumDef;
+import com.azure.analytics.purview.datamap.AtlasRelationshipDef;
+import com.azure.analytics.purview.datamap.AtlasStructDef;
+import com.azure.analytics.purview.datamap.AtlasTypesDef;
+import com.azure.analytics.purview.datamap.CardinalityValue;
+import com.azure.analytics.purview.datamap.TermTemplateDef;
+import com.azure.analytics.purview.datamap.TypeCategory;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

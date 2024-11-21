@@ -4,9 +4,9 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
-import com.azure.analytics.purview.datamap.models.AtlasTermAssignmentHeader;
-import com.azure.analytics.purview.datamap.models.EntityStatus;
+import com.azure.analytics.purview.datamap.AtlasEntityHeader;
+import com.azure.analytics.purview.datamap.AtlasTermAssignmentHeader;
+import com.azure.analytics.purview.datamap.EntityStatus;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

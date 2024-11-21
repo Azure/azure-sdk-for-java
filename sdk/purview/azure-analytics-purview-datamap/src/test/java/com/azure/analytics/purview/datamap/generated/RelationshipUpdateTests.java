@@ -4,9 +4,9 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasObjectId;
-import com.azure.analytics.purview.datamap.models.AtlasRelationship;
-import com.azure.analytics.purview.datamap.models.StatusAtlasRelationship;
+import com.azure.analytics.purview.datamap.AtlasObjectId;
+import com.azure.analytics.purview.datamap.AtlasRelationship;
+import com.azure.analytics.purview.datamap.StatusAtlasRelationship;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

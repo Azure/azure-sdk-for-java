@@ -8,8 +8,8 @@ package com.azure.compute.batch.generated;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.compute.batch.BatchClient;
-import com.azure.compute.batch.BatchClientBuilder;
+import client.BatchClient;
+import client.BatchClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;

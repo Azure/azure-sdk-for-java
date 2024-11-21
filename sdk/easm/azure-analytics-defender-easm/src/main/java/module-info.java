@@ -6,7 +6,9 @@ module com.azure.analytics.defender.easm {
     requires transitive com.azure.core;
 
     exports com.azure.analytics.defender.easm;
+    exports customizations;
     exports com.azure.analytics.defender.easm.models;
 
+    opens com.azure.analytics.defender.easm to com.azure.core;
     opens com.azure.analytics.defender.easm.models to com.azure.core;
 }

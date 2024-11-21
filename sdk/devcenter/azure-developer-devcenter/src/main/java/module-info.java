@@ -6,7 +6,9 @@ module com.azure.developer.devcenter {
     requires transitive com.azure.core;
 
     exports com.azure.developer.devcenter;
+    exports sdkcustomizations;
     exports com.azure.developer.devcenter.models;
 
+    opens com.azure.developer.devcenter to com.azure.core;
     opens com.azure.developer.devcenter.models to com.azure.core;
 }

@@ -4,9 +4,9 @@
 
 package com.azure.ai.translation.document.generated;
 
-import com.azure.ai.translation.document.DocumentTranslationClient;
-import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
-import com.azure.ai.translation.document.models.DocumentStatusResult;
+import clientcustomizations.DocumentTranslationClient;
+import clientcustomizations.DocumentTranslationClientBuilder;
+import com.azure.ai.translation.document.DocumentStatusResult;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReturnsTheStatusOfASingleDocumentInABatchTranslationRequest {

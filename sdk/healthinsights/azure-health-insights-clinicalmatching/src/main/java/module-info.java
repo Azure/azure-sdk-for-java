@@ -6,7 +6,9 @@ module com.azure.health.insights.clinicalmatching {
     requires transitive com.azure.core;
 
     exports com.azure.health.insights.clinicalmatching;
+    exports clientforazurehealthinsights;
     exports com.azure.health.insights.clinicalmatching.models;
 
+    opens com.azure.health.insights.clinicalmatching to com.azure.core;
     opens com.azure.health.insights.clinicalmatching.models to com.azure.core;
 }

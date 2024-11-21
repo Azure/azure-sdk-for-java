@@ -8,13 +8,6 @@ package com.azure.analytics.purview.datamap.generated;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.analytics.purview.datamap.DataMapClientBuilder;
-import com.azure.analytics.purview.datamap.DiscoveryClient;
-import com.azure.analytics.purview.datamap.EntityClient;
-import com.azure.analytics.purview.datamap.GlossaryClient;
-import com.azure.analytics.purview.datamap.LineageClient;
-import com.azure.analytics.purview.datamap.RelationshipClient;
-import com.azure.analytics.purview.datamap.TypeDefinitionClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -22,6 +15,13 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import customizations.DataMapClientBuilder;
+import customizations.DiscoveryClient;
+import customizations.EntityClient;
+import customizations.GlossaryClient;
+import customizations.LineageClient;
+import customizations.RelationshipClient;
+import customizations.TypeDefinitionClient;
 
 class DataMapClientTestBase extends TestProxyTestBase {
     protected EntityClient entityClient;

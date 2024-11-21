@@ -1,0 +1,2528 @@
+language:
+  default:
+    name: EventGrid
+    description: Azure Messaging EventGrid Client
+    namespace: Microsoft.EventGrid
+  java:
+    namespace: com.azure.messaging.eventgrid.namespaces
+protocol: {}
+info:
+  title: EventGrid
+  description: Azure Messaging EventGrid Client
+schemas:
+  uris:
+    - &ref_26
+      language:
+        default:
+          name: endpoint
+          description: Represent a URL string as described by https://url.spec.whatwg.org/
+      protocol: {}
+      type: uri
+  strings:
+    - &ref_0
+      language:
+        default:
+          name: string
+          description: simple string
+      protocol: {}
+      type: string
+    - &ref_28
+      language:
+        default:
+          name: topicName
+          description: A sequence of textual characters.
+      protocol: {}
+      type: string
+    - &ref_1
+      language:
+        default:
+          name: string
+          description: A sequence of textual characters.
+      protocol: {}
+      type: string
+    - &ref_34
+      language:
+        default:
+          name: x-ms-error-code
+          description: A sequence of textual characters.
+      protocol: {}
+      type: string
+    - &ref_43
+      language:
+        default:
+          name: eventSubscriptionName
+          description: A sequence of textual characters.
+      protocol: {}
+      type: string
+  constants:
+    - &ref_27
+      language:
+        default:
+          name: api-version
+          description: API Version
+      protocol: {}
+      type: constant
+      valueType: *ref_0
+      value:
+        value: ''
+    - &ref_29
+      language:
+        default:
+          name: SendRequestContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/cloudevents+json; charset=utf-8
+      usage:
+        - input
+        - internal
+    - &ref_30
+      language:
+        default:
+          name: sendContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_38
+      language:
+        default:
+          name: SendEventsRequestContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/cloudevents-batch+json; charset=utf-8
+      usage:
+        - input
+        - internal
+    - &ref_39
+      language:
+        default:
+          name: sendEventsContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_46
+      language:
+        default:
+          name: receiveContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_59
+      language:
+        default:
+          name: acknowledgeContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_60
+      language:
+        default:
+          name: acknowledgeContentType1
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_73
+      language:
+        default:
+          name: releaseContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_74
+      language:
+        default:
+          name: releaseContentType1
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_86
+      language:
+        default:
+          name: rejectContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_87
+      language:
+        default:
+          name: rejectContentType1
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_98
+      language:
+        default:
+          name: renewLocksContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_99
+      language:
+        default:
+          name: renewLocksContentType1
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+  objects:
+    - &ref_4
+      language:
+        default:
+          name: CloudEvent
+          description: >-
+            Properties of an event published to an Azure Messaging EventGrid
+            Namespace topic using the CloudEvent 1.0 Schema.
+          namespace: Microsoft.EventGrid
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Microsoft.EventGrid.CloudEvent
+      properties:
+        - language:
+            default:
+              name: id
+              description: >-
+                An identifier for the event. The combination of id and source
+                must be unique for each distinct event.
+          protocol: {}
+          schema: *ref_1
+          serializedName: id
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: source
+              description: >-
+                Identifies the context in which an event happened. The
+                combination of id and source must be unique for each distinct
+                event.
+          protocol: {}
+          schema: *ref_1
+          serializedName: source
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: data
+              description: Event data specific to the event type.
+          protocol: {}
+          schema: &ref_8
+            language:
+              default:
+                name: any
+                description: Anything
+            protocol: {}
+            type: any
+          serializedName: data
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: data_base64
+              description: >-
+                Event data specific to the event type, encoded as a base64
+                string.
+          protocol: {}
+          schema: &ref_9
+            language:
+              default:
+                name: bytes
+                description: Represent a byte array
+            protocol: {}
+            type: byte-array
+            format: byte
+          serializedName: data_base64
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: type
+              description: Type of event related to the originating occurrence.
+          protocol: {}
+          schema: *ref_1
+          serializedName: type
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: time
+              description: The time (in UTC) the event was generated, in RFC3339 format.
+          protocol: {}
+          schema: &ref_10
+            language:
+              default:
+                name: ''
+                description: An instant in coordinated universal time (UTC)"
+            protocol: {}
+            type: date-time
+            format: date-time
+          serializedName: time
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: specversion
+              description: >-
+                The version of the CloudEvents specification which the event
+                uses.
+          protocol: {}
+          schema: *ref_1
+          serializedName: specversion
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: dataschema
+              description: Identifies the schema that data adheres to.
+          protocol: {}
+          schema: *ref_1
+          serializedName: dataschema
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: datacontenttype
+              description: Content type of data value.
+          protocol: {}
+          schema: *ref_1
+          serializedName: datacontenttype
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: subject
+              description: >-
+                This describes the subject of the event in the context of the
+                event producer (identified by source).
+          protocol: {}
+          schema: *ref_1
+          serializedName: subject
+          required: false
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - output
+        - public
+    - &ref_33
+      language:
+        default:
+          name: PublishResult
+          description: The result of the Publish operation.
+          namespace: Microsoft.EventGrid
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Microsoft.EventGrid.PublishResult
+      usage:
+        - output
+        - internal
+    - &ref_35
+      language:
+        default:
+          name: ErrorResponse
+          description: A response containing error details.
+          namespace: Azure.Core.Foundations
+        java:
+          namespace: azure.core.foundations.models
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Azure.Core.Foundations.ErrorResponse
+      properties:
+        - language:
+            default:
+              name: error
+              description: The error object.
+          protocol: {}
+          schema: &ref_2
+            language:
+              default:
+                name: Error
+                description: The error object.
+                namespace: Azure.Core.Foundations
+              java:
+                namespace: azure.core.foundations.models
+            protocol: {}
+            type: object
+            crossLanguageDefinitionId: Azure.Core.Foundations.Error
+            properties:
+              - language:
+                  default:
+                    name: code
+                    description: One of a server-defined set of error codes.
+                protocol: {}
+                schema: *ref_1
+                serializedName: code
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: message
+                    description: A human-readable representation of the error.
+                protocol: {}
+                schema: *ref_1
+                serializedName: message
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: target
+                    description: The target of the error.
+                protocol: {}
+                schema: *ref_1
+                serializedName: target
+                required: false
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: details
+                    description: >-
+                      An array of details about specific errors that led to this
+                      reported error.
+                protocol: {}
+                schema: &ref_11
+                  language:
+                    default:
+                      name: ''
+                      description: ''
+                  protocol: {}
+                  type: array
+                  elementType: *ref_2
+                  nullableItems: false
+                serializedName: details
+                required: false
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: innererror
+                    description: >-
+                      An object containing more specific information than the
+                      current object about the error.
+                protocol: {}
+                schema: &ref_3
+                  language:
+                    default:
+                      name: InnerError
+                      description: >-
+                        An object containing more specific information about the
+                        error. As per Microsoft One API guidelines -
+                        https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+                      namespace: Azure.Core.Foundations
+                    java:
+                      namespace: azure.core.foundations.models
+                  protocol: {}
+                  type: object
+                  crossLanguageDefinitionId: Azure.Core.Foundations.InnerError
+                  properties:
+                    - language:
+                        default:
+                          name: code
+                          description: One of a server-defined set of error codes.
+                      protocol: {}
+                      schema: *ref_1
+                      serializedName: code
+                      required: false
+                      nullable: false
+                      readOnly: false
+                    - language:
+                        default:
+                          name: innererror
+                          description: Inner error.
+                      protocol: {}
+                      schema: *ref_3
+                      serializedName: innererror
+                      required: false
+                      nullable: false
+                      readOnly: false
+                  usage:
+                    - exception
+                    - output
+                    - public
+                serializedName: innererror
+                required: false
+                nullable: false
+                readOnly: false
+            usage:
+              - exception
+              - output
+              - public
+          serializedName: error
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - exception
+    - *ref_2
+    - *ref_3
+    - &ref_51
+      language:
+        default:
+          name: ReceiveResult
+          description: Details of the Receive operation response.
+          namespace: Microsoft.EventGrid
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Microsoft.EventGrid.ReceiveResult
+      properties:
+        - language:
+            default:
+              name: details
+              description: Array of receive responses, one per cloud event.
+          protocol: {}
+          schema: &ref_12
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_5
+              language:
+                default:
+                  name: ReceiveDetails
+                  description: Receive operation details per Cloud Event.
+                  namespace: Microsoft.EventGrid
+                java:
+                  namespace: com.azure.messaging.eventgrid.namespaces
+              protocol: {}
+              type: object
+              crossLanguageDefinitionId: Microsoft.EventGrid.ReceiveDetails
+              properties:
+                - language:
+                    default:
+                      name: brokerProperties
+                      description: The Event Broker details.
+                  protocol: {}
+                  schema: &ref_6
+                    language:
+                      default:
+                        name: BrokerProperties
+                        description: Properties of the Event Broker operation.
+                        namespace: Microsoft.EventGrid
+                      java:
+                        namespace: com.azure.messaging.eventgrid.namespaces
+                    protocol: {}
+                    type: object
+                    crossLanguageDefinitionId: Microsoft.EventGrid.BrokerProperties
+                    properties:
+                      - language:
+                          default:
+                            name: lockToken
+                            description: The token of the lock on the event.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: lockToken
+                        required: true
+                        nullable: false
+                        readOnly: false
+                      - language:
+                          default:
+                            name: deliveryCount
+                            description: The attempt count for delivering the event.
+                        protocol: {}
+                        schema: &ref_25
+                          language:
+                            default:
+                              name: int32
+                              description: >-
+                                A 32-bit integer. (`-2,147,483,648` to
+                                `2,147,483,647`)
+                          protocol: {}
+                          type: integer
+                          precision: 32
+                        serializedName: deliveryCount
+                        required: true
+                        nullable: false
+                        readOnly: false
+                    usage:
+                      - output
+                      - public
+                  serializedName: brokerProperties
+                  required: true
+                  nullable: false
+                  readOnly: false
+                - language:
+                    default:
+                      name: event
+                      description: Cloud Event details.
+                  protocol: {}
+                  schema: *ref_4
+                  serializedName: event
+                  required: true
+                  nullable: false
+                  readOnly: false
+              usage:
+                - output
+                - public
+            nullableItems: false
+          serializedName: value
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - public
+    - *ref_5
+    - *ref_6
+    - &ref_52
+      language:
+        default:
+          name: AcknowledgeRequest
+          description: ''
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: acknowledge.Request.anonymous
+      properties:
+        - &ref_53
+          language:
+            default:
+              name: lockTokens
+              description: Array of lock tokens.
+          protocol: {}
+          schema: &ref_13
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: lockTokens
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - internal
+    - &ref_64
+      language:
+        default:
+          name: AcknowledgeResult
+          description: The result of the Acknowledge operation.
+          namespace: Microsoft.EventGrid
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Microsoft.EventGrid.AcknowledgeResult
+      properties:
+        - language:
+            default:
+              name: failedLockTokens
+              description: >-
+                Array of FailedLockToken for failed cloud events. Each
+                FailedLockToken includes the lock token along with the related
+                error information (namely, the error code and description).
+          protocol: {}
+          schema: &ref_14
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_7
+              language:
+                default:
+                  name: FailedLockToken
+                  description: Failed LockToken information.
+                  namespace: Microsoft.EventGrid
+                java:
+                  namespace: com.azure.messaging.eventgrid.namespaces
+              protocol: {}
+              type: object
+              crossLanguageDefinitionId: Microsoft.EventGrid.FailedLockToken
+              properties:
+                - language:
+                    default:
+                      name: lockToken
+                      description: The lock token of an entry in the request.
+                  protocol: {}
+                  schema: *ref_1
+                  serializedName: lockToken
+                  required: true
+                  nullable: false
+                  readOnly: false
+                - language:
+                    default:
+                      name: error
+                      description: >-
+                        Error information of the failed operation result for the
+                        lock token in the request.
+                  protocol: {}
+                  schema: *ref_2
+                  serializedName: error
+                  required: true
+                  nullable: false
+                  readOnly: false
+              usage:
+                - public
+                - output
+            nullableItems: false
+          serializedName: failedLockTokens
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: succeededLockTokens
+              description: >-
+                Array of lock tokens for the successfully acknowledged cloud
+                events.
+          protocol: {}
+          schema: &ref_15
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: succeededLockTokens
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - public
+    - *ref_7
+    - &ref_66
+      language:
+        default:
+          name: ReleaseRequest
+          description: ''
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: release.Request.anonymous
+      properties:
+        - &ref_67
+          language:
+            default:
+              name: lockTokens
+              description: Array of lock tokens.
+          protocol: {}
+          schema: &ref_16
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: lockTokens
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - internal
+    - &ref_79
+      language:
+        default:
+          name: ReleaseResult
+          description: The result of the Release operation.
+          namespace: Microsoft.EventGrid
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Microsoft.EventGrid.ReleaseResult
+      properties:
+        - language:
+            default:
+              name: failedLockTokens
+              description: >-
+                Array of FailedLockToken for failed cloud events. Each
+                FailedLockToken includes the lock token along with the related
+                error information (namely, the error code and description).
+          protocol: {}
+          schema: &ref_17
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_7
+            nullableItems: false
+          serializedName: failedLockTokens
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: succeededLockTokens
+              description: Array of lock tokens for the successfully released cloud events.
+          protocol: {}
+          schema: &ref_18
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: succeededLockTokens
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - public
+    - &ref_80
+      language:
+        default:
+          name: RejectRequest
+          description: ''
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: reject.Request.anonymous
+      properties:
+        - &ref_81
+          language:
+            default:
+              name: lockTokens
+              description: Array of lock tokens.
+          protocol: {}
+          schema: &ref_19
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: lockTokens
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - internal
+    - &ref_91
+      language:
+        default:
+          name: RejectResult
+          description: The result of the Reject operation.
+          namespace: Microsoft.EventGrid
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Microsoft.EventGrid.RejectResult
+      properties:
+        - language:
+            default:
+              name: failedLockTokens
+              description: >-
+                Array of FailedLockToken for failed cloud events. Each
+                FailedLockToken includes the lock token along with the related
+                error information (namely, the error code and description).
+          protocol: {}
+          schema: &ref_20
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_7
+            nullableItems: false
+          serializedName: failedLockTokens
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: succeededLockTokens
+              description: Array of lock tokens for the successfully rejected cloud events.
+          protocol: {}
+          schema: &ref_21
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: succeededLockTokens
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - public
+    - &ref_92
+      language:
+        default:
+          name: RenewLocksRequest
+          description: ''
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: renewLocks.Request.anonymous
+      properties:
+        - &ref_93
+          language:
+            default:
+              name: lockTokens
+              description: Array of lock tokens.
+          protocol: {}
+          schema: &ref_22
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: lockTokens
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - internal
+    - &ref_103
+      language:
+        default:
+          name: RenewLocksResult
+          description: The result of the RenewLock operation.
+          namespace: Microsoft.EventGrid
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Microsoft.EventGrid.RenewCloudEventLocksResult
+      properties:
+        - language:
+            default:
+              name: failedLockTokens
+              description: >-
+                Array of FailedLockToken for failed cloud events. Each
+                FailedLockToken includes the lock token along with the related
+                error information (namely, the error code and description).
+          protocol: {}
+          schema: &ref_23
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_7
+            nullableItems: false
+          serializedName: failedLockTokens
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: succeededLockTokens
+              description: Array of lock tokens for the successfully renewed locks.
+          protocol: {}
+          schema: &ref_24
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: succeededLockTokens
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - public
+  any:
+    - *ref_8
+  byteArrays:
+    - *ref_9
+  dateTimes:
+    - *ref_10
+  arrays:
+    - *ref_11
+    - &ref_40
+      language:
+        default:
+          name: events
+          description: ''
+      protocol: {}
+      type: array
+      elementType: *ref_4
+      nullableItems: false
+    - *ref_12
+    - *ref_13
+    - *ref_14
+    - *ref_15
+    - *ref_16
+    - *ref_17
+    - *ref_18
+    - *ref_19
+    - *ref_20
+    - *ref_21
+    - *ref_22
+    - *ref_23
+    - *ref_24
+  numbers:
+    - &ref_44
+      language:
+        default:
+          name: maxEvents
+          description: A 32-bit integer. (`-2,147,483,648` to `2,147,483,647`)
+      protocol: {}
+      type: integer
+      precision: 32
+    - *ref_25
+  durations:
+    - &ref_45
+      language:
+        default:
+          name: maxWaitTime
+          description: A duration/time period. e.g 5s, 10h
+      protocol: {}
+      type: duration
+      format: seconds-integer
+  choices:
+    - &ref_65
+      language:
+        default:
+          name: ReleaseDelay
+          description: Supported delays for release operation.
+          namespace: Microsoft.EventGrid
+        java:
+          namespace: com.azure.messaging.eventgrid.namespaces
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: '0'
+          language:
+            default:
+              name: NoDelay
+              description: Release the event after 0 seconds.
+        - value: '10'
+          language:
+            default:
+              name: TenSeconds
+              description: Release the event after 10 seconds.
+        - value: '60'
+          language:
+            default:
+              name: OneMinute
+              description: Release the event after 60 seconds.
+        - value: '600'
+          language:
+            default:
+              name: TenMinutes
+              description: Release the event after 600 seconds.
+        - value: '3600'
+          language:
+            default:
+              name: OneHour
+              description: Release the event after 3600 seconds.
+      crossLanguageDefinitionId: Microsoft.EventGrid.ReleaseDelay
+      usage:
+        - input
+        - public
+operationGroups:
+  - language:
+      default:
+        name: ''
+        description: ''
+    protocol: {}
+    $key: ''
+    operations:
+      - &ref_106
+        language:
+          default:
+            name: send
+            description: Publish a single Cloud Event to a namespace topic.
+        protocol: {}
+        operationId: send
+        extensions: {}
+        crossLanguageDefinitionId: Customizations.ClientSender2.send
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: send
+              description: ''
+          protocol: {}
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /topics/{topicName}:publish
+                method: post
+                uri: '{endpoint}'
+                mediaTypes:
+                  - application/cloudevents+json; charset=utf-8
+        parameters:
+          - &ref_36
+            language:
+              default:
+                name: endpoint
+                description: >-
+                  The host name of the namespace, e.g.
+                  namespaceName1.westus-1.eventgrid.azure.net
+                serializedName: endpoint
+            protocol:
+              http:
+                in: uri
+            schema: *ref_26
+            implementation: Client
+            origin: modelerfour:synthesized/host
+            required: true
+            extensions:
+              x-ms-skip-url-encoding: true
+          - &ref_37
+            language:
+              default:
+                name: api-version
+                description: Version parameter
+                serializedName: api-version
+            protocol:
+              http:
+                in: query
+            schema: *ref_27
+            implementation: Client
+            origin: modelerfour:synthesized/api-version
+            required: true
+          - &ref_31
+            language:
+              default:
+                name: topicName
+                description: Topic Name.
+                serializedName: topicName
+            protocol:
+              http:
+                in: path
+            schema: *ref_28
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: content type
+                serializedName: content-type
+            protocol:
+              http:
+                in: header
+            schema: *ref_29
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_30
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_32
+            language:
+              default:
+                name: event
+                description: Single Cloud Event being published.
+            protocol:
+              http:
+                in: body
+            schema: *ref_4
+            implementation: Method
+            required: true
+        signatureParameters:
+          - *ref_31
+          - *ref_32
+        responses:
+          - language:
+              default:
+                name: sendResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_33
+        exceptions:
+          - language:
+              default:
+                name: sendResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_34
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_35
+      - &ref_107
+        language:
+          default:
+            name: sendEvents
+            description: Publish a batch of Cloud Events to a namespace topic.
+        protocol: {}
+        operationId: sendEvents
+        extensions:
+          x-ms-examples:
+            Publish Cloud Event:
+              operationId: PublishCloudEvents
+              title: Publish Cloud Event
+              parameters:
+                endpoint: myNamespaceName.westus-1.eventgrid.azure.net
+                topicName: myTopic
+                content-type: application/cloudevents-batch+json
+                authorization: SharedAccessKey 123
+                api-version: '2024-06-01'
+                events:
+                  - id: b3ccc7e3-c1cb-49bf-b7c8-0d4e60980616
+                    source: >-
+                      /microsoft/autorest/examples/eventgrid/cloud-events/publish
+                    specversion: '1.0'
+                    data:
+                      Property1: Value1
+                      Property2: Value2
+                    type: Microsoft.Contoso.TestEvent
+                    time: '2023-05-04T23:06:09.147165Z'
+              responses:
+                '200':
+                  body: {}
+              x-ms-original-file: 2024-06-01/publish.json
+        crossLanguageDefinitionId: Customizations.ClientSender2.sendEvents
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: sendEvents
+              description: ''
+          protocol: {}
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /topics/{topicName}:publish
+                method: post
+                uri: '{endpoint}'
+                mediaTypes:
+                  - application/cloudevents-batch+json; charset=utf-8
+        parameters:
+          - *ref_36
+          - *ref_37
+          - &ref_41
+            language:
+              default:
+                name: topicName
+                description: Topic Name.
+                serializedName: topicName
+            protocol:
+              http:
+                in: path
+            schema: *ref_28
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: content type
+                serializedName: content-type
+            protocol:
+              http:
+                in: header
+            schema: *ref_38
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_39
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_42
+            language:
+              default:
+                name: events
+                description: Array of Cloud Events being published.
+            protocol:
+              http:
+                in: body
+            schema: *ref_40
+            implementation: Method
+            required: true
+        signatureParameters:
+          - *ref_41
+          - *ref_42
+        responses:
+          - language:
+              default:
+                name: sendEventsResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_33
+        exceptions:
+          - language:
+              default:
+                name: sendEventsResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_34
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_35
+      - &ref_108
+        language:
+          default:
+            name: receive
+            description: Receive a batch of Cloud Events from a subscription.
+        protocol: {}
+        operationId: receive
+        extensions:
+          x-ms-examples:
+            Receive Cloud Event:
+              operationId: ReceiveCloudEvents
+              title: Receive Cloud Event
+              parameters:
+                endpoint: myNamespaceName.westus-1.eventgrid.azure.net
+                topicName: myTopic
+                eventSubscriptionName: myEventSubscription
+                content-type: application/json
+                authorization: SharedAccessKey 123
+                api-version: '2024-06-01'
+                maxEvents: 1
+                maxWaitTime: 60
+              responses:
+                '200':
+                  body:
+                    value:
+                      - brokerProperties:
+                          lockToken: CgMKATESCQoHdG9rZW4tMQ==
+                          deliveryCount: 1
+                        event:
+                          specversion: '1.0'
+                          type: demo-started
+                          source: /test
+                          subject: all-hands-0405
+                          id: e770f36b-381a-41db-8b2b-b7199daeb202
+                          time: '2023-05-05T17:31:00Z'
+                          datacontenttype: application/json
+                          data: test
+              x-ms-original-file: 2024-06-01/receive.json
+        crossLanguageDefinitionId: Customizations.ClientReceiver2.receive
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: receive
+              description: ''
+          protocol: {}
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: >-
+                  /topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive
+                method: post
+                uri: '{endpoint}'
+        parameters:
+          - &ref_56
+            language:
+              default:
+                name: endpoint
+                description: >-
+                  The host name of the namespace, e.g.
+                  namespaceName1.westus-1.eventgrid.azure.net
+                serializedName: endpoint
+            protocol:
+              http:
+                in: uri
+            schema: *ref_26
+            implementation: Client
+            origin: modelerfour:synthesized/host
+            required: true
+            extensions:
+              x-ms-skip-url-encoding: true
+          - *ref_37
+          - &ref_47
+            language:
+              default:
+                name: topicName
+                description: Topic Name.
+                serializedName: topicName
+            protocol:
+              http:
+                in: path
+            schema: *ref_28
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_48
+            language:
+              default:
+                name: eventSubscriptionName
+                description: Event Subscription Name.
+                serializedName: eventSubscriptionName
+            protocol:
+              http:
+                in: path
+            schema: *ref_43
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_49
+            language:
+              default:
+                name: maxEvents
+                description: >-
+                  Max Events count to be received. Minimum value is 1, while
+                  maximum value is 100 events. If not specified, the default
+                  value is 1.
+                serializedName: maxEvents
+            protocol:
+              http:
+                in: query
+            schema: *ref_44
+            implementation: Method
+            required: false
+            nullable: false
+          - &ref_50
+            language:
+              default:
+                name: maxWaitTime
+                description: >-
+                  Max wait time value for receive operation in Seconds. It is
+                  the time in seconds that the server approximately waits for
+                  the availability of an event and responds to the request. If
+                  an event is available, the broker responds immediately to the
+                  client. Minimum value is 10 seconds, while maximum value is
+                  120 seconds. If not specified, the default value is 60
+                  seconds.
+                serializedName: maxWaitTime
+            protocol:
+              http:
+                in: query
+            schema: *ref_45
+            implementation: Method
+            required: false
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_46
+            implementation: Method
+            required: true
+            nullable: false
+        signatureParameters:
+          - *ref_47
+          - *ref_48
+          - *ref_49
+          - *ref_50
+        responses:
+          - language:
+              default:
+                name: receiveResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_51
+        exceptions:
+          - language:
+              default:
+                name: receiveResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_34
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_35
+      - &ref_109
+        language:
+          default:
+            name: acknowledge
+            description: >-
+              Acknowledge a batch of Cloud Events. The response will include the
+              set of successfully acknowledged lock tokens, along with other
+              failed lock tokens with their corresponding error information.
+              Successfully acknowledged events will no longer be available to be
+              received by any consumer.
+        protocol: {}
+        operationId: acknowledge
+        extensions:
+          x-ms-examples:
+            Acknowledge Cloud Event:
+              operationId: AcknowledgeCloudEvents
+              title: Acknowledge Cloud Event
+              parameters:
+                endpoint: myNamespaceName.westus-1.eventgrid.azure.net
+                topicName: myTopic
+                eventSubscriptionName: myEventSubscription
+                content-type: application/json
+                authorization: SharedAccessKey 123
+                api-version: '2024-06-01'
+                acknowledgeOptions:
+                  lockTokens:
+                    - CgMKATESCQoHdG9rZW4tMQ==
+              responses:
+                '200':
+                  body:
+                    failedLockTokens:
+                      - lockToken: CgMKATESCQoHdG9rZW4tMQ==
+                        error:
+                          code: BadToken
+                          message: ''
+                    succeededLockTokens:
+                      - CgMKATESCQoHdG9rZW4tMQ==
+              x-ms-original-file: 2024-06-01/ack.json
+        crossLanguageDefinitionId: Customizations.ClientReceiver2.acknowledge
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: acknowledge
+              description: ''
+          protocol: {}
+          requests:
+            - language:
+                default:
+                  name: ''
+                  description: ''
+              protocol:
+                http: &ref_55
+                  path: >-
+                    /topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge
+                  method: post
+                  uri: '{endpoint}'
+                  mediaTypes:
+                    - application/json
+              parameters: &ref_54
+                - language:
+                    default:
+                      name: topicName
+                      description: Topic Name.
+                      serializedName: topicName
+                  protocol:
+                    http: &ref_57
+                      in: path
+                  schema: *ref_28
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: eventSubscriptionName
+                      description: Event Subscription Name.
+                      serializedName: eventSubscriptionName
+                  protocol:
+                    http: &ref_58
+                      in: path
+                  schema: *ref_43
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: lockTokens
+                      description: Array of lock tokens.
+                      serializedName: lockTokens
+                  protocol: {}
+                  schema: *ref_13
+                  originalParameter: &ref_61
+                    language:
+                      default:
+                        name: acknowledgeRequest
+                        description: ''
+                    protocol:
+                      http:
+                        in: body
+                    schema: *ref_52
+                    implementation: Method
+                    required: true
+                  targetProperty: *ref_53
+                  implementation: Method
+                  required: true
+                  nullable: false
+              signatureParameters: *ref_54
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http: *ref_55
+        parameters:
+          - *ref_56
+          - *ref_37
+          - &ref_62
+            language:
+              default:
+                name: topicName
+                description: Topic Name.
+                serializedName: topicName
+            protocol:
+              http: *ref_57
+            schema: *ref_28
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_63
+            language:
+              default:
+                name: eventSubscriptionName
+                description: Event Subscription Name.
+                serializedName: eventSubscriptionName
+            protocol:
+              http: *ref_58
+            schema: *ref_43
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: >-
+                  Body parameter's content type. Known values are
+                  application/json
+                serializedName: Content-Type
+            protocol:
+              http:
+                in: header
+            schema: *ref_59
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_60
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_61
+        signatureParameters:
+          - *ref_62
+          - *ref_63
+          - *ref_61
+        responses:
+          - language:
+              default:
+                name: acknowledgeResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_64
+        exceptions:
+          - language:
+              default:
+                name: acknowledgeResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_34
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_35
+      - &ref_110
+        language:
+          default:
+            name: release
+            description: >-
+              Release a batch of Cloud Events. The response will include the set
+              of successfully released lock tokens, along with other failed lock
+              tokens with their corresponding error information. Successfully
+              released events can be received by consumers.
+        protocol: {}
+        operationId: release
+        extensions:
+          x-ms-examples:
+            Release Cloud Event with an optional delay.:
+              operationId: ReleaseCloudEvents
+              title: Release Cloud Event with an optional delay.
+              parameters:
+                endpoint: myNamespaceName.westus-1.eventgrid.azure.net
+                topicName: myTopic
+                eventSubscriptionName: myEventSubscription
+                content-type: application/json
+                authorization: SharedAccessKey 123
+                api-version: '2024-06-01'
+                releaseDelayInSeconds: 10
+                releaseOptions:
+                  lockTokens:
+                    - CgMKATESCQoHdG9rZW4tMQ==
+              responses:
+                '200':
+                  body:
+                    failedLockTokens: []
+                    succeededLockTokens:
+                      - CgMKATESCQoHdG9rZW4tMQ==
+              x-ms-original-file: 2024-06-01/release.json
+        crossLanguageDefinitionId: Customizations.ClientReceiver2.release
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: release
+              description: ''
+          protocol: {}
+          requests:
+            - language:
+                default:
+                  name: ''
+                  description: ''
+              protocol:
+                http: &ref_69
+                  path: >-
+                    /topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release
+                  method: post
+                  uri: '{endpoint}'
+                  mediaTypes:
+                    - application/json
+              parameters: &ref_68
+                - language:
+                    default:
+                      name: topicName
+                      description: Topic Name.
+                      serializedName: topicName
+                  protocol:
+                    http: &ref_70
+                      in: path
+                  schema: *ref_28
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: eventSubscriptionName
+                      description: Event Subscription Name.
+                      serializedName: eventSubscriptionName
+                  protocol:
+                    http: &ref_71
+                      in: path
+                  schema: *ref_43
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: releaseDelayInSeconds
+                      description: >-
+                        Release cloud events with the specified delay in
+                        seconds.
+                      serializedName: releaseDelayInSeconds
+                  protocol:
+                    http: &ref_72
+                      in: query
+                  schema: *ref_65
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: lockTokens
+                      description: Array of lock tokens.
+                      serializedName: lockTokens
+                  protocol: {}
+                  schema: *ref_16
+                  originalParameter: &ref_75
+                    language:
+                      default:
+                        name: releaseRequest
+                        description: ''
+                    protocol:
+                      http:
+                        in: body
+                    schema: *ref_66
+                    implementation: Method
+                    required: true
+                  targetProperty: *ref_67
+                  implementation: Method
+                  required: true
+                  nullable: false
+              signatureParameters: *ref_68
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http: *ref_69
+        parameters:
+          - *ref_56
+          - *ref_37
+          - &ref_76
+            language:
+              default:
+                name: topicName
+                description: Topic Name.
+                serializedName: topicName
+            protocol:
+              http: *ref_70
+            schema: *ref_28
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_77
+            language:
+              default:
+                name: eventSubscriptionName
+                description: Event Subscription Name.
+                serializedName: eventSubscriptionName
+            protocol:
+              http: *ref_71
+            schema: *ref_43
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_78
+            language:
+              default:
+                name: releaseDelayInSeconds
+                description: Release cloud events with the specified delay in seconds.
+                serializedName: releaseDelayInSeconds
+            protocol:
+              http: *ref_72
+            schema: *ref_65
+            implementation: Method
+            required: false
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: >-
+                  Body parameter's content type. Known values are
+                  application/json
+                serializedName: Content-Type
+            protocol:
+              http:
+                in: header
+            schema: *ref_73
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_74
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_75
+        signatureParameters:
+          - *ref_76
+          - *ref_77
+          - *ref_78
+          - *ref_75
+        responses:
+          - language:
+              default:
+                name: releaseResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_79
+        exceptions:
+          - language:
+              default:
+                name: releaseResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_34
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_35
+      - &ref_111
+        language:
+          default:
+            name: reject
+            description: >-
+              Reject a batch of Cloud Events. The response will include the set
+              of successfully rejected lock tokens, along with other failed lock
+              tokens with their corresponding error information. Successfully
+              rejected events will be dead-lettered and can no longer be
+              received by a consumer.
+        protocol: {}
+        operationId: reject
+        extensions:
+          x-ms-examples:
+            Reject Cloud Event:
+              operationId: RejectCloudEvents
+              title: Reject Cloud Event
+              parameters:
+                endpoint: myNamespaceName.westus-1.eventgrid.azure.net
+                topicName: myTopic
+                eventSubscriptionName: myEventSubscription
+                content-type: application/json
+                authorization: SharedAccessKey 123
+                api-version: '2024-06-01'
+                rejectOptions:
+                  lockTokens:
+                    - CgMKATESCQoHdG9rZW4tMQ==
+              responses:
+                '200':
+                  body:
+                    failedLockTokens: []
+                    succeededLockTokens:
+                      - CgMKATESCQoHdG9rZW4tMQ==
+              x-ms-original-file: 2024-06-01/reject.json
+        crossLanguageDefinitionId: Customizations.ClientReceiver2.reject
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: reject
+              description: ''
+          protocol: {}
+          requests:
+            - language:
+                default:
+                  name: ''
+                  description: ''
+              protocol:
+                http: &ref_83
+                  path: >-
+                    /topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject
+                  method: post
+                  uri: '{endpoint}'
+                  mediaTypes:
+                    - application/json
+              parameters: &ref_82
+                - language:
+                    default:
+                      name: topicName
+                      description: Topic Name.
+                      serializedName: topicName
+                  protocol:
+                    http: &ref_84
+                      in: path
+                  schema: *ref_28
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: eventSubscriptionName
+                      description: Event Subscription Name.
+                      serializedName: eventSubscriptionName
+                  protocol:
+                    http: &ref_85
+                      in: path
+                  schema: *ref_43
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: lockTokens
+                      description: Array of lock tokens.
+                      serializedName: lockTokens
+                  protocol: {}
+                  schema: *ref_19
+                  originalParameter: &ref_88
+                    language:
+                      default:
+                        name: rejectRequest
+                        description: ''
+                    protocol:
+                      http:
+                        in: body
+                    schema: *ref_80
+                    implementation: Method
+                    required: true
+                  targetProperty: *ref_81
+                  implementation: Method
+                  required: true
+                  nullable: false
+              signatureParameters: *ref_82
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http: *ref_83
+        parameters:
+          - *ref_56
+          - *ref_37
+          - &ref_89
+            language:
+              default:
+                name: topicName
+                description: Topic Name.
+                serializedName: topicName
+            protocol:
+              http: *ref_84
+            schema: *ref_28
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_90
+            language:
+              default:
+                name: eventSubscriptionName
+                description: Event Subscription Name.
+                serializedName: eventSubscriptionName
+            protocol:
+              http: *ref_85
+            schema: *ref_43
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: >-
+                  Body parameter's content type. Known values are
+                  application/json
+                serializedName: Content-Type
+            protocol:
+              http:
+                in: header
+            schema: *ref_86
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_87
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_88
+        signatureParameters:
+          - *ref_89
+          - *ref_90
+          - *ref_88
+        responses:
+          - language:
+              default:
+                name: rejectResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_91
+        exceptions:
+          - language:
+              default:
+                name: rejectResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_34
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_35
+      - &ref_112
+        language:
+          default:
+            name: renewLocks
+            description: >-
+              Renew locks for a batch of Cloud Events. The response will include
+              the set of successfully renewed lock tokens, along with other
+              failed lock tokens with their corresponding error information.
+              Successfully renewed locks will ensure that the associated event
+              is only available to the consumer that holds the renewed lock.
+        protocol: {}
+        operationId: renewLocks
+        extensions:
+          x-ms-examples:
+            Renew lock for batch of Cloud Events:
+              operationId: RenewCloudEventLocks
+              title: Renew lock for batch of Cloud Events
+              parameters:
+                endpoint: myNamespaceName.westus-1.eventgrid.azure.net
+                topicName: myTopic
+                eventSubscriptionName: myEventSubscription
+                content-type: application/json
+                authorization: SharedAccessKey 123
+                api-version: '2024-06-01'
+                renewLockOptions:
+                  lockTokens:
+                    - CgMKATESCQoHdG9rZW4tMQ==
+              responses:
+                '200':
+                  body:
+                    failedLockTokens: []
+                    succeededLockTokens:
+                      - CgMKATESCQoHdG9rZW4tMQ==
+              x-ms-original-file: 2024-06-01/renewlock.json
+        crossLanguageDefinitionId: Customizations.ClientReceiver2.renewLocks
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: renewLocks
+              description: ''
+          protocol: {}
+          requests:
+            - language:
+                default:
+                  name: ''
+                  description: ''
+              protocol:
+                http: &ref_95
+                  path: >-
+                    /topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock
+                  method: post
+                  uri: '{endpoint}'
+                  mediaTypes:
+                    - application/json
+              parameters: &ref_94
+                - language:
+                    default:
+                      name: topicName
+                      description: Topic Name.
+                      serializedName: topicName
+                  protocol:
+                    http: &ref_96
+                      in: path
+                  schema: *ref_28
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: eventSubscriptionName
+                      description: Event Subscription Name.
+                      serializedName: eventSubscriptionName
+                  protocol:
+                    http: &ref_97
+                      in: path
+                  schema: *ref_43
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: lockTokens
+                      description: Array of lock tokens.
+                      serializedName: lockTokens
+                  protocol: {}
+                  schema: *ref_22
+                  originalParameter: &ref_100
+                    language:
+                      default:
+                        name: renewLocksRequest
+                        description: ''
+                    protocol:
+                      http:
+                        in: body
+                    schema: *ref_92
+                    implementation: Method
+                    required: true
+                  targetProperty: *ref_93
+                  implementation: Method
+                  required: true
+                  nullable: false
+              signatureParameters: *ref_94
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http: *ref_95
+        parameters:
+          - *ref_56
+          - *ref_37
+          - &ref_101
+            language:
+              default:
+                name: topicName
+                description: Topic Name.
+                serializedName: topicName
+            protocol:
+              http: *ref_96
+            schema: *ref_28
+            implementation: Method
+            required: true
+            nullable: false
+          - &ref_102
+            language:
+              default:
+                name: eventSubscriptionName
+                description: Event Subscription Name.
+                serializedName: eventSubscriptionName
+            protocol:
+              http: *ref_97
+            schema: *ref_43
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: >-
+                  Body parameter's content type. Known values are
+                  application/json
+                serializedName: Content-Type
+            protocol:
+              http:
+                in: header
+            schema: *ref_98
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_99
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_100
+        signatureParameters:
+          - *ref_101
+          - *ref_102
+          - *ref_100
+        responses:
+          - language:
+              default:
+                name: renewLocksResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_103
+        exceptions:
+          - language:
+              default:
+                name: renewLocksResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_34
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_35
+security:
+  authenticationRequired: true
+  schemes:
+    - &ref_104
+      type: Key
+      name: authorization
+      prefix: SharedAccessKey
+    - &ref_105
+      type: OAuth2
+      scopes:
+        - https://eventgrid.azure.net/.default
+clients:
+  - language:
+      default:
+        name: EventGridSenderClient
+        description: ''
+        namespace: Microsoft.EventGrid
+      java:
+        namespace: customizations
+    protocol: {}
+    security:
+      authenticationRequired: true
+      schemes:
+        - *ref_104
+        - *ref_105
+    operationGroups:
+      - language:
+          default:
+            name: ''
+            description: ''
+        protocol: {}
+        $key: ''
+        operations:
+          - *ref_106
+          - *ref_107
+    subClients: []
+    buildMethodPublic: true
+    parentAccessorPublic: false
+    crossLanguageDefinitionId: Customizations.ClientSender2
+    apiVersions:
+      - version: '2023-11-01'
+      - version: '2024-06-01'
+    globalParameters:
+      - *ref_36
+      - *ref_37
+    serviceVersion: &ref_113
+      language:
+        default:
+          name: EventGridServiceVersion
+          description: EventGridClient
+      protocol: {}
+  - language:
+      default:
+        name: EventGridReceiverClient
+        description: ''
+        namespace: Microsoft.EventGrid
+      java:
+        namespace: customizations
+    protocol: {}
+    security:
+      authenticationRequired: true
+      schemes:
+        - *ref_104
+        - *ref_105
+    operationGroups:
+      - language:
+          default:
+            name: ''
+            description: ''
+        protocol: {}
+        $key: ''
+        operations:
+          - *ref_108
+          - *ref_109
+          - *ref_110
+          - *ref_111
+          - *ref_112
+    subClients: []
+    buildMethodPublic: true
+    parentAccessorPublic: false
+    crossLanguageDefinitionId: Customizations.ClientReceiver2
+    apiVersions:
+      - version: '2023-11-01'
+      - version: '2024-06-01'
+    globalParameters:
+      - *ref_56
+      - *ref_37
+    serviceVersion: *ref_113
+globalParameters:
+  - *ref_36
+  - *ref_56

@@ -4,9 +4,9 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AutoCompleteOptions;
-import com.azure.analytics.purview.datamap.models.AutoCompleteResult;
-import com.azure.analytics.purview.datamap.models.AutoCompleteResultValue;
+import com.azure.analytics.purview.datamap.AutoCompleteOptions;
+import com.azure.analytics.purview.datamap.AutoCompleteResult;
+import com.azure.analytics.purview.datamap.AutoCompleteResultValue;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.List;

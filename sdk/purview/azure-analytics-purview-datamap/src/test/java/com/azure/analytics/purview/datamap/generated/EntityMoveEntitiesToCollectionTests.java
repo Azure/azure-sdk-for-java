@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.EntityMutationResult;
-import com.azure.analytics.purview.datamap.models.MoveEntitiesOptions;
+import com.azure.analytics.purview.datamap.EntityMutationResult;
+import com.azure.analytics.purview.datamap.MoveEntitiesOptions;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

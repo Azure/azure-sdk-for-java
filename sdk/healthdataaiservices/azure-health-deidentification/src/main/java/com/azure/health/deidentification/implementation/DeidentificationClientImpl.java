@@ -45,7 +45,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.health.deidentification.DeidServicesServiceVersion;
-import com.azure.health.deidentification.models.DeidentificationJob;
+import com.azure.health.deidentification.DeidentificationJob;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;

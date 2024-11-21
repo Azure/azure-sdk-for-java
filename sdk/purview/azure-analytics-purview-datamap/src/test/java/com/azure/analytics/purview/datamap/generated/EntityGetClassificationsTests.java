@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasClassifications;
-import com.azure.analytics.purview.datamap.models.SortType;
+import com.azure.analytics.purview.datamap.AtlasClassifications;
+import com.azure.analytics.purview.datamap.SortType;
 import com.azure.core.util.BinaryData;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;

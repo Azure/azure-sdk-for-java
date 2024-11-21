@@ -18,10 +18,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.implementation.DeidentificationClientImpl;
-import com.azure.health.deidentification.models.DeidentificationContent;
-import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDetails;
 
 /**
  * Initializes a new instance of the synchronous DeidentificationClient type.

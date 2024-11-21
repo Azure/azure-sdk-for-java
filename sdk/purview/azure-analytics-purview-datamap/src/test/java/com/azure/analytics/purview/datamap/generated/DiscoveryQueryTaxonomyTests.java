@@ -4,15 +4,15 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.ContactSearchResultValue;
-import com.azure.analytics.purview.datamap.models.QueryOptions;
-import com.azure.analytics.purview.datamap.models.QueryResult;
-import com.azure.analytics.purview.datamap.models.SearchFacetItem;
-import com.azure.analytics.purview.datamap.models.SearchFacetSort;
-import com.azure.analytics.purview.datamap.models.SearchResultValue;
-import com.azure.analytics.purview.datamap.models.SearchSortOrder;
-import com.azure.analytics.purview.datamap.models.SearchTaxonomySetting;
-import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
+import com.azure.analytics.purview.datamap.ContactSearchResultValue;
+import com.azure.analytics.purview.datamap.QueryOptions;
+import com.azure.analytics.purview.datamap.QueryResult;
+import com.azure.analytics.purview.datamap.SearchFacetItem;
+import com.azure.analytics.purview.datamap.SearchFacetSort;
+import com.azure.analytics.purview.datamap.SearchResultValue;
+import com.azure.analytics.purview.datamap.SearchSortOrder;
+import com.azure.analytics.purview.datamap.SearchTaxonomySetting;
+import com.azure.analytics.purview.datamap.TermSearchResultValue;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

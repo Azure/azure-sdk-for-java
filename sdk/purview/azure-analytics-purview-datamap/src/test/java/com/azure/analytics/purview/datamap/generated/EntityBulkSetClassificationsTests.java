@@ -4,9 +4,9 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasClassification;
-import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
-import com.azure.analytics.purview.datamap.models.AtlasEntityHeaders;
+import com.azure.analytics.purview.datamap.AtlasClassification;
+import com.azure.analytics.purview.datamap.AtlasEntityHeader;
+import com.azure.analytics.purview.datamap.AtlasEntityHeaders;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

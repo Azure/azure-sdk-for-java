@@ -4,12 +4,12 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.ContactSearchResultValue;
-import com.azure.analytics.purview.datamap.models.QueryOptions;
-import com.azure.analytics.purview.datamap.models.QueryResult;
-import com.azure.analytics.purview.datamap.models.SearchHighlights;
-import com.azure.analytics.purview.datamap.models.SearchResultValue;
-import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
+import com.azure.analytics.purview.datamap.ContactSearchResultValue;
+import com.azure.analytics.purview.datamap.QueryOptions;
+import com.azure.analytics.purview.datamap.QueryResult;
+import com.azure.analytics.purview.datamap.SearchHighlights;
+import com.azure.analytics.purview.datamap.SearchResultValue;
+import com.azure.analytics.purview.datamap.TermSearchResultValue;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.List;

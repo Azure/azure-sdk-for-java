@@ -4,10 +4,10 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasAttributeDef;
-import com.azure.analytics.purview.datamap.models.AtlasBusinessMetadataDef;
-import com.azure.analytics.purview.datamap.models.CardinalityValue;
-import com.azure.analytics.purview.datamap.models.TypeCategory;
+import com.azure.analytics.purview.datamap.AtlasAttributeDef;
+import com.azure.analytics.purview.datamap.AtlasBusinessMetadataDef;
+import com.azure.analytics.purview.datamap.CardinalityValue;
+import com.azure.analytics.purview.datamap.TypeCategory;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

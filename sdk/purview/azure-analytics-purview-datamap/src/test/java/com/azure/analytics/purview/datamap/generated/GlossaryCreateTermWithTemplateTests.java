@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasGlossaryHeader;
-import com.azure.analytics.purview.datamap.models.AtlasGlossaryTerm;
+import com.azure.analytics.purview.datamap.AtlasGlossaryHeader;
+import com.azure.analytics.purview.datamap.AtlasGlossaryTerm;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

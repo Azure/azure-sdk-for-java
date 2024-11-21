@@ -5,13 +5,13 @@
 package com.azure.health.deidentification.generated;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.JobStatus;
-import com.azure.health.deidentification.models.JobSummary;
-import com.azure.health.deidentification.models.OperationType;
-import com.azure.health.deidentification.models.SourceStorageLocation;
-import com.azure.health.deidentification.models.TargetStorageLocation;
+import com.azure.health.deidentification.DeidentificationJob;
+import com.azure.health.deidentification.DocumentDataType;
+import com.azure.health.deidentification.JobStatus;
+import com.azure.health.deidentification.JobSummary;
+import com.azure.health.deidentification.OperationType;
+import com.azure.health.deidentification.SourceStorageLocation;
+import com.azure.health.deidentification.TargetStorageLocation;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

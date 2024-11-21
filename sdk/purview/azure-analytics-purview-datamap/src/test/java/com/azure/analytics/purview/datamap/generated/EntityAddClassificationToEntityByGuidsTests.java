@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasClassification;
-import com.azure.analytics.purview.datamap.models.ClassificationAssociateOptions;
+import com.azure.analytics.purview.datamap.AtlasClassification;
+import com.azure.analytics.purview.datamap.ClassificationAssociateOptions;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

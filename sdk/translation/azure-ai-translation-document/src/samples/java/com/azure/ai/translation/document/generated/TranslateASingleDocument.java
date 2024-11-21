@@ -4,8 +4,8 @@
 
 package com.azure.ai.translation.document.generated;
 
-import com.azure.ai.translation.document.SingleDocumentTranslationClient;
-import com.azure.ai.translation.document.SingleDocumentTranslationClientBuilder;
+import clientcustomizations.SingleDocumentTranslationClient;
+import clientcustomizations.SingleDocumentTranslationClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;

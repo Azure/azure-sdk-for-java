@@ -6,7 +6,7 @@ module com.azure.analytics.purview.datamap {
     requires transitive com.azure.core;
 
     exports com.azure.analytics.purview.datamap;
-    exports com.azure.analytics.purview.datamap.models;
+    exports customizations;
 
-    opens com.azure.analytics.purview.datamap.models to com.azure.core;
+    opens com.azure.analytics.purview.datamap to com.azure.core;
 }

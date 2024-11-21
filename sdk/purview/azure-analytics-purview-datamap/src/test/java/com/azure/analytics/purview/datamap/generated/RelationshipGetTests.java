@@ -4,10 +4,10 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasObjectId;
-import com.azure.analytics.purview.datamap.models.AtlasRelationship;
-import com.azure.analytics.purview.datamap.models.AtlasRelationshipWithExtInfo;
-import com.azure.analytics.purview.datamap.models.StatusAtlasRelationship;
+import com.azure.analytics.purview.datamap.AtlasObjectId;
+import com.azure.analytics.purview.datamap.AtlasRelationship;
+import com.azure.analytics.purview.datamap.AtlasRelationshipWithExtInfo;
+import com.azure.analytics.purview.datamap.StatusAtlasRelationship;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

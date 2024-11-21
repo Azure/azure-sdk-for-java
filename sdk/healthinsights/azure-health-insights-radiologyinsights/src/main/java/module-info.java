@@ -6,7 +6,11 @@ module com.azure.health.insights.radiologyinsights {
     requires transitive com.azure.core;
 
     exports com.azure.health.insights.radiologyinsights;
+    exports clientforazurehealthinsights;
+    exports fhir.r4.models;
     exports com.azure.health.insights.radiologyinsights.models;
 
+    opens fhir.r4.models to com.azure.core;
+    opens com.azure.health.insights.radiologyinsights to com.azure.core;
     opens com.azure.health.insights.radiologyinsights.models to com.azure.core;
 }

@@ -4,10 +4,10 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasLineageInfo;
-import com.azure.analytics.purview.datamap.models.LineageDirection;
-import com.azure.analytics.purview.datamap.models.LineageRelation;
-import com.azure.analytics.purview.datamap.models.ParentRelation;
+import com.azure.analytics.purview.datamap.AtlasLineageInfo;
+import com.azure.analytics.purview.datamap.LineageDirection;
+import com.azure.analytics.purview.datamap.LineageRelation;
+import com.azure.analytics.purview.datamap.ParentRelation;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

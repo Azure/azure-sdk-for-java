@@ -36,9 +36,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.health.insights.radiologyinsights.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.RadiologyInsightsServiceVersion;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
@@ -208,128 +208,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -359,10 +238,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -403,7 +282,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -445,128 +324,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -596,10 +354,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -640,7 +398,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -713,128 +471,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -864,10 +501,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -908,7 +545,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -950,128 +587,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -1101,10 +617,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -1145,7 +661,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -1217,128 +733,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -1368,10 +763,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -1412,7 +807,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -1454,128 +849,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -1605,10 +879,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -1649,7 +923,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -1728,128 +1002,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -1879,10 +1032,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -1923,7 +1076,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -1965,128 +1118,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -2116,10 +1148,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -2160,7 +1192,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -2239,128 +1271,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -2390,10 +1301,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -2434,7 +1345,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -2476,128 +1387,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -2627,10 +1417,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -2671,7 +1461,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -2751,128 +1541,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -2902,10 +1571,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -2946,7 +1615,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]
@@ -2988,128 +1657,7 @@ public final class RadiologyInsightsClientImpl {
      *                     sex: String(female/male/unspecified) (Optional)
      *                     birthDate: LocalDate (Optional)
      *                     clinicalInfo (Optional): [
-     *                          (Optional){
-     *                             resourceType: String (Required)
-     *                             id: String (Optional)
-     *                             meta (Optional): {
-     *                                 versionId: String (Optional)
-     *                                 lastUpdated: String (Optional)
-     *                                 source: String (Optional)
-     *                                 profile (Optional): [
-     *                                     String (Optional)
-     *                                 ]
-     *                                 security (Optional): [
-     *                                      (Optional){
-     *                                         id: String (Optional)
-     *                                         extension (Optional): [
-     *                                              (Optional){
-     *                                                 id: String (Optional)
-     *                                                 extension (Optional): [
-     *                                                     (recursive schema, see above)
-     *                                                 ]
-     *                                                 url: String (Required)
-     *                                                 valueQuantity (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     value: Double (Optional)
-     *                                                     comparator: String (Optional)
-     *                                                     unit: String (Optional)
-     *                                                     system: String (Optional)
-     *                                                     code: String (Optional)
-     *                                                 }
-     *                                                 valueCodeableConcept (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     coding (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     text: String (Optional)
-     *                                                 }
-     *                                                 valueString: String (Optional)
-     *                                                 valueBoolean: Boolean (Optional)
-     *                                                 valueInteger: Integer (Optional)
-     *                                                 valueRange (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     low (Optional): (recursive schema, see low above)
-     *                                                     high (Optional): (recursive schema, see high above)
-     *                                                 }
-     *                                                 valueRatio (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     numerator (Optional): (recursive schema, see numerator above)
-     *                                                     denominator (Optional): (recursive schema, see denominator above)
-     *                                                 }
-     *                                                 valueSampledData (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     origin (Required): (recursive schema, see origin above)
-     *                                                     period: double (Required)
-     *                                                     factor: Double (Optional)
-     *                                                     lowerLimit: Double (Optional)
-     *                                                     upperLimit: Double (Optional)
-     *                                                     dimensions: int (Required)
-     *                                                     data: String (Optional)
-     *                                                 }
-     *                                                 valueTime: String (Optional)
-     *                                                 valueDateTime: String (Optional)
-     *                                                 valuePeriod (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     start: String (Optional)
-     *                                                     end: String (Optional)
-     *                                                 }
-     *                                                 valueReference (Optional): {
-     *                                                     id: String (Optional)
-     *                                                     extension (Optional): [
-     *                                                         (recursive schema, see above)
-     *                                                     ]
-     *                                                     reference: String (Optional)
-     *                                                     type: String (Optional)
-     *                                                     identifier (Optional): {
-     *                                                         id: String (Optional)
-     *                                                         extension (Optional): [
-     *                                                             (recursive schema, see above)
-     *                                                         ]
-     *                                                         use: String (Optional)
-     *                                                         type (Optional): (recursive schema, see type above)
-     *                                                         system: String (Optional)
-     *                                                         value: String (Optional)
-     *                                                         period (Optional): (recursive schema, see period above)
-     *                                                         assigner (Optional): (recursive schema, see assigner above)
-     *                                                     }
-     *                                                     display: String (Optional)
-     *                                                 }
-     *                                             }
-     *                                         ]
-     *                                         system: String (Optional)
-     *                                         version: String (Optional)
-     *                                         code: String (Optional)
-     *                                         display: String (Optional)
-     *                                     }
-     *                                 ]
-     *                                 tag (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                             implicitRules: String (Optional)
-     *                             language: String (Optional)
-     *                              (Optional): {
-     *                                 String: Object (Required)
-     *                             }
-     *                         }
+     *                         FhirR4Resource (Optional)
      *                     ]
      *                 }
      *                 encounters (Optional): [
@@ -3139,10 +1687,10 @@ public final class RadiologyInsightsClientImpl {
      *                         administrativeMetadata (Optional): {
      *                             orderedProcedures (Optional): [
      *                                  (Optional){
-     *                                     code (Optional): (recursive schema, see code above)
+     *                                     code: FhirR4CodeableConcept (Optional)
      *                                     description: String (Optional)
      *                                     extension (Optional): [
-     *                                         (recursive schema, see above)
+     *                                         FhirR4Extension (Optional)
      *                                     ]
      *                                 }
      *                             ]
@@ -3183,7 +1731,7 @@ public final class RadiologyInsightsClientImpl {
      *                      (Required){
      *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
      *                         extension (Optional): [
-     *                             (recursive schema, see above)
+     *                             FhirR4Extension (Optional)
      *                         ]
      *                     }
      *                 ]

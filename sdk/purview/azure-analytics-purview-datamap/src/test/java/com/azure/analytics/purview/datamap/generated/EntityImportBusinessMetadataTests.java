@@ -4,9 +4,9 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.BulkImportResult;
-import com.azure.analytics.purview.datamap.models.ImportInfo;
-import com.azure.analytics.purview.datamap.models.ImportStatus;
+import com.azure.analytics.purview.datamap.BulkImportResult;
+import com.azure.analytics.purview.datamap.ImportInfo;
+import com.azure.analytics.purview.datamap.ImportStatus;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

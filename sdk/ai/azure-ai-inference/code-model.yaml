@@ -1,0 +1,4783 @@
+language:
+  default:
+    name: Model
+    description: ''
+    namespace: AI.Model
+  java:
+    namespace: com.azure.ai.inference
+protocol: {}
+info:
+  title: Model
+  description: ''
+schemas:
+  strings:
+    - &ref_100
+      language:
+        default:
+          name: endpoint
+          description: A sequence of textual characters.
+      protocol: {}
+      type: string
+    - &ref_0
+      language:
+        default:
+          name: string
+          description: simple string
+      protocol: {}
+      type: string
+    - &ref_1
+      language:
+        default:
+          name: string
+          description: A sequence of textual characters.
+      protocol: {}
+      type: string
+    - &ref_5
+      language:
+        default:
+          name: String
+          description: A sequence of textual characters.
+      protocol: {}
+      type: string
+    - &ref_107
+      language:
+        default:
+          name: x-ms-error-code
+          description: A sequence of textual characters.
+      protocol: {}
+      type: string
+  constants:
+    - &ref_101
+      language:
+        default:
+          name: api-version
+          description: API Version
+      protocol: {}
+      type: constant
+      valueType: *ref_0
+      value:
+        value: ''
+    - &ref_103
+      language:
+        default:
+          name: completeContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_104
+      language:
+        default:
+          name: completeContentType1
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_10
+      language:
+        default:
+          name: ChatCompletionsToolCallType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: function
+      usage:
+        - input
+        - public
+        - output
+    - &ref_19
+      language:
+        default:
+          name: ChatCompletionsToolCallType1
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: function
+      usage:
+        - input
+        - public
+    - &ref_22
+      language:
+        default:
+          name: ChatCompletionsToolCallType2
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: function
+      usage:
+        - input
+        - public
+    - &ref_111
+      language:
+        default:
+          name: getModelInfoContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_123
+      language:
+        default:
+          name: embedContentType
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_124
+      language:
+        default:
+          name: embedContentType1
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_128
+      language:
+        default:
+          name: getModelInfoContentType1
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_139
+      language:
+        default:
+          name: embedContentType2
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_140
+      language:
+        default:
+          name: embedContentType3
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+    - &ref_143
+      language:
+        default:
+          name: getModelInfoContentType2
+          description: ''
+      protocol: {}
+      type: constant
+      valueType: *ref_1
+      value:
+        value: application/json
+      usage:
+        - input
+        - internal
+  choices:
+    - &ref_67
+      language:
+        default:
+          name: ExtraParameters
+          description: >-
+            Controls what happens if extra parameters, undefined by the REST
+            API, are passed in the JSON request payload.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: error
+          language:
+            default:
+              name: error
+              description: >-
+                The service will error if it detected extra parameters in the
+                request payload. This is the service default.
+        - value: drop
+          language:
+            default:
+              name: drop
+              description: >-
+                The service will ignore (drop) extra parameters in the request
+                payload. It will only pass the known parameters to the back-end
+                AI model.
+        - value: pass-through
+          language:
+            default:
+              name: pass_through
+              description: The service will pass extra parameters to the back-end AI model.
+      crossLanguageDefinitionId: AI.Model.ExtraParameters
+      usage:
+        - input
+        - public
+    - &ref_3
+      language:
+        default:
+          name: ChatRole
+          description: >-
+            A description of the intended purpose of a message within a chat
+            completions interaction.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: system
+          language:
+            default:
+              name: system
+              description: The role that instructs or sets the behavior of the assistant.
+        - value: user
+          language:
+            default:
+              name: user
+              description: The role that provides input for chat completions.
+        - value: assistant
+          language:
+            default:
+              name: assistant
+              description: >-
+                The role that provides responses to system-instructed,
+                user-prompted input.
+        - value: tool
+          language:
+            default:
+              name: tool
+              description: >-
+                The role that represents extension tool activity within a chat
+                completions operation.
+      crossLanguageDefinitionId: AI.Model.ChatRole
+      usage:
+        - public
+        - input
+        - output
+    - &ref_7
+      language:
+        default:
+          name: ChatMessageImageDetailLevel
+          description: >-
+            A representation of the possible image detail levels for image-based
+            chat completions message content.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: auto
+          language:
+            default:
+              name: auto
+              description: >-
+                Specifies that the model should determine which detail level to
+                apply using heuristics like image size.
+        - value: low
+          language:
+            default:
+              name: low
+              description: >-
+                Specifies that image evaluation should be constrained to the
+                'low-res' model that may be faster and consume fewer
+
+                tokens but may also be less accurate for highly detailed images.
+        - value: high
+          language:
+            default:
+              name: high
+              description: >-
+                Specifies that image evaluation should enable the 'high-res'
+                model that may be more accurate for highly detailed
+
+                images but may also be slower and consume more tokens.
+      crossLanguageDefinitionId: AI.Model.ChatMessageImageDetailLevel
+      usage:
+        - public
+        - input
+    - &ref_21
+      language:
+        default:
+          name: ChatCompletionsToolSelectionPreset
+          description: >-
+            Represents a generic policy for how a chat completions tool may be
+            selected.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: auto
+          language:
+            default:
+              name: auto
+              description: >-
+                Specifies that the model may either use any of the tools
+                provided in this chat completions request or
+
+                instead return a standard chat completions response as if no
+                tools were provided.
+        - value: none
+          language:
+            default:
+              name: none
+              description: >-
+                Specifies that the model should not respond with a tool call and
+                should instead provide a standard chat
+
+                completions response. Response content may still be influenced
+                by the provided tool definitions.
+        - value: required
+          language:
+            default:
+              name: required
+              description: >-
+                Specifies that the model should respond with a call to one or
+                more tools.
+      crossLanguageDefinitionId: AI.Model.ChatCompletionsToolSelectionPreset
+      usage:
+        - public
+        - input
+    - &ref_31
+      language:
+        default:
+          name: CompletionsFinishReason
+          description: >-
+            Representation of the manner in which a completions response
+            concluded.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: stop
+          language:
+            default:
+              name: stopped
+              description: >-
+                Completions ended normally and reached its end of token
+                generation.
+        - value: length
+          language:
+            default:
+              name: tokenLimitReached
+              description: >-
+                Completions exhausted available token limits before generation
+                could complete.
+        - value: content_filter
+          language:
+            default:
+              name: contentFiltered
+              description: >-
+                Completions generated a response that was identified as
+                potentially sensitive per content
+
+                moderation policies.
+        - value: tool_calls
+          language:
+            default:
+              name: toolCalls
+              description: >-
+                Completion ended with the model calling a provided tool for
+                output.
+      crossLanguageDefinitionId: AI.Model.CompletionsFinishReason
+      usage:
+        - public
+        - output
+    - &ref_37
+      language:
+        default:
+          name: ModelType
+          description: The type of AI model
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: embeddings
+          language:
+            default:
+              name: embeddings
+              description: Embeddings.
+        - value: image_generation
+          language:
+            default:
+              name: image_generation
+              description: Image generation
+        - value: text_generation
+          language:
+            default:
+              name: text_generation
+              description: Text generation
+        - value: image_embeddings
+          language:
+            default:
+              name: image_embeddings
+              description: Image embeddings
+        - value: audio_generation
+          language:
+            default:
+              name: audio_generation
+              description: Audio generation
+        - value: chat
+          language:
+            default:
+              name: chat
+              description: Chat completions
+      crossLanguageDefinitionId: AI.Model.ModelType
+      usage:
+        - public
+        - output
+    - &ref_38
+      language:
+        default:
+          name: EmbeddingEncodingFormat
+          description: >-
+            The format of the embeddings result.
+
+            Returns a 422 error if the model doesn't support the value or
+            parameter.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: base64
+          language:
+            default:
+              name: base64
+              description: Base64
+        - value: binary
+          language:
+            default:
+              name: binary
+              description: Binary
+        - value: float
+          language:
+            default:
+              name: float
+              description: Floating point
+        - value: int8
+          language:
+            default:
+              name: int8
+              description: Signed 8-bit integer
+        - value: ubinary
+          language:
+            default:
+              name: ubinary
+              description: ubinary
+        - value: uint8
+          language:
+            default:
+              name: uint8
+              description: Unsigned 8-bit integer
+      crossLanguageDefinitionId: AI.Model.EmbeddingEncodingFormat
+      usage:
+        - public
+        - input
+    - &ref_39
+      language:
+        default:
+          name: EmbeddingInputType
+          description: Represents the input types used for embedding search.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: choice
+      choiceType: *ref_1
+      choices:
+        - value: text
+          language:
+            default:
+              name: text
+              description: to do
+        - value: query
+          language:
+            default:
+              name: query
+              description: to do
+        - value: document
+          language:
+            default:
+              name: document
+              description: to do
+      crossLanguageDefinitionId: AI.Model.EmbeddingInputType
+      usage:
+        - public
+        - input
+  objects:
+    - &ref_69
+      language:
+        default:
+          name: CompleteRequest
+          description: ''
+          namespace: Customizations
+        java:
+          namespace: customizations.implementation.models
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Customizations.complete.Request.anonymous
+      parents:
+        immediate:
+          - &ref_2
+            language:
+              default:
+                name: Record
+                description: ''
+            protocol: {}
+            type: dictionary
+            elementType: &ref_20
+              language:
+                default:
+                  name: any
+                  description: Anything
+              protocol: {}
+              type: any
+            nullableItems: false
+        all:
+          - *ref_2
+      properties:
+        - &ref_70
+          language:
+            default:
+              name: messages
+              description: >-
+                The collection of context messages associated with this chat
+                completions request.
+
+                Typical usage begins with a chat message for the System role
+                that provides instructions for
+
+                the behavior of the assistant, followed by alternating messages
+                between the User and
+
+                Assistant roles.
+          protocol: {}
+          schema: &ref_49
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_4
+              language:
+                default:
+                  name: ChatRequestMessage
+                  description: >-
+                    An abstract representation of a chat message as provided in
+                    a request.
+                  namespace: AI.Model
+                java:
+                  namespace: com.azure.ai.inference
+              protocol: {}
+              type: object
+              crossLanguageDefinitionId: AI.Model.ChatRequestMessage
+              discriminator:
+                property:
+                  language:
+                    default:
+                      name: role
+                      description: The chat role associated with this message.
+                  protocol: {}
+                  schema: *ref_3
+                  serializedName: role
+                  required: true
+                  nullable: false
+                  readOnly: false
+                immediate: {}
+                all: {}
+              children:
+                immediate:
+                  - &ref_11
+                    language:
+                      default:
+                        name: ChatRequestSystemMessage
+                        description: >-
+                          A request chat message containing system instructions
+                          that influence how the model will generate a chat
+                          completions
+
+                          response.
+                        namespace: AI.Model
+                      java:
+                        namespace: com.azure.ai.inference
+                    protocol: {}
+                    type: object
+                    crossLanguageDefinitionId: AI.Model.ChatRequestSystemMessage
+                    parents:
+                      immediate:
+                        - *ref_4
+                      all:
+                        - *ref_4
+                    discriminatorValue: system
+                    properties:
+                      - language:
+                          default:
+                            name: content
+                            description: The contents of the system message.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: content
+                        required: true
+                        nullable: false
+                        readOnly: false
+                    usage:
+                      - public
+                      - input
+                  - &ref_12
+                    language:
+                      default:
+                        name: ChatRequestUserMessage
+                        description: >-
+                          A request chat message representing user input to the
+                          assistant.
+                        namespace: AI.Model
+                      java:
+                        namespace: com.azure.ai.inference
+                    protocol: {}
+                    type: object
+                    crossLanguageDefinitionId: AI.Model.ChatRequestUserMessage
+                    parents:
+                      immediate:
+                        - *ref_4
+                      all:
+                        - *ref_4
+                    discriminatorValue: user
+                    properties:
+                      - language:
+                          default:
+                            name: content
+                            description: >-
+                              The contents of the user message, with available
+                              input types varying by selected model.
+                        protocol: {}
+                        schema: &ref_61
+                          language:
+                            default:
+                              name: ChatRequestUserMessageContentBase
+                              description: ''
+                          protocol: {}
+                          type: or
+                          anyOf:
+                            - language:
+                                default:
+                                  name: StringChatRequestUserMessageContent
+                                  description: A sequence of textual characters.
+                                java:
+                                  namespace: com.azure.ai.inference
+                              protocol: {}
+                              type: object
+                              properties:
+                                - language:
+                                    default:
+                                      name: value
+                                      description: ''
+                                  protocol: {}
+                                  schema: *ref_5
+                                  serializedName: value
+                                  required: true
+                                  readOnly: false
+                              usage:
+                                - input
+                                - internal
+                                - public
+                            - language:
+                                default:
+                                  name: >-
+                                    ChatMessageContentItemListChatRequestUserMessageContent
+                                  description: ''
+                                java:
+                                  namespace: com.azure.ai.inference
+                              protocol: {}
+                              type: object
+                              properties:
+                                - language:
+                                    default:
+                                      name: value
+                                      description: ''
+                                  protocol: {}
+                                  schema: &ref_47
+                                    language:
+                                      default:
+                                        name: ChatMessageContentItemList
+                                        description: ''
+                                    protocol: {}
+                                    type: array
+                                    elementType: &ref_6
+                                      language:
+                                        default:
+                                          name: ChatMessageContentItem
+                                          description: >-
+                                            An abstract representation of a
+                                            structured content item within a chat
+                                            message.
+                                          namespace: AI.Model
+                                        java:
+                                          namespace: com.azure.ai.inference
+                                      protocol: {}
+                                      type: object
+                                      crossLanguageDefinitionId: AI.Model.ChatMessageContentItem
+                                      discriminator:
+                                        property:
+                                          language:
+                                            default:
+                                              name: type
+                                              description: The discriminated object type.
+                                          protocol: {}
+                                          schema: *ref_1
+                                          serializedName: type
+                                          required: true
+                                          nullable: false
+                                          readOnly: false
+                                        immediate: {}
+                                        all: {}
+                                      children:
+                                        immediate:
+                                          - &ref_8
+                                            language:
+                                              default:
+                                                name: ChatMessageTextContentItem
+                                                description: >-
+                                                  A structured chat content item
+                                                  containing plain text.
+                                                namespace: AI.Model
+                                              java:
+                                                namespace: com.azure.ai.inference
+                                            protocol: {}
+                                            type: object
+                                            crossLanguageDefinitionId: AI.Model.ChatMessageTextContentItem
+                                            parents:
+                                              immediate:
+                                                - *ref_6
+                                              all:
+                                                - *ref_6
+                                            discriminatorValue: text
+                                            properties:
+                                              - language:
+                                                  default:
+                                                    name: text
+                                                    description: The content of the message.
+                                                protocol: {}
+                                                schema: *ref_1
+                                                serializedName: text
+                                                required: true
+                                                nullable: false
+                                                readOnly: false
+                                            usage:
+                                              - public
+                                              - input
+                                          - &ref_9
+                                            language:
+                                              default:
+                                                name: ChatMessageImageContentItem
+                                                description: >-
+                                                  A structured chat content item
+                                                  containing an image reference.
+                                                namespace: AI.Model
+                                              java:
+                                                namespace: com.azure.ai.inference
+                                            protocol: {}
+                                            type: object
+                                            crossLanguageDefinitionId: AI.Model.ChatMessageImageContentItem
+                                            parents:
+                                              immediate:
+                                                - *ref_6
+                                              all:
+                                                - *ref_6
+                                            discriminatorValue: image_url
+                                            properties:
+                                              - language:
+                                                  default:
+                                                    name: imageUrl
+                                                    description: >-
+                                                      An internet location, which must be
+                                                      accessible to the model,from which the
+                                                      image may be retrieved.
+                                                protocol: {}
+                                                schema: &ref_23
+                                                  language:
+                                                    default:
+                                                      name: ChatMessageImageUrl
+                                                      description: >-
+                                                        An internet location from which the
+                                                        model may retrieve an image.
+                                                      namespace: AI.Model
+                                                    java:
+                                                      namespace: com.azure.ai.inference
+                                                  protocol: {}
+                                                  type: object
+                                                  crossLanguageDefinitionId: AI.Model.ChatMessageImageUrl
+                                                  properties:
+                                                    - language:
+                                                        default:
+                                                          name: url
+                                                          description: The URL of the image.
+                                                      protocol: {}
+                                                      schema: *ref_1
+                                                      serializedName: url
+                                                      required: true
+                                                      nullable: false
+                                                      readOnly: false
+                                                    - language:
+                                                        default:
+                                                          name: detail
+                                                          description: >-
+                                                            The evaluation quality setting to use,
+                                                            which controls relative prioritization
+                                                            of speed, token consumption, and
+
+                                                            accuracy.
+                                                      protocol: {}
+                                                      schema: *ref_7
+                                                      serializedName: detail
+                                                      required: false
+                                                      nullable: false
+                                                      readOnly: false
+                                                  usage:
+                                                    - public
+                                                    - input
+                                                serializedName: image_url
+                                                required: true
+                                                nullable: false
+                                                readOnly: false
+                                            usage:
+                                              - public
+                                              - input
+                                        all:
+                                          - *ref_8
+                                          - *ref_9
+                                      usage:
+                                        - public
+                                        - input
+                                    nullableItems: false
+                                  serializedName: value
+                                  required: true
+                                  readOnly: false
+                              usage:
+                                - input
+                                - internal
+                                - public
+                          usage:
+                            - input
+                            - public
+                        serializedName: content
+                        required: true
+                        nullable: false
+                        readOnly: false
+                    usage:
+                      - public
+                      - input
+                  - &ref_13
+                    language:
+                      default:
+                        name: ChatRequestAssistantMessage
+                        description: >-
+                          A request chat message representing response or action
+                          from the assistant.
+                        namespace: AI.Model
+                      java:
+                        namespace: com.azure.ai.inference
+                    protocol: {}
+                    type: object
+                    crossLanguageDefinitionId: AI.Model.ChatRequestAssistantMessage
+                    parents:
+                      immediate:
+                        - *ref_4
+                      all:
+                        - *ref_4
+                    discriminatorValue: assistant
+                    properties:
+                      - language:
+                          default:
+                            name: content
+                            description: The content of the message.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: content
+                        required: false
+                        nullable: true
+                        readOnly: false
+                      - language:
+                          default:
+                            name: toolCalls
+                            description: >-
+                              The tool calls that must be resolved and have
+                              their outputs appended to subsequent input
+                              messages for the chat
+
+                              completions request to resolve as configured.
+                        protocol: {}
+                        schema: &ref_48
+                          language:
+                            default:
+                              name: ''
+                              description: ''
+                          protocol: {}
+                          type: array
+                          elementType: &ref_24
+                            language:
+                              default:
+                                name: ChatCompletionsToolCall
+                                description: >-
+                                  A function tool call requested by the AI
+                                  model.
+                                namespace: AI.Model
+                              java:
+                                namespace: com.azure.ai.inference
+                            protocol: {}
+                            type: object
+                            crossLanguageDefinitionId: AI.Model.ChatCompletionsToolCall
+                            properties:
+                              - language:
+                                  default:
+                                    name: id
+                                    description: The ID of the tool call.
+                                protocol: {}
+                                schema: *ref_1
+                                serializedName: id
+                                required: true
+                                nullable: false
+                                readOnly: false
+                              - language:
+                                  default:
+                                    name: type
+                                    description: >-
+                                      The type of tool call. Currently, only
+                                      `function` is supported.
+                                protocol: {}
+                                schema: *ref_10
+                                serializedName: type
+                                required: true
+                                nullable: false
+                                readOnly: false
+                              - language:
+                                  default:
+                                    name: function
+                                    description: >-
+                                      The details of the function call requested
+                                      by the AI model.
+                                protocol: {}
+                                schema: &ref_25
+                                  language:
+                                    default:
+                                      name: FunctionCall
+                                      description: >-
+                                        The name and arguments of a function
+                                        that should be called, as generated by
+                                        the model.
+                                      namespace: AI.Model
+                                    java:
+                                      namespace: com.azure.ai.inference
+                                  protocol: {}
+                                  type: object
+                                  crossLanguageDefinitionId: AI.Model.FunctionCall
+                                  properties:
+                                    - language:
+                                        default:
+                                          name: name
+                                          description: The name of the function to call.
+                                      protocol: {}
+                                      schema: *ref_1
+                                      serializedName: name
+                                      required: true
+                                      nullable: false
+                                      readOnly: false
+                                    - language:
+                                        default:
+                                          name: arguments
+                                          description: >-
+                                            The arguments to call the function with,
+                                            as generated by the model in JSON
+                                            format.
+
+                                            Note that the model does not always
+                                            generate valid JSON, and may hallucinate
+                                            parameters
+
+                                            not defined by your function schema.
+                                            Validate the arguments in your code
+                                            before calling
+
+                                            your function.
+                                      protocol: {}
+                                      schema: *ref_1
+                                      serializedName: arguments
+                                      required: true
+                                      nullable: false
+                                      readOnly: false
+                                  usage:
+                                    - public
+                                    - input
+                                    - output
+                                serializedName: function
+                                required: true
+                                nullable: false
+                                readOnly: false
+                            usage:
+                              - public
+                              - input
+                              - output
+                          nullableItems: false
+                        serializedName: tool_calls
+                        required: false
+                        nullable: false
+                        readOnly: false
+                    usage:
+                      - public
+                      - input
+                  - &ref_14
+                    language:
+                      default:
+                        name: ChatRequestToolMessage
+                        description: >-
+                          A request chat message representing requested output
+                          from a configured tool.
+                        namespace: AI.Model
+                      java:
+                        namespace: com.azure.ai.inference
+                    protocol: {}
+                    type: object
+                    crossLanguageDefinitionId: AI.Model.ChatRequestToolMessage
+                    parents:
+                      immediate:
+                        - *ref_4
+                      all:
+                        - *ref_4
+                    discriminatorValue: tool
+                    properties:
+                      - language:
+                          default:
+                            name: content
+                            description: The content of the message.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: content
+                        required: true
+                        nullable: true
+                        readOnly: false
+                      - language:
+                          default:
+                            name: toolCallId
+                            description: >-
+                              The ID of the tool call resolved by the provided
+                              content.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: tool_call_id
+                        required: true
+                        nullable: false
+                        readOnly: false
+                    usage:
+                      - public
+                      - input
+                all:
+                  - *ref_11
+                  - *ref_12
+                  - *ref_13
+                  - *ref_14
+              usage:
+                - public
+                - input
+            nullableItems: false
+          serializedName: messages
+          required: true
+          nullable: false
+          readOnly: false
+        - &ref_73
+          language:
+            default:
+              name: frequency_penalty
+              description: >-
+                A value that influences the probability of generated tokens
+                appearing based on their cumulative
+
+                frequency in generated text.
+
+                Positive values will make tokens less likely to appear as their
+                frequency increases and
+
+                decrease the likelihood of the model repeating the same
+                statements verbatim.
+
+                Supported range is [-2, 2].
+          protocol: {}
+          schema: &ref_15
+            language:
+              default:
+                name: float32
+                description: >-
+                  A 32 bit floating point number. (`±1.5 x 10^−45` to `±3.4 x
+                  10^38`)
+            protocol: {}
+            type: number
+            precision: 64
+          serializedName: frequency_penalty
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_74
+          language:
+            default:
+              name: stream
+              description: >-
+                A value indicating whether chat completions should be streamed
+                for this request.
+          protocol: {}
+          schema: &ref_66
+            language:
+              default:
+                name: boolean
+                description: Boolean with `true` and `false` values.
+            protocol: {}
+            type: boolean
+          serializedName: stream
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_75
+          language:
+            default:
+              name: presence_penalty
+              description: >-
+                A value that influences the probability of generated tokens
+                appearing based on their existing
+
+                presence in generated text.
+
+                Positive values will make tokens less likely to appear when they
+                already exist and increase the
+
+                model's likelihood to output new topics.
+
+                Supported range is [-2, 2].
+          protocol: {}
+          schema: *ref_15
+          serializedName: presence_penalty
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_76
+          language:
+            default:
+              name: temperature
+              description: >-
+                The sampling temperature to use that controls the apparent
+                creativity of generated completions.
+
+                Higher values will make output more random while lower values
+                will make results more focused
+
+                and deterministic.
+
+                It is not recommended to modify temperature and top_p for the
+                same completions request as the
+
+                interaction of these two settings is difficult to predict.
+
+                Supported range is [0, 1].
+          protocol: {}
+          schema: *ref_15
+          serializedName: temperature
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_77
+          language:
+            default:
+              name: top_p
+              description: >-
+                An alternative to sampling with temperature called nucleus
+                sampling. This value causes the
+
+                model to consider the results of tokens with the provided
+                probability mass. As an example, a
+
+                value of 0.15 will cause only the tokens comprising the top 15%
+                of probability mass to be
+
+                considered.
+
+                It is not recommended to modify temperature and top_p for the
+                same completions request as the
+
+                interaction of these two settings is difficult to predict.
+
+                Supported range is [0, 1].
+          protocol: {}
+          schema: *ref_15
+          serializedName: top_p
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_78
+          language:
+            default:
+              name: max_tokens
+              description: The maximum number of tokens to generate.
+          protocol: {}
+          schema: &ref_30
+            language:
+              default:
+                name: int32
+                description: A 32-bit integer. (`-2,147,483,648` to `2,147,483,647`)
+            protocol: {}
+            type: integer
+            precision: 32
+          serializedName: max_tokens
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_79
+          language:
+            default:
+              name: response_format
+              description: >-
+                The format that the model must output. Use this to enable JSON
+                mode instead of the default text mode.
+
+                Note that to enable JSON mode, some AI models may also require
+                you to instruct the model to produce JSON
+
+                via a system or user message.
+          protocol: {}
+          schema: &ref_16
+            language:
+              default:
+                name: ChatCompletionsResponseFormat
+                description: >-
+                  Represents the format that the model must output. Use this to
+                  enable JSON mode instead of the default text mode.
+
+                  Note that to enable JSON mode, some AI models may also require
+                  you to instruct the model to produce JSON
+
+                  via a system or user message.
+                namespace: AI.Model
+              java:
+                namespace: com.azure.ai.inference
+            protocol: {}
+            type: object
+            crossLanguageDefinitionId: AI.Model.ChatCompletionsResponseFormat
+            discriminator:
+              property:
+                language:
+                  default:
+                    name: type
+                    description: The response format type to use for chat completions.
+                protocol: {}
+                schema: *ref_1
+                serializedName: type
+                required: true
+                nullable: false
+                readOnly: false
+              immediate: {}
+              all: {}
+            children:
+              immediate:
+                - &ref_17
+                  language:
+                    default:
+                      name: ChatCompletionsResponseFormatText
+                      description: >-
+                        A response format for Chat Completions that emits text
+                        responses. This is the default response format.
+                      namespace: AI.Model
+                    java:
+                      namespace: com.azure.ai.inference
+                  protocol: {}
+                  type: object
+                  crossLanguageDefinitionId: AI.Model.ChatCompletionsResponseFormatText
+                  parents:
+                    immediate:
+                      - *ref_16
+                    all:
+                      - *ref_16
+                  discriminatorValue: text
+                  usage:
+                    - public
+                    - input
+                - &ref_18
+                  language:
+                    default:
+                      name: ChatCompletionsResponseFormatJson
+                      description: >-
+                        A response format for Chat Completions that restricts
+                        responses to emitting valid JSON objects.
+
+                        Note that to enable JSON mode, some AI models may also
+                        require you to instruct the model to produce JSON
+
+                        via a system or user message.
+                      namespace: AI.Model
+                    java:
+                      namespace: com.azure.ai.inference
+                  protocol: {}
+                  type: object
+                  crossLanguageDefinitionId: AI.Model.ChatCompletionsResponseFormatJSON
+                  parents:
+                    immediate:
+                      - *ref_16
+                    all:
+                      - *ref_16
+                  discriminatorValue: json_object
+                  usage:
+                    - public
+                    - input
+              all:
+                - *ref_17
+                - *ref_18
+            usage:
+              - public
+              - input
+          serializedName: response_format
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_80
+          language:
+            default:
+              name: stop
+              description: >-
+                A collection of textual sequences that will end completions
+                generation.
+          protocol: {}
+          schema: &ref_50
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: stop
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_81
+          language:
+            default:
+              name: tools
+              description: >-
+                A list of tools the model may request to call. Currently, only
+                functions are supported as a tool. The model
+
+                may response with a function call request and provide the input
+                arguments in JSON format for that function.
+          protocol: {}
+          schema: &ref_51
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_26
+              language:
+                default:
+                  name: ChatCompletionsToolDefinition
+                  description: >-
+                    The definition of a chat completions tool that can call a
+                    function.
+                  namespace: AI.Model
+                java:
+                  namespace: com.azure.ai.inference
+              protocol: {}
+              type: object
+              crossLanguageDefinitionId: AI.Model.ChatCompletionsToolDefinition
+              properties:
+                - language:
+                    default:
+                      name: type
+                      description: >-
+                        The type of the tool. Currently, only `function` is
+                        supported.
+                  protocol: {}
+                  schema: *ref_19
+                  serializedName: type
+                  required: true
+                  nullable: false
+                  readOnly: false
+                - language:
+                    default:
+                      name: function
+                      description: The function definition details for the function tool.
+                  protocol: {}
+                  schema: &ref_27
+                    language:
+                      default:
+                        name: FunctionDefinition
+                        description: >-
+                          The definition of a caller-specified function that
+                          chat completions may invoke in response to matching
+                          user input.
+                        namespace: AI.Model
+                      java:
+                        namespace: com.azure.ai.inference
+                    protocol: {}
+                    type: object
+                    crossLanguageDefinitionId: AI.Model.FunctionDefinition
+                    properties:
+                      - language:
+                          default:
+                            name: name
+                            description: The name of the function to be called.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: name
+                        required: true
+                        nullable: false
+                        readOnly: false
+                      - language:
+                          default:
+                            name: description
+                            description: >-
+                              A description of what the function does. The model
+                              will use this description when selecting the
+                              function and
+
+                              interpreting its parameters.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: description
+                        required: false
+                        nullable: false
+                        readOnly: false
+                      - language:
+                          default:
+                            name: parameters
+                            description: >-
+                              The parameters the function accepts, described as
+                              a JSON Schema object.
+                        protocol: {}
+                        schema: *ref_20
+                        serializedName: parameters
+                        required: false
+                        nullable: false
+                        readOnly: false
+                    usage:
+                      - public
+                      - input
+                  serializedName: function
+                  required: true
+                  nullable: false
+                  readOnly: false
+              usage:
+                - public
+                - input
+            nullableItems: false
+          serializedName: tools
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_82
+          language:
+            default:
+              name: toolChoice
+              description: >-
+                If specified, the model will configure which of the provided
+                tools it can use for the chat completions response.
+          protocol: {}
+          schema: &ref_62
+            language:
+              default:
+                name: CompleteRequestToolChoiceBase
+                description: ''
+            protocol: {}
+            type: or
+            anyOf:
+              - language:
+                  default:
+                    name: >-
+                      ChatCompletionsToolSelectionPresetCompleteRequestToolChoice
+                    description: >-
+                      Represents a generic policy for how a chat completions
+                      tool may be selected.
+                  java:
+                    namespace: com.azure.ai.inference
+                protocol: {}
+                type: object
+                properties:
+                  - language:
+                      default:
+                        name: value
+                        description: ''
+                    protocol: {}
+                    schema: *ref_21
+                    serializedName: value
+                    required: true
+                    readOnly: false
+                usage:
+                  - input
+                  - internal
+              - language:
+                  default:
+                    name: ChatCompletionsNamedToolSelectionCompleteRequestToolChoice
+                    description: >-
+                      A tool selection of a specific, named function tool that
+                      will limit chat completions to using the named function.
+                  java:
+                    namespace: com.azure.ai.inference
+                protocol: {}
+                type: object
+                properties:
+                  - language:
+                      default:
+                        name: value
+                        description: ''
+                    protocol: {}
+                    schema: &ref_28
+                      language:
+                        default:
+                          name: ChatCompletionsNamedToolSelection
+                          description: >-
+                            A tool selection of a specific, named function tool
+                            that will limit chat completions to using the named
+                            function.
+                          namespace: AI.Model
+                        java:
+                          namespace: com.azure.ai.inference
+                      protocol: {}
+                      type: object
+                      crossLanguageDefinitionId: AI.Model.ChatCompletionsNamedToolSelection
+                      properties:
+                        - language:
+                            default:
+                              name: type
+                              description: >-
+                                The type of the tool. Currently, only `function`
+                                is supported.
+                          protocol: {}
+                          schema: *ref_22
+                          serializedName: type
+                          required: true
+                          nullable: false
+                          readOnly: false
+                        - language:
+                            default:
+                              name: function
+                              description: The function that should be called.
+                          protocol: {}
+                          schema: &ref_29
+                            language:
+                              default:
+                                name: ChatCompletionsFunctionToolSelection
+                                description: >-
+                                  A tool selection of a specific, named function
+                                  tool that will limit chat completions to using
+                                  the named function.
+                                namespace: AI.Model
+                              java:
+                                namespace: com.azure.ai.inference
+                            protocol: {}
+                            type: object
+                            crossLanguageDefinitionId: AI.Model.ChatCompletionsFunctionToolSelection
+                            properties:
+                              - language:
+                                  default:
+                                    name: name
+                                    description: >-
+                                      The name of the function that should be
+                                      called.
+                                protocol: {}
+                                schema: *ref_1
+                                serializedName: name
+                                required: true
+                                nullable: false
+                                readOnly: false
+                            usage:
+                              - public
+                              - input
+                          serializedName: function
+                          required: true
+                          nullable: false
+                          readOnly: false
+                      usage:
+                        - public
+                        - input
+                    serializedName: value
+                    required: true
+                    readOnly: false
+                usage:
+                  - input
+                  - internal
+            usage:
+              - input
+              - internal
+          serializedName: tool_choice
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_83
+          language:
+            default:
+              name: seed
+              description: >-
+                If specified, the system will make a best effort to sample
+                deterministically such that repeated requests with the
+
+                same seed and parameters should return the same result.
+                Determinism is not guaranteed.
+          protocol: {}
+          schema: &ref_64
+            language:
+              default:
+                name: int64
+                description: >-
+                  A 64-bit integer. (`-9,223,372,036,854,775,808` to
+                  `9,223,372,036,854,775,807`)
+            protocol: {}
+            type: integer
+            precision: 64
+          serializedName: seed
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_84
+          language:
+            default:
+              name: model
+              description: >-
+                ID of the specific AI model to use, if more than one model is
+                available on the endpoint.
+          protocol: {}
+          schema: *ref_1
+          serializedName: model
+          required: false
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - internal
+    - *ref_4
+    - *ref_11
+    - *ref_12
+    - *ref_6
+    - *ref_8
+    - *ref_9
+    - *ref_23
+    - *ref_13
+    - *ref_24
+    - *ref_25
+    - *ref_14
+    - *ref_16
+    - *ref_17
+    - *ref_18
+    - *ref_26
+    - *ref_27
+    - *ref_28
+    - *ref_29
+    - &ref_106
+      language:
+        default:
+          name: ChatCompletions
+          description: >-
+            Representation of the response data from a chat completions request.
+
+            Completions support a wide variety of tasks and generate text that
+            continues from or "completes"
+
+            provided prompt data.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: AI.Model.ChatCompletions
+      properties:
+        - language:
+            default:
+              name: id
+              description: >-
+                A unique identifier associated with this chat completions
+                response.
+          protocol: {}
+          schema: *ref_1
+          serializedName: id
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: created
+              description: >-
+                The first timestamp associated with generation activity for this
+                completions response,
+
+                represented as seconds since the beginning of the Unix epoch of
+                00:00 on 1 Jan 1970.
+          protocol: {}
+          schema: &ref_43
+            language:
+              default:
+                name: ''
+                description: An instant in coordinated universal time (UTC)"
+            protocol: {}
+            type: unixtime
+          serializedName: created
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: model
+              description: The model used for the chat completion.
+          protocol: {}
+          schema: *ref_1
+          serializedName: model
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: usage
+              description: >-
+                Usage information for tokens processed and generated as part of
+                this completions operation.
+          protocol: {}
+          schema: &ref_32
+            language:
+              default:
+                name: CompletionsUsage
+                description: >-
+                  Representation of the token counts processed for a completions
+                  request.
+
+                  Counts consider all tokens across prompts, choices, choice
+                  alternates, best_of generations, and
+
+                  other consumers.
+                namespace: AI.Model
+              java:
+                namespace: com.azure.ai.inference
+            protocol: {}
+            type: object
+            crossLanguageDefinitionId: AI.Model.CompletionsUsage
+            properties:
+              - language:
+                  default:
+                    name: completion_tokens
+                    description: >-
+                      The number of tokens generated across all completions
+                      emissions.
+                protocol: {}
+                schema: *ref_30
+                serializedName: completion_tokens
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: prompt_tokens
+                    description: >-
+                      The number of tokens in the provided prompts for the
+                      completions request.
+                protocol: {}
+                schema: *ref_30
+                serializedName: prompt_tokens
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: total_tokens
+                    description: >-
+                      The total number of tokens processed for the completions
+                      request and response.
+                protocol: {}
+                schema: *ref_30
+                serializedName: total_tokens
+                required: true
+                nullable: false
+                readOnly: false
+            usage:
+              - public
+              - output
+          serializedName: usage
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: choices
+              description: >-
+                The collection of completions choices associated with this
+                completions response.
+
+                Generally, `n` choices are generated per provided prompt with a
+                default value of 1.
+
+                Token limits and other settings may limit the number of choices
+                generated.
+          protocol: {}
+          schema: &ref_53
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_33
+              language:
+                default:
+                  name: ChatChoice
+                  description: >-
+                    The representation of a single prompt completion as part of
+                    an overall chat completions request.
+
+                    Generally, `n` choices are generated per provided prompt
+                    with a default value of 1.
+
+                    Token limits and other settings may limit the number of
+                    choices generated.
+                  namespace: AI.Model
+                java:
+                  namespace: com.azure.ai.inference
+              protocol: {}
+              type: object
+              crossLanguageDefinitionId: AI.Model.ChatChoice
+              properties:
+                - language:
+                    default:
+                      name: index
+                      description: >-
+                        The ordered index associated with this chat completions
+                        choice.
+                  protocol: {}
+                  schema: *ref_30
+                  serializedName: index
+                  required: true
+                  nullable: false
+                  readOnly: false
+                - language:
+                    default:
+                      name: finish_reason
+                      description: >-
+                        The reason that this chat completions choice completed
+                        its generated.
+                  protocol: {}
+                  schema: *ref_31
+                  serializedName: finish_reason
+                  required: true
+                  nullable: true
+                  readOnly: false
+                - language:
+                    default:
+                      name: message
+                      description: The chat message for a given chat completions prompt.
+                  protocol: {}
+                  schema: &ref_34
+                    language:
+                      default:
+                        name: ChatResponseMessage
+                        description: >-
+                          A representation of a chat message as received in a
+                          response.
+                        namespace: AI.Model
+                      java:
+                        namespace: com.azure.ai.inference
+                    protocol: {}
+                    type: object
+                    crossLanguageDefinitionId: AI.Model.ChatResponseMessage
+                    properties:
+                      - language:
+                          default:
+                            name: role
+                            description: The chat role associated with the message.
+                        protocol: {}
+                        schema: *ref_3
+                        serializedName: role
+                        required: true
+                        nullable: false
+                        readOnly: false
+                      - language:
+                          default:
+                            name: content
+                            description: The content of the message.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: content
+                        required: true
+                        nullable: true
+                        readOnly: false
+                      - language:
+                          default:
+                            name: toolCalls
+                            description: >-
+                              The tool calls that must be resolved and have
+                              their outputs appended to subsequent input
+                              messages for the chat
+
+                              completions request to resolve as configured.
+                        protocol: {}
+                        schema: &ref_52
+                          language:
+                            default:
+                              name: ''
+                              description: ''
+                          protocol: {}
+                          type: array
+                          elementType: *ref_24
+                          nullableItems: false
+                        serializedName: tool_calls
+                        required: false
+                        nullable: false
+                        readOnly: false
+                    usage:
+                      - public
+                      - output
+                  serializedName: message
+                  required: true
+                  nullable: false
+                  readOnly: false
+              usage:
+                - public
+                - output
+            nullableItems: false
+          serializedName: choices
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - public
+    - *ref_32
+    - *ref_33
+    - *ref_34
+    - &ref_108
+      language:
+        default:
+          name: ErrorResponse
+          description: A response containing error details.
+          namespace: Azure.Core.Foundations
+        java:
+          namespace: azure.core.foundations.models
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Azure.Core.Foundations.ErrorResponse
+      properties:
+        - language:
+            default:
+              name: error
+              description: The error object.
+          protocol: {}
+          schema: &ref_35
+            language:
+              default:
+                name: Error
+                description: The error object.
+                namespace: Azure.Core.Foundations
+              java:
+                namespace: azure.core.foundations.models
+            protocol: {}
+            type: object
+            crossLanguageDefinitionId: Azure.Core.Foundations.Error
+            properties:
+              - language:
+                  default:
+                    name: code
+                    description: One of a server-defined set of error codes.
+                protocol: {}
+                schema: *ref_1
+                serializedName: code
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: message
+                    description: A human-readable representation of the error.
+                protocol: {}
+                schema: *ref_1
+                serializedName: message
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: target
+                    description: The target of the error.
+                protocol: {}
+                schema: *ref_1
+                serializedName: target
+                required: false
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: details
+                    description: >-
+                      An array of details about specific errors that led to this
+                      reported error.
+                protocol: {}
+                schema: &ref_54
+                  language:
+                    default:
+                      name: ''
+                      description: ''
+                  protocol: {}
+                  type: array
+                  elementType: *ref_35
+                  nullableItems: false
+                serializedName: details
+                required: false
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: innererror
+                    description: >-
+                      An object containing more specific information than the
+                      current object about the error.
+                protocol: {}
+                schema: &ref_36
+                  language:
+                    default:
+                      name: InnerError
+                      description: >-
+                        An object containing more specific information about the
+                        error. As per Microsoft One API guidelines -
+                        https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+                      namespace: Azure.Core.Foundations
+                    java:
+                      namespace: azure.core.foundations.models
+                  protocol: {}
+                  type: object
+                  crossLanguageDefinitionId: Azure.Core.Foundations.InnerError
+                  properties:
+                    - language:
+                        default:
+                          name: code
+                          description: One of a server-defined set of error codes.
+                      protocol: {}
+                      schema: *ref_1
+                      serializedName: code
+                      required: false
+                      nullable: false
+                      readOnly: false
+                    - language:
+                        default:
+                          name: innererror
+                          description: Inner error.
+                      protocol: {}
+                      schema: *ref_36
+                      serializedName: innererror
+                      required: false
+                      nullable: false
+                      readOnly: false
+                  usage:
+                    - exception
+                serializedName: innererror
+                required: false
+                nullable: false
+                readOnly: false
+            usage:
+              - exception
+          serializedName: error
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - exception
+    - *ref_35
+    - *ref_36
+    - &ref_112
+      language:
+        default:
+          name: ModelInfo
+          description: Represents some basic information about the AI model.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: AI.Model.ModelInfo
+      properties:
+        - language:
+            default:
+              name: model_name
+              description: 'The name of the AI model. For example: `Phi21`'
+          protocol: {}
+          schema: *ref_1
+          serializedName: model_name
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: model_type
+              description: The type of the AI model. A Unique identifier for the profile.
+          protocol: {}
+          schema: *ref_37
+          serializedName: model_type
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: model_provider_name
+              description: 'The model provider name. For example: `Microsoft Research`'
+          protocol: {}
+          schema: *ref_1
+          serializedName: model_provider_name
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - public
+    - &ref_113
+      language:
+        default:
+          name: EmbedRequest
+          description: ''
+          namespace: Customizations
+        java:
+          namespace: customizations.implementation.models
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Customizations.embed.Request.anonymous
+      parents:
+        immediate:
+          - *ref_2
+        all:
+          - *ref_2
+      properties:
+        - &ref_114
+          language:
+            default:
+              name: input
+              description: |-
+                Input text to embed, encoded as a string or array of tokens.
+                To embed multiple inputs in a single request, pass an array
+                of strings or array of token arrays.
+          protocol: {}
+          schema: &ref_55
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: *ref_1
+            nullableItems: false
+          serializedName: input
+          required: true
+          nullable: false
+          readOnly: false
+        - &ref_116
+          language:
+            default:
+              name: dimensions
+              description: >-
+                Optional. The number of dimensions the resulting output
+                embeddings should have.
+
+                Passing null causes the model to use its default value.
+
+                Returns a 422 error if the model doesn't support the value or
+                parameter.
+          protocol: {}
+          schema: *ref_30
+          serializedName: dimensions
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_117
+          language:
+            default:
+              name: encoding_format
+              description: Optional. The desired format for the returned embeddings.
+          protocol: {}
+          schema: *ref_38
+          serializedName: encoding_format
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_118
+          language:
+            default:
+              name: input_type
+              description: >-
+                Optional. The type of the input.
+
+                Returns a 422 error if the model doesn't support the value or
+                parameter.
+          protocol: {}
+          schema: *ref_39
+          serializedName: input_type
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_119
+          language:
+            default:
+              name: model
+              description: >-
+                ID of the specific AI model to use, if more than one model is
+                available on the endpoint.
+          protocol: {}
+          schema: *ref_1
+          serializedName: model
+          required: false
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - internal
+    - &ref_126
+      language:
+        default:
+          name: EmbeddingsResult
+          description: >-
+            Representation of the response data from an embeddings request.
+
+            Embeddings measure the relatedness of text strings and are commonly
+            used for search, clustering,
+
+            recommendations, and other similar scenarios.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: AI.Model.EmbeddingsResult
+      properties:
+        - language:
+            default:
+              name: data
+              description: Embedding values for the prompts submitted in the request.
+          protocol: {}
+          schema: &ref_57
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_40
+              language:
+                default:
+                  name: EmbeddingItem
+                  description: >-
+                    Representation of a single embeddings relatedness
+                    comparison.
+                  namespace: AI.Model
+                java:
+                  namespace: com.azure.ai.inference
+              protocol: {}
+              type: object
+              crossLanguageDefinitionId: AI.Model.EmbeddingItem
+              properties:
+                - language:
+                    default:
+                      name: embedding
+                      description: >-
+                        List of embedding values for the input prompt. These
+                        represent a measurement of the
+
+                        vector-based relatedness of the provided input. Or a
+                        base64 encoded string of the embedding vector.
+                  protocol: {}
+                  schema: &ref_63
+                    language:
+                      default:
+                        name: EmbeddingItemEmbeddingBase
+                        description: ''
+                    protocol: {}
+                    type: or
+                    anyOf:
+                      - language:
+                          default:
+                            name: StringEmbeddingItemEmbedding
+                            description: A sequence of textual characters.
+                          java:
+                            namespace: com.azure.ai.inference
+                        protocol: {}
+                        type: object
+                        properties:
+                          - language:
+                              default:
+                                name: value
+                                description: ''
+                            protocol: {}
+                            schema: *ref_5
+                            serializedName: value
+                            required: true
+                            readOnly: false
+                        usage:
+                          - output
+                          - internal
+                          - public
+                      - language:
+                          default:
+                            name: DoubleListEmbeddingItemEmbedding
+                            description: ''
+                          java:
+                            namespace: com.azure.ai.inference
+                        protocol: {}
+                        type: object
+                        properties:
+                          - language:
+                              default:
+                                name: value
+                                description: ''
+                            protocol: {}
+                            schema: &ref_56
+                              language:
+                                default:
+                                  name: DoubleList
+                                  description: ''
+                              protocol: {}
+                              type: array
+                              elementType: &ref_65
+                                language:
+                                  default:
+                                    name: DoubleList
+                                    description: >-
+                                      A 32 bit floating point number. (`±1.5 x
+                                      10^−45` to `±3.4 x 10^38`)
+                                protocol: {}
+                                type: number
+                                precision: 64
+                              nullableItems: false
+                            serializedName: value
+                            required: true
+                            readOnly: false
+                        usage:
+                          - output
+                          - internal
+                          - public
+                    usage:
+                      - output
+                      - public
+                  serializedName: embedding
+                  required: true
+                  nullable: false
+                  readOnly: false
+                - language:
+                    default:
+                      name: index
+                      description: >-
+                        Index of the prompt to which the EmbeddingItem
+                        corresponds.
+                  protocol: {}
+                  schema: *ref_30
+                  serializedName: index
+                  required: true
+                  nullable: false
+                  readOnly: false
+              usage:
+                - public
+                - output
+            nullableItems: false
+          serializedName: data
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: usage
+              description: Usage counts for tokens input using the embeddings API.
+          protocol: {}
+          schema: &ref_41
+            language:
+              default:
+                name: EmbeddingsUsage
+                description: >-
+                  Measurement of the amount of tokens used in this request and
+                  response.
+                namespace: AI.Model
+              java:
+                namespace: com.azure.ai.inference
+            protocol: {}
+            type: object
+            crossLanguageDefinitionId: AI.Model.EmbeddingsUsage
+            properties:
+              - language:
+                  default:
+                    name: prompt_tokens
+                    description: Number of tokens in the request.
+                protocol: {}
+                schema: *ref_30
+                serializedName: prompt_tokens
+                required: true
+                nullable: false
+                readOnly: false
+              - language:
+                  default:
+                    name: total_tokens
+                    description: >-
+                      Total number of tokens transacted in this
+                      request/response. Should equal the
+
+                      number of tokens in the request.
+                protocol: {}
+                schema: *ref_30
+                serializedName: total_tokens
+                required: true
+                nullable: false
+                readOnly: false
+            usage:
+              - public
+              - output
+          serializedName: usage
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: model
+              description: The model ID used to generate this result.
+          protocol: {}
+          schema: *ref_1
+          serializedName: model
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - output
+        - public
+    - *ref_40
+    - *ref_41
+    - &ref_129
+      language:
+        default:
+          name: EmbedRequest1
+          description: ''
+          namespace: Customizations
+        java:
+          namespace: customizations.implementation.models
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: Customizations.embed.Request.anonymous
+      parents:
+        immediate:
+          - *ref_2
+        all:
+          - *ref_2
+      properties:
+        - &ref_130
+          language:
+            default:
+              name: input
+              description: >-
+                Input image to embed. To embed multiple inputs in a single
+                request, pass an array.
+
+                The input must not exceed the max input tokens for the model.
+          protocol: {}
+          schema: &ref_58
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_42
+              language:
+                default:
+                  name: EmbeddingInput
+                  description: Represents an image with optional text.
+                  namespace: AI.Model
+                java:
+                  namespace: com.azure.ai.inference
+              protocol: {}
+              type: object
+              crossLanguageDefinitionId: AI.Model.EmbeddingInput
+              properties:
+                - language:
+                    default:
+                      name: image
+                      description: The input image, in PNG format.
+                  protocol: {}
+                  schema: *ref_1
+                  serializedName: image
+                  required: true
+                  nullable: false
+                  readOnly: false
+                - language:
+                    default:
+                      name: text
+                      description: >-
+                        Optional. The text input to feed into the model (like
+                        DINO, CLIP).
+
+                        Returns a 422 error if the model doesn't support the
+                        value or parameter.
+                  protocol: {}
+                  schema: *ref_1
+                  serializedName: text
+                  required: false
+                  nullable: false
+                  readOnly: false
+              usage:
+                - public
+                - input
+            nullableItems: false
+          serializedName: input
+          required: true
+          nullable: false
+          readOnly: false
+        - &ref_132
+          language:
+            default:
+              name: dimensions
+              description: >-
+                Optional. The number of dimensions the resulting output
+                embeddings should have.
+
+                Passing null causes the model to use its default value.
+
+                Returns a 422 error if the model doesn't support the value or
+                parameter.
+          protocol: {}
+          schema: *ref_30
+          serializedName: dimensions
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_133
+          language:
+            default:
+              name: encoding_format
+              description: >-
+                Optional. The number of dimensions the resulting output
+                embeddings should have.
+
+                Passing null causes the model to use its default value.
+
+                Returns a 422 error if the model doesn't support the value or
+                parameter.
+          protocol: {}
+          schema: *ref_38
+          serializedName: encoding_format
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_134
+          language:
+            default:
+              name: input_type
+              description: >-
+                Optional. The type of the input.
+
+                Returns a 422 error if the model doesn't support the value or
+                parameter.
+          protocol: {}
+          schema: *ref_39
+          serializedName: input_type
+          required: false
+          nullable: false
+          readOnly: false
+        - &ref_135
+          language:
+            default:
+              name: model
+              description: >-
+                ID of the specific AI model to use, if more than one model is
+                available on the endpoint.
+          protocol: {}
+          schema: *ref_1
+          serializedName: model
+          required: false
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - internal
+    - *ref_42
+    - language:
+        default:
+          name: StreamingChatCompletionsUpdate
+          description: >-
+            Represents a response update to a chat completions request, when the
+            service is streaming updates 
+
+            using Server Sent Events (SSE).
+
+            Completions support a wide variety of tasks and generate text that
+            continues from or "completes"
+
+            provided prompt data.
+          namespace: AI.Model
+        java:
+          namespace: com.azure.ai.inference
+      protocol: {}
+      type: object
+      crossLanguageDefinitionId: AI.Model.StreamingChatCompletionsUpdate
+      properties:
+        - language:
+            default:
+              name: id
+              description: >-
+                A unique identifier associated with this chat completions
+                response.
+          protocol: {}
+          schema: *ref_1
+          serializedName: id
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: created
+              description: >-
+                The first timestamp associated with generation activity for this
+                completions response,
+
+                represented as seconds since the beginning of the Unix epoch of
+                00:00 on 1 Jan 1970.
+          protocol: {}
+          schema: *ref_43
+          serializedName: created
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: model
+              description: The model used for the chat completion.
+          protocol: {}
+          schema: *ref_1
+          serializedName: model
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: usage
+              description: >-
+                Usage information for tokens processed and generated as part of
+                this completions operation.
+          protocol: {}
+          schema: *ref_32
+          serializedName: usage
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: choices
+              description: >-
+                An update to the collection of completion choices associated
+                with this completions response.
+
+                Generally, `n` choices are generated per provided prompt with a
+                default value of 1.
+
+                Token limits and other settings may limit the number of choices
+                generated.
+          protocol: {}
+          schema: &ref_60
+            language:
+              default:
+                name: ''
+                description: ''
+            protocol: {}
+            type: array
+            elementType: &ref_44
+              language:
+                default:
+                  name: StreamingChatChoiceUpdate
+                  description: >-
+                    Represents an update to a single prompt completion when the
+                    service is streaming updates 
+
+                    using Server Sent Events (SSE).
+
+                    Generally, `n` choices are generated per provided prompt
+                    with a default value of 1.
+
+                    Token limits and other settings may limit the number of
+                    choices generated.
+                  namespace: AI.Model
+                java:
+                  namespace: com.azure.ai.inference
+              protocol: {}
+              type: object
+              crossLanguageDefinitionId: AI.Model.StreamingChatChoiceUpdate
+              properties:
+                - language:
+                    default:
+                      name: index
+                      description: >-
+                        The ordered index associated with this chat completions
+                        choice.
+                  protocol: {}
+                  schema: *ref_30
+                  serializedName: index
+                  required: true
+                  nullable: false
+                  readOnly: false
+                - language:
+                    default:
+                      name: finish_reason
+                      description: >-
+                        The reason that this chat completions choice completed
+                        its generated.
+                  protocol: {}
+                  schema: *ref_31
+                  serializedName: finish_reason
+                  required: true
+                  nullable: true
+                  readOnly: false
+                - language:
+                    default:
+                      name: delta
+                      description: >-
+                        An update to the chat message for a given chat
+                        completions prompt.
+                  protocol: {}
+                  schema: &ref_45
+                    language:
+                      default:
+                        name: StreamingChatResponseMessageUpdate
+                        description: >-
+                          A representation of a chat message update as received
+                          in a streaming response.
+                        namespace: AI.Model
+                      java:
+                        namespace: com.azure.ai.inference
+                    protocol: {}
+                    type: object
+                    crossLanguageDefinitionId: AI.Model.StreamingChatResponseMessageUpdate
+                    properties:
+                      - language:
+                          default:
+                            name: role
+                            description: >-
+                              The chat role associated with the message. If
+                              present, should always be 'assistant'
+                        protocol: {}
+                        schema: *ref_3
+                        serializedName: role
+                        required: false
+                        nullable: false
+                        readOnly: false
+                      - language:
+                          default:
+                            name: content
+                            description: The content of the message.
+                        protocol: {}
+                        schema: *ref_1
+                        serializedName: content
+                        required: false
+                        nullable: false
+                        readOnly: false
+                      - language:
+                          default:
+                            name: toolCalls
+                            description: >-
+                              The tool calls that must be resolved and have
+                              their outputs appended to subsequent input
+                              messages for the chat
+
+                              completions request to resolve as configured.
+                        protocol: {}
+                        schema: &ref_59
+                          language:
+                            default:
+                              name: ''
+                              description: ''
+                          protocol: {}
+                          type: array
+                          elementType: &ref_46
+                            language:
+                              default:
+                                name: StreamingChatResponseToolCallUpdate
+                                description: >-
+                                  An update to the function tool call
+                                  information requested by the AI model.
+                                namespace: AI.Model
+                              java:
+                                namespace: com.azure.ai.inference
+                            protocol: {}
+                            type: object
+                            crossLanguageDefinitionId: AI.Model.StreamingChatResponseToolCallUpdate
+                            properties:
+                              - language:
+                                  default:
+                                    name: id
+                                    description: The ID of the tool call.
+                                protocol: {}
+                                schema: *ref_1
+                                serializedName: id
+                                required: true
+                                nullable: false
+                                readOnly: false
+                              - language:
+                                  default:
+                                    name: function
+                                    description: >-
+                                      Updates to the function call requested by
+                                      the AI model.
+                                protocol: {}
+                                schema: *ref_25
+                                serializedName: function
+                                required: true
+                                nullable: false
+                                readOnly: false
+                            usage:
+                              - public
+                              - output
+                          nullableItems: false
+                        serializedName: tool_calls
+                        required: false
+                        nullable: false
+                        readOnly: false
+                    usage:
+                      - public
+                      - output
+                  serializedName: delta
+                  required: true
+                  nullable: false
+                  readOnly: false
+              usage:
+                - public
+                - output
+            nullableItems: false
+          serializedName: choices
+          required: true
+          nullable: false
+          readOnly: false
+      usage:
+        - public
+        - output
+    - *ref_44
+    - *ref_45
+    - *ref_46
+  any:
+    - *ref_20
+  dictionaries:
+    - *ref_2
+  arrays:
+    - *ref_47
+    - *ref_48
+    - *ref_49
+    - *ref_50
+    - *ref_51
+    - *ref_52
+    - *ref_53
+    - *ref_54
+    - *ref_55
+    - *ref_56
+    - *ref_57
+    - *ref_58
+    - *ref_59
+    - *ref_60
+  ors:
+    - *ref_61
+    - *ref_62
+    - *ref_63
+  numbers:
+    - *ref_15
+    - *ref_30
+    - *ref_64
+    - *ref_65
+  booleans:
+    - *ref_66
+  groups:
+    - &ref_68
+      language:
+        default:
+          name: completeOptions
+          description: Options for complete API
+          namespace: Customizations
+        java:
+          namespace: customizations.implementation.models
+      protocol: {}
+      type: group
+      properties:
+        - language:
+            default:
+              name: extra_params
+              description: >-
+                Controls what happens if extra parameters, undefined by the REST
+                API,
+
+                are passed in the JSON request payload.
+
+                This sets the HTTP request header `extra-parameters`.
+          protocol: {}
+          schema: *ref_67
+          serializedName: extra-parameters
+          originalParameter:
+            - &ref_85
+              language:
+                default:
+                  name: extra_params
+                  description: >-
+                    Controls what happens if extra parameters, undefined by the
+                    REST API,
+
+                    are passed in the JSON request payload.
+
+                    This sets the HTTP request header `extra-parameters`.
+                  serializedName: extra-parameters
+              protocol:
+                http: &ref_102
+                  in: header
+              schema: *ref_67
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: &ref_71
+                language:
+                  default:
+                    name: options
+                    description: Options for complete API
+                protocol: {}
+                schema: *ref_68
+                implementation: Method
+                required: true
+                nullable: false
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: messages
+              description: >-
+                The collection of context messages associated with this chat
+                completions request.
+
+                Typical usage begins with a chat message for the System role
+                that provides instructions for
+
+                the behavior of the assistant, followed by alternating messages
+                between the User and
+
+                Assistant roles.
+          protocol: {}
+          schema: *ref_49
+          serializedName: messages
+          originalParameter:
+            - &ref_86
+              language:
+                default:
+                  name: messages
+                  description: >-
+                    The collection of context messages associated with this chat
+                    completions request.
+
+                    Typical usage begins with a chat message for the System role
+                    that provides instructions for
+
+                    the behavior of the assistant, followed by alternating
+                    messages between the User and
+
+                    Assistant roles.
+                  serializedName: messages
+              protocol: {}
+              schema: *ref_49
+              originalParameter: &ref_72
+                language:
+                  default:
+                    name: completeRequest
+                    description: ''
+                protocol:
+                  http:
+                    in: body
+                schema: *ref_69
+                implementation: Method
+                required: true
+              targetProperty: *ref_70
+              implementation: Method
+              required: true
+              nullable: false
+              groupedBy: *ref_71
+          required: true
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: frequency_penalty
+              description: >-
+                A value that influences the probability of generated tokens
+                appearing based on their cumulative
+
+                frequency in generated text.
+
+                Positive values will make tokens less likely to appear as their
+                frequency increases and
+
+                decrease the likelihood of the model repeating the same
+                statements verbatim.
+
+                Supported range is [-2, 2].
+          protocol: {}
+          schema: *ref_15
+          serializedName: frequency_penalty
+          originalParameter:
+            - &ref_87
+              language:
+                default:
+                  name: frequency_penalty
+                  description: >-
+                    A value that influences the probability of generated tokens
+                    appearing based on their cumulative
+
+                    frequency in generated text.
+
+                    Positive values will make tokens less likely to appear as
+                    their frequency increases and
+
+                    decrease the likelihood of the model repeating the same
+                    statements verbatim.
+
+                    Supported range is [-2, 2].
+                  serializedName: frequency_penalty
+              protocol: {}
+              schema: *ref_15
+              originalParameter: *ref_72
+              targetProperty: *ref_73
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: stream
+              description: >-
+                A value indicating whether chat completions should be streamed
+                for this request.
+          protocol: {}
+          schema: *ref_66
+          serializedName: stream
+          originalParameter:
+            - &ref_88
+              language:
+                default:
+                  name: stream
+                  description: >-
+                    A value indicating whether chat completions should be
+                    streamed for this request.
+                  serializedName: stream
+              protocol: {}
+              schema: *ref_66
+              originalParameter: *ref_72
+              targetProperty: *ref_74
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: presence_penalty
+              description: >-
+                A value that influences the probability of generated tokens
+                appearing based on their existing
+
+                presence in generated text.
+
+                Positive values will make tokens less likely to appear when they
+                already exist and increase the
+
+                model's likelihood to output new topics.
+
+                Supported range is [-2, 2].
+          protocol: {}
+          schema: *ref_15
+          serializedName: presence_penalty
+          originalParameter:
+            - &ref_89
+              language:
+                default:
+                  name: presence_penalty
+                  description: >-
+                    A value that influences the probability of generated tokens
+                    appearing based on their existing
+
+                    presence in generated text.
+
+                    Positive values will make tokens less likely to appear when
+                    they already exist and increase the
+
+                    model's likelihood to output new topics.
+
+                    Supported range is [-2, 2].
+                  serializedName: presence_penalty
+              protocol: {}
+              schema: *ref_15
+              originalParameter: *ref_72
+              targetProperty: *ref_75
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: temperature
+              description: >-
+                The sampling temperature to use that controls the apparent
+                creativity of generated completions.
+
+                Higher values will make output more random while lower values
+                will make results more focused
+
+                and deterministic.
+
+                It is not recommended to modify temperature and top_p for the
+                same completions request as the
+
+                interaction of these two settings is difficult to predict.
+
+                Supported range is [0, 1].
+          protocol: {}
+          schema: *ref_15
+          serializedName: temperature
+          originalParameter:
+            - &ref_90
+              language:
+                default:
+                  name: temperature
+                  description: >-
+                    The sampling temperature to use that controls the apparent
+                    creativity of generated completions.
+
+                    Higher values will make output more random while lower
+                    values will make results more focused
+
+                    and deterministic.
+
+                    It is not recommended to modify temperature and top_p for
+                    the same completions request as the
+
+                    interaction of these two settings is difficult to predict.
+
+                    Supported range is [0, 1].
+                  serializedName: temperature
+              protocol: {}
+              schema: *ref_15
+              originalParameter: *ref_72
+              targetProperty: *ref_76
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: top_p
+              description: >-
+                An alternative to sampling with temperature called nucleus
+                sampling. This value causes the
+
+                model to consider the results of tokens with the provided
+                probability mass. As an example, a
+
+                value of 0.15 will cause only the tokens comprising the top 15%
+                of probability mass to be
+
+                considered.
+
+                It is not recommended to modify temperature and top_p for the
+                same completions request as the
+
+                interaction of these two settings is difficult to predict.
+
+                Supported range is [0, 1].
+          protocol: {}
+          schema: *ref_15
+          serializedName: top_p
+          originalParameter:
+            - &ref_91
+              language:
+                default:
+                  name: top_p
+                  description: >-
+                    An alternative to sampling with temperature called nucleus
+                    sampling. This value causes the
+
+                    model to consider the results of tokens with the provided
+                    probability mass. As an example, a
+
+                    value of 0.15 will cause only the tokens comprising the top
+                    15% of probability mass to be
+
+                    considered.
+
+                    It is not recommended to modify temperature and top_p for
+                    the same completions request as the
+
+                    interaction of these two settings is difficult to predict.
+
+                    Supported range is [0, 1].
+                  serializedName: top_p
+              protocol: {}
+              schema: *ref_15
+              originalParameter: *ref_72
+              targetProperty: *ref_77
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: max_tokens
+              description: The maximum number of tokens to generate.
+          protocol: {}
+          schema: *ref_30
+          serializedName: max_tokens
+          originalParameter:
+            - &ref_92
+              language:
+                default:
+                  name: max_tokens
+                  description: The maximum number of tokens to generate.
+                  serializedName: max_tokens
+              protocol: {}
+              schema: *ref_30
+              originalParameter: *ref_72
+              targetProperty: *ref_78
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: response_format
+              description: >-
+                The format that the model must output. Use this to enable JSON
+                mode instead of the default text mode.
+
+                Note that to enable JSON mode, some AI models may also require
+                you to instruct the model to produce JSON
+
+                via a system or user message.
+          protocol: {}
+          schema: *ref_16
+          serializedName: response_format
+          originalParameter:
+            - &ref_93
+              language:
+                default:
+                  name: response_format
+                  description: >-
+                    The format that the model must output. Use this to enable
+                    JSON mode instead of the default text mode.
+
+                    Note that to enable JSON mode, some AI models may also
+                    require you to instruct the model to produce JSON
+
+                    via a system or user message.
+                  serializedName: response_format
+              protocol: {}
+              schema: *ref_16
+              originalParameter: *ref_72
+              targetProperty: *ref_79
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: stop
+              description: >-
+                A collection of textual sequences that will end completions
+                generation.
+          protocol: {}
+          schema: *ref_50
+          serializedName: stop
+          originalParameter:
+            - &ref_94
+              language:
+                default:
+                  name: stop
+                  description: >-
+                    A collection of textual sequences that will end completions
+                    generation.
+                  serializedName: stop
+              protocol: {}
+              schema: *ref_50
+              originalParameter: *ref_72
+              targetProperty: *ref_80
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: tools
+              description: >-
+                A list of tools the model may request to call. Currently, only
+                functions are supported as a tool. The model
+
+                may response with a function call request and provide the input
+                arguments in JSON format for that function.
+          protocol: {}
+          schema: *ref_51
+          serializedName: tools
+          originalParameter:
+            - &ref_95
+              language:
+                default:
+                  name: tools
+                  description: >-
+                    A list of tools the model may request to call. Currently,
+                    only functions are supported as a tool. The model
+
+                    may response with a function call request and provide the
+                    input arguments in JSON format for that function.
+                  serializedName: tools
+              protocol: {}
+              schema: *ref_51
+              originalParameter: *ref_72
+              targetProperty: *ref_81
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: toolChoice
+              description: >-
+                If specified, the model will configure which of the provided
+                tools it can use for the chat completions response.
+          protocol: {}
+          schema: *ref_62
+          serializedName: tool_choice
+          originalParameter:
+            - &ref_96
+              language:
+                default:
+                  name: toolChoice
+                  description: >-
+                    If specified, the model will configure which of the provided
+                    tools it can use for the chat completions response.
+                  serializedName: tool_choice
+              protocol: {}
+              schema: *ref_62
+              originalParameter: *ref_72
+              targetProperty: *ref_82
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: seed
+              description: >-
+                If specified, the system will make a best effort to sample
+                deterministically such that repeated requests with the
+
+                same seed and parameters should return the same result.
+                Determinism is not guaranteed.
+          protocol: {}
+          schema: *ref_64
+          serializedName: seed
+          originalParameter:
+            - &ref_97
+              language:
+                default:
+                  name: seed
+                  description: >-
+                    If specified, the system will make a best effort to sample
+                    deterministically such that repeated requests with the
+
+                    same seed and parameters should return the same result.
+                    Determinism is not guaranteed.
+                  serializedName: seed
+              protocol: {}
+              schema: *ref_64
+              originalParameter: *ref_72
+              targetProperty: *ref_83
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+        - language:
+            default:
+              name: model
+              description: >-
+                ID of the specific AI model to use, if more than one model is
+                available on the endpoint.
+          protocol: {}
+          schema: *ref_1
+          serializedName: model
+          originalParameter:
+            - &ref_98
+              language:
+                default:
+                  name: model
+                  description: >-
+                    ID of the specific AI model to use, if more than one model
+                    is available on the endpoint.
+                  serializedName: model
+              protocol: {}
+              schema: *ref_1
+              originalParameter: *ref_72
+              targetProperty: *ref_84
+              implementation: Method
+              required: false
+              nullable: false
+              groupedBy: *ref_71
+          required: false
+          nullable: false
+          readOnly: false
+      usage:
+        - input
+        - internal
+  unixtimes:
+    - *ref_43
+operationGroups:
+  - language:
+      default:
+        name: ''
+        description: ''
+    protocol: {}
+    $key: ''
+    operations:
+      - &ref_146
+        language:
+          default:
+            name: complete
+            description: >-
+              Gets chat completions for the provided chat messages.
+
+              Completions support a wide variety of tasks and generate text that
+              continues from or "completes"
+
+              provided prompt data. The method makes a REST API call to the
+              `/chat/completions` route 
+
+              on the given endpoint.
+        protocol: {}
+        operationId: complete
+        extensions:
+          x-ms-examples:
+            maximum set chat completion:
+              title: maximum set chat completion
+              operationId: GetChatCompletions
+              parameters:
+                api-version: 2024-05-01-preview
+                extra-parameters: error
+                body:
+                  messages:
+                    - role: ChatRequestMessage
+                  frequency_penalty: 1
+                  stream: true
+                  presence_penalty: -2
+                  temperature: 0
+                  top_p: 0
+                  max_tokens: 0
+                  response_format:
+                    type: ChatCompletionsResponseFormat
+                  stop:
+                    - lwlqenszpaurxntgit
+                  tools:
+                    - type: function
+                      function:
+                        name: velupowkmhiyypklqmgzzlmcjokcs
+                        description: dngfctkfjoypnjfikiowvpuvisga
+                        parameters: {}
+                  seed: 10
+                  model: bcxpoxjhymqvjo
+              responses:
+                '200':
+                  body:
+                    id: qdjwxvfotmorpdevwdmhbqnsgi
+                    created: 16
+                    model: wr
+                    usage:
+                      completion_tokens: 9
+                      prompt_tokens: 15
+                      total_tokens: 1
+                    choices:
+                      - index: 29
+                        finish_reason: stop
+                        message:
+                          role: system
+                          content: wynvtftvlenfzzzrfmg
+                          tool_calls:
+                            - id: zlmfpvg
+                              type: function
+                              function:
+                                name: velupowkmhiyypklqmgzzlmcjokcs
+                                arguments: zocluceldmcazefk
+              x-ms-original-file: 2024-05-01-preview/GetChatCompletions_MaximumSet_Gen.json
+            minimum set chat completion:
+              title: minimum set chat completion
+              operationId: GetChatCompletions
+              parameters:
+                api-version: 2024-05-01-preview
+                body:
+                  messages:
+                    - role: ChatRequestMessage
+              responses:
+                '200':
+                  body:
+                    id: qdjwxvfotmorpdevwdmhbqnsgi
+                    created: 16
+                    model: wr
+                    usage:
+                      completion_tokens: 9
+                      prompt_tokens: 15
+                      total_tokens: 1
+                    choices:
+                      - index: 29
+                        finish_reason: stop
+                        message:
+                          role: system
+                          content: wynvtftvlenfzzzrfmg
+              x-ms-original-file: 2024-05-01-preview/GetChatCompletions_MinimumSet_Gen.json
+        crossLanguageDefinitionId: Customizations.Client1.complete
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: complete
+              description: ''
+          protocol: {}
+          requests:
+            - language:
+                default:
+                  name: ''
+                  description: ''
+              protocol:
+                http: &ref_99
+                  path: /chat/completions
+                  method: post
+                  uri: '{endpoint}'
+                  mediaTypes:
+                    - application/json
+              parameters:
+                - *ref_85
+                - *ref_86
+                - *ref_87
+                - *ref_88
+                - *ref_89
+                - *ref_90
+                - *ref_91
+                - *ref_92
+                - *ref_93
+                - *ref_94
+                - *ref_95
+                - *ref_96
+                - *ref_97
+                - *ref_98
+                - *ref_71
+              signatureParameters:
+                - *ref_71
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http: *ref_99
+        parameters:
+          - &ref_109
+            language:
+              default:
+                name: endpoint
+                description: Service host
+                serializedName: endpoint
+            protocol:
+              http:
+                in: uri
+            schema: *ref_100
+            implementation: Client
+            origin: modelerfour:synthesized/host
+            required: true
+            extensions:
+              x-ms-skip-url-encoding: false
+          - &ref_110
+            language:
+              default:
+                name: api-version
+                description: Version parameter
+                serializedName: api-version
+            protocol:
+              http:
+                in: query
+            schema: *ref_101
+            implementation: Client
+            origin: modelerfour:synthesized/api-version
+            required: true
+          - &ref_105
+            language:
+              default:
+                name: extra_params
+                description: >-
+                  Controls what happens if extra parameters, undefined by the
+                  REST API,
+
+                  are passed in the JSON request payload.
+
+                  This sets the HTTP request header `extra-parameters`.
+                serializedName: extra-parameters
+            protocol:
+              http: *ref_102
+            schema: *ref_67
+            implementation: Method
+            required: false
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: >-
+                  Body parameter's content type. Known values are
+                  application/json
+                serializedName: Content-Type
+            protocol:
+              http:
+                in: header
+            schema: *ref_103
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_104
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_72
+        signatureParameters:
+          - *ref_105
+          - *ref_72
+        responses:
+          - language:
+              default:
+                name: completeResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_106
+        exceptions:
+          - language:
+              default:
+                name: completeResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_107
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_108
+      - &ref_147
+        language:
+          default:
+            name: getModelInfo
+            description: >-
+              Returns information about the AI model.
+
+              The method makes a REST API call to the `/info` route on the given
+              endpoint.
+        protocol: {}
+        operationId: getModelInfo
+        extensions:
+          x-ms-examples:
+            maximum set model information:
+              title: maximum set model information
+              operationId: GetModelInfo
+              parameters:
+                api-version: 2024-05-01-preview
+              responses:
+                '200':
+                  body:
+                    model_name: wzkm
+                    model_type: embeddings
+                    model_provider_name: jkxwuyloxsmuhsevvytzp
+              x-ms-original-file: 2024-05-01-preview/GetModelInfo_MaximumSet_Gen.json
+            minimum set model information:
+              title: minimum set model information
+              operationId: GetModelInfo
+              parameters:
+                api-version: 2024-05-01-preview
+              responses:
+                '200':
+                  body:
+                    model_name: wzkm
+                    model_type: embeddings
+                    model_provider_name: jkxwuyloxsmuhsevvytzp
+              x-ms-original-file: 2024-05-01-preview/GetModelInfo_MinimumSet_Gen.json
+        crossLanguageDefinitionId: Customizations.Client1.getModelInfo
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: getModelInfo
+              description: ''
+          protocol: {}
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /info
+                method: get
+                uri: '{endpoint}'
+        parameters:
+          - *ref_109
+          - *ref_110
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_111
+            implementation: Method
+            required: true
+            nullable: false
+        signatureParameters: []
+        responses:
+          - language:
+              default:
+                name: getModelInfoResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_112
+        exceptions:
+          - language:
+              default:
+                name: getModelInfoResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_107
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_108
+      - &ref_148
+        language:
+          default:
+            name: embed
+            description: >-
+              Return the embedding vectors for given text prompts.
+
+              The method makes a REST API call to the `/embeddings` route on the
+              given endpoint.
+        protocol: {}
+        operationId: embed
+        extensions:
+          x-ms-examples:
+            maximum set embeddings:
+              title: maximum set embeddings
+              operationId: GetEmbeddings
+              parameters:
+                api-version: 2024-05-01-preview
+                extra-parameters: error
+                body:
+                  input:
+                    - wditkfkcn
+                  dimensions: 14
+                  encoding_format: base64
+                  input_type: text
+                  model: esgcnvlwfzgrstu
+              responses:
+                '200':
+                  body:
+                    data:
+                      - index: 4
+                    usage:
+                      prompt_tokens: 30
+                      total_tokens: 29
+                    model: rbnjxkkdrp
+              x-ms-original-file: 2024-05-01-preview/GetEmbeddings_MaximumSet_Gen.json
+            minimum set embeddings:
+              title: minimum set embeddings
+              operationId: GetEmbeddings
+              parameters:
+                api-version: 2024-05-01-preview
+                body:
+                  input:
+                    - ujbdzqgintkjjorqvgtyqxehwod
+              responses:
+                '200':
+                  body:
+                    id: kmclubpbyrjjrcihu
+                    data:
+                      - embedding:
+                          - 3
+                        index: 20
+                    usage:
+                      prompt_tokens: 17
+                      total_tokens: 25
+                    model: gg
+              x-ms-original-file: 2024-05-01-preview/GetEmbeddings_MinimumSet_Gen.json
+        crossLanguageDefinitionId: Customizations.Client2.embed
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: embed
+              description: ''
+          protocol: {}
+          requests:
+            - language:
+                default:
+                  name: ''
+                  description: ''
+              protocol:
+                http: &ref_121
+                  path: /embeddings
+                  method: post
+                  uri: '{endpoint}'
+                  mediaTypes:
+                    - application/json
+              parameters: &ref_120
+                - language:
+                    default:
+                      name: extra_params
+                      description: >-
+                        Controls what happens if extra parameters, undefined by
+                        the REST API,
+
+                        are passed in the JSON request payload.
+
+                        This sets the HTTP request header `extra-parameters`.
+                      serializedName: extra-parameters
+                  protocol:
+                    http: &ref_122
+                      in: header
+                  schema: *ref_67
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: input
+                      description: >-
+                        Input text to embed, encoded as a string or array of
+                        tokens.
+
+                        To embed multiple inputs in a single request, pass an
+                        array
+
+                        of strings or array of token arrays.
+                      serializedName: input
+                  protocol: {}
+                  schema: *ref_55
+                  originalParameter: &ref_115
+                    language:
+                      default:
+                        name: embedRequest
+                        description: ''
+                    protocol:
+                      http:
+                        in: body
+                    schema: *ref_113
+                    implementation: Method
+                    required: true
+                  targetProperty: *ref_114
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: dimensions
+                      description: >-
+                        Optional. The number of dimensions the resulting output
+                        embeddings should have.
+
+                        Passing null causes the model to use its default value.
+
+                        Returns a 422 error if the model doesn't support the
+                        value or parameter.
+                      serializedName: dimensions
+                  protocol: {}
+                  schema: *ref_30
+                  originalParameter: *ref_115
+                  targetProperty: *ref_116
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: encoding_format
+                      description: >-
+                        Optional. The desired format for the returned
+                        embeddings.
+                      serializedName: encoding_format
+                  protocol: {}
+                  schema: *ref_38
+                  originalParameter: *ref_115
+                  targetProperty: *ref_117
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: input_type
+                      description: >-
+                        Optional. The type of the input.
+
+                        Returns a 422 error if the model doesn't support the
+                        value or parameter.
+                      serializedName: input_type
+                  protocol: {}
+                  schema: *ref_39
+                  originalParameter: *ref_115
+                  targetProperty: *ref_118
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: model
+                      description: >-
+                        ID of the specific AI model to use, if more than one
+                        model is available on the endpoint.
+                      serializedName: model
+                  protocol: {}
+                  schema: *ref_1
+                  originalParameter: *ref_115
+                  targetProperty: *ref_119
+                  implementation: Method
+                  required: false
+                  nullable: false
+              signatureParameters: *ref_120
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http: *ref_121
+        parameters:
+          - &ref_127
+            language:
+              default:
+                name: endpoint
+                description: Service host
+                serializedName: endpoint
+            protocol:
+              http:
+                in: uri
+            schema: *ref_100
+            implementation: Client
+            origin: modelerfour:synthesized/host
+            required: true
+            extensions:
+              x-ms-skip-url-encoding: false
+          - *ref_110
+          - &ref_125
+            language:
+              default:
+                name: extra_params
+                description: >-
+                  Controls what happens if extra parameters, undefined by the
+                  REST API,
+
+                  are passed in the JSON request payload.
+
+                  This sets the HTTP request header `extra-parameters`.
+                serializedName: extra-parameters
+            protocol:
+              http: *ref_122
+            schema: *ref_67
+            implementation: Method
+            required: false
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: >-
+                  Body parameter's content type. Known values are
+                  application/json
+                serializedName: Content-Type
+            protocol:
+              http:
+                in: header
+            schema: *ref_123
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_124
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_115
+        signatureParameters:
+          - *ref_125
+          - *ref_115
+        responses:
+          - language:
+              default:
+                name: embedResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_126
+        exceptions:
+          - language:
+              default:
+                name: embedResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_107
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_108
+      - &ref_149
+        language:
+          default:
+            name: getModelInfo
+            description: >-
+              Returns information about the AI model.
+
+              The method makes a REST API call to the `/info` route on the given
+              endpoint.
+        protocol: {}
+        operationId: getModelInfo
+        extensions:
+          x-ms-examples:
+            maximum set model information:
+              title: maximum set model information
+              operationId: GetModelInfo
+              parameters:
+                api-version: 2024-05-01-preview
+              responses:
+                '200':
+                  body:
+                    model_name: wzkm
+                    model_type: embeddings
+                    model_provider_name: jkxwuyloxsmuhsevvytzp
+              x-ms-original-file: 2024-05-01-preview/GetModelInfo_MaximumSet_Gen.json
+            minimum set model information:
+              title: minimum set model information
+              operationId: GetModelInfo
+              parameters:
+                api-version: 2024-05-01-preview
+              responses:
+                '200':
+                  body:
+                    model_name: wzkm
+                    model_type: embeddings
+                    model_provider_name: jkxwuyloxsmuhsevvytzp
+              x-ms-original-file: 2024-05-01-preview/GetModelInfo_MinimumSet_Gen.json
+        crossLanguageDefinitionId: Customizations.Client2.getModelInfo
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: getModelInfo
+              description: ''
+          protocol: {}
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /info
+                method: get
+                uri: '{endpoint}'
+        parameters:
+          - *ref_127
+          - *ref_110
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_128
+            implementation: Method
+            required: true
+            nullable: false
+        signatureParameters: []
+        responses:
+          - language:
+              default:
+                name: getModelInfoResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_112
+        exceptions:
+          - language:
+              default:
+                name: getModelInfoResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_107
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_108
+      - &ref_151
+        language:
+          default:
+            name: embed
+            description: >-
+              Return the embedding vectors for given images.
+
+              The method makes a REST API call to the `/images/embeddings` route
+              on the given endpoint.
+        protocol: {}
+        operationId: embed
+        extensions:
+          x-ms-examples:
+            maximum set image embeddings:
+              title: maximum set image embeddings
+              operationId: GetImageEmbeddings
+              parameters:
+                api-version: 2024-05-01-preview
+                extra-parameters: error
+                body:
+                  input:
+                    - image: hxkwvrx
+                      text: qpoyljvucirvkzjhhnhpdeqkl
+                  dimensions: 17
+                  encoding_format: base64
+                  input_type: text
+                  model: wssoguntnhwg
+              responses:
+                '200':
+                  body:
+                    data:
+                      - index: 4
+                    usage:
+                      prompt_tokens: 30
+                      total_tokens: 29
+                    model: rbnjxkkdrp
+              x-ms-original-file: 2024-05-01-preview/GetImageEmbeddings_MaximumSet_Gen.json
+            minimum set image embeddings:
+              title: minimum set image embeddings
+              operationId: GetImageEmbeddings
+              parameters:
+                api-version: 2024-05-01-preview
+                body:
+                  input:
+                    - image: gvmojtfooxixxzayrditjlyymg
+              responses:
+                '200':
+                  body:
+                    id: kmclubpbyrjjrcihu
+                    data:
+                      - embedding:
+                          - 3
+                        index: 20
+                    usage:
+                      prompt_tokens: 17
+                      total_tokens: 25
+                    model: gg
+              x-ms-original-file: 2024-05-01-preview/GetImageEmbeddings_MinimumSet_Gen.json
+        crossLanguageDefinitionId: Customizations.Client3.embed
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: embed
+              description: ''
+          protocol: {}
+          requests:
+            - language:
+                default:
+                  name: ''
+                  description: ''
+              protocol:
+                http: &ref_137
+                  path: /images/embeddings
+                  method: post
+                  uri: '{endpoint}'
+                  mediaTypes:
+                    - application/json
+              parameters: &ref_136
+                - language:
+                    default:
+                      name: extra_params
+                      description: >-
+                        Controls what happens if extra parameters, undefined by
+                        the REST API,
+
+                        are passed in the JSON request payload.
+
+                        This sets the HTTP request header `extra-parameters`.
+                      serializedName: extra-parameters
+                  protocol:
+                    http: &ref_138
+                      in: header
+                  schema: *ref_67
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: input
+                      description: >-
+                        Input image to embed. To embed multiple inputs in a
+                        single request, pass an array.
+
+                        The input must not exceed the max input tokens for the
+                        model.
+                      serializedName: input
+                  protocol: {}
+                  schema: *ref_58
+                  originalParameter: &ref_131
+                    language:
+                      default:
+                        name: embedRequest1
+                        description: ''
+                    protocol:
+                      http:
+                        in: body
+                    schema: *ref_129
+                    implementation: Method
+                    required: true
+                  targetProperty: *ref_130
+                  implementation: Method
+                  required: true
+                  nullable: false
+                - language:
+                    default:
+                      name: dimensions
+                      description: >-
+                        Optional. The number of dimensions the resulting output
+                        embeddings should have.
+
+                        Passing null causes the model to use its default value.
+
+                        Returns a 422 error if the model doesn't support the
+                        value or parameter.
+                      serializedName: dimensions
+                  protocol: {}
+                  schema: *ref_30
+                  originalParameter: *ref_131
+                  targetProperty: *ref_132
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: encoding_format
+                      description: >-
+                        Optional. The number of dimensions the resulting output
+                        embeddings should have.
+
+                        Passing null causes the model to use its default value.
+
+                        Returns a 422 error if the model doesn't support the
+                        value or parameter.
+                      serializedName: encoding_format
+                  protocol: {}
+                  schema: *ref_38
+                  originalParameter: *ref_131
+                  targetProperty: *ref_133
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: input_type
+                      description: >-
+                        Optional. The type of the input.
+
+                        Returns a 422 error if the model doesn't support the
+                        value or parameter.
+                      serializedName: input_type
+                  protocol: {}
+                  schema: *ref_39
+                  originalParameter: *ref_131
+                  targetProperty: *ref_134
+                  implementation: Method
+                  required: false
+                  nullable: false
+                - language:
+                    default:
+                      name: model
+                      description: >-
+                        ID of the specific AI model to use, if more than one
+                        model is available on the endpoint.
+                      serializedName: model
+                  protocol: {}
+                  schema: *ref_1
+                  originalParameter: *ref_131
+                  targetProperty: *ref_135
+                  implementation: Method
+                  required: false
+                  nullable: false
+              signatureParameters: *ref_136
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http: *ref_137
+        parameters:
+          - &ref_142
+            language:
+              default:
+                name: endpoint
+                description: Service host
+                serializedName: endpoint
+            protocol:
+              http:
+                in: uri
+            schema: *ref_100
+            implementation: Client
+            origin: modelerfour:synthesized/host
+            required: true
+            extensions:
+              x-ms-skip-url-encoding: false
+          - *ref_110
+          - &ref_141
+            language:
+              default:
+                name: extra_params
+                description: >-
+                  Controls what happens if extra parameters, undefined by the
+                  REST API,
+
+                  are passed in the JSON request payload.
+
+                  This sets the HTTP request header `extra-parameters`.
+                serializedName: extra-parameters
+            protocol:
+              http: *ref_138
+            schema: *ref_67
+            implementation: Method
+            required: false
+            nullable: false
+          - language:
+              default:
+                name: contentType
+                description: >-
+                  Body parameter's content type. Known values are
+                  application/json
+                serializedName: Content-Type
+            protocol:
+              http:
+                in: header
+            schema: *ref_139
+            implementation: Method
+            required: true
+            nullable: false
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_140
+            implementation: Method
+            required: true
+            nullable: false
+          - *ref_131
+        signatureParameters:
+          - *ref_141
+          - *ref_131
+        responses:
+          - language:
+              default:
+                name: embedResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_126
+        exceptions:
+          - language:
+              default:
+                name: embedResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_107
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_108
+      - &ref_152
+        language:
+          default:
+            name: getModelInfo
+            description: >-
+              Returns information about the AI model.
+
+              The method makes a REST API call to the `/info` route on the given
+              endpoint.
+        protocol: {}
+        operationId: getModelInfo
+        extensions:
+          x-ms-examples:
+            maximum set model information:
+              title: maximum set model information
+              operationId: GetModelInfo
+              parameters:
+                api-version: 2024-05-01-preview
+              responses:
+                '200':
+                  body:
+                    model_name: wzkm
+                    model_type: embeddings
+                    model_provider_name: jkxwuyloxsmuhsevvytzp
+              x-ms-original-file: 2024-05-01-preview/GetModelInfo_MaximumSet_Gen.json
+            minimum set model information:
+              title: minimum set model information
+              operationId: GetModelInfo
+              parameters:
+                api-version: 2024-05-01-preview
+              responses:
+                '200':
+                  body:
+                    model_name: wzkm
+                    model_type: embeddings
+                    model_provider_name: jkxwuyloxsmuhsevvytzp
+              x-ms-original-file: 2024-05-01-preview/GetModelInfo_MinimumSet_Gen.json
+        crossLanguageDefinitionId: Customizations.Client3.getModelInfo
+        internalApi: true
+        convenienceApi:
+          language:
+            default:
+              name: getModelInfo
+              description: ''
+          protocol: {}
+        generateProtocolApi: false
+        requests:
+          - language:
+              default:
+                name: ''
+                description: ''
+            protocol:
+              http:
+                path: /info
+                method: get
+                uri: '{endpoint}'
+        parameters:
+          - *ref_142
+          - *ref_110
+          - language:
+              default:
+                name: accept
+                description: ''
+                serializedName: Accept
+            protocol:
+              http:
+                in: header
+            schema: *ref_143
+            implementation: Method
+            required: true
+            nullable: false
+        signatureParameters: []
+        responses:
+          - language:
+              default:
+                name: getModelInfoResponse
+                description: The request has succeeded.
+            protocol:
+              http:
+                statusCodes:
+                  - '200'
+                headers: []
+                mediaTypes:
+                  - application/json
+            schema: *ref_112
+        exceptions:
+          - language:
+              default:
+                name: getModelInfoResponse
+            protocol:
+              http:
+                statusCodes:
+                  - default
+                headers:
+                  - header: x-ms-error-code
+                    schema: *ref_107
+                    language:
+                      default:
+                        name: x-ms-error-code
+                        description: String error code indicating what went wrong.
+                mediaTypes:
+                  - application/json
+            schema: *ref_108
+security:
+  authenticationRequired: true
+  schemes:
+    - &ref_144
+      type: Key
+      name: api-key
+    - &ref_145
+      type: OAuth2
+      scopes:
+        - https://ml.azure.com/.default
+clients:
+  - language:
+      default:
+        name: ChatCompletionsClient
+        description: ''
+        namespace: AI.Model
+      java:
+        namespace: customizations
+    protocol: {}
+    security:
+      authenticationRequired: true
+      schemes:
+        - *ref_144
+        - *ref_145
+    operationGroups:
+      - language:
+          default:
+            name: ''
+            description: ''
+        protocol: {}
+        $key: ''
+        operations:
+          - *ref_146
+          - *ref_147
+    subClients: []
+    buildMethodPublic: true
+    parentAccessorPublic: false
+    crossLanguageDefinitionId: Customizations.Client1
+    apiVersions:
+      - version: 2024-05-01-preview
+    globalParameters:
+      - *ref_109
+      - *ref_110
+    serviceVersion: &ref_150
+      language:
+        default:
+          name: ModelServiceVersion
+          description: ModelClient
+      protocol: {}
+  - language:
+      default:
+        name: EmbeddingsClient
+        description: ''
+        namespace: AI.Model
+      java:
+        namespace: customizations
+    protocol: {}
+    security:
+      authenticationRequired: true
+      schemes:
+        - *ref_144
+        - *ref_145
+    operationGroups:
+      - language:
+          default:
+            name: ''
+            description: ''
+        protocol: {}
+        $key: ''
+        operations:
+          - *ref_148
+          - *ref_149
+    subClients: []
+    buildMethodPublic: true
+    parentAccessorPublic: false
+    crossLanguageDefinitionId: Customizations.Client2
+    apiVersions:
+      - version: 2024-05-01-preview
+    globalParameters:
+      - *ref_127
+      - *ref_110
+    serviceVersion: *ref_150
+  - language:
+      default:
+        name: ImageEmbeddingsClient
+        description: ''
+        namespace: AI.Model
+      java:
+        namespace: customizations
+    protocol: {}
+    security:
+      authenticationRequired: true
+      schemes:
+        - *ref_144
+        - *ref_145
+    operationGroups:
+      - language:
+          default:
+            name: ''
+            description: ''
+        protocol: {}
+        $key: ''
+        operations:
+          - *ref_151
+          - *ref_152
+    subClients: []
+    buildMethodPublic: true
+    parentAccessorPublic: false
+    crossLanguageDefinitionId: Customizations.Client3
+    apiVersions:
+      - version: 2024-05-01-preview
+    globalParameters:
+      - *ref_142
+      - *ref_110
+    serviceVersion: *ref_150
+globalParameters:
+  - *ref_109
+  - *ref_127
+  - *ref_142

@@ -5,7 +5,7 @@
 package com.azure.ai.translation.document.implementation;
 
 import com.azure.ai.translation.document.DocumentTranslationServiceVersion;
-import com.azure.ai.translation.document.models.TranslationStatusResult;
+import com.azure.ai.translation.document.TranslationStatusResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;

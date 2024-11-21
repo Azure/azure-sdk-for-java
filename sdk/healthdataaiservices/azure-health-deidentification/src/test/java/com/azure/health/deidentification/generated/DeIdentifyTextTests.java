@@ -4,14 +4,14 @@
 
 package com.azure.health.deidentification.generated;
 
-import com.azure.health.deidentification.models.DeidentificationContent;
-import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
-import com.azure.health.deidentification.models.PhiCategory;
-import com.azure.health.deidentification.models.PhiEntity;
-import com.azure.health.deidentification.models.PhiTaggerResult;
-import com.azure.health.deidentification.models.StringIndex;
+import com.azure.health.deidentification.DeidentificationContent;
+import com.azure.health.deidentification.DeidentificationResult;
+import com.azure.health.deidentification.DocumentDataType;
+import com.azure.health.deidentification.OperationType;
+import com.azure.health.deidentification.PhiCategory;
+import com.azure.health.deidentification.PhiEntity;
+import com.azure.health.deidentification.PhiTaggerResult;
+import com.azure.health.deidentification.StringIndex;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

@@ -4,7 +4,7 @@
 
 package com.azure.ai.contentsafety.implementation;
 
-import com.azure.ai.contentsafety.models.TextBlocklist;
+import com.azure.ai.contentsafety.TextBlocklist;
 
 /**
  * This is the Helper class to enable json merge patch serialization for a model.

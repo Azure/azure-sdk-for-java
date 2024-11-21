@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
-import com.azure.analytics.purview.datamap.models.EntityMutationResult;
+import com.azure.analytics.purview.datamap.AtlasEntityHeader;
+import com.azure.analytics.purview.datamap.EntityMutationResult;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.List;

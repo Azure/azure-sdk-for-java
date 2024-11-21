@@ -4,11 +4,11 @@
 
 package com.azure.analytics.purview.datamap.generated;
 
-import com.azure.analytics.purview.datamap.models.AtlasEntitiesWithExtInfo;
-import com.azure.analytics.purview.datamap.models.AtlasEntity;
-import com.azure.analytics.purview.datamap.models.ContactInfo;
-import com.azure.analytics.purview.datamap.models.EntityMutationResult;
-import com.azure.analytics.purview.datamap.models.EntityStatus;
+import com.azure.analytics.purview.datamap.AtlasEntitiesWithExtInfo;
+import com.azure.analytics.purview.datamap.AtlasEntity;
+import com.azure.analytics.purview.datamap.ContactInfo;
+import com.azure.analytics.purview.datamap.EntityMutationResult;
+import com.azure.analytics.purview.datamap.EntityStatus;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

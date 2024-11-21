@@ -5,9 +5,9 @@
 package com.azure.health.deidentification.generated;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.health.deidentification.models.DocumentDetails;
-import com.azure.health.deidentification.models.DocumentLocation;
-import com.azure.health.deidentification.models.OperationState;
+import com.azure.health.deidentification.DocumentDetails;
+import com.azure.health.deidentification.DocumentLocation;
+import com.azure.health.deidentification.OperationState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

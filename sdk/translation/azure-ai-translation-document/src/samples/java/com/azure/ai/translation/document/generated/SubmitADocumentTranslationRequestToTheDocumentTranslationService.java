@@ -4,17 +4,17 @@
 
 package com.azure.ai.translation.document.generated;
 
-import com.azure.ai.translation.document.DocumentTranslationClient;
-import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
-import com.azure.ai.translation.document.models.DocumentFilter;
-import com.azure.ai.translation.document.models.DocumentTranslationInput;
-import com.azure.ai.translation.document.models.StorageInputType;
-import com.azure.ai.translation.document.models.TranslationBatch;
-import com.azure.ai.translation.document.models.TranslationGlossary;
-import com.azure.ai.translation.document.models.TranslationSource;
-import com.azure.ai.translation.document.models.TranslationStatusResult;
-import com.azure.ai.translation.document.models.TranslationStorageSource;
-import com.azure.ai.translation.document.models.TranslationTarget;
+import clientcustomizations.DocumentTranslationClient;
+import clientcustomizations.DocumentTranslationClientBuilder;
+import com.azure.ai.translation.document.DocumentFilter;
+import com.azure.ai.translation.document.DocumentTranslationInput;
+import com.azure.ai.translation.document.StorageInputType;
+import com.azure.ai.translation.document.TranslationBatch;
+import com.azure.ai.translation.document.TranslationGlossary;
+import com.azure.ai.translation.document.TranslationSource;
+import com.azure.ai.translation.document.TranslationStatusResult;
+import com.azure.ai.translation.document.TranslationStorageSource;
+import com.azure.ai.translation.document.TranslationTarget;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
