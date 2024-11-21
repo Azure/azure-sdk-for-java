@@ -1,0 +1,72 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d47ae0c4-9d06-4386-b495-c4db7141425b",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "14ms",
+      "MS-CV" : "0z4cvA0KqkuHlQWXZne6tw.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0C5sIZAAAAABfFtgCD5kpRpbkfjrYLVR3UFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "StatusCode" : "422",
+      "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidTrunkFqdn\",\"message\":\"Domain '_' is not properly formatted domnain name.\"}}}",
+      "Date" : "Wed, 08 Mar 2023 14:26:18 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "09cc0fe2-d75b-4916-a9fb-a694e25b0682"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "173ms",
+      "MS-CV" : "5kkiwuMMZU+Ac2u6+IXT3Q.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0C5sIZAAAAABks4ICSEnqS4uxKl9maK0qUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "25",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{},\"routes\":[]}",
+      "Date" : "Wed, 08 Mar 2023 14:26:19 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7da58038-c080-4f39-9526-1051592be14e",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "17ms",
+      "MS-CV" : "0dYY4sCVOkq/uNDrbJD/zA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0C5sIZAAAAABKAH/LLcK4SL3vvfeRAq+MUFJHMDFFREdFMDkyMQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "StatusCode" : "422",
+      "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidTrunkFqdn\",\"message\":\"Domain '_' is not properly formatted domnain name.\"}}}",
+      "Date" : "Wed, 08 Mar 2023 14:26:19 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
