@@ -16,12 +16,10 @@ public final class PhoneNumberIdentifierConverter {
      */
     public static PhoneNumberIdentifierModel convert(PhoneNumberIdentifier phoneNumberIdentifier) {
 
-        PhoneNumberIdentifierModel phoneNumberIdentifierModel
-            = (phoneNumberIdentifier == null || phoneNumberIdentifier.getPhoneNumber().isEmpty())
-                ? null
+        PhoneNumberIdentifierModel phoneNumberIdentifierModel =
+            (phoneNumberIdentifier == null || phoneNumberIdentifier.getPhoneNumber().isEmpty()) ? null
                 : CommunicationIdentifierConverter
-                    .convert(new PhoneNumberIdentifier(phoneNumberIdentifier.getPhoneNumber()))
-                    .getPhoneNumber();
+                    .convert(new PhoneNumberIdentifier(phoneNumberIdentifier.getPhoneNumber())).getPhoneNumber();
         return phoneNumberIdentifierModel;
     }
 
@@ -30,14 +28,12 @@ public final class PhoneNumberIdentifierConverter {
      */
     public static PhoneNumberIdentifier convert(PhoneNumberIdentifierModel phoneNumberIdentifierModel) {
 
-        PhoneNumberIdentifier phoneNumberIdentifier
-            = (phoneNumberIdentifierModel == null || phoneNumberIdentifierModel.getValue().isEmpty())
-                ? null
+        PhoneNumberIdentifier phoneNumberIdentifier =
+            (phoneNumberIdentifierModel == null || phoneNumberIdentifierModel.getValue().isEmpty()) ? null
                 : new PhoneNumberIdentifier(phoneNumberIdentifierModel.getValue());
 
         return phoneNumberIdentifier;
     }
-
     private PhoneNumberIdentifierConverter() {
     }
 }

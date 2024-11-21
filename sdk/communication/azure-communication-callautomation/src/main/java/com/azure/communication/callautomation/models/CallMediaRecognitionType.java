@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for RecognitionType. */
@@ -16,28 +17,17 @@ public final class CallMediaRecognitionType extends ExpandableStringEnum<CallMed
     public static final CallMediaRecognitionType SPEECH = fromString("speech");
 
     /**
-     * Creates an instance of {@link CallMediaRecognitionType} with no string value.
-     *
-     * @deprecated Please use {@link #fromString(String)} to create an instance of CallMediaRecognitionType.
-     */
-    @Deprecated
-    public CallMediaRecognitionType() {
-    }
-
-    /**
      * Creates or finds a RecognitionType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding RecognitionType.
      */
+    @JsonCreator
     public static CallMediaRecognitionType fromString(String name) {
         return fromString(name, CallMediaRecognitionType.class);
     }
 
-    /**
-     * Get the collection of RecognitionType values.
-     * @return known RecognitionType values.
-     */
+    /** @return known RecognitionType values. */
     public static Collection<CallMediaRecognitionType> values() {
         return values(CallMediaRecognitionType.class);
     }

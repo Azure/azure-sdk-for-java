@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for RecordingKind. */
@@ -21,8 +22,7 @@ public final class RecordingKind extends ExpandableStringEnum<RecordingKind> {
     /**
      * Creates a new instance of RecordingKind value.
      */
-    public RecordingKind() {
-    }
+    public RecordingKind() {}
 
     /**
      * Creates or finds a RecordingKind from its string representation.
@@ -30,6 +30,7 @@ public final class RecordingKind extends ExpandableStringEnum<RecordingKind> {
      * @param name a name to look for.
      * @return the corresponding RecordingKind.
      */
+    @JsonCreator
     public static RecordingKind fromString(String name) {
         return fromString(name, RecordingKind.class);
     }
