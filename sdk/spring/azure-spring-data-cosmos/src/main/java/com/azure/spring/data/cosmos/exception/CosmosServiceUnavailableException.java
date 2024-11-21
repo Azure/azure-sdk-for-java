@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
-public class CosmosServiceUnavailableException extends CosmosAccessException {
+public final class CosmosServiceUnavailableException extends CosmosAccessException {
 
     /**
      * Construct a {@code CosmosDBAccessException} with the specified detail message.

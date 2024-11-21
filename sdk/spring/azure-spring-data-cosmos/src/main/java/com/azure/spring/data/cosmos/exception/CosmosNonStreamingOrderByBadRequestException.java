@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
-public class CosmosNonStreamingOrderByBadRequestException extends CosmosAccessException {
+public final class CosmosNonStreamingOrderByBadRequestException extends CosmosAccessException {
 
     /**
      * Construct a {@code CosmosDBAccessException} with the specified detail message.

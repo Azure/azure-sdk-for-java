@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
-public class CosmosPartitionKeyRangeIsSplittingException extends CosmosAccessException {
+public final class CosmosPartitionKeyRangeIsSplittingException extends CosmosAccessException {
 
     /**
      * Construct a {@code CosmosDBAccessException} with the specified detail message.
