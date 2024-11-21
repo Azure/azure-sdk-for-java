@@ -19,16 +19,9 @@ import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -42,28 +35,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  */
 public class EventData extends MessageContent {
-    /*
-     * These are properties owned by the service and set when a message is received.
-     */
-    static final Set<String> RESERVED_SYSTEM_PROPERTIES;
-
     private static final ClientLogger LOGGER = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final SystemProperties systemProperties;
-    private String updatedPartitionKey;
     private AmqpAnnotatedMessage annotatedMessage;
     private Context context;
-
-    static {
-        final Set<String> properties = new HashSet<>();
-        properties.add(OFFSET_ANNOTATION_NAME.getValue());
-        properties.add(PARTITION_KEY_ANNOTATION_NAME.getValue());
-        properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-        properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-        properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
-
-        RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
-    }
 
     /**
      * Creates an event with an empty body.
@@ -456,28 +432,25 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * Updates or sets partition key on the message.
+     * Sets partition key on the message annotations.
      * @param partitionKey The partition key to set on the message.
      * @return The updated {@link EventData}.
      */
-    EventData updatePartitionKey(String partitionKey) {
-        // first, let's set message annotation - this is necessary to calculate message size correctly
+    EventData setPartitionKeyAnnotation(String partitionKey) {
         Map<String, Object> messageAnnotations = annotatedMessage.getMessageAnnotations();
         messageAnnotations.put(AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
-
-        // also we need to store it in a separate field to get the updated value.
-        // Otherwise, we won't know if the partition key came from the upstream event hub
-        // when message is forwarded (in which case we should ignore and strip it) or was provided
-        // by the buffering producer and represents the actual partition key to be used when publishing.
-        this.updatedPartitionKey = partitionKey;
 
         return this;
     }
 
-    String getUpdatedPartitionKey() {
-        // we explicitly ignore the partition key on message annotations
-        // in case it came from the upstream event hub.
-        return updatedPartitionKey;
+    /**
+     * Gets the partition key from the message annotations.
+     *
+     * @return The partition key.
+     */
+    String getPartitionKeyAnnotation() {
+        return (String) annotatedMessage.getMessageAnnotations()
+            .get(AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME.getValue());
     }
 
     /**
