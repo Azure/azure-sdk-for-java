@@ -23,7 +23,8 @@ public final class MetricAlertConfiguration {
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param alertScope The scope for the alert.
      */
-    public MetricAlertConfiguration(String detectionConfigurationId, MetricAnomalyAlertScope alertScope) {
+    public MetricAlertConfiguration(String detectionConfigurationId,
+                                    MetricAnomalyAlertScope alertScope) {
         this(detectionConfigurationId, alertScope, false);
     }
 
@@ -37,11 +38,12 @@ public final class MetricAlertConfiguration {
      *     performed among corresponding series in other configurations. The result of expression is true
      *     only if there is no anomaly found in the series.
      */
-    public MetricAlertConfiguration(String detectionConfigurationId, MetricAnomalyAlertScope alertScope,
-        boolean negationOperation) {
+    public MetricAlertConfiguration(String detectionConfigurationId,
+                                    MetricAnomalyAlertScope alertScope,
+                                    boolean negationOperation) {
         this.detectionConfigurationId = detectionConfigurationId;
         this.negationOperation = negationOperation;
-        this.alertScope = alertScope;
+        this.alertScope =  alertScope;
     }
 
     /**

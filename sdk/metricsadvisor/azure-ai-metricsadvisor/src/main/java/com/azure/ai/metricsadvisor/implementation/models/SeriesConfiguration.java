@@ -153,9 +153,6 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

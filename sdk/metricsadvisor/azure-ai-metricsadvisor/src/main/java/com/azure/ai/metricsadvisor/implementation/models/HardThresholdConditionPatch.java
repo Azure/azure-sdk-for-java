@@ -134,9 +134,6 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

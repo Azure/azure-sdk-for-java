@@ -147,9 +147,6 @@ public final class InfluxDBParameterPatch implements JsonSerializable<InfluxDBPa
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

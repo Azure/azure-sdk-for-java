@@ -19,11 +19,6 @@ import java.util.UUID;
 @Fluent
 public class HookInfo implements JsonSerializable<HookInfo> {
     /*
-     * hook type
-     */
-    private HookType hookType = HookType.fromString("HookInfo");
-
-    /*
      * Hook unique id
      */
     private UUID hookId;
@@ -52,15 +47,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * Creates an instance of HookInfo class.
      */
     public HookInfo() {
-    }
-
-    /**
-     * Get the hookType property: hook type.
-     * 
-     * @return the hookType value.
-     */
-    public HookType getHookType() {
-        return this.hookType;
     }
 
     /**
@@ -163,14 +149,10 @@ public class HookInfo implements JsonSerializable<HookInfo> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("hookName", this.hookName);
-        jsonWriter.writeStringField("hookType", this.hookType == null ? null : this.hookType.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("externalLink", this.externalLink);
         jsonWriter.writeArrayField("admins", this.admins, (writer, element) -> writer.writeString(element));
@@ -183,32 +165,33 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of HookInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the HookInfo.
      */
     public static HookInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("hookType".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Email".equals(discriminatorValue)) {
-                    return EmailHookInfo.fromJson(readerToUse.reset());
-                } else if ("Webhook".equals(discriminatorValue)) {
-                    return WebhookHookInfo.fromJson(readerToUse.reset());
+            JsonReader readerToUse = reader.bufferObject();
+
+            readerToUse.nextToken(); // Prepare for reading
+            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = readerToUse.getFieldName();
+                readerToUse.nextToken();
+                if ("hookType".equals(fieldName)) {
+                    discriminatorValue = readerToUse.getString();
+                    break;
                 } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                    readerToUse.skipChildren();
                 }
+            }
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("Email".equals(discriminatorValue)) {
+                return EmailHookInfo.fromJson(readerToUse.reset());
+            } else if ("Webhook".equals(discriminatorValue)) {
+                return WebhookHookInfo.fromJson(readerToUse.reset());
+            } else {
+                return fromJsonKnownDiscriminator(readerToUse.reset());
             }
         });
     }
@@ -222,8 +205,6 @@ public class HookInfo implements JsonSerializable<HookInfo> {
 
                 if ("hookName".equals(fieldName)) {
                     deserializedHookInfo.hookName = reader.getString();
-                } else if ("hookType".equals(fieldName)) {
-                    deserializedHookInfo.hookType = HookType.fromString(reader.getString());
                 } else if ("hookId".equals(fieldName)) {
                     deserializedHookInfo.hookId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));

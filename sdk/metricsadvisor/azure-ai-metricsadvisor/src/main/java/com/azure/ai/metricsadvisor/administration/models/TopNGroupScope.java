@@ -78,6 +78,7 @@ public final class TopNGroupScope {
         return this;
     }
 
+
     /**
      * Sets the period value indicating the number of latest point-sets detector should select for ranking,
      * value should be in the range : [1, +∞).
@@ -89,6 +90,7 @@ public final class TopNGroupScope {
         this.period = period;
         return this;
     }
+
 
     /**
      * Sets the number of point-sets in the period to falls into the top rank for anomaly reporting,
