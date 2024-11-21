@@ -11,19 +11,12 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-extensions</artifactId>
-  <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-extensions;current} -->
+  <version>1.1.21</version> <!-- {x-version-update;com.azure:azure-identity-extensions;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Extensions</name>
   <description>This package provides the ability of authenticating with Azure AD and returning a token as a password.</description>
   <url>https://github.com/azure/azure-sdk-for-java</url>
-
-  <properties>
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
-    <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
-  </properties>
 
   <dependencies>
     <dependency>
@@ -41,7 +34,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
 
     <!-- test   -->
