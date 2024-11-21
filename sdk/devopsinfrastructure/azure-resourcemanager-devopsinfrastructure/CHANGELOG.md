@@ -6,6 +6,17 @@
 
 ### Breaking Changes
 
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
 #### `implementation.models.QuotaListResult` was removed
 
 #### `implementation.models.PagedOperation` was removed
@@ -57,53 +68,11 @@
 #### `models.StatelessAgentProfile` was modified
 
 * `withResourcePredictions(models.ResourcePredictions)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.PoolUpdateProperties` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.ResourcePredictionsProfile` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.AzureDevOpsOrganizationProfile` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.StorageProfile` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.SubscriptionUsages` was modified
 
 * `usages(java.lang.String)` was added
 * `usages(java.lang.String,com.azure.core.util.Context)` was added
-
-#### `models.ManagedServiceIdentity` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.DataDisk` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.DevOpsAzureSku` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.GitHubOrganization` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.Quota` was modified
 
@@ -111,162 +80,9 @@
 * `unit()` was added
 * `currentValue()` was added
 
-#### `models.ResourceSkuRestrictions` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
 #### `models.AgentProfile` was modified
 
 * `withResourcePredictions(models.ResourcePredictions)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.OsProfile` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.PoolUpdate` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.ImageVersionProperties` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `implementation.models.PoolListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.OperationDisplay` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.ManualResourcePredictionsProfile` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.AzureDevOpsPermissionProfile` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.GitHubOrganizationProfile` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.Stateful` was modified
-
-* `withResourcePredictions(models.ResourcePredictions)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `implementation.models.ImageVersionListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.UserAssignedIdentity` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `implementation.models.ResourceSkuListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.VmssFabricProfile` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.OrganizationProfile` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.PoolImage` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.ResourceDetailsObjectProperties` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.PoolProperties` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.Organization` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.AutomaticResourcePredictionsProfile` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.SecretsManagementSettings` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.QuotaName` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.FabricProfile` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.ResourceSkuZoneDetails` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `implementation.models.ResourceDetailsObjectListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.NetworkProfile` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-
-#### `models.ResourceSkuCapabilities` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.ResourceSkuLocationInfo` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.ResourceSkuRestrictionInfo` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `models.ResourceSkuProperties` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.0.0-beta.1 (2024-05-23)
 
