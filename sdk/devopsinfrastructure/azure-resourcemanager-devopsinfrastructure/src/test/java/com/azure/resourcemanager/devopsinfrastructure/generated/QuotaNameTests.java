@@ -5,14 +5,15 @@
 package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.devopsinfrastructure.models.ImageVersionProperties;
+import com.azure.resourcemanager.devopsinfrastructure.models.QuotaName;
 import org.junit.jupiter.api.Assertions;
 
-public final class ImageVersionPropertiesTests {
+public final class QuotaNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageVersionProperties model
-            = BinaryData.fromString("{\"version\":\"iipfpubj\"}").toObject(ImageVersionProperties.class);
-        Assertions.assertEquals("iipfpubj", model.version());
+        QuotaName model = BinaryData.fromString("{\"value\":\"hwflu\",\"localizedValue\":\"dtmhrkwofyyvoqa\"}")
+            .toObject(QuotaName.class);
+        Assertions.assertEquals("hwflu", model.value());
+        Assertions.assertEquals("dtmhrkwofyyvoqa", model.localizedValue());
     }
 }

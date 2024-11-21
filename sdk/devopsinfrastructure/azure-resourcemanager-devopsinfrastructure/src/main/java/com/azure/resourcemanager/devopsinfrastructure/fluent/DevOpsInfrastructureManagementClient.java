@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for DevOpsInfrastructureClient class.
+ * The interface for DevOpsInfrastructureManagementClient class.
  */
-public interface DevOpsInfrastructureClient {
+public interface DevOpsInfrastructureManagementClient {
     /**
      * Gets Service host.
      * 

@@ -23,7 +23,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.devopsinfrastructure.fluent.DevOpsInfrastructureClient;
+import com.azure.resourcemanager.devopsinfrastructure.fluent.DevOpsInfrastructureManagementClient;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.ImageVersionsClient;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.OperationsClient;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.PoolsClient;
@@ -40,10 +40,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the DevOpsInfrastructureClientImpl type.
+ * Initializes a new instance of the DevOpsInfrastructureManagementClientImpl type.
  */
-@ServiceClient(builder = DevOpsInfrastructureClientBuilder.class)
-public final class DevOpsInfrastructureClientImpl implements DevOpsInfrastructureClient {
+@ServiceClient(builder = DevOpsInfrastructureManagementClientBuilder.class)
+public final class DevOpsInfrastructureManagementClientImpl implements DevOpsInfrastructureManagementClient {
     /**
      * Service host.
      */
@@ -213,7 +213,7 @@ public final class DevOpsInfrastructureClientImpl implements DevOpsInfrastructur
     }
 
     /**
-     * Initializes an instance of DevOpsInfrastructureClient client.
+     * Initializes an instance of DevOpsInfrastructureManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -222,14 +222,14 @@ public final class DevOpsInfrastructureClientImpl implements DevOpsInfrastructur
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    DevOpsInfrastructureClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+    DevOpsInfrastructureManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-04-04-preview";
+        this.apiVersion = "2024-10-19";
         this.operations = new OperationsClientImpl(this);
         this.pools = new PoolsClientImpl(this);
         this.resourceDetails = new ResourceDetailsClientImpl(this);
@@ -364,5 +364,5 @@ public final class DevOpsInfrastructureClientImpl implements DevOpsInfrastructur
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DevOpsInfrastructureClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DevOpsInfrastructureManagementClientImpl.class);
 }

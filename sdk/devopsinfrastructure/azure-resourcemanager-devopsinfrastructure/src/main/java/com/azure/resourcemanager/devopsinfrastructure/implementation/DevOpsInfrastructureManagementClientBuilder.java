@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the DevOpsInfrastructureClientImpl type.
+ * A builder for creating a new instance of the DevOpsInfrastructureManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { DevOpsInfrastructureClientImpl.class })
-public final class DevOpsInfrastructureClientBuilder {
+@ServiceClientBuilder(serviceClients = { DevOpsInfrastructureManagementClientImpl.class })
+public final class DevOpsInfrastructureManagementClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class DevOpsInfrastructureClientBuilder {
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the DevOpsInfrastructureClientBuilder.
+     * @return the DevOpsInfrastructureManagementClientBuilder.
      */
-    public DevOpsInfrastructureClientBuilder endpoint(String endpoint) {
+    public DevOpsInfrastructureManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class DevOpsInfrastructureClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the DevOpsInfrastructureClientBuilder.
+     * @return the DevOpsInfrastructureManagementClientBuilder.
      */
-    public DevOpsInfrastructureClientBuilder subscriptionId(String subscriptionId) {
+    public DevOpsInfrastructureManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class DevOpsInfrastructureClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the DevOpsInfrastructureClientBuilder.
+     * @return the DevOpsInfrastructureManagementClientBuilder.
      */
-    public DevOpsInfrastructureClientBuilder environment(AzureEnvironment environment) {
+    public DevOpsInfrastructureManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class DevOpsInfrastructureClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the DevOpsInfrastructureClientBuilder.
+     * @return the DevOpsInfrastructureManagementClientBuilder.
      */
-    public DevOpsInfrastructureClientBuilder pipeline(HttpPipeline pipeline) {
+    public DevOpsInfrastructureManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class DevOpsInfrastructureClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the DevOpsInfrastructureClientBuilder.
+     * @return the DevOpsInfrastructureManagementClientBuilder.
      */
-    public DevOpsInfrastructureClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public DevOpsInfrastructureManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class DevOpsInfrastructureClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the DevOpsInfrastructureClientBuilder.
+     * @return the DevOpsInfrastructureManagementClientBuilder.
      */
-    public DevOpsInfrastructureClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public DevOpsInfrastructureManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of DevOpsInfrastructureClientImpl with the provided parameters.
+     * Builds an instance of DevOpsInfrastructureManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of DevOpsInfrastructureClientImpl.
+     * @return an instance of DevOpsInfrastructureManagementClientImpl.
      */
-    public DevOpsInfrastructureClientImpl buildClient() {
+    public DevOpsInfrastructureManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,7 +131,7 @@ public final class DevOpsInfrastructureClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        DevOpsInfrastructureClientImpl client = new DevOpsInfrastructureClientImpl(localPipeline,
+        DevOpsInfrastructureManagementClientImpl client = new DevOpsInfrastructureManagementClientImpl(localPipeline,
             localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
