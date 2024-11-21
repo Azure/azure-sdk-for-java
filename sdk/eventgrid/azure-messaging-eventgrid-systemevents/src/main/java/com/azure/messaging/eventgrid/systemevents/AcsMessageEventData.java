@@ -38,7 +38,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
      * The time message was received
      */
     @Generated
-    private final OffsetDateTime receivedTimeStamp;
+    private final OffsetDateTime receivedTimestamp;
 
     /*
      * The channel event error
@@ -49,12 +49,12 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
     /**
      * Creates an instance of AcsMessageEventData class.
      *
-     * @param receivedTimeStamp the receivedTimeStamp value to set.
+     * @param receivedTimestamp the receivedTimestamp value to set.
      * @param error the error value to set.
      */
     @Generated
-    protected AcsMessageEventData(OffsetDateTime receivedTimeStamp, AcsMessageChannelEventError error) {
-        this.receivedTimeStamp = receivedTimeStamp;
+    protected AcsMessageEventData(OffsetDateTime receivedTimestamp, AcsMessageChannelEventError error) {
+        this.receivedTimestamp = receivedTimestamp;
         this.error = error;
     }
 
@@ -103,13 +103,13 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
     }
 
     /**
-     * Get the receivedTimeStamp property: The time message was received.
+     * Get the receivedTimestamp property: The time message was received.
      *
-     * @return the receivedTimeStamp value.
+     * @return the receivedTimestamp value.
      */
     @Generated
-    public OffsetDateTime getReceivedTimeStamp() {
-        return this.receivedTimeStamp;
+    public OffsetDateTime getReceivedTimestamp() {
+        return this.receivedTimestamp;
     }
 
     /**
@@ -130,9 +130,9 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("receivedTimeStamp",
-            this.receivedTimeStamp == null
+            this.receivedTimestamp == null
                 ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimeStamp));
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeStringField("from", this.from);
         jsonWriter.writeStringField("to", this.to);
@@ -151,7 +151,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
     @Generated
     public static AcsMessageEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OffsetDateTime receivedTimeStamp = null;
+            OffsetDateTime receivedTimestamp = null;
             AcsMessageChannelEventError error = null;
             String from = null;
             String to = null;
@@ -159,7 +159,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("receivedTimeStamp".equals(fieldName)) {
-                    receivedTimeStamp = reader
+                    receivedTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     error = AcsMessageChannelEventError.fromJson(reader);
@@ -171,7 +171,7 @@ public class AcsMessageEventData implements JsonSerializable<AcsMessageEventData
                     reader.skipChildren();
                 }
             }
-            AcsMessageEventData deserializedAcsMessageEventData = new AcsMessageEventData(receivedTimeStamp, error);
+            AcsMessageEventData deserializedAcsMessageEventData = new AcsMessageEventData(receivedTimestamp, error);
             deserializedAcsMessageEventData.from = from;
             deserializedAcsMessageEventData.to = to;
             return deserializedAcsMessageEventData;

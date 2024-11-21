@@ -54,15 +54,15 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     /**
      * Creates an instance of AcsMessageDeliveryStatusUpdatedEventData class.
      * 
-     * @param receivedTimeStamp the receivedTimeStamp value to set.
+     * @param receivedTimestamp the receivedTimestamp value to set.
      * @param error the error value to set.
      * @param status the status value to set.
      * @param channelKind the channelKind value to set.
      */
     @Generated
-    private AcsMessageDeliveryStatusUpdatedEventData(OffsetDateTime receivedTimeStamp,
+    private AcsMessageDeliveryStatusUpdatedEventData(OffsetDateTime receivedTimestamp,
         AcsMessageChannelEventError error, AcsMessageDeliveryStatus status, AcsMessageChannelKind channelKind) {
-        super(receivedTimeStamp, error);
+        super(receivedTimestamp, error);
         this.status = status;
         this.channelKind = channelKind;
     }
@@ -127,9 +127,9 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("receivedTimeStamp",
-            getReceivedTimeStamp() == null
+            getReceivedTimestamp() == null
                 ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimeStamp()));
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
@@ -151,7 +151,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     @Generated
     public static AcsMessageDeliveryStatusUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OffsetDateTime receivedTimeStamp = null;
+            OffsetDateTime receivedTimestamp = null;
             AcsMessageChannelEventError error = null;
             String from = null;
             String to = null;
@@ -163,7 +163,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
                 reader.nextToken();
 
                 if ("receivedTimeStamp".equals(fieldName)) {
-                    receivedTimeStamp = reader
+                    receivedTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     error = AcsMessageChannelEventError.fromJson(reader);
@@ -182,7 +182,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
                 }
             }
             AcsMessageDeliveryStatusUpdatedEventData deserializedAcsMessageDeliveryStatusUpdatedEventData
-                = new AcsMessageDeliveryStatusUpdatedEventData(receivedTimeStamp, error, status, channelKind);
+                = new AcsMessageDeliveryStatusUpdatedEventData(receivedTimestamp, error, status, channelKind);
             deserializedAcsMessageDeliveryStatusUpdatedEventData.from = from;
             deserializedAcsMessageDeliveryStatusUpdatedEventData.to = to;
             deserializedAcsMessageDeliveryStatusUpdatedEventData.messageId = messageId;

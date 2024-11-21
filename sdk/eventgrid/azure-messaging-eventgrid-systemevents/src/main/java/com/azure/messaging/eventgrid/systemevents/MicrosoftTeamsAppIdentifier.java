@@ -16,7 +16,7 @@ import java.io.IOException;
  * A Microsoft Teams application.
  */
 @Immutable
-public final class MicrosoftTeamsAppIdentifierModel implements JsonSerializable<MicrosoftTeamsAppIdentifierModel> {
+public final class MicrosoftTeamsAppIdentifier implements JsonSerializable<MicrosoftTeamsAppIdentifier> {
     /*
      * The Id of the Microsoft Teams application
      */
@@ -30,13 +30,13 @@ public final class MicrosoftTeamsAppIdentifierModel implements JsonSerializable<
     private final CommunicationCloudEnvironmentModel cloud;
 
     /**
-     * Creates an instance of MicrosoftTeamsAppIdentifierModel class.
+     * Creates an instance of MicrosoftTeamsAppIdentifier class.
      * 
      * @param appId the appId value to set.
      * @param cloud the cloud value to set.
      */
     @Generated
-    private MicrosoftTeamsAppIdentifierModel(String appId, CommunicationCloudEnvironmentModel cloud) {
+    private MicrosoftTeamsAppIdentifier(String appId, CommunicationCloudEnvironmentModel cloud) {
         this.appId = appId;
         this.cloud = cloud;
     }
@@ -75,16 +75,16 @@ public final class MicrosoftTeamsAppIdentifierModel implements JsonSerializable<
     }
 
     /**
-     * Reads an instance of MicrosoftTeamsAppIdentifierModel from the JsonReader.
+     * Reads an instance of MicrosoftTeamsAppIdentifier from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MicrosoftTeamsAppIdentifierModel if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of MicrosoftTeamsAppIdentifier if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MicrosoftTeamsAppIdentifierModel.
+     * @throws IOException If an error occurs while reading the MicrosoftTeamsAppIdentifier.
      */
     @Generated
-    public static MicrosoftTeamsAppIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
+    public static MicrosoftTeamsAppIdentifier fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String appId = null;
             CommunicationCloudEnvironmentModel cloud = null;
@@ -100,7 +100,7 @@ public final class MicrosoftTeamsAppIdentifierModel implements JsonSerializable<
                     reader.skipChildren();
                 }
             }
-            return new MicrosoftTeamsAppIdentifierModel(appId, cloud);
+            return new MicrosoftTeamsAppIdentifier(appId, cloud);
         });
     }
 }

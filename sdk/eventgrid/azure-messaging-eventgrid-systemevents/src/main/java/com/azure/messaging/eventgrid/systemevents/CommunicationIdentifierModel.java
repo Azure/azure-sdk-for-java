@@ -23,7 +23,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * The identifier kind. Only required in responses.
      */
     @Generated
-    private final CommunicationIdentifierModelKind kind;
+    private final CommunicationIdentifierKind kind;
 
     /*
      * Raw Id of the identifier. Optional in requests, required in responses.
@@ -53,7 +53,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * The Microsoft Teams application.
      */
     @Generated
-    private final MicrosoftTeamsAppIdentifierModel microsoftTeamsApp;
+    private final MicrosoftTeamsAppIdentifier microsoftTeamsApp;
 
     /**
      * Creates an instance of CommunicationIdentifierModel class.
@@ -65,9 +65,9 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param microsoftTeamsApp the microsoftTeamsApp value to set.
      */
     @Generated
-    private CommunicationIdentifierModel(CommunicationIdentifierModelKind kind,
+    private CommunicationIdentifierModel(CommunicationIdentifierKind kind,
         CommunicationUserIdentifierModel communicationUser, PhoneNumberIdentifierModel phoneNumber,
-        MicrosoftTeamsUserIdentifierModel microsoftTeamsUser, MicrosoftTeamsAppIdentifierModel microsoftTeamsApp) {
+        MicrosoftTeamsUserIdentifierModel microsoftTeamsUser, MicrosoftTeamsAppIdentifier microsoftTeamsApp) {
         this.kind = kind;
         this.communicationUser = communicationUser;
         this.phoneNumber = phoneNumber;
@@ -81,7 +81,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @return the kind value.
      */
     @Generated
-    public CommunicationIdentifierModelKind getKind() {
+    public CommunicationIdentifierKind getKind() {
         return this.kind;
     }
 
@@ -131,7 +131,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @return the microsoftTeamsApp value.
      */
     @Generated
-    public MicrosoftTeamsAppIdentifierModel getMicrosoftTeamsApp() {
+    public MicrosoftTeamsAppIdentifier getMicrosoftTeamsApp() {
         return this.microsoftTeamsApp;
     }
 
@@ -163,18 +163,18 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
     @Generated
     public static CommunicationIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CommunicationIdentifierModelKind kind = null;
+            CommunicationIdentifierKind kind = null;
             CommunicationUserIdentifierModel communicationUser = null;
             PhoneNumberIdentifierModel phoneNumber = null;
             MicrosoftTeamsUserIdentifierModel microsoftTeamsUser = null;
-            MicrosoftTeamsAppIdentifierModel microsoftTeamsApp = null;
+            MicrosoftTeamsAppIdentifier microsoftTeamsApp = null;
             String rawId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("kind".equals(fieldName)) {
-                    kind = CommunicationIdentifierModelKind.fromString(reader.getString());
+                    kind = CommunicationIdentifierKind.fromString(reader.getString());
                 } else if ("communicationUser".equals(fieldName)) {
                     communicationUser = CommunicationUserIdentifierModel.fromJson(reader);
                 } else if ("phoneNumber".equals(fieldName)) {
@@ -182,7 +182,7 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
                 } else if ("microsoftTeamsUser".equals(fieldName)) {
                     microsoftTeamsUser = MicrosoftTeamsUserIdentifierModel.fromJson(reader);
                 } else if ("microsoftTeamsApp".equals(fieldName)) {
-                    microsoftTeamsApp = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
+                    microsoftTeamsApp = MicrosoftTeamsAppIdentifier.fromJson(reader);
                 } else if ("rawId".equals(fieldName)) {
                     rawId = reader.getString();
                 } else {
