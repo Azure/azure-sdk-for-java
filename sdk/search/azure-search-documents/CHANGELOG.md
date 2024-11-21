@@ -2,13 +2,9 @@
 
 ## 11.8.0-beta.4 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+ - Fixed bug in the serialization of `SearchDocumentsRuslt` `debuginfo` property.
 
 ## 11.8.0-beta.3 (2024-11-20)
 
