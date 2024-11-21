@@ -20,7 +20,7 @@ Various documentation is available to help you get started
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;current})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid-systemevents;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
