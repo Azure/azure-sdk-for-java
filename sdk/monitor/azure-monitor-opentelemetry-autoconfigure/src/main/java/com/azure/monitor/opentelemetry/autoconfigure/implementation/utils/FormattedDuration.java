@@ -48,10 +48,18 @@ public final class FormattedDuration {
     public static long getDurationFromTelemetryItemDurationString(String duration) {
         // duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
         try {
-            String[] parts = duration.split(".");
-            int days = Integer.parseInt(parts[0]);
-            long microseconds = Integer.parseInt(parts[2]);
-            String hms = parts[1];
+            String[] parts = duration.split("\\.");
+            int days = 0;
+            String hms;
+            long microseconds;
+            if (parts.length == 3) {
+                days = Integer.parseInt(parts[0]);
+                hms = parts[1];
+                microseconds = Integer.parseInt(parts[2]);
+            } else { //length 2
+                hms = parts[0];
+                microseconds = Integer.parseInt(parts[1]);
+            }
             String[] hmsParts = hms.split(":");
             int hours = Integer.parseInt(hmsParts[0]);
             int minutes = Integer.parseInt(hmsParts[1]);

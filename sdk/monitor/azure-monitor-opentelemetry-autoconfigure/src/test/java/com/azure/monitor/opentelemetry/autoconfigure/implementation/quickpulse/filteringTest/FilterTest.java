@@ -392,6 +392,9 @@ class FilterTest {
         RequestDataColumns requestDataColumns = new RequestDataColumns((RequestData) requestData);
 
         MonitorDomain dependencyData = dependencyItem.getData().getBaseData();
+        ((RemoteDependencyData) dependencyData).setType("HTTP");
+        ((RemoteDependencyData) dependencyData).setTarget("test.com");
+        ((RemoteDependencyData) dependencyData).setResultCode("200");
         DependencyDataColumns dependencyDataColumns = new DependencyDataColumns((RemoteDependencyData) dependencyData);
 
         ExceptionDataColumns exceptionData = new ExceptionDataColumns(exceptionItem);
@@ -406,13 +409,15 @@ class FilterTest {
         assertTrue(dependencyDataColumns.getSuccess());
         assertEquals(dependencyDataColumns.getData(), "https://test.com/hiThere?x=y");
         assertEquals(dependencyDataColumns.getName(), "GET /hiThere");
-        assertEquals(dependencyDataColumns.getType(), null );
-        assert
+        assertEquals(dependencyDataColumns.getType(), "HTTP");
+        assertEquals(dependencyDataColumns.getDuration(),400000L);
+        assertEquals(dependencyDataColumns.getResultCode(), 200);
+        assertEquals(dependencyDataColumns.getTarget(), "test.com");
 
+        assertEquals(exceptionData.getMessage(), "A message");
+        assertEquals(exceptionData.getStackTrace(), "A stack trace");
 
-
-
-
+        assertEquals(traceDataColumns.getMessage(), "A message");
     }
 
 }

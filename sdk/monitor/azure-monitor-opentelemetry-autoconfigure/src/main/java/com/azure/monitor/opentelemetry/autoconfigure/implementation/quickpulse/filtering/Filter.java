@@ -148,13 +148,13 @@ public class Filter {
 
     private static boolean stringCompare(String fieldValue, String comparand, PredicateType predicate) {
         if (predicate.equals(PredicateType.EQUAL)) {
-            return fieldValue.equals(comparand);
+            return fieldValue != null && fieldValue.equals(comparand);
         } else if (predicate.equals(PredicateType.NOT_EQUAL)) {
-            return !fieldValue.equals(comparand);
+            return fieldValue != null && !fieldValue.equals(comparand);
         } else if (predicate.equals(PredicateType.CONTAINS)) {
-            return fieldValue.toLowerCase().contains(comparand.toLowerCase());
+            return fieldValue != null && fieldValue.toLowerCase().contains(comparand.toLowerCase());
         } else if (predicate.equals(PredicateType.DOES_NOT_CONTAIN)){
-            return !fieldValue.toLowerCase().contains(comparand.toLowerCase());
+            return fieldValue != null && !fieldValue.toLowerCase().contains(comparand.toLowerCase());
         }
         return false;
     }
