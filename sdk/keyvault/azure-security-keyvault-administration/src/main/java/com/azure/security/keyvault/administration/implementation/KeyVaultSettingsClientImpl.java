@@ -186,8 +186,11 @@ public final class KeyVaultSettingsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Setting>> updateSettingWithResponseAsync(String vaultBaseUrl, String settingName,
         String value) {
-        return FluxUtil
-            .withContext(context -> updateSettingWithResponseAsync(vaultBaseUrl, settingName, value, context));
+        final String accept = "application/json";
+        UpdateSettingRequest parameters = new UpdateSettingRequest();
+        parameters.setValue(value);
+        return FluxUtil.withContext(context -> service.updateSetting(vaultBaseUrl, settingName, this.getApiVersion(),
+            parameters, accept, context));
     }
 
     /**
@@ -307,7 +310,9 @@ public final class KeyVaultSettingsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Setting>> getSettingWithResponseAsync(String vaultBaseUrl, String settingName) {
-        return FluxUtil.withContext(context -> getSettingWithResponseAsync(vaultBaseUrl, settingName, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getSetting(vaultBaseUrl, settingName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -415,7 +420,9 @@ public final class KeyVaultSettingsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SettingsListResult>> getSettingsWithResponseAsync(String vaultBaseUrl) {
-        return FluxUtil.withContext(context -> getSettingsWithResponseAsync(vaultBaseUrl, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getSettings(vaultBaseUrl, this.getApiVersion(), accept, context));
     }
 
     /**

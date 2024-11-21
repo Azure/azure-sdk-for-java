@@ -26,11 +26,9 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     private KeyVaultAccessControlClient client;
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        client
-            = getClientBuilder(
-                buildSyncAssertingClient(
-                    interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-                forCleanup).buildClient();
+        client = getClientBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildClient();
         if (!interceptorManager.isLiveMode()) {
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
@@ -38,7 +36,9 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
     }
 
     /**
@@ -75,13 +75,14 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
 
         try {
             // Create a role definition.
-            KeyVaultRoleDefinition roleDefinition
-                = client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            KeyVaultRoleDefinition roleDefinition =
+                client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
             assertNotNull(roleDefinition);
             assertNotNull(roleDefinition.getId());
             assertEquals(roleDefinitionName, roleDefinition.getName());
-            assertEquals(KeyVaultRoleDefinitionType.MICROSOFT_AUTHORIZATION_ROLE_DEFINITIONS, roleDefinition.getType());
+            assertEquals(KeyVaultRoleDefinitionType.MICROSOFT_AUTHORIZATION_ROLE_DEFINITIONS,
+                roleDefinition.getType());
             assertTrue(roleDefinition.getAssignableScopes().contains(KeyVaultRoleScope.GLOBAL));
             assertEquals(KeyVaultRoleType.CUSTOM_ROLE, roleDefinition.getRoleType());
             assertEquals(roleDefinitionName, roleDefinition.getRoleName());
@@ -103,14 +104,14 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
 
         try {
             // Create a role definition to retrieve.
-            KeyVaultRoleDefinition createdRoleDefinition
-                = client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            KeyVaultRoleDefinition createdRoleDefinition =
+                client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
             assertNotNull(createdRoleDefinition);
 
             // Get the role assignment.
-            KeyVaultRoleDefinition retrievedRoleDefinition
-                = client.getRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            KeyVaultRoleDefinition retrievedRoleDefinition =
+                client.getRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
             assertNotNull(retrievedRoleDefinition);
             assertRoleDefinitionEquals(createdRoleDefinition, retrievedRoleDefinition);
@@ -131,14 +132,14 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
         String roleDefinitionName = testResourceNamer.randomUuid();
 
         // Create a role definition to delete.
-        KeyVaultRoleDefinition createdRoleDefinition
-            = client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+        KeyVaultRoleDefinition createdRoleDefinition =
+            client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
         assertNotNull(createdRoleDefinition);
 
         // Delete the role definition.
-        Response<Void> deleteResponse
-            = client.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL, roleDefinitionName, Context.NONE);
+        Response<Void> deleteResponse =
+            client.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL, roleDefinitionName, Context.NONE);
 
         assertNotNull(deleteResponse);
         assertEquals(200, deleteResponse.getStatusCode());
@@ -154,8 +155,8 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
         getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
         // Try to delete a non-existent role definition.
-        Response<Void> deleteResponse
-            = client.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL, roleDefinitionName, Context.NONE);
+        Response<Void> deleteResponse =
+            client.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL, roleDefinitionName, Context.NONE);
 
         assertNotNull(deleteResponse);
         assertEquals(404, deleteResponse.getStatusCode());
@@ -197,8 +198,8 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
         String roleAssignmentName = testResourceNamer.randomUuid();
 
         try {
-            KeyVaultRoleDefinition createdRoleDefinition
-                = client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            KeyVaultRoleDefinition createdRoleDefinition =
+                client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
             assertNotNull(createdRoleDefinition);
 
@@ -237,8 +238,8 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
         String roleAssignmentName = testResourceNamer.randomUuid();
 
         try {
-            KeyVaultRoleDefinition createdRoleDefinition
-                = client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            KeyVaultRoleDefinition createdRoleDefinition =
+                client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
             assertNotNull(createdRoleDefinition);
 
@@ -269,8 +270,8 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
         String roleAssignmentName = testResourceNamer.randomUuid();
 
         try {
-            KeyVaultRoleDefinition createdRoleDefinition
-                = client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            KeyVaultRoleDefinition createdRoleDefinition =
+                client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
             assertNotNull(createdRoleDefinition);
 
@@ -281,8 +282,8 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
             assertNotNull(createdRoleAssignment);
 
             // Get the role assignment.
-            KeyVaultRoleAssignment retrievedRoleAssignment
-                = client.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
+            KeyVaultRoleAssignment retrievedRoleAssignment =
+                client.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
 
             assertNotNull(retrievedRoleAssignment);
             assertRoleAssignmentEquals(createdRoleAssignment, retrievedRoleAssignment);
@@ -305,8 +306,8 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
         String roleAssignmentName = testResourceNamer.randomUuid();
 
         try {
-            KeyVaultRoleDefinition createdRoleDefinition
-                = client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            KeyVaultRoleDefinition createdRoleDefinition =
+                client.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
 
             assertNotNull(createdRoleDefinition);
 
@@ -317,8 +318,8 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
             assertNotNull(createdRoleAssignment);
 
             // Delete the role assignment.
-            Response<Void> deleteResponse
-                = client.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignmentName, Context.NONE);
+            Response<Void> deleteResponse =
+                client.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignmentName, Context.NONE);
 
             assertNotNull(deleteResponse);
             assertEquals(200, deleteResponse.getStatusCode());
@@ -340,8 +341,8 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
         getClient(httpClient, false);
         String roleAssignmentName = testResourceNamer.randomUuid();
         // Try to delete a non-existent role assignment.
-        Response<Void> deleteResponse
-            = client.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignmentName, Context.NONE);
+        Response<Void> deleteResponse =
+            client.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignmentName, Context.NONE);
 
         assertNotNull(deleteResponse);
         assertEquals(404, deleteResponse.getStatusCode());
