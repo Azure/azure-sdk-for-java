@@ -5,33 +5,34 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The harm category supported in Text content analysis.
+ * Text analyze category.
  */
 public final class TextCategory extends ExpandableStringEnum<TextCategory> {
 
     /**
-     * The harm category for Text - Hate.
+     * Static value Hate for TextCategory.
      */
     @Generated
     public static final TextCategory HATE = fromString("Hate");
 
     /**
-     * The harm category for Text - SelfHarm.
+     * Static value SelfHarm for TextCategory.
      */
     @Generated
     public static final TextCategory SELF_HARM = fromString("SelfHarm");
 
     /**
-     * The harm category for Text - Sexual.
+     * Static value Sexual for TextCategory.
      */
     @Generated
     public static final TextCategory SEXUAL = fromString("Sexual");
 
     /**
-     * The harm category for Text - Violence.
+     * Static value Violence for TextCategory.
      */
     @Generated
     public static final TextCategory VIOLENCE = fromString("Violence");
@@ -53,6 +54,7 @@ public final class TextCategory extends ExpandableStringEnum<TextCategory> {
      * @return the corresponding TextCategory.
      */
     @Generated
+    @JsonCreator
     public static TextCategory fromString(String name) {
         return fromString(name, TextCategory.class);
     }
