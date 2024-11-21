@@ -12,8 +12,7 @@ import com.azure.ai.textanalytics.util.ExtractiveSummaryResultCollection;
 public final class ExtractiveSummaryActionResultPropertiesHelper {
     private static ExtractiveSummaryActionResultAccessor accessor;
 
-    private ExtractiveSummaryActionResultPropertiesHelper() {
-    }
+    private ExtractiveSummaryActionResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ExtractiveSummaryActionResult}
@@ -21,7 +20,7 @@ public final class ExtractiveSummaryActionResultPropertiesHelper {
      */
     public interface ExtractiveSummaryActionResultAccessor {
         void setDocumentsResults(ExtractiveSummaryActionResult actionResult,
-            ExtractiveSummaryResultCollection documentsResults);
+                                 ExtractiveSummaryResultCollection documentsResults);
     }
 
     /**
@@ -34,7 +33,7 @@ public final class ExtractiveSummaryActionResultPropertiesHelper {
     }
 
     public static void setDocumentsResults(ExtractiveSummaryActionResult actionResult,
-        ExtractiveSummaryResultCollection documentsResults) {
+                                           ExtractiveSummaryResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

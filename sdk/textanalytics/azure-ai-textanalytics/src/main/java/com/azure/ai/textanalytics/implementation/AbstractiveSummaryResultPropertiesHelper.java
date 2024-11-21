@@ -14,8 +14,7 @@ import com.azure.core.util.IterableStream;
 public final class AbstractiveSummaryResultPropertiesHelper {
     private static AbstractiveSummaryResultAccessor accessor;
 
-    private AbstractiveSummaryResultPropertiesHelper() {
-    }
+    private AbstractiveSummaryResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AbstractiveSummaryResult}
@@ -23,7 +22,6 @@ public final class AbstractiveSummaryResultPropertiesHelper {
      */
     public interface AbstractiveSummaryResultAccessor {
         void setWarnings(AbstractiveSummaryResult documentResult, IterableStream<TextAnalyticsWarning> warnings);
-
         void setSummaries(AbstractiveSummaryResult documentResult, IterableStream<AbstractiveSummary> summaries);
     }
 
@@ -37,12 +35,12 @@ public final class AbstractiveSummaryResultPropertiesHelper {
     }
 
     public static void setWarnings(AbstractiveSummaryResult documentResult,
-        IterableStream<TextAnalyticsWarning> warnings) {
+                                   IterableStream<TextAnalyticsWarning> warnings) {
         accessor.setWarnings(documentResult, warnings);
     }
 
     public static void setSummaries(AbstractiveSummaryResult documentResult,
-        IterableStream<AbstractiveSummary> summaries) {
+                                    IterableStream<AbstractiveSummary> summaries) {
         accessor.setSummaries(documentResult, summaries);
     }
 }

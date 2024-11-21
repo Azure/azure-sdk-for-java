@@ -117,8 +117,13 @@ public final class TextAnalyticsClientImpl {
      *     https://westus.api.cognitive.microsoft.com).
      */
     TextAnalyticsClientImpl(String apiVersion, String endpoint) {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), apiVersion, endpoint);
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                apiVersion,
+                endpoint);
     }
 
     /**
@@ -142,14 +147,14 @@ public final class TextAnalyticsClientImpl {
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      */
-    TextAnalyticsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion,
-        String endpoint) {
+    TextAnalyticsClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.apiVersion = apiVersion;
         this.endpoint = endpoint;
-        this.service
-            = RestProxy.create(TextAnalyticsClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service =
+                RestProxy.create(TextAnalyticsClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -160,203 +165,291 @@ public final class TextAnalyticsClientImpl {
     @ServiceInterface(name = "TextAnalyticsClient")
     public interface TextAnalyticsClientService {
         @Post("/analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<AnalyzeHeaders, Void>> analyze(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/json") AnalyzeBatchInput body,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<ResponseBase<AnalyzeHeaders, Void>> analyze(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @BodyParam("application/json") AnalyzeBatchInput body,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        ResponseBase<AnalyzeHeaders, Void> analyzeSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/json") AnalyzeBatchInput body,
-            @HeaderParam("Accept") String accept, Context context);
+        ResponseBase<AnalyzeHeaders, Void> analyzeSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @BodyParam("application/json") AnalyzeBatchInput body,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/analyze/jobs/{jobId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<AnalyzeJobState>> analyzeStatus(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @PathParam("jobId") String jobId,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<AnalyzeJobState>> analyzeStatus(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("jobId") String jobId,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("$top") Integer top,
+                @QueryParam("$skip") Integer skip,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/analyze/jobs/{jobId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<AnalyzeJobState> analyzeStatusSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @PathParam("jobId") String jobId,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip, @HeaderParam("Accept") String accept, Context context);
+        Response<AnalyzeJobState> analyzeStatusSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @PathParam("jobId") String jobId,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/entities/health/jobs/{jobId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<HealthcareJobState>> healthStatus(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @PathParam("jobId") UUID jobId, @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip, @QueryParam("showStats") Boolean showStats,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<HealthcareJobState>> healthStatus(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("jobId") UUID jobId,
+                @QueryParam("$top") Integer top,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("showStats") Boolean showStats,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/entities/health/jobs/{jobId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<HealthcareJobState> healthStatusSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @PathParam("jobId") UUID jobId, @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip, @QueryParam("showStats") Boolean showStats,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<HealthcareJobState> healthStatusSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @PathParam("jobId") UUID jobId,
+            @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("showStats") Boolean showStats,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Delete("/entities/health/jobs/{jobId}")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<CancelHealthJobHeaders, Void>> cancelHealthJob(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @PathParam("jobId") UUID jobId,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<ResponseBase<CancelHealthJobHeaders, Void>> cancelHealthJob(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("jobId") UUID jobId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/entities/health/jobs/{jobId}")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        ResponseBase<CancelHealthJobHeaders, Void> cancelHealthJobSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @PathParam("jobId") UUID jobId,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Post("/entities/health/jobs")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<HealthHeaders, Void>> health(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
+        ResponseBase<CancelHealthJobHeaders, Void> cancelHealthJobSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @PathParam("jobId") UUID jobId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Post("/entities/health/jobs")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        ResponseBase<HealthHeaders, Void> healthSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
+        Mono<ResponseBase<HealthHeaders, Void>> health(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("loggingOptOut") Boolean loggingOptOut,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/entities/health/jobs")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        ResponseBase<HealthHeaders, Void> healthSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
             @QueryParam("stringIndexType") StringIndexType stringIndexType,
             @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Post("/entities/recognition/general")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<EntitiesResult>> entitiesRecognitionGeneral(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EntitiesResult>> entitiesRecognitionGeneral(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("loggingOptOut") Boolean loggingOptOut,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/entities/recognition/general")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<EntitiesResult> entitiesRecognitionGeneralSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
+        Response<EntitiesResult> entitiesRecognitionGeneralSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
             @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Post("/entities/recognition/pii")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PiiResult>> entitiesRecognitionPii(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @QueryParam("domain") String domain, @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("piiCategories") String piiCategories,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PiiResult>> entitiesRecognitionPii(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("loggingOptOut") Boolean loggingOptOut,
+                @QueryParam("domain") String domain,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("piiCategories") String piiCategories,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/entities/recognition/pii")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<PiiResult> entitiesRecognitionPiiSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @QueryParam("domain") String domain, @QueryParam("stringIndexType") StringIndexType stringIndexType,
+        Response<PiiResult> entitiesRecognitionPiiSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @QueryParam("domain") String domain,
+            @QueryParam("stringIndexType") StringIndexType stringIndexType,
             @QueryParam("piiCategories") String piiCategories,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Post("/entities/linking")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<EntityLinkingResult>> entitiesLinking(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EntityLinkingResult>> entitiesLinking(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("loggingOptOut") Boolean loggingOptOut,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/entities/linking")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<EntityLinkingResult> entitiesLinkingSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
+        Response<EntityLinkingResult> entitiesLinkingSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
             @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Post("/keyPhrases")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<KeyPhraseResult>> keyPhrases(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<KeyPhraseResult>> keyPhrases(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("loggingOptOut") Boolean loggingOptOut,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/keyPhrases")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<KeyPhraseResult> keyPhrasesSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
+        Response<KeyPhraseResult> keyPhrasesSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Post("/languages")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<LanguageResult>> languages(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @BodyParam("application/json") LanguageBatchInput input, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LanguageResult>> languages(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("loggingOptOut") Boolean loggingOptOut,
+                @BodyParam("application/json") LanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/languages")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<LanguageResult> languagesSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @BodyParam("application/json") LanguageBatchInput input, @HeaderParam("Accept") String accept,
+        Response<LanguageResult> languagesSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
+            @BodyParam("application/json") LanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Post("/sentiment")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SentimentResponse>> sentiment(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
-            @QueryParam("opinionMining") Boolean opinionMining,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SentimentResponse>> sentiment(
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("loggingOptOut") Boolean loggingOptOut,
+                @QueryParam("opinionMining") Boolean opinionMining,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/sentiment")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<SentimentResponse> sentimentSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @QueryParam("model-version") String modelVersion,
-            @QueryParam("showStats") Boolean showStats, @QueryParam("loggingOptOut") Boolean loggingOptOut,
+        Response<SentimentResponse> sentimentSync(
+            @HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion,
+            @QueryParam("model-version") String modelVersion,
+            @QueryParam("showStats") Boolean showStats,
+            @QueryParam("loggingOptOut") Boolean loggingOptOut,
             @QueryParam("opinionMining") Boolean opinionMining,
             @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @BodyParam("application/json") MultiLanguageBatchInput input, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MultiLanguageBatchInput input,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -409,11 +502,11 @@ public final class TextAnalyticsClientImpl {
      * @return the status of an analysis job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeJobState>> analyzeStatusWithResponseAsync(String jobId, Boolean showStats, Integer top,
-        Integer skip, Context context) {
+    public Mono<Response<AnalyzeJobState>> analyzeStatusWithResponseAsync(
+            String jobId, Boolean showStats, Integer top, Integer skip, Context context) {
         final String accept = "application/json, text/json";
-        return service.analyzeStatus(this.getEndpoint(), this.getApiVersion(), jobId, showStats, top, skip, accept,
-            context);
+        return service.analyzeStatus(
+                this.getEndpoint(), this.getApiVersion(), jobId, showStats, top, skip, accept, context);
     }
 
     /**
@@ -433,11 +526,11 @@ public final class TextAnalyticsClientImpl {
      * @return the status of an analysis job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeJobState> analyzeStatusWithResponseSync(String jobId, Boolean showStats, Integer top,
-        Integer skip, Context context) {
+    public Response<AnalyzeJobState> analyzeStatusWithResponseSync(
+        String jobId, Boolean showStats, Integer top, Integer skip, Context context) {
         final String accept = "application/json, text/json";
-        return service.analyzeStatusSync(this.getEndpoint(), this.getApiVersion(), jobId, showStats, top, skip, accept,
-            context);
+        return service.analyzeStatusSync(
+            this.getEndpoint(), this.getApiVersion(), jobId, showStats, top, skip, accept, context);
     }
 
     /**
@@ -456,11 +549,11 @@ public final class TextAnalyticsClientImpl {
      * @return details of the healthcare prediction job specified by the jobId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<HealthcareJobState>> healthStatusWithResponseAsync(UUID jobId, Integer top, Integer skip,
-        Boolean showStats, Context context) {
+    public Mono<Response<HealthcareJobState>> healthStatusWithResponseAsync(
+            UUID jobId, Integer top, Integer skip, Boolean showStats, Context context) {
         final String accept = "application/json, text/json";
-        return service.healthStatus(this.getEndpoint(), this.getApiVersion(), jobId, top, skip, showStats, accept,
-            context);
+        return service.healthStatus(
+                this.getEndpoint(), this.getApiVersion(), jobId, top, skip, showStats, accept, context);
     }
 
     /**
@@ -479,11 +572,11 @@ public final class TextAnalyticsClientImpl {
      * @return details of the healthcare prediction job specified by the jobId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HealthcareJobState> healthStatusWithResponseSync(UUID jobId, Integer top, Integer skip,
-        Boolean showStats, Context context) {
+    public Response<HealthcareJobState> healthStatusWithResponseSync(
+        UUID jobId, Integer top, Integer skip, Boolean showStats, Context context) {
         final String accept = "application/json, text/json";
-        return service.healthStatusSync(this.getEndpoint(), this.getApiVersion(), jobId, top, skip, showStats, accept,
-            context);
+        return service.healthStatusSync(
+            this.getEndpoint(), this.getApiVersion(), jobId, top, skip, showStats, accept, context);
     }
 
     /**
@@ -497,8 +590,9 @@ public final class TextAnalyticsClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CancelHealthJobHeaders, Void>> cancelHealthJobWithResponseAsync(UUID jobId,
-        Context context) {
+    public Mono<ResponseBase<CancelHealthJobHeaders, Void>> cancelHealthJobWithResponseAsync(
+            UUID jobId,
+            Context context) {
         final String accept = "application/json, text/json";
         return service.cancelHealthJob(this.getEndpoint(), this.getApiVersion(), jobId, accept, context);
     }
@@ -542,11 +636,22 @@ public final class TextAnalyticsClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<HealthHeaders, Void>> healthWithResponseAsync(MultiLanguageBatchInput input,
-        String modelVersion, StringIndexType stringIndexType, Boolean loggingOptOut, Context context) {
+    public Mono<ResponseBase<HealthHeaders, Void>> healthWithResponseAsync(
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            StringIndexType stringIndexType,
+            Boolean loggingOptOut,
+            Context context) {
         final String accept = "application/json, text/json";
-        return service.health(this.getEndpoint(), this.getApiVersion(), modelVersion, stringIndexType, loggingOptOut,
-            input, accept, context);
+        return service.health(
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                stringIndexType,
+                loggingOptOut,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -572,11 +677,22 @@ public final class TextAnalyticsClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<HealthHeaders, Void> healthWithResponseSync(MultiLanguageBatchInput input, String modelVersion,
-        StringIndexType stringIndexType, Boolean loggingOptOut, Context context) {
+    public ResponseBase<HealthHeaders, Void> healthWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        StringIndexType stringIndexType,
+        Boolean loggingOptOut,
+        Context context) {
         final String accept = "application/json, text/json";
-        return service.healthSync(this.getEndpoint(), this.getApiVersion(), modelVersion, stringIndexType,
-            loggingOptOut, input, accept, context);
+        return service.healthSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            stringIndexType,
+            loggingOptOut,
+            input,
+            accept,
+            context);
     }
 
     /**
@@ -605,12 +721,24 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntitiesResult>> entitiesRecognitionGeneralWithResponseAsync(MultiLanguageBatchInput input,
-        String modelVersion, Boolean showStats, Boolean loggingOptOut, StringIndexType stringIndexType,
-        Context context) {
+    public Mono<Response<EntitiesResult>> entitiesRecognitionGeneralWithResponseAsync(
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            Boolean loggingOptOut,
+            StringIndexType stringIndexType,
+            Context context) {
         final String accept = "application/json, text/json";
-        return service.entitiesRecognitionGeneral(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats,
-            loggingOptOut, stringIndexType, input, accept, context);
+        return service.entitiesRecognitionGeneral(
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                loggingOptOut,
+                stringIndexType,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -639,12 +767,24 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntitiesResult> entitiesRecognitionGeneralWithResponseSync(MultiLanguageBatchInput input,
-        String modelVersion, Boolean showStats, Boolean loggingOptOut, StringIndexType stringIndexType,
+    public Response<EntitiesResult> entitiesRecognitionGeneralWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        StringIndexType stringIndexType,
         Context context) {
         final String accept = "application/json, text/json";
-        return service.entitiesRecognitionGeneralSync(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats,
-            loggingOptOut, stringIndexType, input, accept, context);
+        return service.entitiesRecognitionGeneralSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            stringIndexType,
+            input,
+            accept,
+            context);
     }
 
     /**
@@ -676,14 +816,30 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PiiResult>> entitiesRecognitionPiiWithResponseAsync(MultiLanguageBatchInput input,
-        String modelVersion, Boolean showStats, Boolean loggingOptOut, String domain, StringIndexType stringIndexType,
-        List<PiiCategory> piiCategories, Context context) {
+    public Mono<Response<PiiResult>> entitiesRecognitionPiiWithResponseAsync(
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            Boolean loggingOptOut,
+            String domain,
+            StringIndexType stringIndexType,
+            List<PiiCategory> piiCategories,
+            Context context) {
         final String accept = "application/json, text/json";
-        String piiCategoriesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeList(piiCategories, CollectionFormat.CSV);
-        return service.entitiesRecognitionPii(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats,
-            loggingOptOut, domain, stringIndexType, piiCategoriesConverted, input, accept, context);
+        String piiCategoriesConverted =
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(piiCategories, CollectionFormat.CSV);
+        return service.entitiesRecognitionPii(
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                loggingOptOut,
+                domain,
+                stringIndexType,
+                piiCategoriesConverted,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -715,14 +871,30 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PiiResult> entitiesRecognitionPiiWithResponseSync(MultiLanguageBatchInput input,
-        String modelVersion, Boolean showStats, Boolean loggingOptOut, String domain, StringIndexType stringIndexType,
-        List<PiiCategory> piiCategories, Context context) {
+    public Response<PiiResult> entitiesRecognitionPiiWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        String domain,
+        StringIndexType stringIndexType,
+        List<PiiCategory> piiCategories,
+        Context context) {
         final String accept = "application/json, text/json";
-        String piiCategoriesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeList(piiCategories, CollectionFormat.CSV);
-        return service.entitiesRecognitionPiiSync(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats,
-            loggingOptOut, domain, stringIndexType, piiCategoriesConverted, input, accept, context);
+        String piiCategoriesConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(piiCategories, CollectionFormat.CSV);
+        return service.entitiesRecognitionPiiSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            domain,
+            stringIndexType,
+            piiCategoriesConverted,
+            input,
+            accept,
+            context);
     }
 
     /**
@@ -750,12 +922,24 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EntityLinkingResult>> entitiesLinkingWithResponseAsync(MultiLanguageBatchInput input,
-        String modelVersion, Boolean showStats, Boolean loggingOptOut, StringIndexType stringIndexType,
-        Context context) {
+    public Mono<Response<EntityLinkingResult>> entitiesLinkingWithResponseAsync(
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            Boolean loggingOptOut,
+            StringIndexType stringIndexType,
+            Context context) {
         final String accept = "application/json, text/json";
-        return service.entitiesLinking(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, loggingOptOut,
-            stringIndexType, input, accept, context);
+        return service.entitiesLinking(
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                loggingOptOut,
+                stringIndexType,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -783,12 +967,24 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntityLinkingResult> entitiesLinkingWithResponseSync(MultiLanguageBatchInput input,
-        String modelVersion, Boolean showStats, Boolean loggingOptOut, StringIndexType stringIndexType,
+    public Response<EntityLinkingResult> entitiesLinkingWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        StringIndexType stringIndexType,
         Context context) {
         final String accept = "application/json, text/json";
-        return service.entitiesLinkingSync(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats,
-            loggingOptOut, stringIndexType, input, accept, context);
+        return service.entitiesLinkingSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            stringIndexType,
+            input,
+            accept,
+            context);
     }
 
     /**
@@ -813,11 +1009,22 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyPhraseResult>> keyPhrasesWithResponseAsync(MultiLanguageBatchInput input,
-        String modelVersion, Boolean showStats, Boolean loggingOptOut, Context context) {
+    public Mono<Response<KeyPhraseResult>> keyPhrasesWithResponseAsync(
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            Boolean loggingOptOut,
+            Context context) {
         final String accept = "application/json, text/json";
-        return service.keyPhrases(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, loggingOptOut,
-            input, accept, context);
+        return service.keyPhrases(
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                loggingOptOut,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -842,11 +1049,22 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyPhraseResult> keyPhrasesWithResponseSync(MultiLanguageBatchInput input, String modelVersion,
-        Boolean showStats, Boolean loggingOptOut, Context context) {
+    public Response<KeyPhraseResult> keyPhrasesWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        Context context) {
         final String accept = "application/json, text/json";
-        return service.keyPhrasesSync(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, loggingOptOut,
-            input, accept, context);
+        return service.keyPhrasesSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            input,
+            accept,
+            context);
     }
 
     /**
@@ -871,11 +1089,18 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LanguageResult>> languagesWithResponseAsync(LanguageBatchInput input, String modelVersion,
-        Boolean showStats, Boolean loggingOptOut, Context context) {
+    public Mono<Response<LanguageResult>> languagesWithResponseAsync(
+            LanguageBatchInput input, String modelVersion, Boolean showStats, Boolean loggingOptOut, Context context) {
         final String accept = "application/json, text/json";
-        return service.languages(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, loggingOptOut,
-            input, accept, context);
+        return service.languages(
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                loggingOptOut,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -900,11 +1125,18 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LanguageResult> languagesWithResponseSync(LanguageBatchInput input, String modelVersion,
-        Boolean showStats, Boolean loggingOptOut, Context context) {
+    public Response<LanguageResult> languagesWithResponseSync(
+        LanguageBatchInput input, String modelVersion, Boolean showStats, Boolean loggingOptOut, Context context) {
         final String accept = "application/json, text/json";
-        return service.languagesSync(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, loggingOptOut,
-            input, accept, context);
+        return service.languagesSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            input,
+            accept,
+            context);
     }
 
     /**
@@ -933,12 +1165,26 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SentimentResponse>> sentimentWithResponseAsync(MultiLanguageBatchInput input,
-        String modelVersion, Boolean showStats, Boolean loggingOptOut, Boolean opinionMining,
-        StringIndexType stringIndexType, Context context) {
+    public Mono<Response<SentimentResponse>> sentimentWithResponseAsync(
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            Boolean loggingOptOut,
+            Boolean opinionMining,
+            StringIndexType stringIndexType,
+            Context context) {
         final String accept = "application/json, text/json";
-        return service.sentiment(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, loggingOptOut,
-            opinionMining, stringIndexType, input, accept, context);
+        return service.sentiment(
+                this.getEndpoint(),
+                this.getApiVersion(),
+                modelVersion,
+                showStats,
+                loggingOptOut,
+                opinionMining,
+                stringIndexType,
+                input,
+                accept,
+                context);
     }
 
     /**
@@ -967,11 +1213,25 @@ public final class TextAnalyticsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SentimentResponse> sentimentWithResponseSync(MultiLanguageBatchInput input, String modelVersion,
-        Boolean showStats, Boolean loggingOptOut, Boolean opinionMining, StringIndexType stringIndexType,
+    public Response<SentimentResponse> sentimentWithResponseSync(
+        MultiLanguageBatchInput input,
+        String modelVersion,
+        Boolean showStats,
+        Boolean loggingOptOut,
+        Boolean opinionMining,
+        StringIndexType stringIndexType,
         Context context) {
         final String accept = "application/json, text/json";
-        return service.sentimentSync(this.getEndpoint(), this.getApiVersion(), modelVersion, showStats, loggingOptOut,
-            opinionMining, stringIndexType, input, accept, context);
+        return service.sentimentSync(
+            this.getEndpoint(),
+            this.getApiVersion(),
+            modelVersion,
+            showStats,
+            loggingOptOut,
+            opinionMining,
+            stringIndexType,
+            input,
+            accept,
+            context);
     }
 }

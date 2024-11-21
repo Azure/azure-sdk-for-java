@@ -14,7 +14,6 @@ import com.azure.core.util.IterableStream;
 public class AnalyzeSentimentResultCollection extends IterableStream<AnalyzeSentimentResult> {
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
-
     /**
      * Creates a {@code AnalyzeSentimentResultCollection} model that maintains a list of {@link AnalyzeSentimentResult}
      * along with model version and batch's statistics.
