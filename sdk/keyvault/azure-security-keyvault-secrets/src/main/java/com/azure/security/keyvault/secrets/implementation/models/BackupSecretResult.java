@@ -12,9 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The backup secret result, containing the backup blob.
- */
+/** The backup secret result, containing the backup blob. */
 @Immutable
 public final class BackupSecretResult implements JsonSerializable<BackupSecretResult> {
     /*
@@ -22,15 +20,12 @@ public final class BackupSecretResult implements JsonSerializable<BackupSecretRe
      */
     private Base64Url value;
 
-    /**
-     * Creates an instance of BackupSecretResult class.
-     */
-    public BackupSecretResult() {
-    }
+    /** Creates an instance of BackupSecretResult class. */
+    public BackupSecretResult() {}
 
     /**
      * Get the value property: The backup blob containing the backed up secret.
-     * 
+     *
      * @return the value value.
      */
     public byte[] getValue() {
@@ -40,9 +35,6 @@ public final class BackupSecretResult implements JsonSerializable<BackupSecretRe
         return this.value.decodedBytes();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -51,28 +43,29 @@ public final class BackupSecretResult implements JsonSerializable<BackupSecretRe
 
     /**
      * Reads an instance of BackupSecretResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of BackupSecretResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the BackupSecretResult.
      */
     public static BackupSecretResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            BackupSecretResult deserializedBackupSecretResult = new BackupSecretResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    BackupSecretResult deserializedBackupSecretResult = new BackupSecretResult();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("value".equals(fieldName)) {
-                    deserializedBackupSecretResult.value
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("value".equals(fieldName)) {
+                            deserializedBackupSecretResult.value =
+                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedBackupSecretResult;
-        });
+                    return deserializedBackupSecretResult;
+                });
     }
 }
