@@ -19,16 +19,13 @@ public final class InstrumentedCheckpointStore implements CheckpointStore {
     private final CheckpointStore checkpointStore;
     private final EventHubsConsumerInstrumentation instrumentation;
     private final EventHubsTracer tracer;
-
-    private InstrumentedCheckpointStore(CheckpointStore checkpointStore,
-        EventHubsConsumerInstrumentation instrumentation) {
+    private InstrumentedCheckpointStore(CheckpointStore checkpointStore, EventHubsConsumerInstrumentation instrumentation) {
         this.checkpointStore = checkpointStore;
         this.instrumentation = instrumentation;
         this.tracer = instrumentation.getTracer();
     }
 
-    public static CheckpointStore create(CheckpointStore checkpointStore,
-        EventHubsConsumerInstrumentation instrumentation) {
+    public static CheckpointStore create(CheckpointStore checkpointStore, EventHubsConsumerInstrumentation instrumentation) {
         if (!instrumentation.isEnabled()) {
             return checkpointStore;
         }
@@ -37,8 +34,7 @@ public final class InstrumentedCheckpointStore implements CheckpointStore {
     }
 
     @Override
-    public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
-        String consumerGroup) {
+    public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         return checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup);
     }
 
@@ -55,18 +51,18 @@ public final class InstrumentedCheckpointStore implements CheckpointStore {
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         return Mono.using(
-            () -> instrumentation.createScope((m, s) -> m.reportCheckpoint(checkpoint, s))
-                .setSpan(startSpan(checkpoint.getPartitionId())),
-            scope -> checkpointStore.updateCheckpoint(checkpoint)
-                .doOnError(scope::setError)
-                .doOnCancel(scope::setCancelled)
-                .contextWrite(ctx -> ctx.putAllMap(scope.getSpan().getValues())),
-            InstrumentationScope::close);
+                () -> instrumentation.createScope((m, s) -> m.reportCheckpoint(checkpoint, s))
+                        .setSpan(startSpan(checkpoint.getPartitionId())),
+                scope -> checkpointStore.updateCheckpoint(checkpoint)
+                        .doOnError(scope::setError)
+                        .doOnCancel(scope::setCancelled)
+                        .contextWrite(ctx -> ctx.putAllMap(scope.getSpan().getValues())),
+                InstrumentationScope::close);
     }
 
     private Context startSpan(String partitionId) {
         return tracer.isEnabled()
-            ? tracer.startSpan(CHECKPOINT, tracer.createStartOptions(INTERNAL, CHECKPOINT, partitionId), Context.NONE)
-            : Context.NONE;
+                ? tracer.startSpan(CHECKPOINT, tracer.createStartOptions(INTERNAL, CHECKPOINT, partitionId), Context.NONE)
+                : Context.NONE;
     }
 }
