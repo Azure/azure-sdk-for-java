@@ -14,9 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * The key operations parameters.
- */
+/** The key operations parameters. */
 @Fluent
 public final class KeyOperationsParameters implements JsonSerializable<KeyOperationsParameters> {
     /*
@@ -44,15 +42,12 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
      */
     private Base64Url tag;
 
-    /**
-     * Creates an instance of KeyOperationsParameters class.
-     */
-    public KeyOperationsParameters() {
-    }
+    /** Creates an instance of KeyOperationsParameters class. */
+    public KeyOperationsParameters() {}
 
     /**
      * Get the algorithm property: algorithm identifier.
-     * 
+     *
      * @return the algorithm value.
      */
     public JsonWebKeyEncryptionAlgorithm getAlgorithm() {
@@ -61,7 +56,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Set the algorithm property: algorithm identifier.
-     * 
+     *
      * @param algorithm the algorithm value to set.
      * @return the KeyOperationsParameters object itself.
      */
@@ -72,7 +67,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public byte[] getValue() {
@@ -84,7 +79,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Set the value property: The value property.
-     * 
+     *
      * @param value the value value to set.
      * @return the KeyOperationsParameters object itself.
      */
@@ -99,7 +94,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Get the iv property: Cryptographically random, non-repeating initialization vector for symmetric algorithms.
-     * 
+     *
      * @return the iv value.
      */
     public byte[] getIv() {
@@ -111,7 +106,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Set the iv property: Cryptographically random, non-repeating initialization vector for symmetric algorithms.
-     * 
+     *
      * @param iv the iv value to set.
      * @return the KeyOperationsParameters object itself.
      */
@@ -127,7 +122,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
     /**
      * Get the aad property: Additional data to authenticate but not encrypt/decrypt when using authenticated crypto
      * algorithms.
-     * 
+     *
      * @return the aad value.
      */
     public byte[] getAad() {
@@ -140,7 +135,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
     /**
      * Set the aad property: Additional data to authenticate but not encrypt/decrypt when using authenticated crypto
      * algorithms.
-     * 
+     *
      * @param aad the aad value to set.
      * @return the KeyOperationsParameters object itself.
      */
@@ -155,7 +150,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Get the tag property: The tag to authenticate when performing decryption with an authenticated algorithm.
-     * 
+     *
      * @return the tag value.
      */
     public byte[] getTag() {
@@ -167,7 +162,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Set the tag property: The tag to authenticate when performing decryption with an authenticated algorithm.
-     * 
+     *
      * @param tag the tag value to set.
      * @return the KeyOperationsParameters object itself.
      */
@@ -180,13 +175,10 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("alg", this.algorithm == null ? null : this.algorithm.toString());
+        jsonWriter.writeStringField("alg", Objects.toString(this.algorithm, null));
         jsonWriter.writeStringField("value", Objects.toString(this.value, null));
         jsonWriter.writeStringField("iv", Objects.toString(this.iv, null));
         jsonWriter.writeStringField("aad", Objects.toString(this.aad, null));
@@ -196,41 +188,42 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
 
     /**
      * Reads an instance of KeyOperationsParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyOperationsParameters if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyOperationsParameters.
      */
     public static KeyOperationsParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            KeyOperationsParameters deserializedKeyOperationsParameters = new KeyOperationsParameters();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    KeyOperationsParameters deserializedKeyOperationsParameters = new KeyOperationsParameters();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("alg".equals(fieldName)) {
-                    deserializedKeyOperationsParameters.algorithm
-                        = JsonWebKeyEncryptionAlgorithm.fromString(reader.getString());
-                } else if ("value".equals(fieldName)) {
-                    deserializedKeyOperationsParameters.value
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else if ("iv".equals(fieldName)) {
-                    deserializedKeyOperationsParameters.iv
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else if ("aad".equals(fieldName)) {
-                    deserializedKeyOperationsParameters.aad
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else if ("tag".equals(fieldName)) {
-                    deserializedKeyOperationsParameters.tag
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("alg".equals(fieldName)) {
+                            deserializedKeyOperationsParameters.algorithm =
+                                    JsonWebKeyEncryptionAlgorithm.fromString(reader.getString());
+                        } else if ("value".equals(fieldName)) {
+                            deserializedKeyOperationsParameters.value =
+                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        } else if ("iv".equals(fieldName)) {
+                            deserializedKeyOperationsParameters.iv =
+                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        } else if ("aad".equals(fieldName)) {
+                            deserializedKeyOperationsParameters.aad =
+                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        } else if ("tag".equals(fieldName)) {
+                            deserializedKeyOperationsParameters.tag =
+                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedKeyOperationsParameters;
-        });
+                    return deserializedKeyOperationsParameters;
+                });
     }
 }
