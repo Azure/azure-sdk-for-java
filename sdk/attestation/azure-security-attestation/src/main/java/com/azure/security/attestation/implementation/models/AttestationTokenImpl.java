@@ -62,8 +62,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @Fluent
 @Immutable
 public class AttestationTokenImpl implements AttestationToken {
-    private static final ClientLogger LOGGER = new ClientLogger(AttestationTokenImpl.class);
-
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
@@ -71,12 +69,14 @@ public class AttestationTokenImpl implements AttestationToken {
      * @param serializedToken - Serialized JSON Web Token/JSON Web Signature object.
      */
     public AttestationTokenImpl(String serializedToken) {
+        logger = new ClientLogger(AttestationTokenImpl.class);
+
         this.rawToken = serializedToken;
         JOSEObject tokenAsJose;
         try {
             tokenAsJose = JOSEObject.parse(serializedToken);
         } catch (ParseException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e.toString()));
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
         }
         header = tokenAsJose.getHeader();
         // If this is not an unsecured token, grab the JWS headers.
@@ -88,6 +88,7 @@ public class AttestationTokenImpl implements AttestationToken {
         payload = tokenAsJose.getPayload();
     }
 
+    private final ClientLogger logger;
     private final String rawToken;
     private final Header header;
     private final JWSHeader jwsHeader;
@@ -99,8 +100,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * @param <T> The Type of the body of the token.
      * @return Returns the deserialized body of hte token.
      */
-    @Override
-    public <T> T getBody(Class<T> returnType) {
+    @Override public <T> T getBody(Class<T> returnType) {
         // If the payload looks to be empty, return null.
         if (payload.toString().length() == 0) {
             return null;
@@ -108,7 +108,7 @@ public class AttestationTokenImpl implements AttestationToken {
             try {
                 return SERIALIZER_ADAPTER.deserialize(payload.toString(), returnType, SerializerEncoding.JSON);
             } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
             }
         }
     }
@@ -117,8 +117,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * Serializes the attestation token as a string.
      * @return Returns the serialized attestation token.
      */
-    @Override
-    public String serialize() {
+    @Override public String serialize() {
         return rawToken;
     }
 
@@ -128,8 +127,7 @@ public class AttestationTokenImpl implements AttestationToken {
      *
      * @return The value of the "alg" header parameter.
      */
-    @Override
-    public String getAlgorithm() {
+    @Override public String getAlgorithm() {
         return header.getAlgorithm().getName();
     }
 
@@ -138,8 +136,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * See <a href='https://datatracker.ietf.org/doc/html/rfc7515#section-4.1.4'>RFC 7515 section 4.1.4</a>
      * @return The value of the "kid" header parameter.
      */
-    @Override
-    public String getKeyId() {
+    @Override public String getKeyId() {
         return jwsHeader != null ? jwsHeader.getKeyID() : null;
     }
 
@@ -147,8 +144,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * Returns the signing certificate chain as an AttestationSigner.
      * @return an AttestationSigner encapsulating the certificate chain.
      */
-    @Override
-    public AttestationSigner getCertificateChain() {
+    @Override public AttestationSigner getCertificateChain() {
         if (jwsHeader != null) {
             List<Base64> certChain = jwsHeader.getX509CertChain();
             return AttestationSignerImpl.fromCertificateChain(certChain);
@@ -161,8 +157,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * this token.
      * @return URI at which a JWK can be retrieved.
      */
-    @Override
-    public String getJsonWebKeyUrl() {
+    @Override public String getJsonWebKeyUrl() {
         return jwsHeader != null ? jwsHeader.getJWKURL().toString() : null;
     }
 
@@ -170,8 +165,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * Returns the signer for this token if the caller provided a JSON Web Key.
      * @return Attestation signer representing the signer of the token.
      */
-    @Override
-    public AttestationSigner getJsonWebKey() {
+    @Override public AttestationSigner getJsonWebKey() {
         if (jwsHeader != null) {
             JWK jwk = jwsHeader.getJWK();
             if (jwk == null) {
@@ -186,8 +180,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * Returns the SHA-256 thumbprint of the leaf certificate in the getCertificateChain.
      * @return the SHA-256 thumbprint of the leaf certificate returned by getCertificateChain.
      */
-    @Override
-    public BinaryData getSha256Thumbprint() {
+    @Override public BinaryData getSha256Thumbprint() {
         return jwsHeader != null ? BinaryData.fromBytes(jwsHeader.getX509CertSHA256Thumbprint().decode()) : null;
     }
 
@@ -195,8 +188,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * Returns the SHA-1 thumbprint of the leaf certificate in the getCertificateChain.
      * @return the SHA-1 thumbprint of the leaf certificate returned by getCertificateChain.
      */
-    @Override
-    public BinaryData getThumbprint() {
+    @Override public BinaryData getThumbprint() {
         return jwsHeader != null ? BinaryData.fromBytes(jwsHeader.getX509CertThumbprint().decode()) : null;
     }
 
@@ -205,8 +197,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * on this token.
      * @return URI at which an X.509 certificate can be retrieved.
      */
-    @Override
-    public String getX509Url() {
+    @Override public String getX509Url() {
         return jwsHeader != null ? jwsHeader.getX509CertURL().toString() : null;
     }
 
@@ -226,7 +217,6 @@ public class AttestationTokenImpl implements AttestationToken {
     }
 
     final AtomicReference<String> issuer = new AtomicReference<>();
-
     @Override
     public String getIssuer() {
         if (issuer.get() == null) {
@@ -236,7 +226,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 try {
                     claimsSet = JWTClaimsSet.parse(claimSet);
                 } catch (ParseException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+                    throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
                 }
                 issuer.set(claimsSet.getIssuer());
             }
@@ -245,7 +235,6 @@ public class AttestationTokenImpl implements AttestationToken {
     }
 
     final AtomicReference<OffsetDateTime> issuedAt = new AtomicReference<>();
-
     @Override
     public OffsetDateTime getIssuedAt() {
         if (issuedAt.get() == null) {
@@ -254,8 +243,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 Object iatObject = claimSet.get("iat");
                 if (iatObject != null) {
                     if (!(iatObject instanceof Long)) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
-                            String.format("Invalid type for IssuedAt: %s", iatObject.getClass().getName())));
+                        throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for IssuedAt: %s", iatObject.getClass().getName())));
                     }
 
                     long iat = (long) iatObject;
@@ -267,7 +255,6 @@ public class AttestationTokenImpl implements AttestationToken {
     }
 
     final AtomicReference<OffsetDateTime> expiresOn = new AtomicReference<>();
-
     @Override
     public OffsetDateTime getExpiresOn() {
         if (expiresOn.get() == null) {
@@ -276,8 +263,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 Object expObject = claimSet.get("exp");
                 if (expObject != null) {
                     if (!(expObject instanceof Long)) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
-                            String.format("Invalid type for ExpiresOn: %s", expiresOn.getClass().getName())));
+                        throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for ExpiresOn: %s", expiresOn.getClass().getName())));
                     }
 
                     long exp = (long) expObject;
@@ -289,7 +275,6 @@ public class AttestationTokenImpl implements AttestationToken {
     }
 
     final AtomicReference<OffsetDateTime> notBeforeTime = new AtomicReference<>();
-
     @Override
     public OffsetDateTime getNotBefore() {
         if (notBeforeTime.get() == null) {
@@ -298,8 +283,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 Object nbfObject = claimSet.get("nbf");
                 if (nbfObject != null) {
                     if (!(nbfObject instanceof Long)) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
-                            String.format("Invalid type for NotBefore: %s", nbfObject.getClass().getName())));
+                        throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for NotBefore: %s", nbfObject.getClass().getName())));
                     }
 
                     long nbf = (long) nbfObject;
@@ -309,6 +293,7 @@ public class AttestationTokenImpl implements AttestationToken {
         }
         return notBeforeTime.get();
     }
+
 
     /**
      * Validate the attestation token.
@@ -349,9 +334,7 @@ public class AttestationTokenImpl implements AttestationToken {
     private void validateTokenIssuer(AttestationTokenValidationOptions options) {
         if (options.getExpectedIssuer() != null && this.getIssuer() != null) {
             if (!this.getIssuer().equals(options.getExpectedIssuer())) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(
-                    String.format("Token Validation Failed due to mismatched issuer. Expected issuer %s, but found %s",
-                        options.getExpectedIssuer(), getIssuer())));
+                throw logger.logExceptionAsError(new RuntimeException(String.format("Token Validation Failed due to mismatched issuer. Expected issuer %s, but found %s", options.getExpectedIssuer(), getIssuer())));
             }
         }
     }
@@ -365,9 +348,9 @@ public class AttestationTokenImpl implements AttestationToken {
             if (timeNow.isAfter(expirationTime)) {
                 final Duration timeDelta = Duration.between(timeNow, expirationTime);
                 if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                        "Token Validation Failed due to expiration time. Current time: %tc Expiration time: %tc",
-                        timeNow, this.getExpiresOn())));
+                    throw logger.logExceptionAsError(
+                        new RuntimeException(
+                            String.format("Token Validation Failed due to expiration time. Current time: %tc Expiration time: %tc", timeNow, this.getExpiresOn())));
                 }
             }
         }
@@ -377,9 +360,7 @@ public class AttestationTokenImpl implements AttestationToken {
             if (timeNow.isBefore(notBefore)) {
                 final Duration timeDelta = Duration.between(timeNow, notBefore);
                 if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                        "Token Validation Failed due to NotBefore time. Current time: %tc Token becomes valid at: %tc",
-                        timeNow, this.getNotBefore())));
+                    throw logger.logExceptionAsError(new RuntimeException(String.format("Token Validation Failed due to NotBefore time. Current time: %tc Token becomes valid at: %tc", timeNow, this.getNotBefore())));
                 }
             }
         }
@@ -402,7 +383,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             jwt.set(JWSObject.parse(rawToken));
         } catch (ParseException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
         AtomicReference<AttestationSigner> tokenSigner = new AtomicReference<>();
         List<AttestationSigner> candidateSigners = getCandidateSigners(signers);
@@ -418,7 +399,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 try {
                     verifier = new ECDSAVerifier(publicKey);
                 } catch (JOSEException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+                    throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
                 }
             }
 
@@ -429,7 +410,7 @@ public class AttestationTokenImpl implements AttestationToken {
                     break;
                 }
             } catch (JOSEException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
             }
         }
         return tokenSigner.get();
@@ -474,6 +455,7 @@ public class AttestationTokenImpl implements AttestationToken {
         return candidates;
     }
 
+
     static final String EMPTY_TOKEN = "eyJhbGciOiJub25lIn0..";
 
     /**
@@ -486,7 +468,6 @@ public class AttestationTokenImpl implements AttestationToken {
         // See <a href='https://datatracker.ietf.org/doc/html/rfc7519#section-6.1' RFC 7519 section 6.1/>.
         return new AttestationTokenImpl(EMPTY_TOKEN);
     }
-
     /**
      * Create an unsecured attestation token from the specified string body.
      * @param stringBody Body of the attestation token.
@@ -509,10 +490,11 @@ public class AttestationTokenImpl implements AttestationToken {
      * @throws RuntimeException exception that occurs at runtime.
      */
     public static AttestationToken createSecuredToken(AttestationSigningKey signingKey) {
+        ClientLogger logger = new ClientLogger(AttestationTokenImpl.class);
         try {
             signingKey.verify();
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         // The NimbusDS Library Payload object must have a body, so we have to
@@ -521,10 +503,12 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             certs.add(Base64.encode(signingKey.getCertificate().getEncoded()));
         } catch (CertificateEncodingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
-        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).x509CertChain(certs).build();
+        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
+            .x509CertChain(certs)
+            .build();
 
         // Create a signer from the provided signing key.
         JWSSigner signer;
@@ -536,13 +520,13 @@ public class AttestationTokenImpl implements AttestationToken {
                     options.add(AllowWeakRSAKey.getInstance());
                 }
                 signer = new RSASSASigner(signingKey.getPrivateKey(), options);
-            } else if (signingKey.getPrivateKey() instanceof ECPrivateKey) {
+            } else if (signingKey.getPrivateKey() instanceof  ECPrivateKey) {
                 signer = new ECDSASigner((ECPrivateKey) signingKey.getPrivateKey());
             } else {
                 throw new RuntimeException("Assertion failure: Cannot have signer that is not either RSA or EC");
             }
         } catch (JOSEException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         String signedBody = header.toBase64URL() + ".";
@@ -550,12 +534,11 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             signature = signer.sign(header, signedBody.getBytes(StandardCharsets.UTF_8));
         } catch (JOSEException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.toString());
         }
         return new AttestationTokenImpl(signedBody + "." + signature.toString());
 
     }
-
     /**
      * Create a secured attestation token from the specified string body which is signed with the
      * specified signing key.
@@ -564,10 +547,11 @@ public class AttestationTokenImpl implements AttestationToken {
      * @return Newly created secured attestation token based off the serialized body.
      */
     public static AttestationToken createSecuredToken(String stringBody, AttestationSigningKey signingKey) {
+        ClientLogger logger = new ClientLogger(AttestationTokenImpl.class);
         try {
             signingKey.verify();
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         JWSObject securedObject;
@@ -577,9 +561,11 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             certs.add(Base64.encode(signingKey.getCertificate().getEncoded()));
         } catch (CertificateEncodingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).x509CertChain(certs).build();
+        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
+            .x509CertChain(certs)
+            .build();
         JWSSigner signer = null;
         try {
             if (signingKey.getPrivateKey() instanceof RSAPrivateKey) {
@@ -594,14 +580,14 @@ public class AttestationTokenImpl implements AttestationToken {
                 signer = new ECDSASigner(privateKey);
             }
         } catch (JOSEException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         securedObject = new JWSObject(header, payload);
         try {
             securedObject.sign(signer);
         } catch (JOSEException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
         }
 
         return new AttestationTokenImpl(securedObject.serialize());
