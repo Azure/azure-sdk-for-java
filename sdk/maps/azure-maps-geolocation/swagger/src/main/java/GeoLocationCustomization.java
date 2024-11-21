@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.github.javaparser.StaticJavaParser;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
@@ -40,25 +41,37 @@ public class GeoLocationCustomization extends Customization {
         // Get the class customization for IpAddressToLocationResult
         ClassCustomization ipAddressToLocationResult = models.getClass("IpAddressToLocationResult");
 
-        // Add the imports for InetAddress and UnknownHostException
-        ipAddressToLocationResult.addImports("java.net.InetAddress", "java.net.UnknownHostException");
+        // Add the necessary imports
+        ipAddressToLocationResult.addImports(
+            "java.net.InetAddress",
+            "java.net.UnknownHostException",
+            "com.azure.core.util.logging.ClientLogger"
+        );
+
+        // Use customizeAst to declare and initialize the logger field
+        ipAddressToLocationResult.customizeAst(ast -> ast.getClassByName("IpAddressToLocationResult").ifPresent(clazz -> {
+            clazz.addMember(
+                StaticJavaParser.parseBodyDeclaration(
+                    "private static final ClientLogger LOGGER = new ClientLogger(IpAddressToLocationResult.class);"
+                )
+            );
+        }));
 
         // Remove the existing getIpAddress method
         ipAddressToLocationResult.removeMethod("getIpAddress");
 
-        // Add the new getIpAddress method
+        // Add the new getIpAddress method using ClientLogger
         ipAddressToLocationResult.addMethod(
             "/**\n" +
                 " * Get the IP address as an InetAddress.\n" +
                 " *\n" +
                 " * @return The IP address as an InetAddress.\n" +
-                " * @throws IllegalArgumentException If the IP address string is invalid.\n" +
                 " */\n" +
                 "public InetAddress getIpAddress() {\n" +
                 "    try {\n" +
                 "        return InetAddress.getByName(this.ipAddress);\n" +
                 "    } catch (UnknownHostException e) {\n" +
-                "        throw new IllegalArgumentException(\"Invalid IP address: \" + this.ipAddress, e);\n" +
+                "        throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid IP address: \" + this.ipAddress, e));\n" +
                 "    }\n" +
                 "}\n"
         );

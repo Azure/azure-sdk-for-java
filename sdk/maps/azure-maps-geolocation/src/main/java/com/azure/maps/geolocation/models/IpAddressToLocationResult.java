@@ -5,7 +5,7 @@ package com.azure.maps.geolocation.models;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -83,14 +83,14 @@ public final class IpAddressToLocationResult implements JsonSerializable<IpAddre
      * Get the IP address as an InetAddress.
      *
      * @return The IP address as an InetAddress.
-     * @throws IllegalArgumentException If the IP address string is invalid.
      */
     public InetAddress getIpAddress() {
         try {
             return InetAddress.getByName(this.ipAddress);
         } catch (UnknownHostException e) {
-            throw new IllegalArgumentException("Invalid IP address: " + this.ipAddress, e);
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid IP address: " + this.ipAddress, e));
         }
     }
 
+    private static final ClientLogger LOGGER = new ClientLogger(IpAddressToLocationResult.class);
 }
