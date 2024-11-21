@@ -49,6 +49,7 @@
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
+    <module>sdk/connectedcache</module>
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerorchestratorruntime</module>
