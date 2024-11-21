@@ -64,11 +64,11 @@ class SchemaRegistrySchemaCache {
 
         final Mono<SchemaProperties> serviceCall;
         if (autoRegisterSchemas) {
-            serviceCall = this.schemaRegistryClient.registerSchema(schemaGroup, schemaFullName, schemaString,
-                SchemaFormat.AVRO);
+            serviceCall = this.schemaRegistryClient
+                .registerSchema(schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
         } else {
-            serviceCall = this.schemaRegistryClient.getSchemaProperties(schemaGroup, schemaFullName, schemaString,
-                SchemaFormat.AVRO);
+            serviceCall = this.schemaRegistryClient.getSchemaProperties(
+                schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
         }
 
         return serviceCall.map(properties -> {
@@ -92,19 +92,20 @@ class SchemaRegistrySchemaCache {
             }
         }
 
-        return schemaRegistryClient.getSchema(schemaId).handle((registryObject, sink) -> {
-            final String schemaString = registryObject.getDefinition();
+        return schemaRegistryClient.getSchema(schemaId)
+            .handle((registryObject, sink) -> {
+                final String schemaString = registryObject.getDefinition();
 
-            final Schema parsedSchema;
-            synchronized (lock) {
-                parsedSchema = new Schema.Parser().parse(schemaString);
-                cache.put(schemaId, parsedSchema);
+                final Schema parsedSchema;
+                synchronized (lock) {
+                    parsedSchema = new Schema.Parser().parse(schemaString);
+                    cache.put(schemaId, parsedSchema);
 
-                logCacheStatus();
-            }
+                    logCacheStatus();
+                }
 
-            sink.next(parsedSchema);
-        });
+                sink.next(parsedSchema);
+            });
     }
 
     /**
@@ -143,7 +144,8 @@ class SchemaRegistrySchemaCache {
         logger.atVerbose()
             .addKeyValue(SIZE_KEY, size)
             .addKeyValue(TOTAL_LENGTH_KEY, length)
-            .log("Cache entry added or updated. Total number of entries: {}; Total schema length: {}", size, length);
+            .log("Cache entry added or updated. Total number of entries: {}; Total schema length: {}",
+                size, length);
     }
 
     /**
