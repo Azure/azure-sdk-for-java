@@ -24,6 +24,12 @@ public final class SsmlSource extends PlaySource {
     private String customVoiceEndpointId;
 
     /**
+     * Initializes a new instance of {@link SsmlSource}.
+     */
+    public SsmlSource() {
+    }
+
+    /**
      * Get the ssmlText property: Ssml string for the cognitive service to be played.
      *
      * @return the ssmlText value.

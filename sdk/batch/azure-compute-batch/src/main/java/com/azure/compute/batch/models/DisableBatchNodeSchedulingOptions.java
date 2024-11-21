@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for disabling Task scheduling on a Batch Compute Node.
  */
 public class DisableBatchNodeSchedulingOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link DisableBatchNodeSchedulingOptions}.
+     */
+    public DisableBatchNodeSchedulingOptions() {
+    }
 }

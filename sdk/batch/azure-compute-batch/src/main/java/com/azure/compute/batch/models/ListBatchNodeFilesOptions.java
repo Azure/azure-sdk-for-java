@@ -10,6 +10,12 @@ public class ListBatchNodeFilesOptions extends BatchBaseOptions {
     private Boolean recursive;
 
     /**
+     * Creates an instance of {@link ListBatchNodeFilesOptions}.
+     */
+    public ListBatchNodeFilesOptions() {
+    }
+
+    /**
      * Gets the OData $filter clause used for filtering results.
      *
      * @return The OData $filter clause.

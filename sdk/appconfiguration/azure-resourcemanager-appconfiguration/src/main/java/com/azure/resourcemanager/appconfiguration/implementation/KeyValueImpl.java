@@ -137,9 +137,9 @@ public final class KeyValueImpl implements KeyValue, KeyValue.Definition, KeyVal
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.configStoreName = Utils.getValueFromIdByName(innerObject.id(), "configurationStores");
-        this.keyValueName = Utils.getValueFromIdByName(innerObject.id(), "keyValues");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.configStoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationStores");
+        this.keyValueName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "keyValues");
     }
 
     public KeyValue refresh() {
