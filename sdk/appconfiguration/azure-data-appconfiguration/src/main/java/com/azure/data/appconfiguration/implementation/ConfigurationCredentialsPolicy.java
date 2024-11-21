@@ -69,3 +69,4 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
         return next.processSync();
     }
 }
+
