@@ -107,8 +107,14 @@ public final class DeviceUpdateClientImpl {
      * @param serviceVersion Service version.
      */
     public DeviceUpdateClientImpl(String endpoint, String instanceId, DeviceUpdateServiceVersion serviceVersion) {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, instanceId, serviceVersion);
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                endpoint,
+                instanceId,
+                serviceVersion);
     }
 
     /**
@@ -119,8 +125,8 @@ public final class DeviceUpdateClientImpl {
      * @param instanceId The Device Update for IoT Hub account instance identifier.
      * @param serviceVersion Service version.
      */
-    public DeviceUpdateClientImpl(HttpPipeline httpPipeline, String endpoint, String instanceId,
-        DeviceUpdateServiceVersion serviceVersion) {
+    public DeviceUpdateClientImpl(
+            HttpPipeline httpPipeline, String endpoint, String instanceId, DeviceUpdateServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, instanceId, serviceVersion);
     }
 
@@ -133,8 +139,12 @@ public final class DeviceUpdateClientImpl {
      * @param instanceId The Device Update for IoT Hub account instance identifier.
      * @param serviceVersion Service version.
      */
-    public DeviceUpdateClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        String instanceId, DeviceUpdateServiceVersion serviceVersion) {
+    public DeviceUpdateClientImpl(
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            String instanceId,
+            DeviceUpdateServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
