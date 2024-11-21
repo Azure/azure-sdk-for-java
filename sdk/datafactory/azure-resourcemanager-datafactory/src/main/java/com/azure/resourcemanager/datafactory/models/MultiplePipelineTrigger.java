@@ -105,7 +105,6 @@ public class MultiplePipelineTrigger extends Trigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (pipelines() != null) {
             pipelines().forEach(e -> e.validate());
         }

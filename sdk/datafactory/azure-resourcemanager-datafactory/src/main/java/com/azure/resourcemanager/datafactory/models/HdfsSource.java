@@ -134,7 +134,6 @@ public final class HdfsSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (distcpSettings() != null) {
             distcpSettings().validate();
         }

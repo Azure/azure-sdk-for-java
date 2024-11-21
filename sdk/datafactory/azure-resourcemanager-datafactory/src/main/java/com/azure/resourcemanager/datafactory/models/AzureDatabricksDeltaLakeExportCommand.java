@@ -101,7 +101,6 @@ public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

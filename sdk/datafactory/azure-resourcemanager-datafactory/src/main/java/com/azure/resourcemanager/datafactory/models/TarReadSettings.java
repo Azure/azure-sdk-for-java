@@ -72,7 +72,6 @@ public final class TarReadSettings extends CompressionReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

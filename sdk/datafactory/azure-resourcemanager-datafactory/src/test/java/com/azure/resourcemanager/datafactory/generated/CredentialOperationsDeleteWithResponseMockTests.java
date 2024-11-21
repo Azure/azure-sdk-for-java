@@ -28,7 +28,7 @@ public final class CredentialOperationsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.credentialOperations()
-            .deleteWithResponse("fjsseem", "dfmlail", "xausivh", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("lnjhoemlwea", "sxmshaugenpippt", "reput", com.azure.core.util.Context.NONE);
 
     }
 }

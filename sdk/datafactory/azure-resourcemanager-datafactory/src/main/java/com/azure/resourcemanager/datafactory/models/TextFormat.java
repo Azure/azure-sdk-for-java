@@ -308,7 +308,6 @@ public final class TextFormat extends DatasetStorageFormat {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

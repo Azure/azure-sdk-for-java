@@ -24,7 +24,7 @@ public final class PrivateEndpointConnectionOperationsCreateOrUpdateWithResponse
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"c\",\"privateEndpoint\":{\"id\":\"juuii\"},\"privateLinkServiceConnectionState\":{\"status\":\"t\",\"description\":\"rbo\",\"actionsRequired\":\"xyhpukcmxbis\"}},\"name\":\"itjovjrirg\",\"type\":\"soacbxbioxtqxrbr\",\"etag\":\"znuyczlyl\",\"id\":\"rziaxigeosmuh\"}";
+            = "{\"properties\":{\"provisioningState\":\"bgitkowflc\",\"privateEndpoint\":{\"id\":\"wysv\"},\"privateLinkServiceConnectionState\":{\"status\":\"qqgaysynejdvt\",\"description\":\"gwxilbazrui\",\"actionsRequired\":\"slbrowbfsly\"}},\"name\":\"zwqlhxgsjzrifgu\",\"type\":\"n\",\"etag\":\"wlernchdxpsonkk\",\"id\":\"amojzrngmkeun\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,21 +33,22 @@ public final class PrivateEndpointConnectionOperationsCreateOrUpdateWithResponse
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnectionResource response = manager.privateEndpointConnectionOperations()
-            .define("t")
-            .withExistingFactory("jnoibclfqdtfj", "tvohywyv")
-            .withProperties(new PrivateLinkConnectionApprovalRequest()
-                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("lqyhabgocqry")
-                    .withDescription("vofnhckll")
-                    .withActionsRequired("grkvlqqkpxvemj"))
-                .withPrivateEndpoint(new PrivateEndpoint().withId("anefwsodnlwonpb")))
-            .withIfMatch("eodhtltooikz")
-            .create();
+        PrivateEndpointConnectionResource response
+            = manager.privateEndpointConnectionOperations()
+                .define("inldmflngjtltxfo")
+                .withExistingFactory("nwjowgdw", "peyyzmxuelplbbs")
+                .withProperties(new PrivateLinkConnectionApprovalRequest()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("leylv")
+                        .withDescription("xlptockgjvflc")
+                        .withActionsRequired("sbx"))
+                    .withPrivateEndpoint(new PrivateEndpoint().withId("eywmqhnlsmfqgl")))
+                .withIfMatch("gjp")
+                .create();
 
-        Assertions.assertEquals("rziaxigeosmuh", response.id());
-        Assertions.assertEquals("t", response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("rbo", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("xyhpukcmxbis",
+        Assertions.assertEquals("amojzrngmkeun", response.id());
+        Assertions.assertEquals("qqgaysynejdvt", response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("gwxilbazrui", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("slbrowbfsly",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

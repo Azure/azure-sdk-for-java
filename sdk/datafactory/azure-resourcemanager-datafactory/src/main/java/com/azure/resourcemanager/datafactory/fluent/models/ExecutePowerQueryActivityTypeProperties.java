@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -172,7 +173,6 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
      */
     @Override
     public void validate() {
-        super.validate();
         if (sinks() != null) {
             sinks().values().forEach(e -> {
                 if (e != null) {
@@ -183,7 +183,28 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
         if (queries() != null) {
             queries().forEach(e -> e.validate());
         }
+        if (dataFlow() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataFlow in model ExecutePowerQueryActivityTypeProperties"));
+        } else {
+            dataFlow().validate();
+        }
+        if (staging() != null) {
+            staging().validate();
+        }
+        if (integrationRuntime() != null) {
+            integrationRuntime().validate();
+        }
+        if (continuationSettings() != null) {
+            continuationSettings().validate();
+        }
+        if (compute() != null) {
+            compute().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecutePowerQueryActivityTypeProperties.class);
 
     /**
      * {@inheritDoc}

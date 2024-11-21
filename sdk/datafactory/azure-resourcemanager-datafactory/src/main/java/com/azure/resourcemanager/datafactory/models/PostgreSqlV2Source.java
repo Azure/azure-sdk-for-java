@@ -124,7 +124,6 @@ public final class PostgreSqlV2Source extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -19,37 +19,36 @@ public final class OracleTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleTableDataset model = BinaryData.fromString(
-            "{\"type\":\"OracleTable\",\"typeProperties\":{\"tableName\":\"databn\",\"schema\":\"datanv\",\"table\":\"datahfuzzlapyixlvz\"},\"description\":\"ulaebx\",\"structure\":\"datauq\",\"schema\":\"dataptessjlw\",\"linkedServiceName\":{\"referenceName\":\"tatpvblskxgxqay\",\"parameters\":{\"jbvyezjwjkqo\":\"datalkvcvwpvl\",\"ieyozvrcwfpucwnb\":\"databwh\"}},\"parameters\":{\"xtuuci\":{\"type\":\"String\",\"defaultValue\":\"datagzjvbxqcbgoa\"},\"mjfexulvoep\":{\"type\":\"String\",\"defaultValue\":\"datakdlhuduklbjoa\"},\"qoacbuqdgsap\":{\"type\":\"String\",\"defaultValue\":\"datarseianc\"}},\"annotations\":[\"datafgkxenvs\"],\"folder\":{\"name\":\"vya\"},\"\":{\"uuvu\":\"dataz\"}}")
+            "{\"type\":\"OracleTable\",\"typeProperties\":{\"tableName\":\"datazsxagysokli\",\"schema\":\"datas\",\"table\":\"datavrrbnhy\"},\"description\":\"bhujcydyl\",\"structure\":\"dataxvpstizsyqagqll\",\"schema\":\"datar\",\"linkedServiceName\":{\"referenceName\":\"aidyl\",\"parameters\":{\"jrnogykugdl\":\"datatrrqwfyybptm\",\"gthkslgeu\":\"datavsa\"}},\"parameters\":{\"lajybdnb\":{\"type\":\"String\",\"defaultValue\":\"databfbxj\"},\"zdjmofsvpzxgny\":{\"type\":\"String\",\"defaultValue\":\"databtois\"},\"ymg\":{\"type\":\"String\",\"defaultValue\":\"dataymlf\"}},\"annotations\":[\"dataszcfyzqpeqreg\",\"dataurd\"],\"folder\":{\"name\":\"knxmaovrgihlnz\"},\"\":{\"yafwtyd\":\"datawvqkycjcgeipqxxs\",\"hg\":\"datamma\",\"adj\":\"datalejqzhpvhxp\",\"qscjpvqerqxk\":\"dataeullgfyog\"}}")
             .toObject(OracleTableDataset.class);
-        Assertions.assertEquals("ulaebx", model.description());
-        Assertions.assertEquals("tatpvblskxgxqay", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("xtuuci").type());
-        Assertions.assertEquals("vya", model.folder().name());
+        Assertions.assertEquals("bhujcydyl", model.description());
+        Assertions.assertEquals("aidyl", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("lajybdnb").type());
+        Assertions.assertEquals("knxmaovrgihlnz", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleTableDataset model = new OracleTableDataset().withDescription("ulaebx")
-            .withStructure("datauq")
-            .withSchema("dataptessjlw")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tatpvblskxgxqay")
-                .withParameters(mapOf("jbvyezjwjkqo", "datalkvcvwpvl", "ieyozvrcwfpucwnb", "databwh")))
-            .withParameters(mapOf("xtuuci",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datagzjvbxqcbgoa"),
-                "mjfexulvoep",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datakdlhuduklbjoa"),
-                "qoacbuqdgsap",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datarseianc")))
-            .withAnnotations(Arrays.asList("datafgkxenvs"))
-            .withFolder(new DatasetFolder().withName("vya"))
-            .withTableName("databn")
-            .withSchemaTypePropertiesSchema("datanv")
-            .withTable("datahfuzzlapyixlvz");
+        OracleTableDataset model = new OracleTableDataset().withDescription("bhujcydyl")
+            .withStructure("dataxvpstizsyqagqll")
+            .withSchema("datar")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("aidyl")
+                .withParameters(mapOf("jrnogykugdl", "datatrrqwfyybptm", "gthkslgeu", "datavsa")))
+            .withParameters(mapOf("lajybdnb",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("databfbxj"),
+                "zdjmofsvpzxgny",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("databtois"), "ymg",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataymlf")))
+            .withAnnotations(Arrays.asList("dataszcfyzqpeqreg", "dataurd"))
+            .withFolder(new DatasetFolder().withName("knxmaovrgihlnz"))
+            .withTableName("datazsxagysokli")
+            .withSchemaTypePropertiesSchema("datas")
+            .withTable("datavrrbnhy");
         model = BinaryData.fromObject(model).toObject(OracleTableDataset.class);
-        Assertions.assertEquals("ulaebx", model.description());
-        Assertions.assertEquals("tatpvblskxgxqay", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("xtuuci").type());
-        Assertions.assertEquals("vya", model.folder().name());
+        Assertions.assertEquals("bhujcydyl", model.description());
+        Assertions.assertEquals("aidyl", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("lajybdnb").type());
+        Assertions.assertEquals("knxmaovrgihlnz", model.folder().name());
     }
 
     // Use "Map.of" if available

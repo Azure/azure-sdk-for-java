@@ -11,14 +11,14 @@ public final class CosmosDbMongoDbApiCollectionDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbMongoDbApiCollectionDatasetTypeProperties model
-            = BinaryData.fromString("{\"collection\":\"datazbassqfyy\"}")
+            = BinaryData.fromString("{\"collection\":\"dataaovphirlzbipi\"}")
                 .toObject(CosmosDbMongoDbApiCollectionDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CosmosDbMongoDbApiCollectionDatasetTypeProperties model
-            = new CosmosDbMongoDbApiCollectionDatasetTypeProperties().withCollection("datazbassqfyy");
+            = new CosmosDbMongoDbApiCollectionDatasetTypeProperties().withCollection("dataaovphirlzbipi");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiCollectionDatasetTypeProperties.class);
     }
 }

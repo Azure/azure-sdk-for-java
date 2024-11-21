@@ -40,6 +40,11 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
     private Object database;
 
     /*
+     * The authentication type to use. Type: string.
+     */
+    private Object authenticationType;
+
+    /*
      * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
      * Type: integer.
      */
@@ -202,6 +207,26 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
      */
     public PostgreSqlV2LinkedServiceTypeProperties withDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to use. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public Object authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the PostgreSqlV2LinkedServiceTypeProperties object itself.
+     */
+    public PostgreSqlV2LinkedServiceTypeProperties withAuthenticationType(Object authenticationType) {
+        this.authenticationType = authenticationType;
         return this;
     }
 
@@ -544,6 +569,11 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
                 .log(new IllegalArgumentException(
                     "Missing required property database in model PostgreSqlV2LinkedServiceTypeProperties"));
         }
+        if (authenticationType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model PostgreSqlV2LinkedServiceTypeProperties"));
+        }
         if (sslMode() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -565,6 +595,7 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
         jsonWriter.writeUntypedField("server", this.server);
         jsonWriter.writeUntypedField("username", this.username);
         jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
         jsonWriter.writeUntypedField("sslMode", this.sslMode);
         jsonWriter.writeUntypedField("port", this.port);
         jsonWriter.writeUntypedField("schema", this.schema);
@@ -607,6 +638,8 @@ public final class PostgreSqlV2LinkedServiceTypeProperties
                     deserializedPostgreSqlV2LinkedServiceTypeProperties.username = reader.readUntyped();
                 } else if ("database".equals(fieldName)) {
                     deserializedPostgreSqlV2LinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.authenticationType = reader.readUntyped();
                 } else if ("sslMode".equals(fieldName)) {
                     deserializedPostgreSqlV2LinkedServiceTypeProperties.sslMode = reader.readUntyped();
                 } else if ("port".equals(fieldName)) {

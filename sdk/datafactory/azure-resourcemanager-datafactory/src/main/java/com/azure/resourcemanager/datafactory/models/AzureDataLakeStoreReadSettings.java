@@ -369,7 +369,6 @@ public final class AzureDataLakeStoreReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

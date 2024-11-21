@@ -363,7 +363,6 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      */
     @Override
     public void validate() {
-        super.validate();
         if (password() != null) {
             password().validate();
         }

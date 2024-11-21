@@ -212,7 +212,6 @@ public final class ExecutePipelineActivity extends ControlActivity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (policy() != null) {
             policy().validate();
         }
@@ -222,6 +221,16 @@ public final class ExecutePipelineActivity extends ControlActivity {
                     "Missing required property innerTypeProperties in model ExecutePipelineActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ExecutePipelineActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 

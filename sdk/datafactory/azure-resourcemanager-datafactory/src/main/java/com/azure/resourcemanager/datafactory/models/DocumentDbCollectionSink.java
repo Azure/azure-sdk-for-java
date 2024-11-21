@@ -154,7 +154,6 @@ public final class DocumentDbCollectionSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

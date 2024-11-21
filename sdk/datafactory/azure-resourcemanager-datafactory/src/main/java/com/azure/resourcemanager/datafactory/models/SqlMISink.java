@@ -335,7 +335,6 @@ public final class SqlMISink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
         if (upsertSettings() != null) {
             upsertSettings().validate();
         }

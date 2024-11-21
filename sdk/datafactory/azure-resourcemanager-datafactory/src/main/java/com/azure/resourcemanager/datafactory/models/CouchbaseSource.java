@@ -126,7 +126,6 @@ public final class CouchbaseSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

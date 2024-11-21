@@ -24,7 +24,7 @@ public final class DataFlowsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"ojtryrdzogtrycbm\",\"annotations\":[\"datawmavgdztdjs\"],\"folder\":{\"name\":\"kbcwymbpredcl\"}},\"name\":\"lvuzqsv\",\"type\":\"rkpswasveymdrbm\",\"etag\":\"cryyykwwhscubgwz\",\"id\":\"nplzbzc\"}";
+            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"lcekonmcxriqfrrx\",\"annotations\":[\"datavrhcjhszmymfr\",\"dataosmic\",\"datakizqqdawmrk\"],\"folder\":{\"name\":\"xbbhjgnjlzdjzhx\"}},\"name\":\"bxsok\",\"type\":\"awr\",\"etag\":\"rodrtkw\",\"id\":\"gllnyohnhfu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class DataFlowsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataFlowResource response = manager.dataFlows()
-            .define("mouxspkxapqgyh")
-            .withExistingFactory("jsyors", "jvztqragq")
-            .withProperties(new DataFlow().withDescription("qkkwzbgbwwop")
-                .withAnnotations(Arrays.asList("datawse", "datarzcnlqs"))
-                .withFolder(new DataFlowFolder().withName("kbt")))
-            .withIfMatch("lbflbax")
+            .define("ya")
+            .withExistingFactory("iixnx", "cvyi")
+            .withProperties(new DataFlow().withDescription("wegijdejs")
+                .withAnnotations(Arrays.asList("datacggoqmblhcba"))
+                .withFolder(new DataFlowFolder().withName("waathdrbaaqt")))
+            .withIfMatch("exxn")
             .create();
 
-        Assertions.assertEquals("nplzbzc", response.id());
-        Assertions.assertEquals("ojtryrdzogtrycbm", response.properties().description());
-        Assertions.assertEquals("kbcwymbpredcl", response.properties().folder().name());
+        Assertions.assertEquals("gllnyohnhfu", response.id());
+        Assertions.assertEquals("lcekonmcxriqfrrx", response.properties().description());
+        Assertions.assertEquals("xbbhjgnjlzdjzhx", response.properties().folder().name());
     }
 }

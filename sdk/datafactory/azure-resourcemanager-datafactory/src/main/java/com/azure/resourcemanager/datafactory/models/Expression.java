@@ -20,7 +20,7 @@ public final class Expression implements JsonSerializable<Expression> {
     /*
      * Expression type.
      */
-    private String type = "Expression";
+    private final String type = "Expression";
 
     /*
      * Expression value.
@@ -40,17 +40,6 @@ public final class Expression implements JsonSerializable<Expression> {
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Expression type.
-     * 
-     * @param type the type value to set.
-     * @return the Expression object itself.
-     */
-    public Expression withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

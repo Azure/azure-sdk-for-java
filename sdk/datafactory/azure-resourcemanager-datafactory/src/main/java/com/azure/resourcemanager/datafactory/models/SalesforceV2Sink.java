@@ -191,7 +191,6 @@ public final class SalesforceV2Sink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

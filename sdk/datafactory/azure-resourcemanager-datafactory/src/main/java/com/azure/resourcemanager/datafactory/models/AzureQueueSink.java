@@ -99,7 +99,6 @@ public final class AzureQueueSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -63,7 +63,6 @@ public final class LakeHouseLocation extends DatasetLocation {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

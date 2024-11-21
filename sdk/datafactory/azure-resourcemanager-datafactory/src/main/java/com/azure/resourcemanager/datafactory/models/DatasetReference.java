@@ -21,7 +21,7 @@ public final class DatasetReference implements JsonSerializable<DatasetReference
     /*
      * Dataset reference type.
      */
-    private String type = "DatasetReference";
+    private final String type = "DatasetReference";
 
     /*
      * Reference dataset name.
@@ -46,17 +46,6 @@ public final class DatasetReference implements JsonSerializable<DatasetReference
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Dataset reference type.
-     * 
-     * @param type the type value to set.
-     * @return the DatasetReference object itself.
-     */
-    public DatasetReference withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

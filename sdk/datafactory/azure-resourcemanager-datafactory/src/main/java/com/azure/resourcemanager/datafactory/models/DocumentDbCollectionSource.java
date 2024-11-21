@@ -189,7 +189,6 @@ public final class DocumentDbCollectionSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -159,7 +159,6 @@ public final class DelimitedTextSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (storeSettings() != null) {
             storeSettings().validate();
         }

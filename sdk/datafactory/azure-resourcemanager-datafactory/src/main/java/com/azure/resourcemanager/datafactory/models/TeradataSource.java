@@ -177,7 +177,6 @@ public final class TeradataSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }

@@ -28,7 +28,8 @@ public final class TriggerRunsCancelWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.triggerRuns()
-            .cancelWithResponse("ijyzhmf", "ksqiqzmgxunld", "k", "qcnjiwzqn", com.azure.core.util.Context.NONE);
+            .cancelWithResponse("oexughztrmtimt", "auylqpzskng", "cbldpeforxa", "pmzkdisrgykrcj",
+                com.azure.core.util.Context.NONE);
 
     }
 }

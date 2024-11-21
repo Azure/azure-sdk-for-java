@@ -11,19 +11,19 @@ public final class AzurePostgreSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlSource model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"datapsoeocvywtyehln\",\"queryTimeout\":\"dataqeply\",\"additionalColumns\":\"dataad\",\"sourceRetryCount\":\"datagwdxoxjlvvvz\",\"sourceRetryWait\":\"datajvyintgkve\",\"maxConcurrentConnections\":\"dataeldnmb\",\"disableMetricsCollection\":\"databii\",\"\":{\"jaagfeiw\":\"datakxi\",\"zmsivqegmpfzbrh\":\"datauxqw\",\"tkrsjspziiev\":\"dataqj\",\"auyxyoyjas\":\"datattsz\"}}")
+            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"dataxllfwxdou\",\"queryTimeout\":\"datazpaqjahjxgedtmzh\",\"additionalColumns\":\"datahktywtac\",\"sourceRetryCount\":\"datakie\",\"sourceRetryWait\":\"dataqrfassiiil\",\"maxConcurrentConnections\":\"datargahscay\",\"disableMetricsCollection\":\"datagc\",\"\":{\"vqopxun\":\"dataieqonsbukznxd\"}}")
             .toObject(AzurePostgreSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("datagwdxoxjlvvvz")
-            .withSourceRetryWait("datajvyintgkve")
-            .withMaxConcurrentConnections("dataeldnmb")
-            .withDisableMetricsCollection("databii")
-            .withQueryTimeout("dataqeply")
-            .withAdditionalColumns("dataad")
-            .withQuery("datapsoeocvywtyehln");
+        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("datakie")
+            .withSourceRetryWait("dataqrfassiiil")
+            .withMaxConcurrentConnections("datargahscay")
+            .withDisableMetricsCollection("datagc")
+            .withQueryTimeout("datazpaqjahjxgedtmzh")
+            .withAdditionalColumns("datahktywtac")
+            .withQuery("dataxllfwxdou");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlSource.class);
     }
 }

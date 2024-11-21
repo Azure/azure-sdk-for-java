@@ -33,14 +33,14 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
         = new ManagedIntegrationRuntimeStatusTypeProperties();
 
     /*
-     * The data factory name which the integration runtime belong to.
-     */
-    private String dataFactoryName;
-
-    /*
      * The state of integration runtime.
      */
     private IntegrationRuntimeState state;
+
+    /*
+     * The data factory name which the integration runtime belong to.
+     */
+    private String dataFactoryName;
 
     /**
      * Creates an instance of ManagedIntegrationRuntimeStatus class.
@@ -68,16 +68,6 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
     }
 
     /**
-     * Get the dataFactoryName property: The data factory name which the integration runtime belong to.
-     * 
-     * @return the dataFactoryName value.
-     */
-    @Override
-    public String dataFactoryName() {
-        return this.dataFactoryName;
-    }
-
-    /**
      * Get the state property: The state of integration runtime.
      * 
      * @return the state value.
@@ -85,6 +75,16 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
     @Override
     public IntegrationRuntimeState state() {
         return this.state;
+    }
+
+    /**
+     * Get the dataFactoryName property: The data factory name which the integration runtime belong to.
+     * 
+     * @return the dataFactoryName value.
+     */
+    @Override
+    public String dataFactoryName() {
+        return this.dataFactoryName;
     }
 
     /**
@@ -130,7 +130,6 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

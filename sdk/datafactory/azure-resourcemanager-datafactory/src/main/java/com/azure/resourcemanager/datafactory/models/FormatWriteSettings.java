@@ -120,6 +120,8 @@ public class FormatWriteSettings implements JsonSerializable<FormatWriteSettings
                     return DelimitedTextWriteSettings.fromJson(readerToUse.reset());
                 } else if ("JsonWriteSettings".equals(discriminatorValue)) {
                     return JsonWriteSettings.fromJson(readerToUse.reset());
+                } else if ("IcebergWriteSettings".equals(discriminatorValue)) {
+                    return IcebergWriteSettings.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

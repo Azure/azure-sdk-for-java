@@ -102,7 +102,6 @@ public final class ManagedIdentityCredential extends Credential {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }

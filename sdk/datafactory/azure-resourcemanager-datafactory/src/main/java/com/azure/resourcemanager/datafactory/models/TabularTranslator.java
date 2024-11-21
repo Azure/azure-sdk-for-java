@@ -252,7 +252,6 @@ public final class TabularTranslator extends CopyTranslator {
      */
     @Override
     public void validate() {
-        super.validate();
         if (typeConversionSettings() != null) {
             typeConversionSettings().validate();
         }

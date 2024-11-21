@@ -23,7 +23,7 @@ public final class ExposureControlsQueryFeatureValuesByFactoryWithResponseMockTe
     @Test
     public void testQueryFeatureValuesByFactoryWithResponse() throws Exception {
         String responseStr
-            = "{\"exposureControlResponses\":[{\"featureName\":\"ogmcblwhzvnisinp\",\"value\":\"wwpukabja\"},{\"featureName\":\"hngaczgg\",\"value\":\"aqmuptnhuybtmto\"},{\"featureName\":\"hyozxotwral\",\"value\":\"jzlnrellwf\"}]}";
+            = "{\"exposureControlResponses\":[{\"featureName\":\"tchigubsidwgy\",\"value\":\"ppefsdoodcmjfiey\"},{\"featureName\":\"npqtwohfhscke\",\"value\":\"m\"},{\"featureName\":\"goaxtwtkkmuir\",\"value\":\"oaxstqqjq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,9 @@ public final class ExposureControlsQueryFeatureValuesByFactoryWithResponseMockTe
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExposureControlBatchResponse response = manager.exposureControls()
-            .queryFeatureValuesByFactoryWithResponse("pay", "aschhfm",
+            .queryFeatureValuesByFactoryWithResponse("syzk", "entiprriqwf",
                 new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
-                    new ExposureControlRequest().withFeatureName("dywpptessvmdo").withFeatureType("cvugary"),
-                    new ExposureControlRequest().withFeatureName("yuukhssretugorc").withFeatureType("csevqtd"))),
+                    new ExposureControlRequest().withFeatureName("dyingrcjoycqndg").withFeatureType("tzytesz"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

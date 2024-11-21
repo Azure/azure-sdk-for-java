@@ -161,7 +161,6 @@ public final class CassandraSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

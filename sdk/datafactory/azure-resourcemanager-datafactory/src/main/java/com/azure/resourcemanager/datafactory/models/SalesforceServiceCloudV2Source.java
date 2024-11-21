@@ -201,7 +201,6 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

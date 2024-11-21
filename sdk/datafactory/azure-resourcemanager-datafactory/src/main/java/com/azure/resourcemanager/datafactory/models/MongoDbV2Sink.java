@@ -130,7 +130,6 @@ public final class MongoDbV2Sink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

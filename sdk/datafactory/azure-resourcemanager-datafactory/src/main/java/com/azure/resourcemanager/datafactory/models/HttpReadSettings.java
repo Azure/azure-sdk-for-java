@@ -203,7 +203,6 @@ public final class HttpReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

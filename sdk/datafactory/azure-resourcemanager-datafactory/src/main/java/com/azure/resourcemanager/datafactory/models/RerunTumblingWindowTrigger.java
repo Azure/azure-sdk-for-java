@@ -197,7 +197,6 @@ public final class RerunTumblingWindowTrigger extends Trigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

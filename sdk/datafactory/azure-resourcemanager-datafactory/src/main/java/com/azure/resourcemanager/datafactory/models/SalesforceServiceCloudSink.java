@@ -191,7 +191,6 @@ public final class SalesforceServiceCloudSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

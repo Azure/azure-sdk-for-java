@@ -180,7 +180,6 @@ public final class AzureDataExplorerSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

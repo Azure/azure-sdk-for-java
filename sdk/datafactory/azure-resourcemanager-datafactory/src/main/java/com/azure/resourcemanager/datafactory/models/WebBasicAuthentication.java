@@ -105,7 +105,6 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      */
     @Override
     public void validate() {
-        super.validate();
         if (username() == null) {
             throw LOGGER.atError()
                 .log(
@@ -117,6 +116,10 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
                     new IllegalArgumentException("Missing required property password in model WebBasicAuthentication"));
         } else {
             password().validate();
+        }
+        if (url() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model WebBasicAuthentication"));
         }
     }
 

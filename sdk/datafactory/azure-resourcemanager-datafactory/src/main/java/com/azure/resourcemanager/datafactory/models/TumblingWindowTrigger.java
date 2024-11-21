@@ -319,7 +319,6 @@ public final class TumblingWindowTrigger extends Trigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (pipeline() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));

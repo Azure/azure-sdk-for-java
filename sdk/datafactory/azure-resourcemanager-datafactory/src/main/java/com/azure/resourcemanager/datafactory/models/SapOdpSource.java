@@ -210,7 +210,6 @@ public final class SapOdpSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -90,7 +90,6 @@ public final class HttpServerLocation extends DatasetLocation {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

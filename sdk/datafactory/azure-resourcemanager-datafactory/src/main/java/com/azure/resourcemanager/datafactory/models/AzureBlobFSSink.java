@@ -155,7 +155,6 @@ public final class AzureBlobFSSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
         if (metadata() != null) {
             metadata().forEach(e -> e.validate());
         }

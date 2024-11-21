@@ -11,19 +11,19 @@ public final class ShopifySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ShopifySource model = BinaryData.fromString(
-            "{\"type\":\"ShopifySource\",\"query\":\"datadtq\",\"queryTimeout\":\"datajbxol\",\"additionalColumns\":\"datahquqihgibog\",\"sourceRetryCount\":\"datajupenoupcolxc\",\"sourceRetryWait\":\"dataszwadesisd\",\"maxConcurrentConnections\":\"datauhqts\",\"disableMetricsCollection\":\"datab\",\"\":{\"bymrgelgoduexx\":\"dataeeucvv\",\"fr\":\"datad\",\"wqzvqtnozwphka\":\"dataenvkqtvtq\",\"bzbbjxkami\":\"dataracvcbrtltpo\"}}")
+            "{\"type\":\"ShopifySource\",\"query\":\"databuwauytq\",\"queryTimeout\":\"datagaxloafws\",\"additionalColumns\":\"dataxqrokw\",\"sourceRetryCount\":\"dataipn\",\"sourceRetryWait\":\"dataql\",\"maxConcurrentConnections\":\"datarhctbrvegdamoy\",\"disableMetricsCollection\":\"datafjpkezqjizbyczme\",\"\":{\"destarulnhbqt\":\"datacgvlnpjjbyryrktu\",\"xhcrffj\":\"datayh\",\"svzhlkeot\":\"dataexupcuizvx\"}}")
             .toObject(ShopifySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShopifySource model = new ShopifySource().withSourceRetryCount("datajupenoupcolxc")
-            .withSourceRetryWait("dataszwadesisd")
-            .withMaxConcurrentConnections("datauhqts")
-            .withDisableMetricsCollection("datab")
-            .withQueryTimeout("datajbxol")
-            .withAdditionalColumns("datahquqihgibog")
-            .withQuery("datadtq");
+        ShopifySource model = new ShopifySource().withSourceRetryCount("dataipn")
+            .withSourceRetryWait("dataql")
+            .withMaxConcurrentConnections("datarhctbrvegdamoy")
+            .withDisableMetricsCollection("datafjpkezqjizbyczme")
+            .withQueryTimeout("datagaxloafws")
+            .withAdditionalColumns("dataxqrokw")
+            .withQuery("databuwauytq");
         model = BinaryData.fromObject(model).toObject(ShopifySource.class);
     }
 }

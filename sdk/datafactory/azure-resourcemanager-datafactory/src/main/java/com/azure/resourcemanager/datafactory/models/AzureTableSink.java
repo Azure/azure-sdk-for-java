@@ -207,7 +207,6 @@ public final class AzureTableSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

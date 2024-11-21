@@ -23,7 +23,7 @@ public final class LinkedServicesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"version\":\"ubsidwgya\",\"connectVia\":{\"referenceName\":\"pefs\",\"parameters\":{\"fhsckecume\":\"datadcmjfieydtnpqtwo\",\"koaxstqqjqliyxze\":\"datagoaxtwtkkmuir\",\"oiaotaaxluovzm\":\"dataiiudnmojjmimy\",\"ltblm\":\"datajirp\"}},\"description\":\"bafcmsotudnkr\",\"parameters\":{\"eel\":{\"type\":\"Int\",\"defaultValue\":\"dataqeiguxix\"}},\"annotations\":[\"datavinumd\"],\"\":{\"rn\":\"datayvz\",\"obagaigtpjjz\":\"datakany\",\"wd\":\"dataqolmoifxli\"}},\"name\":\"qxqjvjubjqjxobm\",\"type\":\"jtzatr\",\"etag\":\"rneugbupkjyosq\",\"id\":\"xedkkdk\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"version\":\"sgpymzrt\",\"connectVia\":{\"referenceName\":\"jn\",\"parameters\":{\"hoiufrqsm\":\"datasjbnnuqsz\"}},\"description\":\"ddbunxufataqsf\",\"parameters\":{\"mmbu\":{\"type\":\"Bool\",\"defaultValue\":\"datahacu\"},\"qwisuhare\":{\"type\":\"Float\",\"defaultValue\":\"datalivvnyzc\"},\"yuxcjqyfx\":{\"type\":\"SecureString\",\"defaultValue\":\"dataadvvgndfyelpnlpn\"},\"ygecly\":{\"type\":\"Int\",\"defaultValue\":\"datatukossiflfv\"}},\"annotations\":[\"datashkzibbjbzdnkgp\",\"databvicwfrybvhg\",\"dataltjghdfusphokcc\",\"dataynnm\"],\"\":{\"hpxxwbetmqugov\":\"dataqii\",\"qrgjejabqvg\":\"dataddxlrbs\",\"qyazpxlyabjrzgss\":\"datah\"}},\"name\":\"wurhkuxphbwmb\",\"type\":\"gm\",\"etag\":\"l\",\"id\":\"nkylqdsyg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class LinkedServicesListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LinkedServiceResource> response
-            = manager.linkedServices().listByFactory("grcjoycqndgbxtz", "teszohntch", com.azure.core.util.Context.NONE);
+            = manager.linkedServices().listByFactory("lieyyfqhndj", "yovuyxccrajx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xedkkdk", response.iterator().next().id());
-        Assertions.assertEquals("ubsidwgya", response.iterator().next().properties().version());
-        Assertions.assertEquals("pefs", response.iterator().next().properties().connectVia().referenceName());
-        Assertions.assertEquals("bafcmsotudnkr", response.iterator().next().properties().description());
-        Assertions.assertEquals(ParameterType.INT,
-            response.iterator().next().properties().parameters().get("eel").type());
+        Assertions.assertEquals("nkylqdsyg", response.iterator().next().id());
+        Assertions.assertEquals("sgpymzrt", response.iterator().next().properties().version());
+        Assertions.assertEquals("jn", response.iterator().next().properties().connectVia().referenceName());
+        Assertions.assertEquals("ddbunxufataqsf", response.iterator().next().properties().description());
+        Assertions.assertEquals(ParameterType.BOOL,
+            response.iterator().next().properties().parameters().get("mmbu").type());
     }
 }

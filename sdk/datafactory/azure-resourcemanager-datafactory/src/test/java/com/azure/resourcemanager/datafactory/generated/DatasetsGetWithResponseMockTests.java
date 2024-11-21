@@ -22,7 +22,7 @@ public final class DatasetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"dnxwkf\",\"structure\":\"dataursbyfoavozqn\",\"schema\":\"datamxitvmrq\",\"linkedServiceName\":{\"referenceName\":\"kzchcmuvskdvqyf\",\"parameters\":{\"f\":\"dataxca\",\"yohzhu\":\"datavjpfojhvqmdo\",\"k\":\"datad\",\"pgarhf\":\"datadxfvjdfusuwght\"}},\"parameters\":{\"vqpmwqsd\":{\"type\":\"String\",\"defaultValue\":\"dataivadpc\"}},\"annotations\":[\"datae\",\"datakfsgrheakvl\",\"dataukmnu\"],\"folder\":{\"name\":\"bjclihfzrii\"},\"\":{\"nctkqbvtdeou\":\"dataqyptmjqjoamzdsa\",\"juwdvfaulbfrc\":\"dataixgtpykbjevj\"}},\"name\":\"ucobpkphxh\",\"type\":\"fekxbcbumj\",\"etag\":\"ukezqohthsmdua\",\"id\":\"pryuw\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"tya\",\"structure\":\"datacznotggyg\",\"schema\":\"datasghafzdzdf\",\"linkedServiceName\":{\"referenceName\":\"udmiutzuriqlksba\",\"parameters\":{\"qzdxdal\":\"datatiqzjrxhelqh\"}},\"parameters\":{\"eipxdn\":{\"type\":\"Float\",\"defaultValue\":\"dataymdywjzqm\"},\"rdxquowe\":{\"type\":\"Int\",\"defaultValue\":\"dataxhpxsbhua\"}},\"annotations\":[\"dataxzduydnvvwoclmdc\",\"dataqwdme\"],\"folder\":{\"name\":\"jeuguvnwcvlmy\"},\"\":{\"mptxmuejlseumm\":\"datawrtub\",\"dmfrjqfem\":\"datapq\",\"vfyjvkmompwtevqb\":\"datadkxipr\"}},\"name\":\"jlnnvhbejutupgm\",\"type\":\"ityp\",\"etag\":\"qakpbkwqavxlja\",\"id\":\"gxxmxdrgxhrta\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class DatasetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DatasetResource response = manager.datasets()
-            .getWithResponse("uhjxvcjrxle", "yptvrbgcp", "sd", "swozpm", com.azure.core.util.Context.NONE)
+            .getWithResponse("tc", "cdomzfw", "jt", "ox", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pryuw", response.id());
-        Assertions.assertEquals("dnxwkf", response.properties().description());
-        Assertions.assertEquals("kzchcmuvskdvqyf", response.properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, response.properties().parameters().get("vqpmwqsd").type());
-        Assertions.assertEquals("bjclihfzrii", response.properties().folder().name());
+        Assertions.assertEquals("gxxmxdrgxhrta", response.id());
+        Assertions.assertEquals("tya", response.properties().description());
+        Assertions.assertEquals("udmiutzuriqlksba", response.properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, response.properties().parameters().get("eipxdn").type());
+        Assertions.assertEquals("jeuguvnwcvlmy", response.properties().folder().name());
     }
 }

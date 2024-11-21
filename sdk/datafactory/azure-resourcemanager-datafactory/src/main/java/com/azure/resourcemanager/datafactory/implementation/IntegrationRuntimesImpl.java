@@ -23,8 +23,8 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeMonitoring
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeRegenerateKeyParameters;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeResource;
-import com.azure.resourcemanager.datafactory.models.IntegrationRuntimes;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeStatusResponse;
+import com.azure.resourcemanager.datafactory.models.IntegrationRuntimes;
 import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeRequest;
 
 public final class IntegrationRuntimesImpl implements IntegrationRuntimes {

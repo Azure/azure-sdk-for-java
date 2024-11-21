@@ -225,7 +225,6 @@ public final class CosmosDbMongoDbApiSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (cursorMethods() != null) {
             cursorMethods().validate();
         }

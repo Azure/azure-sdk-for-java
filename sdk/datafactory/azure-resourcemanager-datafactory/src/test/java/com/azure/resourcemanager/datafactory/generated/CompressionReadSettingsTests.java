@@ -13,7 +13,7 @@ public final class CompressionReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CompressionReadSettings model = BinaryData.fromString(
-            "{\"type\":\"CompressionReadSettings\",\"\":{\"qcjfqmyfgwb\":\"datagadkrknyyjngdf\",\"bq\":\"dataxqzfw\"}}")
+            "{\"type\":\"CompressionReadSettings\",\"\":{\"eqjnouuujli\":\"datastwaa\",\"hop\":\"dataicshmqxgjzs\",\"vkcnggoc\":\"dataqxipbxs\",\"lk\":\"datawnjmiitlamfb\"}}")
             .toObject(CompressionReadSettings.class);
     }
 

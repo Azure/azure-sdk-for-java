@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -52,8 +53,13 @@ public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProper
      */
     @Override
     public void validate() {
-        super.validate();
+        if (url() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model WebAnonymousAuthentication"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebAnonymousAuthentication.class);
 
     /**
      * {@inheritDoc}

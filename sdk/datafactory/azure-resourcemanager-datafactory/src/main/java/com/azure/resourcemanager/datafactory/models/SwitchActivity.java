@@ -192,13 +192,22 @@ public final class SwitchActivity extends ControlActivity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model SwitchActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SwitchActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 

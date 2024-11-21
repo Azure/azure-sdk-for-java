@@ -98,7 +98,6 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
         if (compressionProperties() != null) {
             compressionProperties().validate();
         }

@@ -101,7 +101,6 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

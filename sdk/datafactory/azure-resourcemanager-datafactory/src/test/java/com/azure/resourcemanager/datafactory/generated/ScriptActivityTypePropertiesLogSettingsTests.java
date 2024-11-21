@@ -17,24 +17,23 @@ public final class ScriptActivityTypePropertiesLogSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityTypePropertiesLogSettings model = BinaryData.fromString(
-            "{\"logDestination\":\"ExternalStore\",\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"qwxsli\",\"parameters\":{\"rjwllg\":\"dataxwyfeqajtzquh\",\"jzycqiz\":\"datackoxk\"}},\"path\":\"datau\"}}")
+            "{\"logDestination\":\"ExternalStore\",\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"wxcvwhutjjqzqi\",\"parameters\":{\"bjsrisfcc\":\"datao\"}},\"path\":\"datau\"}}")
             .toObject(ScriptActivityTypePropertiesLogSettings.class);
         Assertions.assertEquals(ScriptActivityLogDestination.EXTERNAL_STORE, model.logDestination());
-        Assertions.assertEquals("qwxsli", model.logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("wxcvwhutjjqzqi", model.logLocationSettings().linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityTypePropertiesLogSettings model
-            = new ScriptActivityTypePropertiesLogSettings()
-                .withLogDestination(ScriptActivityLogDestination.EXTERNAL_STORE)
-                .withLogLocationSettings(new LogLocationSettings()
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("qwxsli")
-                        .withParameters(mapOf("rjwllg", "dataxwyfeqajtzquh", "jzycqiz", "datackoxk")))
-                    .withPath("datau"));
+        ScriptActivityTypePropertiesLogSettings model = new ScriptActivityTypePropertiesLogSettings()
+            .withLogDestination(ScriptActivityLogDestination.EXTERNAL_STORE)
+            .withLogLocationSettings(new LogLocationSettings()
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("wxcvwhutjjqzqi")
+                    .withParameters(mapOf("bjsrisfcc", "datao")))
+                .withPath("datau"));
         model = BinaryData.fromObject(model).toObject(ScriptActivityTypePropertiesLogSettings.class);
         Assertions.assertEquals(ScriptActivityLogDestination.EXTERNAL_STORE, model.logDestination());
-        Assertions.assertEquals("qwxsli", model.logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("wxcvwhutjjqzqi", model.logLocationSettings().linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

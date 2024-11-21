@@ -137,7 +137,6 @@ public final class FileSystemSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

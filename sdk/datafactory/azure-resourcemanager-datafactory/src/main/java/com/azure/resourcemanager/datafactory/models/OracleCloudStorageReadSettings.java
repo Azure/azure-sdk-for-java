@@ -336,7 +336,6 @@ public final class OracleCloudStorageReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -112,7 +112,9 @@ public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
+        }
     }
 
     /**

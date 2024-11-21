@@ -137,7 +137,6 @@ public class TabularSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

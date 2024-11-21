@@ -11,19 +11,19 @@ public final class PostgreSqlV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PostgreSqlV2Source model = BinaryData.fromString(
-            "{\"type\":\"PostgreSqlV2Source\",\"query\":\"datapaf\",\"queryTimeout\":\"datax\",\"additionalColumns\":\"dataskelwzmjiigq\",\"sourceRetryCount\":\"datalcckgfoxvrb\",\"sourceRetryWait\":\"datajmenqcjjfxqt\",\"maxConcurrentConnections\":\"datafsvqyzgaweix\",\"disableMetricsCollection\":\"datablazwhdacz\",\"\":{\"zdxu\":\"dataduwlsovitpcsma\",\"ypvu\":\"datahmiu\"}}")
+            "{\"type\":\"PostgreSqlV2Source\",\"query\":\"dataopqtegkrjolbaegh\",\"queryTimeout\":\"datasscismrnneklfi\",\"additionalColumns\":\"dataysfclxtf\",\"sourceRetryCount\":\"datadwqzbiukzmfyfvy\",\"sourceRetryWait\":\"dataofaiwlnfvexiuuqa\",\"maxConcurrentConnections\":\"datalseyxpgkmlnj\",\"disableMetricsCollection\":\"dataaywgc\",\"\":{\"wv\":\"datafafpyglnfwjs\"}}")
             .toObject(PostgreSqlV2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PostgreSqlV2Source model = new PostgreSqlV2Source().withSourceRetryCount("datalcckgfoxvrb")
-            .withSourceRetryWait("datajmenqcjjfxqt")
-            .withMaxConcurrentConnections("datafsvqyzgaweix")
-            .withDisableMetricsCollection("datablazwhdacz")
-            .withQueryTimeout("datax")
-            .withAdditionalColumns("dataskelwzmjiigq")
-            .withQuery("datapaf");
+        PostgreSqlV2Source model = new PostgreSqlV2Source().withSourceRetryCount("datadwqzbiukzmfyfvy")
+            .withSourceRetryWait("dataofaiwlnfvexiuuqa")
+            .withMaxConcurrentConnections("datalseyxpgkmlnj")
+            .withDisableMetricsCollection("dataaywgc")
+            .withQueryTimeout("datasscismrnneklfi")
+            .withAdditionalColumns("dataysfclxtf")
+            .withQuery("dataopqtegkrjolbaegh");
         model = BinaryData.fromObject(model).toObject(PostgreSqlV2Source.class);
     }
 }

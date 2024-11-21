@@ -20,7 +20,7 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
     /*
      * Pipeline reference type.
      */
-    private String type = "PipelineReference";
+    private final String type = "PipelineReference";
 
     /*
      * Reference pipeline name.
@@ -45,17 +45,6 @@ public final class PipelineReference implements JsonSerializable<PipelineReferen
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Pipeline reference type.
-     * 
-     * @param type the type value to set.
-     * @return the PipelineReference object itself.
-     */
-    public PipelineReference withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

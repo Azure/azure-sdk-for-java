@@ -112,7 +112,6 @@ public final class HttpSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

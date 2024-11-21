@@ -127,7 +127,6 @@ public final class CosmosDbSqlApiSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -11,20 +11,20 @@ public final class SapCloudForCustomerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapCloudForCustomerSource model = BinaryData.fromString(
-            "{\"type\":\"SapCloudForCustomerSource\",\"query\":\"datacnk\",\"httpRequestTimeout\":\"datamiecfmqc\",\"queryTimeout\":\"datapcdbvcxo\",\"additionalColumns\":\"datahefuhnbdl\",\"sourceRetryCount\":\"datawectz\",\"sourceRetryWait\":\"datagvcbt\",\"maxConcurrentConnections\":\"datampnkyvujhej\",\"disableMetricsCollection\":\"datarvlguy\",\"\":{\"kormrcjshtcfn\":\"datangnbqhmuqyz\",\"ehuboq\":\"dataffdaxlyhxpdq\",\"glynbqpeo\":\"datazxnuxamxikhrxi\",\"wtihtnywgtsodnx\":\"dataecbog\"}}")
+            "{\"type\":\"SapCloudForCustomerSource\",\"query\":\"datauztb\",\"httpRequestTimeout\":\"datatfmcnrgwgcsto\",\"queryTimeout\":\"dataveehmvr\",\"additionalColumns\":\"dataurpzry\",\"sourceRetryCount\":\"datafdhch\",\"sourceRetryWait\":\"datawahaxyrdlvb\",\"maxConcurrentConnections\":\"datahfqsjzlckt\",\"disableMetricsCollection\":\"datagxteehyhxgnlpj\",\"\":{\"mijhnjk\":\"dataez\",\"huwz\":\"dataco\",\"bhobdocfv\":\"datankzbdeyhw\",\"jfzxsazu\":\"datajmmdmbylyndtq\"}}")
             .toObject(SapCloudForCustomerSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapCloudForCustomerSource model = new SapCloudForCustomerSource().withSourceRetryCount("datawectz")
-            .withSourceRetryWait("datagvcbt")
-            .withMaxConcurrentConnections("datampnkyvujhej")
-            .withDisableMetricsCollection("datarvlguy")
-            .withQueryTimeout("datapcdbvcxo")
-            .withAdditionalColumns("datahefuhnbdl")
-            .withQuery("datacnk")
-            .withHttpRequestTimeout("datamiecfmqc");
+        SapCloudForCustomerSource model = new SapCloudForCustomerSource().withSourceRetryCount("datafdhch")
+            .withSourceRetryWait("datawahaxyrdlvb")
+            .withMaxConcurrentConnections("datahfqsjzlckt")
+            .withDisableMetricsCollection("datagxteehyhxgnlpj")
+            .withQueryTimeout("dataveehmvr")
+            .withAdditionalColumns("dataurpzry")
+            .withQuery("datauztb")
+            .withHttpRequestTimeout("datatfmcnrgwgcsto");
         model = BinaryData.fromObject(model).toObject(SapCloudForCustomerSource.class);
     }
 }

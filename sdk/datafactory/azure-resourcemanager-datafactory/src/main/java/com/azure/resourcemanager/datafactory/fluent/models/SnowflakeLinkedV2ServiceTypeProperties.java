@@ -81,6 +81,11 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
     private SecretBase privateKeyPassphrase;
 
     /*
+     * The host name of the Snowflake account.
+     */
+    private Object host;
+
+    /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
@@ -346,6 +351,26 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
     }
 
     /**
+     * Get the host property: The host name of the Snowflake account.
+     * 
+     * @return the host value.
+     */
+    public Object host() {
+        return this.host;
+    }
+
+    /**
+     * Set the host property: The host name of the Snowflake account.
+     * 
+     * @param host the host value to set.
+     * @return the SnowflakeLinkedV2ServiceTypeProperties object itself.
+     */
+    public SnowflakeLinkedV2ServiceTypeProperties withHost(Object host) {
+        this.host = host;
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
      * 
@@ -423,6 +448,7 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
         jsonWriter.writeUntypedField("scope", this.scope);
         jsonWriter.writeJsonField("privateKey", this.privateKey);
         jsonWriter.writeJsonField("privateKeyPassphrase", this.privateKeyPassphrase);
+        jsonWriter.writeUntypedField("host", this.host);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }
@@ -470,6 +496,8 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
                 } else if ("privateKeyPassphrase".equals(fieldName)) {
                     deserializedSnowflakeLinkedV2ServiceTypeProperties.privateKeyPassphrase
                         = SecretBase.fromJson(reader);
+                } else if ("host".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.host = reader.readUntyped();
                 } else if ("encryptedCredential".equals(fieldName)) {
                     deserializedSnowflakeLinkedV2ServiceTypeProperties.encryptedCredential = reader.getString();
                 } else {

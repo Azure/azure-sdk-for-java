@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class ChangeDataCapturesStatusWithResponseMockTests {
     @Test
     public void testStatusWithResponse() throws Exception {
-        String responseStr = "\"tq\"";
+        String responseStr = "\"ebyt\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,9 @@ public final class ChangeDataCapturesStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         String response = manager.changeDataCaptures()
-            .statusWithResponse("rvnq", "dwsggjkzulihdh", "ccbbh", com.azure.core.util.Context.NONE)
+            .statusWithResponse("qijhvpvzfvegumsq", "acgfcbatfl", "pbgbzdhnmyyag", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tq", response);
+        Assertions.assertEquals("ebyt", response);
     }
 }

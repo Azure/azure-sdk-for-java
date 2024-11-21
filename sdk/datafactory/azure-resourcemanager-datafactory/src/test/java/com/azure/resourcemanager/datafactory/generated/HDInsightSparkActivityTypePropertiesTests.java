@@ -17,30 +17,29 @@ public final class HDInsightSparkActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HDInsightSparkActivityTypeProperties model = BinaryData.fromString(
-            "{\"rootPath\":\"datavwmybokqpfhs\",\"entryFilePath\":\"databpjzoyzy\",\"arguments\":[\"dataszthpnwzpki\",\"dataefygdaumerkgmgqy\",\"dataejqka\",\"dataxi\"],\"getDebugInfo\":\"None\",\"sparkJobLinkedService\":{\"referenceName\":\"xoihcqxexbksa\",\"parameters\":{\"gpszwvooxieyyww\":\"datacwyrtluujyesp\",\"fybktbviaqvzzszc\":\"dataiwiaqrc\",\"rxo\":\"dataw\",\"twwaxx\":\"datavygdefpy\"}},\"className\":\"rdsmra\",\"proxyUser\":\"datat\",\"sparkConfig\":{\"dlbocecmnqcgbi\":\"dataxmd\",\"ebvxu\":\"dataypcwbyrkx\",\"kcrc\":\"datachegeog\"}}")
+            "{\"rootPath\":\"datanxrpsty\",\"entryFilePath\":\"dataxidqnvhrbfepf\",\"arguments\":[\"datantaaftdysev\",\"datappxthsfux\",\"datalgoexudnbfoorgtx\",\"datalewhbxvr\"],\"getDebugInfo\":\"Failure\",\"sparkJobLinkedService\":{\"referenceName\":\"kwoommqvzz\",\"parameters\":{\"fh\":\"datawfo\"}},\"className\":\"p\",\"proxyUser\":\"dataljajz\",\"sparkConfig\":{\"odgisfejs\":\"datawarbvblatvbjkqy\",\"wi\":\"datap\",\"jwktiyhiyk\":\"dataujyn\"}}")
             .toObject(HDInsightSparkActivityTypeProperties.class);
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.NONE, model.getDebugInfo());
-        Assertions.assertEquals("xoihcqxexbksa", model.sparkJobLinkedService().referenceName());
-        Assertions.assertEquals("rdsmra", model.className());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
+        Assertions.assertEquals("kwoommqvzz", model.sparkJobLinkedService().referenceName());
+        Assertions.assertEquals("p", model.className());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HDInsightSparkActivityTypeProperties model
-            = new HDInsightSparkActivityTypeProperties().withRootPath("datavwmybokqpfhs")
-                .withEntryFilePath("databpjzoyzy")
-                .withArguments(Arrays.asList("dataszthpnwzpki", "dataefygdaumerkgmgqy", "dataejqka", "dataxi"))
-                .withGetDebugInfo(HDInsightActivityDebugInfoOption.NONE)
-                .withSparkJobLinkedService(new LinkedServiceReference().withReferenceName("xoihcqxexbksa")
-                    .withParameters(mapOf("gpszwvooxieyyww", "datacwyrtluujyesp", "fybktbviaqvzzszc", "dataiwiaqrc",
-                        "rxo", "dataw", "twwaxx", "datavygdefpy")))
-                .withClassName("rdsmra")
-                .withProxyUser("datat")
-                .withSparkConfig(mapOf("dlbocecmnqcgbi", "dataxmd", "ebvxu", "dataypcwbyrkx", "kcrc", "datachegeog"));
+        HDInsightSparkActivityTypeProperties model = new HDInsightSparkActivityTypeProperties()
+            .withRootPath("datanxrpsty")
+            .withEntryFilePath("dataxidqnvhrbfepf")
+            .withArguments(Arrays.asList("datantaaftdysev", "datappxthsfux", "datalgoexudnbfoorgtx", "datalewhbxvr"))
+            .withGetDebugInfo(HDInsightActivityDebugInfoOption.FAILURE)
+            .withSparkJobLinkedService(
+                new LinkedServiceReference().withReferenceName("kwoommqvzz").withParameters(mapOf("fh", "datawfo")))
+            .withClassName("p")
+            .withProxyUser("dataljajz")
+            .withSparkConfig(mapOf("odgisfejs", "datawarbvblatvbjkqy", "wi", "datap", "jwktiyhiyk", "dataujyn"));
         model = BinaryData.fromObject(model).toObject(HDInsightSparkActivityTypeProperties.class);
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.NONE, model.getDebugInfo());
-        Assertions.assertEquals("xoihcqxexbksa", model.sparkJobLinkedService().referenceName());
-        Assertions.assertEquals("rdsmra", model.className());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
+        Assertions.assertEquals("kwoommqvzz", model.sparkJobLinkedService().referenceName());
+        Assertions.assertEquals("p", model.className());
     }
 
     // Use "Map.of" if available

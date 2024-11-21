@@ -335,7 +335,6 @@ public final class SftpReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

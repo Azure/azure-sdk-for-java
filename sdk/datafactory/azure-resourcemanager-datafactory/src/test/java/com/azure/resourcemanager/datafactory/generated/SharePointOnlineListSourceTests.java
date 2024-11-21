@@ -11,18 +11,18 @@ public final class SharePointOnlineListSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharePointOnlineListSource model = BinaryData.fromString(
-            "{\"type\":\"SharePointOnlineListSource\",\"query\":\"datajiope\",\"httpRequestTimeout\":\"dataxgimfftvylfkec\",\"sourceRetryCount\":\"datafq\",\"sourceRetryWait\":\"databqdjawuldyjmjvzp\",\"maxConcurrentConnections\":\"datahba\",\"disableMetricsCollection\":\"datarriwrmd\",\"\":{\"tjyxhvjjvsvlmdl\":\"datasybvnqaxmipk\"}}")
+            "{\"type\":\"SharePointOnlineListSource\",\"query\":\"dataihifrkyvutwmc\",\"httpRequestTimeout\":\"dataricjmvs\",\"sourceRetryCount\":\"datadtladfc\",\"sourceRetryWait\":\"datazcizuegyl\",\"maxConcurrentConnections\":\"datamefpijwr\",\"disableMetricsCollection\":\"datauphbwaiswb\",\"\":{\"pdcmp\":\"datarysjgzuzoj\",\"dhfpvnkhgga\":\"datawfdcpeduxyddvp\"}}")
             .toObject(SharePointOnlineListSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SharePointOnlineListSource model = new SharePointOnlineListSource().withSourceRetryCount("datafq")
-            .withSourceRetryWait("databqdjawuldyjmjvzp")
-            .withMaxConcurrentConnections("datahba")
-            .withDisableMetricsCollection("datarriwrmd")
-            .withQuery("datajiope")
-            .withHttpRequestTimeout("dataxgimfftvylfkec");
+        SharePointOnlineListSource model = new SharePointOnlineListSource().withSourceRetryCount("datadtladfc")
+            .withSourceRetryWait("datazcizuegyl")
+            .withMaxConcurrentConnections("datamefpijwr")
+            .withDisableMetricsCollection("datauphbwaiswb")
+            .withQuery("dataihifrkyvutwmc")
+            .withHttpRequestTimeout("dataricjmvs");
         model = BinaryData.fromObject(model).toObject(SharePointOnlineListSource.class);
     }
 }

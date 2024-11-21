@@ -11,19 +11,19 @@ public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQuerySource model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"datavijdr\",\"queryTimeout\":\"datayqvhz\",\"additionalColumns\":\"datayvhrenozl\",\"sourceRetryCount\":\"dataqfghlosho\",\"sourceRetryWait\":\"datakpcmtsbandesalv\",\"maxConcurrentConnections\":\"datawrljmlo\",\"disableMetricsCollection\":\"datatzvtfyqe\",\"\":{\"xhcygfg\":\"databsyni\",\"aosttbwap\":\"datamdbazggr\"}}")
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataeydmeuimlhyze\",\"queryTimeout\":\"dataivkzrvya\",\"additionalColumns\":\"dataqgyui\",\"sourceRetryCount\":\"dataelyjduzapnopoto\",\"sourceRetryWait\":\"datarrqcaglyt\",\"maxConcurrentConnections\":\"datacbdpczmzuwr\",\"disableMetricsCollection\":\"datahfwce\",\"\":{\"cyfccnwmdpbso\":\"dataaqaviqskylwpq\",\"fxpveruuckrzw\":\"datakn\"}}")
             .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("dataqfghlosho")
-            .withSourceRetryWait("datakpcmtsbandesalv")
-            .withMaxConcurrentConnections("datawrljmlo")
-            .withDisableMetricsCollection("datatzvtfyqe")
-            .withQueryTimeout("datayqvhz")
-            .withAdditionalColumns("datayvhrenozl")
-            .withQuery("datavijdr");
+        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("dataelyjduzapnopoto")
+            .withSourceRetryWait("datarrqcaglyt")
+            .withMaxConcurrentConnections("datacbdpczmzuwr")
+            .withDisableMetricsCollection("datahfwce")
+            .withQueryTimeout("dataivkzrvya")
+            .withAdditionalColumns("dataqgyui")
+            .withQuery("dataeydmeuimlhyze");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }

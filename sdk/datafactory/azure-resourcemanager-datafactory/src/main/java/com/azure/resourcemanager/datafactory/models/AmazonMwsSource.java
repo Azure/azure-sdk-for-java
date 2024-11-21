@@ -126,7 +126,6 @@ public final class AmazonMwsSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -134,7 +134,6 @@ public final class OrcSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (storeSettings() != null) {
             storeSettings().validate();
         }

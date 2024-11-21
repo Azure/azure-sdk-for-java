@@ -193,6 +193,29 @@ public final class PostgreSqlV2LinkedService extends LinkedService {
     }
 
     /**
+     * Get the authenticationType property: The authentication type to use. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public Object authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the PostgreSqlV2LinkedService object itself.
+     */
+    public PostgreSqlV2LinkedService withAuthenticationType(Object authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PostgreSqlV2LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
      * Get the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
      * verify-ca, 5: verify-full. Type: integer.
      * 
@@ -562,13 +585,22 @@ public final class PostgreSqlV2LinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model PostgreSqlV2LinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

@@ -21,7 +21,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
     /*
      * Linked service reference type.
      */
-    private String type = "LinkedServiceReference";
+    private final String type = "LinkedServiceReference";
 
     /*
      * Reference LinkedService name.
@@ -46,17 +46,6 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Linked service reference type.
-     * 
-     * @param type the type value to set.
-     * @return the LinkedServiceReference object itself.
-     */
-    public LinkedServiceReference withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

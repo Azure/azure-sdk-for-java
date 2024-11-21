@@ -219,7 +219,6 @@ public final class AmazonRdsForOracleSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }

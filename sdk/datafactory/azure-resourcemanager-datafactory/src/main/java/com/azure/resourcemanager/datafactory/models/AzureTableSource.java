@@ -153,7 +153,6 @@ public final class AzureTableSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -332,7 +332,6 @@ public final class HdfsReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
         if (distcpSettings() != null) {
             distcpSettings().validate();
         }

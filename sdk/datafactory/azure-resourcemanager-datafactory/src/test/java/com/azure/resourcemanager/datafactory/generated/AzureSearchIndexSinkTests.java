@@ -13,19 +13,19 @@ public final class AzureSearchIndexSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSearchIndexSink model = BinaryData.fromString(
-            "{\"type\":\"AzureSearchIndexSink\",\"writeBehavior\":\"Upload\",\"writeBatchSize\":\"datasdccmdplhzjiqi\",\"writeBatchTimeout\":\"dataiwrhmzkxrqzgshqx\",\"sinkRetryCount\":\"dataunuvfslawimhoaqj\",\"sinkRetryWait\":\"datahlpznmdai\",\"maxConcurrentConnections\":\"datazqz\",\"disableMetricsCollection\":\"datadipnhbsvrlr\",\"\":{\"xtl\":\"datamnoasyyadyf\",\"ekuovwiwtykpr\":\"datanzcmdgsv\"}}")
+            "{\"type\":\"AzureSearchIndexSink\",\"writeBehavior\":\"Upload\",\"writeBatchSize\":\"dataerejrdxhlo\",\"writeBatchTimeout\":\"dataxhztdca\",\"sinkRetryCount\":\"datamvqgqmi\",\"sinkRetryWait\":\"datapa\",\"maxConcurrentConnections\":\"datah\",\"disableMetricsCollection\":\"datacyasz\",\"\":{\"ni\":\"datamtcihupoelj\",\"awbsdeqqbdcbnrg\":\"datayoxajit\",\"mtgtnb\":\"datapnor\",\"rwldeinhnsd\":\"datasopuwesmxodyto\"}}")
             .toObject(AzureSearchIndexSink.class);
         Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.UPLOAD, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSearchIndexSink model = new AzureSearchIndexSink().withWriteBatchSize("datasdccmdplhzjiqi")
-            .withWriteBatchTimeout("dataiwrhmzkxrqzgshqx")
-            .withSinkRetryCount("dataunuvfslawimhoaqj")
-            .withSinkRetryWait("datahlpznmdai")
-            .withMaxConcurrentConnections("datazqz")
-            .withDisableMetricsCollection("datadipnhbsvrlr")
+        AzureSearchIndexSink model = new AzureSearchIndexSink().withWriteBatchSize("dataerejrdxhlo")
+            .withWriteBatchTimeout("dataxhztdca")
+            .withSinkRetryCount("datamvqgqmi")
+            .withSinkRetryWait("datapa")
+            .withMaxConcurrentConnections("datah")
+            .withDisableMetricsCollection("datacyasz")
             .withWriteBehavior(AzureSearchIndexWriteBehaviorType.UPLOAD);
         model = BinaryData.fromObject(model).toObject(AzureSearchIndexSink.class);
         Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.UPLOAD, model.writeBehavior());

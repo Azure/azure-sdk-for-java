@@ -25,7 +25,7 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"mm\",\"runtimeState\":\"Started\",\"annotations\":[\"datazfjlprljil\",\"datauavxidy\",\"datajmkfxzg\",\"datap\"],\"\":{\"fbreyvrlycikwqt\":\"datama\"}},\"name\":\"fryourlywxjvsqz\",\"type\":\"ysqy\",\"etag\":\"sqmikljc\",\"id\":\"ot\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"gpt\",\"runtimeState\":\"Started\",\"annotations\":[\"datacrtpz\"],\"\":{\"hbf\":\"datahwbzrbqpzgsr\",\"nvwaxmeyjimf\":\"dataffytw\",\"vu\":\"datamhc\",\"vtypvwfllrie\":\"datawzajdxmaimwuf\"}},\"name\":\"xbcgnphen\",\"type\":\"whk\",\"etag\":\"xohqvqpwzoqtvm\",\"id\":\"l\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,16 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerResource response = manager.triggers()
-            .define("sktzrdxxsbbdo")
-            .withExistingFactory("usxyugidkgsjivdt", "tkqqdqxslbrttlw")
-            .withProperties(new Trigger().withDescription("jnbcdnjexcyh")
-                .withAnnotations(Arrays.asList("dataraubx", "databmqgimwivqph"))
-                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped")))
-            .withIfMatch("nyzytgkdw")
+            .define("kjaqlszlymyqpw")
+            .withExistingFactory("sbygm", "nxeyfkrcmxtbwolz")
+            .withProperties(new Trigger().withDescription("uwqmi")
+                .withAnnotations(Arrays.asList("datazmhcvrfqqmbuvt", "datawrmcym"))
+                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Disabled")))
+            .withIfMatch("vlfffymrzoupip")
             .create();
 
-        Assertions.assertEquals("ot", response.id());
-        Assertions.assertEquals("mm", response.properties().description());
+        Assertions.assertEquals("l", response.id());
+        Assertions.assertEquals("gpt", response.properties().description());
     }
 
     // Use "Map.of" if available

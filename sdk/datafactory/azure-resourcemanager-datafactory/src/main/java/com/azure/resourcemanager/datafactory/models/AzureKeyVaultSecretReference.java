@@ -124,7 +124,6 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (store() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

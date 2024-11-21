@@ -1,14 +1,107 @@
 # Release History
 
-## 1.0.0-beta.31 (Unreleased)
+## 1.0.0-beta.31 (2024-11-21)
 
-### Features Added
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Expression` was modified
 
-### Other Changes
+* `withType(java.lang.String)` was removed
+
+#### `models.DatasetReference` was modified
+
+* `withType(java.lang.String)` was removed
+
+#### `models.IntegrationRuntimeReference` was modified
+
+* `withType(java.lang.String)` was removed
+
+#### `models.LinkedServiceReference` was modified
+
+* `withType(java.lang.String)` was removed
+
+#### `models.PipelineReference` was modified
+
+* `withType(java.lang.String)` was removed
+
+### Features Added
+
+* `models.IcebergSink` was added
+
+* `models.IcebergDataset` was added
+
+* `models.IcebergWriteSettings` was added
+
+#### `models.SalesforceV2Source` was modified
+
+* `pageSize()` was added
+* `withPageSize(java.lang.Object)` was added
+
+#### `models.MariaDBLinkedService` was modified
+
+* `useSystemTrustStore()` was added
+* `withSslMode(java.lang.Object)` was added
+* `sslMode()` was added
+* `withUseSystemTrustStore(java.lang.Object)` was added
+
+#### `models.ServiceNowV2Source` was modified
+
+* `pageSize()` was added
+* `withPageSize(java.lang.Object)` was added
+
+#### `models.SnowflakeV2LinkedService` was modified
+
+* `withHost(java.lang.Object)` was added
+* `host()` was added
+
+#### `models.AzurePostgreSqlLinkedService` was modified
+
+* `withTimeout(java.lang.Object)` was added
+* `withSslMode(java.lang.Object)` was added
+* `withReadBufferSize(java.lang.Object)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `withUsername(java.lang.Object)` was added
+* `commandTimeout()` was added
+* `port()` was added
+* `encoding()` was added
+* `readBufferSize()` was added
+* `server()` was added
+* `timeout()` was added
+* `trustServerCertificate()` was added
+* `database()` was added
+* `withEncoding(java.lang.Object)` was added
+* `username()` was added
+* `withTimezone(java.lang.Object)` was added
+* `withDatabase(java.lang.Object)` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `withPort(java.lang.Object)` was added
+* `withServer(java.lang.Object)` was added
+* `timezone()` was added
+* `sslMode()` was added
+
+#### `models.PostgreSqlV2LinkedService` was modified
+
+* `withAuthenticationType(java.lang.Object)` was added
+* `authenticationType()` was added
+
+#### `models.MySqlLinkedService` was modified
+
+* `allowZeroDateTime()` was added
+* `withSslKey(java.lang.Object)` was added
+* `withConnectionTimeout(java.lang.Object)` was added
+* `withSslCert(java.lang.Object)` was added
+* `convertZeroDateTime()` was added
+* `treatTinyAsBoolean()` was added
+* `guidFormat()` was added
+* `withConvertZeroDateTime(java.lang.Object)` was added
+* `withTreatTinyAsBoolean(java.lang.Object)` was added
+* `withAllowZeroDateTime(java.lang.Object)` was added
+* `withGuidFormat(java.lang.Object)` was added
+* `sslKey()` was added
+* `sslCert()` was added
+* `connectionTimeout()` was added
 
 ## 1.0.0-beta.30 (2024-08-21)
 

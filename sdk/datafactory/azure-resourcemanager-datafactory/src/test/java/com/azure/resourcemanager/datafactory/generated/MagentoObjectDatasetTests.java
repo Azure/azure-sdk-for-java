@@ -19,34 +19,31 @@ public final class MagentoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MagentoObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"MagentoObject\",\"typeProperties\":{\"tableName\":\"datagfb\"},\"description\":\"kxasomafe\",\"structure\":\"dataz\",\"schema\":\"datardxpcpautfzptr\",\"linkedServiceName\":{\"referenceName\":\"dzytrtffvp\",\"parameters\":{\"oqatdjka\":\"datacyuwenbqvpraw\"}},\"parameters\":{\"xfzynfemq\":{\"type\":\"SecureString\",\"defaultValue\":\"datacs\"},\"uup\":{\"type\":\"SecureString\",\"defaultValue\":\"datakpgwgssd\"},\"pvirzyud\":{\"type\":\"Int\",\"defaultValue\":\"databnlqyvdsqxkjwd\"}},\"annotations\":[\"dataxrxhxmlfouqp\"],\"folder\":{\"name\":\"andbp\"},\"\":{\"jxcqcaczzvwaeztt\":\"datah\",\"qlyyslg\":\"datajqyfy\",\"bdsvkllrzhshhkb\":\"dataf\",\"rgfwhfzh\":\"datahcazkgdjth\"}}")
+            "{\"type\":\"MagentoObject\",\"typeProperties\":{\"tableName\":\"datasvkllrz\"},\"description\":\"hhkbc\",\"structure\":\"dataazk\",\"schema\":\"datajthprgfwhfzhhr\",\"linkedServiceName\":{\"referenceName\":\"rmrfyyqjcni\",\"parameters\":{\"ztqe\":\"datarsddcuqddldaoyv\",\"zzw\":\"dataqjojesxjht\"}},\"parameters\":{\"guzlweoyxfoaf\":{\"type\":\"Array\",\"defaultValue\":\"dataoyineuaxpmezit\"}},\"annotations\":[\"datapzlx\"],\"folder\":{\"name\":\"dhgwhlbpjuaj\"},\"\":{\"svdtyydd\":\"dataavmitnwlyhbuj\"}}")
             .toObject(MagentoObjectDataset.class);
-        Assertions.assertEquals("kxasomafe", model.description());
-        Assertions.assertEquals("dzytrtffvp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xfzynfemq").type());
-        Assertions.assertEquals("andbp", model.folder().name());
+        Assertions.assertEquals("hhkbc", model.description());
+        Assertions.assertEquals("rmrfyyqjcni", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("guzlweoyxfoaf").type());
+        Assertions.assertEquals("dhgwhlbpjuaj", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MagentoObjectDataset model = new MagentoObjectDataset().withDescription("kxasomafe")
-            .withStructure("dataz")
-            .withSchema("datardxpcpautfzptr")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("dzytrtffvp")
-                .withParameters(mapOf("oqatdjka", "datacyuwenbqvpraw")))
-            .withParameters(mapOf("xfzynfemq",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datacs"), "uup",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datakpgwgssd"),
-                "pvirzyud",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("databnlqyvdsqxkjwd")))
-            .withAnnotations(Arrays.asList("dataxrxhxmlfouqp"))
-            .withFolder(new DatasetFolder().withName("andbp"))
-            .withTableName("datagfb");
+        MagentoObjectDataset model = new MagentoObjectDataset().withDescription("hhkbc")
+            .withStructure("dataazk")
+            .withSchema("datajthprgfwhfzhhr")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("rmrfyyqjcni")
+                .withParameters(mapOf("ztqe", "datarsddcuqddldaoyv", "zzw", "dataqjojesxjht")))
+            .withParameters(mapOf("guzlweoyxfoaf",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataoyineuaxpmezit")))
+            .withAnnotations(Arrays.asList("datapzlx"))
+            .withFolder(new DatasetFolder().withName("dhgwhlbpjuaj"))
+            .withTableName("datasvkllrz");
         model = BinaryData.fromObject(model).toObject(MagentoObjectDataset.class);
-        Assertions.assertEquals("kxasomafe", model.description());
-        Assertions.assertEquals("dzytrtffvp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xfzynfemq").type());
-        Assertions.assertEquals("andbp", model.folder().name());
+        Assertions.assertEquals("hhkbc", model.description());
+        Assertions.assertEquals("rmrfyyqjcni", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("guzlweoyxfoaf").type());
+        Assertions.assertEquals("dhgwhlbpjuaj", model.folder().name());
     }
 
     // Use "Map.of" if available
