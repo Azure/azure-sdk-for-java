@@ -18,6 +18,8 @@ public class GeoLocationCustomization extends Customization {
 
         // customize IpAddressToLocationResult
         customizeIpAddressToLocationResult(models);
+
+        customizeIpAddressToLocationResultMethod(models);
     }
 
     // Customizes the CountryRegion class
@@ -32,5 +34,33 @@ public class GeoLocationCustomization extends Customization {
         models.getClass("IpAddressToLocationResult").customizeAst(ast -> ast.getClassByName("IpAddressToLocationResult")
             .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
                 .setJavadocComment("Set default constructor to private")));
+    }
+
+    private void customizeIpAddressToLocationResultMethod(PackageCustomization models) {
+        // Get the class customization for IpAddressToLocationResult
+        ClassCustomization ipAddressToLocationResult = models.getClass("IpAddressToLocationResult");
+
+        // Add the imports for InetAddress and UnknownHostException
+        ipAddressToLocationResult.addImports("java.net.InetAddress", "java.net.UnknownHostException");
+
+        // Remove the existing getIpAddress method
+        ipAddressToLocationResult.removeMethod("getIpAddress");
+
+        // Add the new getIpAddress method
+        ipAddressToLocationResult.addMethod(
+            "/**\n" +
+                " * Get the IP address as an InetAddress.\n" +
+                " *\n" +
+                " * @return The IP address as an InetAddress.\n" +
+                " * @throws IllegalArgumentException If the IP address string is invalid.\n" +
+                " */\n" +
+                "public InetAddress getIpAddress() {\n" +
+                "    try {\n" +
+                "        return InetAddress.getByName(this.ipAddress);\n" +
+                "    } catch (UnknownHostException e) {\n" +
+                "        throw new IllegalArgumentException(\"Invalid IP address: \" + this.ipAddress, e);\n" +
+                "    }\n" +
+                "}\n"
+        );
     }
 }
