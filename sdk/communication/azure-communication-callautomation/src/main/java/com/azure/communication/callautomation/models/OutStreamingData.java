@@ -3,9 +3,12 @@
 
 package com.azure.communication.callautomation.models;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 
 /** The PlaySource model. */
 @Fluent
@@ -78,38 +81,57 @@ public class OutStreamingData {
      * Get the streaming data for outbound
      * @param audioData the audioData to set
      * @return the string of outstreaming data
+     * @throws IOException when failed to serilize the data
      * 
      */
-    public static String getStreamingDataForOutbound(byte[] audioData) {
+    public static String getStreamingDataForOutbound(byte[] audioData) throws IOException {
         OutStreamingData data = new OutStreamingData(MediaKind.AUDIO_DATA);
         data.setAudioData(audioData);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String serializedData = objectMapper.writeValueAsString(data);
-            return serializedData;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return serializeOutStreamingData(data);
     }
 
     /**
      * Get the stop audiofor outbound
      * @return the string of outstreaming data
+     * @throws IOException throws exception when failed to serialize
      * 
      */
-    public static String getStopAudioForOutbound() {
+    public static String getStopAudioForOutbound() throws IOException {
         OutStreamingData data = new OutStreamingData(MediaKind.STOP_AUDIO);
         data.setStopAudio();
+        return serializeOutStreamingData(data);
+    }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String serializedData = objectMapper.writeValueAsString(data);
-            return serializedData;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+    /**
+     * serilize the outstreaming data
+     * @param data Outstreaming data
+     * @return string
+     * @throws IOException throws exception when fails to serialize
+     */
+    private static String serializeOutStreamingData(OutStreamingData data) throws IOException {
+        // JsonSerializer jsonSerializer = JsonSerializerProviders.createInstance();
+        // ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        // jsonSerializer.serialize(outputStream, data);
+        Writer json = new StringWriter();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
+            // JsonWriter automatically flushes on close.
+            data.toJson(jsonWriter);
         }
+
+        return json.toString();
+    }
+
+    /**
+     * convert to json
+     * @param jsonWriter json writer 
+     * @return return json writeer
+     * @throws IOException hrows exception when fails to serialize
+     */
+    private JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind.toString());
+        jsonWriter.writeRawField("audioData", this.audioData.toString());
+        jsonWriter.writeRawField("stopAudio", this.stopAudio.toString());
+        return jsonWriter.writeEndObject();
     }
 }

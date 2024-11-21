@@ -7,10 +7,8 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Trans
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
 
 import java.util.List;
-import java.io.IOException;
 import java.time.Duration;
 
 /**
@@ -196,15 +194,5 @@ public final class TranscriptionData extends StreamingData {
      */
     public TranscriptionResultState getResultState() {
         return resultState;
-    }
-
-    /**
-     * Parser for TranscriptionData
-     */
-    static class Parser implements StreamingDataParser<TranscriptionData> {
-        @Override 
-        public TranscriptionData parse(JsonReader jsonReader) throws IOException {
-            return new TranscriptionData(TranscriptionDataConverter.fromJson(jsonReader));
-        }
     }
 }

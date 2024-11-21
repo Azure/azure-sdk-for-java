@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+
 import com.azure.core.annotation.Fluent;
 
 /** The StopAudio model. */

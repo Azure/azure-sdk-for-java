@@ -13,12 +13,12 @@ public final class MediaKind extends ExpandableStringEnum<MediaKind> {
     /**
      * AudioData.
      */
-    public static final MediaKind AUDIO_DATA = fromString("AudioData");
+    public static final MediaKind AUDIO_DATA = fromString("audioData");
 
     /**
      * StopAudio.
      */
-    public static final MediaKind STOP_AUDIO = fromString("StopAudio");
+    public static final MediaKind STOP_AUDIO = fromString("stopAudio");
 
     /**
      * Creates a new instance of MediaKind value.
