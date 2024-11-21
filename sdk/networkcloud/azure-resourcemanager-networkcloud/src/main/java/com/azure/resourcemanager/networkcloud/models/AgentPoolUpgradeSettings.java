@@ -5,30 +5,74 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool. */
+/**
+ * AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool.
+ */
 @Fluent
-public final class AgentPoolUpgradeSettings {
+public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoolUpgradeSettings> {
+    /*
+     * The maximum time in seconds that is allowed for a node drain to complete before proceeding with the upgrade of
+     * the agent pool. If not specified during creation, a value of 1800 seconds is used.
+     */
+    private Long drainTimeout;
+
     /*
      * The maximum number or percentage of nodes that are surged during upgrade. This can either be set to an integer
      * (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total agent
-     * pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified, the
-     * default is 1.
+     * pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified during
+     * creation, a value of 1 is used. One of MaxSurge and MaxUnavailable must be greater than 0.
      */
-    @JsonProperty(value = "maxSurge")
     private String maxSurge;
 
-    /** Creates an instance of AgentPoolUpgradeSettings class. */
+    /*
+     * The maximum number or percentage of nodes that can be unavailable during upgrade. This can either be set to an
+     * integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total
+     * agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified
+     * during creation, a value of 0 is used. One of MaxSurge and MaxUnavailable must be greater than 0.
+     */
+    private String maxUnavailable;
+
+    /**
+     * Creates an instance of AgentPoolUpgradeSettings class.
+     */
     public AgentPoolUpgradeSettings() {
+    }
+
+    /**
+     * Get the drainTimeout property: The maximum time in seconds that is allowed for a node drain to complete before
+     * proceeding with the upgrade of the agent pool. If not specified during creation, a value of 1800 seconds is used.
+     * 
+     * @return the drainTimeout value.
+     */
+    public Long drainTimeout() {
+        return this.drainTimeout;
+    }
+
+    /**
+     * Set the drainTimeout property: The maximum time in seconds that is allowed for a node drain to complete before
+     * proceeding with the upgrade of the agent pool. If not specified during creation, a value of 1800 seconds is used.
+     * 
+     * @param drainTimeout the drainTimeout value to set.
+     * @return the AgentPoolUpgradeSettings object itself.
+     */
+    public AgentPoolUpgradeSettings withDrainTimeout(Long drainTimeout) {
+        this.drainTimeout = drainTimeout;
+        return this;
     }
 
     /**
      * Get the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade. This can
      * either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the
      * percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded
-     * up. If not specified, the default is 1.
-     *
+     * up. If not specified during creation, a value of 1 is used. One of MaxSurge and MaxUnavailable must be greater
+     * than 0.
+     * 
      * @return the maxSurge value.
      */
     public String maxSurge() {
@@ -39,8 +83,9 @@ public final class AgentPoolUpgradeSettings {
      * Set the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade. This can
      * either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the
      * percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded
-     * up. If not specified, the default is 1.
-     *
+     * up. If not specified during creation, a value of 1 is used. One of MaxSurge and MaxUnavailable must be greater
+     * than 0.
+     * 
      * @param maxSurge the maxSurge value to set.
      * @return the AgentPoolUpgradeSettings object itself.
      */
@@ -50,10 +95,80 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
+     * Get the maxUnavailable property: The maximum number or percentage of nodes that can be unavailable during
+     * upgrade. This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is
+     * specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages,
+     * fractional nodes are rounded up. If not specified during creation, a value of 0 is used. One of MaxSurge and
+     * MaxUnavailable must be greater than 0.
+     * 
+     * @return the maxUnavailable value.
+     */
+    public String maxUnavailable() {
+        return this.maxUnavailable;
+    }
+
+    /**
+     * Set the maxUnavailable property: The maximum number or percentage of nodes that can be unavailable during
+     * upgrade. This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is
+     * specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages,
+     * fractional nodes are rounded up. If not specified during creation, a value of 0 is used. One of MaxSurge and
+     * MaxUnavailable must be greater than 0.
+     * 
+     * @param maxUnavailable the maxUnavailable value to set.
+     * @return the AgentPoolUpgradeSettings object itself.
+     */
+    public AgentPoolUpgradeSettings withMaxUnavailable(String maxUnavailable) {
+        this.maxUnavailable = maxUnavailable;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("drainTimeout", this.drainTimeout);
+        jsonWriter.writeStringField("maxSurge", this.maxSurge);
+        jsonWriter.writeStringField("maxUnavailable", this.maxUnavailable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolUpgradeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolUpgradeSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolUpgradeSettings.
+     */
+    public static AgentPoolUpgradeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolUpgradeSettings deserializedAgentPoolUpgradeSettings = new AgentPoolUpgradeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("drainTimeout".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.drainTimeout = reader.getNullable(JsonReader::getLong);
+                } else if ("maxSurge".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.maxSurge = reader.getString();
+                } else if ("maxUnavailable".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.maxUnavailable = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolUpgradeSettings;
+        });
     }
 }

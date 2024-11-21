@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for Racks List. */
+/**
+ * Samples for Racks List.
+ */
 public final class RacksListSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Racks_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * Racks_ListBySubscription.json
      */
     /**
      * Sample code: List racks for subscription.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void listRacksForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {

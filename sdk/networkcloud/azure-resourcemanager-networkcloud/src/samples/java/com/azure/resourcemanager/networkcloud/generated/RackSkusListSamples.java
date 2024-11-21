@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for RackSkus List. */
+/**
+ * Samples for RackSkus List.
+ */
 public final class RackSkusListSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/RackSkus_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * RackSkus_ListBySubscription.json
      */
     /**
      * Sample code: List rack SKUs for subscription.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void listRackSKUsForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The more detailed status of the volume. */
+/**
+ * The more detailed status of the volume.
+ */
 public final class VolumeDetailedStatus extends ExpandableStringEnum<VolumeDetailedStatus> {
-    /** Static value Error for VolumeDetailedStatus. */
+    /**
+     * Static value Error for VolumeDetailedStatus.
+     */
     public static final VolumeDetailedStatus ERROR = fromString("Error");
 
-    /** Static value Active for VolumeDetailedStatus. */
+    /**
+     * Static value Active for VolumeDetailedStatus.
+     */
     public static final VolumeDetailedStatus ACTIVE = fromString("Active");
 
-    /** Static value Provisioning for VolumeDetailedStatus. */
+    /**
+     * Static value Provisioning for VolumeDetailedStatus.
+     */
     public static final VolumeDetailedStatus PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of VolumeDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class VolumeDetailedStatus extends ExpandableStringEnum<VolumeDetai
 
     /**
      * Creates or finds a VolumeDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VolumeDetailedStatus.
      */
-    @JsonCreator
     public static VolumeDetailedStatus fromString(String name) {
         return fromString(name, VolumeDetailedStatus.class);
     }
 
     /**
      * Gets known VolumeDetailedStatus values.
-     *
+     * 
      * @return known VolumeDetailedStatus values.
      */
     public static Collection<VolumeDetailedStatus> values() {

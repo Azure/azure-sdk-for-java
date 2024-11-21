@@ -6,32 +6,39 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.AgentPool;
 import com.azure.resourcemanager.networkcloud.models.AgentPoolUpgradeSettings;
+import com.azure.resourcemanager.networkcloud.models.NodePoolAdministratorConfigurationPatch;
+import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AgentPools Update. */
+/**
+ * Samples for AgentPools Update.
+ */
 public final class AgentPoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/AgentPools_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * AgentPools_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster agent pool.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void patchKubernetesClusterAgentPool(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        AgentPool resource =
-            manager
-                .agentPools()
-                .getWithResponse(
-                    "resourceGroupName", "kubernetesClusterName", "agentPoolName", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        patchKubernetesClusterAgentPool(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        AgentPool resource = manager.agentPools()
+            .getWithResponse("resourceGroupName", "kubernetesClusterName", "agentPoolName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withAdministratorConfiguration(new NodePoolAdministratorConfigurationPatch()
+                .withSshPublicKeys(Arrays.asList(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
             .withCount(3L)
-            .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("1"))
+            .withUpgradeSettings(
+                new AgentPoolUpgradeSettings().withDrainTimeout(1800L).withMaxSurge("1").withMaxUnavailable("0"))
             .apply();
     }
 

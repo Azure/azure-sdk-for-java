@@ -6,63 +6,64 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** RackDefinition represents details regarding the rack. */
+/**
+ * RackDefinition represents details regarding the rack.
+ */
 @Fluent
-public final class RackDefinition {
+public final class RackDefinition implements JsonSerializable<RackDefinition> {
     /*
      * The zone name used for this rack when created. Availability zones are used for workload placement.
      */
-    @JsonProperty(value = "availabilityZone")
     private String availabilityZone;
 
     /*
      * The unordered list of bare metal machine configuration.
      */
-    @JsonProperty(value = "bareMetalMachineConfigurationData")
     private List<BareMetalMachineConfigurationData> bareMetalMachineConfigurationData;
 
     /*
      * The resource ID of the network rack that matches this rack definition.
      */
-    @JsonProperty(value = "networkRackId", required = true)
     private String networkRackId;
 
     /*
      * The free-form description of the rack's location.
      */
-    @JsonProperty(value = "rackLocation")
     private String rackLocation;
 
     /*
      * The unique identifier for the rack within Network Cloud cluster. An alternate unique alphanumeric value other
      * than a serial number may be provided if desired.
      */
-    @JsonProperty(value = "rackSerialNumber", required = true)
     private String rackSerialNumber;
 
     /*
      * The resource ID of the sku for the rack being added.
      */
-    @JsonProperty(value = "rackSkuId", required = true)
     private String rackSkuId;
 
     /*
      * The list of storage appliance configuration data for this rack.
      */
-    @JsonProperty(value = "storageApplianceConfigurationData")
     private List<StorageApplianceConfigurationData> storageApplianceConfigurationData;
 
-    /** Creates an instance of RackDefinition class. */
+    /**
+     * Creates an instance of RackDefinition class.
+     */
     public RackDefinition() {
     }
 
     /**
      * Get the availabilityZone property: The zone name used for this rack when created. Availability zones are used for
      * workload placement.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -72,7 +73,7 @@ public final class RackDefinition {
     /**
      * Set the availabilityZone property: The zone name used for this rack when created. Availability zones are used for
      * workload placement.
-     *
+     * 
      * @param availabilityZone the availabilityZone value to set.
      * @return the RackDefinition object itself.
      */
@@ -83,7 +84,7 @@ public final class RackDefinition {
 
     /**
      * Get the bareMetalMachineConfigurationData property: The unordered list of bare metal machine configuration.
-     *
+     * 
      * @return the bareMetalMachineConfigurationData value.
      */
     public List<BareMetalMachineConfigurationData> bareMetalMachineConfigurationData() {
@@ -92,7 +93,7 @@ public final class RackDefinition {
 
     /**
      * Set the bareMetalMachineConfigurationData property: The unordered list of bare metal machine configuration.
-     *
+     * 
      * @param bareMetalMachineConfigurationData the bareMetalMachineConfigurationData value to set.
      * @return the RackDefinition object itself.
      */
@@ -104,7 +105,7 @@ public final class RackDefinition {
 
     /**
      * Get the networkRackId property: The resource ID of the network rack that matches this rack definition.
-     *
+     * 
      * @return the networkRackId value.
      */
     public String networkRackId() {
@@ -113,7 +114,7 @@ public final class RackDefinition {
 
     /**
      * Set the networkRackId property: The resource ID of the network rack that matches this rack definition.
-     *
+     * 
      * @param networkRackId the networkRackId value to set.
      * @return the RackDefinition object itself.
      */
@@ -124,7 +125,7 @@ public final class RackDefinition {
 
     /**
      * Get the rackLocation property: The free-form description of the rack's location.
-     *
+     * 
      * @return the rackLocation value.
      */
     public String rackLocation() {
@@ -133,7 +134,7 @@ public final class RackDefinition {
 
     /**
      * Set the rackLocation property: The free-form description of the rack's location.
-     *
+     * 
      * @param rackLocation the rackLocation value to set.
      * @return the RackDefinition object itself.
      */
@@ -145,7 +146,7 @@ public final class RackDefinition {
     /**
      * Get the rackSerialNumber property: The unique identifier for the rack within Network Cloud cluster. An alternate
      * unique alphanumeric value other than a serial number may be provided if desired.
-     *
+     * 
      * @return the rackSerialNumber value.
      */
     public String rackSerialNumber() {
@@ -155,7 +156,7 @@ public final class RackDefinition {
     /**
      * Set the rackSerialNumber property: The unique identifier for the rack within Network Cloud cluster. An alternate
      * unique alphanumeric value other than a serial number may be provided if desired.
-     *
+     * 
      * @param rackSerialNumber the rackSerialNumber value to set.
      * @return the RackDefinition object itself.
      */
@@ -166,7 +167,7 @@ public final class RackDefinition {
 
     /**
      * Get the rackSkuId property: The resource ID of the sku for the rack being added.
-     *
+     * 
      * @return the rackSkuId value.
      */
     public String rackSkuId() {
@@ -175,7 +176,7 @@ public final class RackDefinition {
 
     /**
      * Set the rackSkuId property: The resource ID of the sku for the rack being added.
-     *
+     * 
      * @param rackSkuId the rackSkuId value to set.
      * @return the RackDefinition object itself.
      */
@@ -187,7 +188,7 @@ public final class RackDefinition {
     /**
      * Get the storageApplianceConfigurationData property: The list of storage appliance configuration data for this
      * rack.
-     *
+     * 
      * @return the storageApplianceConfigurationData value.
      */
     public List<StorageApplianceConfigurationData> storageApplianceConfigurationData() {
@@ -197,7 +198,7 @@ public final class RackDefinition {
     /**
      * Set the storageApplianceConfigurationData property: The list of storage appliance configuration data for this
      * rack.
-     *
+     * 
      * @param storageApplianceConfigurationData the storageApplianceConfigurationData value to set.
      * @return the RackDefinition object itself.
      */
@@ -209,7 +210,7 @@ public final class RackDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -217,16 +218,17 @@ public final class RackDefinition {
             bareMetalMachineConfigurationData().forEach(e -> e.validate());
         }
         if (networkRackId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property networkRackId in model RackDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property networkRackId in model RackDefinition"));
         }
         if (rackSerialNumber() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property rackSerialNumber in model RackDefinition"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property rackSerialNumber in model RackDefinition"));
         }
         if (rackSkuId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property rackSkuId in model RackDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property rackSkuId in model RackDefinition"));
         }
         if (storageApplianceConfigurationData() != null) {
             storageApplianceConfigurationData().forEach(e -> e.validate());
@@ -234,4 +236,65 @@ public final class RackDefinition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RackDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkRackId", this.networkRackId);
+        jsonWriter.writeStringField("rackSerialNumber", this.rackSerialNumber);
+        jsonWriter.writeStringField("rackSkuId", this.rackSkuId);
+        jsonWriter.writeStringField("availabilityZone", this.availabilityZone);
+        jsonWriter.writeArrayField("bareMetalMachineConfigurationData", this.bareMetalMachineConfigurationData,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("rackLocation", this.rackLocation);
+        jsonWriter.writeArrayField("storageApplianceConfigurationData", this.storageApplianceConfigurationData,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RackDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RackDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RackDefinition.
+     */
+    public static RackDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RackDefinition deserializedRackDefinition = new RackDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkRackId".equals(fieldName)) {
+                    deserializedRackDefinition.networkRackId = reader.getString();
+                } else if ("rackSerialNumber".equals(fieldName)) {
+                    deserializedRackDefinition.rackSerialNumber = reader.getString();
+                } else if ("rackSkuId".equals(fieldName)) {
+                    deserializedRackDefinition.rackSkuId = reader.getString();
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedRackDefinition.availabilityZone = reader.getString();
+                } else if ("bareMetalMachineConfigurationData".equals(fieldName)) {
+                    List<BareMetalMachineConfigurationData> bareMetalMachineConfigurationData
+                        = reader.readArray(reader1 -> BareMetalMachineConfigurationData.fromJson(reader1));
+                    deserializedRackDefinition.bareMetalMachineConfigurationData = bareMetalMachineConfigurationData;
+                } else if ("rackLocation".equals(fieldName)) {
+                    deserializedRackDefinition.rackLocation = reader.getString();
+                } else if ("storageApplianceConfigurationData".equals(fieldName)) {
+                    List<StorageApplianceConfigurationData> storageApplianceConfigurationData
+                        = reader.readArray(reader1 -> StorageApplianceConfigurationData.fromJson(reader1));
+                    deserializedRackDefinition.storageApplianceConfigurationData = storageApplianceConfigurationData;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRackDefinition;
+        });
+    }
 }
