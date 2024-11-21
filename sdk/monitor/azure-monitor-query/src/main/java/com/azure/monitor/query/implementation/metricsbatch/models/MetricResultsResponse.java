@@ -48,9 +48,6 @@ public final class MetricResultsResponse implements JsonSerializable<MetricResul
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

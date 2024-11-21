@@ -34,6 +34,8 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
     private List<ErrorDetail> details;
 
     /*
+     * The code and message for an error.
+     * 
      * Inner error details if they exist.
      */
     private ErrorInfo innererror;
@@ -93,7 +95,9 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
     }
 
     /**
-     * Get the innererror property: Inner error details if they exist.
+     * Get the innererror property: The code and message for an error.
+     * 
+     * Inner error details if they exist.
      * 
      * @return the innererror value.
      */
@@ -102,7 +106,9 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
     }
 
     /**
-     * Set the innererror property: Inner error details if they exist.
+     * Set the innererror property: The code and message for an error.
+     * 
+     * Inner error details if they exist.
      * 
      * @param innererror the innererror value to set.
      * @return the ErrorInfo object itself.
@@ -132,9 +138,6 @@ public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

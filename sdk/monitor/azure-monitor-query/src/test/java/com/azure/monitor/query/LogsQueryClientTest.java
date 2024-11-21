@@ -50,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 /**
  * Unit tests for {@link LogsQueryClient}
  */
@@ -71,11 +72,14 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         additionalWorkspaceId = getAdditionalLogWorkspaceId(interceptorManager.isPlaybackMode());
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
         credential = TestUtil.getTestTokenCredential(interceptorManager);
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential);
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
+            .credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
-            clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+            clientBuilder
+                    .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder
+                    .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
@@ -85,18 +89,22 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             interceptorManager.removeSanitizers("AZSDK3493", "AZSDK3430");
         }
 
-        this.client = clientBuilder.buildClient();
+        this.client = clientBuilder
+                .buildClient();
     }
 
     private HttpClient getAssertingHttpClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient).assertSync().skipRequest((request, context) -> false).build();
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .skipRequest((request, context) -> false)
+            .build();
     }
 
     @Test
     public void testLogsQuery() {
         LogsQueryResult queryResults = client.queryWorkspace(workspaceId, QUERY_STRING,
-            new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
-                OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
+                new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
+                        OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
         assertEquals(1, queryResults.getAllTables().size());
         assertEquals(1200, queryResults.getAllTables().get(0).getAllTableCells().size());
         assertEquals(100, queryResults.getAllTables().get(0).getRows().size());
@@ -116,7 +124,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @DoNotRecord(skipInPlayback = true)
     public void testLogsQueryAllowPartialSuccess() {
         // Arrange
-        final String query = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
+        final String query =  "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
             + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
             + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
             + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
@@ -126,8 +134,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         final QueryTimeInterval interval = QueryTimeInterval.LAST_DAY;
 
         // Act
-        final Response<LogsQueryResult> response
-            = client.queryWorkspaceWithResponse(workspaceId, query, interval, options, Context.NONE);
+        final Response<LogsQueryResult> response = client.queryWorkspaceWithResponse(workspaceId, query, interval,
+            options, Context.NONE);
 
         // Assert
         final LogsQueryResult result = response.getValue();
@@ -144,8 +152,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + "| take 3", null);
 
-        LogsBatchQueryResultCollection batchResultCollection
-            = client.queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+        LogsBatchQueryResultCollection batchResultCollection = client
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -163,32 +171,36 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testLogsQueryBatchWithServerTimeout() {
 
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential);
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
+            .credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
                 .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
                 .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
-        LogsQueryClient client = clientBuilder.addPolicy((context, next) -> {
-            String requestBody = context.getHttpRequest().getBodyAsBinaryData().toString();
-            Assertions.assertTrue(requestBody.contains("wait=10"));
-            Assertions.assertTrue(requestBody.contains("wait=20"));
-            return next.process();
-        }).buildClient();
+        LogsQueryClient client = clientBuilder
+            .addPolicy((context, next) -> {
+                String requestBody = context.getHttpRequest().getBodyAsBinaryData().toString();
+                Assertions.assertTrue(requestBody.contains("wait=10"));
+                Assertions.assertTrue(requestBody.contains("wait=20"));
+                return next.process();
+            })
+            .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 5", null,
-            new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(20)));
+                new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(20)));
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + "| take 3", null,
-            new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(10)));
+                new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(10)));
 
-        LogsBatchQueryResultCollection batchResultCollection
-            = client.queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+        LogsBatchQueryResultCollection batchResultCollection = client
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -212,22 +224,19 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         final String multipleWorkspacesQuery = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
             + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic, TenantId: string)\n"
             + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
-            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \""
-            + workspaceId + "\""
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \"" + workspaceId + "\""
             + ", datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
-            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \""
-            + additionalWorkspaceId + "\"];"
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \"" + additionalWorkspaceId + "\"];"
             + "range x from 1 to 2 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
-        LogsQueryResult queryResults
-            = client
-                .queryWorkspaceWithResponse(workspaceId, multipleWorkspacesQuery, null,
-                    new LogsQueryOptions().setAdditionalWorkspaces(Collections.singletonList(additionalWorkspaceId)),
-                    Context.NONE)
+        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
+                multipleWorkspacesQuery, null,
+                new LogsQueryOptions()
+                        .setAdditionalWorkspaces(Collections.singletonList(additionalWorkspaceId)), Context.NONE)
                 .getValue();
         assertEquals(1, queryResults.getAllTables().size());
-        assertEquals(2,
-            queryResults.getAllTables()
+        assertEquals(2, queryResults
+                .getAllTables()
                 .get(0)
                 .getRows()
                 .stream()
@@ -240,11 +249,11 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testBatchQueryPartialSuccess() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);
+        logsBatchQuery.addWorkspaceQuery(workspaceId,  QUERY_STRING + " | take 2", null);
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take", null);
 
-        LogsBatchQueryResultCollection batchResultCollection
-            = client.queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+        LogsBatchQueryResultCollection batchResultCollection = client
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -258,11 +267,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
     @Test
     public void testStatistics() {
-        LogsQueryResult queryResults
-            = client
-                .queryWorkspaceWithResponse(workspaceId, QUERY_STRING, null,
-                    new LogsQueryOptions().setIncludeStatistics(true), Context.NONE)
-                .getValue();
+        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
+                QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE).getValue();
 
         BinaryData statisticsData = queryResults.getStatistics();
 
@@ -288,11 +294,9 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
     @Test
     public void testStatisticsResourceQuery() {
-        LogsQueryResult queryResults
-            = client
-                .queryResourceWithResponse(resourceId, QUERY_STRING, null,
-                    new LogsQueryOptions().setIncludeStatistics(true), Context.NONE)
-                .getValue();
+        LogsQueryResult queryResults = client.queryResourceWithResponse(resourceId,
+            QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE)
+            .getValue();
         assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getStatistics());
     }
@@ -305,8 +309,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING, null,
             new LogsQueryOptions().setIncludeStatistics(true));
 
-        LogsBatchQueryResultCollection batchResultCollection
-            = client.queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+        LogsBatchQueryResultCollection batchResultCollection = client
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -324,22 +328,23 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         // Server timeout is not readily reproducible and because the service caches query results, the queries that require extended time
         // to complete if run the first time can return immediately if a cached result is available. So, instead of testing the server behavior,
         // this test validates that the request is sent with the correct timeout value in the Prefer header.
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential);
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
+            .credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
-            clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+            clientBuilder
+                .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
-        LogsQueryClient client = clientBuilder.addPolicy((context, next) -> {
-            Assertions.assertTrue(context.getHttpRequest()
-                .getHeaders()
-                .get(HttpHeaderName.fromString("Prefer"))
-                .getValue()
-                .contains("wait=5"));
-            return next.process();
-        }).buildClient();
+        LogsQueryClient client = clientBuilder
+            .addPolicy((context, next) -> {
+                Assertions.assertTrue(context.getHttpRequest().getHeaders().get(HttpHeaderName.fromString("Prefer")).getValue().contains("wait=5"));
+                return next.process();
+            })
+            .buildClient();
         long count = 5;
         client.queryWorkspaceWithResponse(workspaceId, "range x from 1 to " + count + " step 1 | count", null,
             new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(5)), Context.NONE);
@@ -348,11 +353,10 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     @Test
     public void testVisualization() {
         String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
-            + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
-        LogsQueryResult queryResults = client
-            .queryWorkspaceWithResponse(workspaceId, query, null,
-                new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true), Context.NONE)
-            .getValue();
+                + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
+        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
+            query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
+            Context.NONE).getValue();
 
         assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getVisualization());
@@ -372,8 +376,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             Assertions.fail("Failed to read the visualization data.");
         }
 
-        LinkedHashMap<String, Object> linkedHashMap
-            = queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {
+        LinkedHashMap<String, Object> linkedHashMap =
+            queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {
             });
         String title = linkedHashMap.get("title").toString();
         String xTitle = linkedHashMap.get("xTitle").toString();
@@ -386,10 +390,9 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     public void testVisualizationResourceQuery() {
         String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
             + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
-        LogsQueryResult queryResults = client
-            .queryResourceWithResponse(resourceId, query, null,
-                new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true), Context.NONE)
-            .getValue();
+        LogsQueryResult queryResults = client.queryResourceWithResponse(resourceId,
+            query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
+            Context.NONE).getValue();
         assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getVisualization());
 
@@ -408,8 +411,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             Assertions.fail("Failed to read the visualization data.");
         }
 
-        LinkedHashMap<String, Object> linkedHashMap
-            = queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {
+        LinkedHashMap<String, Object> linkedHashMap =
+            queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {
             });
         String title = linkedHashMap.get("title").toString();
         String xTitle = linkedHashMap.get("xTitle").toString();

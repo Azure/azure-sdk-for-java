@@ -20,6 +20,8 @@ import java.io.IOException;
 @Fluent
 public final class ErrorContract implements JsonSerializable<ErrorContract> {
     /*
+     * Error Response
+     * 
      * The error object.
      */
     private ErrorResponse error;
@@ -31,7 +33,9 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
     }
 
     /**
-     * Get the error property: The error object.
+     * Get the error property: Error Response
+     * 
+     * The error object.
      * 
      * @return the error value.
      */
@@ -40,7 +44,9 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
     }
 
     /**
-     * Set the error property: The error object.
+     * Set the error property: Error Response
+     * 
+     * The error object.
      * 
      * @param error the error value to set.
      * @return the ErrorContract object itself.
@@ -50,9 +56,6 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

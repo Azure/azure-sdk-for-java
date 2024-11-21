@@ -173,9 +173,6 @@ public final class MetadataResourceTypeRelated implements JsonSerializable<Metad
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
