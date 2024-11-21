@@ -16,14 +16,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.knuddels.jtokkit.Encodings;
-import com.knuddels.jtokkit.api.Encoding;
-import com.knuddels.jtokkit.api.EncodingRegistry;
-import com.knuddels.jtokkit.api.EncodingType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Demonstrates how to get chat completions for the provided chat messages.
@@ -47,7 +42,6 @@ public class StreamingChatSample {
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(azureOpenaiKey))
-            .serviceVersion(OpenAIServiceVersion.V2024_09_01_PREVIEW)
             .buildClient();
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
@@ -58,7 +52,6 @@ public class StreamingChatSample {
 
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId,
             new ChatCompletionsOptions(chatMessages)
-                .setStream(true)
                 .setStreamOptions(new ChatCompletionStreamOptions().setIncludeUsage(true))
         );
 
@@ -79,6 +72,11 @@ public class StreamingChatSample {
         chatCompletionsStream
                 .stream()
                 .forEach(chatCompletions -> {
+                    CompletionsUsage usage = chatCompletions.getUsage();
+                    if (usage != null) {
+                        System.out.println("\nTotal token count: " + usage.getTotalTokens());
+                    }
+
                     if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
                         return;
                     }
@@ -89,9 +87,9 @@ public class StreamingChatSample {
                         System.out.println("Role = " + delta.getRole());
                     }
 
-                    CompletionsUsage usage = chatCompletions.getUsage();
-                    if (usage != null) {
-                        System.out.println("\nTotal token count: " + usage.getTotalTokens());
+                    String content = delta.getContent();
+                    if (content != null) {
+                        System.out.print(content);
                     }
                 });
     }
