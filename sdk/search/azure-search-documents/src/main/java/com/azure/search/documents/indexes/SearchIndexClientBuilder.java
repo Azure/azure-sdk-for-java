@@ -174,10 +174,13 @@ import java.util.Objects;
  * @see SearchIndexAsyncClient
  * @see com.azure.search.documents.indexes
  */
-@ServiceClientBuilder(serviceClients = { SearchIndexClient.class, SearchIndexAsyncClient.class })
-public final class SearchIndexClientBuilder implements AzureKeyCredentialTrait<SearchIndexClientBuilder>,
-    ConfigurationTrait<SearchIndexClientBuilder>, EndpointTrait<SearchIndexClientBuilder>,
-    HttpTrait<SearchIndexClientBuilder>, TokenCredentialTrait<SearchIndexClientBuilder> {
+@ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
+public final class SearchIndexClientBuilder implements
+    AzureKeyCredentialTrait<SearchIndexClientBuilder>,
+    ConfigurationTrait<SearchIndexClientBuilder>,
+    EndpointTrait<SearchIndexClientBuilder>,
+    HttpTrait<SearchIndexClientBuilder>,
+    TokenCredentialTrait<SearchIndexClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -220,16 +223,17 @@ public final class SearchIndexClientBuilder implements AzureKeyCredentialTrait<S
     public SearchIndexClient buildClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
-        SearchServiceVersion buildVersion
-            = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
+        SearchServiceVersion buildVersion = (serviceVersion == null)
+            ? SearchServiceVersion.getLatest()
+            : serviceVersion;
 
         if (httpPipeline != null) {
             return new SearchIndexClient(endpoint, buildVersion, httpPipeline, jsonSerializer);
         }
 
-        HttpPipeline pipeline
-            = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
-                azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
+        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
+            retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient,
+            LOGGER);
 
         return new SearchIndexClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }
@@ -249,16 +253,17 @@ public final class SearchIndexClientBuilder implements AzureKeyCredentialTrait<S
     public SearchIndexAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
-        SearchServiceVersion buildVersion
-            = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
+        SearchServiceVersion buildVersion = (serviceVersion == null)
+            ? SearchServiceVersion.getLatest()
+            : serviceVersion;
 
         if (httpPipeline != null) {
             return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline, jsonSerializer);
         }
 
-        HttpPipeline pipeline
-            = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
-                azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
+        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
+            retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient,
+            LOGGER);
 
         return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }

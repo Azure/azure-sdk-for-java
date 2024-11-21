@@ -37,7 +37,6 @@ import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
-import com.azure.search.documents.models.QueryRewrites;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -320,8 +319,8 @@ public final class SearchAsyncClient {
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
-    SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline,
-        JsonSerializer serializer, SearchIndexClientImpl restClient) {
+    SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
+        HttpPipeline httpPipeline, JsonSerializer serializer, SearchIndexClientImpl restClient) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
@@ -903,8 +902,8 @@ public final class SearchAsyncClient {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(Utility::exceptionMapper)
-                .map(res -> new SimpleResponse<>(res, serializer
-                    .deserializeFromBytes(serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
+                .map(res -> new SimpleResponse<>(res, serializer.deserializeFromBytes(
+                    serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1082,8 +1081,8 @@ public final class SearchAsyncClient {
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
-        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(
-            context -> search(request, continuationToken, firstPageResponse, context));
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
+            search(request, continuationToken, firstPageResponse, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
@@ -1092,8 +1091,8 @@ public final class SearchAsyncClient {
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
-        Function<String, Mono<SearchPagedResponse>> func
-            = continuationToken -> search(request, continuationToken, firstPageResponseWrapper, context);
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
+            search(request, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
@@ -1106,17 +1105,16 @@ public final class SearchAsyncClient {
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
-        return restClient.getDocuments()
-            .searchPostWithResponseAsync(requestToUse, null, context)
+        return restClient.getDocuments().searchPostWithResponseAsync(requestToUse, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SearchDocumentsResult result = response.getValue();
 
-                SearchPagedResponse page
-                    = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                        createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                        result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                        result.getSemanticPartialResponseType());
+                SearchPagedResponse page = new SearchPagedResponse(
+                    new SimpleResponse<>(response, getSearchResults(result, serializer)),
+                    createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
+                    result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
+                    result.getSemanticPartialResponseType());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -1125,8 +1123,7 @@ public final class SearchAsyncClient {
     }
 
     static List<SearchResult> getSearchResults(SearchDocumentsResult result, JsonSerializer jsonSerializer) {
-        return result.getResults()
-            .stream()
+        return result.getResults().stream()
             .map(searchResult -> SearchResultConverter.map(searchResult, jsonSerializer))
             .collect(Collectors.toList());
     }
@@ -1195,15 +1192,14 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions) {
-        SuggestRequest suggestRequest
-            = createSuggestRequest(searchText, suggesterName, Utility.ensureSuggestOptions(suggestOptions));
+        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName,
+            Utility.ensureSuggestOptions(suggestOptions));
 
         return new SuggestPagedFlux(() -> withContext(context -> suggest(suggestRequest, context)));
     }
 
     private Mono<SuggestPagedResponse> suggest(SuggestRequest suggestRequest, Context context) {
-        return restClient.getDocuments()
-            .suggestPostWithResponseAsync(suggestRequest, null, context)
+        return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SuggestDocumentsResult result = response.getValue();
@@ -1214,8 +1210,7 @@ public final class SearchAsyncClient {
     }
 
     static List<SuggestResult> getSuggestResults(SuggestDocumentsResult result, JsonSerializer serializer) {
-        return result.getResults()
-            .stream()
+        return result.getResults().stream()
             .map(suggestResult -> SuggestResultConverter.map(suggestResult, serializer))
             .collect(Collectors.toList());
     }
@@ -1280,8 +1275,7 @@ public final class SearchAsyncClient {
     }
 
     private Mono<AutocompletePagedResponse> autocomplete(AutocompleteRequest request, Context context) {
-        return restClient.getDocuments()
-            .autocompletePostWithResponseAsync(request, null, context)
+        return restClient.getDocuments().autocompletePostWithResponseAsync(request, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue())));
     }
@@ -1321,23 +1315,18 @@ public final class SearchAsyncClient {
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop())
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller())
-            .setDebug(options.getDebug());
+            .setTop(options.getTop());
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
         if (semanticSearchOptions != null) {
-            Integer waitInMillis = semanticSearchOptions.getMaxWaitDuration() == null
-                ? null
+            Integer waitInMillis = semanticSearchOptions.getMaxWaitDuration() == null ? null
                 : (int) semanticSearchOptions.getMaxWaitDuration().toMillis();
             request.setSemanticConfiguration(semanticSearchOptions.getSemanticConfigurationName())
                 .setSemanticErrorHandling(semanticSearchOptions.getErrorMode())
                 .setSemanticMaxWaitInMilliseconds(waitInMillis)
                 .setAnswers(createSearchRequestAnswers(semanticSearchOptions.getQueryAnswer()))
                 .setCaptions(createSearchRequestCaptions(semanticSearchOptions.getQueryCaption()))
-                .setSemanticQuery(semanticSearchOptions.getSemanticQuery())
-                .setQueryRewrites(createQueryRewrites(semanticSearchOptions.getQueryRewrites()));
+                .setSemanticQuery(semanticSearchOptions.getSemanticQuery());
         }
 
         VectorSearchOptions vectorSearchOptions = options.getVectorSearchOptions();
@@ -1345,6 +1334,7 @@ public final class SearchAsyncClient {
             request.setVectorFilterMode(vectorSearchOptions.getFilterMode())
                 .setVectorQueries(vectorSearchOptions.getQueries());
         }
+
 
         return request;
     }
@@ -1357,39 +1347,23 @@ public final class SearchAsyncClient {
         QueryAnswerType queryAnswerType = queryAnswer.getAnswerType();
         Integer answersCount = queryAnswer.getCount();
         Double answerThreshold = queryAnswer.getThreshold();
-        Integer maxCharLength = queryAnswer.getMaxCharLength();
 
         // No answer has been defined.
         if (queryAnswerType == null) {
             return null;
         }
 
-        String answerType = queryAnswerType.toString();
+        String answerString = queryAnswerType.toString();
 
-        if (queryAnswerType == QueryAnswerType.NONE
-            || (answersCount == null && answerThreshold == null && maxCharLength == null)) {
-            return answerType;
+        if (answersCount != null && answerThreshold != null) {
+            return answerString + "|count-" + answersCount + ",threshold-" + answerThreshold;
+        } else if (answersCount != null) {
+            return answerString + "|count-" + answersCount;
+        } else if (answerThreshold != null) {
+            return answerString + "|threshold-" + answerThreshold;
+        } else {
+            return answerString;
         }
-
-        StringBuilder answerStringBuilder = new StringBuilder(answerType).append('|');
-
-        if (answersCount != null) {
-            answerStringBuilder.append("count-").append(answersCount).append(",");
-        }
-
-        if (answerThreshold != null) {
-            answerStringBuilder.append("threshold-").append(answerThreshold).append(",");
-        }
-
-        if (maxCharLength != null) {
-            answerStringBuilder.append("maxCharLength-").append(maxCharLength).append(",");
-        }
-
-        if (answerStringBuilder.charAt(answerStringBuilder.length() - 1) == ',') {
-            answerStringBuilder.deleteCharAt(answerStringBuilder.length() - 1);
-        }
-
-        return answerStringBuilder.toString();
     }
 
     static String createSearchRequestCaptions(QueryCaption queryCaption) {
@@ -1399,41 +1373,15 @@ public final class SearchAsyncClient {
 
         QueryCaptionType queryCaptionType = queryCaption.getCaptionType();
         Boolean highlightEnabled = queryCaption.isHighlightEnabled();
-        Integer maxCharLength = queryCaption.getMaxCharLength();
 
         // No caption has been defined.
         if (queryCaptionType == null) {
             return null;
         }
 
-        String queryCaptionTypeString = queryCaptionType.toString();
-
-        if (queryCaptionType == QueryCaptionType.NONE || (highlightEnabled == null && maxCharLength == null)) {
-            return queryCaptionTypeString;
-        }
-
-        StringBuilder captionStringBuilder = new StringBuilder(queryCaptionTypeString).append('|');
-
-        if (highlightEnabled != null) {
-            captionStringBuilder.append("highlight-").append(highlightEnabled).append(",");
-        }
-
-        if (maxCharLength != null) {
-            captionStringBuilder.append("maxCharLength-").append(maxCharLength).append(",");
-        }
-
-        if (captionStringBuilder.charAt(captionStringBuilder.length() - 1) == ',') {
-            captionStringBuilder.deleteCharAt(captionStringBuilder.length() - 1);
-        }
-
-        return captionStringBuilder.toString();
-    }
-
-    static String createQueryRewrites(QueryRewrites queryRewrites) {
-        if (queryRewrites == null) {
-            return null;
-        }
-        return queryRewrites.toString();
+        return highlightEnabled == null
+            ? queryCaptionType.toString()
+            : queryCaptionType + "|highlight-" + highlightEnabled;
     }
 
     /**
@@ -1444,7 +1392,8 @@ public final class SearchAsyncClient {
      * @param options suggest options
      * @return SuggestRequest
      */
-    static SuggestRequest createSuggestRequest(String searchText, String suggesterName, SuggestOptions options) {
+    static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
+        SuggestOptions options) {
         SuggestRequest request = new SuggestRequest(searchText, suggesterName);
 
         if (options == null) {
@@ -1498,7 +1447,9 @@ public final class SearchAsyncClient {
 
     static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         List<IndexAction<T>> actions = new ArrayList<>();
-        documents.forEach(d -> actions.add(new IndexAction<T>().setActionType(actionType).setDocument(d)));
+        documents.forEach(d -> actions.add(new IndexAction<T>()
+            .setActionType(actionType)
+            .setDocument(d)));
 
         return new IndexDocumentsBatch<T>().addActions(actions);
     }
