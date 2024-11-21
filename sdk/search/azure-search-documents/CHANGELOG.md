@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.4 (Unreleased)
+## 11.8.0-beta.4 (2024-11-21)
 
 ### Bugs Fixed
 
