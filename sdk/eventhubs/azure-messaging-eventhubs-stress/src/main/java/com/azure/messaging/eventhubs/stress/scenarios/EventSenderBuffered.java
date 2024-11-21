@@ -91,8 +91,9 @@ public class EventSenderBuffered extends EventHubsScenario {
 
     private EventHubBufferedProducerClientBuilder getBuilder() {
         final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-        final EventHubBufferedProducerClientBuilder builder = new EventHubBufferedProducerClientBuilder().credential(
-            options.getEventHubsFullyQualifiedNamespace(), options.getEventHubsEventHubName(), tokenCredential);
+        final EventHubBufferedProducerClientBuilder builder = new EventHubBufferedProducerClientBuilder()
+            .credential(options.getEventHubsFullyQualifiedNamespace(), options.getEventHubsEventHubName(),
+                tokenCredential);
 
         if (maxEventBufferLengthPerPartition > 0) {
             builder.maxEventBufferLengthPerPartition(maxEventBufferLengthPerPartition);
