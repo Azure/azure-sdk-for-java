@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Tag;
@@ -26,13 +27,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -175,6 +179,10 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
             final String partitionKey = "partition-" + index;
             final EventData eventData = new EventData(partitionKey);
             eventData.setMessageId(String.valueOf(index));
+            eventData.getRawAmqpMessage()
+                .getMessageAnnotations()
+                .put(PARTITION_KEY_ANNOTATION_NAME.getValue(), "old partition key - should not be used");
+
             expectedPartitionKeysMap.put(eventData.getMessageId(), partitionKey);
 
             final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
@@ -229,6 +237,64 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
         final Map<String, PartitionProperties> finalProperties = getPartitionProperties();
         assertPropertiesUpdated(partitionPropertiesMap, finalProperties);
+    }
+
+    /**
+     * Checks that sending a message with partition key propagates partition key to receiver.
+     */
+    @Test
+    public void publishAndReceiveWithPartitionKeys() throws InterruptedException {
+        // Arrange
+        final CountDownLatch eventCountdown = new CountDownLatch(1);
+        final int queueSize = 1;
+
+        final EventHubClientBuilder builder = createBuilder();
+        producer = new EventHubBufferedProducerClientBuilder()
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
+            .onSendBatchFailed(failed -> {
+                fail("Exception occurred while sending messages." + failed.getThrowable());
+            })
+            .onSendBatchSucceeded(succeeded -> {
+            })
+            .maxEventBufferLengthPerPartition(queueSize)
+            .buildAsyncClient();
+
+        final EventHubConsumerAsyncClient receiver = toClose(createBuilder().buildAsyncConsumerClient());
+
+        final PartitionResolver resolver = new PartitionResolver();
+
+        final String partitionKey = "test-partition-key";
+        final String messageId = UUID.randomUUID().toString();
+        final EventData eventData = new EventData(partitionKey);
+        eventData.setMessageId(messageId);
+        eventData.getRawAmqpMessage()
+            .getMessageAnnotations()
+            .put(PARTITION_KEY_ANNOTATION_NAME.getValue(), "old partition key - should not be used");
+
+        final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
+        final String expectedPartitionId = resolver.assignForPartitionKey(partitionKey, partitionIds);
+
+        AtomicReference<EventData> receivedEventData = new AtomicReference<>();
+        receiver.receiveFromPartition(expectedPartitionId, EventPosition.earliest()).filter(pe -> {
+            if (messageId.equals(pe.getData().getMessageId())) {
+                receivedEventData.compareAndSet(null, pe.getData());
+                eventCountdown.countDown();
+                return true;
+            }
+            return false;
+        }).subscribe();
+
+        StepVerifier.create(producer.enqueueEvent(eventData, sendOptions))
+            .expectNext(1)
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        assertTrue(eventCountdown.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS));
+
+        final EventData received = receivedEventData.get();
+        assertNotNull(received, "Did not receive the event.");
+        assertEquals(partitionKey, received.getPartitionKey());
     }
 
     private Map<String, PartitionProperties> getPartitionProperties() {

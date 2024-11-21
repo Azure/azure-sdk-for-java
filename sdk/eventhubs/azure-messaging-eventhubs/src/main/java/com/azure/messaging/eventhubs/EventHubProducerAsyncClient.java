@@ -589,11 +589,14 @@ public class EventHubProducerAsyncClient implements Closeable {
             final EventData event = batch.getEvents().get(i);
             final Message message = messageSerializer.serialize(event);
 
-            if (!CoreUtils.isNullOrEmpty(partitionKey)) {
+            // Each EventData might have updated partitionKey if batch is created by the buffered producer
+            String finalPartitionKey
+                = CoreUtils.isNullOrEmpty(partitionKey) ? event.getUpdatedPartitionKey() : partitionKey;
+            if (!CoreUtils.isNullOrEmpty(finalPartitionKey)) {
                 final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
                     ? new MessageAnnotations(new HashMap<>())
                     : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+                messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, finalPartitionKey);
                 message.setMessageAnnotations(messageAnnotations);
             }
             messages.add(message);

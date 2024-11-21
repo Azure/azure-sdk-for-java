@@ -50,6 +50,7 @@ public class EventData extends MessageContent {
     private static final ClientLogger LOGGER = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final SystemProperties systemProperties;
+    private String updatedPartitionKey;
     private AmqpAnnotatedMessage annotatedMessage;
     private Context context;
 
@@ -454,11 +455,29 @@ public class EventData extends MessageContent {
         return context;
     }
 
-    EventData setPartitionKey(String partitionKey) {
+    /**
+     * Updates or sets partition key on the message.
+     * @param partitionKey The partition key to set on the message.
+     * @return The updated {@link EventData}.
+     */
+    EventData updatePartitionKey(String partitionKey) {
+        // first, let's set message annotation - this is necessary to calculate message size correctly
         Map<String, Object> messageAnnotations = annotatedMessage.getMessageAnnotations();
         messageAnnotations.put(AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
 
+        // also we need to store it in a separate field to get the updated value.
+        // Otherwise, we won't know if the partition key came from the upstream event hub
+        // when message is forwarded (in which case we should ignore and strip it) or was provided
+        // by the buffering producer and represents the actual partition key to be used when publishing.
+        this.updatedPartitionKey = partitionKey;
+
         return this;
+    }
+
+    String getUpdatedPartitionKey() {
+        // we explicitly ignore the partition key on message annotations
+        // in case it came from the upstream event hub.
+        return updatedPartitionKey;
     }
 
     /**

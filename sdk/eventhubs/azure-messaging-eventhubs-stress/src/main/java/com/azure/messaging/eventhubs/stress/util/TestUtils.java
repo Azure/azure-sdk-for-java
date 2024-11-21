@@ -42,9 +42,8 @@ public final class TestUtils {
             .checkpointStore(new BlobCheckpointStore(getContainerClient(options)));
 
         if (options.useV2Stack()) {
-            Configuration configuration = new ConfigurationBuilder()
-                .putProperty("com.azure.messaging.eventhubs.v2", "true")
-                .build();
+            Configuration configuration
+                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
 
             builder.configuration(configuration);
         }
@@ -70,9 +69,8 @@ public final class TestUtils {
             .consumerGroup(options.getEventHubsConsumerGroup());
 
         if (options.useV2Stack()) {
-            Configuration configuration = new ConfigurationBuilder()
-                .putProperty("com.azure.messaging.eventhubs.v2", "true")
-                .build();
+            Configuration configuration
+                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
 
             builder.configuration(configuration);
         }
@@ -83,8 +81,7 @@ public final class TestUtils {
     private static BlobContainerAsyncClient getContainerClient(ScenarioOptions options) {
         final DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-        return new BlobContainerClientBuilder()
-            .endpoint(options.getStorageBlobEndpointUri())
+        return new BlobContainerClientBuilder().endpoint(options.getStorageBlobEndpointUri())
             .containerName(options.getStorageContainerName())
             .credential(credential)
             .buildAsyncClient();
@@ -105,11 +102,11 @@ public final class TestUtils {
         String eventHub = options.getEventHubsEventHubName();
         String consumerGroup = options.getEventHubsConsumerGroup();
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        BlobContainerClient containerClient = new BlobContainerClientBuilder()
-            .endpoint(options.getStorageBlobEndpointUri())
-            .containerName(options.getStorageContainerName())
-            .credential(credential)
-            .buildClient();
+        BlobContainerClient containerClient
+            = new BlobContainerClientBuilder().endpoint(options.getStorageBlobEndpointUri())
+                .containerName(options.getStorageContainerName())
+                .credential(credential)
+                .buildClient();
 
         PagedIterable<BlobItem> blobs = containerClient.listBlobs();
         try {
