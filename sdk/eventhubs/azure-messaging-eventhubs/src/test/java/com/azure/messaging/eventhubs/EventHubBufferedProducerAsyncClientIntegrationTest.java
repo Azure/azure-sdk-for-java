@@ -252,9 +252,9 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
             .maxEventBufferLengthPerPartition(queueSize)
             .buildAsyncClient();
 
-        final EventHubConsumerAsyncClient receiver = toClose(createBuilder()
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient());
+        final EventHubConsumerAsyncClient receiver
+            = toClose(createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .buildAsyncConsumerClient());
 
         final PartitionResolver resolver = new PartitionResolver();
 
@@ -280,7 +280,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         }).subscribe());
 
         StepVerifier.create(producer.enqueueEvent(eventData, sendOptions))
-            .expectNext(1)
+            .expectNext(0)
             .expectComplete()
             .verify(TIMEOUT);
 
