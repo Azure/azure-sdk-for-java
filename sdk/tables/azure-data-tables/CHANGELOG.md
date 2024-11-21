@@ -1,14 +1,18 @@
 # Release History
 
-## 12.5.0-beta.1 (Unreleased)
+## 12.4.7 (2024-11-21)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for Microsoft Entra authentication when using the Tables SDK with Azure Cosmos endpoints.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
 
 ## 12.4.6 (2024-10-17)
 
