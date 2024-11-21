@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * The certificate update parameters.
- */
+/** The certificate update parameters. */
 @Fluent
 public final class CertificateUpdateParameters implements JsonSerializable<CertificateUpdateParameters> {
     /*
@@ -32,15 +30,12 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
      */
     private Map<String, String> tags;
 
-    /**
-     * Creates an instance of CertificateUpdateParameters class.
-     */
-    public CertificateUpdateParameters() {
-    }
+    /** Creates an instance of CertificateUpdateParameters class. */
+    public CertificateUpdateParameters() {}
 
     /**
      * Get the certificatePolicy property: The management policy for the certificate.
-     * 
+     *
      * @return the certificatePolicy value.
      */
     public CertificatePolicy getCertificatePolicy() {
@@ -49,7 +44,7 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
 
     /**
      * Set the certificatePolicy property: The management policy for the certificate.
-     * 
+     *
      * @param certificatePolicy the certificatePolicy value to set.
      * @return the CertificateUpdateParameters object itself.
      */
@@ -60,7 +55,7 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
 
     /**
      * Get the certificateAttributes property: The attributes of the certificate (optional).
-     * 
+     *
      * @return the certificateAttributes value.
      */
     public CertificateAttributes getCertificateAttributes() {
@@ -69,7 +64,7 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
 
     /**
      * Set the certificateAttributes property: The attributes of the certificate (optional).
-     * 
+     *
      * @param certificateAttributes the certificateAttributes value to set.
      * @return the CertificateUpdateParameters object itself.
      */
@@ -80,7 +75,7 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
 
     /**
      * Get the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -89,7 +84,7 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
 
     /**
      * Set the tags property: Application specific metadata in the form of key-value pairs.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the CertificateUpdateParameters object itself.
      */
@@ -98,9 +93,6 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,33 +104,36 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
 
     /**
      * Reads an instance of CertificateUpdateParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateUpdateParameters if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateUpdateParameters.
      */
     public static CertificateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CertificateUpdateParameters deserializedCertificateUpdateParameters = new CertificateUpdateParameters();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    CertificateUpdateParameters deserializedCertificateUpdateParameters =
+                            new CertificateUpdateParameters();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("policy".equals(fieldName)) {
-                    deserializedCertificateUpdateParameters.certificatePolicy = CertificatePolicy.fromJson(reader);
-                } else if ("attributes".equals(fieldName)) {
-                    deserializedCertificateUpdateParameters.certificateAttributes
-                        = CertificateAttributes.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedCertificateUpdateParameters.tags = tags;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("policy".equals(fieldName)) {
+                            deserializedCertificateUpdateParameters.certificatePolicy =
+                                    CertificatePolicy.fromJson(reader);
+                        } else if ("attributes".equals(fieldName)) {
+                            deserializedCertificateUpdateParameters.certificateAttributes =
+                                    CertificateAttributes.fromJson(reader);
+                        } else if ("tags".equals(fieldName)) {
+                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                            deserializedCertificateUpdateParameters.tags = tags;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedCertificateUpdateParameters;
-        });
+                    return deserializedCertificateUpdateParameters;
+                });
     }
 }
