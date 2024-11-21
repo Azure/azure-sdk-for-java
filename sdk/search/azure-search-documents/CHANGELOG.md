@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
- - Fixed bug in the serialization of `SearchDocumentsRuslt` `debuginfo` property.
+ - Fixed bug in the serialization of `SearchDocumentsResult` `debuginfo` property.
 
 ## 11.8.0-beta.3 (2024-11-20)
 
