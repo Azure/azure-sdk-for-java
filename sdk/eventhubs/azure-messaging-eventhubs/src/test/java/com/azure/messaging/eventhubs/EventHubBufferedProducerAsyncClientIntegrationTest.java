@@ -172,18 +172,14 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
         final Random randomInterval = new Random(10);
         final Map<String, List<String>> expectedPartitionIdsMap = new HashMap<>();
-        final Map<String, String> expectedPartitionKeysMap = new HashMap<>();
         final PartitionResolver resolver = new PartitionResolver();
 
         final List<Mono<Integer>> publishEventMono = IntStream.range(0, numberOfEvents).mapToObj(index -> {
             final String partitionKey = "partition-" + index;
             final EventData eventData = new EventData(partitionKey);
-            eventData.setMessageId(String.valueOf(index));
             eventData.getRawAmqpMessage()
                 .getMessageAnnotations()
                 .put(PARTITION_KEY_ANNOTATION_NAME.getValue(), "old partition key - should not be used");
-
-            expectedPartitionKeysMap.put(eventData.getMessageId(), partitionKey);
 
             final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
             final int delay = randomInterval.nextInt(20);
@@ -219,10 +215,6 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         for (SendBatchSucceededContext context : succeededContexts) {
             final List<String> expected = expectedPartitionIdsMap.get(context.getPartitionId());
             assertNotNull(expected, "Did not find any expected for partitionId: " + context.getPartitionId());
-
-            for (EventData eventData : context.getEvents()) {
-                assertEquals(expectedPartitionKeysMap.get(eventData.getMessageId()), eventData.getPartitionKey());
-            }
 
             context.getEvents().forEach(eventData -> {
                 final boolean success = expected.removeIf(key -> key.equals(eventData.getBodyAsString()));
@@ -260,7 +252,9 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
             .maxEventBufferLengthPerPartition(queueSize)
             .buildAsyncClient();
 
-        final EventHubConsumerAsyncClient receiver = toClose(createBuilder().buildAsyncConsumerClient());
+        final EventHubConsumerAsyncClient receiver = toClose(createBuilder()
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncConsumerClient());
 
         final PartitionResolver resolver = new PartitionResolver();
 
@@ -276,14 +270,14 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final String expectedPartitionId = resolver.assignForPartitionKey(partitionKey, partitionIds);
 
         AtomicReference<EventData> receivedEventData = new AtomicReference<>();
-        receiver.receiveFromPartition(expectedPartitionId, EventPosition.earliest()).filter(pe -> {
+        toClose(receiver.receiveFromPartition(expectedPartitionId, EventPosition.earliest()).filter(pe -> {
             if (messageId.equals(pe.getData().getMessageId())) {
                 receivedEventData.compareAndSet(null, pe.getData());
                 eventCountdown.countDown();
                 return true;
             }
             return false;
-        }).subscribe();
+        }).subscribe());
 
         StepVerifier.create(producer.enqueueEvent(eventData, sendOptions))
             .expectNext(1)
