@@ -9,25 +9,14 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 public class EventDataBatchTest {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION
         = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
-    @Mock
-    private ErrorContextProvider errorContextProvider;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     public void nullEventData() {
@@ -42,7 +31,7 @@ public class EventDataBatchTest {
      */
     @Test
     public void payloadExceededException() {
-        when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
+        ErrorContextProvider errorContextProvider = () -> new AmqpErrorContext("test-namespace");
 
         final EventDataBatch batch
             = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider, DEFAULT_INSTRUMENTATION);

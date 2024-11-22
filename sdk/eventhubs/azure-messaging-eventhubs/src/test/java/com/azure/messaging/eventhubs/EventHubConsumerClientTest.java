@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
@@ -66,7 +67,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class EventHubConsumerClientTest {
@@ -92,6 +92,10 @@ public class EventHubConsumerClientTest {
 
     private final TestPublisher<AmqpEndpointState> receiveLinkStates = TestPublisher.createCold();
     private final TestPublisher<AmqpEndpointState> connectionStates = TestPublisher.createCold();
+    private final TokenCredential tokenCredential = new MockTokenCredential();
+    private final Runnable onClientClosed = () -> {
+        throw new RuntimeException("'onClientClosed' should not be called");
+    };
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -101,15 +105,8 @@ public class EventHubConsumerClientTest {
     @Mock
     private EventHubAmqpConnection connection;
 
-    @Mock
-    private TokenCredential tokenCredential;
-    @Mock
-    private Runnable onClientClosed;
-
     private EventHubConsumerClient consumer;
     private ConnectionCacheWrapper connectionProcessor;
-    private ConnectionOptions connectionOptions;
-    private EventHubConsumerAsyncClient asyncConsumer;
     private AutoCloseable mockCloseable;
 
     @SuppressWarnings("unchecked")
@@ -124,7 +121,7 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink.getCredits()).thenReturn(10);
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
-        connectionOptions
+        ConnectionOptions connectionOptions
             = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, AmqpTransportType.AMQP_WEB_SOCKETS,
                 new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
@@ -146,7 +143,7 @@ public class EventHubConsumerClientTest {
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        asyncConsumer
+        EventHubConsumerAsyncClient asyncConsumer
             = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer,
                 CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
@@ -156,7 +153,6 @@ public class EventHubConsumerClientTest {
     public void teardown() throws Exception {
         Mockito.framework().clearInlineMock(this);
         consumer.close();
-        verifyNoMoreInteractions(onClientClosed);
         mockCloseable.close();
     }
 
@@ -177,7 +173,7 @@ public class EventHubConsumerClientTest {
                 CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
-        sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor, numberOfEvents);
         final int numberToReceive = 3;
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(false);
 
@@ -191,8 +187,6 @@ public class EventHubConsumerClientTest {
         for (PartitionEvent event : receive) {
             Assertions.assertNull(event.getLastEnqueuedEventProperties());
         }
-
-        verifyNoMoreInteractions(onClientClosed);
     }
 
     /**
@@ -208,7 +202,7 @@ public class EventHubConsumerClientTest {
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;
-        sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor, numberOfEvents);
 
         // Act
         final IterableStream<PartitionEvent> receive;
@@ -250,7 +244,7 @@ public class EventHubConsumerClientTest {
             semaphore.release();
         });
 
-        EXECUTOR_SERVICE.execute(() -> sendMessages(messageProcessor, 10, PARTITION_ID));
+        EXECUTOR_SERVICE.execute(() -> sendMessages(messageProcessor, 10));
 
         // Assert
         semaphore.acquire();
@@ -289,11 +283,11 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         // Act
-        sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor, numberOfEvents);
         final IterableStream<PartitionEvent> receive
             = consumer.receiveFromPartition(PARTITION_ID, firstReceive, EventPosition.earliest());
 
-        sendMessages(messageProcessor2, numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor2, numberOfEvents);
         final IterableStream<PartitionEvent> receive2
             = consumer.receiveFromPartition(PARTITION_ID, secondReceive, EventPosition.earliest());
 
@@ -328,7 +322,7 @@ public class EventHubConsumerClientTest {
         final int firstReceive = 8;
         final Duration timeout = Duration.ofSeconds(1);
 
-        sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
+        sendMessages(messageProcessor, numberOfEvents);
 
         // Act
         final IterableStream<PartitionEvent> receive
@@ -363,12 +357,13 @@ public class EventHubConsumerClientTest {
         return Integer.valueOf(value);
     }
 
-    private void sendMessages(TestPublisher<Message> publisher, int numberOfEvents, String partitionId) {
+    private void sendMessages(TestPublisher<Message> publisher, int numberOfEvents) {
         for (int i = 0; i < numberOfEvents; i++) {
-            Map<String, String> set = new HashMap<>();
             final Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID);
             message.getApplicationProperties().getValue().put(MESSAGE_POSITION_ID, Integer.valueOf(i).toString());
-            message.getApplicationProperties().getValue().put(PARTITION_ID_HEADER, partitionId);
+            message.getApplicationProperties()
+                .getValue()
+                .put(PARTITION_ID_HEADER, EventHubConsumerClientTest.PARTITION_ID);
             publisher.next(message);
         }
     }

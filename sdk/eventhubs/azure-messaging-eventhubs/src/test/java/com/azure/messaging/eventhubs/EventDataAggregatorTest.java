@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -229,7 +230,7 @@ public class EventDataAggregatorTest {
         StepVerifier.create(aggregator).then(() -> {
             publisher.next(event1);
         }).consumeErrorWith(error -> {
-            assertTrue(error instanceof AmqpException);
+            assertInstanceOf(AmqpException.class, error);
             assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, ((AmqpException) error).getErrorCondition());
         }).verify(Duration.ofSeconds(20));
     }
@@ -300,9 +301,7 @@ public class EventDataAggregatorTest {
 
             return matches;
         });
-        when(batch.getEvents()).thenAnswer(invocation -> {
-            return resultSet;
-        });
+        when(batch.getEvents()).thenAnswer(invocation -> resultSet);
         when(batch.getCount()).thenAnswer(invocation -> resultSet.size());
     }
 }

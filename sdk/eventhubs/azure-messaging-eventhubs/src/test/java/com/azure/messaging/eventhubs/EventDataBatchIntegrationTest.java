@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
@@ -36,10 +34,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION
         = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
+
+    private final ErrorContextProvider contextProvider = () -> null;
+
     private EventHubProducerAsyncClient producer;
     private EventHubClientBuilder builder;
-    @Mock
-    private ErrorContextProvider contextProvider;
 
     public EventDataBatchIntegrationTest() {
         super(new ClientLogger(EventDataBatchIntegrationTest.class));
@@ -47,8 +46,6 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        MockitoAnnotations.initMocks(this);
-
         builder = createBuilder().shareConnection()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);

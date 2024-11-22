@@ -28,6 +28,7 @@ import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
 import com.azure.messaging.eventhubs.TestUtils;
+import com.azure.messaging.eventhubs.mocking.MockMessageSerializer;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.SslDomain;
@@ -35,8 +36,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -45,6 +44,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Verifies we authorize with Event Hubs CBS node correctly.
@@ -55,9 +56,7 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
     private static String product;
     private static String clientVersion;
 
-    @Mock
-    private MessageSerializer messageSerializer;
-
+    private final MessageSerializer messageSerializer = new MockMessageSerializer();
     private final ClientOptions clientOptions = new ClientOptions();
 
     private TestReactorConnection connection;
@@ -69,7 +68,6 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
     private ReactorHandlerProvider handlerProvider;
     private final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
     private String tokenAudience;
-    private AutoCloseable closeable;
 
     NonFederatedCBSChannelTest() {
         super(new ClientLogger(NonFederatedCBSChannelTest.class));
@@ -84,8 +82,6 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        closeable = MockitoAnnotations.openMocks(this);
-
         connectionProperties = new ConnectionStringProperties(TestUtils.getConnectionString(false));
 
         final String eventHubName = TestUtils.getEventHubName();
@@ -111,14 +107,6 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
         if (connection != null) {
             connection.dispose();
         }
-
-        if (closeable != null) {
-            try {
-                closeable.close();
-            } catch (Exception e) {
-                logger.logThrowableAsWarning(e);
-            }
-        }
     }
 
     @Test
@@ -139,7 +127,7 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience, tokenAudience))
-            .assertNext(expiration -> OffsetDateTime.now().isBefore(expiration))
+            .assertNext(expiration -> assertTrue(OffsetDateTime.now().isBefore(expiration)))
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -163,7 +151,7 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience, tokenAudience)).expectErrorSatisfies(error -> {
-            Assertions.assertTrue(error instanceof AmqpException);
+            Assertions.assertInstanceOf(AmqpException.class, error);
 
             AmqpException exception = (AmqpException) error;
             Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());

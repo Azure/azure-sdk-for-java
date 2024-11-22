@@ -10,13 +10,9 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import org.junit.jupiter.api.AfterEach;
+import com.azure.messaging.eventhubs.mocking.MockEventHubAmqpConnection;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -25,13 +21,12 @@ import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link EventHubConnectionProcessor}.
@@ -42,32 +37,28 @@ class EventHubConnectionProcessorTest {
     private static final AmqpRetryOptions AMQP_RETRY_OPTIONS
         = new AmqpRetryOptions().setMaxRetries(2).setMode(AmqpRetryMode.FIXED).setDelay(Duration.ofSeconds(2));
 
-    @Mock
-    private EventHubAmqpConnection connection;
-    @Mock
-    private EventHubAmqpConnection connection2;
-    @Mock
-    private EventHubAmqpConnection connection3;
-
     private final Duration timeout = Duration.ofSeconds(15);
     private final Sinks.Many<AmqpEndpointState> endpointStatesSink = Sinks.many().multicast().onBackpressureBuffer();
     private final Sinks.Many<AmqpShutdownSignal> shutdownSignalSink = Sinks.many().multicast().onBackpressureBuffer();
-    private EventHubConnectionProcessor eventHubConnectionProcessor
+    private final EventHubConnectionProcessor eventHubConnectionProcessor
         = new EventHubConnectionProcessor(NAMESPACE, EVENT_HUB_NAME, AMQP_RETRY_OPTIONS);
 
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.initMocks(this);
+    private final EventHubAmqpConnection connection = new MockEventHubAmqpConnection() {
+        @Override
+        public Flux<AmqpEndpointState> getEndpointStates() {
+            return endpointStatesSink.asFlux();
+        }
 
-        when(connection.getEndpointStates()).thenReturn(endpointStatesSink.asFlux());
-        when(connection.getShutdownSignals()).thenReturn(shutdownSignalSink.asFlux());
-        when(connection.closeAsync()).thenReturn(Mono.empty());
-    }
+        @Override
+        public Flux<AmqpShutdownSignal> getShutdownSignals() {
+            return shutdownSignalSink.asFlux();
+        }
 
-    @AfterEach
-    void teardown() {
-        Mockito.framework().clearInlineMock(this);
-    }
+        @Override
+        public Mono<Void> closeAsync() {
+            return Mono.empty();
+        }
+    };
 
     /**
      * Verifies that we can get a new connection.
@@ -101,17 +92,27 @@ class EventHubConnectionProcessorTest {
     @Test
     void newConnectionOnClose() {
         // Arrange
-        final EventHubAmqpConnection[] connections
-            = new EventHubAmqpConnection[] { connection, connection2, connection3 };
-
-        final Flux<EventHubAmqpConnection> connectionsSink = createSink(connections);
-        final EventHubConnectionProcessor processor = connectionsSink.subscribeWith(eventHubConnectionProcessor);
         final Sinks.Many<AmqpEndpointState> connection2EndpointStatesSink
             = Sinks.many().multicast().onBackpressureBuffer();
         connection2EndpointStatesSink.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        when(connection2.getEndpointStates()).thenReturn(connection2EndpointStatesSink.asFlux());
-        when(connection2.closeAsync()).thenReturn(Mono.empty());
+        EventHubAmqpConnection connection2 = new MockEventHubAmqpConnection() {
+            @Override
+            public Flux<AmqpEndpointState> getEndpointStates() {
+                return connection2EndpointStatesSink.asFlux();
+            }
+
+            @Override
+            public Mono<Void> closeAsync() {
+                return Mono.empty();
+            }
+        };
+        EventHubAmqpConnection connection3 = new MockEventHubAmqpConnection();
+
+        final EventHubAmqpConnection[] connections
+            = new EventHubAmqpConnection[] { connection, connection2, connection3 };
+        final Flux<EventHubAmqpConnection> connectionsSink = createSink(connections);
+        final EventHubConnectionProcessor processor = connectionsSink.subscribeWith(eventHubConnectionProcessor);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -142,6 +143,7 @@ class EventHubConnectionProcessorTest {
     @Test
     void newConnectionOnRetryableError() {
         // Arrange
+        EventHubAmqpConnection connection2 = new MockEventHubAmqpConnection();
         final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] { connection, connection2 };
         final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
             new AmqpErrorContext("test-namespace"));
@@ -172,6 +174,7 @@ class EventHubConnectionProcessorTest {
     @Test
     void nonRetryableError() {
         // Arrange
+        EventHubAmqpConnection connection2 = new MockEventHubAmqpConnection();
         final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] { connection, connection2 };
         final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "Test-error",
             new AmqpErrorContext("test-namespace"));
@@ -206,13 +209,24 @@ class EventHubConnectionProcessorTest {
     @Test
     void noSubscribers() {
         // Arrange
-        final Subscription subscription = mock(Subscription.class);
+        Map<Long, AtomicInteger> requests = new ConcurrentHashMap<>();
+        final Subscription subscription = new Subscription() {
+            @Override
+            public void request(long l) {
+                requests.computeIfAbsent(l, ignored -> new AtomicInteger()).incrementAndGet();
+            }
+
+            @Override
+            public void cancel() {
+            }
+        };
 
         // Act
         eventHubConnectionProcessor.onSubscribe(subscription);
 
         // Assert
-        verify(subscription).request(eq(1L));
+        assertEquals(1, requests.size());
+        assertEquals(1, requests.get(1L).get());
     }
 
     /**
@@ -222,7 +236,7 @@ class EventHubConnectionProcessorTest {
     @Test
     void errorsWhenResubscribingOnTerminated() {
         // Arrange
-        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] { connection, };
+        final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[] { connection };
 
         final Flux<EventHubAmqpConnection> connectionsSink = createSink(connections);
         final EventHubConnectionProcessor processor = connectionsSink.subscribeWith(eventHubConnectionProcessor);

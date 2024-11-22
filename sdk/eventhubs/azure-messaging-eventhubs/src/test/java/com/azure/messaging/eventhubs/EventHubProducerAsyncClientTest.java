@@ -19,12 +19,12 @@ import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.metrics.TestCounter;
 import com.azure.core.test.utils.metrics.TestHistogram;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
@@ -51,7 +51,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -126,17 +125,18 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("resource")
 class EventHubProducerAsyncClientTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
-    private static final String ENTITY_PATH = HOSTNAME
-        + Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION
         = new EventHubsProducerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+
+    private final TokenCredential tokenCredential = new MockTokenCredential();
     @Mock
     private AmqpSendLink sendLink;
     @Mock
@@ -150,8 +150,6 @@ class EventHubProducerAsyncClientTest {
     private EventHubReactorAmqpConnection connection2;
     @Mock
     private EventHubReactorAmqpConnection connection3;
-    @Mock
-    private TokenCredential tokenCredential;
     @Mock
     private Runnable onClientClosed;
 
@@ -171,7 +169,7 @@ class EventHubProducerAsyncClientTest {
     private final Scheduler testScheduler = Schedulers.newBoundedElastic(10, 10, "test");
 
     @BeforeEach
-    void setup(TestInfo testInfo) {
+    void setup() {
         MockitoAnnotations.initMocks(this);
 
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
@@ -194,7 +192,7 @@ class EventHubProducerAsyncClientTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown() {
         testScheduler.dispose();
         Mockito.framework().clearInlineMock(this);
         Mockito.reset(sendLink);
@@ -391,9 +389,11 @@ class EventHubProducerAsyncClientTest {
         verify(tracer1, times(1)).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);
-        assertEquals(2, testData.blockFirst().getProperties().size());
-        assertEquals("diag-id", testData.blockFirst().getProperties().get(DIAGNOSTIC_ID_KEY));
-        assertEquals("diag-id", testData.blockFirst().getProperties().get(TRACEPARENT_KEY));
+        StepVerifier.create(testData).assertNext(event -> {
+            assertEquals(2, event.getProperties().size());
+            assertEquals("diag-id", event.getProperties().get(DIAGNOSTIC_ID_KEY));
+            assertEquals("diag-id", event.getProperties().get(TRACEPARENT_KEY));
+        }).verifyComplete();
     }
 
     /**
@@ -442,7 +442,9 @@ class EventHubProducerAsyncClientTest {
         verify(tracer1, never()).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);
-        assertEquals(1, testData.blockFirst().getProperties().size());
+        StepVerifier.create(testData)
+            .assertNext(event -> assertEquals(1, event.getProperties().size()))
+            .verifyComplete();
     }
 
     /**
@@ -1032,8 +1034,8 @@ class EventHubProducerAsyncClientTest {
             .expectErrorMessage(error.getMessage())
             .verify(DEFAULT_TIMEOUT);
 
-        assertSendCount(meter, null, 1, expectedErrorType, null);
-        assertOperationDuration(meter, SEND, null, null, expectedErrorType, null);
+        assertSendCount(meter, null, expectedErrorType, null);
+        assertOperationDuration(meter, SEND, null, expectedErrorType, null);
     }
 
     @Test
@@ -1057,8 +1059,8 @@ class EventHubProducerAsyncClientTest {
         SendOptions options = new SendOptions().setPartitionId(partitionId);
         StepVerifier.create(producer.send(new EventData("1"), options)).expectComplete().verify(DEFAULT_TIMEOUT);
 
-        assertSendCount(meter, partitionId, 1, null, null);
-        assertOperationDuration(meter, SEND, partitionId, null, null, null);
+        assertSendCount(meter, partitionId, null, null);
+        assertOperationDuration(meter, SEND, partitionId, null, null);
     }
 
     @Test
@@ -1094,14 +1096,14 @@ class EventHubProducerAsyncClientTest {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        assertOperationDuration(meter, GET_PARTITION_PROPERTIES, partitionId, null, null, null);
+        assertOperationDuration(meter, GET_PARTITION_PROPERTIES, partitionId, null, null);
 
         StepVerifier.create(producer.getEventHubProperties())
             .expectNextCount(1)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        assertOperationDuration(meter, GET_EVENT_HUB_PROPERTIES, null, null, null, null);
+        assertOperationDuration(meter, GET_EVENT_HUB_PROPERTIES, null, null, null);
     }
 
     @Test
@@ -1146,8 +1148,8 @@ class EventHubProducerAsyncClientTest {
 
         StepVerifier.create(producer.send(new EventData("1"))).expectComplete().verify(DEFAULT_TIMEOUT);
 
-        assertSendCount(meter, null, 1, null, "parent span");
-        assertOperationDuration(meter, SEND, null, null, null, "parent span");
+        assertSendCount(meter, null, null, "parent span");
+        assertOperationDuration(meter, SEND, null, null, "parent span");
     }
 
     @Test
@@ -1416,7 +1418,7 @@ class EventHubProducerAsyncClientTest {
         endpointStates.emitError(nonTransientError, Sinks.EmitFailureHandler.FAIL_FAST);
 
         StepVerifier.create(producer.send(testData2)).expectErrorSatisfies(error -> {
-            Assertions.assertTrue(error instanceof AmqpException);
+            Assertions.assertInstanceOf(AmqpException.class, error);
 
             final AmqpException actual = (AmqpException) error;
             Assertions.assertEquals(nonTransientError.isTransient(), actual.isTransient());
@@ -1583,23 +1585,26 @@ class EventHubProducerAsyncClientTest {
         }
     }
 
-    private void assertSendCount(TestMeter meter, String partitionId, int expectedValue, String expectedErrorType,
-        Object parentContext) {
+    private void assertSendCount(TestMeter meter, String partitionId, String expectedErrorType, Object parentContext) {
         TestCounter eventCounter = meter.getCounters().get("messaging.client.published.messages");
         assertNotNull(eventCounter);
 
         List<TestMeasurement<Long>> measurements = eventCounter.getMeasurements();
         assertEquals(1, measurements.size());
-        assertEquals(expectedValue, measurements.get(0).getValue(), expectedValue);
+        assertEquals(1, measurements.get(0).getValue(), 1);
         assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, expectedErrorType, SEND,
             measurements.get(0).getAttributes());
         if (parentContext != null) {
-            assertEquals(parentContext, measurements.get(0).getContext().getData(PARENT_TRACE_CONTEXT_KEY).get());
+            assertEquals(parentContext,
+                measurements.get(0)
+                    .getContext()
+                    .getData(PARENT_TRACE_CONTEXT_KEY)
+                    .orElseThrow(() -> new IllegalStateException("Parent context not found")));
         }
     }
 
     private void assertOperationDuration(TestMeter meter, OperationName operation, String partitionId,
-        Double expectedValue, String expectedErrorType, Object parentContext) {
+        String expectedErrorType, Object parentContext) {
         TestHistogram duration = meter.getHistograms().get("messaging.client.operation.duration");
         assertNotNull(duration);
         List<TestMeasurement<Double>> measurements = duration.getMeasurements()
@@ -1607,15 +1612,15 @@ class EventHubProducerAsyncClientTest {
             .filter(m -> operation.toString().equals(m.getAttributes().get("messaging.operation.name")))
             .collect(Collectors.toList());
         assertEquals(1, measurements.size());
-        if (expectedValue != null) {
-            // sanity check
-            assertEquals(expectedValue, measurements.get(0).getValue(), expectedValue + 10);
-        }
 
         assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, expectedErrorType, operation,
             measurements.get(0).getAttributes());
         if (parentContext != null) {
-            assertEquals(parentContext, measurements.get(0).getContext().getData(PARENT_TRACE_CONTEXT_KEY).get());
+            assertEquals(parentContext,
+                measurements.get(0)
+                    .getContext()
+                    .getData(PARENT_TRACE_CONTEXT_KEY)
+                    .orElseThrow(() -> new IllegalStateException("Parent context not found")));
         }
     }
 

@@ -181,7 +181,7 @@ public class PartitionBasedLoadBalancerTest {
 
                     partitionOwnership.forEach(po -> assertEquals(OWNER_ID_1, partitionOwnership.get(0).getOwnerId()));
                     assertEquals(index + 1,
-                        partitionOwnership.stream().map(po -> po.getPartitionId()).distinct().count());
+                        partitionOwnership.stream().map(PartitionOwnership::getPartitionId).distinct().count());
                 })
                 .verifyComplete();
         });
@@ -220,7 +220,7 @@ public class PartitionBasedLoadBalancerTest {
 
                     assertNotNull(partitionOwnership, "'partitionOwnership' should not be null.");
                     assertTrue(partitionOwnership.size() <= 3);
-                    assertEquals(2, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
+                    assertEquals(2, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
                 })
                 .verifyComplete();
         });
@@ -304,19 +304,20 @@ public class PartitionBasedLoadBalancerTest {
                 .add(createPartitionLoadBalancer("owner" + index, LoadBalancingStrategy.BALANCED)));
 
         IntStream.range(0, PARTITION_IDS_3.size()).forEach(index -> {
-            loadBalancers.forEach(lb -> lb.loadBalance());
-            List<PartitionOwnership> partitionOwnership
-                = checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME)
-                    .collectList()
-                    .block();
-            assertTrue(partitionOwnership.size() <= 3);
-            assertEquals(3, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
+            loadBalancers.forEach(PartitionBasedLoadBalancer::loadBalance);
+            StepVerifier
+                .create(checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME).collectList())
+                .assertNext(partitionOwnership -> {
+                    assertTrue(partitionOwnership.size() <= 3);
+                    assertEquals(3, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
+                })
+                .verifyComplete();
         });
 
         StepVerifier
             .create(checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME).collectList())
             .assertNext(partitionOwnership -> {
-                assertEquals(3, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
+                assertEquals(3, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
 
                 // each should have 1 partition
                 assertEquals(1, partitionOwnership.stream().filter(po -> "owner0".equals(po.getOwnerId())).count());
@@ -347,21 +348,22 @@ public class PartitionBasedLoadBalancerTest {
                 .add(createPartitionLoadBalancer("owner" + index, LoadBalancingStrategy.BALANCED)));
 
         IntStream.range(0, PARTITION_IDS_3.size()).forEach(index -> {
-            loadBalancers.forEach(lb -> lb.loadBalance());
+            loadBalancers.forEach(PartitionBasedLoadBalancer::loadBalance);
 
-            List<PartitionOwnership> partitionOwnership
-                = checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME)
-                    .collectList()
-                    .block();
-            assertTrue(partitionOwnership.size() <= 3);
-            assertEquals(3, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
+            StepVerifier
+                .create(checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME).collectList())
+                .assertNext(partitionOwnership -> {
+                    assertTrue(partitionOwnership.size() <= 3);
+                    assertEquals(3, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
+                })
+                .verifyComplete();
         });
 
         StepVerifier
             .create(checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME).collectList())
             .assertNext(partitionOwnership -> {
 
-                assertEquals(3, partitionOwnership.stream().map(po -> po.getOwnerId()).distinct().count());
+                assertEquals(3, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
 
                 // each should have 1 partition
                 assertEquals(1, partitionOwnership.stream().filter(po -> ownerId0.equals(po.getOwnerId())).count());
@@ -478,9 +480,7 @@ public class PartitionBasedLoadBalancerTest {
 
         final CheckpointStore mockCheckpointStore = mock(CheckpointStore.class);
         when(mockCheckpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME))
-            .thenAnswer(invocation -> {
-                return Flux.just(claim1, claim2);
-            });
+            .thenAnswer(invocation -> Flux.just(claim1, claim2));
         when(mockCheckpointStore.claimOwnership(any())).thenReturn(Flux.just(claim1),
             Flux.error(new IllegalStateException("Unable to claim partition.")));
         when(mockCheckpointStore.listCheckpoints(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME))
@@ -774,7 +774,7 @@ public class PartitionBasedLoadBalancerTest {
         assertNotNull(partitionOwnership);
         assertEquals(3, partitionOwnership.size());
         partitionOwnership.forEach(po -> assertEquals("owner1", partitionOwnership.get(0).getOwnerId()));
-        assertEquals(3, partitionOwnership.stream().map(po -> po.getPartitionId()).distinct().count());
+        assertEquals(3, partitionOwnership.stream().map(PartitionOwnership::getPartitionId).distinct().count());
     }
 
     @Test
@@ -796,12 +796,15 @@ public class PartitionBasedLoadBalancerTest {
         // one execution of load balancer for both instances should result in a 3-2 split
         partitionBasedLoadBalancer1.loadBalance();
         partitionBasedLoadBalancer2.loadBalance();
-        List<PartitionOwnership> partitionOwnership
-            = checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME).collectList().block();
-        assertEquals(5, partitionOwnership.size());
-        assertEquals(2, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
-        assertTrue(partitionOwnership.stream().filter(po -> po.getOwnerId().equals(OWNER_ID_1)).count() >= 2);
-        assertTrue(partitionOwnership.stream().filter(po -> po.getOwnerId().equals("owner2")).count() >= 2);
+        StepVerifier
+            .create(checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME).collectList())
+            .assertNext(partitionOwnership -> {
+                assertEquals(5, partitionOwnership.size());
+                assertEquals(2, partitionOwnership.stream().map(PartitionOwnership::getOwnerId).distinct().count());
+                assertTrue(partitionOwnership.stream().filter(po -> po.getOwnerId().equals(OWNER_ID_1)).count() >= 2);
+                assertTrue(partitionOwnership.stream().filter(po -> po.getOwnerId().equals("owner2")).count() >= 2);
+            })
+            .verifyComplete();
     }
 
     private PartitionPumpManager getPartitionPumpManager() {

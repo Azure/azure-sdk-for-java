@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
@@ -22,10 +23,16 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
+import com.azure.messaging.eventhubs.mocking.MockMessageSerializer;
+import com.azure.messaging.eventhubs.mocking.MockReactorConnection;
+import com.azure.messaging.eventhubs.mocking.MockRecord;
+import com.azure.messaging.eventhubs.mocking.MockSelectable;
+import com.azure.messaging.eventhubs.mocking.MockSession;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -37,10 +44,8 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -48,6 +53,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.Answer;
 import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -69,49 +75,54 @@ public class EventHubReactorConnectionTest {
     private static final String HOSTNAME = String.format("test-event-hub%s/",
         Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net"));
 
-    private static String product;
-    private static String clientVersion;
+    private static final String PRODUCT;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
+        PRODUCT = properties.get(NAME_KEY);
+        CLIENT_VERSION = properties.get(VERSION_KEY);
+    }
+
+    private final TokenCredential tokenCredential = new MockTokenCredential();
+    private final Scheduler scheduler = Schedulers.boundedElastic();
+    private final TokenManagerProvider tokenManagerProvider
+        = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "", "");
+    private final MessageSerializer messageSerializer = new MockMessageSerializer();
 
     @Mock
     private Reactor reactor;
     @Mock
-    private Selectable selectable;
-    @Mock
-    private TokenManagerProvider tokenManagerProvider;
-    @Mock
-    private TokenCredential tokenCredential;
-    @Mock
-    private Scheduler scheduler;
-    @Mock
-    private Connection reactorConnection;
-    @Mock
-    private MessageSerializer messageSerializer;
-    @Mock
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorHandlerProvider handlerProvider;
-    @Mock
-    private Session session;
-    @Mock
-    private Record record;
 
     private ConnectionOptions connectionOptions;
     private ConnectionHandler connectionHandler;
-    private AmqpLinkProvider linkProvider = new AmqpLinkProvider();
-
-    @BeforeAll
-    public static void init() {
-        Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
-        product = properties.get(NAME_KEY);
-        clientVersion = properties.get(VERSION_KEY);
-    }
+    private final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
     @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @AfterEach
+    public void reset() {
+        Mockito.reset(reactor, reactorProvider, handlerProvider);
+
+        Mockito.framework().clearInlineMock(this);
+    }
+
+    private void configure(Session session) throws IOException {
+        Connection reactorConnection = new MockReactorConnection() {
+            @Override
+            public Session session() {
+                return session;
+            }
+        };
 
         final ClientOptions clientOptions = new ClientOptions()
-            .setHeaders(Arrays.asList(new Header(NAME_KEY, product), new Header(VERSION_KEY, clientVersion)));
+            .setHeaders(Arrays.asList(new Header(NAME_KEY, PRODUCT), new Header(VERSION_KEY, CLIENT_VERSION)));
 
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         this.connectionOptions
@@ -123,11 +134,11 @@ public class EventHubReactorConnectionTest {
         connectionHandler
             = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
 
-        when(reactor.selectable()).thenReturn(selectable);
+        when(reactor.selectable()).thenReturn(new MockSelectable());
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
             connectionHandler)).thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
-        when(reactor.attachments()).thenReturn(record);
+        when(reactor.attachments()).thenReturn(new MockRecord());
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor, Pipe.open());
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -144,33 +155,43 @@ public class EventHubReactorConnectionTest {
         when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions)).thenReturn(connectionHandler);
         when(handlerProvider.createSessionHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);
-
-        when(reactorConnection.session()).thenReturn(session);
-        final Record record = mock(Record.class);
-        when(session.attachments()).thenReturn(record);
-    }
-
-    @AfterEach
-    public void reset() {
-        Mockito.reset(reactor, selectable, tokenManagerProvider, reactorConnection, messageSerializer, reactorProvider,
-            handlerProvider, tokenCredential, scheduler);
-
-        Mockito.framework().clearInlineMock(this);
     }
 
     @Test
-    public void getsManagementChannel() {
+    public void getsManagementChannel() throws IOException {
         // Arrange
         final Sender sender = mock(Sender.class);
         final Receiver receiver = mock(Receiver.class);
-        final Record linkRecord = mock(Record.class);
+        final Record linkRecord = new MockRecord();
         final Event event = mock(Event.class);
-        final Connection connectionProtonJ = mock(Connection.class);
-        when(event.getConnection()).thenReturn(connectionProtonJ);
-        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        final Connection connectionProtonJ = new MockReactorConnection() {
+            @Override
+            public EndpointState getRemoteState() {
+                return EndpointState.ACTIVE;
+            }
+        };
 
-        when(session.sender(any())).thenReturn(sender);
-        when(session.receiver(any())).thenReturn(receiver);
+        when(event.getLink()).thenReturn(sender);
+        when(event.getConnection()).thenReturn(connectionProtonJ);
+
+        Session session = new MockSession() {
+            @Override
+            public Record attachments() {
+                return new MockRecord();
+            }
+
+            @Override
+            public Sender sender(String name) {
+                return sender;
+            }
+
+            @Override
+            public Receiver receiver(String name) {
+                return receiver;
+            }
+        };
+
+        configure(session);
 
         when(sender.attachments()).thenReturn(linkRecord);
         when(receiver.attachments()).thenReturn(linkRecord);
@@ -190,14 +211,9 @@ public class EventHubReactorConnectionTest {
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())
             .then(() -> connectionHandler.onConnectionRemoteOpen(event))
-            .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
+            .assertNext(node -> Assertions.assertInstanceOf(ManagementChannel.class, node))
             .expectComplete()
             .verify(Duration.ofSeconds(10));
-    }
-
-    @AfterEach
-    public void teardown() {
-        Mockito.framework().clearInlineMock(this);
     }
 
     private Answer<ReactorExecutor> answerByCreatingExecutor() {

@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -58,6 +59,9 @@ class AmqpReceiveLinkProcessorTest {
         = new EventHubsConsumerInstrumentation(null, null, "hostname", "hubname", "$Default", false);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
 
+    private final Message message1 = Message.Factory.create();
+    private final Message message2 = Message.Factory.create();
+
     @Mock
     private AmqpReceiveLink link1;
     @Mock
@@ -66,10 +70,6 @@ class AmqpReceiveLinkProcessorTest {
     private AmqpReceiveLink link3;
     @Mock
     private AmqpRetryPolicy retryPolicy;
-    @Mock
-    private Message message1;
-    @Mock
-    private Message message2;
     @Mock
     private Disposable parentConnection;
 
@@ -250,16 +250,17 @@ class AmqpReceiveLinkProcessorTest {
         when(link3.getCredits()).thenReturn(1);
 
         // Act & Assert
-        StepVerifier.create(processor).then(() -> messageProcessor.next(message1)).expectNext(message1).then(() -> {
-            // Close that first link.
-            endpointProcessor.complete();
-        }).expectNext(message2).then(() -> {
-            // Close connection 2
-            connection2Endpoints.complete();
-        })
+        // Close connection 2
+        // Close that first link.
+        StepVerifier.create(processor)
+            .then(() -> messageProcessor.next(message1))
+            .expectNext(message1)
+            .then(endpointProcessor::complete)
+            .expectNext(message2)
+            .then(connection2Endpoints::complete)
             .expectNext(message3)
             .expectNext(message4)
-            .then(() -> processor.cancel())
+            .then(processor::cancel)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
@@ -284,7 +285,7 @@ class AmqpReceiveLinkProcessorTest {
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ARGUMENT_ERROR,
-            "Non" + "-retryable-error", new AmqpErrorContext("test-namespace"));
+            "Non-retryable-error", new AmqpErrorContext("test-namespace"));
         when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(null);
 
         // Act & Assert
@@ -293,7 +294,7 @@ class AmqpReceiveLinkProcessorTest {
             endpointProcessor.next(AmqpEndpointState.ACTIVE);
             messageProcessor.next(message1);
         }).expectNext(message1).then(() -> endpointProcessor.error(amqpException)).expectErrorSatisfies(error -> {
-            assertTrue(error instanceof AmqpException);
+            assertInstanceOf(AmqpException.class, error);
             AmqpException exception = (AmqpException) error;
 
             assertFalse(exception.isTransient());
@@ -360,7 +361,7 @@ class AmqpReceiveLinkProcessorTest {
         StepVerifier.create(processor).then(() -> {
             endpointProcessor.next(AmqpEndpointState.ACTIVE);
             messageProcessor.next(message1);
-        }).expectNext(message1).then(() -> endpointProcessor.complete()).thenCancel().verify(DEFAULT_TIMEOUT);
+        }).expectNext(message1).then(endpointProcessor::complete).thenCancel().verify(DEFAULT_TIMEOUT);
 
         assertTrue(processor.isTerminated());
     }
@@ -407,7 +408,7 @@ class AmqpReceiveLinkProcessorTest {
         })
             .expectNext(message1)
             .expectNext(message2)
-            .then(() -> endpointProcessor.complete())
+            .then(endpointProcessor::complete)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 

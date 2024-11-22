@@ -18,6 +18,7 @@ import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.SpanKind;
@@ -81,7 +82,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -96,14 +96,19 @@ public class EventHubProducerClientTest {
     private final AmqpRetryOptions retryOptions
         = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30)).setDelay(Duration.ofSeconds(1));
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
+
+    private final TokenCredential tokenCredential = new MockTokenCredential();
+
+    // All previous usages of the 'onClientClosed' mock checked that it was never called. This replacement throws when
+    // called, which is more explicit.
+    private final Runnable onClientClosed = () -> {
+        throw new IllegalStateException("'onClientClosed' should not be called.");
+    };
+
     @Mock
     private AmqpSendLink sendLink;
     @Mock
     private EventHubAmqpConnection connection;
-    @Mock
-    private TokenCredential tokenCredential;
-    @Mock
-    private Runnable onClientClosed;
     @Captor
     private ArgumentCaptor<Message> singleMessageCaptor;
     @Captor
@@ -226,8 +231,6 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(1)).start(eq(expectedMessageSpanName), any(), any(Context.class));
         verify(tracer1, times(2)).end(isNull(), isNull(), any());
         verify(tracer1, times(1)).injectContext(any(), any());
-
-        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -280,7 +283,6 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(1)).extractContext(any());
         verify(tracer1, never()).start(eq(expectedMessageSpanName), any(), any(Context.class));
         verify(tracer1, never()).injectContext(any(), any());
-        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -343,8 +345,6 @@ public class EventHubProducerClientTest {
         Assertions.assertEquals(count, messagesSent.size());
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
-
-        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -449,8 +449,6 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(2)).start(eq(expectedMessageSpanName), any(), any(Context.class));
         verify(tracer1, times(3)).end(isNull(), isNull(), any());
         verify(tracer1, times(2)).injectContext(any(), any());
-
-        verifyNoInteractions(onClientClosed);
     }
 
     /**

@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 
 import static com.azure.messaging.eventhubs.EventDataAggregatorTest.setupBatchMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -468,7 +469,7 @@ public class EventHubBufferedPartitionProducerTest {
             .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         StepVerifier.create(producer.enqueueEvent(event2)).consumeErrorWith(error -> {
-            assertTrue(error instanceof AmqpException);
+            assertInstanceOf(AmqpException.class, error);
 
             final AmqpException amqpException = (AmqpException) error;
             assertTrue(amqpException.isTransient());

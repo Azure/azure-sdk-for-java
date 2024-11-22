@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.CreditFlowMode;
 import com.azure.core.amqp.implementation.MessageFlux;
@@ -50,7 +51,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.atMost;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -65,20 +65,18 @@ class EventHubPartitionAsyncConsumerTest {
     private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION
         = new EventHubsConsumerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+    private final Disposable parentConnection = () -> {
+    };
+    private final Message message1 = Message.Factory.create();
+    private final Message message2 = Message.Factory.create();
+    private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
+
     @Mock
     private AmqpReceiveLink link1;
     @Mock
     private AmqpReceiveLink link2;
     @Mock
-    private AmqpRetryPolicy retryPolicy;
-    @Mock
-    private Message message1;
-    @Mock
-    private Message message2;
-    @Mock
     private MessageSerializer messageSerializer;
-    @Mock
-    private Disposable parentConnection;
 
     private final EventPosition originalPosition = EventPosition.latest();
     private final AtomicReference<Supplier<EventPosition>> currentPosition
@@ -92,8 +90,6 @@ class EventHubPartitionAsyncConsumerTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-
-        when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
 
         when(link1.getEndpointStates()).thenReturn(endpointStatesSink.asFlux());
         when(link1.receive()).thenReturn(messagesSink.asFlux());
@@ -164,9 +160,9 @@ class EventHubPartitionAsyncConsumerTest {
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
-        final Message message3 = mock(Message.class);
+        final Message message3 = Message.Factory.create();
         final Long secondOffset = 54L;
-        final Long lastOffset = 65L;
+        final long lastOffset = 65L;
         final AmqpAnnotatedMessage annotatedMessage1
             = new AmqpAnnotatedMessage(AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
         final AmqpAnnotatedMessage annotatedMessage2
@@ -223,7 +219,7 @@ class EventHubPartitionAsyncConsumerTest {
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
-        final Message message3 = mock(Message.class);
+        final Message message3 = Message.Factory.create();
         final long secondOffset = 54L;
         final long lastOffset = 65L;
         final AmqpAnnotatedMessage annotatedMessage1

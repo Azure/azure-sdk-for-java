@@ -13,17 +13,15 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -32,6 +30,7 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,8 +44,7 @@ public class EventHubClientBuilderTest {
     private static final String EVENT_HUB_NAME = "eventHubName";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
-    private static final String ENDPOINT
-        = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
+    private static final String ENDPOINT = getURI().toString();
     private static final TokenCredential TOKEN_CREDENTIAL = new BasicAuthenticationCredential("foo", "bar");
 
     private static final String PROXY_HOST = "127.0.0.1";
@@ -62,24 +60,8 @@ public class EventHubClientBuilderTest {
         = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
     public static final String JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
-    @Mock
-    private Scheduler scheduler;
-
-    @Mock
-    private TokenCredential tokenCredential;
-    private AutoCloseable closeable;
-
-    @BeforeEach
-    public void beforeEach() {
-        closeable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    public void afterEach() throws Exception {
-        if (closeable != null) {
-            closeable.close();
-        }
-    }
+    private final Scheduler scheduler = Schedulers.boundedElastic();
+    private final TokenCredential tokenCredential = new MockTokenCredential();
 
     @Test
     public void missingConnectionString() {
@@ -128,10 +110,10 @@ public class EventHubClientBuilderTest {
     @Test
     public void testConnectionStringWithSas() {
 
-        String connectionStringWithNoEntityPath = String.format(
-            "Endpoint=sb://eh-name%s/;" + "SharedAccessSignature=SharedAccessSignature test-value", ENDPOINT_SUFFIX);
+        String connectionStringWithNoEntityPath = String
+            .format("Endpoint=sb://eh-name%s/;SharedAccessSignature=SharedAccessSignature test-value", ENDPOINT_SUFFIX);
         String connectionStringWithEntityPath = String.format(
-            "Endpoint=sb://eh-name%s/;" + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name",
+            "Endpoint=sb://eh-name%s/;SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name",
             ENDPOINT_SUFFIX);
 
         assertNotNull(new EventHubClientBuilder().connectionString(connectionStringWithNoEntityPath, "eh-name"));
@@ -143,17 +125,17 @@ public class EventHubClientBuilderTest {
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
     public void testProxyOptionsConfiguration(String proxyConfiguration) {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
-        configuration = configuration.put(JAVA_NET_USE_SYSTEM_PROXIES, "true");
+        Configuration configuration = Configuration.getGlobalConfiguration()
+            .clone()
+            .put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
+            .put(JAVA_NET_USE_SYSTEM_PROXIES, "true");
 
         // Client creation should not fail with incorrect proxy configurations
-        EventHubConsumerAsyncClient asyncClient
-            = new EventHubClientBuilder().connectionString(CORRECT_CONNECTION_STRING)
-                .configuration(configuration)
-                .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-                .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-                .buildAsyncConsumerClient();
+        assertDoesNotThrow(() -> new EventHubClientBuilder().connectionString(CORRECT_CONNECTION_STRING)
+            .configuration(configuration)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .buildAsyncConsumerClient());
     }
 
     @Test
@@ -389,11 +371,13 @@ public class EventHubClientBuilderTest {
             Arguments.of("https://username:password@sub.example.com"));
     }
 
-    private static URI getURI(String endpointFormat, String namespace, String domainName) {
+    private static URI getURI() {
         try {
-            return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
+            return new URI(String.format(Locale.US, ClientConstants.ENDPOINT_FORMAT,
+                EventHubClientBuilderTest.NAMESPACE_NAME, EventHubClientBuilderTest.DEFAULT_DOMAIN_NAME));
         } catch (URISyntaxException exception) {
-            throw new IllegalArgumentException(String.format(Locale.US, "Invalid namespace name: %s", namespace),
+            throw new IllegalArgumentException(
+                String.format(Locale.US, "Invalid namespace name: %s", EventHubClientBuilderTest.NAMESPACE_NAME),
                 exception);
         }
     }

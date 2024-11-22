@@ -9,11 +9,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.eventhubs.mocking.MockTracer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiConsumer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,16 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class InstrumentationScopeTests {
-    private static final BiConsumer<EventHubsMetricsProvider, InstrumentationScope> NOOP_METRICS_CALLBACK = (m, s) -> {
-    };
 
     @Test
     public void disabledScope() {
@@ -54,8 +47,7 @@ public class InstrumentationScopeTests {
 
     @Test
     public void enabledTracesScope() {
-        Tracer tracer = mock(Tracer.class);
-        when(tracer.isEnabled()).thenReturn(true);
+        Tracer tracer = new MockTracer();
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, null,
             "fullyQualifiedName", "entityName", "consumerGroup", true);
         InstrumentationScope scope = instrumentation.createScope(null);
@@ -108,26 +100,43 @@ public class InstrumentationScopeTests {
 
     @Test
     public void scopeClosesSpan() {
-        Tracer tracer = mock(Tracer.class);
-        when(tracer.isEnabled()).thenReturn(true);
+        AtomicInteger endCallCount = new AtomicInteger();
+        Tracer tracer = new MockTracer() {
+            @Override
+            public void end(String s, Throwable throwable, Context context) {
+                if (s == null && throwable == null && context == Context.NONE) {
+                    endCallCount.incrementAndGet();
+                }
+            }
+        };
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, null,
             "fullyQualifiedName", "entityName", "consumerGroup", true);
 
         InstrumentationScope scope = instrumentation.createScope(null);
         scope.close();
 
-        verify(tracer).end(isNull(), isNull(), same(Context.NONE));
+        assertEquals(1, endCallCount.get());
     }
 
     @Test
     public void scopeClosesSpanAndScope() {
-        Tracer tracer = mock(Tracer.class);
-        when(tracer.isEnabled()).thenReturn(true);
+        AtomicInteger endCallCount = new AtomicInteger();
+        AtomicBoolean spanClosed = new AtomicBoolean();
+        Tracer tracer = new MockTracer() {
+            @Override
+            public void end(String s, Throwable throwable, Context context) {
+                if (s == null && throwable == null && context == Context.NONE) {
+                    endCallCount.incrementAndGet();
+                }
+            }
+
+            @Override
+            public AutoCloseable makeSpanCurrent(Context context) {
+                return () -> spanClosed.set(true);
+            }
+        };
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, null,
             "fullyQualifiedName", "entityName", "consumerGroup", true);
-
-        AtomicBoolean spanClosed = new AtomicBoolean();
-        when(tracer.makeSpanCurrent(any(Context.class))).thenReturn(() -> spanClosed.set(true));
 
         AtomicBoolean metricCallbackCalled = new AtomicBoolean();
         InstrumentationScope scope
@@ -137,7 +146,7 @@ public class InstrumentationScopeTests {
 
         assertTrue(spanClosed.get());
         assertTrue(metricCallbackCalled.get());
-        verify(tracer).end(isNull(), isNull(), same(Context.NONE));
+        assertEquals(1, endCallCount.get());
     }
 
     @Test

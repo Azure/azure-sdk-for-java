@@ -14,6 +14,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,14 +29,9 @@ class EventBatchContextTest {
         = new PartitionContext("TEST_NAMESPACE", "TEST_EVENT_HUB", "TEST_DEFAULT_GROUP", "TEST_TEST_ID");
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties = new LastEnqueuedEventProperties(1035L, 100L,
         Instant.ofEpochSecond(1608315301L), Instant.ofEpochSecond(1609315301L));
-    private final List<EventData> events = new ArrayList<>();
 
     @Mock
     private CheckpointStore checkpointStore;
-    @Mock
-    private EventData eventData1;
-    @Mock
-    private EventData eventData2;
 
     @BeforeEach
     void beforeEach() {
@@ -48,11 +44,11 @@ class EventBatchContextTest {
     @Test
     void constructorNull() {
         assertThrows(NullPointerException.class,
-            () -> new EventBatchContext(null, events, checkpointStore, lastEnqueuedEventProperties));
+            () -> new EventBatchContext(null, new ArrayList<>(), checkpointStore, lastEnqueuedEventProperties));
         assertThrows(NullPointerException.class,
             () -> new EventBatchContext(partitionContext, null, checkpointStore, lastEnqueuedEventProperties));
         assertThrows(NullPointerException.class,
-            () -> new EventBatchContext(partitionContext, events, null, lastEnqueuedEventProperties));
+            () -> new EventBatchContext(partitionContext, new ArrayList<>(), null, lastEnqueuedEventProperties));
     }
 
     /**
@@ -61,8 +57,7 @@ class EventBatchContextTest {
     @Test
     void properties() {
         // Arrange
-        events.add(eventData1);
-        events.add(eventData2);
+        List<EventData> events = Arrays.asList(new EventData(), new EventData());
 
         final EventBatchContext context
             = new EventBatchContext(partitionContext, events, checkpointStore, lastEnqueuedEventProperties);
@@ -76,15 +71,22 @@ class EventBatchContextTest {
     @Test
     void updateCheckpointAsync() {
         // Arrange
-        when(checkpointStore.updateCheckpoint(any(Checkpoint.class))).thenReturn(Mono.empty());
-
-        events.add(eventData1);
-        events.add(eventData2);
-
         final Long sequenceNumber = 10L;
         final Long offset = 15L;
-        when(eventData2.getSequenceNumber()).thenReturn(sequenceNumber);
-        when(eventData2.getOffset()).thenReturn(offset);
+
+        List<EventData> events = Arrays.asList(new EventData(), new EventData() {
+            @Override
+            public Long getSequenceNumber() {
+                return sequenceNumber;
+            }
+
+            @Override
+            public Long getOffset() {
+                return offset;
+            }
+        });
+
+        when(checkpointStore.updateCheckpoint(any(Checkpoint.class))).thenReturn(Mono.empty());
 
         final EventBatchContext context
             = new EventBatchContext(partitionContext, events, checkpointStore, lastEnqueuedEventProperties);

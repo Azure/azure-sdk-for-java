@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.mocking.MockTracer;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -43,6 +43,9 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link EventProcessorClient} error handling.
  */
 public class EventProcessorClientErrorHandlingTest {
+    private final EventData eventData1 = new EventData();
+    private final Tracer tracer = new MockTracer();
+
     @Mock
     private EventHubClientBuilder eventHubClientBuilder;
 
@@ -52,16 +55,7 @@ public class EventProcessorClientErrorHandlingTest {
     @Mock
     private EventHubConsumerAsyncClient eventHubConsumer;
 
-    @Mock
-    private EventData eventData1;
-
-    @Mock
-    private Tracer tracer;
-
-    @Mock
-    private Meter meter;
-
-    private EventProcessorClientOptions processorOptions = new EventProcessorClientOptions();
+    private final EventProcessorClientOptions processorOptions = new EventProcessorClientOptions();
     private CountDownLatch countDownLatch;
     private AutoCloseable mocksCloseable;
 
@@ -102,7 +96,7 @@ public class EventProcessorClientErrorHandlingTest {
                 countDownLatch.countDown();
                 Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
                 Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
-                Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
+                Assertions.assertInstanceOf(IllegalStateException.class, errorContext.getThrowable());
             }, tracer, null, processorOptions);
         client.start();
         boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
