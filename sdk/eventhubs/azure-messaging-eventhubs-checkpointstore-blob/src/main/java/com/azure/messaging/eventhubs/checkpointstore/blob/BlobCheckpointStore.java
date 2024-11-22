@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
@@ -17,6 +19,7 @@ import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -45,7 +48,6 @@ public class BlobCheckpointStore implements CheckpointStore {
     static final String SEQUENCE_NUMBER = "sequencenumber";
     static final String OFFSET = "offset";
     static final String OWNER_ID = "ownerid";
-    private static final String ETAG = "eTag";
 
     static final String BLOB_PATH_SEPARATOR = "/";
     static final String CHECKPOINT_PATH = "/checkpoint/";
@@ -67,7 +69,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static final ClientLogger LOGGER = new ClientLogger(BlobCheckpointStore.class);
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;
-    private final Map<String, BlobAsyncClient> blobClients = new ConcurrentHashMap<>();
+    private final Map<String, BlobWrapper> blobClients = new ConcurrentHashMap<>();
 
     /**
      * Creates an instance of BlobCheckpointStore.
@@ -112,9 +114,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     private <T> Flux<T> listBlobs(String prefix, Function<BlobItem, Mono<T>> converter) {
-        BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
-        ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
-        return blobContainerAsyncClient.listBlobs(options).flatMap(converter).filter(Objects::nonNull);
+        return listBlobsInternal(prefix).flatMap(converter).filter(Objects::nonNull);
     }
 
     private Mono<Checkpoint> convertToCheckpoint(BlobItem blobItem) {
@@ -179,11 +179,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                     = getBlobName(partitionOwnership.getFullyQualifiedNamespace(), partitionOwnership.getEventHubName(),
                         partitionOwnership.getConsumerGroup(), partitionId, OWNERSHIP_PATH);
 
-                if (!blobClients.containsKey(blobName)) {
-                    blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
-                }
-
-                BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
+                BlobWrapper blobWrapper = getBlobAsyncClient(blobName);
 
                 Map<String, String> metadata = new HashMap<>();
                 metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
@@ -192,9 +188,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                 if (CoreUtils.isNullOrEmpty(partitionOwnership.getETag())) {
                     // New blob should be created
                     blobRequestConditions.setIfNoneMatch("*");
-                    return blobAsyncClient.getBlockBlobAsyncClient()
-                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null,
-                            blobRequestConditions)
+                    return blobWrapper.uploadWithResponse(metadata, blobRequestConditions)
                         .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                             LOGGER.atVerbose()
                                 .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
@@ -204,7 +198,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                 } else {
                     // update existing blob
                     blobRequestConditions.setIfMatch(partitionOwnership.getETag());
-                    return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
+                    return blobWrapper.setMetadataWithResponse(metadata, blobRequestConditions)
                         .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                             LOGGER.atVerbose()
                                 .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
@@ -222,7 +216,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     private Mono<PartitionOwnership> updateOwnershipETag(Response<?> response, PartitionOwnership ownership) {
-        return Mono.just(ownership.setETag(response.getHeaders().get(ETAG).getValue()));
+        return Mono.just(ownership.setETag(response.getHeaders().get(HttpHeaderName.ETAG).getValue()));
     }
 
     /**
@@ -241,9 +235,7 @@ public class BlobCheckpointStore implements CheckpointStore {
         String partitionId = checkpoint.getPartitionId();
         String blobName = getBlobName(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
             checkpoint.getConsumerGroup(), partitionId, CHECKPOINT_PATH);
-        if (!blobClients.containsKey(blobName)) {
-            blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
-        }
+        BlobWrapper blobWrapper = getBlobAsyncClient(blobName);
 
         Map<String, String> metadata = new HashMap<>();
         String sequenceNumber
@@ -252,15 +244,12 @@ public class BlobCheckpointStore implements CheckpointStore {
         String offset = checkpoint.getOffset() == null ? null : String.valueOf(checkpoint.getOffset());
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
         metadata.put(OFFSET, offset);
-        BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
-        return blobAsyncClient.exists().flatMap(exists -> {
+        return blobWrapper.exists().flatMap(exists -> {
             if (exists) {
-                return blobAsyncClient.setMetadata(metadata);
+                return blobWrapper.setMetadataWithResponse(metadata, null).then();
             } else {
-                return blobAsyncClient.getBlockBlobAsyncClient()
-                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null, null)
-                    .then();
+                return blobWrapper.uploadWithResponse(metadata, null).then();
             }
         });
     }
@@ -316,5 +305,44 @@ public class BlobCheckpointStore implements CheckpointStore {
         }
 
         return Mono.empty();
+    }
+
+    PagedFlux<BlobItem> listBlobsInternal(String prefix) {
+        BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
+        return blobContainerAsyncClient.listBlobs(options);
+    }
+
+    BlobWrapper getBlobAsyncClient(String blobName) {
+        BlobWrapper blobWrapper;
+        if (!blobClients.containsKey(blobName)) {
+            blobWrapper = new BlobWrapper(blobContainerAsyncClient.getBlobAsyncClient(blobName));
+            blobClients.put(blobName, blobWrapper);
+            return blobWrapper;
+        }
+        return blobClients.get(blobName);
+    }
+
+    static class BlobWrapper {
+        private final BlobAsyncClient blobAsyncClient;
+
+        BlobWrapper(BlobAsyncClient blobAsyncClient) {
+            this.blobAsyncClient = blobAsyncClient;
+        }
+
+        Mono<Boolean> exists() {
+            return blobAsyncClient.exists();
+        }
+
+        Mono<Response<BlockBlobItem>> uploadWithResponse(Map<String, String> metadata,
+            BlobRequestConditions blobRequestConditions) {
+            return blobAsyncClient.getBlockBlobAsyncClient()
+                .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null, blobRequestConditions);
+        }
+
+        Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
+            BlobRequestConditions requestConditions) {
+            return blobAsyncClient.setMetadataWithResponse(metadata, requestConditions);
+        }
     }
 }
