@@ -112,6 +112,34 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getCompletionsStreamUsageRunnerForNonAzure((deploymentId, completionsOptions) -> {
+            StepVerifier.create(client.getCompletionsStream(deploymentId, completionsOptions))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> true)
+                .consumeRecordedWith(
+                    resultCompletions -> assertCompletionStreamUsage(new ArrayList<>(resultCompletions)))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getCompletionsStreamTokenCutoffRunnerForNonAzure((deploymentId, completionsOptions) -> {
+            StepVerifier.create(client.getCompletionsStream(deploymentId, completionsOptions))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> true)
+                .consumeRecordedWith(
+                    resultCompletions -> assertCompletionStreamTokenCutoff(new ArrayList<>(resultCompletions)))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsFromSinglePromptRunnerForNonAzure((modelId, prompt) -> {
@@ -178,14 +206,12 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt).setMaxTokens(3);
-            StepVerifier.create(client.getCompletions(modelId, completionsOptions))
-                .assertNext(resultCompletions -> {
-                    assertCompletions(1, resultCompletions);
-                    CompletionsUsage usage = resultCompletions.getUsage();
-                    assertNotNull(usage);
-                    assertTrue(usage.getCompletionTokens() <= 3);
-                })
-                .verifyComplete();
+            StepVerifier.create(client.getCompletions(modelId, completionsOptions)).assertNext(resultCompletions -> {
+                assertCompletions(1, resultCompletions);
+                CompletionsUsage usage = resultCompletions.getUsage();
+                assertNotNull(usage);
+                assertTrue(usage.getCompletionTokens() <= 3);
+            }).verifyComplete();
         });
     }
 
@@ -208,8 +234,11 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatCompletionsRunnerForNonAzure((modelId, chatMessages) -> {
-            StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10)))
-                .assertNext(resultChatCompletions -> assertTrue(resultChatCompletions.getUsage().getCompletionTokens() <= 10))
+            StepVerifier
+                .create(client.getChatCompletions(modelId,
+                    new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10)))
+                .assertNext(
+                    resultChatCompletions -> assertTrue(resultChatCompletions.getUsage().getCompletionTokens() <= 10))
                 .verifyComplete();
         });
     }
@@ -226,6 +255,34 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertTrue(messageList.size() > 1);
                     messageList.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
                 })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
+            StepVerifier.create(client.getChatCompletionsStream(deploymentId, chatCompletionsOptions))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> true)
+                .consumeRecordedWith(
+                    resultChatCompletions -> assertChatCompletionStreamUsage(new ArrayList<>(resultChatCompletions)))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatCompletionsStreamTokenCutoffRunner((deploymentId, chatCompletionsOptions) -> {
+            StepVerifier.create(client.getChatCompletionsStream(deploymentId, chatCompletionsOptions))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> true)
+                .consumeRecordedWith(resultChatCompletions -> assertChatCompletionStreamTokenCutoff(
+                    new ArrayList<>(resultChatCompletions)))
                 .verifyComplete();
         });
     }

@@ -13,7 +13,6 @@ import com.azure.ai.openai.models.Batch;
 import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.BatchStatus;
 import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolSelection;
@@ -109,6 +108,28 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getCompletionsStreamUsageRunnerForNonAzure((deploymentId, completionsOptions) -> {
+            IterableStream<Completions> resultCompletions
+                = client.getCompletionsStream(deploymentId, completionsOptions);
+            assertCompletionStreamUsage(resultCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getCompletionsStreamTokenCutoffRunnerForNonAzure((deploymentId, completionsOptions) -> {
+            IterableStream<Completions> resultCompletions
+                = client.getCompletionsStream(deploymentId, completionsOptions);
+            assertCompletionStreamTokenCutoff(resultCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsFromSinglePromptRunnerForNonAzure((deploymentId, prompts) -> {
@@ -168,8 +189,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
-            completionsOptions
-                .setMaxTokens(2);
+            completionsOptions.setMaxTokens(2);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, resultCompletions);
             CompletionsUsage usage = resultCompletions.getUsage();
@@ -194,8 +214,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
-            ChatCompletions resultChatCompletions
-                = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10));
+            ChatCompletions resultChatCompletions = client.getChatCompletions(deploymentId,
+                new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10));
             assertTrue(resultChatCompletions.getUsage().getCompletionTokens() <= 10);
         });
     }
@@ -206,25 +226,31 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
             IterableStream<ChatCompletions> resultChatCompletions
-                = client.getChatCompletionsStream(deploymentId,
-                new ChatCompletionsOptions(chatMessages)
-                    .setStreamOptions(new ChatCompletionStreamOptions().setIncludeUsage(true))
-                    .setMaxCompletionTokens(10));
+                = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
             assertTrue(resultChatCompletions.stream().toArray().length > 1);
             resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+        });
+    }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsUsageRunnerForNonAzure((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamUsage(resultChatCompletions.stream().collect(Collectors.toList()));
+        });
+    }
 
-            List<ChatCompletions> collect = resultChatCompletions.stream().collect(Collectors.toList());
-
-
-            int size = collect.size();
-            for (int i = 0; i < size; i++) {
-                ChatCompletions chatCompletions = collect.get(i);
-                int completionTokens = chatCompletions.getUsage().getCompletionTokens();
-                assertTrue(completionTokens <= 10);
-            }
-
-
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsStreamTokenCutoffRunnerForNonAzure((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamTokenCutoff(resultChatCompletions.stream().collect(Collectors.toList()));
         });
     }
 
