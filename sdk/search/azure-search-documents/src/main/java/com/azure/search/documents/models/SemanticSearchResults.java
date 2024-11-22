@@ -58,7 +58,6 @@ public final class SemanticSearchResults {
         return this.resultsType;
     }
 
-
     /**
      * Type of query rewrite that was used for this request.
      *

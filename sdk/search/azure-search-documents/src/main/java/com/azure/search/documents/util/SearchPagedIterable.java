@@ -143,4 +143,5 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
         return metadataSupplier != null
             ? metadataSupplier.get().getFirstPageResponse().getDebugInfo()
             : pagedFlux.getDebugInfo().block();
+    }
 }
