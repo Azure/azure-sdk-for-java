@@ -23,6 +23,16 @@ import java.util.stream.Stream;
 public class Main {
     private final static String BREAKING_CHANGE_TITLE = "### Breaking Changes\n\n";
     private final static String NEW_FEATURE_TITLE = "### Features Added\n\n";
+    private final static String AZURE_JSON_MIGRATION = "#### Serialization/Deserialization change\n" +
+        "\n" +
+        "- `Jackson` is removed from dependency and no longer supported.\n" +
+        "\n" +
+        "##### Migration Guide\n" +
+        "\n" +
+        "If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:\n" +
+        "```java\n" +
+        "objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());\n" +
+        "```\n\n";
 
     public static void main(String[] args) throws Exception {
         JSONObject json = getChangelog();
@@ -67,9 +77,15 @@ public class Main {
         }
 
         List<ChangeLog> changeLogs = ChangeLog.fromClasses(classes);
+        boolean migrateToAzureJson = migrateToAzureJson(changeLogs);
         StringBuilder breakingChange = new StringBuilder();
         StringBuilder newFeature = new StringBuilder();
         List<String> breakingChangeItems = new ArrayList<>();
+        if (migrateToAzureJson) {
+            breakingChange.append(AZURE_JSON_MIGRATION);
+        }
+        changeLogs = changeLogs
+            .stream().filter(changeLog -> !changeLog.onlyAzureJson()).collect(Collectors.toList());
         changeLogs.forEach(x -> {
             if (x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
@@ -93,12 +109,16 @@ public class Main {
             }
         });
 
-        String changelog = (breakingChange.length() > 0 ? BREAKING_CHANGE_TITLE + breakingChange.toString().replace(namespaces.getBase() + ".", "") : "") +
+        String changelog = (breakingChange.length()> 0 || migrateToAzureJson ? BREAKING_CHANGE_TITLE + breakingChange.toString().replace(namespaces.getBase() + ".", "") : "") +
             (newFeature.length() > 0 ? NEW_FEATURE_TITLE + newFeature.toString().replace(namespaces.getBase() + ".", "") : "");
 
         JSONObject json = new JSONObject();
         json.put("breakingChanges", breakingChangeItems);
         json.put("changelog", changelog);
         return json;
+    }
+
+    private static boolean migrateToAzureJson(List<ChangeLog> changeLogs) {
+        return changeLogs.stream().anyMatch(ChangeLog::migrateToAzureJson);
     }
 }

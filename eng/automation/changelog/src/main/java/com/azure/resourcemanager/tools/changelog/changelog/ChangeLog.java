@@ -76,7 +76,9 @@ public class ChangeLog {
     public String getNewFeature() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < this.newFeature.size(); ++i) {
-            builder.append(this.newFeature.get(i)).append("\n");
+            if (!azureJsonFeature(this.newFeature.get(i))) {
+                builder.append(this.newFeature.get(i)).append("\n");
+            }
             if (i + 1 == this.newFeature.size()) {
                 builder.append("\n");
             }
@@ -156,5 +158,19 @@ public class ChangeLog {
 
     public Collection<String> getBreakingChangeItems() {
         return breakingChange.getItems();
+    }
+
+    public boolean migrateToAzureJson() {
+        return this.newFeature.stream().anyMatch(ChangeLog::azureJsonFeature);
+    }
+
+    private static boolean azureJsonFeature(String newFeature) {
+        return newFeature.contains("`fromJson(com.azure.json.JsonReader)` was added") || newFeature.contains("`toJson(com.azure.json.JsonWriter)` was added");
+    }
+
+    public boolean onlyAzureJson() {
+        return
+            migrateToAzureJson()
+                && this.newFeature.stream().noneMatch(newFeature -> newFeature.startsWith("* ") && !newFeature.contains("json"));
     }
 }

@@ -62,6 +62,12 @@ jobs:
     #     targetVersion: 1.0.0-dev.20230908.1
 
     - bash: |
+        git config --global user.name "Azure SDK Bot"
+        git config --global user.email "53356347+azure-sdk@users.noreply.github.com"
+        git rebase origin/main
+      displayName: Update current branch
+
+    - bash: |
         java -version
         set -x
         ./eng/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
@@ -75,6 +81,14 @@ jobs:
       displayName: Generation from Swagger
       condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
 
+    - bash: |
+        git add -A
+        git stash clear
+        git stash
+        git reset --hard origin/main
+        git stash pop
+      displayName: Remove unnecessary changes
+
     - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
       parameters:
         PRBranchName: fluent-lite-generation-$(Build.BuildId)
@@ -86,3 +100,4 @@ jobs:
           PRTitle: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
         PRLabels: 'Mgmt - Track 2'
         OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
+        BaseBranchName: main

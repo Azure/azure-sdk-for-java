@@ -47,8 +47,21 @@ public class BreakingChangeTests {
         String changelog = (String) jsonObject.get("changelog");
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(changelog));
         Assertions.assertFalse(breakingChanges.isEmpty());
-        Assertions.assertTrue(breakingChanges.toList().contains("Required stage 3 was added in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$DefinitionStages`."));
-        Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.quota.models.QuotaProperties)` was removed in stage 2 in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$DefinitionStages`."));
-        Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.quota.models.QuotaProperties)` was removed in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$Definition`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Required stage 4 was added in class `com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsm$DefinitionStages`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmProperties)` was removed in stage 3 in class `com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsm$DefinitionStages`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Method `listByCloudHsmClusterWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed in class `com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterPrivateLinkResourcesClient`."));
+    }
+
+    @Test
+    public void testAzureJson() {
+        URL oldJar = BreakingChangeTests.class.getResource("/old.jar");
+        URL newJar = BreakingChangeTests.class.getResource("/new.jar");
+        System.setProperty("OLD_JAR", oldJar.getFile());
+        System.setProperty("NEW_JAR", newJar.getFile());
+        JSONObject jsonObject = Main.getChangelog();
+        Assertions.assertFalse(jsonObject.toString().contains("DedicatedHsmListResult"));
+        Assertions.assertFalse(jsonObject.toString().contains("toJson"));
+        Assertions.assertFalse(jsonObject.toString().contains("fromJson"));
+        Assertions.assertTrue(jsonObject.toString().contains("`models.Error` was modified"));
     }
 }
