@@ -5,6 +5,8 @@
 ### Bugs Fixed
 
  - Fixed bug in the serialization of `SearchDocumentsResult` `debuginfo` property.
+ - Fixed missing properties bug in `SemanticSearchResults`.
+   - Added missing properties `debugInfo` and `semanticQueryRewritesResultType`.
 
 ## 11.8.0-beta.3 (2024-11-20)
 
