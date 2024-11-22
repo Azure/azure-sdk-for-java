@@ -16,11 +16,6 @@ import com.azure.json.JsonWriter;
 /** The CallTransferAccepted model. */
 @Immutable
 public final class CallTransferAccepted extends CallAutomationEventBase {
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
-
     /**
      * The participant who is being transferred away.
      */

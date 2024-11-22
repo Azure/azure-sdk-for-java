@@ -60,11 +60,6 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
     private Duration initialSilenceTimeout;
 
     /*
-     * Endpoint where the custom model was deployed.
-     */
-    private String speechModelEndpointId;
-
-    /*
      * Target participant of DTMF tone recognition.
      */
     @SuppressWarnings("FieldMayBeFinal")
