@@ -5,7 +5,7 @@ package com.azure.ai.openai.realtime.implementation;
 
 import com.azure.ai.openai.realtime.RealtimeAsyncClient;
 import com.azure.ai.openai.realtime.RealtimeClient;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventInputAudioBufferAppend;
+import com.azure.ai.openai.realtime.models.InputAudioBufferAppendEvent;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class FileUtils {
             int end = Math.min(audioBytes.length, i + bytesPerChunk);
             byte[] chunk = new byte[end - i];
             System.arraycopy(audioBytes, i, chunk, 0, end - i);
-            client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(chunk)).block();
+            client.sendMessage(new InputAudioBufferAppendEvent(chunk)).block();
         }
 
         return Mono.empty();
@@ -67,7 +67,7 @@ public class FileUtils {
             int end = Math.min(audioBytes.length, i + bytesPerChunk);
             byte[] chunk = new byte[end - i];
             System.arraycopy(audioBytes, i, chunk, 0, end - i);
-            client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(chunk));
+            client.sendMessage(new InputAudioBufferAppendEvent(chunk));
         }
     }
 

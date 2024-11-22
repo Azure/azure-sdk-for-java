@@ -4,7 +4,7 @@ import com.azure.ai.openai.realtime.implementation.AudioFile;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
+import com.azure.ai.openai.realtime.models.SessionUpdateEvent;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventErrorError;
@@ -92,7 +92,7 @@ public class AudioCollection {
         client.start().block();
 
         // Configure the realtime session
-        client.sendMessage(new RealtimeClientEventSessionUpdate(
+        client.sendMessage(new SessionUpdateEvent(
             new RealtimeRequestSession()
                 .setVoice(RealtimeVoice.ALLOY)
                 .setTurnDetection(

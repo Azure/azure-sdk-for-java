@@ -5,8 +5,8 @@ package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventInputAudioBufferAppend;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
+import com.azure.ai.openai.realtime.models.InputAudioBufferAppendEvent;
+import com.azure.ai.openai.realtime.models.SessionUpdateEvent;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.ResponseAudioDeltaEvent;
@@ -85,13 +85,13 @@ public class ReadmeSamples {
         });
 
         client.start();
-        client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(audioBytes));
+        client.sendMessage(new InputAudioBufferAppendEvent(audioBytes));
         // END: readme-sample-uploadAudioFile
     }
 
     public void createTextAndAudioSession() {
         // BEGIN: readme-sample-sessionUpdate
-        client.sendMessage(new RealtimeClientEventSessionUpdate(
+        client.sendMessage(new SessionUpdateEvent(
                 new RealtimeRequestSession()
                         .setVoice(RealtimeVoice.ALLOY)
                         .setTurnDetection(
