@@ -6,22 +6,31 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData;
 
 public class TraceDataColumns extends TelemetryColumns {
-    private final String Message;
+    private final String message;
 
     public TraceDataColumns(MessageData traceData) {
         super();
         setCustomDimensions(traceData.getProperties(), traceData.getMeasurements());
-        this.Message = traceData.getMessage();
+        this.message = traceData.getMessage();
     }
 
     // to be used in tests only
     public TraceDataColumns(String message) {
         super();
-        this.Message = message;
+        this.message = message;
+    }
+
+    @Override
+    public Object getFieldValue(String fieldName) {
+        if ("Message".equals(fieldName)) {
+            return this.message;
+        } else {
+            return null;
+        }
     }
 
     // To be used in tests only
     public String getMessage() {
-        return this.Message;
+        return this.message;
     }
 }

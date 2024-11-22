@@ -6,7 +6,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 import java.util.HashMap;
 import java.util.Map;
 
-public class TelemetryColumns {
+public abstract class TelemetryColumns {
     private Map<String, String> customDimensions;
 
     public TelemetryColumns() {
@@ -29,5 +29,7 @@ public class TelemetryColumns {
     public Map<String, String> getCustomDimensions() {
         return this.customDimensions;
     }
+
+    public abstract Object getFieldValue(String fieldName);
 
 }

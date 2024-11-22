@@ -356,10 +356,6 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter" checks="MissingJavadocMethod" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder" checks="DenyListedWords" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder" checks="ServiceClientBuilder" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ExceptionDataColumns" checks="MemberName" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TraceDataColumns" checks="MemberName" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.RequestDataColumns" checks="MemberName" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DependencyDataColumns" checks="MemberName" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TelemetryColumns" checks="MemberName" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.*" checks="JavadocPackage" />
 
 </suppressions>

@@ -8,71 +8,93 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Format
 
 // Casing of private fields is to match the names of fields passed down via filtering configuration
 public class DependencyDataColumns extends TelemetryColumns {
-    private final String Target;
-    private final long Duration; // in microseconds
-    private final boolean Success;
-    private final String Name;
-    private final int ResultCode;
-    private final String Type;
-    private final String Data;
+    private final String target;
+    private final long duration; // in microseconds
+    private final boolean success;
+    private final String name;
+    private final int resultCode;
+    private final String type;
+    private final String data;
 
     public DependencyDataColumns(RemoteDependencyData rdData) {
         super();
         setCustomDimensions(rdData.getProperties(), rdData.getMeasurements());
-        this.Target = rdData.getTarget();
-        this.Duration = FormattedDuration.getDurationFromTelemetryItemDurationString(rdData.getDuration());
-        this.Success = rdData.isSuccess();
-        this.Name = rdData.getName();
-        this.Type = rdData.getType();
-        this.Data = rdData.getData();
+        this.target = rdData.getTarget();
+        this.duration = FormattedDuration.getDurationFromTelemetryItemDurationString(rdData.getDuration());
+        this.success = rdData.isSuccess();
+        this.name = rdData.getName();
+        this.type = rdData.getType();
+        this.data = rdData.getData();
         int resultCode;
         try {
             resultCode = Integer.parseInt(rdData.getResultCode());
         } catch (NumberFormatException e) {
             resultCode = -1;
         }
-        this.ResultCode = resultCode;
+        this.resultCode = resultCode;
     }
 
     // To be used for tests only
     public DependencyDataColumns(String target, long duration, boolean success, String name, int resultCode,
         String type, String data) {
         super();
-        this.Target = target;
-        this.Duration = duration;
-        this.Success = success;
-        this.Name = name;
-        this.ResultCode = resultCode;
-        this.Type = type;
-        this.Data = data;
+        this.target = target;
+        this.duration = duration;
+        this.success = success;
+        this.name = name;
+        this.resultCode = resultCode;
+        this.type = type;
+        this.data = data;
+    }
+
+    @Override
+    public Object getFieldValue(String fieldName) {
+
+        if (fieldName.equals(KnownDependencyColumns.TARGET)) {
+            return this.target;
+        } else if (fieldName.equals(KnownDependencyColumns.DURATION)) {
+            return this.duration;
+        } else if (fieldName.equals(KnownDependencyColumns.SUCCESS)) {
+            return this.success;
+        } else if (fieldName.equals(KnownDependencyColumns.NAME)) {
+            return this.name;
+        } else if (fieldName.equals(KnownDependencyColumns.RESULT_CODE)) {
+            return this.resultCode;
+        } else if (fieldName.equals(KnownDependencyColumns.TYPE)) {
+            return this.type;
+        } else if (fieldName.equals(KnownDependencyColumns.DATA)) {
+            return this.data;
+        } else {
+            return null;
+        }
     }
 
     public String getTarget() {
-        return this.Target;
+        return this.target;
     }
 
     public long getDuration() {
-        return this.Duration;
+        return this.duration;
     }
 
     public boolean getSuccess() {
-        return this.Success;
+        return this.success;
     }
 
     public String getName() {
-        return this.Name;
+        return this.name;
     }
 
     public String getData() {
-        return this.Data;
+        return this.data;
     }
 
     public String getType() {
-        return this.Type;
+        return this.type;
     }
 
     public int getResultCode() {
-        return this.ResultCode;
+        return this.resultCode;
     }
 
 }

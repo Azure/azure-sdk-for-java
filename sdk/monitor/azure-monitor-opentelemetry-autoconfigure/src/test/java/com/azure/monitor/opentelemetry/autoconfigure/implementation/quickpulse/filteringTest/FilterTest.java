@@ -366,8 +366,9 @@ class FilterTest {
         assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, traceBye));
         assertFalse(Filter.checkMetricFilters(derivedMetricInfo, traceBye));
 
-        // Exception Message filter matches. Note that fieldName is "Message" here and that's intended (we remove the Exception. prefix when validating config)
+        // Exception.Message filter matches.
         derivedMetricInfo.setTelemetryType("Exception");
+        stringFilter.setFieldName("Exception.Message");
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, exceptionHi));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, exceptionHi));
 

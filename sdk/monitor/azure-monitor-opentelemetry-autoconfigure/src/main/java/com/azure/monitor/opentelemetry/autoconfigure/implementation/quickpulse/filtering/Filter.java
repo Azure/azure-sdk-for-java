@@ -12,18 +12,8 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 public class Filter {
-    public static final String EXCEPTION_FIELDNAME_PREFIX = "Exception.";
     public static final String CUSTOM_DIM_FIELDNAME_PREFIX = "CustomDimensions.";
     public static final String ANY_FIELD = "*";
-
-    public static void renameExceptionFieldNamesForFiltering(FilterConjunctionGroupInfo filterConjunctionGroupInfo) {
-        filterConjunctionGroupInfo.getFilters().forEach(filter -> {
-            String fieldName = filter.getFieldName();
-            if (fieldName.startsWith(EXCEPTION_FIELDNAME_PREFIX)) {
-                filter.setFieldName(fieldName.substring(EXCEPTION_FIELDNAME_PREFIX.length()));
-            }
-        });
-    }
 
     // To be used when checking telemetry against metric charts filters
     public static boolean checkMetricFilters(DerivedMetricInfo derivedMetricInfo, TelemetryColumns data) {
@@ -56,64 +46,44 @@ public class Filter {
     }
 
     private static boolean checkFilter(FilterInfo filter, TelemetryColumns data) {
-        try {
-            if (ANY_FIELD.equals(filter.getFieldName())) {
-                return checkAnyFieldFilter(filter, data);
-            } else if (filter.getFieldName().startsWith(CUSTOM_DIM_FIELDNAME_PREFIX)) {
-                return checkCustomDimFilter(filter, data);
-            } else {
-                Object fieldValue = getFieldValue(data, filter.getFieldName());
+        if (ANY_FIELD.equals(filter.getFieldName())) {
+            return checkAnyFieldFilter(filter, data);
+        } else if (filter.getFieldName().startsWith(CUSTOM_DIM_FIELDNAME_PREFIX)) {
+            return checkCustomDimFilter(filter, data);
+        } else {
+            Object fieldValue = data.getFieldValue(filter.getFieldName());
 
-                if (filter.getFieldName().equals(KnownRequestColumns.SUCCESS)) {
-                    boolean fieldValueBoolean = (Boolean) fieldValue;
-                    boolean comparand = Boolean.parseBoolean(filter.getComparand().toLowerCase());
-                    if (filter.getPredicate().equals(PredicateType.EQUAL)) {
-                        return fieldValueBoolean == comparand;
-                    } else if (filter.getPredicate().equals(PredicateType.NOT_EQUAL)) {
-                        return fieldValueBoolean != comparand;
-                    }
-                } else if (filter.getFieldName().equals(KnownDependencyColumns.RESULT_CODE)
-                    || filter.getFieldName().equals(KnownRequestColumns.RESPONSE_CODE)
-                    || filter.getFieldName().equals(KnownDependencyColumns.DURATION)) {
-                    long comparand = filter.getFieldName().equals(KnownDependencyColumns.DURATION)
-                        ? getMicroSecondsFromFilterTimestampString(filter.getComparand())
-                        : Long.parseLong(filter.getComparand());
-                    long fieldValueLong = filter.getFieldName().equals(KnownDependencyColumns.DURATION)
-                        ? (Long) fieldValue
-                        : ((Integer) fieldValue).longValue();
-                    PredicateType predicate = filter.getPredicate();
-                    if (predicate.equals(PredicateType.EQUAL)) {
-                        return fieldValueLong == comparand;
-                    } else if (predicate.equals(PredicateType.NOT_EQUAL)) {
-                        return fieldValueLong != comparand;
-                    } else if (predicate.equals(PredicateType.GREATER_THAN)) {
-                        return fieldValueLong > comparand;
-                    } else if (predicate.equals(PredicateType.GREATER_THAN_OR_EQUAL)) {
-                        return fieldValueLong >= comparand;
-                    } else if (predicate.equals(PredicateType.LESS_THAN)) {
-                        return fieldValueLong < comparand;
-                    } else if (predicate.equals(PredicateType.LESS_THAN_OR_EQUAL)) {
-                        return fieldValueLong <= comparand;
-                    }
+            if (filter.getFieldName().equals(KnownRequestColumns.SUCCESS)) {
+                if (fieldValue == null) { // this should never happen, but just in case
                     return false;
-                } else {
-                    // string fields
-                    return stringCompare((String) fieldValue, filter.getComparand(), filter.getPredicate());
                 }
+                boolean fieldValueBoolean = (Boolean) fieldValue;
+                boolean comparand = Boolean.parseBoolean(filter.getComparand().toLowerCase());
+                if (filter.getPredicate().equals(PredicateType.EQUAL)) {
+                    return fieldValueBoolean == comparand;
+                } else if (filter.getPredicate().equals(PredicateType.NOT_EQUAL)) {
+                    return fieldValueBoolean != comparand;
+                }
+            } else if (filter.getFieldName().equals(KnownDependencyColumns.DURATION)) {
+                if (fieldValue == null) { // this should never happen, but just in case
+                    return false;
+                }
+                long comparand = getMicroSecondsFromFilterTimestampString(filter.getComparand());
+                return numericCompare((Long) fieldValue, comparand, filter.getPredicate());
+            } else if (filter.getFieldName().equals(KnownDependencyColumns.RESULT_CODE)
+                || filter.getFieldName().equals(KnownRequestColumns.RESPONSE_CODE)) {
+                if (fieldValue == null) { // this should never happen, but just in case
+                    return false;
+                }
+                int comparand = Integer.parseInt(filter.getComparand());
+                PredicateType predicate = filter.getPredicate();
+                return numericCompare((Integer) fieldValue, comparand, predicate);
+            } else {
+                // string fields
+                return stringCompare((String) fieldValue, filter.getComparand(), filter.getPredicate());
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            // because we will be doing validation of filtering configuration when the config changes,
-            // there should be no case where we are accessing fields that don't exist or are invalid.
-            return false;
         }
         return false;
-    }
-
-    private static Object getFieldValue(Object data, String fieldName)
-        throws NoSuchFieldException, IllegalAccessException {
-        Field field = data.getClass().getDeclaredField(fieldName);
-        field.setAccessible(true);
-        return field.get(data);
     }
 
     private static boolean checkAnyFieldFilter(FilterInfo filter, TelemetryColumns data) {
@@ -161,6 +131,24 @@ public class Filter {
             return fieldValue != null && !fieldValue.toLowerCase().contains(comparand.toLowerCase());
         }
         return false;
+    }
+
+    private static boolean numericCompare(long fieldValue, long comparand, PredicateType predicate) {
+        if (predicate.equals(PredicateType.EQUAL)) {
+            return fieldValue == comparand;
+        } else if (predicate.equals(PredicateType.NOT_EQUAL)) {
+            return fieldValue != comparand;
+        } else if (predicate.equals(PredicateType.GREATER_THAN)) {
+            return fieldValue > comparand;
+        } else if (predicate.equals(PredicateType.GREATER_THAN_OR_EQUAL)) {
+            return fieldValue >= comparand;
+        } else if (predicate.equals(PredicateType.LESS_THAN)) {
+            return fieldValue < comparand;
+        } else if (predicate.equals(PredicateType.LESS_THAN_OR_EQUAL)) {
+            return fieldValue <= comparand;
+        } else {
+            return false;
+        }
     }
 
     public static long getMicroSecondsFromFilterTimestampString(String timestamp) {
