@@ -160,13 +160,13 @@ namespace Azure.Core.Foundations.Private {
    * Provides a Model describing parameter customizations to spread into the target.
    * @param customizations Model describing the customization to spread
    */
-  extern dec spreadCustomParameters(entity: Model, customizations: {});
+  extern dec spreadCustomParameters(entity: Model, customizations: Model);
 
   /**
    * Provides a Model describing response property customizations to spread into the target.
    * @param customizations Model describing the customization to spread
    */
-  extern dec spreadCustomResponseProperties(entity: Model, customizations: {});
+  extern dec spreadCustomResponseProperties(entity: Model, customizations: Model);
 
   /**
    * Checks the Resource parameter of an operation signature to ensure it's a valid resource type.

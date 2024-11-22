@@ -295,6 +295,23 @@ model ResourceKindProperty {
 @friendlyName("{name}ListResult", Resource)
 model ResourceListResult<Resource extends Foundations.Resource> is Azure.Core.Page<Resource>;
 
+/**
+ * Paged response containing results
+ * @template Result The type of the values returned in the paged response
+ */
+@doc("The custom response of a list operation.")
+@friendlyName("{name}ListResult", Result)
+@pagedResult
+model ResourceListCustomResult<Result> {
+  /** The items on this page */
+  @items
+  value: Result[];
+
+  /** The link to the next page of items */
+  @Azure.Core.nextLink
+  nextLink?: string;
+}
+
 #deprecated "`ResourcePlan` will be deprecated. Please use `ResourcePlanProperty` instead."
 alias ResourcePlan = ResourcePlanProperty;
 /**
@@ -374,6 +391,21 @@ alias Encryption = EncryptionProperty;
 model EncryptionProperty {
   /** All encryption configuration for a resource. */
   encryption: EncryptionConfiguration;
+}
+
+/**
+ * Model representing the standard `zones` envelope property for a resource.
+ * Spread this model into a resource Model if the resource supports ARM `zones`.
+ * @example
+ * ```typescript
+ * model Foo is TrackedResource<FooProperties> {
+ *   ...AvailabilityZonesProperty;
+ * }
+ * ```
+ */
+model AvailabilityZonesProperty {
+  /** The availability zones. */
+  zones?: string[];
 }
 
 //#endregion

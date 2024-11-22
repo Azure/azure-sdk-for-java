@@ -71,7 +71,8 @@ public final class CertificateClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -88,7 +89,8 @@ public final class CertificateClient {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -111,7 +113,8 @@ public final class CertificateClient {
      * certificate object. This operation requires the certificates/delete permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -186,7 +189,8 @@ public final class CertificateClient {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -210,7 +214,8 @@ public final class CertificateClient {
      * requires the certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -221,11 +226,13 @@ public final class CertificateClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -236,7 +243,8 @@ public final class CertificateClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param contacts The contacts for the key vault certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -260,7 +268,8 @@ public final class CertificateClient {
      * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -271,7 +280,8 @@ public final class CertificateClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -293,7 +303,8 @@ public final class CertificateClient {
      * operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -304,7 +315,8 @@ public final class CertificateClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -336,12 +348,14 @@ public final class CertificateClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -363,7 +377,8 @@ public final class CertificateClient {
      * issuer. This operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provider: String (Required)
      *     credentials (Optional): {
@@ -387,11 +402,13 @@ public final class CertificateClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -416,7 +433,8 @@ public final class CertificateClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the
      * purpose of running the service. The value provided should not include
@@ -444,7 +462,8 @@ public final class CertificateClient {
      * permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provider: String (Optional)
      *     credentials (Optional): {
@@ -468,11 +487,13 @@ public final class CertificateClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -497,7 +518,8 @@ public final class CertificateClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param parameter Certificate issuer update parameter.
@@ -523,7 +545,8 @@ public final class CertificateClient {
      * certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -548,7 +571,8 @@ public final class CertificateClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -572,7 +596,8 @@ public final class CertificateClient {
      * certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -597,7 +622,8 @@ public final class CertificateClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -620,7 +646,8 @@ public final class CertificateClient {
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     policy (Optional): {
      *         id: String (Optional)
@@ -686,11 +713,13 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -710,7 +739,8 @@ public final class CertificateClient {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate. The value you provide may be copied globally for
      * the purpose of running the service. The value provided should not include
@@ -740,7 +770,8 @@ public final class CertificateClient {
      * certificates. Key Vault will only accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Required)
      *     pwd: String (Optional)
@@ -808,11 +839,13 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -884,7 +917,8 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate. The value you provide may be copied globally for
      * the purpose of running the service. The value provided should not include
@@ -921,7 +955,8 @@ public final class CertificateClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -938,7 +973,8 @@ public final class CertificateClient {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -962,7 +998,8 @@ public final class CertificateClient {
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -1022,7 +1059,8 @@ public final class CertificateClient {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in a given key vault.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1046,7 +1084,8 @@ public final class CertificateClient {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -1106,11 +1145,13 @@ public final class CertificateClient {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -1170,7 +1211,8 @@ public final class CertificateClient {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -1197,7 +1239,8 @@ public final class CertificateClient {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     policy (Optional): {
      *         id: String (Optional)
@@ -1263,11 +1306,13 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1339,7 +1384,8 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -1366,7 +1412,8 @@ public final class CertificateClient {
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1438,7 +1485,8 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not
@@ -1448,7 +1496,9 @@ public final class CertificateClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a specific certificate along with {@link Response}.
+     * @return information about a certificate.
+     *
+     * Gets information about a specific certificate along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1464,15 +1514,18 @@ public final class CertificateClient {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     cancellation_requested: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -1492,7 +1545,8 @@ public final class CertificateClient {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param certificateOperation The certificate operation response.
@@ -1518,7 +1572,8 @@ public final class CertificateClient {
      * operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -1538,7 +1593,8 @@ public final class CertificateClient {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1546,7 +1602,9 @@ public final class CertificateClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the creation operation associated with a specified certificate along with {@link Response}.
+     * @return the creation operation of a certificate.
+     *
+     * Gets the creation operation associated with a specified certificate along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1563,7 +1621,8 @@ public final class CertificateClient {
      * requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -1583,7 +1642,8 @@ public final class CertificateClient {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1608,7 +1668,8 @@ public final class CertificateClient {
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     x5c (Required): [
      *         byte[] (Required)
@@ -1626,11 +1687,13 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1702,7 +1765,8 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param parameters The parameters to merge certificate.
@@ -1728,11 +1792,13 @@ public final class CertificateClient {
      * requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1755,15 +1821,18 @@ public final class CertificateClient {
      * operation requires the certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1835,7 +1904,8 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param parameters The parameters to restore the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1872,7 +1942,8 @@ public final class CertificateClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -1897,7 +1968,8 @@ public final class CertificateClient {
      *     ]
      *     nextLink: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1921,7 +1993,8 @@ public final class CertificateClient {
      * requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1996,7 +2069,8 @@ public final class CertificateClient {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2046,7 +2120,8 @@ public final class CertificateClient {
      * permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -2118,7 +2193,8 @@ public final class CertificateClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the deleted certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2643,7 +2719,9 @@ public final class CertificateClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a specific certificate.
+     * @return information about a certificate.
+     *
+     * Gets information about a specific certificate.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2693,7 +2771,9 @@ public final class CertificateClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the creation operation associated with a specified certificate.
+     * @return the creation operation of a certificate.
+     *
+     * Gets the creation operation associated with a specified certificate.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

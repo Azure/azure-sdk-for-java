@@ -8,6 +8,7 @@ namespace Azure.ResourceManager.CommonTypes;
 model PrivateEndpoint {
   /** The resource identifier for private endpoint */
   @visibility("read")
+  @typeChangedFrom(CommonTypes.Versions.v4, string)
   id?: Azure.Core.armResourceIdentifier<[
     {
       type: "Microsoft.Network/privateEndpoints";

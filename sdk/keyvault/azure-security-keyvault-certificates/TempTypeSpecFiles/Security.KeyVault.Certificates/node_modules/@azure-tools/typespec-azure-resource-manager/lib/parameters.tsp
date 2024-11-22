@@ -83,9 +83,8 @@ model ArmLocationResource<BaseType extends
  */
 @doc("The default resourceUri parameter type.")
 model ResourceUriParameter {
-  @path
+  @path(#{ allowReserved: true })
   @doc("The fully qualified Azure Resource manager identifier of the resource.")
-  @extension("x-ms-skip-url-encoding", true)
   @resourceParameterBaseFor([ResourceHome.Extension])
   resourceUri: string;
 }
@@ -137,3 +136,31 @@ alias TenantInstanceParameters<Resource extends Foundations.Resource> = Resource
   Resource,
   TenantBaseParameters
 >;
+
+/**
+ * Template used by ArmProviderAction templates.
+ */
+@armVirtualResource
+@subscriptionResource
+model SubscriptionActionScope {
+  @doc("Symbolic name of scope")
+  @path
+  @visibility("read")
+  @key
+  @segment("subscription")
+  name: string;
+}
+
+/**
+ * Template used by ArmTenantAction templates.
+ */
+@armVirtualResource
+@tenantResource
+model TenantActionScope {
+  @doc("Symbolic name of scope")
+  @path
+  @visibility("read")
+  @key
+  @segment("tenant")
+  name: string;
+}

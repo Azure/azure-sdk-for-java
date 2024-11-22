@@ -9,7 +9,7 @@ import "./models.tsp";
 import "./operations.tsp";
 import "./obsolete.tsp";
 import "./decorators.tsp";
-import "../dist/src/index.js";
+import "../dist/src/tsp-index.js";
 
 using TypeSpec.Versioning;
 

@@ -694,3 +694,62 @@ op checkLocalNameAvailability<
   Response,
   AdditionalParams
 >;
+
+/**
+ * @dev A provider action performed over a tenant
+ * @template Request The request model for the action
+ * @template Response The response type for the action
+ * @template Scope The scope of the action (SubscriptionActionScope or TenantActionScope)
+ * @template Parameters Optional. Additional parameters after the path parameters (e.g. Location)
+ * @template Error Optional. The error response, if non-standard.
+ */
+@post
+@action
+@armResourceCollectionAction
+op ArmProviderActionSync<
+  Request extends {} | void = void,
+  Response extends {} | void = void,
+  Scope extends {} = TenantActionScope,
+  Parameters extends {} = {},
+  Error extends {} = ErrorResponse
+>(
+  ...Azure.ResourceManager.Foundations.DefaultBaseParameters<Scope>,
+  ...ProviderNamespace<Scope>,
+  ...Parameters,
+
+  /** The request body */
+  @bodyRoot body: Request,
+): Response | ErrorResponse;
+
+/**
+ * @dev A long-running provider action.
+ * @template Request The request model for the action
+ * @template Response The response type for the action
+ * @template Scope The scope of the action (SubscriptionActionScope or TenantActionScope)
+ * @template Parameters Optional. Additional parameters after the path parameters (e.g. Location)
+ * @template LroHeaders Optional.  Allows overriding the lro headers returned in the Accepted response
+ * @template Error Optional. The error response, if non-standard.
+ */
+@post
+@action
+@armResourceCollectionAction
+op ArmProviderActionAsync<
+  Request extends {} | void = void,
+  Response extends {} | void = void,
+  Scope extends {} = TenantActionScope,
+  Parameters extends {} = {},
+  LroHeaders extends TypeSpec.Reflection.Model = ArmLroLocationHeader<
+    Azure.Core.StatusMonitorPollingOptions<ArmOperationStatus>,
+    Response,
+    string
+  > &
+    Azure.Core.Foundations.RetryAfterHeader,
+  Error extends {} = ErrorResponse
+>(
+  ...Azure.ResourceManager.Foundations.DefaultBaseParameters<Scope>,
+  ...ProviderNamespace<Scope>,
+  ...Parameters,
+
+  /** The request body */
+  @bodyRoot body: Request,
+): ArmAcceptedLroResponse<"Resource operation accepted.", LroHeaders> | Response | ErrorResponse;

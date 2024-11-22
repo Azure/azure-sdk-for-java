@@ -106,7 +106,7 @@ model ArmOperationStatus<
   @key
   @path
   @segment("operationStatuses")
-  id: Azure.Core.uuid;
+  id: string;
 
   /** The name of the  operationStatus resource */
   @visibility("read")

@@ -64,8 +64,8 @@ public class CertificatesCustomizations extends Customization {
         editor.removeFile(
             "src/main/java/com/azure/security/keyvault/certificates/implementation/implementation/package-info.java");
         //editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/implementation/implementation");
-        editor.removeFile(
-            "src/test/java/com/azure/security/keyvault/certificates/implementation/generated/CertificateClientTestBase.java");
+        /*editor.removeFile(
+            "src/test/java/com/azure/security/keyvault/certificates/implementation/generated/CertificateClientTestBase.java");*/
     }
 
     private static void renameFiles(Editor editor) {

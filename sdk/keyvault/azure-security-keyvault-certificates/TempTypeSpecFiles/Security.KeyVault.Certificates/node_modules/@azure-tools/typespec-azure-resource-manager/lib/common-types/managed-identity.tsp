@@ -61,28 +61,24 @@ model UserAssignedIdentity {
  */
 union ManagedServiceIdentityType {
   /** No managed identity. */
-  None: "None",
+  "None",
 
   /** System assigned managed identity. */
-  SystemAssigned: "SystemAssigned",
+  "SystemAssigned",
 
   /** User assigned managed identity. */
-  UserAssigned: "UserAssigned",
+  "UserAssigned",
 
   /** System and user assigned managed identity. */
-  @renamedFrom(Versions.v3, "SystemAndUserAssigned")
+  @added(Versions.v3)
   @removed(Versions.v4)
-  SystemAndUserAssignedV3: "SystemAssigned,UserAssigned",
+  @added(Versions.v5)
+  "SystemAssigned,UserAssigned",
 
   /** System and user assigned managed identity. */
   @added(Versions.v4)
-  @renamedFrom(Versions.v4, "SystemAndUserAssigned")
   @removed(Versions.v5)
-  SystemAndUserAssignedV4: "SystemAssigned, UserAssigned",
-
-  /** System and user assigned managed identity. */
-  @added(Versions.v5)
-  SystemAndUserAssigned: "SystemAssigned,UserAssigned",
+  "SystemAssigned, UserAssigned",
 
   string,
 }

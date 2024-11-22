@@ -8,9 +8,7 @@ TypeSpec library for emitting openapi from the TypeSpec REST protocol binding
 npm install @azure-tools/typespec-autorest
 ```
 
-## Emitter
-
-### Usage
+## Usage
 
 1. Via the command line
 
@@ -25,15 +23,25 @@ emit:
   - "@azure-tools/typespec-autorest"
 ```
 
-### Emitter options
+The config can be extended with options as follows:
 
-#### `output-dir`
+```yaml
+emit:
+  - "@azure-tools/typespec-autorest"
+options:
+  "@azure-tools/typespec-autorest":
+    option: value
+```
+
+## Emitter options
+
+### `output-dir`
 
 **Type:** `string`
 
 Deprecated DO NOT USE. Use built-in emitter-output-dir instead
 
-#### `output-file`
+### `output-file`
 
 **Type:** `string`
 
@@ -73,70 +81,76 @@ Example: azureResourceProviderFolder is provided
 - `arm-folder/AzureService/preview/2020-01-01.yaml`
 - `arm-folder/AzureService/preview/2020-01-01.yaml`
 
-#### `examples-directory`
+### `examples-dir`
 
 **Type:** `string`
 
-Directory where the examples are located. Default: `{cwd}/examples`.
+Directory where the examples are located. Default: `{project-root}/examples`.
 
-#### `version`
-
-**Type:** `string`
-
-#### `azure-resource-provider-folder`
+### `examples-directory`
 
 **Type:** `string`
 
-#### `arm-types-dir`
+DEPRECATED. Use examples-dir instead
+
+### `version`
+
+**Type:** `string`
+
+### `azure-resource-provider-folder`
+
+**Type:** `string`
+
+### `arm-types-dir`
 
 **Type:** `string`
 
 Path to the common-types.json file folder. Default: '${project-root}/../../common-types/resource-management'
 
-#### `new-line`
+### `new-line`
 
 **Type:** `"crlf" | "lf"`
 
 Set the newline character for emitting files.
 
-#### `omit-unreachable-types`
+### `omit-unreachable-types`
 
 **Type:** `boolean`
 
 Omit unreachable types. By default all types declared under the service namespace will be included. With this flag on only types references in an operation will be emitted.
 
-#### `version-enum-strategy`
+### `version-enum-strategy`
 
 **Type:** `string`
 
 Decide how to deal with the Version enum when when `omit-unreachable-types` is not set. Default to 'omit'
 
-#### `include-x-typespec-name`
+### `include-x-typespec-name`
 
 **Type:** `"inline-only" | "never"`
 
 If the generated openapi types should have the `x-typespec-name` extension set with the name of the TypeSpec type that created it.
 This extension is meant for debugging and should not be depended on.
 
-#### `use-read-only-status-schema`
+### `use-read-only-status-schema`
 
 **Type:** `boolean`
 
 Create read-only property schema for lro status
 
-#### `emit-lro-options`
+### `emit-lro-options`
 
 **Type:** `"none" | "final-state-only" | "all"`
 
 Determine whether and how to emit x-ms-long-running-operation-options for lro resolution
 
-#### `arm-resource-flattening`
+### `arm-resource-flattening`
 
 **Type:** `boolean`
 
 Back-compat flag. If true, continue to emit `x-ms-client-flatten` in for some of the ARM resource properties.
 
-#### `emit-common-types-schema`
+### `emit-common-types-schema`
 
 **Type:** `"never" | "for-visibility-changes"`
 

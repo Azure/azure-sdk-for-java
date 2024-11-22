@@ -8,9 +8,7 @@ TypeSpec ruleset for Azure specs
 npm install @azure-tools/typespec-azure-rulesets
 ```
 
-## Linter
-
-### Usage
+## Usage
 
 Add the following in `tspconfig.yaml`:
 
@@ -20,14 +18,14 @@ linter:
     - "@azure-tools/typespec-azure-rulesets/data-plane"
 ```
 
-### RuleSets
+## RuleSets
 
 Available ruleSets:
 
 - `@azure-tools/typespec-azure-rulesets/data-plane`
 - `@azure-tools/typespec-azure-rulesets/resource-manager`
 
-### Rules
+## Rules
 
 | Name | Description |
 | ---- | ----------- |

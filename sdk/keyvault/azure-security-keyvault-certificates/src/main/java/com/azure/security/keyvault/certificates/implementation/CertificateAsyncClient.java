@@ -77,7 +77,8 @@ public final class CertificateAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -94,7 +95,8 @@ public final class CertificateAsyncClient {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -117,7 +119,8 @@ public final class CertificateAsyncClient {
      * certificate object. This operation requires the certificates/delete permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -192,7 +195,8 @@ public final class CertificateAsyncClient {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -218,7 +222,8 @@ public final class CertificateAsyncClient {
      * requires the certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -229,11 +234,13 @@ public final class CertificateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -244,7 +251,8 @@ public final class CertificateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param contacts The contacts for the key vault certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -270,7 +278,8 @@ public final class CertificateAsyncClient {
      * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -281,7 +290,8 @@ public final class CertificateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -304,7 +314,8 @@ public final class CertificateAsyncClient {
      * operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -315,7 +326,8 @@ public final class CertificateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -348,12 +360,14 @@ public final class CertificateAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -375,7 +389,8 @@ public final class CertificateAsyncClient {
      * issuer. This operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provider: String (Required)
      *     credentials (Optional): {
@@ -399,11 +414,13 @@ public final class CertificateAsyncClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -428,7 +445,8 @@ public final class CertificateAsyncClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the
      * purpose of running the service. The value provided should not include
@@ -457,7 +475,8 @@ public final class CertificateAsyncClient {
      * permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provider: String (Optional)
      *     credentials (Optional): {
@@ -481,11 +500,13 @@ public final class CertificateAsyncClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -510,7 +531,8 @@ public final class CertificateAsyncClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param parameter Certificate issuer update parameter.
@@ -537,7 +559,8 @@ public final class CertificateAsyncClient {
      * certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -562,7 +585,8 @@ public final class CertificateAsyncClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -588,7 +612,8 @@ public final class CertificateAsyncClient {
      * certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -613,7 +638,8 @@ public final class CertificateAsyncClient {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -638,7 +664,8 @@ public final class CertificateAsyncClient {
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     policy (Optional): {
      *         id: String (Optional)
@@ -704,11 +731,13 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -728,7 +757,8 @@ public final class CertificateAsyncClient {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate. The value you provide may be copied globally for
      * the purpose of running the service. The value provided should not include
@@ -759,7 +789,8 @@ public final class CertificateAsyncClient {
      * certificates. Key Vault will only accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Required)
      *     pwd: String (Optional)
@@ -827,11 +858,13 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -903,7 +936,8 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate. The value you provide may be copied globally for
      * the purpose of running the service. The value provided should not include
@@ -941,7 +975,8 @@ public final class CertificateAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -958,7 +993,8 @@ public final class CertificateAsyncClient {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -982,7 +1018,8 @@ public final class CertificateAsyncClient {
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -1042,7 +1079,8 @@ public final class CertificateAsyncClient {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in a given key vault.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1066,7 +1104,8 @@ public final class CertificateAsyncClient {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -1126,11 +1165,13 @@ public final class CertificateAsyncClient {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -1190,7 +1231,8 @@ public final class CertificateAsyncClient {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -1217,7 +1259,8 @@ public final class CertificateAsyncClient {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     policy (Optional): {
      *         id: String (Optional)
@@ -1283,11 +1326,13 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1359,7 +1404,8 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -1387,7 +1433,8 @@ public final class CertificateAsyncClient {
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1459,7 +1506,8 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not
@@ -1469,7 +1517,9 @@ public final class CertificateAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a specific certificate along with {@link Response} on successful completion of
+     * @return information about a certificate.
+     *
+     * Gets information about a specific certificate along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @Generated
@@ -1486,15 +1536,18 @@ public final class CertificateAsyncClient {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     cancellation_requested: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -1514,7 +1567,8 @@ public final class CertificateAsyncClient {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param certificateOperation The certificate operation response.
@@ -1541,7 +1595,8 @@ public final class CertificateAsyncClient {
      * operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -1561,7 +1616,8 @@ public final class CertificateAsyncClient {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1569,7 +1625,9 @@ public final class CertificateAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the creation operation associated with a specified certificate along with {@link Response} on successful
+     * @return the creation operation of a certificate.
+     *
+     * Gets the creation operation associated with a specified certificate along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @Generated
@@ -1587,7 +1645,8 @@ public final class CertificateAsyncClient {
      * requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -1607,7 +1666,8 @@ public final class CertificateAsyncClient {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1633,7 +1693,8 @@ public final class CertificateAsyncClient {
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     x5c (Required): [
      *         byte[] (Required)
@@ -1651,11 +1712,13 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1727,7 +1790,8 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param parameters The parameters to merge certificate.
@@ -1754,11 +1818,13 @@ public final class CertificateAsyncClient {
      * requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1783,15 +1849,18 @@ public final class CertificateAsyncClient {
      * operation requires the certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1863,7 +1932,8 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param parameters The parameters to restore the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1902,7 +1972,8 @@ public final class CertificateAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -1927,7 +1998,8 @@ public final class CertificateAsyncClient {
      *     ]
      *     nextLink: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1952,7 +2024,8 @@ public final class CertificateAsyncClient {
      * requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -2027,7 +2100,8 @@ public final class CertificateAsyncClient {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2079,7 +2153,8 @@ public final class CertificateAsyncClient {
      * permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -2151,7 +2226,8 @@ public final class CertificateAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the deleted certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2710,7 +2786,7 @@ public final class CertificateAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return updateCertificatePolicyWithResponse(certificateName, BinaryData.fromObject(certificatePolicy),
             requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CertificatePolicy.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(CertificatePolicy.class));
     }
 
     /**
@@ -2740,7 +2816,7 @@ public final class CertificateAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return updateCertificateWithResponse(certificateName, certificateVersion, BinaryData.fromObject(parameters),
             requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CertificateBundle.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(CertificateBundle.class));
     }
 
     /**
@@ -2758,7 +2834,9 @@ public final class CertificateAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a specific certificate on successful completion of {@link Mono}.
+     * @return information about a certificate.
+     *
+     * Gets information about a specific certificate on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2794,7 +2872,7 @@ public final class CertificateAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return updateCertificateOperationWithResponse(certificateName, BinaryData.fromObject(certificateOperation),
             requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CertificateOperation.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(CertificateOperation.class));
     }
 
     /**
@@ -2810,7 +2888,9 @@ public final class CertificateAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the creation operation associated with a specified certificate on successful completion of {@link Mono}.
+     * @return the creation operation of a certificate.
+     *
+     * Gets the creation operation associated with a specified certificate on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

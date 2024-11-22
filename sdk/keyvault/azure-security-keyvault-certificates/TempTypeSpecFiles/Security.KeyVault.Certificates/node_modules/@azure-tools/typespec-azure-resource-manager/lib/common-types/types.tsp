@@ -537,10 +537,9 @@ model ManagementGroupNameParameter {
 @added(Versions.v4)
 model ScopeParameter {
   /** The scope at which the operation is performed. */
-  @path
+  @path(#{ allowReserved: true })
   @segment("scope")
   @minLength(1)
-  @extension("x-ms-skip-url-encoding", true)
   scope: string;
 }
 

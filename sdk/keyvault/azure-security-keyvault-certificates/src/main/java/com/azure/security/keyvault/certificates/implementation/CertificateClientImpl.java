@@ -165,7 +165,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificates(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/certificates")
@@ -175,7 +175,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificatesSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/certificates/{certificate-name}")
@@ -186,7 +186,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/certificates/{certificate-name}")
         @ExpectedResponses({ 200 })
@@ -196,7 +196,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/certificates/contacts")
         @ExpectedResponses({ 200 })
@@ -205,8 +205,9 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> setCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData contacts, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData contacts,
+            RequestOptions requestOptions, Context context);
 
         @Put("/certificates/contacts")
         @ExpectedResponses({ 200 })
@@ -215,8 +216,9 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> setCertificateContactsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData contacts, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData contacts,
+            RequestOptions requestOptions, Context context);
 
         @Get("/certificates/contacts")
         @ExpectedResponses({ 200 })
@@ -225,7 +227,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/certificates/contacts")
@@ -235,7 +237,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateContactsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/certificates/contacts")
@@ -245,7 +247,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/certificates/contacts")
@@ -255,7 +257,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteCertificateContactsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/certificates/issuers")
@@ -265,7 +267,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificateIssuers(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/certificates/issuers")
@@ -275,7 +277,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateIssuersSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Put("/certificates/issuers/{issuer-name}")
@@ -286,8 +288,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> setCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameter,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameter, RequestOptions requestOptions, Context context);
 
         @Put("/certificates/issuers/{issuer-name}")
         @ExpectedResponses({ 200 })
@@ -297,8 +299,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> setCertificateIssuerSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameter,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameter, RequestOptions requestOptions, Context context);
 
         @Patch("/certificates/issuers/{issuer-name}")
         @ExpectedResponses({ 200 })
@@ -308,8 +310,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameter,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameter, RequestOptions requestOptions, Context context);
 
         @Patch("/certificates/issuers/{issuer-name}")
         @ExpectedResponses({ 200 })
@@ -319,8 +321,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateCertificateIssuerSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameter,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameter, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/issuers/{issuer-name}")
         @ExpectedResponses({ 200 })
@@ -330,7 +332,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/issuers/{issuer-name}")
         @ExpectedResponses({ 200 })
@@ -340,7 +342,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateIssuerSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/certificates/issuers/{issuer-name}")
         @ExpectedResponses({ 200 })
@@ -350,7 +352,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/certificates/issuers/{issuer-name}")
         @ExpectedResponses({ 200 })
@@ -360,7 +362,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteCertificateIssuerSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/{certificate-name}/create")
         @ExpectedResponses({ 202 })
@@ -370,8 +372,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/{certificate-name}/create")
         @ExpectedResponses({ 202 })
@@ -381,8 +383,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/{certificate-name}/import")
         @ExpectedResponses({ 200 })
@@ -392,8 +394,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> importCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/{certificate-name}/import")
         @ExpectedResponses({ 200 })
@@ -403,8 +405,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> importCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/{certificate-name}/versions")
         @ExpectedResponses({ 200 })
@@ -414,7 +416,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificateVersions(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/{certificate-name}/versions")
         @ExpectedResponses({ 200 })
@@ -424,7 +426,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateVersionsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/{certificate-name}/policy")
         @ExpectedResponses({ 200 })
@@ -434,7 +436,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificatePolicy(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/{certificate-name}/policy")
         @ExpectedResponses({ 200 })
@@ -444,7 +446,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificatePolicySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/certificates/{certificate-name}/policy")
         @ExpectedResponses({ 200 })
@@ -454,8 +456,9 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateCertificatePolicy(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData certificatePolicy,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData certificatePolicy, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/certificates/{certificate-name}/policy")
         @ExpectedResponses({ 200 })
@@ -465,8 +468,9 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateCertificatePolicySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData certificatePolicy,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData certificatePolicy, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/certificates/{certificate-name}/{certificate-version}")
         @ExpectedResponses({ 200 })
@@ -476,7 +480,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @PathParam("certificate-version") String certificateVersion, @HeaderParam("accept") String accept,
+            @PathParam("certificate-version") String certificateVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Patch("/certificates/{certificate-name}/{certificate-version}")
@@ -487,7 +492,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @PathParam("certificate-version") String certificateVersion, @HeaderParam("accept") String accept,
+            @PathParam("certificate-version") String certificateVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/{certificate-name}/{certificate-version}")
@@ -498,7 +504,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @PathParam("certificate-version") String certificateVersion, @HeaderParam("accept") String accept,
+            @PathParam("certificate-version") String certificateVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/certificates/{certificate-name}/{certificate-version}")
@@ -509,7 +515,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @PathParam("certificate-version") String certificateVersion, @HeaderParam("accept") String accept,
+            @PathParam("certificate-version") String certificateVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Patch("/certificates/{certificate-name}/pending")
@@ -520,8 +526,9 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateCertificateOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData certificateOperation,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData certificateOperation, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/certificates/{certificate-name}/pending")
         @ExpectedResponses({ 200 })
@@ -531,8 +538,9 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateCertificateOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData certificateOperation,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData certificateOperation, RequestOptions requestOptions,
+            Context context);
 
         @Get("/certificates/{certificate-name}/pending")
         @ExpectedResponses({ 200 })
@@ -542,7 +550,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificateOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/certificates/{certificate-name}/pending")
         @ExpectedResponses({ 200 })
@@ -552,7 +560,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/certificates/{certificate-name}/pending")
         @ExpectedResponses({ 200 })
@@ -562,7 +570,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteCertificateOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/certificates/{certificate-name}/pending")
         @ExpectedResponses({ 200 })
@@ -572,7 +580,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteCertificateOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/{certificate-name}/pending/merge")
         @ExpectedResponses({ 201 })
@@ -582,8 +590,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> mergeCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/{certificate-name}/pending/merge")
         @ExpectedResponses({ 201 })
@@ -593,8 +601,8 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> mergeCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData parameters,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/{certificate-name}/backup")
         @ExpectedResponses({ 200 })
@@ -604,7 +612,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> backupCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/{certificate-name}/backup")
         @ExpectedResponses({ 200 })
@@ -614,7 +622,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> backupCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/certificates/restore")
         @ExpectedResponses({ 200 })
@@ -623,8 +631,9 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> restoreCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
 
         @Post("/certificates/restore")
         @ExpectedResponses({ 200 })
@@ -633,8 +642,9 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> restoreCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData parameters, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
 
         @Get("/deletedcertificates")
         @ExpectedResponses({ 200 })
@@ -643,7 +653,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDeletedCertificates(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/deletedcertificates")
@@ -653,7 +663,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDeletedCertificatesSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/deletedcertificates/{certificate-name}")
@@ -664,7 +674,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/deletedcertificates/{certificate-name}")
         @ExpectedResponses({ 200 })
@@ -674,7 +684,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDeletedCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deletedcertificates/{certificate-name}")
         @ExpectedResponses({ 204 })
@@ -684,7 +694,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deletedcertificates/{certificate-name}")
         @ExpectedResponses({ 204 })
@@ -694,7 +704,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> purgeDeletedCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deletedcertificates/{certificate-name}/recover")
         @ExpectedResponses({ 200 })
@@ -704,7 +714,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> recoverDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deletedcertificates/{certificate-name}/recover")
         @ExpectedResponses({ 200 })
@@ -714,7 +724,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> recoverDeletedCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -723,7 +733,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificatesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -733,7 +743,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificatesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -744,7 +754,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificateIssuersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -755,7 +765,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateIssuersNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -766,7 +776,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCertificateVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -777,7 +787,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCertificateVersionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("accept") String accept,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
     }
 
@@ -799,7 +809,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -816,7 +827,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -853,7 +865,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -870,7 +883,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -906,7 +920,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -923,7 +938,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -959,7 +975,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -976,7 +993,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1002,7 +1020,8 @@ public final class CertificateClientImpl {
      * certificate object. This operation requires the certificates/delete permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1077,7 +1096,8 @@ public final class CertificateClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1105,7 +1125,8 @@ public final class CertificateClientImpl {
      * certificate object. This operation requires the certificates/delete permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -1180,7 +1201,8 @@ public final class CertificateClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1205,7 +1227,8 @@ public final class CertificateClientImpl {
      * requires the certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -1216,11 +1239,13 @@ public final class CertificateClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -1231,7 +1256,8 @@ public final class CertificateClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param contacts The contacts for the key vault certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1245,9 +1271,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setCertificateContactsWithResponseAsync(BinaryData contacts,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.setCertificateContacts(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, contacts, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, contacts, requestOptions, context));
     }
 
     /**
@@ -1257,7 +1284,8 @@ public final class CertificateClientImpl {
      * requires the certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -1268,11 +1296,13 @@ public final class CertificateClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -1283,7 +1313,8 @@ public final class CertificateClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param contacts The contacts for the key vault certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1295,9 +1326,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> setCertificateContactsWithResponse(BinaryData contacts, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.setCertificateContactsSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            contacts, requestOptions, Context.NONE);
+        return service.setCertificateContactsSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            contentType, accept, contacts, requestOptions, Context.NONE);
     }
 
     /**
@@ -1308,7 +1340,8 @@ public final class CertificateClientImpl {
      * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -1319,7 +1352,8 @@ public final class CertificateClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1344,7 +1378,8 @@ public final class CertificateClientImpl {
      * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -1355,7 +1390,8 @@ public final class CertificateClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1378,7 +1414,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -1389,7 +1426,8 @@ public final class CertificateClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1413,7 +1451,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     contacts (Optional): [
@@ -1424,7 +1463,8 @@ public final class CertificateClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1457,12 +1497,14 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1499,12 +1541,14 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1539,12 +1583,14 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1579,12 +1625,14 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1609,7 +1657,8 @@ public final class CertificateClientImpl {
      * issuer. This operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provider: String (Required)
      *     credentials (Optional): {
@@ -1633,11 +1682,13 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -1662,7 +1713,8 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the
      * purpose of running the service. The value provided should not include
@@ -1679,9 +1731,11 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setCertificateIssuerWithResponseAsync(String issuerName, BinaryData parameter,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.setCertificateIssuer(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), issuerName, accept, parameter, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.setCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                issuerName, contentType, accept, parameter, requestOptions, context));
     }
 
     /**
@@ -1691,7 +1745,8 @@ public final class CertificateClientImpl {
      * issuer. This operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provider: String (Required)
      *     credentials (Optional): {
@@ -1715,11 +1770,13 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -1744,7 +1801,8 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the
      * purpose of running the service. The value provided should not include
@@ -1760,9 +1818,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> setCertificateIssuerWithResponse(String issuerName, BinaryData parameter,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.setCertificateIssuerSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            issuerName, accept, parameter, requestOptions, Context.NONE);
+            issuerName, contentType, accept, parameter, requestOptions, Context.NONE);
     }
 
     /**
@@ -1773,7 +1832,8 @@ public final class CertificateClientImpl {
      * permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provider: String (Optional)
      *     credentials (Optional): {
@@ -1797,11 +1857,13 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -1826,7 +1888,8 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param parameter Certificate issuer update parameter.
@@ -1841,9 +1904,11 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateCertificateIssuerWithResponseAsync(String issuerName, BinaryData parameter,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateCertificateIssuer(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), issuerName, accept, parameter, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.updateCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                issuerName, contentType, accept, parameter, requestOptions, context));
     }
 
     /**
@@ -1854,7 +1919,8 @@ public final class CertificateClientImpl {
      * permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provider: String (Optional)
      *     credentials (Optional): {
@@ -1878,11 +1944,13 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -1907,7 +1975,8 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param parameter Certificate issuer update parameter.
@@ -1921,9 +1990,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateCertificateIssuerWithResponse(String issuerName, BinaryData parameter,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateCertificateIssuerSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            issuerName, accept, parameter, requestOptions, Context.NONE);
+            issuerName, contentType, accept, parameter, requestOptions, Context.NONE);
     }
 
     /**
@@ -1934,7 +2004,8 @@ public final class CertificateClientImpl {
      * certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -1959,7 +2030,8 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1986,7 +2058,8 @@ public final class CertificateClientImpl {
      * certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -2011,7 +2084,8 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2036,7 +2110,8 @@ public final class CertificateClientImpl {
      * certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -2061,7 +2136,8 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2088,7 +2164,8 @@ public final class CertificateClientImpl {
      * certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
@@ -2113,7 +2190,8 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param issuerName The name of the issuer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2137,7 +2215,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     policy (Optional): {
      *         id: String (Optional)
@@ -2203,11 +2282,13 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -2227,7 +2308,8 @@ public final class CertificateClientImpl {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate. The value you provide may be copied globally for
      * the purpose of running the service. The value provided should not include
@@ -2244,9 +2326,11 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createCertificateWithResponseAsync(String certificateName, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createCertificate(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                certificateName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -2256,7 +2340,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     policy (Optional): {
      *         id: String (Optional)
@@ -2322,11 +2407,13 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -2346,7 +2433,8 @@ public final class CertificateClientImpl {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate. The value you provide may be copied globally for
      * the purpose of running the service. The value provided should not include
@@ -2362,9 +2450,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createCertificateWithResponse(String certificateName, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, parameters, requestOptions, Context.NONE);
+            certificateName, contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -2377,7 +2466,8 @@ public final class CertificateClientImpl {
      * certificates. Key Vault will only accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Required)
      *     pwd: String (Optional)
@@ -2445,11 +2535,13 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -2521,7 +2613,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate. The value you provide may be copied globally for
      * the purpose of running the service. The value provided should not include
@@ -2538,9 +2631,11 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importCertificateWithResponseAsync(String certificateName, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.importCertificate(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.importCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                certificateName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -2553,7 +2648,8 @@ public final class CertificateClientImpl {
      * certificates. Key Vault will only accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: String (Required)
      *     pwd: String (Optional)
@@ -2621,11 +2717,13 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -2697,7 +2795,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate. The value you provide may be copied globally for
      * the purpose of running the service. The value provided should not include
@@ -2713,9 +2812,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> importCertificateWithResponse(String certificateName, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.importCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, parameters, requestOptions, Context.NONE);
+            certificateName, contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -2735,7 +2835,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2752,7 +2853,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2790,7 +2892,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2807,7 +2910,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2843,7 +2947,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2860,7 +2965,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2897,7 +3003,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -2914,7 +3021,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2941,7 +3049,8 @@ public final class CertificateClientImpl {
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -3001,7 +3110,8 @@ public final class CertificateClientImpl {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in a given key vault.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3027,7 +3137,8 @@ public final class CertificateClientImpl {
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -3087,7 +3198,8 @@ public final class CertificateClientImpl {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in a given key vault.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3112,7 +3224,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -3172,11 +3285,13 @@ public final class CertificateClientImpl {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -3236,7 +3351,8 @@ public final class CertificateClientImpl {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -3250,10 +3366,11 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateCertificatePolicyWithResponseAsync(String certificateName,
         BinaryData certificatePolicy, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.updateCertificatePolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                certificateName, accept, certificatePolicy, requestOptions, context));
+                certificateName, contentType, accept, certificatePolicy, requestOptions, context));
     }
 
     /**
@@ -3263,7 +3380,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -3323,11 +3441,13 @@ public final class CertificateClientImpl {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     key_props (Optional): {
@@ -3387,7 +3507,8 @@ public final class CertificateClientImpl {
      *         recoveryLevel: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
@@ -3401,9 +3522,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateCertificatePolicyWithResponse(String certificateName,
         BinaryData certificatePolicy, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateCertificatePolicySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, certificatePolicy, requestOptions, Context.NONE);
+            certificateName, contentType, accept, certificatePolicy, requestOptions, Context.NONE);
     }
 
     /**
@@ -3414,7 +3536,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     policy (Optional): {
      *         id: String (Optional)
@@ -3480,11 +3603,13 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -3556,7 +3681,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -3572,10 +3698,11 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateCertificateWithResponseAsync(String certificateName,
         String certificateVersion, BinaryData parameters, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.updateCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                certificateName, certificateVersion, accept, parameters, requestOptions, context));
+                certificateName, certificateVersion, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -3586,7 +3713,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     policy (Optional): {
      *         id: String (Optional)
@@ -3652,11 +3780,13 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -3728,7 +3858,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
@@ -3743,9 +3874,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateCertificateWithResponse(String certificateName, String certificateVersion,
         BinaryData parameters, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, certificateVersion, accept, parameters, requestOptions, Context.NONE);
+            certificateName, certificateVersion, contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -3755,7 +3887,8 @@ public final class CertificateClientImpl {
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -3827,7 +3960,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not
@@ -3837,7 +3971,9 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a specific certificate along with {@link Response} on successful completion of
+     * @return information about a certificate.
+     *
+     * Gets information about a specific certificate along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3856,7 +3992,8 @@ public final class CertificateClientImpl {
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -3928,7 +4065,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not
@@ -3938,7 +4076,9 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a specific certificate along with {@link Response}.
+     * @return information about a certificate.
+     *
+     * Gets information about a specific certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCertificateWithResponse(String certificateName, String certificateVersion,
@@ -3955,15 +4095,18 @@ public final class CertificateClientImpl {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     cancellation_requested: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -3983,7 +4126,8 @@ public final class CertificateClientImpl {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param certificateOperation The certificate operation response.
@@ -3998,10 +4142,11 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateCertificateOperationWithResponseAsync(String certificateName,
         BinaryData certificateOperation, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.updateCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-                certificateName, accept, certificateOperation, requestOptions, context));
+                certificateName, contentType, accept, certificateOperation, requestOptions, context));
     }
 
     /**
@@ -4011,15 +4156,18 @@ public final class CertificateClientImpl {
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     cancellation_requested: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -4039,7 +4187,8 @@ public final class CertificateClientImpl {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param certificateOperation The certificate operation response.
@@ -4053,9 +4202,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateCertificateOperationWithResponse(String certificateName,
         BinaryData certificateOperation, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateCertificateOperationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, certificateOperation, requestOptions, Context.NONE);
+            certificateName, contentType, accept, certificateOperation, requestOptions, Context.NONE);
     }
 
     /**
@@ -4065,7 +4215,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -4085,7 +4236,8 @@ public final class CertificateClientImpl {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4093,7 +4245,9 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the creation operation associated with a specified certificate along with {@link Response} on successful
+     * @return the creation operation of a certificate.
+     *
+     * Gets the creation operation associated with a specified certificate along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4111,7 +4265,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -4131,7 +4286,8 @@ public final class CertificateClientImpl {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4139,7 +4295,9 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the creation operation associated with a specified certificate along with {@link Response}.
+     * @return the creation operation of a certificate.
+     *
+     * Gets the creation operation associated with a specified certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCertificateOperationWithResponse(String certificateName,
@@ -4157,7 +4315,8 @@ public final class CertificateClientImpl {
      * requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -4177,7 +4336,8 @@ public final class CertificateClientImpl {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4204,7 +4364,8 @@ public final class CertificateClientImpl {
      * requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     issuer (Optional): {
@@ -4224,7 +4385,8 @@ public final class CertificateClientImpl {
      *     target: String (Optional)
      *     request_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4250,7 +4412,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     x5c (Required): [
      *         byte[] (Required)
@@ -4268,11 +4431,13 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -4344,7 +4509,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param parameters The parameters to merge certificate.
@@ -4359,9 +4525,11 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> mergeCertificateWithResponseAsync(String certificateName, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.mergeCertificate(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, accept, parameters, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.mergeCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                certificateName, contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -4372,7 +4540,8 @@ public final class CertificateClientImpl {
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     x5c (Required): [
      *         byte[] (Required)
@@ -4390,11 +4559,13 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -4466,7 +4637,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param parameters The parameters to merge certificate.
@@ -4480,9 +4652,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> mergeCertificateWithResponse(String certificateName, BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.mergeCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, parameters, requestOptions, Context.NONE);
+            certificateName, contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -4493,11 +4666,13 @@ public final class CertificateClientImpl {
      * requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4524,11 +4699,13 @@ public final class CertificateClientImpl {
      * requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4552,15 +4729,18 @@ public final class CertificateClientImpl {
      * operation requires the certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -4632,7 +4812,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param parameters The parameters to restore the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4646,9 +4827,10 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> restoreCertificateWithResponseAsync(BinaryData parameters,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.restoreCertificate(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, parameters, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, parameters, requestOptions, context));
     }
 
     /**
@@ -4658,15 +4840,18 @@ public final class CertificateClientImpl {
      * operation requires the certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value: Base64Url (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -4738,7 +4923,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param parameters The parameters to restore the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4750,9 +4936,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> restoreCertificateWithResponse(BinaryData parameters, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.restoreCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            parameters, requestOptions, Context.NONE);
+        return service.restoreCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            contentType, accept, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -4776,7 +4963,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -4801,7 +4989,8 @@ public final class CertificateClientImpl {
      *     ]
      *     nextLink: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4839,7 +5028,8 @@ public final class CertificateClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -4864,7 +5054,8 @@ public final class CertificateClientImpl {
      *     ]
      *     nextLink: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4889,7 +5080,8 @@ public final class CertificateClientImpl {
      * requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -4964,7 +5156,8 @@ public final class CertificateClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4993,7 +5186,8 @@ public final class CertificateClientImpl {
      * requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -5068,7 +5262,8 @@ public final class CertificateClientImpl {
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5144,7 +5339,8 @@ public final class CertificateClientImpl {
      * permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -5216,7 +5412,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the deleted certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5245,7 +5442,8 @@ public final class CertificateClientImpl {
      * permission.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     kid: String (Optional)
@@ -5317,7 +5515,8 @@ public final class CertificateClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param certificateName The name of the deleted certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5341,7 +5540,8 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -5358,7 +5558,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5384,7 +5585,8 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -5401,7 +5603,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5426,12 +5629,14 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5459,12 +5664,14 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     provider: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5490,7 +5697,8 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -5507,7 +5715,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5534,7 +5743,8 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     attributes (Optional): {
@@ -5551,7 +5761,8 @@ public final class CertificateClientImpl {
      *     }
      *     x5t: Base64Url (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
