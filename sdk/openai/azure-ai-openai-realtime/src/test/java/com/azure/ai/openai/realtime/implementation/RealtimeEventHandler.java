@@ -3,42 +3,42 @@
 
 package com.azure.ai.openai.realtime.implementation;
 
+import com.azure.ai.openai.realtime.models.RateLimitsUpdatedEvent;
 import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemDeleted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionFailed;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemTruncated;
+import com.azure.ai.openai.realtime.models.ConversationCreatedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemCreatedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemDeletedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemInputAudioTranscriptionCompletedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemInputAudioTranscriptionFailedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemTruncatedEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventError;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferCleared;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferCommitted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStarted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStopped;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventRateLimitsUpdated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartAdded;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseFunctionCallArgumentsDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseFunctionCallArgumentsDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemAdded;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseTextDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseTextDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
+import com.azure.ai.openai.realtime.models.InputAudioBufferClearedEvent;
+import com.azure.ai.openai.realtime.models.InputAudioBufferCommittedEvent;
+import com.azure.ai.openai.realtime.models.InputAudioBufferSpeechStartedEvent;
+import com.azure.ai.openai.realtime.models.InputAudioBufferSpeechStoppedEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioTranscriptDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioTranscriptDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseContentPartAddedEvent;
+import com.azure.ai.openai.realtime.models.ResponseTextDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseCreatedEvent;
+import com.azure.ai.openai.realtime.models.ResponseDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseFunctionCallArgumentsDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseFunctionCallArgumentsDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseOutputItemAddedEvent;
+import com.azure.ai.openai.realtime.models.ResponseOutputItemDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseTextDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseTextDoneEvent;
+import com.azure.ai.openai.realtime.models.SessionCreatedEvent;
+import com.azure.ai.openai.realtime.models.SessionUpdatedEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
+import com.azure.ai.openai.realtime.models.SessionUpdateEvent;
 import reactor.core.publisher.Sinks;
 
 import java.util.Arrays;
@@ -91,14 +91,14 @@ public final class RealtimeEventHandler {
 
             case "session.created":
                 System.out.println("Session successfully created");
-                RealtimeServerEventSessionCreated sessionCreated = (RealtimeServerEventSessionCreated) serverEvent;
+                SessionCreatedEvent sessionCreated = (SessionCreatedEvent) serverEvent;
                 System.out.println("\tEvent ID: " + sessionCreated.getSession().getId());
                 System.out.println("\tModel: " + sessionCreated.getSession().getModel());
                 requestUserInput.emitNext(new SessionUpdateRequest(), Sinks.EmitFailureHandler.FAIL_FAST);
                 break;
 
             case "session.updated":
-                RealtimeServerEventSessionUpdated sessionUpdatedEvent = (RealtimeServerEventSessionUpdated) serverEvent;
+                SessionUpdatedEvent sessionUpdatedEvent = (SessionUpdatedEvent) serverEvent;
                 System.out.println("Session updated");
                 System.out.println("\tEvent ID: " + sessionUpdatedEvent.getSession().getId());
                 System.out.println("\tModel: " + sessionUpdatedEvent.getSession().getModel());
@@ -106,157 +106,157 @@ public final class RealtimeEventHandler {
                 break;
 
             case "conversation.created":
-                RealtimeServerEventConversationCreated conversationCreatedEvent
-                    = (RealtimeServerEventConversationCreated) serverEvent;
+                ConversationCreatedEvent conversationCreatedEvent
+                    = (ConversationCreatedEvent) serverEvent;
 
                 break;
 
             case "input_audio_buffer.committed":
-                RealtimeServerEventInputAudioBufferCommitted inputAudioBufferCommitted
-                    = (RealtimeServerEventInputAudioBufferCommitted) serverEvent;
+                InputAudioBufferCommittedEvent inputAudioBufferCommitted
+                    = (InputAudioBufferCommittedEvent) serverEvent;
                 // Handle input_audio_buffer.committed event
                 break;
 
             case "input_audio_buffer.cleared":
-                RealtimeServerEventInputAudioBufferCleared inputAudioBufferCleared
-                    = (RealtimeServerEventInputAudioBufferCleared) serverEvent;
+                InputAudioBufferClearedEvent inputAudioBufferCleared
+                    = (InputAudioBufferClearedEvent) serverEvent;
                 // Handle input_audio_buffer.cleared event
                 break;
 
             case "input_audio_buffer.speech_started":
-                RealtimeServerEventInputAudioBufferSpeechStarted inputAudioBufferSpeechStarted
-                    = (RealtimeServerEventInputAudioBufferSpeechStarted) serverEvent;
+                InputAudioBufferSpeechStartedEvent inputAudioBufferSpeechStarted
+                    = (InputAudioBufferSpeechStartedEvent) serverEvent;
                 System.out.println("Speech started");
                 System.out.println("\tEvent ID: " + inputAudioBufferSpeechStarted.getEventId());
                 System.out.println("\tStart Time: " + inputAudioBufferSpeechStarted.getAudioStartMs());
                 break;
 
             case "input_audio_buffer.speech_stopped":
-                RealtimeServerEventInputAudioBufferSpeechStopped inputAudioBufferSpeechStopped
-                    = (RealtimeServerEventInputAudioBufferSpeechStopped) serverEvent;
+                InputAudioBufferSpeechStoppedEvent inputAudioBufferSpeechStopped
+                    = (InputAudioBufferSpeechStoppedEvent) serverEvent;
                 // Handle input_audio_buffer.speech_stopped event
                 break;
 
             case "conversation.item.created":
-                RealtimeServerEventConversationItemCreated conversationItemCreated
-                    = (RealtimeServerEventConversationItemCreated) serverEvent;
+                ConversationItemCreatedEvent conversationItemCreated
+                    = (ConversationItemCreatedEvent) serverEvent;
                 // Handle conversation.item.created event
                 break;
 
             case "conversation.item.input_audio_transcription.completed":
-                RealtimeServerEventConversationItemInputAudioTranscriptionCompleted conversationItemInputAudioTranscriptionCompleted
-                    = (RealtimeServerEventConversationItemInputAudioTranscriptionCompleted) serverEvent;
+                ConversationItemInputAudioTranscriptionCompletedEvent conversationItemInputAudioTranscriptionCompleted
+                    = (ConversationItemInputAudioTranscriptionCompletedEvent) serverEvent;
                 System.out
                     .println("Transcription: " + conversationItemInputAudioTranscriptionCompleted.getTranscript());
                 break;
 
             case "conversation.item.input_audio_transcription.failed":
-                RealtimeServerEventConversationItemInputAudioTranscriptionFailed conversationItemInputAudioTranscriptionFailed
-                    = (RealtimeServerEventConversationItemInputAudioTranscriptionFailed) serverEvent;
+                ConversationItemInputAudioTranscriptionFailedEvent conversationItemInputAudioTranscriptionFailed
+                    = (ConversationItemInputAudioTranscriptionFailedEvent) serverEvent;
                 // Handle conversation.item.input_audio_transcription.failed event
                 break;
 
             case "conversation.item.truncated":
-                RealtimeServerEventConversationItemTruncated conversationItemTruncated
-                    = (RealtimeServerEventConversationItemTruncated) serverEvent;
+                ConversationItemTruncatedEvent conversationItemTruncated
+                    = (ConversationItemTruncatedEvent) serverEvent;
                 // Handle conversation.item.truncated event
                 break;
 
             case "conversation.item.deleted":
-                RealtimeServerEventConversationItemDeleted conversationItemDeleted
-                    = (RealtimeServerEventConversationItemDeleted) serverEvent;
+                ConversationItemDeletedEvent conversationItemDeleted
+                    = (ConversationItemDeletedEvent) serverEvent;
                 // Handle conversation.item.deleted event
                 break;
 
             case "response.created":
-                RealtimeServerEventResponseCreated responseCreated = (RealtimeServerEventResponseCreated) serverEvent;
+                ResponseCreatedEvent responseCreated = (ResponseCreatedEvent) serverEvent;
                 // Handle response.created event
                 break;
 
             case "response.done":
-                RealtimeServerEventResponseDone responseDone = (RealtimeServerEventResponseDone) serverEvent;
+                ResponseDoneEvent responseDone = (ResponseDoneEvent) serverEvent;
                 System.out.println("Response done received");
                 requestUserInput.emitNext(new EndSession(), Sinks.EmitFailureHandler.FAIL_FAST);
                 // Handle response.done event
                 break;
 
             case "response.output_item.added":
-                RealtimeServerEventResponseOutputItemAdded responseOutputItemAdded
-                    = (RealtimeServerEventResponseOutputItemAdded) serverEvent;
+                ResponseOutputItemAddedEvent responseOutputItemAdded
+                    = (ResponseOutputItemAddedEvent) serverEvent;
                 // Handle response.output_item.added event
                 break;
 
             case "response.output_item.done":
-                RealtimeServerEventResponseOutputItemDone responseOutputItemDone
-                    = (RealtimeServerEventResponseOutputItemDone) serverEvent;
+                ResponseOutputItemDoneEvent responseOutputItemDone
+                    = (ResponseOutputItemDoneEvent) serverEvent;
                 // Handle response.output_item.done event
                 break;
 
             case "response.content_part.added":
-                RealtimeServerEventResponseContentPartAdded responseContentPartAdded
-                    = (RealtimeServerEventResponseContentPartAdded) serverEvent;
+                ResponseContentPartAddedEvent responseContentPartAdded
+                    = (ResponseContentPartAddedEvent) serverEvent;
                 // Handle response.content_part.added event
                 break;
 
             case "response.content_part.done":
-                RealtimeServerEventResponseContentPartDone responseContentPartDone
-                    = (RealtimeServerEventResponseContentPartDone) serverEvent;
+                ResponseTextDeltaEvent responseContentPartDone
+                    = (ResponseTextDeltaEvent) serverEvent;
                 // Handle response.content_part.done event
                 break;
 
             case "response.text.delta":
-                RealtimeServerEventResponseTextDelta responseTextDelta
-                    = (RealtimeServerEventResponseTextDelta) serverEvent;
+                ResponseTextDeltaEvent responseTextDelta
+                    = (ResponseTextDeltaEvent) serverEvent;
                 // Handle response.text.delta event
                 break;
 
             case "response.text.done":
-                RealtimeServerEventResponseTextDone responseTextDone
-                    = (RealtimeServerEventResponseTextDone) serverEvent;
+                ResponseTextDoneEvent responseTextDone
+                    = (ResponseTextDoneEvent) serverEvent;
                 // Handle response.text.done event
                 break;
 
             case "response.audio_transcript.delta":
-                RealtimeServerEventResponseAudioTranscriptDelta responseAudioTranscriptDelta
-                    = (RealtimeServerEventResponseAudioTranscriptDelta) serverEvent;
+                ResponseAudioTranscriptDeltaEvent responseAudioTranscriptDelta
+                    = (ResponseAudioTranscriptDeltaEvent) serverEvent;
                 // Handle response.audio_transcript.delta event
                 break;
 
             case "response.audio_transcript.done":
-                RealtimeServerEventResponseAudioTranscriptDone responseAudioTranscriptDone
-                    = (RealtimeServerEventResponseAudioTranscriptDone) serverEvent;
+                ResponseAudioTranscriptDoneEvent responseAudioTranscriptDone
+                    = (ResponseAudioTranscriptDoneEvent) serverEvent;
                 // Handle response.audio_transcript.done event
                 break;
 
             case "response.audio.delta":
-                RealtimeServerEventResponseAudioDelta responseAudioDelta
-                    = (RealtimeServerEventResponseAudioDelta) serverEvent;
+                ResponseAudioDeltaEvent responseAudioDelta
+                    = (ResponseAudioDeltaEvent) serverEvent;
                 System.out.println("Audio delta received");
                 // Handle response.audio.delta event
                 break;
 
             case "response.audio.done":
-                RealtimeServerEventResponseAudioDone responseAudioDone
-                    = (RealtimeServerEventResponseAudioDone) serverEvent;
+                ResponseAudioDoneEvent responseAudioDone
+                    = (ResponseAudioDoneEvent) serverEvent;
                 System.out.println("Audio done received");
                 // Handle response.audio.done event
                 break;
 
             case "response.function_call_arguments.delta":
-                RealtimeServerEventResponseFunctionCallArgumentsDelta responseFunctionCallArgumentsDelta
-                    = (RealtimeServerEventResponseFunctionCallArgumentsDelta) serverEvent;
+                ResponseFunctionCallArgumentsDeltaEvent responseFunctionCallArgumentsDelta
+                    = (ResponseFunctionCallArgumentsDeltaEvent) serverEvent;
                 // Handle response.function_call_arguments.delta event
                 break;
 
             case "response.function_call_arguments.done":
-                RealtimeServerEventResponseFunctionCallArgumentsDone responseFunctionCallArgumentsDone
-                    = (RealtimeServerEventResponseFunctionCallArgumentsDone) serverEvent;
+                ResponseFunctionCallArgumentsDoneEvent responseFunctionCallArgumentsDone
+                    = (ResponseFunctionCallArgumentsDoneEvent) serverEvent;
                 // Handle response.function_call_arguments.done event
                 break;
 
             case "rate_limits.updated":
-                RealtimeServerEventRateLimitsUpdated rateLimitsUpdated
-                    = (RealtimeServerEventRateLimitsUpdated) serverEvent;
+                RateLimitsUpdatedEvent rateLimitsUpdated
+                    = (RateLimitsUpdatedEvent) serverEvent;
                 // Handle rate_limits.updated event
                 break;
 
@@ -269,8 +269,8 @@ public final class RealtimeEventHandler {
      * Creates a session update event for the purpose of tests
      * @return a session update request event from the client.
      */
-    public static RealtimeClientEventSessionUpdate sessionUpdate() {
-        return new RealtimeClientEventSessionUpdate(new RealtimeRequestSession()
+    public static SessionUpdateEvent sessionUpdate() {
+        return new SessionUpdateEvent(new RealtimeRequestSession()
             .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT, RealtimeRequestSessionModality.AUDIO))
             .setInputAudioTranscription(
                 new RealtimeAudioInputTranscriptionSettings().setModel(RealtimeAudioInputTranscriptionModel.WHISPER_1))

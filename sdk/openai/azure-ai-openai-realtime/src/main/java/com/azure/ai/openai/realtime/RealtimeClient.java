@@ -5,34 +5,34 @@ package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.implementation.EventHandlerCollection;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemDeleted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionFailed;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemTruncated;
+import com.azure.ai.openai.realtime.models.ConversationCreatedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemCreatedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemDeletedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemInputAudioTranscriptionCompletedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemInputAudioTranscriptionFailedEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemTruncatedEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventError;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferCleared;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferCommitted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStarted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStopped;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventRateLimitsUpdated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartAdded;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseContentPartDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseFunctionCallArgumentsDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseFunctionCallArgumentsDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemAdded;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseTextDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseTextDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
+import com.azure.ai.openai.realtime.models.InputAudioBufferClearedEvent;
+import com.azure.ai.openai.realtime.models.InputAudioBufferCommittedEvent;
+import com.azure.ai.openai.realtime.models.InputAudioBufferSpeechStartedEvent;
+import com.azure.ai.openai.realtime.models.InputAudioBufferSpeechStoppedEvent;
+import com.azure.ai.openai.realtime.models.RateLimitsUpdatedEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioTranscriptDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioTranscriptDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseContentPartAddedEvent;
+import com.azure.ai.openai.realtime.models.ResponseTextDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseCreatedEvent;
+import com.azure.ai.openai.realtime.models.ResponseDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseFunctionCallArgumentsDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseFunctionCallArgumentsDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseOutputItemAddedEvent;
+import com.azure.ai.openai.realtime.models.ResponseOutputItemDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseTextDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseTextDoneEvent;
+import com.azure.ai.openai.realtime.models.SessionCreatedEvent;
+import com.azure.ai.openai.realtime.models.SessionUpdatedEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
 import com.azure.core.annotation.ServiceClient;
 import reactor.core.scheduler.Schedulers;
@@ -97,7 +97,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationCreatedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnConversationCreatedEventHandler(
-        Consumer<RealtimeServerEventConversationCreated> onConversationCreatedEventHandler) {
+        Consumer<ConversationCreatedEvent> onConversationCreatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.CONVERSATION_CREATED.toString(),
             onConversationCreatedEventHandler);
     }
@@ -108,7 +108,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemCreatedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnConversationItemCreatedEventHandler(
-        Consumer<RealtimeServerEventConversationItemCreated> onConversationItemCreatedEventHandler) {
+        Consumer<ConversationItemCreatedEvent> onConversationItemCreatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_CREATED.toString(),
             onConversationItemCreatedEventHandler);
     }
@@ -119,7 +119,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemDeletedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnConversationItemDeletedEventHandler(
-        Consumer<RealtimeServerEventConversationItemDeleted> onConversationItemDeletedEventHandler) {
+        Consumer<ConversationItemDeletedEvent> onConversationItemDeletedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_DELETED.toString(),
             onConversationItemDeletedEventHandler);
     }
@@ -130,7 +130,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemInputAudioTranscriptionCompletedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnConversationItemInputAudioTranscriptionCompletedEventHandler(
-        Consumer<RealtimeServerEventConversationItemInputAudioTranscriptionCompleted> onConversationItemInputAudioTranscriptionCompletedEventHandler) {
+        Consumer<ConversationItemInputAudioTranscriptionCompletedEvent> onConversationItemInputAudioTranscriptionCompletedEventHandler) {
         eventHandlerCollection.addEventHandler(
             RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED.toString(),
             onConversationItemInputAudioTranscriptionCompletedEventHandler);
@@ -142,7 +142,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemInputAudioTranscriptionFailedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnConversationItemInputAudioTranscriptionFailedEventHandler(
-        Consumer<RealtimeServerEventConversationItemInputAudioTranscriptionFailed> onConversationItemInputAudioTranscriptionFailedEventHandler) {
+        Consumer<ConversationItemInputAudioTranscriptionFailedEvent> onConversationItemInputAudioTranscriptionFailedEventHandler) {
         eventHandlerCollection.addEventHandler(
             RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_FAILED.toString(),
             onConversationItemInputAudioTranscriptionFailedEventHandler);
@@ -154,7 +154,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemTruncatedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnConversationItemTruncatedEventHandler(
-        Consumer<RealtimeServerEventConversationItemTruncated> onConversationItemTruncatedEventHandler) {
+        Consumer<ConversationItemTruncatedEvent> onConversationItemTruncatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_TRUNCATED.toString(),
             onConversationItemTruncatedEventHandler);
     }
@@ -174,7 +174,7 @@ public final class RealtimeClient implements Closeable {
      * @param onInputAudioBufferClearedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnInputAudioBufferClearedEventHandler(
-        Consumer<RealtimeServerEventInputAudioBufferCleared> onInputAudioBufferClearedEventHandler) {
+        Consumer<InputAudioBufferClearedEvent> onInputAudioBufferClearedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_CLEARED.toString(),
             onInputAudioBufferClearedEventHandler);
     }
@@ -185,7 +185,7 @@ public final class RealtimeClient implements Closeable {
      * @param onInputAudioBufferCommittedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnInputAudioBufferCommittedEventHandler(
-        Consumer<RealtimeServerEventInputAudioBufferCommitted> onInputAudioBufferCommittedEventHandler) {
+        Consumer<InputAudioBufferCommittedEvent> onInputAudioBufferCommittedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_COMMITTED.toString(),
             onInputAudioBufferCommittedEventHandler);
     }
@@ -196,7 +196,7 @@ public final class RealtimeClient implements Closeable {
      * @param onInputAudioBufferSpeechStartedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnInputAudioBufferSpeechStartedEventHandler(
-        Consumer<RealtimeServerEventInputAudioBufferSpeechStarted> onInputAudioBufferSpeechStartedEventHandler) {
+        Consumer<InputAudioBufferSpeechStartedEvent> onInputAudioBufferSpeechStartedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED.toString(),
             onInputAudioBufferSpeechStartedEventHandler);
     }
@@ -207,7 +207,7 @@ public final class RealtimeClient implements Closeable {
      * @param onInputAudioBufferSpeechStoppedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnInputAudioBufferSpeechStoppedEventHandler(
-        Consumer<RealtimeServerEventInputAudioBufferSpeechStopped> onInputAudioBufferSpeechStoppedEventHandler) {
+        Consumer<InputAudioBufferSpeechStoppedEvent> onInputAudioBufferSpeechStoppedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED.toString(),
             onInputAudioBufferSpeechStoppedEventHandler);
     }
@@ -218,7 +218,7 @@ public final class RealtimeClient implements Closeable {
      * @param onRateLimitsUpdatedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnRateLimitsUpdatedEventHandler(
-        Consumer<RealtimeServerEventRateLimitsUpdated> onRateLimitsUpdatedEventHandler) {
+        Consumer<RateLimitsUpdatedEvent> onRateLimitsUpdatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RATE_LIMITS_UPDATED.toString(),
             onRateLimitsUpdatedEventHandler);
     }
@@ -229,7 +229,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseAudioDeltaEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseAudioDeltaEventHandler(
-        Consumer<RealtimeServerEventResponseAudioDelta> onResponseAudioDeltaEventHandler) {
+        Consumer<ResponseAudioDeltaEvent> onResponseAudioDeltaEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DELTA.toString(),
             onResponseAudioDeltaEventHandler);
     }
@@ -240,7 +240,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseAudioDoneEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseAudioDoneEventHandler(
-        Consumer<RealtimeServerEventResponseAudioDone> onResponseAudioDoneEventHandler) {
+        Consumer<ResponseAudioDoneEvent> onResponseAudioDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DONE.toString(),
             onResponseAudioDoneEventHandler);
     }
@@ -251,7 +251,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseAudioTranscriptDeltaEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseAudioTranscriptDeltaEventHandler(
-        Consumer<RealtimeServerEventResponseAudioTranscriptDelta> onResponseAudioTranscriptDeltaEventHandler) {
+        Consumer<ResponseAudioTranscriptDeltaEvent> onResponseAudioTranscriptDeltaEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DELTA.toString(),
             onResponseAudioTranscriptDeltaEventHandler);
     }
@@ -262,7 +262,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseAudioTranscriptDoneEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseAudioTranscriptDoneEventHandler(
-        Consumer<RealtimeServerEventResponseAudioTranscriptDone> onResponseAudioTranscriptDoneEventHandler) {
+        Consumer<ResponseAudioTranscriptDoneEvent> onResponseAudioTranscriptDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE.toString(),
             onResponseAudioTranscriptDoneEventHandler);
     }
@@ -273,7 +273,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseContentPartAddedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseContentPartAddedEventHandler(
-        Consumer<RealtimeServerEventResponseContentPartAdded> onResponseContentPartAddedEventHandler) {
+        Consumer<ResponseContentPartAddedEvent> onResponseContentPartAddedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_CONTENT_PART_ADDED.toString(),
             onResponseContentPartAddedEventHandler);
     }
@@ -284,7 +284,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseContentPartDoneEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseContentPartDoneEventHandler(
-        Consumer<RealtimeServerEventResponseContentPartDone> onResponseContentPartDoneEventHandler) {
+        Consumer<ResponseTextDeltaEvent> onResponseContentPartDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_CONTENT_PART_DONE.toString(),
             onResponseContentPartDoneEventHandler);
     }
@@ -295,7 +295,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseCreatedEventHandler The callback to be notified when this event type is received.
      */
     public void
-        addOnResponseCreatedEventHandler(Consumer<RealtimeServerEventResponseCreated> onResponseCreatedEventHandler) {
+        addOnResponseCreatedEventHandler(Consumer<ResponseCreatedEvent> onResponseCreatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_CREATED.toString(),
             onResponseCreatedEventHandler);
     }
@@ -305,7 +305,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseDoneEventHandler The callback to be notified when this event type is received.
      */
-    public void addOnResponseDoneEventHandler(Consumer<RealtimeServerEventResponseDone> onResponseDoneEventHandler) {
+    public void addOnResponseDoneEventHandler(Consumer<ResponseDoneEvent> onResponseDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_DONE.toString(),
             onResponseDoneEventHandler);
     }
@@ -316,7 +316,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseFunctionCallArgumentsDeltaEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseFunctionCallArgumentsDeltaEventHandler(
-        Consumer<RealtimeServerEventResponseFunctionCallArgumentsDelta> onResponseFunctionCallArgumentsDeltaEventHandler) {
+        Consumer<ResponseFunctionCallArgumentsDeltaEvent> onResponseFunctionCallArgumentsDeltaEventHandler) {
         eventHandlerCollection.addEventHandler(
             RealtimeServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA.toString(),
             onResponseFunctionCallArgumentsDeltaEventHandler);
@@ -328,7 +328,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseFunctionCallArgumentsDoneEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseFunctionCallArgumentsDoneEventHandler(
-        Consumer<RealtimeServerEventResponseFunctionCallArgumentsDone> onResponseFunctionCallArgumentsDoneEventHandler) {
+        Consumer<ResponseFunctionCallArgumentsDoneEvent> onResponseFunctionCallArgumentsDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE.toString(),
             onResponseFunctionCallArgumentsDoneEventHandler);
     }
@@ -339,7 +339,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseOutputItemAddedEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseOutputItemAddedEventHandler(
-        Consumer<RealtimeServerEventResponseOutputItemAdded> onResponseOutputItemAddedEventHandler) {
+        Consumer<ResponseOutputItemAddedEvent> onResponseOutputItemAddedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_OUTPUT_ITEM_ADDED.toString(),
             onResponseOutputItemAddedEventHandler);
     }
@@ -350,7 +350,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseOutputItemDoneEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseOutputItemDoneEventHandler(
-        Consumer<RealtimeServerEventResponseOutputItemDone> onResponseOutputItemDoneEventHandler) {
+        Consumer<ResponseOutputItemDoneEvent> onResponseOutputItemDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_OUTPUT_ITEM_DONE.toString(),
             onResponseOutputItemDoneEventHandler);
     }
@@ -361,7 +361,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseTextDeltaEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseTextDeltaEventHandler(
-        Consumer<RealtimeServerEventResponseTextDelta> onResponseTextDeltaEventHandler) {
+        Consumer<ResponseTextDeltaEvent> onResponseTextDeltaEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DELTA.toString(),
             onResponseTextDeltaEventHandler);
     }
@@ -372,7 +372,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseTextDoneEventHandler The callback to be notified when this event type is received.
      */
     public void addOnResponseTextDoneEventHandler(
-        Consumer<RealtimeServerEventResponseTextDone> onResponseTextDoneEventHandler) {
+        Consumer<ResponseTextDoneEvent> onResponseTextDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DONE.toString(),
             onResponseTextDoneEventHandler);
     }
@@ -383,7 +383,7 @@ public final class RealtimeClient implements Closeable {
      * @param onSessionCreatedEventHandler The callback to be notified when this event type is received.
      */
     public void
-        addOnSessionCreatedEventHandler(Consumer<RealtimeServerEventSessionCreated> onSessionCreatedEventHandler) {
+        addOnSessionCreatedEventHandler(Consumer<SessionCreatedEvent> onSessionCreatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.SESSION_CREATED.toString(),
             onSessionCreatedEventHandler);
     }
@@ -394,7 +394,7 @@ public final class RealtimeClient implements Closeable {
      * @param onSessionUpdatedEventHandler The callback to be notified when this event type is received.
      */
     public void
-        addOnSessionUpdatedEventHandler(Consumer<RealtimeServerEventSessionUpdated> onSessionUpdatedEventHandler) {
+        addOnSessionUpdatedEventHandler(Consumer<SessionUpdatedEvent> onSessionUpdatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.SESSION_UPDATED.toString(),
             onSessionUpdatedEventHandler);
     }
@@ -405,7 +405,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationCreatedEventHandler the event handler to be removed.
      */
     public void removeOnConversationCreatedEventHandler(
-        Consumer<RealtimeServerEventConversationCreated> onConversationCreatedEventHandler) {
+        Consumer<ConversationCreatedEvent> onConversationCreatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_CREATED.toString(),
             onConversationCreatedEventHandler);
     }
@@ -416,7 +416,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemCreatedEventHandler the event handler to be removed.
      */
     public void removeOnConversationItemCreatedEventHandler(
-        Consumer<RealtimeServerEventConversationItemCreated> onConversationItemCreatedEventHandler) {
+        Consumer<ConversationItemCreatedEvent> onConversationItemCreatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_CREATED.toString(),
             onConversationItemCreatedEventHandler);
     }
@@ -427,7 +427,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemDeletedEventHandler the event handler to be removed.
      */
     public void removeOnConversationItemDeletedEventHandler(
-        Consumer<RealtimeServerEventConversationItemDeleted> onConversationItemDeletedEventHandler) {
+        Consumer<ConversationItemDeletedEvent> onConversationItemDeletedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_DELETED.toString(),
             onConversationItemDeletedEventHandler);
     }
@@ -438,7 +438,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemInputAudioTranscriptionCompletedEventHandler the event handler to be removed.
      */
     public void removeOnConversationItemInputAudioTranscriptionCompletedEventHandler(
-        Consumer<RealtimeServerEventConversationItemInputAudioTranscriptionCompleted> onConversationItemInputAudioTranscriptionCompletedEventHandler) {
+        Consumer<ConversationItemInputAudioTranscriptionCompletedEvent> onConversationItemInputAudioTranscriptionCompletedEventHandler) {
         eventHandlerCollection.removeEventHandler(
             RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED.toString(),
             onConversationItemInputAudioTranscriptionCompletedEventHandler);
@@ -450,7 +450,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemInputAudioTranscriptionFailedEventHandler the event handler to be removed.
      */
     public void removeOnConversationItemInputAudioTranscriptionFailedEventHandler(
-        Consumer<RealtimeServerEventConversationItemInputAudioTranscriptionFailed> onConversationItemInputAudioTranscriptionFailedEventHandler) {
+        Consumer<ConversationItemInputAudioTranscriptionFailedEvent> onConversationItemInputAudioTranscriptionFailedEventHandler) {
         eventHandlerCollection.removeEventHandler(
             RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_FAILED.toString(),
             onConversationItemInputAudioTranscriptionFailedEventHandler);
@@ -462,7 +462,7 @@ public final class RealtimeClient implements Closeable {
      * @param onConversationItemTruncatedEventHandler the event handler to be removed.
      */
     public void removeOnConversationItemTruncatedEventHandler(
-        Consumer<RealtimeServerEventConversationItemTruncated> onConversationItemTruncatedEventHandler) {
+        Consumer<ConversationItemTruncatedEvent> onConversationItemTruncatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_ITEM_TRUNCATED.toString(),
             onConversationItemTruncatedEventHandler);
     }
@@ -482,7 +482,7 @@ public final class RealtimeClient implements Closeable {
      * @param onInputAudioBufferClearedEventHandler the event handler to be removed.
      */
     public void removeOnInputAudioBufferClearedEventHandler(
-        Consumer<RealtimeServerEventInputAudioBufferCleared> onInputAudioBufferClearedEventHandler) {
+        Consumer<InputAudioBufferClearedEvent> onInputAudioBufferClearedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_CLEARED.toString(),
             onInputAudioBufferClearedEventHandler);
     }
@@ -493,7 +493,7 @@ public final class RealtimeClient implements Closeable {
      * @param onInputAudioBufferCommittedEventHandler the event handler to be removed.
      */
     public void removeOnInputAudioBufferCommittedEventHandler(
-        Consumer<RealtimeServerEventInputAudioBufferCommitted> onInputAudioBufferCommittedEventHandler) {
+        Consumer<InputAudioBufferCommittedEvent> onInputAudioBufferCommittedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_COMMITTED.toString(),
             onInputAudioBufferCommittedEventHandler);
     }
@@ -504,7 +504,7 @@ public final class RealtimeClient implements Closeable {
      * @param onInputAudioBufferSpeechStartedEventHandler the event handler to be removed.
      */
     public void removeOnInputAudioBufferSpeechStartedEventHandler(
-        Consumer<RealtimeServerEventInputAudioBufferSpeechStarted> onInputAudioBufferSpeechStartedEventHandler) {
+        Consumer<InputAudioBufferSpeechStartedEvent> onInputAudioBufferSpeechStartedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED.toString(),
             onInputAudioBufferSpeechStartedEventHandler);
     }
@@ -515,7 +515,7 @@ public final class RealtimeClient implements Closeable {
      * @param onInputAudioBufferSpeechStoppedEventHandler the event handler to be removed.
      */
     public void removeOnInputAudioBufferSpeechStoppedEventHandler(
-        Consumer<RealtimeServerEventInputAudioBufferSpeechStopped> onInputAudioBufferSpeechStoppedEventHandler) {
+        Consumer<InputAudioBufferSpeechStoppedEvent> onInputAudioBufferSpeechStoppedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED.toString(),
             onInputAudioBufferSpeechStoppedEventHandler);
     }
@@ -526,7 +526,7 @@ public final class RealtimeClient implements Closeable {
      * @param onRateLimitsUpdatedEventHandler the event handler to be removed.
      */
     public void removeOnRateLimitsUpdatedEventHandler(
-        Consumer<RealtimeServerEventRateLimitsUpdated> onRateLimitsUpdatedEventHandler) {
+        Consumer<RateLimitsUpdatedEvent> onRateLimitsUpdatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RATE_LIMITS_UPDATED.toString(),
             onRateLimitsUpdatedEventHandler);
     }
@@ -537,7 +537,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseAudioDeltaEventHandler the event handler to be removed.
      */
     public void removeOnResponseAudioDeltaEventHandler(
-        Consumer<RealtimeServerEventResponseAudioDelta> onResponseAudioDeltaEventHandler) {
+        Consumer<ResponseAudioDeltaEvent> onResponseAudioDeltaEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DELTA.toString(),
             onResponseAudioDeltaEventHandler);
     }
@@ -548,7 +548,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseAudioDoneEventHandler the event handler to be removed.
      */
     public void removeOnResponseAudioDoneEventHandler(
-        Consumer<RealtimeServerEventResponseAudioDone> onResponseAudioDoneEventHandler) {
+        Consumer<ResponseAudioDoneEvent> onResponseAudioDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DONE.toString(),
             onResponseAudioDoneEventHandler);
     }
@@ -559,7 +559,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseAudioTranscriptDeltaEventHandler the event handler to be removed.
      */
     public void removeOnResponseAudioTranscriptDeltaEventHandler(
-        Consumer<RealtimeServerEventResponseAudioTranscriptDelta> onResponseAudioTranscriptDeltaEventHandler) {
+        Consumer<ResponseAudioTranscriptDeltaEvent> onResponseAudioTranscriptDeltaEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DELTA.toString(),
             onResponseAudioTranscriptDeltaEventHandler);
     }
@@ -570,7 +570,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseAudioTranscriptDoneEventHandler the event handler to be removed.
      */
     public void removeOnResponseAudioTranscriptDoneEventHandler(
-        Consumer<RealtimeServerEventResponseAudioTranscriptDone> onResponseAudioTranscriptDoneEventHandler) {
+        Consumer<ResponseAudioTranscriptDoneEvent> onResponseAudioTranscriptDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE.toString(),
             onResponseAudioTranscriptDoneEventHandler);
     }
@@ -581,7 +581,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseContentPartAddedEventHandler the event handler to be removed.
      */
     public void removeOnResponseContentPartAddedEventHandler(
-        Consumer<RealtimeServerEventResponseContentPartAdded> onResponseContentPartAddedEventHandler) {
+        Consumer<ResponseContentPartAddedEvent> onResponseContentPartAddedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_CONTENT_PART_ADDED.toString(),
             onResponseContentPartAddedEventHandler);
     }
@@ -592,7 +592,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseContentPartDoneEventHandler the event handler to be removed.
      */
     public void removeOnResponseContentPartDoneEventHandler(
-        Consumer<RealtimeServerEventResponseContentPartDone> onResponseContentPartDoneEventHandler) {
+        Consumer<ResponseTextDeltaEvent> onResponseContentPartDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_CONTENT_PART_DONE.toString(),
             onResponseContentPartDoneEventHandler);
     }
@@ -603,7 +603,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseCreatedEventHandler the event handler to be removed.
      */
     public void removeOnResponseCreatedEventHandler(
-        Consumer<RealtimeServerEventResponseCreated> onResponseCreatedEventHandler) {
+        Consumer<ResponseCreatedEvent> onResponseCreatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_CREATED.toString(),
             onResponseCreatedEventHandler);
     }
@@ -613,7 +613,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseDoneEventHandler the event handler to be removed.
      */
-    public void removeOnResponseDoneEventHandler(Consumer<RealtimeServerEventResponseDone> onResponseDoneEventHandler) {
+    public void removeOnResponseDoneEventHandler(Consumer<ResponseDoneEvent> onResponseDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_DONE.toString(),
             onResponseDoneEventHandler);
     }
@@ -624,7 +624,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseFunctionCallArgumentsDeltaEventHandler the event handler to be removed.
      */
     public void removeOnResponseFunctionCallArgumentsDeltaEventHandler(
-        Consumer<RealtimeServerEventResponseFunctionCallArgumentsDelta> onResponseFunctionCallArgumentsDeltaEventHandler) {
+        Consumer<ResponseFunctionCallArgumentsDeltaEvent> onResponseFunctionCallArgumentsDeltaEventHandler) {
         eventHandlerCollection.removeEventHandler(
             RealtimeServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA.toString(),
             onResponseFunctionCallArgumentsDeltaEventHandler);
@@ -636,7 +636,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseFunctionCallArgumentsDoneEventHandler the event handler to be removed.
      */
     public void removeOnResponseFunctionCallArgumentsDoneEventHandler(
-        Consumer<RealtimeServerEventResponseFunctionCallArgumentsDone> onResponseFunctionCallArgumentsDoneEventHandler) {
+        Consumer<ResponseFunctionCallArgumentsDoneEvent> onResponseFunctionCallArgumentsDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(
             RealtimeServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE.toString(),
             onResponseFunctionCallArgumentsDoneEventHandler);
@@ -648,7 +648,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseOutputItemAddedEventHandler the event handler to be removed.
      */
     public void removeOnResponseOutputItemAddedEventHandler(
-        Consumer<RealtimeServerEventResponseOutputItemAdded> onResponseOutputItemAddedEventHandler) {
+        Consumer<ResponseOutputItemAddedEvent> onResponseOutputItemAddedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_OUTPUT_ITEM_ADDED.toString(),
             onResponseOutputItemAddedEventHandler);
     }
@@ -659,7 +659,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseOutputItemDoneEventHandler the event handler to be removed.
      */
     public void removeOnResponseOutputItemDoneEventHandler(
-        Consumer<RealtimeServerEventResponseOutputItemDone> onResponseOutputItemDoneEventHandler) {
+        Consumer<ResponseOutputItemDoneEvent> onResponseOutputItemDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_OUTPUT_ITEM_DONE.toString(),
             onResponseOutputItemDoneEventHandler);
     }
@@ -670,7 +670,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseTextDeltaEventHandler the event handler to be removed.
      */
     public void removeOnResponseTextDeltaEventHandler(
-        Consumer<RealtimeServerEventResponseTextDelta> onResponseTextDeltaEventHandler) {
+        Consumer<ResponseTextDeltaEvent> onResponseTextDeltaEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DELTA.toString(),
             onResponseTextDeltaEventHandler);
     }
@@ -681,7 +681,7 @@ public final class RealtimeClient implements Closeable {
      * @param onResponseTextDoneEventHandler the event handler to be removed.
      */
     public void removeOnResponseTextDoneEventHandler(
-        Consumer<RealtimeServerEventResponseTextDone> onResponseTextDoneEventHandler) {
+        Consumer<ResponseTextDoneEvent> onResponseTextDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DONE.toString(),
             onResponseTextDoneEventHandler);
     }
@@ -692,7 +692,7 @@ public final class RealtimeClient implements Closeable {
      * @param onSessionCreatedEventHandler the event handler to be removed.
      */
     public void
-        removeOnSessionCreatedEventHandler(Consumer<RealtimeServerEventSessionCreated> onSessionCreatedEventHandler) {
+        removeOnSessionCreatedEventHandler(Consumer<SessionCreatedEvent> onSessionCreatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.SESSION_CREATED.toString(),
             onSessionCreatedEventHandler);
     }
@@ -703,7 +703,7 @@ public final class RealtimeClient implements Closeable {
      * @param onSessionUpdatedEventHandler the event handler to be removed.
      */
     public void
-        removeOnSessionUpdatedEventHandler(Consumer<RealtimeServerEventSessionUpdated> onSessionUpdatedEventHandler) {
+        removeOnSessionUpdatedEventHandler(Consumer<SessionUpdatedEvent> onSessionUpdatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.SESSION_UPDATED.toString(),
             onSessionUpdatedEventHandler);
     }

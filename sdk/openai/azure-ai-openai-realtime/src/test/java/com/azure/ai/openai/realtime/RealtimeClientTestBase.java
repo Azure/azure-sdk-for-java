@@ -9,12 +9,12 @@ import com.azure.ai.openai.realtime.implementation.websocket.WebSocketClient;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeFunctionTool;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.ai.openai.realtime.models.RealtimeVoice;
+import com.azure.ai.openai.realtime.models.SessionUpdateEvent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
@@ -86,12 +86,12 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
         }
     }
 
-    void getWeatherToolRunner(BiConsumer<RealtimeFunctionTool, RealtimeClientEventSessionUpdate> testRunner) {
+    void getWeatherToolRunner(BiConsumer<RealtimeFunctionTool, SessionUpdateEvent> testRunner) {
         RealtimeFunctionTool weatherTool
             = new RealtimeFunctionTool("get_weather_for_location").setDescription("Get the weather for a location")
                 .setParameters(new WeatherToolDescriptor());
-        RealtimeClientEventSessionUpdate sessionUpdate
-            = new RealtimeClientEventSessionUpdate(new RealtimeRequestSession().setTools(Arrays.asList(weatherTool))
+        SessionUpdateEvent sessionUpdate
+            = new SessionUpdateEvent(new RealtimeRequestSession().setTools(Arrays.asList(weatherTool))
                 .setInstructions("Call provided tools if appropriate for the user's input")
                 .setVoice(RealtimeVoice.ALLOY)
                 .setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))

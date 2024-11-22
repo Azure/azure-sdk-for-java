@@ -18,10 +18,10 @@ import reactor.core.publisher.Sinks;
  * We use a {@link Sinks.Many} to react to the need to send more user input once the service is ready for it.
  * You can see the details in the {@link RealtimeEventHandler} class, but briefly described, we issue a
  * {@link com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate} once we've received from the server a
- * {@link com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated} event.
+ * {@link com.azure.ai.openai.realtime.models.SessionCreatedEvent} event.
  * We proceed to send the audio file only once we know that the session was successfully updated. This is done by listening
- * for the {@link com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated} event.
- * Finally, once we receive the {@link com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone} event, we
+ * for the {@link com.azure.ai.openai.realtime.models.SessionUpdatedEvent} event.
+ * Finally, once we receive the {@link com.azure.ai.openai.realtime.models.ResponseDoneEvent} event, we
  * signal the client to end the session and close the connection.
  */
 public class NonAzureLowLevelClient {
@@ -31,10 +31,10 @@ public class NonAzureLowLevelClient {
      * We use a {@link Sinks.Many} to react to the need to send more user input once the service is ready for it.
      * You can see the details in the {@link RealtimeEventHandler} class, but briefly described, we issue a
      * {@link com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate} once we've received from the server a
-     * {@link com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated} event.
+     * {@link com.azure.ai.openai.realtime.models.SessionCreatedEvent} event.
      * We proceed to send the audio file only once we know that the session was successfully updated. This is done by listening
-     * for the {@link com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated} event.
-     * Finally, once we receive the {@link com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone} event, we
+     * for the {@link com.azure.ai.openai.realtime.models.SessionUpdatedEvent} event.
+     * Finally, once we receive the {@link com.azure.ai.openai.realtime.models.ResponseDoneEvent} event, we
      * signal the client to end the session and close the connection.
      *
      * @param args Unused. Arguments to the program.

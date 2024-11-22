@@ -9,10 +9,10 @@ import com.azure.ai.openai.realtime.models.RealtimeClientEventInputAudioBufferAp
 import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDone;
+import com.azure.ai.openai.realtime.models.ResponseAudioDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioTranscriptDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioTranscriptDoneEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
 import com.azure.ai.openai.realtime.models.RealtimeVoice;
 import com.azure.core.credential.AzureKeyCredential;
@@ -116,12 +116,12 @@ public class ReadmeSamples {
 
         disposables.addAll(Arrays.asList(
                 client.getServerEvents()
-                        .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioDone)
-                        .ofType(RealtimeServerEventResponseAudioDelta.class)
+                        .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioDoneEvent)
+                        .ofType(ResponseAudioDeltaEvent.class)
                         .subscribe(this::consumeAudioDelta, this::consumeError, this::onAudioResponseCompleted),
                 client.getServerEvents()
-                        .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioTranscriptDone)
-                        .ofType(RealtimeServerEventResponseAudioTranscriptDelta.class)
+                        .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioTranscriptDoneEvent)
+                        .ofType(ResponseAudioTranscriptDeltaEvent.class)
                         .subscribe(this::consumeAudioTranscriptDelta, this::consumeError, this::onAudioResponseTranscriptCompleted)
         ));
         // END: readme-sample-consumeSpecificEventsAsync
@@ -131,7 +131,7 @@ public class ReadmeSamples {
         // no-op
     }
 
-    private void consumeAudioTranscriptDelta(RealtimeServerEventResponseAudioTranscriptDelta realtimeServerEventResponseAudioTranscriptDelta) {
+    private void consumeAudioTranscriptDelta(ResponseAudioTranscriptDeltaEvent ResponseAudioTranscriptDeltaEvent) {
         // no-op
     }
 
@@ -143,7 +143,7 @@ public class ReadmeSamples {
         // no-op
     }
 
-    private void consumeAudioDelta(RealtimeServerEventResponseAudioDelta realtimeServerEventResponseAudioDelta) {
+    private void consumeAudioDelta(ResponseAudioDeltaEvent ResponseAudioDeltaEvent) {
         // no-op
     }
 }

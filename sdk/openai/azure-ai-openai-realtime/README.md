@@ -258,12 +258,12 @@ Disposable.Composite disposables = Disposables.composite();
 
 disposables.addAll(Arrays.asList(
     client.getServerEvents()
-        .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioDone)
-        .ofType(RealtimeServerEventResponseAudioDelta.class)
+        .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioDoneEvent)
+        .ofType(ResponseAudioDeltaEvent.class)
         .subscribe(this::consumeAudioDelta, this::consumeError, this::onAudioResponseCompleted),
     client.getServerEvents()
-        .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioTranscriptDone)
-        .ofType(RealtimeServerEventResponseAudioTranscriptDelta.class)
+        .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioTranscriptDoneEvent)
+        .ofType(ResponseAudioTranscriptDeltaEvent.class)
         .subscribe(this::consumeAudioTranscriptDelta, this::consumeError, this::onAudioResponseTranscriptCompleted)
 ));
 ```

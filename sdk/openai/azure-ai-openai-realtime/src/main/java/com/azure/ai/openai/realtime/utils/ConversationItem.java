@@ -1,8 +1,6 @@
 package com.azure.ai.openai.realtime.utils;
 
-import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemCreate;
-import com.azure.ai.openai.realtime.models.RealtimeContentPart;
-import com.azure.ai.openai.realtime.models.RealtimeContentPartType;
+import com.azure.ai.openai.realtime.models.ConversationItemCreateEvent;
 import com.azure.ai.openai.realtime.models.RealtimeRequestAssistantMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeRequestFunctionCallItem;
 import com.azure.ai.openai.realtime.models.RealtimeRequestFunctionCallOutputItem;
@@ -25,12 +23,12 @@ public final class ConversationItem {
      * @param itemText the text of the user message.
      * @return the user message item.
      */
-    public static RealtimeClientEventConversationItemCreate createUserMessage(String itemText) {
+    public static ConversationItemCreateEvent createUserMessage(String itemText) {
         // `itemText` is not a JSON string, but a prompt represented as a JSON Object.
         // Therefore, BinaryData.fromObject is the appropriate representation.
         RealtimeRequestUserMessageItem messageItem = new RealtimeRequestUserMessageItem(
             Arrays.asList(BinaryData.fromObject(new RealtimeRequestTextContentPart(itemText))));
-        return new RealtimeClientEventConversationItemCreate(messageItem);
+        return new ConversationItemCreateEvent(messageItem);
     }
 
     /**
@@ -39,10 +37,10 @@ public final class ConversationItem {
      * @param systemMessage the text of the system message.
      * @return the system message item.
      */
-    public static RealtimeClientEventConversationItemCreate createSystemMessage(String systemMessage) {
+    public static ConversationItemCreateEvent createSystemMessage(String systemMessage) {
         RealtimeRequestSystemMessageItem messageItem
             = new RealtimeRequestSystemMessageItem(Arrays.asList(new RealtimeRequestTextContentPart(systemMessage)));
-        return new RealtimeClientEventConversationItemCreate(messageItem);
+        return new ConversationItemCreateEvent(messageItem);
     }
 
     /**
@@ -51,10 +49,10 @@ public final class ConversationItem {
      * @param assistantMessage the text of the assistant message.
      * @return the assistant message item.
      */
-    public static RealtimeClientEventConversationItemCreate createAssistantMessage(String assistantMessage) {
+    public static ConversationItemCreateEvent createAssistantMessage(String assistantMessage) {
         RealtimeRequestAssistantMessageItem messageItem = new RealtimeRequestAssistantMessageItem(
             Arrays.asList(new RealtimeRequestTextContentPart(assistantMessage)));
-        return new RealtimeClientEventConversationItemCreate(messageItem);
+        return new ConversationItemCreateEvent(messageItem);
     }
 
     /**
@@ -65,9 +63,9 @@ public final class ConversationItem {
      * @param arguments the arguments to pass to the function.
      * @return the function call item.
      */
-    public static RealtimeClientEventConversationItemCreate createFunctionCall(String functionName, String callId,
+    public static ConversationItemCreateEvent createFunctionCall(String functionName, String callId,
         String arguments) {
-        return new RealtimeClientEventConversationItemCreate(
+        return new ConversationItemCreateEvent(
             new RealtimeRequestFunctionCallItem(functionName, callId, arguments));
     }
 
@@ -78,9 +76,9 @@ public final class ConversationItem {
      * @param functionOutput the output of the function call to be passed to the service.
      * @return the function call output item.
      */
-    public static RealtimeClientEventConversationItemCreate createFunctionCallOutput(String callId,
+    public static ConversationItemCreateEvent createFunctionCallOutput(String callId,
         String functionOutput) {
-        return new RealtimeClientEventConversationItemCreate(
+        return new ConversationItemCreateEvent(
             new RealtimeRequestFunctionCallOutputItem(callId, functionOutput));
     }
 }

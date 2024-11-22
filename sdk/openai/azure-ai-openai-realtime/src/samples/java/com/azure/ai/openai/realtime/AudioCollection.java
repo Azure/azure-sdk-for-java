@@ -8,10 +8,10 @@ import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventErrorError;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDelta;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseAudioTranscriptDone;
+import com.azure.ai.openai.realtime.models.ResponseAudioDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioDoneEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioTranscriptDeltaEvent;
+import com.azure.ai.openai.realtime.models.ResponseAudioTranscriptDoneEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
 import com.azure.ai.openai.realtime.models.RealtimeVoice;
 import com.azure.ai.openai.realtime.models.ServerErrorReceivedException;
@@ -34,16 +34,16 @@ import java.util.Arrays;
 /**
  * This sample showcases sending a prompt in audio and what techniques can be utilized to collect the response both
  * in its audio form and text transcript.
- * {@link #consumeAudioDelta(RealtimeServerEventResponseAudioDelta)} will collect the chunks of audio sent by the service.
+ * {@link #consumeAudioDelta(ResponseAudioDeltaEvent)} will collect the chunks of audio sent by the service.
  * This audio defaults to 16PCM 24 kHz samples. The server provides this data as a base64 encoded string which is returned
- * as a byte array. The audio response generation will be signaled by a {@link RealtimeServerEventResponseAudioDone} event.
+ * as a byte array. The audio response generation will be signaled by a {@link ResponseAudioDoneEvent} event.
  * We take advantage of this event to signal the completion of the {@link reactor.core.publisher.Flux} we crafted by using
  * {@link reactor.core.publisher.Flux#takeUntil(java.util.function.Predicate)}. and {@link reactor.core.publisher.Flux#ofType(Class)}.
  * {@link #onAudioResponseCompleted()} is passed as the `onComplete` method to the {@link reactor.core.publisher.Flux#subscribe()} method.
  * In this method, we attached the WAV file headers, since the server omits them, and write the file into {@link #AUDIO_RESPONSE_WAV_FILE}.
- * Similarly, for the text transcript, we consume the {@link RealtimeServerEventResponseAudioTranscriptDelta} events and print them
+ * Similarly, for the text transcript, we consume the {@link ResponseAudioTranscriptDeltaEvent} events and print them
  * without interspersing line breaks. This will render the text as it was emitted by the server. We signal the completion of the
- * transcript generation by listening for a {@link RealtimeServerEventResponseAudioTranscriptDone} event and print to console
+ * transcript generation by listening for a {@link ResponseAudioTranscriptDoneEvent} event and print to console
  * "Audio transcript complete."
  */
 public class AudioCollection {
@@ -54,16 +54,16 @@ public class AudioCollection {
     /**
      * This sample showcases sending a prompt in audio and what techniques can be utilized to collect the response both
      * in its audio form and text transcript.
-     * {@link #consumeAudioDelta(RealtimeServerEventResponseAudioDelta)} will collect the chunks of audio sent by the service.
+     * {@link #consumeAudioDelta(ResponseAudioDeltaEvent)} will collect the chunks of audio sent by the service.
      * This audio defaults to 16PCM 24 kHz samples. The server provides this data as a base64 encoded string which is returned
-     * as a byte array. The audio response generation will be signaled by a {@link RealtimeServerEventResponseAudioDone} event.
+     * as a byte array. The audio response generation will be signaled by a {@link ResponseAudioDoneEvent} event.
      * We take advantage of this event to signal the completion of the {@link reactor.core.publisher.Flux} we crafted by using
      * {@link reactor.core.publisher.Flux#takeUntil(java.util.function.Predicate)}. and {@link reactor.core.publisher.Flux#ofType(Class)}.
      * {@link #onAudioResponseCompleted()} is passed as the `onComplete` method to the {@link reactor.core.publisher.Flux#subscribe()} method.
      * In this method, we attached the WAV file headers, since the server omits them, and write the file into {@link #AUDIO_RESPONSE_WAV_FILE}.
-     * Similarly, for the text transcript, we consume the {@link RealtimeServerEventResponseAudioTranscriptDelta} events and print them
+     * Similarly, for the text transcript, we consume the {@link ResponseAudioTranscriptDeltaEvent} events and print them
      * without interspersing line breaks. This will render the text as it was emitted by the server. We signal the completion of the
-     * transcript generation by listening for a {@link RealtimeServerEventResponseAudioTranscriptDone} event and print to console
+     * transcript generation by listening for a {@link ResponseAudioTranscriptDoneEvent} event and print to console
      * "Audio transcript complete."
      *
      * @param args Unused. Arguments to the program.
@@ -75,16 +75,16 @@ public class AudioCollection {
         Disposable.Composite disposables = Disposables.composite();
 
         // Setup event consumers for our server events of interest:
-        //   - RealtimeServerEventResponseAudioDelta
-        //   - RealtimeServerEventResponseAudioTranscriptDelta
+        //   - ResponseAudioDeltaEvent
+        //   - ResponseAudioTranscriptDeltaEvent
         disposables.addAll(Arrays.asList(
             client.getServerEvents()
-                .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioDone)
-                .ofType(RealtimeServerEventResponseAudioDelta.class)
+                .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioDoneEvent)
+                .ofType(ResponseAudioDeltaEvent.class)
                 .subscribe(AudioCollection::consumeAudioDelta, AudioCollection::consumeError, AudioCollection::onAudioResponseCompleted),
             client.getServerEvents()
-                .takeUntil(serverEvent -> serverEvent instanceof RealtimeServerEventResponseAudioTranscriptDone)
-                .ofType(RealtimeServerEventResponseAudioTranscriptDelta.class)
+                .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioTranscriptDoneEvent)
+                .ofType(ResponseAudioTranscriptDeltaEvent.class)
                 .subscribe(AudioCollection::consumeAudioTranscriptDelta, AudioCollection::consumeError, AudioCollection::onAudioResponseTranscriptCompleted)
         ));
 
@@ -161,7 +161,7 @@ public class AudioCollection {
      *
      * @param audioDelta The server sent delta containing a new chunk of audio data.
      */
-    private static void consumeAudioDelta(RealtimeServerEventResponseAudioDelta audioDelta) {
+    private static void consumeAudioDelta(ResponseAudioDeltaEvent audioDelta) {
         try {
             FileUtils.writeToFile(FileUtils.openResourceFile(AUDIO_RESPONSE_DATA_FILE), audioDelta.getDelta());
         } catch (IOException e) {
@@ -194,7 +194,7 @@ public class AudioCollection {
      * @param audioTranscriptDelta The server sent delta containing a new chunk of text transcript data corresponding to
      *                             the audio file.
      */
-    private static void consumeAudioTranscriptDelta(RealtimeServerEventResponseAudioTranscriptDelta audioTranscriptDelta) {
+    private static void consumeAudioTranscriptDelta(ResponseAudioTranscriptDeltaEvent audioTranscriptDelta) {
         System.out.print(audioTranscriptDelta.getDelta());
     }
 

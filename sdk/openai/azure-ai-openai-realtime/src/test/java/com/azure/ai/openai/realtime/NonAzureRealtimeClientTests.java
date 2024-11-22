@@ -3,12 +3,10 @@ package com.azure.ai.openai.realtime;
 import com.azure.ai.openai.realtime.implementation.AudioFile;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
+import com.azure.ai.openai.realtime.models.ConversationItemCreateEvent;
+import com.azure.ai.openai.realtime.models.ConversationItemDeleteEvent;
 import com.azure.ai.openai.realtime.models.RealtimeAudioFormat;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemCreate;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemDelete;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreate;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventResponseCreateResponse;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeContentPart;
 import com.azure.ai.openai.realtime.models.RealtimeContentPartType;
 import com.azure.ai.openai.realtime.models.RealtimeItemStatus;
@@ -21,6 +19,8 @@ import com.azure.ai.openai.realtime.models.RealtimeResponseFunctionCallItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseTextContentPart;
+import com.azure.ai.openai.realtime.models.ResponseCreateEvent;
+import com.azure.ai.openai.realtime.models.SessionUpdateEvent;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -92,7 +92,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         client.addOnSessionCreatedEventHandler(sessionCreated -> {
             assertNotNull(sessionCreated);
             sessionCreatedEventFired.set(true);
-            client.sendMessage(new RealtimeClientEventSessionUpdate(
+            client.sendMessage(new SessionUpdateEvent(
                 new RealtimeRequestSession().setInstructions("You are a helpful assistant.")
                     .setInputAudioFormat(RealtimeAudioFormat.G711_ALAW)
                     .setMaxResponseOutputTokens(2048)));
@@ -102,14 +102,14 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
             assertNotNull(sessionUpdated);
             int count = sessionUpdatedEventFired.incrementAndGet();
             if (count < 2) {
-                RealtimeClientEventSessionUpdate sessionUpdate = new RealtimeClientEventSessionUpdate(
+                SessionUpdateEvent sessionUpdate = new SessionUpdateEvent(
                     new RealtimeRequestSession().setMaxResponseOutputTokensToInf()
                         .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT)));
                 client.sendMessage(sessionUpdate);
             } else if (count == 2) {
                 client.sendMessage(ConversationItem.createUserMessage("Hello, assistant! Tell me a joke."));
-                RealtimeClientEventResponseCreate conversation
-                    = new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()
+                ResponseCreateEvent conversation
+                    = new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()
                         .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString())));
                 client.sendMessage(conversation);
             }
@@ -145,10 +145,10 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         client.addOnSessionCreatedEventHandler(sessionCreated -> {
             assertNotNull(sessionCreated);
             sessionCreatedEventFired.set(true);
-            client.sendMessage(new RealtimeClientEventSessionUpdate(
+            client.sendMessage(new SessionUpdateEvent(
                 new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
             client.sendMessage(ConversationItem.createUserMessage("Hello, world!"));
-            client.sendMessage(new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()
+            client.sendMessage(new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()
                 .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))));
         });
 
@@ -207,7 +207,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         client.addOnSessionCreatedEventHandler(sessionCreated -> {
             assertNotNull(sessionCreated);
             sessionCreatedEventFired.set(true);
-            client.sendMessage(new RealtimeClientEventSessionUpdate(
+            client.sendMessage(new SessionUpdateEvent(
                 new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
         });
 
@@ -230,7 +230,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
                 if (textContentPart.getText().contains("banana")) {
                     itemCreatedEventFired.set(true);
                     client.sendMessage(
-                        new RealtimeClientEventConversationItemDelete(conversationItemCreated.getItem().getId()));
+                        new ConversationItemDeleteEvent(conversationItemCreated.getItem().getId()));
                 }
             }
         });
@@ -239,7 +239,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
             assertNotNull(conversationItemDeleted);
             itemDeletedEventFired.set(true);
             client.sendMessage(ConversationItem.createUserMessage("What's the second special word you know about?"));
-            client.sendMessage(new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()
+            client.sendMessage(new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()
                 .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))));
         });
 
@@ -302,7 +302,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
                     client.sendMessage(ConversationItem.createFunctionCallOutput(functionCallItem.getCallId(),
                         "71 degrees Fahrenheit, sunny"));
                     client.sendMessage(
-                        new RealtimeClientEventResponseCreate(new RealtimeClientEventResponseCreateResponse()));
+                        new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()));
                 }
                 responseItemDoneCreated.set(true);
             });
@@ -343,7 +343,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         AtomicBoolean responseCreatedEventFired = new AtomicBoolean(false);
 
         client.start();
-        client.sendMessage(new RealtimeClientEventSessionUpdate(
+        client.sendMessage(new SessionUpdateEvent(
             new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
         FileUtils.sendAudioFile(client,
             new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")));
@@ -397,10 +397,10 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         client = getNonAzureRealtimeClientBuilder(null).buildClient();
 
         client.start();
-        client.sendMessage(new RealtimeClientEventSessionUpdate(
+        client.sendMessage(new SessionUpdateEvent(
             new RealtimeRequestSession().setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT))));
 
-        List<RealtimeClientEventConversationItemCreate> conversationItems
+        List<ConversationItemCreateEvent> conversationItems
             = Arrays.asList(ConversationItem.createSystemMessage("You are a robot. Beep boop."),
                 ConversationItem.createUserMessage("How can I pay for a joke?"),
                 ConversationItem.createAssistantMessage("I ONLY ACCEPT CACHE"),
