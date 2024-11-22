@@ -27,7 +27,8 @@ public final class SemanticSearchResults {
         this.errorReason = SearchPagedResponseAccessHelper.getSemanticErrorReason(pagedResponse);
         this.resultsType = SearchPagedResponseAccessHelper.getSemanticSearchResultsType(pagedResponse);
         this.debugInfo = SearchPagedResponseAccessHelper.getDebugInfo(pagedResponse);
-        this.semanticQueryRewritesResultType = SearchPagedResponseAccessHelper.getSemanticQueryRewritesResultType(pagedResponse);
+        this.semanticQueryRewritesResultType
+            = SearchPagedResponseAccessHelper.getSemanticQueryRewritesResultType(pagedResponse);
     }
 
     /**
