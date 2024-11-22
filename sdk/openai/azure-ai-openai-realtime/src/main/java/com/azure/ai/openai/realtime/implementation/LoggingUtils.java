@@ -15,6 +15,10 @@ public final class LoggingUtils {
     private LoggingUtils() {
     }
 
+    public static Map<String, Object> createContextWithApplicationId(String applicationId) {
+        return createContextWithConnectionId(applicationId, null);
+    }
+
     public static Map<String, Object> createContextWithConnectionId(String applicationId, String connectionId) {
         Map<String, Object> globalLoggingContext = new HashMap<>(2);
         if (applicationId != null) {

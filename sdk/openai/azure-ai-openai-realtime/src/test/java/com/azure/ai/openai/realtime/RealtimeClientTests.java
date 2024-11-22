@@ -21,19 +21,11 @@ import com.azure.ai.openai.realtime.models.RealtimeResponseFunctionCallItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeResponseTextContentPart;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemInputAudioTranscriptionFailed;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStarted;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventInputAudioBufferSpeechStopped;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseCreated;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseDone;
-import com.azure.ai.openai.realtime.models.RealtimeServerEventResponseOutputItemDone;
 import com.azure.ai.openai.realtime.models.RealtimeTurnDetectionDisabled;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -53,7 +45,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void testAlawSendAudio() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
         AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);
@@ -89,7 +81,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void canConfigureSession() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
         AtomicInteger sessionUpdatedEventFired = new AtomicInteger(0);
@@ -139,7 +131,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void textOnly() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
         AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);
@@ -201,7 +193,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void ItemManipulation() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
         AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);
@@ -279,7 +271,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void AudioWithTool() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);
         AtomicBoolean responseItemDoneCreated = new AtomicBoolean(false);
@@ -339,7 +331,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void canDisableVoiceActivityDetection() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean speechStartedEventFired = new AtomicBoolean(false);
         AtomicBoolean speechStoppedEventFired = new AtomicBoolean(false);
@@ -401,7 +393,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Disabled("ContentPartType should be TEXT for Assistant message. Current spec does not allow that combination.")
     @Override
     void badCommandProvidesError() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         client.start();
         client.sendMessage(new RealtimeClientEventSessionUpdate(

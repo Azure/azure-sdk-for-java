@@ -78,18 +78,18 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         if (frame instanceof TextWebSocketFrame) {
             // Text
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-            loggerReference.get().atVerbose().addKeyValue("text", textFrame.text()).log("Received TextWebSocketFrame");
+            loggerReference.get().atVerbose().addKeyValue("text", textFrame.text()).log(() -> "Received TextWebSocketFrame");
 
             Object wpsMessage = messageDecoder.decode(textFrame.text());
             messageHandler.accept(wpsMessage);
         } else if (frame instanceof PingWebSocketFrame) {
             // Ping, reply Pong
-            loggerReference.get().atVerbose().log("Received PingWebSocketFrame");
-            loggerReference.get().atVerbose().log("Send PongWebSocketFrame");
+            loggerReference.get().atVerbose().log(() -> "Received PingWebSocketFrame");
+            loggerReference.get().atVerbose().log(() -> "Send PongWebSocketFrame");
             ch.writeAndFlush(new PongWebSocketFrame());
         } else if (frame instanceof PongWebSocketFrame) {
             // Pong
-            loggerReference.get().atVerbose().log("Received PongWebSocketFrame");
+            loggerReference.get().atVerbose().log(() -> "Received PongWebSocketFrame");
         } else if (frame instanceof CloseWebSocketFrame) {
             // Close
             CloseWebSocketFrame closeFrame = (CloseWebSocketFrame) frame;
@@ -97,13 +97,13 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
                 .atVerbose()
                 .addKeyValue("statusCode", closeFrame.statusCode())
                 .addKeyValue("reasonText", closeFrame.reasonText())
-                .log("Received CloseWebSocketFrame");
+                .log(() -> "Received CloseWebSocketFrame");
 
             this.serverCloseWebSocketFrame = closeFrame.retain();   // retain for SessionNettyImpl
 
             if (closeCallbackFuture == null) {
                 // close initiated from server, reply CloseWebSocketFrame, then close connection
-                loggerReference.get().atVerbose().log("Send CloseWebSocketFrame");
+                loggerReference.get().atVerbose().log(() -> "Send CloseWebSocketFrame");
                 closeFrame.retain();    // retain before write it back
                 ch.writeAndFlush(closeFrame).addListener(future -> ch.close());
             } else {

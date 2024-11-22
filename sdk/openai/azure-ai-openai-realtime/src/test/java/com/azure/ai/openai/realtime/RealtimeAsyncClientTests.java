@@ -62,7 +62,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     public void testAlawSendAudio() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
 
         client.start().block();
         StepVerifier.create(client.getServerEvents()).assertNext(event -> {
@@ -85,7 +85,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void canConfigureSession() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
 
         client.start().block();
         StepVerifier.create(client.getServerEvents()).assertNext(event -> {
@@ -123,7 +123,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void textOnly() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
 
         client.start().block();
         client.sendMessage(new RealtimeClientEventSessionUpdate(
@@ -164,7 +164,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void ItemManipulation() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
 
         client.start().block();
         client
@@ -231,7 +231,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void AudioWithTool() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
 
         client.start().block();
 
@@ -285,7 +285,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     void canDisableVoiceActivityDetection() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
         client.start().block();
         client.sendMessage(new RealtimeClientEventSessionUpdate(
             new RealtimeRequestSession().setTurnDetection(new RealtimeTurnDetectionDisabled())
@@ -320,7 +320,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Disabled("ContentPartType should be TEXT for Assistant message. Current spec does not allow that combination.")
     @Override
     void badCommandProvidesError() {
-        client = getRealtimeClientBuilder(null, OpenAIServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
+        client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
 
         client.start().block();
         client

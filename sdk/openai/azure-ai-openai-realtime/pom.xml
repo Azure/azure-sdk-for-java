@@ -60,11 +60,6 @@
       <artifactId>azure-core</artifactId>
       <version>1.53.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-    </dependency>
 
         <!-- netty-codec-http is included in dependency for internal WebSocket implementation -->
     <dependency>

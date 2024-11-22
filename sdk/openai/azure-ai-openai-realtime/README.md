@@ -86,12 +86,6 @@ Add or edit the `settings.xml` file in `${user.home}/.m2`
 
 Replace `[PERSONAL_ACCESS_TOKEN]` in the `<password>` tag with the PAT you generated in [step 1.](#step-1-get-a-pat-personal-access-token)
 
-Then run 
-
-```commandline
-mvn install
-```
-
 ##### Step 3: Add project dependency
 
 Add to your project's pom.xml file
@@ -105,6 +99,12 @@ Add to your project's pom.xml file
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+Then run:
+
+```commandline
+mvn install
+```
 
 #### Gradle setup
 
@@ -136,18 +136,17 @@ azure-sdk-for-javaPassword=PERSONAL_ACCESS_TOKEN
 
 Replace `PERSONAL_ACCESS_TOKEN` being assign to `azure-sdk-for-javaPassword` with the PAT you generated in [step 1.](#step-1-get-a-pat-personal-access-token)
 
-Then run
-
-```commandline
-gradle build
-```
-
 ##### Step 3: Add project dependency
 
 Add to your project setup
 
 ```groovy
 compile(group: 'com.azure', name: 'azure-ai-openai-realtime', version: '1.0.0-beta.1')
+```
+Then run:
+
+```commandline
+gradle build
 ```
 
 ### Authentication

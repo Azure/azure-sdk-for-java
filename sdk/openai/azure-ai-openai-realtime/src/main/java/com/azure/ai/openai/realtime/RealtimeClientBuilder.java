@@ -44,10 +44,17 @@ public final class RealtimeClientBuilder implements ConfigurationTrait<RealtimeC
     private TokenCredential tokenCredential;
     private KeyCredential keyCredential;
 
-    private OpenAIServiceVersion serviceVersion = OpenAIServiceVersion.V2024_10_01_PREVIEW;
+    private OpenAIRealtimeServiceVersion serviceVersion = OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW;
 
     private RetryOptions retryOptions;
     private WebSocketClient webSocketClient;
+
+    /**
+     * Creates a new instance of the {@link RealtimeClientBuilder}.
+     */
+    public RealtimeClientBuilder() {
+        this.properties = CoreUtils.getProperties(PROPERTIES);
+    }
 
     /**
      * {@inheritDoc}
@@ -147,7 +154,7 @@ public final class RealtimeClientBuilder implements ConfigurationTrait<RealtimeC
      * @param serviceVersion the serviceVersion value.
      * @return the OpenAIClientBuilder.
      */
-    public RealtimeClientBuilder serviceVersion(OpenAIServiceVersion serviceVersion) {
+    public RealtimeClientBuilder serviceVersion(OpenAIRealtimeServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -238,12 +245,5 @@ public final class RealtimeClientBuilder implements ConfigurationTrait<RealtimeC
      */
     private boolean useNonAzureOpenAIService() {
         return endpoint == null || endpoint.startsWith(OPENAI_BASE_URL);
-    }
-
-    /**
-     * Creates a new instance of the {@link RealtimeClientBuilder}.
-     */
-    public RealtimeClientBuilder() {
-        this.properties = CoreUtils.getProperties(PROPERTIES);
     }
 }

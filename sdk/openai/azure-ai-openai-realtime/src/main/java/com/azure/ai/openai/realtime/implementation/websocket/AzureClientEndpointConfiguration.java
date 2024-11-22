@@ -3,7 +3,7 @@
 
 package com.azure.ai.openai.realtime.implementation.websocket;
 
-import com.azure.ai.openai.realtime.OpenAIServiceVersion;
+import com.azure.ai.openai.realtime.OpenAIRealtimeServiceVersion;
 import com.azure.core.http.HttpHeaderName;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -16,7 +16,7 @@ public class AzureClientEndpointConfiguration extends ClientEndpointConfiguratio
     private static final String PATH = "/openai/realtime";
 
     // Query parameters
-    private final OpenAIServiceVersion serviceVersion;
+    private final OpenAIRealtimeServiceVersion serviceVersion;
     private final String deployment;
 
     // Headers
@@ -24,7 +24,7 @@ public class AzureClientEndpointConfiguration extends ClientEndpointConfiguratio
     // userAgent is already defined in the parent class
 
     public AzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment,
-        OpenAIServiceVersion serviceVersion) {
+        OpenAIRealtimeServiceVersion serviceVersion) {
         super(baseUrl, userAgent);
         this.serviceVersion = serviceVersion;
         this.deployment = deployment;

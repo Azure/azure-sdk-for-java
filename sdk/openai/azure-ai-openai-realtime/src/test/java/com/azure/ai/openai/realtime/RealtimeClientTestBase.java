@@ -9,19 +9,14 @@ import com.azure.ai.openai.realtime.implementation.websocket.WebSocketClient;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
-import com.azure.ai.openai.realtime.models.RealtimeClientEventConversationItemCreate;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeFunctionTool;
-import com.azure.ai.openai.realtime.models.RealtimeRequestFunctionCallOutputItem;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
-import com.azure.ai.openai.realtime.models.RealtimeRequestTextContentPart;
-import com.azure.ai.openai.realtime.models.RealtimeRequestUserMessageItem;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.ai.openai.realtime.models.RealtimeVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
@@ -36,7 +31,7 @@ import java.util.function.BiConsumer;
 public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
 
     RealtimeClientBuilder getRealtimeClientBuilder(WebSocketClient webSocketClient,
-        OpenAIServiceVersion serviceVersion) {
+        OpenAIRealtimeServiceVersion serviceVersion) {
         String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelId = Configuration.getGlobalConfiguration().get("MODEL_OR_DEPLOYMENT_NAME");

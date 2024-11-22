@@ -3,7 +3,7 @@
 
 package com.azure.ai.openai.realtime.implementation.websocket;
 
-import com.azure.ai.openai.realtime.OpenAIServiceVersion;
+import com.azure.ai.openai.realtime.OpenAIRealtimeServiceVersion;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.net.URI;
@@ -46,7 +46,7 @@ public abstract class ClientEndpointConfiguration {
     protected abstract String getURIString();
 
     public static AzureClientEndpointConfiguration createAzureClientEndpointConfiguration(String baseUrl,
-        String userAgent, String deployment, OpenAIServiceVersion serviceVersion) {
+        String userAgent, String deployment, OpenAIRealtimeServiceVersion serviceVersion) {
         return new AzureClientEndpointConfiguration(baseUrl, userAgent, deployment, serviceVersion);
     }
 

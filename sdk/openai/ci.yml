@@ -49,7 +49,7 @@ parameters:
   - name: release_azureaiopenairealtime
     displayName: 'azure-ai-openai-realtime'
     type: boolean
-    default: true
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

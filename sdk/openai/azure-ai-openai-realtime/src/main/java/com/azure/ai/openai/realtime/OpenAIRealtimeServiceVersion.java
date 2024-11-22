@@ -7,9 +7,9 @@ package com.azure.ai.openai.realtime;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * Service version of OpenAIClient.
+ * Azure OpenAI Realtime service version.
  */
-public enum OpenAIServiceVersion implements ServiceVersion {
+public enum OpenAIRealtimeServiceVersion implements ServiceVersion {
 
     /**
      * Enum value 2024-10-01.
@@ -18,7 +18,7 @@ public enum OpenAIServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    OpenAIServiceVersion(String version) {
+    OpenAIRealtimeServiceVersion(String version) {
         this.version = version;
     }
 
@@ -33,9 +33,9 @@ public enum OpenAIServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      * 
-     * @return The latest {@link OpenAIServiceVersion}.
+     * @return The latest {@link OpenAIRealtimeServiceVersion}.
      */
-    public static OpenAIServiceVersion getLatest() {
+    public static OpenAIRealtimeServiceVersion getLatest() {
         return V2024_10_01_PREVIEW;
     }
 }
