@@ -60,6 +60,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
 
     @Test
     @Override
+    @Disabled("Only LIVE tests are supported for websocket")
     public void testAlawSendAudio() {
         client = getNonAzureRealtimeClientBuilder(null).buildAsyncClient();
 
@@ -84,6 +85,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
 
     @Test
     @Override
+    @Disabled("Only LIVE tests are supported for websocket")
     void canConfigureSession() {
         client = getNonAzureRealtimeClientBuilder(null).buildAsyncClient();
 
@@ -126,6 +128,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
 
     @Test
     @Override
+    @Disabled("Only LIVE tests are supported for websocket")
     void textOnly() {
         client = getNonAzureRealtimeClientBuilder(null).buildAsyncClient();
 
@@ -235,6 +238,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
 
     @Test
     @Override
+    @Disabled("Only LIVE tests are supported for websocket")
     void AudioWithTool() {
         client = getNonAzureRealtimeClientBuilder(null).buildAsyncClient();
 
@@ -289,6 +293,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
 
     @Test
     @Override
+    @Disabled("Only LIVE tests are supported for websocket")
     void canDisableVoiceActivityDetection() {
         client = getNonAzureRealtimeClientBuilder(null).buildAsyncClient();
         client.start().block();

@@ -59,6 +59,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
 
     private RealtimeAsyncClient client;
 
+    @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
     public void testAlawSendAudio() {
@@ -82,6 +83,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
             .verifyComplete();
     }
 
+    @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
     void canConfigureSession() {
@@ -120,6 +122,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
             .verifyComplete();
     }
 
+    @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
     void textOnly() {
@@ -161,6 +164,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
             .verifyComplete();
     }
 
+    @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
     void ItemManipulation() {
@@ -228,6 +232,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
             .verifyComplete();
     }
 
+    @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
     void AudioWithTool() {
@@ -282,6 +287,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
         });
     }
 
+    @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
     void canDisableVoiceActivityDetection() {
