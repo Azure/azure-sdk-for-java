@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
@@ -6,15 +9,12 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PredicateType;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
 
 public class Filter {
     public static final String EXCEPTION_FIELDNAME_PREFIX = "Exception.";
     public static final String CUSTOM_DIM_FIELDNAME_PREFIX = "CustomDimensions.";
     public static final String ANY_FIELD = "*";
-    private static final String TELEMETRY_COLUMNS_CUSTOM_DIM_FIELD = "CustomDimensions";
 
     public static void renameExceptionFieldNamesForFiltering(FilterConjunctionGroupInfo filterConjunctionGroupInfo) {
         filterConjunctionGroupInfo.getFilters().forEach(filter -> {
@@ -44,7 +44,8 @@ public class Filter {
 
     // To be used when checking telemetry against document filters. This also gets reused in the logic for checking metrics
     // charts filters.
-    public static boolean checkFilterConjunctionGroup(FilterConjunctionGroupInfo filterConjunctionGroupInfo, TelemetryColumns data) {
+    public static boolean checkFilterConjunctionGroup(FilterConjunctionGroupInfo filterConjunctionGroupInfo,
+        TelemetryColumns data) {
         // All of the filters need to match for this to return true (and operation).
         for (FilterInfo filter : filterConjunctionGroupInfo.getFilters()) {
             if (!checkFilter(filter, data)) {
@@ -63,7 +64,7 @@ public class Filter {
             } else {
                 Object fieldValue = getFieldValue(data, filter.getFieldName());
 
-                if (filter.getFieldName().equals(KnownRequestColumns.success)) {
+                if (filter.getFieldName().equals(KnownRequestColumns.SUCCESS)) {
                     boolean fieldValueBoolean = (Boolean) fieldValue;
                     boolean comparand = Boolean.parseBoolean(filter.getComparand().toLowerCase());
                     if (filter.getPredicate().equals(PredicateType.EQUAL)) {
@@ -71,13 +72,15 @@ public class Filter {
                     } else if (filter.getPredicate().equals(PredicateType.NOT_EQUAL)) {
                         return fieldValueBoolean != comparand;
                     }
-                } else if (filter.getFieldName().equals(KnownDependencyColumns.resultCode) ||
-                    filter.getFieldName().equals(KnownRequestColumns.responseCode) ||
-                    filter.getFieldName().equals(KnownDependencyColumns.duration)) {
-                    long comparand = filter.getFieldName().equals(KnownDependencyColumns.duration) ?
-                        getMicroSecondsFromFilterTimestampString(filter.getComparand()): Long.parseLong(filter.getComparand());
-                    long fieldValueLong = filter.getFieldName().equals(KnownDependencyColumns.duration) ?
-                        (Long) fieldValue : ((Integer) fieldValue).longValue();
+                } else if (filter.getFieldName().equals(KnownDependencyColumns.RESULT_CODE)
+                    || filter.getFieldName().equals(KnownRequestColumns.RESPONSE_CODE)
+                    || filter.getFieldName().equals(KnownDependencyColumns.DURATION)) {
+                    long comparand = filter.getFieldName().equals(KnownDependencyColumns.DURATION)
+                        ? getMicroSecondsFromFilterTimestampString(filter.getComparand())
+                        : Long.parseLong(filter.getComparand());
+                    long fieldValueLong = filter.getFieldName().equals(KnownDependencyColumns.DURATION)
+                        ? (Long) fieldValue
+                        : ((Integer) fieldValue).longValue();
                     PredicateType predicate = filter.getPredicate();
                     if (predicate.equals(PredicateType.EQUAL)) {
                         return fieldValueLong == comparand;
@@ -106,7 +109,8 @@ public class Filter {
         return false;
     }
 
-    private static Object getFieldValue(Object data, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+    private static Object getFieldValue(Object data, String fieldName)
+        throws NoSuchFieldException, IllegalAccessException {
         Field field = data.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
         return field.get(data);
@@ -153,7 +157,7 @@ public class Filter {
             return fieldValue != null && !fieldValue.equals(comparand);
         } else if (predicate.equals(PredicateType.CONTAINS)) {
             return fieldValue != null && fieldValue.toLowerCase().contains(comparand.toLowerCase());
-        } else if (predicate.equals(PredicateType.DOES_NOT_CONTAIN)){
+        } else if (predicate.equals(PredicateType.DOES_NOT_CONTAIN)) {
             return fieldValue != null && !fieldValue.toLowerCase().contains(comparand.toLowerCase());
         }
         return false;
@@ -164,7 +168,6 @@ public class Filter {
         // [days].[hours]:[minutes]:[seconds]
         // the seconds may be a whole number or something like 7.89. 7.89 seconds translates to 7890000 microseconds.
         // examples: "14.6:56:7.89" = 1234567890000 microseconds, "0.0:0:0.2" = 200000 microseconds
-
 
         // Split the timestamp by ":"
         String[] parts = timestamp.split(":");
@@ -190,9 +193,7 @@ public class Filter {
         }
 
         // Calculate the total microseconds
-        return microseconds
-            + (minutes * 60L * 1000000L)
-            + (hours * 60L * 60L * 1000000L)
+        return microseconds + (minutes * 60L * 1000000L) + (hours * 60L * 60L * 1000000L)
             + (days * 24L * 60L * 60L * 1000000L);
 
     }
@@ -204,9 +205,5 @@ public class Filter {
             return Integer.MIN_VALUE;
         }
     }
-
-
-
-
 
 }

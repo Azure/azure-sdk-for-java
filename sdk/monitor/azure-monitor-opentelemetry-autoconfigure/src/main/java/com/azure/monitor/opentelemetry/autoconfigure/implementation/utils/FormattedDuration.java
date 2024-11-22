@@ -64,11 +64,8 @@ public final class FormattedDuration {
             int hours = Integer.parseInt(hmsParts[0]);
             int minutes = Integer.parseInt(hmsParts[1]);
             int seconds = Integer.parseInt(hmsParts[2]);
-            return (days * 24L * 60L * 60L * 1000000L) +
-                (hours * 60L * 60L * 1000000L) +
-                (minutes * 60L * 1000000L) +
-                (seconds * 1000000L) +
-                microseconds;
+            return (days * 24L * 60L * 60L * 1000000L) + (hours * 60L * 60L * 1000000L) + (minutes * 60L * 1000000L)
+                + (seconds * 1000000L) + microseconds;
         } catch (NumberFormatException e) {
             return -1;
         }

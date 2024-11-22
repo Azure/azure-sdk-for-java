@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
@@ -5,22 +8,24 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Format
 
 // Casing of private fields is to match the names of fields passed down via filtering configuration
 public class RequestDataColumns extends TelemetryColumns {
-    private String Url;
-    private long Duration; // microseconds
-    private int ResponseCode;
-    private boolean Success;
-    private String Name;
+    private final String Url;
+    private final long Duration; // microseconds
+    private final int ResponseCode;
+    private final boolean Success;
+    private final String Name;
 
     public RequestDataColumns(RequestData requestData) {
         super();
         setCustomDimensions(requestData.getProperties(), requestData.getMeasurements());
         this.Url = requestData.getUrl();
         this.Duration = FormattedDuration.getDurationFromTelemetryItemDurationString(requestData.getDuration());
+        int responseCode;
         try {
-            this.ResponseCode = Integer.parseInt(requestData.getResponseCode());
+            responseCode = Integer.parseInt(requestData.getResponseCode());
         } catch (NumberFormatException e) {
-            this.ResponseCode = -1;
+            responseCode = -1;
         }
+        this.ResponseCode = responseCode;
         this.Success = requestData.isSuccess();
         this.Name = requestData.getName();
     }
@@ -33,26 +38,6 @@ public class RequestDataColumns extends TelemetryColumns {
         this.ResponseCode = responseCode;
         this.Success = success;
         this.Name = name;
-    }
-
-    // To be used in tests only
-    public void setSuccess(boolean success) {
-        this.Success = success;
-    }
-
-    // To be used in tests only
-    public void setResponseCode(int responseCode) {
-        this.ResponseCode = responseCode;
-    }
-
-    // To be used in tests only
-    public void setDuration(long duration) {
-        this.Duration = duration;
-    }
-
-    // To be used in tests only
-    public void setUrl(String url) {
-        this.Url = url;
     }
 
     // To be used in tests only

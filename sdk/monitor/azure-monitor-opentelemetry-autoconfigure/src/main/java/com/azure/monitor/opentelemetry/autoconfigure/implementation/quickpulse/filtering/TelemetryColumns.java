@@ -1,13 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TelemetryColumns {
-    private Map<String, String> CustomDimensions;
+    private Map<String, String> customDimensions;
 
     public TelemetryColumns() {
-        this.CustomDimensions = new HashMap<String, String>();
+        this.customDimensions = new HashMap<String, String>();
     }
 
     public void setCustomDimensions(Map<String, String> customDimensions, Map<String, Double> customMeasurements) {
@@ -16,15 +19,15 @@ public class TelemetryColumns {
             resultMap.putAll(customDimensions);
         }
         if (customMeasurements != null) {
-            for (Map.Entry<String, Double> cmEntry: customMeasurements.entrySet()) {
+            for (Map.Entry<String, Double> cmEntry : customMeasurements.entrySet()) {
                 resultMap.put(cmEntry.getKey(), cmEntry.getValue().toString());
             }
         }
-        this.CustomDimensions = resultMap;
+        this.customDimensions = resultMap;
     }
 
     public Map<String, String> getCustomDimensions() {
-        return this.CustomDimensions;
+        return this.customDimensions;
     }
 
 }

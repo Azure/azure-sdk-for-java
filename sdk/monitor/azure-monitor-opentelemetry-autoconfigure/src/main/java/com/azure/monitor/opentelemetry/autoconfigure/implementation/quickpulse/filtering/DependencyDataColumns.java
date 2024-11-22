@@ -1,19 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
 
 // Casing of private fields is to match the names of fields passed down via filtering configuration
 public class DependencyDataColumns extends TelemetryColumns {
-    private String Target;
-    private long Duration; // in microseconds
-    private boolean Success;
-    private String Name;
-    private int ResultCode;
-    private String Type;
-    private String Data;
-
+    private final String Target;
+    private final long Duration; // in microseconds
+    private final boolean Success;
+    private final String Name;
+    private final int ResultCode;
+    private final String Type;
+    private final String Data;
 
     public DependencyDataColumns(RemoteDependencyData rdData) {
         super();
@@ -24,15 +25,18 @@ public class DependencyDataColumns extends TelemetryColumns {
         this.Name = rdData.getName();
         this.Type = rdData.getType();
         this.Data = rdData.getData();
+        int resultCode;
         try {
-            this.ResultCode = Integer.parseInt(rdData.getResultCode());
+            resultCode = Integer.parseInt(rdData.getResultCode());
         } catch (NumberFormatException e) {
-            this.ResultCode = -1;
+            resultCode = -1;
         }
+        this.ResultCode = resultCode;
     }
 
     // To be used for tests only
-    public DependencyDataColumns(String target, long duration, boolean success, String name, int resultCode, String type, String data) {
+    public DependencyDataColumns(String target, long duration, boolean success, String name, int resultCode,
+        String type, String data) {
         super();
         this.Target = target;
         this.Duration = duration;
@@ -40,26 +44,6 @@ public class DependencyDataColumns extends TelemetryColumns {
         this.Name = name;
         this.ResultCode = resultCode;
         this.Type = type;
-        this.Data = data;
-    }
-
-    // To be used in tests only
-    public void setSuccess(boolean success) {
-        this.Success = success;
-    }
-
-    // To be used in tests only
-    public void setResultCode(int responseCode) {
-        this.ResultCode = responseCode;
-    }
-
-    // To be used in tests only
-    public void setDuration(long duration) {
-        this.Duration = duration;
-    }
-
-    // to be used in tests only
-    public void setData(String data) {
         this.Data = data;
     }
 
@@ -90,6 +74,5 @@ public class DependencyDataColumns extends TelemetryColumns {
     public int getResultCode() {
         return this.ResultCode;
     }
-
 
 }
