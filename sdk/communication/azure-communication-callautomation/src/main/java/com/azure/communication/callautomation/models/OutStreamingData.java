@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.models;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Base64;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonProviders;
@@ -110,9 +111,6 @@ public class OutStreamingData {
      * @throws IOException throws exception when fails to serialize
      */
     private static String serializeOutStreamingData(OutStreamingData data) throws IOException {
-        // JsonSerializer jsonSerializer = JsonSerializerProviders.createInstance();
-        // ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        // jsonSerializer.serialize(outputStream, data);
         Writer json = new StringWriter();
         try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
             // JsonWriter automatically flushes on close.
@@ -131,8 +129,24 @@ public class OutStreamingData {
     private JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", this.kind.toString());
-        jsonWriter.writeRawField("audioData", this.audioData.toString());
-        jsonWriter.writeRawField("stopAudio", this.stopAudio.toString());
-        return jsonWriter.writeEndObject();
+
+        if (this.audioData != null) {
+            jsonWriter.writeFieldName("audioData");
+            jsonWriter.writeStartObject();
+            jsonWriter.writeRawField("data", Base64.getEncoder().encodeToString(this.audioData.getData()));
+            jsonWriter.writeNullField("timestamp");
+            jsonWriter.writeNullField("participant");
+            jsonWriter.writeBooleanField("isSilent", this.audioData.isSilent());
+            jsonWriter.writeEndObject();
+        }
+
+        if (this.stopAudio != null) {
+            jsonWriter.writeRawField("stopAudio", "{}");
+        } else {
+            jsonWriter.writeNullField("stopAudio");
+        }
+
+        jsonWriter.writeEndObject();
+        return jsonWriter;
     }
 }
