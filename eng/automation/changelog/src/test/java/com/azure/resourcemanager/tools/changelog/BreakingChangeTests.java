@@ -51,4 +51,15 @@ public class BreakingChangeTests {
         Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.quota.models.QuotaProperties)` was removed in stage 2 in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$DefinitionStages`."));
         Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.quota.models.QuotaProperties)` was removed in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$Definition`."));
     }
+
+    @Test
+    public void testAzureJson() {
+
+        URL oldJar = BreakingChangeTests.class.getResource("/jackson.jar");
+        URL newJar = BreakingChangeTests.class.getResource("/azure-json.jar");
+        System.setProperty("OLD_JAR", oldJar.getFile());
+        System.setProperty("NEW_JAR", newJar.getFile());
+        JSONObject jsonObject = Main.getChangelog();
+        System.out.println(jsonObject);
+    }
 }

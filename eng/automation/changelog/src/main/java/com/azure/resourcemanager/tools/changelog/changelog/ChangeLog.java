@@ -157,4 +157,12 @@ public class ChangeLog {
     public Collection<String> getBreakingChangeItems() {
         return breakingChange.getItems();
     }
+
+    public boolean migrateToAzureJson() {
+        return this.newFeature.stream().anyMatch(newFeature -> newFeature.contains("`fromJson(com.azure.json.JsonReader)` was added") || newFeature.contains("`toJson(com.azure.json.JsonWriter)` was added"));
+    }
+
+    public boolean onlyAzureJson() {
+        return migrateToAzureJson() && this.newFeature.size() == 2;
+    }
 }
