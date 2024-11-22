@@ -22,6 +22,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
 
+import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
@@ -72,7 +73,7 @@ import static com.azure.messaging.eventhubs.checkpointstore.jedis.ClientConstant
  * @see EventProcessorClient
  * @see EventProcessorClientBuilder
  */
-public final class JedisCheckpointStore implements CheckpointStore {
+public class JedisCheckpointStore implements CheckpointStore {
     private static final String PARTITION_ID_KEY = "partitionId";
 
     private static final ClientLogger LOGGER = new ClientLogger(JedisCheckpointStore.class);
@@ -113,7 +114,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
             byte[] prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
             byte[] key = keyBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup, partitionId);
 
-            try (Jedis jedis = jedisPool.getResource()) {
+            try (JedisWrapper jedis = getJedisWrapper()) {
                 jedis.sadd(prefix, key);
 
                 // Start watching for any updates.
@@ -125,8 +126,8 @@ public final class JedisCheckpointStore implements CheckpointStore {
                 byte[] serializedOwnership = DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership);
 
                 try {
-                    Transaction transaction = jedis.multi();
-                    transaction.hset(key, PARTITION_OWNERSHIP, serializedOwnership);
+                    TransactionWrapper transaction = jedis.multi();
+                    transaction.hset(key, serializedOwnership);
 
                     // If at least one watched key is modified before the EXEC command, the whole transaction aborts, and
                     // EXEC returns a Null reply to notify that the transaction failed.
@@ -172,7 +173,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
     @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         return Flux.create(sink -> {
-            try (Jedis jedis = jedisPool.getResource()) {
+            try (JedisWrapper jedis = getJedisWrapper()) {
 
                 byte[] prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
                 Set<byte[]> members = jedis.smembers(prefix);
@@ -214,7 +215,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup) {
         return Flux.create(sink -> {
-            try (Jedis jedis = jedisPool.getResource()) {
+            try (JedisWrapper jedis = getJedisWrapper()) {
                 byte[] prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
                 Set<byte[]> members = jedis.smembers(prefix);
                 if (members == null) {
@@ -277,10 +278,14 @@ public final class JedisCheckpointStore implements CheckpointStore {
             byte[] key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
                 checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
 
-            try (Jedis jedis = jedisPool.getResource()) {
-                jedis.hset(key, CHECKPOINT, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
+            try (JedisWrapper jedis = getJedisWrapper()) {
+                jedis.hset(key, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
             }
         });
+    }
+
+    JedisWrapper getJedisWrapper() {
+        return new JedisWrapper(jedisPool.getResource());
     }
 
     static byte[] prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
@@ -314,5 +319,66 @@ public final class JedisCheckpointStore implements CheckpointStore {
             .log("Unable to claim partition.", exception);
 
         return exception;
+    }
+
+    static class JedisWrapper implements Closeable {
+        private final Jedis jedis;
+
+        JedisWrapper(Jedis jedis) {
+            this.jedis = jedis;
+        }
+
+        void sadd(byte[] key, byte[]... members) {
+            jedis.sadd(key, members);
+        }
+
+        void watch(byte[]... keys) {
+            jedis.watch(keys);
+        }
+
+        List<String> time() {
+            return jedis.time();
+        }
+
+        TransactionWrapper multi() {
+            return new TransactionWrapper(jedis.multi());
+        }
+
+        void unwatch() {
+            jedis.unwatch();
+        }
+
+        Set<byte[]> smembers(byte[] key) {
+            return jedis.smembers(key);
+        }
+
+        List<byte[]> hmget(byte[] key, byte[]... fields) {
+            return jedis.hmget(key, fields);
+        }
+
+        void hset(byte[] key, byte[] value) {
+            jedis.hset(key, JedisCheckpointStore.CHECKPOINT, value);
+        }
+
+        @Override
+        public void close() {
+            jedis.close();
+        }
+    }
+
+    static class TransactionWrapper {
+        private final Transaction transaction;
+
+        TransactionWrapper(Transaction transaction) {
+            this.transaction = transaction;
+        }
+
+        void hset(byte[] key, byte[] value) {
+            transaction.hset(key, JedisCheckpointStore.PARTITION_OWNERSHIP, value);
+        }
+
+        List<Object> exec() {
+            return transaction.exec();
+        }
     }
 }

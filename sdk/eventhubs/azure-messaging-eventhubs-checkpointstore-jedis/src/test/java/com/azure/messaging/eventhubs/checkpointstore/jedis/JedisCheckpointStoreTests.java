@@ -6,10 +6,6 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.messaging.eventhubs.checkpointstore.jedis.mocking.MockConnection;
-import com.azure.messaging.eventhubs.checkpointstore.jedis.mocking.MockJedis;
-import com.azure.messaging.eventhubs.checkpointstore.jedis.mocking.MockJedisPool;
-import com.azure.messaging.eventhubs.checkpointstore.jedis.mocking.MockTransaction;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import org.junit.jupiter.api.Test;
@@ -17,8 +13,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Response;
-import redis.clients.jedis.Transaction;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -30,8 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.azure.messaging.eventhubs.checkpointstore.jedis.JedisCheckpointStore.PARTITION_OWNERSHIP;
 import static com.azure.messaging.eventhubs.checkpointstore.jedis.JedisCheckpointStore.keyBuilder;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -56,59 +50,75 @@ public class JedisCheckpointStoreTests {
         Checkpoint checkpoint = createCheckpoint();
         byte[] checkpointInBytes = JSON_SERIALIZER.serializeToBytes(checkpoint);
 
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public Set<byte[]> smembers(byte[] key) {
-                return Arrays.equals(PREFIX, key) ? Collections.singleton(KEY) : null;
-            }
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public Set<byte[]> smembers(byte[] key) {
+                        return Arrays.equals(PREFIX, key) ? Collections.singleton(KEY) : null;
+                    }
 
-            @Override
-            public List<byte[]> hmget(byte[] key, byte[]... fields) {
-                return Arrays.equals(key, KEY) && Arrays.equals(fields[0], JedisCheckpointStore.CHECKPOINT)
-                    ? Collections.singletonList(checkpointInBytes)
-                    : null;
+                    @Override
+                    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+                        return Arrays.equals(key, KEY) && Arrays.equals(fields[0], JedisCheckpointStore.CHECKPOINT)
+                            ? Collections.singletonList(checkpointInBytes)
+                            : null;
+                    }
+                };
             }
-        });
+        };
 
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).listCheckpoints(FULLY_QUALIFIED_NAMESPACE,
-            EVENT_HUB_NAME, CONSUMER_GROUP)).assertNext(checkpointTest -> {
+        StepVerifier.create(checkpointStore.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
+            .assertNext(checkpointTest -> {
                 assertEquals(FULLY_QUALIFIED_NAMESPACE, checkpointTest.getFullyQualifiedNamespace());
                 assertEquals(EVENT_HUB_NAME, checkpointTest.getEventHubName());
                 assertEquals(CONSUMER_GROUP, checkpointTest.getConsumerGroup());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Test
     public void testListCheckpointsEmptyList() {
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public Set<byte[]> smembers(byte[] key) {
-                return Arrays.equals(PREFIX, key) ? new HashSet<>() : null;
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public Set<byte[]> smembers(byte[] key) {
+                        return Arrays.equals(PREFIX, key) ? new HashSet<>() : null;
+                    }
+                };
             }
-        });
+        };
 
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).listCheckpoints(FULLY_QUALIFIED_NAMESPACE,
-            EVENT_HUB_NAME, CONSUMER_GROUP)).verifyComplete();
+        StepVerifier.create(checkpointStore.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
+            .verifyComplete();
     }
 
     @Test
     public void testCheckpointKeyNotStored() {
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public Set<byte[]> smembers(byte[] key) {
-                return Arrays.equals(PREFIX, key) ? Collections.singleton(KEY) : null;
-            }
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public Set<byte[]> smembers(byte[] key) {
+                        return Arrays.equals(PREFIX, key) ? Collections.singleton(KEY) : null;
+                    }
 
-            @Override
-            public List<byte[]> hmget(byte[] key, byte[]... fields) {
-                return Arrays.equals(key, KEY) && Arrays.equals(fields[0], JedisCheckpointStore.CHECKPOINT)
-                    ? Collections.singletonList(null)
-                    : null;
+                    @Override
+                    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+                        return Arrays.equals(key, KEY) && Arrays.equals(fields[0], JedisCheckpointStore.CHECKPOINT)
+                            ? Collections.singletonList(null)
+                            : null;
+                    }
+                };
             }
-        });
+        };
 
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).listCheckpoints(FULLY_QUALIFIED_NAMESPACE,
-            EVENT_HUB_NAME, CONSUMER_GROUP)).verifyComplete();
+        StepVerifier.create(checkpointStore.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
+            .verifyComplete();
     }
 
     @Test
@@ -116,78 +126,88 @@ public class JedisCheckpointStoreTests {
         PartitionOwnership partitionOwnership = createPartitionOwnership(PARTITION_ID);
         byte[] partitionOwnershipToBytes = JSON_SERIALIZER.serializeToBytes(partitionOwnership);
 
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public Set<byte[]> smembers(byte[] key) {
-                return Arrays.equals(PREFIX, key) ? Collections.singleton(KEY) : null;
-            }
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public Set<byte[]> smembers(byte[] key) {
+                        return Arrays.equals(PREFIX, key) ? Collections.singleton(KEY) : null;
+                    }
 
-            @Override
-            public List<byte[]> hmget(byte[] key, byte[]... fields) {
-                return Arrays.equals(key, KEY) && Arrays.equals(fields[0], PARTITION_OWNERSHIP)
-                    ? Collections.singletonList(partitionOwnershipToBytes)
-                    : null;
+                    @Override
+                    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+                        return Arrays.equals(key, KEY) && Arrays.equals(fields[0], PARTITION_OWNERSHIP)
+                            ? Collections.singletonList(partitionOwnershipToBytes)
+                            : null;
+                    }
+                };
             }
-        });
+        };
 
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME,
-            CONSUMER_GROUP)).assertNext(partitionOwnershipTest -> {
+        StepVerifier.create(checkpointStore.listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
+            .assertNext(partitionOwnershipTest -> {
                 assertEquals(FULLY_QUALIFIED_NAMESPACE, partitionOwnershipTest.getFullyQualifiedNamespace());
                 assertEquals(EVENT_HUB_NAME, partitionOwnershipTest.getEventHubName());
                 assertEquals(CONSUMER_GROUP, partitionOwnershipTest.getConsumerGroup());
                 assertEquals("ownerOne", partitionOwnershipTest.getOwnerId());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Test
     public void testListOwnershipEmptyList() {
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public Set<byte[]> smembers(byte[] key) {
-                return Arrays.equals(PREFIX, key) ? new HashSet<>() : null;
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public Set<byte[]> smembers(byte[] key) {
+                        return Arrays.equals(PREFIX, key) ? new HashSet<>() : null;
+                    }
+                };
             }
-        });
+        };
 
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME,
-            CONSUMER_GROUP)).verifyComplete();
+        StepVerifier.create(checkpointStore.listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
+            .verifyComplete();
     }
 
     @Test
     public void testClaimOwnershipEmptyField() {
         PartitionOwnership partitionOwnership = createPartitionOwnership(PARTITION_ID);
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
-        Transaction transaction = new MockTransaction(new MockConnection()) {
+        TestTransactionWrapper transaction = new TestTransactionWrapper() {
             @Override
             public List<Object> exec() {
                 return Collections.singletonList(1L);
             }
         };
 
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public long sadd(byte[] key, byte[]... members) {
-                return Arrays.equals(PREFIX, key)
-                    && Arrays.equals(members[0], PARTITION_OWNERSHIP)
-                    && members.length == 2 ? 0 : 1;
-            }
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public void sadd(byte[] key, byte[]... members) {
+                        assertArrayEquals(PREFIX, key);
+                        assertArrayEquals(KEY, members[0]);
+                    }
 
-            @Override
-            public long hsetnx(byte[] key, byte[] field, byte[] value) {
-                return Arrays.equals(KEY, key) && Arrays.equals(field, PARTITION_OWNERSHIP) ? 1 : 0;
-            }
+                    @Override
+                    public List<String> time() {
+                        return Collections.singletonList("10000000");
+                    }
 
-            @Override
-            public List<String> time() {
-                return Collections.singletonList("10000000");
+                    @Override
+                    public TransactionWrapper multi() {
+                        return transaction;
+                    }
+                };
             }
+        };
 
-            @Override
-            public Transaction multi() {
-                return transaction;
-            }
-        });
-
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).claimOwnership(partitionOwnershipList))
+        StepVerifier.create(checkpointStore.claimOwnership(partitionOwnershipList))
             .assertNext(partitionOwnershipTest -> {
                 assertEquals(EVENT_HUB_NAME, partitionOwnershipTest.getEventHubName());
                 assertEquals(CONSUMER_GROUP, partitionOwnershipTest.getConsumerGroup());
@@ -201,7 +221,7 @@ public class JedisCheckpointStoreTests {
     public void testClaimOwnershipNonEmptyField() {
         PartitionOwnership partitionOwnership = createPartitionOwnership(PARTITION_ID);
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
-        Transaction transaction = new MockTransaction(new MockConnection()) {
+        TestTransactionWrapper transaction = new TestTransactionWrapper() {
             @Override
             public List<Object> exec() {
                 return Collections.singletonList(1L);
@@ -209,35 +229,38 @@ public class JedisCheckpointStoreTests {
         };
 
         AtomicInteger saddCallCount = new AtomicInteger();
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public List<byte[]> hmget(byte[] key, byte[]... fields) {
-                return Arrays.equals(key, KEY) && Arrays.equals(fields[0], JedisCheckpointStore.CHECKPOINT)
-                    ? Collections.singletonList("oldOwnershipRecord".getBytes(StandardCharsets.UTF_8))
-                    : null;
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+                        return Arrays.equals(key, KEY) && Arrays.equals(fields[0], JedisCheckpointStore.CHECKPOINT)
+                            ? Collections.singletonList("oldOwnershipRecord".getBytes(StandardCharsets.UTF_8))
+                            : null;
+                    }
+
+                    @Override
+                    public List<String> time() {
+                        return Collections.singletonList("10000000");
+                    }
+
+                    @Override
+                    public TransactionWrapper multi() {
+                        return transaction;
+                    }
+
+                    @Override
+                    public void sadd(byte[] key, byte[]... members) {
+                        assertArrayEquals(PREFIX, key);
+                        assertArrayEquals(KEY, members[0]);
+                        saddCallCount.incrementAndGet();
+                    }
+                };
             }
+        };
 
-            @Override
-            public List<String> time() {
-                return Collections.singletonList("10000000");
-            }
-
-            @Override
-            public Transaction multi() {
-                return transaction;
-            }
-
-            @Override
-            public long sadd(byte[] key, byte[]... members) {
-                if (Arrays.equals(PREFIX, key) && Arrays.equals(members[0], KEY)) {
-                    saddCallCount.incrementAndGet();
-                }
-
-                return 0;
-            }
-        });
-
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).claimOwnership(partitionOwnershipList))
+        StepVerifier.create(checkpointStore.claimOwnership(partitionOwnershipList))
             .assertNext(partitionOwnershipTest -> {
                 assertEquals(EVENT_HUB_NAME, partitionOwnershipTest.getEventHubName());
                 assertEquals(CONSUMER_GROUP, partitionOwnershipTest.getConsumerGroup());
@@ -256,43 +279,46 @@ public class JedisCheckpointStoreTests {
     public void claimOwnershipNoExistingOwnerships() {
         PartitionOwnership partitionOwnership = createPartitionOwnership(PARTITION_ID);
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
-        Transaction transaction = new MockTransaction(new MockConnection());
+        TestTransactionWrapper transaction = new TestTransactionWrapper();
 
         AtomicInteger saddCallCount = new AtomicInteger();
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public List<byte[]> hmget(byte[] key, byte[]... fields) {
-                return Arrays.equals(key, KEY) && Arrays.equals(fields[0], PARTITION_OWNERSHIP)
-                    ? Collections.singletonList(null) // No existing partition ownerships.
-                    : null;
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+                        return Arrays.equals(key, KEY) && Arrays.equals(fields[0], PARTITION_OWNERSHIP)
+                            ? Collections.singletonList(null) // No existing partition ownerships.
+                            : null;
+                    }
+
+                    @Override
+                    public void watch(byte[]... keys) {
+                        assertArrayEquals(KEY, keys[0]);
+                    }
+
+                    @Override
+                    public List<String> time() {
+                        return Collections.singletonList("1678740344");
+                    }
+
+                    @Override
+                    public TransactionWrapper multi() {
+                        return transaction;
+                    }
+
+                    @Override
+                    public void sadd(byte[] key, byte[]... members) {
+                        assertArrayEquals(PREFIX, key);
+                        assertArrayEquals(KEY, members[0]);
+                        saddCallCount.incrementAndGet();
+                    }
+                };
             }
+        };
 
-            @Override
-            public String watch(byte[]... keys) {
-                return Arrays.equals(KEY, keys[0]) ? "OK" : null;
-            }
-
-            @Override
-            public List<String> time() {
-                return Collections.singletonList("1678740344");
-            }
-
-            @Override
-            public Transaction multi() {
-                return transaction;
-            }
-
-            @Override
-            public long sadd(byte[] key, byte[]... members) {
-                if (Arrays.equals(PREFIX, key) && Arrays.equals(members[0], KEY)) {
-                    saddCallCount.incrementAndGet();
-                }
-
-                return 0;
-            }
-        });
-
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).claimOwnership(partitionOwnershipList))
+        StepVerifier.create(checkpointStore.claimOwnership(partitionOwnershipList))
             .expectError(AzureException.class)
             .verify();
 
@@ -307,51 +333,53 @@ public class JedisCheckpointStoreTests {
     public void claimOwnershipNoExistingOwnershipsFails() {
         PartitionOwnership partitionOwnership = createPartitionOwnership(PARTITION_ID);
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
-        Transaction transaction = new MockTransaction(new MockConnection());
+        TestTransactionWrapper transaction = new TestTransactionWrapper();
 
         AtomicInteger saddCallCount = new AtomicInteger();
         AtomicInteger unwatchCallCount = new AtomicInteger();
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public List<byte[]> hmget(byte[] key, byte[]... fields) {
-                return Arrays.equals(key, KEY) && Arrays.equals(fields[0], PARTITION_OWNERSHIP)
-                    ? Collections.singletonList(null) // No existing partition ownerships.
-                    : null;
-            }
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+                        return Arrays.equals(key, KEY) && Arrays.equals(fields[0], PARTITION_OWNERSHIP)
+                            ? Collections.singletonList(null) // No existing partition ownerships.
+                            : null;
+                    }
 
-            @Override
-            public String watch(byte[]... keys) {
-                return Arrays.equals(KEY, keys[0]) ? "OK" : null;
-            }
+                    @Override
+                    public void watch(byte[]... keys) {
+                        assertArrayEquals(KEY, keys[0]);
+                    }
 
-            @Override
-            public String unwatch() {
-                unwatchCallCount.incrementAndGet();
-                return null;
-            }
+                    @Override
+                    public void unwatch() {
+                        unwatchCallCount.incrementAndGet();
+                    }
 
-            @Override
-            public List<String> time() {
-                return Collections.singletonList("1678740344");
-            }
+                    @Override
+                    public List<String> time() {
+                        return Collections.singletonList("1678740344");
+                    }
 
-            @Override
-            public Transaction multi() {
-                return transaction;
-            }
+                    @Override
+                    public TransactionWrapper multi() {
+                        return transaction;
+                    }
 
-            @Override
-            public long sadd(byte[] key, byte[]... members) {
-                if (Arrays.equals(PREFIX, key) && Arrays.equals(members[0], KEY)) {
-                    saddCallCount.incrementAndGet();
-                }
-
-                return 0;
+                    @Override
+                    public void sadd(byte[] key, byte[]... members) {
+                        assertArrayEquals(PREFIX, key);
+                        assertArrayEquals(KEY, members[0]);
+                        saddCallCount.incrementAndGet();
+                    }
+                };
             }
-        });
+        };
 
         // Act & Assert
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).claimOwnership(partitionOwnershipList))
+        StepVerifier.create(checkpointStore.claimOwnership(partitionOwnershipList))
             .expectError(AzureException.class)
             .verify();
 
@@ -389,7 +417,7 @@ public class JedisCheckpointStoreTests {
         AtomicInteger execCallCount = new AtomicInteger();
         AtomicReference<byte[]> actualBytes1 = new AtomicReference<>();
         AtomicReference<byte[]> actualBytes2 = new AtomicReference<>();
-        Transaction transaction = new MockTransaction(new MockConnection()) {
+        TestTransactionWrapper transaction = new TestTransactionWrapper() {
             @Override
             public List<Object> exec() {
                 execCallCount.incrementAndGet();
@@ -397,61 +425,64 @@ public class JedisCheckpointStoreTests {
             }
 
             @Override
-            public Response<Long> hset(byte[] key, byte[] field, byte[] value) {
-                if (!Arrays.equals(field, PARTITION_OWNERSHIP)) {
-                    return null;
-                }
-
+            public void hset(byte[] key, byte[] value) {
                 if (Arrays.equals(key, key1)) {
                     actualBytes1.set(value);
                 } else if (Arrays.equals(key, key3)) {
                     actualBytes2.set(value);
                 }
-
-                return null;
             }
         };
 
         long lastModifiedTime = 1678740344L;
 
         AtomicInteger multiCallCount = new AtomicInteger();
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public List<byte[]> hmget(byte[] key, byte[]... fields) {
-                if (!Arrays.equals(fields[0], PARTITION_OWNERSHIP)) {
-                    return null;
-                }
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    void sadd(byte[] key, byte[]... members) {
+                    }
 
-                if (Arrays.equals(key, key1)) {
-                    return Collections.singletonList(existing1);
-                } else if (Arrays.equals(key, key2)) {
-                    return Collections.singletonList(existing2);
-                } else if (Arrays.equals(key, key3)) {
-                    return Collections.singletonList(existing3);
-                } else {
-                    throw new IllegalArgumentException("Unknown key: " + new String(key, StandardCharsets.UTF_8));
-                }
-            }
+                    @Override
+                    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+                        if (!Arrays.equals(fields[0], PARTITION_OWNERSHIP)) {
+                            return null;
+                        }
 
-            @Override
-            public String watch(byte[]... keys) {
-                return "OK";
-            }
+                        if (Arrays.equals(key, key1)) {
+                            return Collections.singletonList(existing1);
+                        } else if (Arrays.equals(key, key2)) {
+                            return Collections.singletonList(existing2);
+                        } else if (Arrays.equals(key, key3)) {
+                            return Collections.singletonList(existing3);
+                        } else {
+                            throw new IllegalArgumentException(
+                                "Unknown key: " + new String(key, StandardCharsets.UTF_8));
+                        }
+                    }
 
-            @Override
-            public List<String> time() {
-                return Arrays.asList(String.valueOf(lastModifiedTime), "0");
-            }
+                    @Override
+                    public void watch(byte[]... keys) {
+                    }
 
-            @Override
-            public Transaction multi() {
-                multiCallCount.incrementAndGet();
-                return transaction;
+                    @Override
+                    public List<String> time() {
+                        return Arrays.asList(String.valueOf(lastModifiedTime), "0");
+                    }
+
+                    @Override
+                    public TransactionWrapper multi() {
+                        multiCallCount.incrementAndGet();
+                        return transaction;
+                    }
+                };
             }
-        });
+        };
 
         // Act & Assert
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).claimOwnership(partitionsToClaim)).assertNext(first -> {
+        StepVerifier.create(checkpointStore.claimOwnership(partitionsToClaim)).assertNext(first -> {
             assertEquals(owner2, first.getOwnerId());
             assertEquals(lastModifiedTime * 1000, first.getLastModifiedTime());
         }).assertNext(second -> {
@@ -513,7 +544,7 @@ public class JedisCheckpointStoreTests {
 
         AtomicInteger execCallCount = new AtomicInteger();
         AtomicReference<byte[]> actualBytes1 = new AtomicReference<>();
-        Transaction transaction = new MockTransaction(new MockConnection()) {
+        TestTransactionWrapper transaction = new TestTransactionWrapper() {
             @Override
             public List<Object> exec() {
                 int number = execCallCount.getAndIncrement();
@@ -527,55 +558,62 @@ public class JedisCheckpointStoreTests {
             }
 
             @Override
-            public Response<Long> hset(byte[] key, byte[] field, byte[] value) {
-                if (Arrays.equals(key, key1) && Arrays.equals(field, PARTITION_OWNERSHIP)) {
+            public void hset(byte[] key, byte[] value) {
+                if (Arrays.equals(key, key1)) {
                     actualBytes1.set(value);
                 }
-
-                return null;
             }
         };
 
         long lastModifiedTime = 1678740344L;
 
         AtomicInteger multiCallCount = new AtomicInteger();
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public List<byte[]> hmget(byte[] key, byte[]... fields) {
-                if (!Arrays.equals(fields[0], PARTITION_OWNERSHIP)) {
-                    return null;
-                }
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    void sadd(byte[] key, byte[]... members) {
+                    }
 
-                if (Arrays.equals(key, key1)) {
-                    return Collections.singletonList(existing1);
-                } else if (Arrays.equals(key, key2)) {
-                    return Collections.singletonList(existing2);
-                } else if (Arrays.equals(key, key3)) {
-                    return Collections.singletonList(existing3);
-                } else {
-                    throw new IllegalArgumentException("Unknown key: " + new String(key, StandardCharsets.UTF_8));
-                }
-            }
+                    @Override
+                    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+                        if (!Arrays.equals(fields[0], PARTITION_OWNERSHIP)) {
+                            return null;
+                        }
 
-            @Override
-            public String watch(byte[]... keys) {
-                return "OK";
-            }
+                        if (Arrays.equals(key, key1)) {
+                            return Collections.singletonList(existing1);
+                        } else if (Arrays.equals(key, key2)) {
+                            return Collections.singletonList(existing2);
+                        } else if (Arrays.equals(key, key3)) {
+                            return Collections.singletonList(existing3);
+                        } else {
+                            throw new IllegalArgumentException(
+                                "Unknown key: " + new String(key, StandardCharsets.UTF_8));
+                        }
+                    }
 
-            @Override
-            public List<String> time() {
-                return Arrays.asList(String.valueOf(lastModifiedTime), "0");
-            }
+                    @Override
+                    public void watch(byte[]... keys) {
+                    }
 
-            @Override
-            public Transaction multi() {
-                multiCallCount.incrementAndGet();
-                return transaction;
+                    @Override
+                    public List<String> time() {
+                        return Arrays.asList(String.valueOf(lastModifiedTime), "0");
+                    }
+
+                    @Override
+                    public TransactionWrapper multi() {
+                        multiCallCount.incrementAndGet();
+                        return transaction;
+                    }
+                };
             }
-        });
+        };
 
         // Act & Assert
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).claimOwnership(partitionsToClaim)).assertNext(first -> {
+        StepVerifier.create(checkpointStore.claimOwnership(partitionsToClaim)).assertNext(first -> {
             assertEquals(owner2, first.getOwnerId());
             assertEquals(lastModifiedTime * 1000, first.getLastModifiedTime());
         }).expectErrorMatches(error -> {
@@ -597,14 +635,18 @@ public class JedisCheckpointStoreTests {
     @Test
     public void testUpdateCheckpoint() {
         Checkpoint checkpoint = createCheckpoint();
-        JedisPool jedisPool = new MockJedisPool(new MockJedis() {
+        JedisCheckpointStore checkpointStore = new JedisCheckpointStore(new JedisPool()) {
             @Override
-            public boolean exists(byte[] key) {
-                return Arrays.equals(PREFIX, key);
+            JedisWrapper getJedisWrapper() {
+                return new TestJedisWrapper() {
+                    @Override
+                    public void hset(byte[] key, byte[] value) {
+                    }
+                };
             }
-        });
+        };
 
-        StepVerifier.create(new JedisCheckpointStore(jedisPool).updateCheckpoint(checkpoint)).verifyComplete();
+        StepVerifier.create(checkpointStore.updateCheckpoint(checkpoint)).verifyComplete();
     }
 
     @Test
@@ -613,15 +655,14 @@ public class JedisCheckpointStoreTests {
         Checkpoint invalidCheckpoint = createCheckpoint().setOffset(null).setSequenceNumber(null);
 
         // Act
-        StepVerifier
-            .create(new JedisCheckpointStore(new MockJedisPool(new MockJedis())).updateCheckpoint(invalidCheckpoint))
+        StepVerifier.create(new JedisCheckpointStore(new JedisPool()).updateCheckpoint(invalidCheckpoint))
             .expectError(IllegalArgumentException.class)
             .verify();
     }
 
     @Test
     public void updateNullCheckpoint() {
-        StepVerifier.create(new JedisCheckpointStore(new MockJedisPool(new MockJedis())).updateCheckpoint(null))
+        StepVerifier.create(new JedisCheckpointStore(new JedisPool()).updateCheckpoint(null))
             .expectError(NullPointerException.class)
             .verify();
     }
@@ -642,5 +683,66 @@ public class JedisCheckpointStoreTests {
             .setConsumerGroup(CONSUMER_GROUP)
             .setPartitionId(PARTITION_ID)
             .setSequenceNumber(1L);
+    }
+
+    private static class TestJedisWrapper extends JedisCheckpointStore.JedisWrapper {
+        TestJedisWrapper() {
+            super(null);
+        }
+
+        @Override
+        void sadd(byte[] key, byte[]... members) {
+        }
+
+        @Override
+        void watch(byte[]... keys) {
+        }
+
+        @Override
+        List<String> time() {
+            return null;
+        }
+
+        @Override
+        JedisCheckpointStore.TransactionWrapper multi() {
+            return null;
+        }
+
+        @Override
+        Set<byte[]> smembers(byte[] key) {
+            return null;
+        }
+
+        @Override
+        List<byte[]> hmget(byte[] key, byte[]... fields) {
+            return null;
+        }
+
+        @Override
+        void hset(byte[] key, byte[] value) {
+        }
+
+        @Override
+        void unwatch() {
+        }
+
+        @Override
+        public void close() {
+        }
+    }
+
+    private static class TestTransactionWrapper extends JedisCheckpointStore.TransactionWrapper {
+        TestTransactionWrapper() {
+            super(null);
+        }
+
+        @Override
+        public List<Object> exec() {
+            return null;
+        }
+
+        @Override
+        public void hset(byte[] key, byte[] value) {
+        }
     }
 }

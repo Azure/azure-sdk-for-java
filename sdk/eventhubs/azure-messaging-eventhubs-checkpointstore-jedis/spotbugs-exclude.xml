@@ -6,4 +6,8 @@
     <Bug pattern="EI_EXPOSE_REP2" />
     <Class name="com.azure.messaging.eventhubs.checkpointstore.jedis.JedisCheckpointStore" />
   </Match>
+  <Match>
+    <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    <Class name="com.azure.messaging.eventhubs.checkpointstore.jedis.JedisCheckpointStore" />
+  </Match>
 </FindBugsFilter>
