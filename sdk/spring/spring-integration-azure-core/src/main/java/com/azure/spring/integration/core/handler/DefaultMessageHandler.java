@@ -25,6 +25,7 @@ import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.util.Assert;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -87,7 +88,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
         final Mono<Void> mono = this.sendOperation.sendAsync(dest, messageToSend);
 
-        if (this.sync) {
+        if (this.sync && !Schedulers.isInNonBlockingThread()) {
             waitingSendResponse(mono, message);
         } else {
             handleSendResponseAsync(mono, message);
