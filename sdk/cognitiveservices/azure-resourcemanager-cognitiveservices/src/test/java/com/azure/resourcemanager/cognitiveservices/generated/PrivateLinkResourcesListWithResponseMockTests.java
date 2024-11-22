@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"disyirnxz\",\"requiredMembers\":[\"exrxzbujrtrhq\",\"wrevkhgnlnzon\",\"lrpiqywnc\"],\"requiredZoneNames\":[\"szcofizeht\",\"hgbjkvrelje\",\"murvzm\",\"ov\"],\"displayName\":\"nashcxlp\"},\"id\":\"jerbdkelvidizozs\",\"name\":\"bccxjmonfdgn\",\"type\":\"n\"},{\"properties\":{\"groupId\":\"uuwwltv\",\"requiredMembers\":[\"ctzenkeifzzhmkd\",\"svflyhbxcudch\",\"gsrboldforobw\"],\"requiredZoneNames\":[\"izbfhfovvacq\",\"btuodxeszabbel\"],\"displayName\":\"umuaslzkwrrwoycq\"},\"id\":\"cwyhahno\",\"name\":\"drkywuhps\",\"type\":\"fuurutlwexx\"},{\"properties\":{\"groupId\":\"lniexz\",\"requiredMembers\":[\"pgepqtybbwwpgda\",\"chzyvlixqnrk\"],\"requiredZoneNames\":[\"jibnxmysu\",\"swqrntvlwijp\",\"ttexoqqpwcyyufmh\",\"uncuw\"],\"displayName\":\"spkcdqzh\"},\"id\":\"ctddun\",\"name\":\"ndy\",\"type\":\"pchrqbn\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"eaqnrmvvfkoxm\",\"requiredMembers\":[\"ktuidvrm\",\"zlpdwwex\",\"mzvlazipbh\"],\"requiredZoneNames\":[\"qsg\"],\"displayName\":\"yuuzivens\"},\"id\":\"pmeyyvpkpatlbijp\",\"name\":\"gsksrfhf\",\"type\":\"olmk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listWithResponse("dlcgqlsismjqfr", "dgamquhiosrsj", com.azure.core.util.Context.NONE)
+            .listWithResponse("y", "srucvcrrpcjtt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("szcofizeht", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("qsg", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

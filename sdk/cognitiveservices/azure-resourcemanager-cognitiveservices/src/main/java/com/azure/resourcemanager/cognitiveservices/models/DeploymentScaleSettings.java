@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties of Cognitive Services account deployment model.
+ * Properties of Cognitive Services account deployment model. (Deprecated, please use Deployment.sku instead.).
  */
 @Fluent
 public final class DeploymentScaleSettings implements JsonSerializable<DeploymentScaleSettings> {
