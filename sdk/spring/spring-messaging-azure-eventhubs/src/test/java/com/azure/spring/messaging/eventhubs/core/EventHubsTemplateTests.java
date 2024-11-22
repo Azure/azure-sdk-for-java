@@ -94,7 +94,7 @@ class EventHubsTemplateTests {
         when(eventDataBatch.getCount()).thenReturn(2, 2, 1);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            messagesList.add("abcde");
+            messagesList.add("test");
         }
         List<Message<String>> messages =
             messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
