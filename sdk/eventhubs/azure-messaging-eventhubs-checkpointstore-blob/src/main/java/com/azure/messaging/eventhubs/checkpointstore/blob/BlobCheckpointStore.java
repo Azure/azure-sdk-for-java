@@ -13,7 +13,6 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
@@ -21,6 +20,7 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -316,7 +316,11 @@ public class BlobCheckpointStore implements CheckpointStore {
     BlobWrapper getBlobAsyncClient(String blobName) {
         BlobWrapper blobWrapper;
         if (!blobClients.containsKey(blobName)) {
-            blobWrapper = new BlobWrapper(blobContainerAsyncClient.getBlobAsyncClient(blobName));
+            // Might as well make it a "BlockBlobAsyncClient" eagerly as the APIs "exists" and "setMetadataWithResponse"
+            // are available due to the super type "BlobAsyncClientBase" and converting from "BlobAsyncClient" to
+            // "BlockBlobAsyncClient" isn't free.
+            blobWrapper
+                = new BlobWrapper(blobContainerAsyncClient.getBlobAsyncClient(blobName).getBlockBlobAsyncClient());
             blobClients.put(blobName, blobWrapper);
             return blobWrapper;
         }
@@ -324,25 +328,25 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     static class BlobWrapper {
-        private final BlobAsyncClient blobAsyncClient;
+        private final BlockBlobAsyncClient blockBlobAsyncClient;
 
-        BlobWrapper(BlobAsyncClient blobAsyncClient) {
-            this.blobAsyncClient = blobAsyncClient;
+        BlobWrapper(BlockBlobAsyncClient blockBlobAsyncClient) {
+            this.blockBlobAsyncClient = blockBlobAsyncClient;
         }
 
         Mono<Boolean> exists() {
-            return blobAsyncClient.exists();
+            return blockBlobAsyncClient.exists();
         }
 
         Mono<Response<BlockBlobItem>> uploadWithResponse(Map<String, String> metadata,
             BlobRequestConditions blobRequestConditions) {
-            return blobAsyncClient.getBlockBlobAsyncClient()
-                .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null, blobRequestConditions);
+            return blockBlobAsyncClient.uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null,
+                blobRequestConditions);
         }
 
         Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
             BlobRequestConditions requestConditions) {
-            return blobAsyncClient.setMetadataWithResponse(metadata, requestConditions);
+            return blockBlobAsyncClient.setMetadataWithResponse(metadata, requestConditions);
         }
     }
 }
