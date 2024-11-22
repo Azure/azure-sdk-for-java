@@ -5,6 +5,9 @@ package com.azure.storage.file.share;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -19,6 +22,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
+import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.share.models.ClearRange;
@@ -62,6 +66,7 @@ import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -78,6 +83,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -635,6 +641,42 @@ class FileApiTests extends FileShareTestBase {
         String bodyStr = outStream.toString();
 
         assertEquals(bodyStr, DATA.getDefaultText());
+    }
+
+    @Test
+    public void testDownloadToFileWithPartialFailures() throws Exception {
+        // Arrange: Set up test data and temporary files
+        byte[] testData = "This is the test data for download".getBytes(StandardCharsets.UTF_8);
+        File uploadFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        uploadFile.deleteOnExit();
+        Files.write(uploadFile.toPath(), testData); // Write test data to the upload file
+
+        File outFile = new File(generatePathName() + ".txt");
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+
+        // Create a custom pipeline with the MockPartialResponsePolicy
+        HttpPipelinePolicy partialResponsePolicy = new MockFailureResponsePolicy(5);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(partialResponsePolicy).build();
+
+        // Create a ShareFileAsyncClient using the custom pipeline
+        ShareFileClient downloadClient = fileBuilderHelper(shareName, filePath).pipeline(pipeline).buildFileClient();
+
+        // Upload the test data
+        primaryFileClient.create(testData.length);
+        primaryFileClient.uploadFromFile(uploadFile.toString());
+
+        // Act: Download the file with fault injection
+        downloadClient.downloadToFile(outFile.toString());
+
+        // Assert: Verify the downloaded data
+        byte[] downloadedData = Files.readAllBytes(outFile.toPath());
+        Assertions.assertArrayEquals(testData, downloadedData, "Downloaded data should match uploaded data");
+
+        // Clean up
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(uploadFile.toPath());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
