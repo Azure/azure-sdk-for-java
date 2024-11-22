@@ -20,7 +20,7 @@ import java.io.IOException;
  * Media streaming Subscription Object.
  */
 @Fluent
-public final class MediaStreamingSubscription  implements JsonSerializable<MediaStreamingSubscription> {
+public final class MediaStreamingSubscription implements JsonSerializable<MediaStreamingSubscription> {
     /*
      * Gets or Sets subscription Id.
      */
@@ -35,7 +35,6 @@ public final class MediaStreamingSubscription  implements JsonSerializable<Media
      * Gets or Sets the subscribed media streaming content types.
      */
     private List<MediaStreamingContent> subscribedContentTypes;
-
 
     static {
         MediaStreamingSubscriptionConstructorProxy.setAccessor(
@@ -56,17 +55,23 @@ public final class MediaStreamingSubscription  implements JsonSerializable<Media
         subscribedContentTypes = null;
     }
 
-     /**
-     * Package-private constructor of the class, used internally.
-     *
-     * @param mediaStreamingSubscriptionInternal The internal response of MediaStreamingSubscription
-     */
+    /**
+    * Package-private constructor of the class, used internally.
+    *
+    * @param mediaStreamingSubscriptionInternal The internal response of MediaStreamingSubscription
+    */
     MediaStreamingSubscription(MediaStreamingSubscriptionInternal mediaStreamingSubscriptionInternal) {
-        this.id = mediaStreamingSubscriptionInternal.getId() != null ? mediaStreamingSubscriptionInternal.getId() : null;
-        this.state = mediaStreamingSubscriptionInternal.getState() != null ? MediaStreamingSubscriptionState.fromString(mediaStreamingSubscriptionInternal.getState().toString()) : null;
-        this.subscribedContentTypes = mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null ? mediaStreamingSubscriptionInternal.getSubscribedContentTypes().stream().
-        map(contentType -> MediaStreamingContent.fromString(contentType.toString())).
-        collect(Collectors.toList()) : null;
+        this.id
+            = mediaStreamingSubscriptionInternal.getId() != null ? mediaStreamingSubscriptionInternal.getId() : null;
+        this.state = mediaStreamingSubscriptionInternal.getState() != null
+            ? MediaStreamingSubscriptionState.fromString(mediaStreamingSubscriptionInternal.getState().toString())
+            : null;
+        this.subscribedContentTypes = mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null
+            ? mediaStreamingSubscriptionInternal.getSubscribedContentTypes()
+                .stream()
+                .map(contentType -> MediaStreamingContent.fromString(contentType.toString()))
+                .collect(Collectors.toList())
+            : null;
     }
 
     /**
@@ -116,8 +121,7 @@ public final class MediaStreamingSubscription  implements JsonSerializable<Media
      */
     public static MediaStreamingSubscription fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MediaStreamingSubscription deserializedMediaStreamingSubscription
-                = new MediaStreamingSubscription();
+            MediaStreamingSubscription deserializedMediaStreamingSubscription = new MediaStreamingSubscription();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -128,7 +132,8 @@ public final class MediaStreamingSubscription  implements JsonSerializable<Media
                     deserializedMediaStreamingSubscription.state
                         = MediaStreamingSubscriptionState.fromString(reader.getString());
                 } else if ("subscribedContentTypes".equals(fieldName)) {
-                    List<MediaStreamingContent> subscribedContentTypes = reader.readArray(reader1 -> MediaStreamingContent.fromString(reader1.getString()));
+                    List<MediaStreamingContent> subscribedContentTypes
+                        = reader.readArray(reader1 -> MediaStreamingContent.fromString(reader1.getString()));
                     deserializedMediaStreamingSubscription.subscribedContentTypes = subscribedContentTypes;
                 } else {
                     reader.skipChildren();

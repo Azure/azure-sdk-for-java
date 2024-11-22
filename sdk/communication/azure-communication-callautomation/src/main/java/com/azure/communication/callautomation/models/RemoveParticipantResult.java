@@ -17,8 +17,8 @@ public final class RemoveParticipantResult {
     private final String operationContext;
 
     static {
-        RemoveParticipantResponseConstructorProxy.setAccessor(
-            new RemoveParticipantResponseConstructorProxy.RemoveParticipantResponseConstructorAccessor() {
+        RemoveParticipantResponseConstructorProxy
+            .setAccessor(new RemoveParticipantResponseConstructorProxy.RemoveParticipantResponseConstructorAccessor() {
                 @Override
                 public RemoveParticipantResult create(RemoveParticipantResponseInternal internalHeaders) {
                     return new RemoveParticipantResult(internalHeaders);

@@ -38,8 +38,8 @@ public final class AudioMetadata extends StreamingData {
     private final Integer length;
 
     static {
-        AudioMetadataContructorProxy.setAccessor(
-            new AudioMetadataContructorProxy.AudioMetadataContructorProxyAccessor() {
+        AudioMetadataContructorProxy
+            .setAccessor(new AudioMetadataContructorProxy.AudioMetadataContructorProxyAccessor() {
                 @Override
                 public AudioMetadata create(AudioMetadataConverter internalData) {
                     return new AudioMetadata(internalData);
@@ -56,7 +56,7 @@ public final class AudioMetadata extends StreamingData {
         this.mediaSubscriptionId = internalData.getMediaSubscriptionId();
         this.encoding = internalData.getEncoding();
         this.sampleRate = internalData.getSampleRate();
-        this.channels =  convertToChannelsEnum(internalData.getChannels());
+        this.channels = convertToChannelsEnum(internalData.getChannels());
         this.length = internalData.getLength();
     }
 

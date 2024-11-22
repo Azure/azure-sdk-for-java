@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -38,11 +39,11 @@ public class OutStreamingData {
         this.kind = kind;
     }
 
-     /**
-     * Get the out streaming media kind.
-     *
-     * @return the MediaKind
-     */
+    /**
+    * Get the out streaming media kind.
+    *
+    * @return the MediaKind
+    */
     MediaKind getMediaKind() {
         return kind;
     }
@@ -56,12 +57,12 @@ public class OutStreamingData {
         return audioData;
     }
 
-     /**
-     * Set the out streaming Audio Data.
-     *
-     * @param audioData the audioData to set
-     * @return the OutStreamingData object itself.
-     */
+    /**
+    * Set the out streaming Audio Data.
+    *
+    * @param audioData the audioData to set
+    * @return the OutStreamingData object itself.
+    */
     OutStreamingData setAudioData(byte[] audioData) {
         this.audioData = new AudioData(audioData);
         return this;

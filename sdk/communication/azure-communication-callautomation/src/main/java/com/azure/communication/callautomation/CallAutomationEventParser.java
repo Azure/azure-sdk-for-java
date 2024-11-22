@@ -50,7 +50,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * Event handler for taking care of event related tasks.
  */
@@ -83,7 +82,8 @@ public final class CallAutomationEventParser {
             }
 
             for (CloudEvent cloudEvent : cloudEvents) {
-                CallAutomationEventBase temp = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
+                CallAutomationEventBase temp
+                    = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
                 if (temp != null) {
                     callAutomationBaseEvents.add(temp);
                 }
@@ -145,7 +145,7 @@ public final class CallAutomationEventParser {
                 ret = CancelAddParticipantSucceeded.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = CancelAddParticipantFailed.fromJson(jsonReader);
-            }  else if (Objects.equals(eventType, "Microsoft.Communication.ConnectFailed")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.ConnectFailed")) {
                 ret = ConnectFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {
                 ret = CreateCallFailed.fromJson(jsonReader);

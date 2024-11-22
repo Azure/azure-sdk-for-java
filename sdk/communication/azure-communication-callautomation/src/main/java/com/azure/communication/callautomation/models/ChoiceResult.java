@@ -25,9 +25,6 @@ public final class ChoiceResult extends RecognizeResult {
      */
     private String recognizedPhrase;
 
-    private ChoiceResult() {
-    }
-    
     /**
      * Creates an instance of {@link ChoiceResult}.
      */

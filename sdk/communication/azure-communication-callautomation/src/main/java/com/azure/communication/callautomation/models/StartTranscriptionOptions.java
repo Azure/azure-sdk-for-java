@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -80,8 +81,7 @@ public final class StartTranscriptionOptions {
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the StartTranscriptionOptions object itself.
      */
-    public StartTranscriptionOptions
-        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+    public StartTranscriptionOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
     }

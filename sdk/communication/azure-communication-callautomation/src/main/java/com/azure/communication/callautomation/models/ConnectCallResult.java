@@ -17,7 +17,8 @@ public final class ConnectCallResult extends CallResult {
      * @param callConnection The callConnection
      * @param callConnectionAsync The callConnectionAsync
      */
-    public ConnectCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    public ConnectCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection,
+        CallConnectionAsync callConnectionAsync) {
         super(callConnectionProperties, callConnection, callConnectionAsync);
     }
 }

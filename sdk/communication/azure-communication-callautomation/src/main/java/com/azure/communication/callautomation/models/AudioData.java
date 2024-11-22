@@ -35,19 +35,17 @@ public final class AudioData extends StreamingData {
     private final boolean silent;
 
     static {
-        AudioDataContructorProxy.setAccessor(
-            new AudioDataContructorProxy.AudioDataContructorProxyAccessor() {
-                @Override
-                public AudioData create(AudioDataConverter internalData) {
-                    return new AudioData(internalData);
-                }
-
-                @Override
-                public AudioData create(byte[] data) {
-                    return new AudioData(data);
-                }
+        AudioDataContructorProxy.setAccessor(new AudioDataContructorProxy.AudioDataContructorProxyAccessor() {
+            @Override
+            public AudioData create(AudioDataConverter internalData) {
+                return new AudioData(internalData);
             }
-        );
+
+            @Override
+            public AudioData create(byte[] data) {
+                return new AudioData(data);
+            }
+        });
     }
 
     /**

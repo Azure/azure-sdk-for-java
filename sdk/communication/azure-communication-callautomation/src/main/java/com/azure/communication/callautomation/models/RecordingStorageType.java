@@ -8,17 +8,12 @@ import java.util.Collection;
 
 /** Defines the kind of external storage. */
 public final class RecordingStorageType extends ExpandableStringEnum<RecordingStorageType> {
-    
+
     /** Static value AzureCommunicationServices for RecordingStorageType. */
     public static final RecordingStorageType ACS = fromString("AzureCommunicationServices");
 
     /** Static value AzureBlobStorage for RecordingStorageType. */
     public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
-
-    /**
-     * Creates a new instance of RecordingStorageType value.
-     */
-    public RecordingStorageType() {}
 
     /**
      * Creates an instance of {@link RecordingStorageType} with no string value.

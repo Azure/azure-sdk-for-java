@@ -49,11 +49,11 @@ public class WordData implements JsonSerializable<WordData> {
         return offset;
     }
 
-      /**
-     * Get the duration property.
-     *
-     * @return the duration value.
-     */
+    /**
+    * Get the duration property.
+    *
+    * @return the duration value.
+    */
     public Duration getDuration() {
         return Duration.ofNanos(duration * 100);
     }

@@ -287,9 +287,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 6. hang up the call.
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("holdUnholdParticipantInACallTest", next))
-            .buildAsyncClient();
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("holdUnholdParticipantInACallTest", next))
+                .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
 
@@ -312,9 +313,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -327,9 +329,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -338,11 +342,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // wait for callConnected
             CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnected);
-        
+
             // hold the participant
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
             callMediaAsync.hold(receiver).block();
-            
+
             sleepIfRunningAgainstService(3000);
             CallConnectionAsync callConnectionAsync = callerAsyncClient.getCallConnectionAsync(callerConnectionId);
 
@@ -370,21 +374,22 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             }
         }
     }
-    
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-            named = "SKIP_LIVE_TEST",
-            matches = "(?i)(true)",
-            disabledReason = "Requires environment to be set up")
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
     public void createVOIPCallAndMediaStreamingTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call and Media Streaming
-     * 1. create a CallAutomationClient.
-     * 2. Start Media Streaming and Stop Media Streaming
-     * 3. See Media Streaming sterted and stoped in call
+        * 1. create a CallAutomationClient.
+        * 2. Start Media Streaming and Stop Media Streaming
+        * 3. See Media Streaming sterted and stoped in call
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("createVOIPCallAndMediaStreamingTest", next))
                 .buildAsyncClient();
 
@@ -397,29 +402,32 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // Create call automation client and use source as the caller.
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
-                    .sourceIdentity(caller)
-                    .buildAsyncClient();
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
-                    .buildAsyncClient();
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
+                .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create options
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            MediaStreamingOptions mediaStreamingOptions = new MediaStreamingOptions(TRANSPORT_URL, MediaStreamingTransport.WEBSOCKET, MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, false);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                    DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            MediaStreamingOptions mediaStreamingOptions
+                = new MediaStreamingOptions(TRANSPORT_URL, MediaStreamingTransport.WEBSOCKET,
+                    MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, false);
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
 
             createCallOptions.setMediaStreamingOptions(mediaStreamingOptions);
 
             // create a call
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
 
-             // validate the call
+            // validate the call
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
             assertNotNull(createCallResult.getCallConnectionProperties());
@@ -433,18 +441,20 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext, 
-                    DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
-             // wait for callConnected
+            // wait for callConnected
             CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnected);
-             
+
             // Start Media Streaming
             StartMediaStreamingOptions startMediaStreamingOptions = new StartMediaStreamingOptions();
             // startMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
@@ -453,15 +463,20 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             System.out.println("TRANSPORT_URL: " + TRANSPORT_URL);
             callMedia.startMediaStreamingWithResponse(startMediaStreamingOptions).block();
 
-            MediaStreamingStarted mediaStreamingStarted = waitForEvent(MediaStreamingStarted.class, callerConnectionId, Duration.ofSeconds(10));
+            MediaStreamingStarted mediaStreamingStarted
+                = waitForEvent(MediaStreamingStarted.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(mediaStreamingStarted);
 
             // Stop Media Streaming
             StopMediaStreamingOptions stopMediaStreamingOptions = new StopMediaStreamingOptions();
-           // stopMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            // stopMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
 
-            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopMediaStreamingWithResponse(stopMediaStreamingOptions).block();
-            MediaStreamingStopped mediaStreamingStopped = waitForEvent(MediaStreamingStopped.class, callerConnectionId, Duration.ofSeconds(10));
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .stopMediaStreamingWithResponse(stopMediaStreamingOptions)
+                .block();
+            MediaStreamingStopped mediaStreamingStopped
+                = waitForEvent(MediaStreamingStopped.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(mediaStreamingStopped);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -480,21 +495,22 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-            named = "SKIP_LIVE_TEST",
-            matches = "(?i)(true)",
-            disabledReason = "Requires environment to be set up")
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
     public void createVOIPCallAndTranscriptionTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call and Media Streaming
-     * 1. create a CallAutomationClient.
-     * 2. Start Transcription and Stop Transcription
-     * 3. See Transcription sterted and stoped in call
+        * 1. create a CallAutomationClient.
+        * 2. Start Transcription and Stop Transcription
+        * 3. See Transcription sterted and stoped in call
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("createVOIPCallAndTranscriptionTest", next))
                 .buildAsyncClient();
 
-        List<CallConnectionAsync> callDestructors = new ArrayList<>();    
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
 
         try {
             // create caller and receiver
@@ -503,24 +519,27 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // Create call automation client and use source as the caller.
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndTranscriptionTest", next))
-                    .sourceIdentity(caller)
-                    .buildAsyncClient();
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndTranscriptionTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndTranscriptionTest", next))
-                    .buildAsyncClient();
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndTranscriptionTest", next))
+                .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            TranscriptionOptions transcriptionOptions = new TranscriptionOptions(TRANSPORT_URL, TranscriptionTransport.WEBSOCKET, "en-US", false);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                    DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            TranscriptionOptions transcriptionOptions
+                = new TranscriptionOptions(TRANSPORT_URL, TranscriptionTransport.WEBSOCKET, "en-US", false);
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             createCallOptions.setTranscriptionOptions(transcriptionOptions);
-            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            createCallOptions.setCallIntelligenceOptions(
+                new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
 
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -534,9 +553,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                    DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -548,16 +569,24 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // Start Transcription
             StartTranscriptionOptions startTranscriptionOptions = new StartTranscriptionOptions();
-            startTranscriptionOptions.setLocale("en-US");    
+            startTranscriptionOptions.setLocale("en-US");
 
-            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().startTranscriptionWithResponse(startTranscriptionOptions).block();
-            TranscriptionStarted transcriptionStarted = waitForEvent(TranscriptionStarted.class, callerConnectionId, Duration.ofSeconds(10));
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .startTranscriptionWithResponse(startTranscriptionOptions)
+                .block();
+            TranscriptionStarted transcriptionStarted
+                = waitForEvent(TranscriptionStarted.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(transcriptionStarted);
 
             // Stop Transcription
             StopTranscriptionOptions stopTranscriptionOptions = new StopTranscriptionOptions();
-            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopTranscriptionWithResponse(stopTranscriptionOptions).block();
-            TranscriptionStopped transcriptionStopped = waitForEvent(TranscriptionStopped.class, callerConnectionId, Duration.ofSeconds(10));
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .stopTranscriptionWithResponse(stopTranscriptionOptions)
+                .block();
+            TranscriptionStopped transcriptionStopped
+                = waitForEvent(TranscriptionStopped.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(transcriptionStopped);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -588,7 +617,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 5. hang up the call.
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("playMultipleFileSourcesWithPlayMediaTest", next))
                 .buildAsyncClient();
 
@@ -613,9 +643,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -628,9 +659,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -680,7 +713,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 6. hang up the call.
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("playMultipleFileSourcesWithPlayMediaAllTest", next))
                 .buildAsyncClient();
 
@@ -705,9 +739,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -720,9 +755,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -772,7 +809,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 5. hang up the call.
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("playMultipleTextSourcesWithPlayMediaAllTest", next))
                 .buildAsyncClient();
 
@@ -797,10 +835,12 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setCallIntelligenceOptions(
+                new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -813,9 +853,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -824,7 +866,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // wait for callConnected
             CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnected);
-        
+
             // Assert multiple Text Sources
             String speechToTextVoice = "en-US-NancyNeural";
             List<PlaySource> playTextSources = new ArrayList<PlaySource>();
@@ -868,7 +910,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 6. hang up the call.
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
                 .addPolicy((context, next) -> logHeaders("playMultipleTextSourcesWithPlayMediaTest", next))
                 .buildAsyncClient();
 
@@ -893,10 +936,12 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setCallIntelligenceOptions(
+                new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -909,9 +954,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -964,9 +1011,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 6. hang up the call.
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("playMultipleCombinedSourcesWithPlayMediaTest", next))
-            .buildAsyncClient();
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("playMultipleCombinedSourcesWithPlayMediaTest", next))
+                .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
 
@@ -989,10 +1037,12 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setCallIntelligenceOptions(
+                new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -1005,9 +1055,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -1022,12 +1074,13 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<PlaySource> playTextAndFileSources = new ArrayList<PlaySource>();
             playTextAndFileSources.add(new TextSource().setText("Test prompt1").setVoiceName(speechToTextVoice));
             playTextAndFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
-          
+
             // play File media to Target participant
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
             callMediaAsync.play(playTextAndFileSources, targets).block();
-            
-            PlayCompleted playFileCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+
+            PlayCompleted playFileCompleted
+                = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(playFileCompleted);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -1059,9 +1112,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 6. hang up the call.
          */
 
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("playMultipleCombinedSourcesWithPlayMediaAllTest", next))
-            .buildAsyncClient();
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("playMultipleCombinedSourcesWithPlayMediaAllTest", next))
+                .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
 
@@ -1084,10 +1138,12 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setCallIntelligenceOptions(
+                new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -1100,9 +1156,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -1117,12 +1175,13 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<PlaySource> playTextAndFileSources = new ArrayList<PlaySource>();
             playTextAndFileSources.add(new TextSource().setText("Test prompt1").setVoiceName(speechToTextVoice));
             playTextAndFileSources.add(new FileSource().setUrl(MEDIA_SOURCE));
-          
+
             // play File media to Target participant
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
             callMediaAsync.playToAll(playTextAndFileSources).block();
-            
-            PlayCompleted playFileCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+
+            PlayCompleted playFileCompleted
+                = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(playFileCompleted);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

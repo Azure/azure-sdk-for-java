@@ -20,14 +20,14 @@ public final class StreamingDataKind extends ExpandableStringEnum<StreamingDataK
      */
     public static final StreamingDataKind AUDIO_METADATA = fromString("audioMetadata");
 
-     /**
-     * Streamind Data kind "transcriptionData".
-     */
+    /**
+    * Streamind Data kind "transcriptionData".
+    */
     public static final StreamingDataKind TRANSCRIPTION_DATA = fromString("transcriptionData");
 
-     /**
-     * Streamind Data kind "transcriptionMetadata".
-     */
+    /**
+    * Streamind Data kind "transcriptionMetadata".
+    */
     public static final StreamingDataKind TRANSCRIPTION_METADATA = fromString("transcriptionMetadata");
 
     /**

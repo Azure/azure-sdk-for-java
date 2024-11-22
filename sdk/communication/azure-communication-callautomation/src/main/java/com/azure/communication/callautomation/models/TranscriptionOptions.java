@@ -45,7 +45,8 @@ public final class TranscriptionOptions {
      * @param locale - Locale
      * @param startTranscription - Start Transcription
      */
-    public TranscriptionOptions(String transportUrl, TranscriptionTransport transportType, String locale, boolean startTranscription) {
+    public TranscriptionOptions(String transportUrl, TranscriptionTransport transportType, String locale,
+        boolean startTranscription) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.locale = locale;

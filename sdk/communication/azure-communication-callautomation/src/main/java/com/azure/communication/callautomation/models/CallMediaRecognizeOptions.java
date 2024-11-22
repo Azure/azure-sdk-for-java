@@ -243,8 +243,7 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      * @param interruptPrompt the interruptPrompt value to set.
      * @return the RecognizeConfigurations object itself.
      */
-    public CallMediaRecognizeOptions setInterruptPrompt(
-        Boolean interruptPrompt) {
+    public CallMediaRecognizeOptions setInterruptPrompt(Boolean interruptPrompt) {
         this.interruptPrompt = interruptPrompt;
         return this;
     }

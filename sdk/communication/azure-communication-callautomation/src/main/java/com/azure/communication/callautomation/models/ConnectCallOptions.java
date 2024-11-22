@@ -2,15 +2,16 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+
 import com.azure.core.annotation.Fluent;
 
 /** The options for creating a call. */
 
 @Fluent
 public final class ConnectCallOptions {
-     /**
-     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} or {@link RoomCallLocator} for locating the call.
-     */
+    /**
+    * Either a {@link GroupCallLocator} or {@link ServerCallLocator} or {@link RoomCallLocator} for locating the call.
+    */
     private final CallLocator callLocator;
 
     /**
@@ -18,9 +19,9 @@ public final class ConnectCallOptions {
      */
     private final String callbackUrl;
 
-     /**
-     * The value to identify context of the operation.
-     */
+    /**
+    * The value to identify context of the operation.
+    */
     private String operationContext;
 
     /*
@@ -95,17 +96,17 @@ public final class ConnectCallOptions {
         return this;
     }
 
-     /**
-     * Sets the operation context.
-     *
-     * @param operationContext Operation Context
-     * @return The ConnectCallOptions object.
-     */
+    /**
+    * Sets the operation context.
+    *
+    * @param operationContext Operation Context
+    * @return The ConnectCallOptions object.
+    */
     public ConnectCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
-    
+
     /**
      * Get the Transcription configuration.
      *
@@ -135,12 +136,12 @@ public final class ConnectCallOptions {
         return this;
     }
 
-     /**
-     * Set the transcription configuration.
-     *
-     * @param transcriptionOptions The transcription options.
-     * @return the ConnectCallOptions object itself.
-     */
+    /**
+    * Set the transcription configuration.
+    *
+    * @param transcriptionOptions The transcription options.
+    * @return the ConnectCallOptions object itself.
+    */
     public ConnectCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;

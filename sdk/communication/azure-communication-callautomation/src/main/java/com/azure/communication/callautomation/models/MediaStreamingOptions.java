@@ -51,7 +51,8 @@ public final class MediaStreamingOptions {
      * @param audioChannelType - Audio Channel Type
      * @param startMediaStreaming - Start media streaming flag
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType, Boolean startMediaStreaming) {
+    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType,
+        MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType, Boolean startMediaStreaming) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.contentType = contentType;
@@ -86,15 +87,15 @@ public final class MediaStreamingOptions {
         return this.contentType;
     }
 
-     /**
-     * Get the startMediaStreaming property: Enables intermediate results for the transcribed speech.
-     * 
-     * @return the startMediaStreaming value.
-     */
+    /**
+    * Get the startMediaStreaming property: Enables intermediate results for the transcribed speech.
+    * 
+    * @return the startMediaStreaming value.
+    */
     public Boolean isStartMediaStreamingEnabled() {
         return this.startMediaStreaming;
     }
-    
+
     /**
      * Get the audioChannelType property: Audio channel type to stream, eg. unmixed audio, mixed audio.
      *
@@ -104,11 +105,11 @@ public final class MediaStreamingOptions {
         return this.audioChannelType;
     }
 
-     /**
-     * Get the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
-     * 
-     * @return the enableBidirectional value.
-     */
+    /**
+    * Get the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
+    * 
+    * @return the enableBidirectional value.
+    */
     public Boolean isEnableBidirectional() {
         return this.enableBidirectional;
     }

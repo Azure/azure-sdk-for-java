@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.implementation.accesshelpers;
+
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.callautomation.models.AudioData;
 
@@ -11,12 +12,13 @@ import com.azure.communication.callautomation.models.AudioData;
 public final class AudioDataContructorProxy {
     private static AudioDataContructorProxyAccessor accessor;
 
-    private AudioDataContructorProxy() { }
+    private AudioDataContructorProxy() {
+    }
 
-     /**
-     * Type defining the methods to set the non-public properties of a {@link AudioDataContructorProxyAccessor}
-     * instance.
-     */
+    /**
+    * Type defining the methods to set the non-public properties of a {@link AudioDataContructorProxyAccessor}
+    * instance.
+    */
     public interface AudioDataContructorProxyAccessor {
         /**
          * Creates a new instance of {@link AudioData} backed by an internal instance of
@@ -36,22 +38,22 @@ public final class AudioDataContructorProxy {
         AudioData create(byte[] data);
     }
 
-     /**
-     * The method called from {@link AudioData} to set it's accessor.
-     *
-     * @param accessor The accessor.
-     */
+    /**
+    * The method called from {@link AudioData} to set it's accessor.
+    *
+    * @param accessor The accessor.
+    */
     public static void setAccessor(final AudioDataContructorProxyAccessor accessor) {
         AudioDataContructorProxy.accessor = accessor;
     }
 
-     /**
-     * Creates a new instance of {@link AudioData} backed by an internal instance of
-     * {@link AudioDataConverter}.
-     *
-     * @param internalResponse The internal response.
-     * @return A new instance of {@link AudioData}.
-     */
+    /**
+    * Creates a new instance of {@link AudioData} backed by an internal instance of
+    * {@link AudioDataConverter}.
+    *
+    * @param internalResponse The internal response.
+    * @return A new instance of {@link AudioData}.
+    */
     public static AudioData create(AudioDataConverter internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses AudioData which triggers the accessor to be configured. So, if the accessor

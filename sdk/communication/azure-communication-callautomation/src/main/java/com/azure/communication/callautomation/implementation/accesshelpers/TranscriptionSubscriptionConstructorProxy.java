@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.implementation.accesshelpers;
+
 import com.azure.communication.callautomation.implementation.models.TranscriptionSubscriptionInternal;
 import com.azure.communication.callautomation.models.TranscriptionSubscription;
 
@@ -11,12 +12,13 @@ import com.azure.communication.callautomation.models.TranscriptionSubscription;
 public final class TranscriptionSubscriptionConstructorProxy {
     private static TranscriptionSubscriptionConstructorAccessor accessor;
 
-    private TranscriptionSubscriptionConstructorProxy() { }
+    private TranscriptionSubscriptionConstructorProxy() {
+    }
 
-     /**
-     * Type defining the methods to set the non-public properties of a {@link TranscriptionSubscriptionConstructorAccessor}
-     * instance.
-     */
+    /**
+    * Type defining the methods to set the non-public properties of a {@link TranscriptionSubscriptionConstructorAccessor}
+    * instance.
+    */
     public interface TranscriptionSubscriptionConstructorAccessor {
         /**
          * Creates a new instance of {@link TranscriptionSubscription} backed by an internal instance of
@@ -28,22 +30,22 @@ public final class TranscriptionSubscriptionConstructorProxy {
         TranscriptionSubscription create(TranscriptionSubscriptionInternal internalResponse);
     }
 
-     /**
-     * The method called from {@link TranscriptionSubscription} to set it's accessor.
-     *
-     * @param accessor The accessor.
-     */
+    /**
+    * The method called from {@link TranscriptionSubscription} to set it's accessor.
+    *
+    * @param accessor The accessor.
+    */
     public static void setAccessor(final TranscriptionSubscriptionConstructorAccessor accessor) {
         TranscriptionSubscriptionConstructorProxy.accessor = accessor;
     }
 
-     /**
-     * Creates a new instance of {@link TranscriptionSubscription} backed by an internal instance of
-     * {@link TranscriptionSubscriptionInternal}.
-     *
-     * @param internalResponse The internal response.
-     * @return A new instance of {@link TranscriptionSubscription}.
-     */
+    /**
+    * Creates a new instance of {@link TranscriptionSubscription} backed by an internal instance of
+    * {@link TranscriptionSubscriptionInternal}.
+    *
+    * @param internalResponse The internal response.
+    * @return A new instance of {@link TranscriptionSubscription}.
+    */
     public static TranscriptionSubscription create(TranscriptionSubscriptionInternal internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses TranscriptionSubscription which triggers the accessor to be configured. So, if the accessor

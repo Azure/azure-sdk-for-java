@@ -77,6 +77,9 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

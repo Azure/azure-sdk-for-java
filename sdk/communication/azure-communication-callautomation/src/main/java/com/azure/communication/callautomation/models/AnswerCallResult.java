@@ -19,7 +19,8 @@ public final class AnswerCallResult extends CallResult {
      * @param callConnection The callConnection
      * @param callConnectionAsync The callConnectionAsync
      */
-    public AnswerCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    public AnswerCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection,
+        CallConnectionAsync callConnectionAsync) {
         super(callConnectionProperties, callConnection, callConnectionAsync);
     }
 }

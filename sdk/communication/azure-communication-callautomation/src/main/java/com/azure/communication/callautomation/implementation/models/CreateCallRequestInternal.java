@@ -39,11 +39,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     private CommunicationUserIdentifierModel source;
 
     /*
-     * The identifier of the source in an OPS call
-     */
-    private MicrosoftTeamsAppIdentifierModel opsSource;
-
-    /*
      * A customer set value used to track the answering of a call.
      */
     private String operationContext;
@@ -95,8 +90,8 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited.
      * Required only when calling a PSTN callee.
      * 
      * @return the sourceCallerIdNumber value.
@@ -106,8 +101,8 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited.
      * Required only when calling a PSTN callee.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
@@ -155,26 +150,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      */
     public CreateCallRequestInternal setSource(CommunicationUserIdentifierModel source) {
         this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the opsSource property: The identifier of the source in an OPS call.
-     * 
-     * @return the opsSource value.
-     */
-    public MicrosoftTeamsAppIdentifierModel getOpsSource() {
-        return this.opsSource;
-    }
-
-    /**
-     * Set the opsSource property: The identifier of the source in an OPS call.
-     * 
-     * @param opsSource the opsSource value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setOpsSource(MicrosoftTeamsAppIdentifierModel opsSource) {
-        this.opsSource = opsSource;
         return this;
     }
 
@@ -279,6 +254,9 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -287,7 +265,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         jsonWriter.writeJsonField("sourceCallerIdNumber", this.sourceCallerIdNumber);
         jsonWriter.writeStringField("sourceDisplayName", this.sourceDisplayName);
         jsonWriter.writeJsonField("source", this.source);
-        jsonWriter.writeJsonField("opsSource", this.opsSource);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
         jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
@@ -324,8 +301,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
                     deserializedCreateCallRequestInternal.sourceDisplayName = reader.getString();
                 } else if ("source".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.source = CommunicationUserIdentifierModel.fromJson(reader);
-                } else if ("opsSource".equals(fieldName)) {
-                    deserializedCreateCallRequestInternal.opsSource = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.operationContext = reader.getString();
                 } else if ("callIntelligenceOptions".equals(fieldName)) {

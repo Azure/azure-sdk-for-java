@@ -29,8 +29,8 @@ public final class AddParticipantResult {
     private final String invitationId;
 
     static {
-        AddParticipantResponseConstructorProxy.setAccessor(
-            new AddParticipantResponseConstructorProxy.AddParticipantResponseConstructorAccessor() {
+        AddParticipantResponseConstructorProxy
+            .setAccessor(new AddParticipantResponseConstructorProxy.AddParticipantResponseConstructorAccessor() {
                 @Override
                 public AddParticipantResult create(AddParticipantResponseInternal internalHeaders) {
                     return new AddParticipantResult(internalHeaders);

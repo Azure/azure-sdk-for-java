@@ -37,8 +37,8 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
     private List<TranscriptionResultState> subscribedResultTypes;
 
     static {
-        TranscriptionSubscriptionConstructorProxy.setAccessor(
-            new TranscriptionSubscriptionConstructorProxy.TranscriptionSubscriptionConstructorAccessor() {
+        TranscriptionSubscriptionConstructorProxy
+            .setAccessor(new TranscriptionSubscriptionConstructorProxy.TranscriptionSubscriptionConstructorAccessor() {
                 @Override
                 public TranscriptionSubscription create(TranscriptionSubscriptionInternal internalHeaders) {
                     return new TranscriptionSubscription(internalHeaders);
@@ -55,17 +55,22 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
         subscribedResultTypes = null;
     }
 
-     /**
-     * Package-private constructor of the class, used internally.
-     *
-     * @param transcriptionSubscriptionInternal The internal response of TranscriptionSubscription
-     */
+    /**
+    * Package-private constructor of the class, used internally.
+    *
+    * @param transcriptionSubscriptionInternal The internal response of TranscriptionSubscription
+    */
     TranscriptionSubscription(TranscriptionSubscriptionInternal transcriptionSubscriptionInternal) {
         this.id = transcriptionSubscriptionInternal.getId() != null ? transcriptionSubscriptionInternal.getId() : null;
-        this.state = transcriptionSubscriptionInternal.getState() != null ? TranscriptionSubscriptionState.fromString(transcriptionSubscriptionInternal.getState().toString()) : null;
-        this.subscribedResultTypes = transcriptionSubscriptionInternal.getSubscribedResultTypes() != null ? transcriptionSubscriptionInternal.getSubscribedResultTypes().stream()
+        this.state = transcriptionSubscriptionInternal.getState() != null
+            ? TranscriptionSubscriptionState.fromString(transcriptionSubscriptionInternal.getState().toString())
+            : null;
+        this.subscribedResultTypes = transcriptionSubscriptionInternal.getSubscribedResultTypes() != null
+            ? transcriptionSubscriptionInternal.getSubscribedResultTypes()
+                .stream()
                 .map(resultType -> TranscriptionResultState.fromString(resultType.toString()))
-                .collect(Collectors.toList()) : null;
+                .collect(Collectors.toList())
+            : null;
     }
 
     /**
@@ -115,8 +120,7 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
      */
     public static TranscriptionSubscription fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TranscriptionSubscription deserializedTranscriptionSubscription
-                = new TranscriptionSubscription();
+            TranscriptionSubscription deserializedTranscriptionSubscription = new TranscriptionSubscription();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -127,7 +131,8 @@ public final class TranscriptionSubscription implements JsonSerializable<Transcr
                     deserializedTranscriptionSubscription.state
                         = TranscriptionSubscriptionState.fromString(reader.getString());
                 } else if ("subscribedResultTypes".equals(fieldName)) {
-                    List<TranscriptionResultState> subscribedResultTypes = reader.readArray(reader1 -> TranscriptionResultState.fromString(reader1.getString()));
+                    List<TranscriptionResultState> subscribedResultTypes
+                        = reader.readArray(reader1 -> TranscriptionResultState.fromString(reader1.getString()));
                     deserializedTranscriptionSubscription.subscribedResultTypes = subscribedResultTypes;
                 } else {
                     reader.skipChildren();

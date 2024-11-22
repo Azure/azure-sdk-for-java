@@ -30,16 +30,15 @@ public final class TranscriptionMetadata extends StreamingData {
      * Correlation id
      */
     private final String correlationId;
-   
+
     static {
-        TranscriptionMetadataContructorProxy.setAccessor(
-            new TranscriptionMetadataContructorProxy.TranscriptionMetadataContructorProxyAccessor() {
+        TranscriptionMetadataContructorProxy
+            .setAccessor(new TranscriptionMetadataContructorProxy.TranscriptionMetadataContructorProxyAccessor() {
                 @Override
                 public TranscriptionMetadata create(TranscriptionMetadataConverter internalData) {
                     return new TranscriptionMetadata(internalData);
                 }
-            }
-        );
+            });
     }
 
     /**

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -9,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class StopMediaStreamingOptions {
-/*
+    /*
      * Set a callback URL that overrides the default callback URL set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URL set by CreateCall/AnswerCall will be
      * used.

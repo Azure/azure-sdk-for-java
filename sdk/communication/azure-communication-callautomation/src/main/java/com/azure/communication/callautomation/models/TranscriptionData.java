@@ -62,14 +62,13 @@ public final class TranscriptionData extends StreamingData {
      * 
      */
     static {
-        TranscriptionDataContructorProxy.setAccessor(
-            new TranscriptionDataContructorProxy.TranscriptionDataContructorProxyAccessor() {
+        TranscriptionDataContructorProxy
+            .setAccessor(new TranscriptionDataContructorProxy.TranscriptionDataContructorProxyAccessor() {
                 @Override
                 public TranscriptionData create(TranscriptionDataConverter internalData) {
                     return new TranscriptionData(internalData);
                 }
-            }
-        );
+            });
     }
 
     /**
@@ -96,7 +95,7 @@ public final class TranscriptionData extends StreamingData {
     /**
      * Create instance of transcription data
      */
-    public TranscriptionData() { 
+    public TranscriptionData() {
         this.text = null;
         this.format = null;
         this.confidence = null;
@@ -161,6 +160,7 @@ public final class TranscriptionData extends StreamingData {
     public Long getOffset() {
         return offset;
     }
+
     /**
      * Get the duration property.
      *
@@ -169,6 +169,7 @@ public final class TranscriptionData extends StreamingData {
     public Duration getDuration() {
         return Duration.ofNanos(duration * 100);
     }
+
     /**
      * Get the words property.
      *

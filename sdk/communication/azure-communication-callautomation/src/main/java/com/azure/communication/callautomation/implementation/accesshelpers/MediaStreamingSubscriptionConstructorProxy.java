@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.implementation.accesshelpers;
+
 import com.azure.communication.callautomation.implementation.models.MediaStreamingSubscriptionInternal;
 import com.azure.communication.callautomation.models.MediaStreamingSubscription;
 
@@ -11,12 +12,13 @@ import com.azure.communication.callautomation.models.MediaStreamingSubscription;
 public final class MediaStreamingSubscriptionConstructorProxy {
     private static MediaStreamingSubscriptionConstructorAccessor accessor;
 
-    private MediaStreamingSubscriptionConstructorProxy() { }
+    private MediaStreamingSubscriptionConstructorProxy() {
+    }
 
-     /**
-     * Type defining the methods to set the non-public properties of a {@link MediaStreamingSubscriptionConstructorAccessor}
-     * instance.
-     */
+    /**
+    * Type defining the methods to set the non-public properties of a {@link MediaStreamingSubscriptionConstructorAccessor}
+    * instance.
+    */
     public interface MediaStreamingSubscriptionConstructorAccessor {
         /**
          * Creates a new instance of {@link MediaStreamingSubscription} backed by an internal instance of
@@ -28,22 +30,22 @@ public final class MediaStreamingSubscriptionConstructorProxy {
         MediaStreamingSubscription create(MediaStreamingSubscriptionInternal internalResponse);
     }
 
-     /**
-     * The method called from {@link MediaStreamingSubscription} to set it's accessor.
-     *
-     * @param accessor The accessor.
-     */
+    /**
+    * The method called from {@link MediaStreamingSubscription} to set it's accessor.
+    *
+    * @param accessor The accessor.
+    */
     public static void setAccessor(final MediaStreamingSubscriptionConstructorAccessor accessor) {
         MediaStreamingSubscriptionConstructorProxy.accessor = accessor;
     }
 
-     /**
-     * Creates a new instance of {@link MediaStreamingSubscription} backed by an internal instance of
-     * {@link MediaStreamingSubscriptionInternal}.
-     *
-     * @param internalResponse The internal response.
-     * @return A new instance of {@link MediaStreamingSubscription}.
-     */
+    /**
+    * Creates a new instance of {@link MediaStreamingSubscription} backed by an internal instance of
+    * {@link MediaStreamingSubscriptionInternal}.
+    *
+    * @param internalResponse The internal response.
+    * @return A new instance of {@link MediaStreamingSubscription}.
+    */
     public static MediaStreamingSubscription create(MediaStreamingSubscriptionInternal internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses MediaStreamingSubscription which triggers the accessor to be configured. So, if the accessor

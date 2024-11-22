@@ -49,6 +49,9 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

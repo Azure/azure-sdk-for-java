@@ -16,5 +16,5 @@ module com.azure.communication.callautomation {
     opens com.azure.communication.callautomation.models to com.azure.core;
     opens com.azure.communication.callautomation.models.events to com.azure.core;
     opens com.azure.communication.callautomation.implementation.converters to com.azure.core;
-    
+
 }

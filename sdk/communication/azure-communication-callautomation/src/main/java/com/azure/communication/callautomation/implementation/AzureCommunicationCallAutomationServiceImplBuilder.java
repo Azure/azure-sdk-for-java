@@ -21,8 +21,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -298,7 +298,8 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
@@ -306,12 +307,15 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("Authorization", azureKeyCredential));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient).clientOptions(localClientOptions).build();
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 }

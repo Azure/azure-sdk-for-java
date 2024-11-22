@@ -72,6 +72,9 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

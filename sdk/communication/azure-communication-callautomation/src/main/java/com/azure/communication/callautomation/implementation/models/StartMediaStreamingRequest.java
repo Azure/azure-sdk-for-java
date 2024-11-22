@@ -18,8 +18,7 @@ import java.io.IOException;
 public final class StartMediaStreamingRequest implements JsonSerializable<StartMediaStreamingRequest> {
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
     private String operationCallbackUri;
 
@@ -37,8 +36,7 @@ public final class StartMediaStreamingRequest implements JsonSerializable<StartM
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -49,8 +47,7 @@ public final class StartMediaStreamingRequest implements JsonSerializable<StartM
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the StartMediaStreamingRequest object itself.
@@ -80,6 +77,9 @@ public final class StartMediaStreamingRequest implements JsonSerializable<StartM
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -19,7 +19,7 @@ import com.azure.json.JsonToken;
 
 /** The abstract class used as parent of Streaming data such as Audio, Transcription, or Captions. */
 public abstract class StreamingData {
-    
+
     private StreamingDataKind streamingDataKind;
 
     /**
@@ -77,21 +77,29 @@ public abstract class StreamingData {
                     reader.nextToken();
                     switch (fieldName) {
                         case "audioData":
-                            AudioData audioData = AudioDataContructorProxy.create(AudioDataConverter.fromJson(jsonReader));
+                            AudioData audioData
+                                = AudioDataContructorProxy.create(AudioDataConverter.fromJson(jsonReader));
                             audioData.setStreamingDataKind(StreamingDataKind.AUDIO_DATA);
                             return audioData;
+
                         case "audioMetadata":
-                            AudioMetadata audioMetadata = AudioMetadataContructorProxy.create(AudioMetadataConverter.fromJson(jsonReader));
+                            AudioMetadata audioMetadata
+                                = AudioMetadataContructorProxy.create(AudioMetadataConverter.fromJson(jsonReader));
                             audioMetadata.setStreamingDataKind(StreamingDataKind.AUDIO_METADATA);
                             return audioMetadata;
+
                         case "transcriptionData":
-                            TranscriptionData transcriptionData = TranscriptionDataContructorProxy.create(TranscriptionDataConverter.fromJson(jsonReader));
+                            TranscriptionData transcriptionData = TranscriptionDataContructorProxy
+                                .create(TranscriptionDataConverter.fromJson(jsonReader));
                             transcriptionData.setStreamingDataKind(StreamingDataKind.TRANSCRIPTION_DATA);
                             return transcriptionData;
+
                         case "transcriptionMetadata":
-                            TranscriptionMetadata transcriptionMetadata = TranscriptionMetadataContructorProxy.create(TranscriptionMetadataConverter.fromJson(jsonReader));
+                            TranscriptionMetadata transcriptionMetadata = TranscriptionMetadataContructorProxy
+                                .create(TranscriptionMetadataConverter.fromJson(jsonReader));
                             transcriptionMetadata.setStreamingDataKind(StreamingDataKind.TRANSCRIPTION_METADATA);
                             return transcriptionMetadata;
+
                         default:
                             reader.skipChildren();
                     }

@@ -44,7 +44,7 @@ public final class ContinuousDtmfRecognitionToneFailed extends CallAutomationEve
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-               
+
                 if (!event.readField(fieldName, reader)) {
                     reader.skipChildren();
                 }

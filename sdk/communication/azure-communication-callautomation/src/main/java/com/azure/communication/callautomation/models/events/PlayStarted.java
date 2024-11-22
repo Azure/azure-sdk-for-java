@@ -16,7 +16,7 @@ public final class PlayStarted extends CallAutomationEventBase {
 
     private PlayStarted() {
     }
-    
+
     /**
      * {@inheritDoc}
      */
