@@ -92,8 +92,8 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
         client.addOnSessionCreatedEventHandler(sessionCreated -> {
             assertNotNull(sessionCreated);
             sessionCreatedEventFired.set(true);
-            client.sendMessage(new SessionUpdateEvent(
-                new RealtimeRequestSession().setInstructions("You are a helpful assistant.")
+            client.sendMessage(
+                new SessionUpdateEvent(new RealtimeRequestSession().setInstructions("You are a helpful assistant.")
                     .setInputAudioFormat(RealtimeAudioFormat.G711_ALAW)
                     .setMaxResponseOutputTokens(2048)));
         });
@@ -102,8 +102,8 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
             assertNotNull(sessionUpdated);
             int count = sessionUpdatedEventFired.incrementAndGet();
             if (count < 2) {
-                SessionUpdateEvent sessionUpdate = new SessionUpdateEvent(
-                    new RealtimeRequestSession().setMaxResponseOutputTokensToInf()
+                SessionUpdateEvent sessionUpdate
+                    = new SessionUpdateEvent(new RealtimeRequestSession().setMaxResponseOutputTokensToInf()
                         .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT)));
                 client.sendMessage(sessionUpdate);
             } else if (count == 2) {
@@ -229,8 +229,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
                 RealtimeRequestTextContentPart textContentPart = (RealtimeRequestTextContentPart) content.get(0);
                 if (textContentPart.getText().contains("banana")) {
                     itemCreatedEventFired.set(true);
-                    client.sendMessage(
-                        new ConversationItemDeleteEvent(conversationItemCreated.getItem().getId()));
+                    client.sendMessage(new ConversationItemDeleteEvent(conversationItemCreated.getItem().getId()));
                 }
             }
         });
@@ -301,8 +300,7 @@ public class NonAzureRealtimeClientTests extends RealtimeClientTestBase {
                     assertEquals(functionCallItem.getName(), weatherTool.getName());
                     client.sendMessage(ConversationItem.createFunctionCallOutput(functionCallItem.getCallId(),
                         "71 degrees Fahrenheit, sunny"));
-                    client.sendMessage(
-                        new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()));
+                    client.sendMessage(new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()));
                 }
                 responseItemDoneCreated.set(true);
             });

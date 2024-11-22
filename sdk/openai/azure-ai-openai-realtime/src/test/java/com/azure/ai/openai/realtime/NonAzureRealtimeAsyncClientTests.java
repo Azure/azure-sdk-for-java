@@ -94,8 +94,8 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
         client.start().block();
         StepVerifier.create(client.getServerEvents()).assertNext(event -> {
             assertInstanceOf(SessionCreatedEvent.class, event);
-            SessionUpdateEvent sessionUpdate = new SessionUpdateEvent(
-                new RealtimeRequestSession().setInstructions("You are a helpful assistant.")
+            SessionUpdateEvent sessionUpdate
+                = new SessionUpdateEvent(new RealtimeRequestSession().setInstructions("You are a helpful assistant.")
                     .setInputAudioFormat(RealtimeAudioFormat.G711_ALAW)
                     //                    .setTurnDetection(new RealtimeTurnDetectionDisabled())
                     .setMaxResponseOutputTokens(2048));
@@ -116,9 +116,8 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
             client.sendMessage(conversationItem).block();
 
             // starting conversation - needs to be submitted after the prompt, otherwise it will be ignored
-            ResponseCreateEvent conversation
-                = new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()
-                    .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString())));
+            ResponseCreateEvent conversation = new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()
+                .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString())));
             client.sendMessage(conversation).block();
         })
             .thenConsumeWhile(event -> event.getType() != RealtimeServerEventType.RESPONSE_DONE,
@@ -149,8 +148,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
                 SessionUpdatedEvent sessionUpdatedEvent = (SessionUpdatedEvent) event;
                 assertNotNull(sessionUpdatedEvent.getSession());
             } else if (event instanceof ConversationItemCreatedEvent) {
-                ConversationItemCreatedEvent itemCreatedEvent
-                    = (ConversationItemCreatedEvent) event;
+                ConversationItemCreatedEvent itemCreatedEvent = (ConversationItemCreatedEvent) event;
                 assertInstanceOf(RealtimeResponseMessageItem.class, itemCreatedEvent.getItem());
                 RealtimeResponseMessageItem responseItem = (RealtimeResponseMessageItem) itemCreatedEvent.getItem();
                 if (responseItem.getRole() == RealtimeMessageRole.ASSISTANT) {
@@ -193,8 +191,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
             .thenConsumeWhile(event -> event.getType() != RealtimeServerEventType.ERROR
                 && event.getType() != RealtimeServerEventType.RESPONSE_DONE, event -> {
                     if (event instanceof ConversationItemCreatedEvent) {
-                        ConversationItemCreatedEvent itemCreatedEvent
-                            = (ConversationItemCreatedEvent) event;
+                        ConversationItemCreatedEvent itemCreatedEvent = (ConversationItemCreatedEvent) event;
                         List<RealtimeContentPart> contentParts
                             = ((RealtimeResponseMessageItem) itemCreatedEvent.getItem()).getContent();
                         if (contentParts.isEmpty()) {
@@ -203,23 +200,19 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
                         RealtimeRequestTextContentPart textContentPart
                             = (RealtimeRequestTextContentPart) contentParts.get(0);
                         if (textContentPart.getText().contains("banana")) {
-                            client
-                                .sendMessage(
-                                    new ConversationItemDeleteEvent(itemCreatedEvent.getItem().getId()))
+                            client.sendMessage(new ConversationItemDeleteEvent(itemCreatedEvent.getItem().getId()))
                                 .block();
                             client
                                 .sendMessage(ConversationItem
                                     .createUserMessage("What's the second special word you know about?"))
                                 .block();
                             client
-                                .sendMessage(new ResponseCreateEvent(
-                                    new RealtimeClientEventResponseCreateResponse()
-                                        .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))))
+                                .sendMessage(new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()
+                                    .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT.toString()))))
                                 .block();
                         }
                     } else if (event instanceof ResponseOutputItemDoneEvent) {
-                        ResponseOutputItemDoneEvent outputItemDoneEvent
-                            = (ResponseOutputItemDoneEvent) event;
+                        ResponseOutputItemDoneEvent outputItemDoneEvent = (ResponseOutputItemDoneEvent) event;
                         assertInstanceOf(RealtimeResponseMessageItem.class, outputItemDoneEvent.getItem());
                         RealtimeResponseMessageItem responseItem
                             = (RealtimeResponseMessageItem) outputItemDoneEvent.getItem();
@@ -259,12 +252,10 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
                     event -> {
                         assertFalse(CoreUtils.isNullOrEmpty(event.getEventId()));
                         if (event instanceof SessionUpdatedEvent) {
-                            SessionUpdatedEvent sessionUpdatedEvent
-                                = (SessionUpdatedEvent) event;
+                            SessionUpdatedEvent sessionUpdatedEvent = (SessionUpdatedEvent) event;
                             assertNotNull(sessionUpdatedEvent.getSession());
                         } else if (event instanceof ResponseOutputItemDoneEvent) {
-                            ResponseOutputItemDoneEvent outputItemDoneEvent
-                                = (ResponseOutputItemDoneEvent) event;
+                            ResponseOutputItemDoneEvent outputItemDoneEvent = (ResponseOutputItemDoneEvent) event;
                             RealtimeResponseItem responseItem = outputItemDoneEvent.getItem();
                             assertNotNull(responseItem);
                             if (responseItem instanceof RealtimeResponseFunctionCallItem) {
@@ -275,8 +266,10 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
                                     .sendMessage(ConversationItem.createFunctionCallOutput(functionCallItem.getCallId(),
                                         "71 degrees Fahrenheit, sunny"))
                                     .block();
-                                client.sendMessage(new ResponseCreateEvent(
-                                    new RealtimeClientEventResponseCreateResponse())).block();
+                                client
+                                    .sendMessage(
+                                        new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()))
+                                    .block();
                             }
                         } else if (event instanceof ResponseDoneEvent) {
                             ResponseDoneEvent responseDoneEvent = (ResponseDoneEvent) event;

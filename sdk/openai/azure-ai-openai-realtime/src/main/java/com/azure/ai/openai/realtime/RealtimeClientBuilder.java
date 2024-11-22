@@ -26,8 +26,9 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Map;
 
 @ServiceClientBuilder(serviceClients = { RealtimeAsyncClient.class, RealtimeClient.class })
-public final class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientBuilder>,
-        TokenCredentialTrait<RealtimeClientBuilder>, KeyCredentialTrait<RealtimeClientBuilder>, EndpointTrait<RealtimeClientBuilder> {
+public final class RealtimeClientBuilder
+    implements ConfigurationTrait<RealtimeClientBuilder>, TokenCredentialTrait<RealtimeClientBuilder>,
+    KeyCredentialTrait<RealtimeClientBuilder>, EndpointTrait<RealtimeClientBuilder> {
 
     private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
 

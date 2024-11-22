@@ -76,8 +76,8 @@ public final class RealtimeAsyncClient implements Closeable {
      */
     RealtimeAsyncClient(WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId,
         RetryStrategy retryStrategy, AuthenticationProvider authenticationProvider) {
-        this.logger = new ClientLogger(RealtimeAsyncClient.class,
-            LoggingUtils.createContextWithApplicationId(applicationId));
+        this.logger
+            = new ClientLogger(RealtimeAsyncClient.class, LoggingUtils.createContextWithApplicationId(applicationId));
         loggerReference.set(logger);
 
         this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
@@ -305,7 +305,7 @@ public final class RealtimeAsyncClient implements Closeable {
     }
 
     private void handleSessionClose(CloseReason closeReason) {
-        logger.atVerbose().addKeyValue("code", closeReason.getCloseCode()).log(() ->"Session closed");
+        logger.atVerbose().addKeyValue("code", closeReason.getCloseCode()).log(() -> "Session closed");
 
         final int violatedPolicyStatusCode = 1008;
 

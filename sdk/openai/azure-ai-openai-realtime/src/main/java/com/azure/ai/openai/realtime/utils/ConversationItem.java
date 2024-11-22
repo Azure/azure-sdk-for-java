@@ -63,10 +63,8 @@ public final class ConversationItem {
      * @param arguments the arguments to pass to the function.
      * @return the function call item.
      */
-    public static ConversationItemCreateEvent createFunctionCall(String functionName, String callId,
-        String arguments) {
-        return new ConversationItemCreateEvent(
-            new RealtimeRequestFunctionCallItem(functionName, callId, arguments));
+    public static ConversationItemCreateEvent createFunctionCall(String functionName, String callId, String arguments) {
+        return new ConversationItemCreateEvent(new RealtimeRequestFunctionCallItem(functionName, callId, arguments));
     }
 
     /**
@@ -76,9 +74,7 @@ public final class ConversationItem {
      * @param functionOutput the output of the function call to be passed to the service.
      * @return the function call output item.
      */
-    public static ConversationItemCreateEvent createFunctionCallOutput(String callId,
-        String functionOutput) {
-        return new ConversationItemCreateEvent(
-            new RealtimeRequestFunctionCallOutputItem(callId, functionOutput));
+    public static ConversationItemCreateEvent createFunctionCallOutput(String callId, String functionOutput) {
+        return new ConversationItemCreateEvent(new RealtimeRequestFunctionCallOutputItem(callId, functionOutput));
     }
 }

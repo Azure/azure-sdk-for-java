@@ -78,7 +78,10 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         if (frame instanceof TextWebSocketFrame) {
             // Text
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-            loggerReference.get().atVerbose().addKeyValue("text", textFrame.text()).log(() -> "Received TextWebSocketFrame");
+            loggerReference.get()
+                .atVerbose()
+                .addKeyValue("text", textFrame.text())
+                .log(() -> "Received TextWebSocketFrame");
 
             Object wpsMessage = messageDecoder.decode(textFrame.text());
             messageHandler.accept(wpsMessage);

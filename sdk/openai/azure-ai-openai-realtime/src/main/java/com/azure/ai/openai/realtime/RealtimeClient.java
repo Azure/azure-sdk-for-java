@@ -96,8 +96,8 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onConversationCreatedEventHandler The callback to be notified when this event type is received.
      */
-    public void addOnConversationCreatedEventHandler(
-        Consumer<ConversationCreatedEvent> onConversationCreatedEventHandler) {
+    public void
+        addOnConversationCreatedEventHandler(Consumer<ConversationCreatedEvent> onConversationCreatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.CONVERSATION_CREATED.toString(),
             onConversationCreatedEventHandler);
     }
@@ -217,8 +217,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onRateLimitsUpdatedEventHandler The callback to be notified when this event type is received.
      */
-    public void addOnRateLimitsUpdatedEventHandler(
-        Consumer<RateLimitsUpdatedEvent> onRateLimitsUpdatedEventHandler) {
+    public void addOnRateLimitsUpdatedEventHandler(Consumer<RateLimitsUpdatedEvent> onRateLimitsUpdatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RATE_LIMITS_UPDATED.toString(),
             onRateLimitsUpdatedEventHandler);
     }
@@ -228,8 +227,8 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseAudioDeltaEventHandler The callback to be notified when this event type is received.
      */
-    public void addOnResponseAudioDeltaEventHandler(
-        Consumer<ResponseAudioDeltaEvent> onResponseAudioDeltaEventHandler) {
+    public void
+        addOnResponseAudioDeltaEventHandler(Consumer<ResponseAudioDeltaEvent> onResponseAudioDeltaEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DELTA.toString(),
             onResponseAudioDeltaEventHandler);
     }
@@ -239,8 +238,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseAudioDoneEventHandler The callback to be notified when this event type is received.
      */
-    public void addOnResponseAudioDoneEventHandler(
-        Consumer<ResponseAudioDoneEvent> onResponseAudioDoneEventHandler) {
+    public void addOnResponseAudioDoneEventHandler(Consumer<ResponseAudioDoneEvent> onResponseAudioDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DONE.toString(),
             onResponseAudioDoneEventHandler);
     }
@@ -294,8 +292,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseCreatedEventHandler The callback to be notified when this event type is received.
      */
-    public void
-        addOnResponseCreatedEventHandler(Consumer<ResponseCreatedEvent> onResponseCreatedEventHandler) {
+    public void addOnResponseCreatedEventHandler(Consumer<ResponseCreatedEvent> onResponseCreatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_CREATED.toString(),
             onResponseCreatedEventHandler);
     }
@@ -360,8 +357,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseTextDeltaEventHandler The callback to be notified when this event type is received.
      */
-    public void addOnResponseTextDeltaEventHandler(
-        Consumer<ResponseTextDeltaEvent> onResponseTextDeltaEventHandler) {
+    public void addOnResponseTextDeltaEventHandler(Consumer<ResponseTextDeltaEvent> onResponseTextDeltaEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DELTA.toString(),
             onResponseTextDeltaEventHandler);
     }
@@ -371,8 +367,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseTextDoneEventHandler The callback to be notified when this event type is received.
      */
-    public void addOnResponseTextDoneEventHandler(
-        Consumer<ResponseTextDoneEvent> onResponseTextDoneEventHandler) {
+    public void addOnResponseTextDoneEventHandler(Consumer<ResponseTextDoneEvent> onResponseTextDoneEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DONE.toString(),
             onResponseTextDoneEventHandler);
     }
@@ -382,8 +377,7 @@ public final class RealtimeClient implements Closeable {
      * 
      * @param onSessionCreatedEventHandler The callback to be notified when this event type is received.
      */
-    public void
-        addOnSessionCreatedEventHandler(Consumer<SessionCreatedEvent> onSessionCreatedEventHandler) {
+    public void addOnSessionCreatedEventHandler(Consumer<SessionCreatedEvent> onSessionCreatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.SESSION_CREATED.toString(),
             onSessionCreatedEventHandler);
     }
@@ -393,8 +387,7 @@ public final class RealtimeClient implements Closeable {
      * 
      * @param onSessionUpdatedEventHandler The callback to be notified when this event type is received.
      */
-    public void
-        addOnSessionUpdatedEventHandler(Consumer<SessionUpdatedEvent> onSessionUpdatedEventHandler) {
+    public void addOnSessionUpdatedEventHandler(Consumer<SessionUpdatedEvent> onSessionUpdatedEventHandler) {
         eventHandlerCollection.addEventHandler(RealtimeServerEventType.SESSION_UPDATED.toString(),
             onSessionUpdatedEventHandler);
     }
@@ -404,8 +397,8 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onConversationCreatedEventHandler the event handler to be removed.
      */
-    public void removeOnConversationCreatedEventHandler(
-        Consumer<ConversationCreatedEvent> onConversationCreatedEventHandler) {
+    public void
+        removeOnConversationCreatedEventHandler(Consumer<ConversationCreatedEvent> onConversationCreatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.CONVERSATION_CREATED.toString(),
             onConversationCreatedEventHandler);
     }
@@ -525,8 +518,8 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onRateLimitsUpdatedEventHandler the event handler to be removed.
      */
-    public void removeOnRateLimitsUpdatedEventHandler(
-        Consumer<RateLimitsUpdatedEvent> onRateLimitsUpdatedEventHandler) {
+    public void
+        removeOnRateLimitsUpdatedEventHandler(Consumer<RateLimitsUpdatedEvent> onRateLimitsUpdatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RATE_LIMITS_UPDATED.toString(),
             onRateLimitsUpdatedEventHandler);
     }
@@ -536,8 +529,8 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseAudioDeltaEventHandler the event handler to be removed.
      */
-    public void removeOnResponseAudioDeltaEventHandler(
-        Consumer<ResponseAudioDeltaEvent> onResponseAudioDeltaEventHandler) {
+    public void
+        removeOnResponseAudioDeltaEventHandler(Consumer<ResponseAudioDeltaEvent> onResponseAudioDeltaEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DELTA.toString(),
             onResponseAudioDeltaEventHandler);
     }
@@ -547,8 +540,8 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseAudioDoneEventHandler the event handler to be removed.
      */
-    public void removeOnResponseAudioDoneEventHandler(
-        Consumer<ResponseAudioDoneEvent> onResponseAudioDoneEventHandler) {
+    public void
+        removeOnResponseAudioDoneEventHandler(Consumer<ResponseAudioDoneEvent> onResponseAudioDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_AUDIO_DONE.toString(),
             onResponseAudioDoneEventHandler);
     }
@@ -602,8 +595,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseCreatedEventHandler the event handler to be removed.
      */
-    public void removeOnResponseCreatedEventHandler(
-        Consumer<ResponseCreatedEvent> onResponseCreatedEventHandler) {
+    public void removeOnResponseCreatedEventHandler(Consumer<ResponseCreatedEvent> onResponseCreatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_CREATED.toString(),
             onResponseCreatedEventHandler);
     }
@@ -669,8 +661,8 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseTextDeltaEventHandler the event handler to be removed.
      */
-    public void removeOnResponseTextDeltaEventHandler(
-        Consumer<ResponseTextDeltaEvent> onResponseTextDeltaEventHandler) {
+    public void
+        removeOnResponseTextDeltaEventHandler(Consumer<ResponseTextDeltaEvent> onResponseTextDeltaEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DELTA.toString(),
             onResponseTextDeltaEventHandler);
     }
@@ -680,8 +672,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onResponseTextDoneEventHandler the event handler to be removed.
      */
-    public void removeOnResponseTextDoneEventHandler(
-        Consumer<ResponseTextDoneEvent> onResponseTextDoneEventHandler) {
+    public void removeOnResponseTextDoneEventHandler(Consumer<ResponseTextDoneEvent> onResponseTextDoneEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.RESPONSE_TEXT_DONE.toString(),
             onResponseTextDoneEventHandler);
     }
@@ -691,8 +682,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onSessionCreatedEventHandler the event handler to be removed.
      */
-    public void
-        removeOnSessionCreatedEventHandler(Consumer<SessionCreatedEvent> onSessionCreatedEventHandler) {
+    public void removeOnSessionCreatedEventHandler(Consumer<SessionCreatedEvent> onSessionCreatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.SESSION_CREATED.toString(),
             onSessionCreatedEventHandler);
     }
@@ -702,8 +692,7 @@ public final class RealtimeClient implements Closeable {
      *
      * @param onSessionUpdatedEventHandler the event handler to be removed.
      */
-    public void
-        removeOnSessionUpdatedEventHandler(Consumer<SessionUpdatedEvent> onSessionUpdatedEventHandler) {
+    public void removeOnSessionUpdatedEventHandler(Consumer<SessionUpdatedEvent> onSessionUpdatedEventHandler) {
         eventHandlerCollection.removeEventHandler(RealtimeServerEventType.SESSION_UPDATED.toString(),
             onSessionUpdatedEventHandler);
     }

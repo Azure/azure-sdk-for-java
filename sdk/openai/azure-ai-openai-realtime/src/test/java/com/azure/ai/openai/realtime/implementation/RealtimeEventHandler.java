@@ -106,20 +106,17 @@ public final class RealtimeEventHandler {
                 break;
 
             case "conversation.created":
-                ConversationCreatedEvent conversationCreatedEvent
-                    = (ConversationCreatedEvent) serverEvent;
+                ConversationCreatedEvent conversationCreatedEvent = (ConversationCreatedEvent) serverEvent;
 
                 break;
 
             case "input_audio_buffer.committed":
-                InputAudioBufferCommittedEvent inputAudioBufferCommitted
-                    = (InputAudioBufferCommittedEvent) serverEvent;
+                InputAudioBufferCommittedEvent inputAudioBufferCommitted = (InputAudioBufferCommittedEvent) serverEvent;
                 // Handle input_audio_buffer.committed event
                 break;
 
             case "input_audio_buffer.cleared":
-                InputAudioBufferClearedEvent inputAudioBufferCleared
-                    = (InputAudioBufferClearedEvent) serverEvent;
+                InputAudioBufferClearedEvent inputAudioBufferCleared = (InputAudioBufferClearedEvent) serverEvent;
                 // Handle input_audio_buffer.cleared event
                 break;
 
@@ -138,8 +135,7 @@ public final class RealtimeEventHandler {
                 break;
 
             case "conversation.item.created":
-                ConversationItemCreatedEvent conversationItemCreated
-                    = (ConversationItemCreatedEvent) serverEvent;
+                ConversationItemCreatedEvent conversationItemCreated = (ConversationItemCreatedEvent) serverEvent;
                 // Handle conversation.item.created event
                 break;
 
@@ -157,14 +153,12 @@ public final class RealtimeEventHandler {
                 break;
 
             case "conversation.item.truncated":
-                ConversationItemTruncatedEvent conversationItemTruncated
-                    = (ConversationItemTruncatedEvent) serverEvent;
+                ConversationItemTruncatedEvent conversationItemTruncated = (ConversationItemTruncatedEvent) serverEvent;
                 // Handle conversation.item.truncated event
                 break;
 
             case "conversation.item.deleted":
-                ConversationItemDeletedEvent conversationItemDeleted
-                    = (ConversationItemDeletedEvent) serverEvent;
+                ConversationItemDeletedEvent conversationItemDeleted = (ConversationItemDeletedEvent) serverEvent;
                 // Handle conversation.item.deleted event
                 break;
 
@@ -181,38 +175,32 @@ public final class RealtimeEventHandler {
                 break;
 
             case "response.output_item.added":
-                ResponseOutputItemAddedEvent responseOutputItemAdded
-                    = (ResponseOutputItemAddedEvent) serverEvent;
+                ResponseOutputItemAddedEvent responseOutputItemAdded = (ResponseOutputItemAddedEvent) serverEvent;
                 // Handle response.output_item.added event
                 break;
 
             case "response.output_item.done":
-                ResponseOutputItemDoneEvent responseOutputItemDone
-                    = (ResponseOutputItemDoneEvent) serverEvent;
+                ResponseOutputItemDoneEvent responseOutputItemDone = (ResponseOutputItemDoneEvent) serverEvent;
                 // Handle response.output_item.done event
                 break;
 
             case "response.content_part.added":
-                ResponseContentPartAddedEvent responseContentPartAdded
-                    = (ResponseContentPartAddedEvent) serverEvent;
+                ResponseContentPartAddedEvent responseContentPartAdded = (ResponseContentPartAddedEvent) serverEvent;
                 // Handle response.content_part.added event
                 break;
 
             case "response.content_part.done":
-                ResponseTextDeltaEvent responseContentPartDone
-                    = (ResponseTextDeltaEvent) serverEvent;
+                ResponseTextDeltaEvent responseContentPartDone = (ResponseTextDeltaEvent) serverEvent;
                 // Handle response.content_part.done event
                 break;
 
             case "response.text.delta":
-                ResponseTextDeltaEvent responseTextDelta
-                    = (ResponseTextDeltaEvent) serverEvent;
+                ResponseTextDeltaEvent responseTextDelta = (ResponseTextDeltaEvent) serverEvent;
                 // Handle response.text.delta event
                 break;
 
             case "response.text.done":
-                ResponseTextDoneEvent responseTextDone
-                    = (ResponseTextDoneEvent) serverEvent;
+                ResponseTextDoneEvent responseTextDone = (ResponseTextDoneEvent) serverEvent;
                 // Handle response.text.done event
                 break;
 
@@ -229,15 +217,13 @@ public final class RealtimeEventHandler {
                 break;
 
             case "response.audio.delta":
-                ResponseAudioDeltaEvent responseAudioDelta
-                    = (ResponseAudioDeltaEvent) serverEvent;
+                ResponseAudioDeltaEvent responseAudioDelta = (ResponseAudioDeltaEvent) serverEvent;
                 System.out.println("Audio delta received");
                 // Handle response.audio.delta event
                 break;
 
             case "response.audio.done":
-                ResponseAudioDoneEvent responseAudioDone
-                    = (ResponseAudioDoneEvent) serverEvent;
+                ResponseAudioDoneEvent responseAudioDone = (ResponseAudioDoneEvent) serverEvent;
                 System.out.println("Audio done received");
                 // Handle response.audio.done event
                 break;
@@ -255,8 +241,7 @@ public final class RealtimeEventHandler {
                 break;
 
             case "rate_limits.updated":
-                RateLimitsUpdatedEvent rateLimitsUpdated
-                    = (RateLimitsUpdatedEvent) serverEvent;
+                RateLimitsUpdatedEvent rateLimitsUpdated = (RateLimitsUpdatedEvent) serverEvent;
                 // Handle rate_limits.updated event
                 break;
 

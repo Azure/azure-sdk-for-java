@@ -214,17 +214,17 @@ For a more detailed guide please refer to the [Azure OpenAI realtime][aoai_sampl
 
 We can setup the Realtime session to return both text and audio.
 ```java readme-sample-sessionUpdate
-client.sendMessage(new RealtimeClientEventSessionUpdate(
-    new RealtimeRequestSession()
-        .setVoice(RealtimeVoice.ALLOY)
-        .setTurnDetection(
-            new RealtimeServerVadTurnDetection()
-                .setThreshold(0.5)
-                .setPrefixPaddingMs(300)
-                .setSilenceDurationMs(200)
-        ).setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings(
-            RealtimeAudioInputTranscriptionModel.WHISPER_1)
-        ).setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
+client.sendMessage(new SessionUpdateEvent(
+        new RealtimeRequestSession()
+                .setVoice(RealtimeVoice.ALLOY)
+                .setTurnDetection(
+                        new RealtimeServerVadTurnDetection()
+                                .setThreshold(0.5)
+                                .setPrefixPaddingMs(300)
+                                .setSilenceDurationMs(200)
+                ).setInputAudioTranscription(new RealtimeAudioInputTranscriptionSettings(
+                        RealtimeAudioInputTranscriptionModel.WHISPER_1)
+                ).setModalities(Arrays.asList(RealtimeRequestSessionModality.AUDIO, RealtimeRequestSessionModality.TEXT))
 ));
 ```
 
@@ -238,13 +238,13 @@ RealtimeClient client = new RealtimeClientBuilder()
 
 String audioFilePath = "{path to audio file}";
 byte[] audioBytes = Files.readAllBytes(Paths.get(audioFilePath));
-        
+
 client.addOnResponseDoneEventHandler(event -> {
     System.out.println("Response done");
 });
 
 client.start();
-client.sendMessage(new RealtimeClientEventInputAudioBufferAppend(audioBytes));
+client.sendMessage(new InputAudioBufferAppendEvent(audioBytes));
 ```
 
 To consume the text and audio produced by the server we setup the following callbacks in an async scenario.
@@ -257,14 +257,14 @@ RealtimeAsyncClient client = new RealtimeClientBuilder()
 Disposable.Composite disposables = Disposables.composite();
 
 disposables.addAll(Arrays.asList(
-    client.getServerEvents()
-        .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioDoneEvent)
-        .ofType(ResponseAudioDeltaEvent.class)
-        .subscribe(this::consumeAudioDelta, this::consumeError, this::onAudioResponseCompleted),
-    client.getServerEvents()
-        .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioTranscriptDoneEvent)
-        .ofType(ResponseAudioTranscriptDeltaEvent.class)
-        .subscribe(this::consumeAudioTranscriptDelta, this::consumeError, this::onAudioResponseTranscriptCompleted)
+        client.getServerEvents()
+                .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioDoneEvent)
+                .ofType(ResponseAudioDeltaEvent.class)
+                .subscribe(this::consumeAudioDelta, this::consumeError, this::onAudioResponseCompleted),
+        client.getServerEvents()
+                .takeUntil(serverEvent -> serverEvent instanceof ResponseAudioTranscriptDoneEvent)
+                .ofType(ResponseAudioTranscriptDeltaEvent.class)
+                .subscribe(this::consumeAudioTranscriptDelta, this::consumeError, this::onAudioResponseTranscriptCompleted)
 ));
 ```
 
