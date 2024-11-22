@@ -15,7 +15,8 @@ class DeserializationTests {
     void getStorageDiagnostics() {
         try {
             String payload = getTestPayloadFromFile("storageBlobCreated.json");
-            StorageBlobCreatedEventData storageBlobCreatedEventData = StorageBlobCreatedEventData.fromJson(JsonProviders.createReader(payload));
+            StorageBlobCreatedEventData storageBlobCreatedEventData
+                = StorageBlobCreatedEventData.fromJson(JsonProviders.createReader(payload));
             BinaryData data = storageBlobCreatedEventData.getStorageDiagnostics().get("batchId");
             assertEquals("\"23f68872-a006-0065-0049-9240f2000000\"", data.toString());
         } catch (IOException e) {
