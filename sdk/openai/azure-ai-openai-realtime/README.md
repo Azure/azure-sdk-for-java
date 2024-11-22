@@ -55,7 +55,7 @@ please visit the [dev feed documentation page.][dev_feed_instructions] Here you 
 
 ##### Step 1: get a PAT (Personal Access Token)
 
-generate a [Personal Access Token](https://dev.azure.com/azure-sdk/_details/security/tokens) with *Packaging* read & write scopes.
+Generate a [Personal Access Token](https://dev.azure.com/azure-sdk/_details/security/tokens) with *Packaging* read & write scopes.
 
 ##### Step 2: Project setup
 
