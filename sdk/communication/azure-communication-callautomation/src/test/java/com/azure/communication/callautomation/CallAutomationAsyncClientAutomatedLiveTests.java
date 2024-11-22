@@ -319,7 +319,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
                     .getValue();
             String callConnectionId = connectCallResult.getCallConnectionProperties().getCallConnectionId();
             CallConnected connectCallConnectedEvent
-                = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
+                = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(15));
             assertNotNull(connectCallConnectedEvent);
 
             // hang up the call.
