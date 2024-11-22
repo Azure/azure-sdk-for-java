@@ -8,6 +8,9 @@ import com.azure.ai.openai.realtime.implementation.websocket.ClientEndpointConfi
 import com.azure.ai.openai.realtime.implementation.websocket.WebSocketClient;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.KeyCredentialTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.ExponentialBackoff;
@@ -23,7 +26,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Map;
 
 @ServiceClientBuilder(serviceClients = { RealtimeAsyncClient.class, RealtimeClient.class })
-public final class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientBuilder> {
+public final class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientBuilder>,
+        TokenCredentialTrait<RealtimeClientBuilder>, KeyCredentialTrait<RealtimeClientBuilder>, EndpointTrait<RealtimeClientBuilder> {
 
     private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
 
@@ -99,39 +103,27 @@ public final class RealtimeClientBuilder implements ConfigurationTrait<RealtimeC
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link TokenCredential} type.
-     *
-     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return the {@link RealtimeClientBuilder}.
+     * {@inheritDoc}
      */
+    @Override
     public RealtimeClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
 
     /**
-     * Sets the {@link KeyCredential} used for authentication. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link KeyCredential} type.
-     *
-     * @param keyCredential the {@link KeyCredential} to be used for authentication.
-     * @return the {@link RealtimeClientBuilder}.
+     * {@inheritDoc}
      */
+    @Override
     public RealtimeClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;
     }
 
     /**
-     * Sets the service endpoint that will be connected to by clients. Not setting this, will default to the OpenAI service.
-     *
-     * @param endpoint The URL of the service endpoint.
-     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
-     *      operations.
-     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
+     * {@inheritDoc}
      */
+    @Override
     public RealtimeClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
