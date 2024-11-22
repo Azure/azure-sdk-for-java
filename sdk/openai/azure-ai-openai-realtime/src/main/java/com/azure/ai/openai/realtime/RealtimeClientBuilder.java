@@ -5,7 +5,6 @@ package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.implementation.websocket.AuthenticationProvider;
 import com.azure.ai.openai.realtime.implementation.websocket.ClientEndpointConfiguration;
-import com.azure.ai.openai.realtime.implementation.websocket.WebSocketClient;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
@@ -13,10 +12,6 @@ import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.FixedDelay;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -25,6 +20,9 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Map;
 
+/**
+ * A builder to create a new instance of the RealtimeClient.
+ */
 @ServiceClientBuilder(serviceClients = { RealtimeAsyncClient.class, RealtimeClient.class })
 public final class RealtimeClientBuilder
     implements ConfigurationTrait<RealtimeClientBuilder>, TokenCredentialTrait<RealtimeClientBuilder>,
@@ -51,9 +49,6 @@ public final class RealtimeClientBuilder
 
     private OpenAIRealtimeServiceVersion serviceVersion = OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW;
 
-    private RetryOptions retryOptions;
-    private WebSocketClient webSocketClient;
-
     /**
      * Creates a new instance of the {@link RealtimeClientBuilder}.
      */
@@ -78,28 +73,6 @@ public final class RealtimeClientBuilder
      */
     public RealtimeClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
-        return this;
-    }
-
-    /**
-     * Sets the {@link WebSocketClient} used to connect to the service.
-     *
-     * @param webSocketClient the {@link WebSocketClient} used to connect to the service.
-     * @return the {@link RealtimeClientBuilder}.
-     */
-    public RealtimeClientBuilder webSocketClient(WebSocketClient webSocketClient) {
-        this.webSocketClient = webSocketClient;
-        return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for all the requests made through the client. Currently unused.
-     *
-     * @param retryOptions the {@link RetryOptions} for all the requests made through the client.
-     * @return the {@link RealtimeClientBuilder}.
-     */
-    public RealtimeClientBuilder retryOptions(RetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
         return this;
     }
 
@@ -159,8 +132,7 @@ public final class RealtimeClientBuilder
      */
     public RealtimeAsyncClient buildAsyncClient() {
         String applicationId = CoreUtils.getApplicationId(clientOptions, null);
-        return new RealtimeAsyncClient(webSocketClient, getClientEndpointConfiguration(), applicationId,
-            getRetryStrategy(), getAuthenticationProvider());
+        return new RealtimeAsyncClient(getClientEndpointConfiguration(), applicationId, getAuthenticationProvider());
     }
 
     /**
@@ -188,28 +160,6 @@ public final class RealtimeClientBuilder
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-    }
-
-    /**
-     * Creates the {@link RetryStrategy}.
-     * @return the {@link RetryStrategy}.
-     */
-    private RetryStrategy getRetryStrategy() {
-        RetryStrategy retryStrategy;
-        if (retryOptions != null) {
-            if (retryOptions.getExponentialBackoffOptions() != null) {
-                retryStrategy = new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
-            } else if (retryOptions.getFixedDelayOptions() != null) {
-                retryStrategy = new FixedDelay(retryOptions.getFixedDelayOptions());
-            } else {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("'retryOptions' didn't define any retry strategy options"));
-            }
-        } else {
-            // default retry strategy be ExponentialBackoff
-            retryStrategy = new ExponentialBackoff();
-        }
-        return retryStrategy;
     }
 
     /**

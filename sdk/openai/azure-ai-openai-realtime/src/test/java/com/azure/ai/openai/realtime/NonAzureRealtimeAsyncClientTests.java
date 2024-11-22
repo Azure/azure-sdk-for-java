@@ -35,9 +35,7 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
 import com.azure.ai.openai.realtime.implementation.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.ai.openai.realtime.models.ResponseCreateEvent;
-import com.azure.ai.openai.realtime.models.SessionCreatedEvent;
 import com.azure.ai.openai.realtime.models.SessionUpdateEvent;
-import com.azure.ai.openai.realtime.models.SessionUpdatedEvent;
 import com.azure.ai.openai.realtime.utils.ConversationItem;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Assertions;
@@ -171,7 +169,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Disabled("List<BinaryData> is causing issues with serialization. We are sending a flat string it seems.")
     @Test
     @Override
-    void ItemManipulation() {
+    void itemManipulation() {
         client = getNonAzureRealtimeClientBuilder(null).buildAsyncClient();
 
         client.start().block();
@@ -234,7 +232,7 @@ public class NonAzureRealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Test
     @Override
     @Disabled("Only LIVE tests are supported for websocket")
-    void AudioWithTool() {
+    void audioWithTool() {
         client = getNonAzureRealtimeClientBuilder(null).buildAsyncClient();
 
         client.start().block();

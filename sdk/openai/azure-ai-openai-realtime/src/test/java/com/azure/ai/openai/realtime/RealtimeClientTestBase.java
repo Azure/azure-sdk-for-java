@@ -59,10 +59,10 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
     abstract void textOnly();
 
     @Test
-    abstract void ItemManipulation();
+    abstract void itemManipulation();
 
     @Test
-    abstract void AudioWithTool();
+    abstract void audioWithTool();
 
     @Test
     abstract void canDisableVoiceActivityDetection();
@@ -75,7 +75,7 @@ public abstract class RealtimeClientTestBase { //} extends TestProxyTestBase {
         return decoder.encode(event);
     }
 
-    // TODO jpalvarezl: should be removed but it's really useful
+    // TODO (jpalvarezl): should be removed but it's really useful
     public static String toJson(RealtimeServerEvent event) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             JsonWriter writer = JsonProviders.createWriter(outputStream)) {

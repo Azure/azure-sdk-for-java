@@ -17,7 +17,7 @@ import reactor.core.publisher.Sinks;
  * This sample demonstrates the usage of the Azure OpenAI Realtime client to interact with the Azure OpenAI service.
  * We use a {@link Sinks.Many} to react to the need to send more user input once the service is ready for it.
  * You can see the details in the {@link RealtimeEventHandler} class, but briefly described, we issue a
- * {@link com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate} once we've received from the server a
+ * {@link com.azure.ai.openai.realtime.models.SessionUpdateEvent} once we've received from the server a
  * {@link com.azure.ai.openai.realtime.models.SessionCreatedEvent} event.
  * We proceed to send the audio file only once we know that the session was successfully updated. This is done by listening
  * for the {@link com.azure.ai.openai.realtime.models.SessionUpdatedEvent} event.
@@ -30,7 +30,7 @@ public class LowLevelClient {
      * This sample demonstrates the usage of the Azure OpenAI Realtime client to interact with the Azure OpenAI service.
      * We use a {@link Sinks.Many} to react to the need to send more user input once the service is ready for it.
      * You can see the details in the {@link RealtimeEventHandler} class, but briefly described, we issue a
-     * {@link com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate} once we've received from the server a
+     * {@link com.azure.ai.openai.realtime.models.SessionUpdateEvent} once we've received from the server a
      * {@link com.azure.ai.openai.realtime.models.SessionCreatedEvent} event.
      * We proceed to send the audio file only once we know that the session was successfully updated. This is done by listening
      * for the {@link com.azure.ai.openai.realtime.models.SessionUpdatedEvent} event.

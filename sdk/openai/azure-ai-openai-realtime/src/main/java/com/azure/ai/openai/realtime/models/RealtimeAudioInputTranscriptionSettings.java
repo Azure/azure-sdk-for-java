@@ -33,6 +33,8 @@ public final class RealtimeAudioInputTranscriptionSettings
 
     /**
      * Creates an instance of RealtimeAudioInputTranscriptionSettings class.
+     *
+     * @param model The model property.
      */
     public RealtimeAudioInputTranscriptionSettings(RealtimeAudioInputTranscriptionModel model) {
         this.model = model;

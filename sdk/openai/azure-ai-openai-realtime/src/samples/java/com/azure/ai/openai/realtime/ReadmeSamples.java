@@ -131,7 +131,7 @@ public class ReadmeSamples {
         // no-op
     }
 
-    private void consumeAudioTranscriptDelta(ResponseAudioTranscriptDeltaEvent ResponseAudioTranscriptDeltaEvent) {
+    private void consumeAudioTranscriptDelta(ResponseAudioTranscriptDeltaEvent responseAudioTranscriptDeltaEvent) {
         // no-op
     }
 
@@ -143,7 +143,7 @@ public class ReadmeSamples {
         // no-op
     }
 
-    private void consumeAudioDelta(ResponseAudioDeltaEvent ResponseAudioDeltaEvent) {
+    private void consumeAudioDelta(ResponseAudioDeltaEvent responseAudioDeltaEvent) {
         // no-op
     }
 }

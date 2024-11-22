@@ -48,7 +48,7 @@ public final class AuthenticationProvider {
         }
     }
 
-    public final static class AuthenticationHeader {
+    public static final class AuthenticationHeader {
         private final String headerName;
         private final String headerValue;
 

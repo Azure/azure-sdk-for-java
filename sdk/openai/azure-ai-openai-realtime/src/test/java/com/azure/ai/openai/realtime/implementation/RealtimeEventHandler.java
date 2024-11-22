@@ -33,7 +33,6 @@ import com.azure.ai.openai.realtime.models.ResponseFunctionCallArgumentsDeltaEve
 import com.azure.ai.openai.realtime.models.ResponseFunctionCallArgumentsDoneEvent;
 import com.azure.ai.openai.realtime.models.ResponseOutputItemAddedEvent;
 import com.azure.ai.openai.realtime.models.ResponseOutputItemDoneEvent;
-import com.azure.ai.openai.realtime.models.ResponseTextDeltaEvent;
 import com.azure.ai.openai.realtime.models.ResponseTextDoneEvent;
 import com.azure.ai.openai.realtime.models.SessionCreatedEvent;
 import com.azure.ai.openai.realtime.models.SessionUpdatedEvent;

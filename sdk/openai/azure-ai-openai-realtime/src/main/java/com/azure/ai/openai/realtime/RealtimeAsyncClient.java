@@ -17,22 +17,22 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEventError;
 import com.azure.ai.openai.realtime.models.SendMessageFailedException;
 import com.azure.ai.openai.realtime.models.ServerErrorReceivedException;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
-import reactor.util.retry.Retry;
 
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-@ServiceClient(builder = RealtimeClientBuilder.class)
+/**
+ * Initializes a new instance of the asynchronous RealtimeClient type.
+ */
+@ServiceClient(builder = RealtimeClientBuilder.class, isAsync = true)
 public final class RealtimeAsyncClient implements Closeable {
 
     // logging
@@ -51,7 +51,7 @@ public final class RealtimeAsyncClient implements Closeable {
 
     // websocket client
     private final WebSocketClient webSocketClient;
-    private WebSocketSession webSocketSession;
+    private final AtomicReference<WebSocketSession> webSocketSession = new AtomicReference<>();
 
     // client specifics
     private final ClientEndpointConfiguration clientEndpointConfiguration;
@@ -62,25 +62,23 @@ public final class RealtimeAsyncClient implements Closeable {
     // incoming message handlers:
 
     // Server catch all:
-    private Sinks.Many<RealtimeServerEvent> serverEvents
-        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private final AtomicReference<Sinks.Many<RealtimeServerEvent>> serverEvents
+        = new AtomicReference<>(Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false));
 
     /**
      * Creates a RealtimeAsyncClient.
      *
-     * @param webSocketClient The WebSocket client.
      * @param cec The client endpoint configuration containing base URL, headers and other information.
      * @param applicationId The application ID.
-     * @param retryStrategy The retry strategy. Unused for now
      * @param authenticationProvider The authentication provider. Currently only supports KeyCredential and TokenCredential
      */
-    RealtimeAsyncClient(WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId,
-        RetryStrategy retryStrategy, AuthenticationProvider authenticationProvider) {
+    RealtimeAsyncClient(ClientEndpointConfiguration cec, String applicationId,
+        AuthenticationProvider authenticationProvider) {
         this.logger
             = new ClientLogger(RealtimeAsyncClient.class, LoggingUtils.createContextWithApplicationId(applicationId));
         loggerReference.set(logger);
 
-        this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
+        this.webSocketClient = new WebSocketClientNettyImpl();
         this.clientEndpointConfiguration = cec;
         this.applicationId = applicationId;
         this.authenticationProvider = authenticationProvider;
@@ -133,15 +131,22 @@ public final class RealtimeAsyncClient implements Closeable {
      */
     public Mono<Void> sendMessage(RealtimeClientEvent message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
-            webSocketSession.sendObjectAsync(message, sendResult -> {
-                if (sendResult.isOK()) {
-                    sink.success();
-                } else {
-                    sink.error(logSendMessageFailedException("Failed to send message.", sendResult.getException(), true,
-                        message));
-                }
-            });
-        }));//.retryWhen(this.sendMessageRetrySpec);
+            WebSocketSession localWebSocketSession = this.webSocketSession.get();
+            if (localWebSocketSession != null) {
+                localWebSocketSession.sendObjectAsync(message, sendResult -> {
+                    if (sendResult.isOK()) {
+                        sink.success();
+                    } else {
+                        sink.error(logSendMessageFailedException("Failed to send message.", sendResult.getException(),
+                            true, message));
+                    }
+                });
+            } else {
+                sink.error(logSendMessageFailedException("Failed to send message. Websocket session is null.", null,
+                    false, message));
+            }
+
+        }));
     }
 
     /**
@@ -150,7 +155,8 @@ public final class RealtimeAsyncClient implements Closeable {
      * @return the server events.
      */
     public Flux<RealtimeServerEvent> getServerEvents() {
-        return serverEvents.asFlux().transform(serverEvents -> serverEvents.flatMap(event -> {
+        Sinks.Many<RealtimeServerEvent> localServerEvents = serverEvents.get();
+        return localServerEvents.asFlux().transform(serverEvents -> serverEvents.flatMap(event -> {
             if (event instanceof RealtimeServerEventError) {
                 RealtimeServerEventError errorEvent = (RealtimeServerEventError) event;
                 logger.atError()
@@ -190,8 +196,8 @@ public final class RealtimeAsyncClient implements Closeable {
             .then(authenticationProvider.authenticationToken())
             .flatMap(authenticationHeader -> Mono.<Void>fromRunnable(() -> {
                 this.webSocketSession
-                    = webSocketClient.connectToServer(this.clientEndpointConfiguration, () -> authenticationHeader,
-                        loggerReference, this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
+                    .set(webSocketClient.connectToServer(this.clientEndpointConfiguration, () -> authenticationHeader,
+                        loggerReference, this::handleMessage, this::handleSessionOpen, this::handleSessionClose));
             }))
             .subscribeOn(Schedulers.boundedElastic())
             .doOnError(error -> {
@@ -215,7 +221,7 @@ public final class RealtimeAsyncClient implements Closeable {
         // reset
         isStoppedByUser.compareAndSet(false, true);
 
-        WebSocketSession localSession = this.webSocketSession;
+        WebSocketSession localSession = this.webSocketSession.get();
         if (localSession != null && localSession.isOpen()) {
             // should be CONNECTED
             clientState.changeState(RealtimeClientState.STOPPING);
@@ -263,7 +269,9 @@ public final class RealtimeAsyncClient implements Closeable {
                             || state == RealtimeClientState.DISCONNECTED,
                         (String) null));
             }
-            if (webSocketSession == null || !webSocketSession.isOpen()) {
+
+            WebSocketSession localWebSocketSession = this.webSocketSession.get();
+            if (localWebSocketSession == null || !localWebSocketSession.isOpen()) {
                 // something unexpected
                 return Mono.error(logSendMessageFailedException(
                     "Failed to send message. Websocket session is not opened.", null, false, (String) null));
@@ -274,7 +282,12 @@ public final class RealtimeAsyncClient implements Closeable {
     }
 
     private void handleMessage(Object message) {
-        serverEvents.tryEmitNext((RealtimeServerEvent) message);
+        Sinks.Many<RealtimeServerEvent> localServerEvents = serverEvents.get();
+        if (localServerEvents == null) {
+            logger.atError().log(() -> "Server event sink is null");
+        } else {
+            localServerEvents.tryEmitNext((RealtimeServerEvent) message);
+        }
     }
 
     private void handleSessionOpen(WebSocketSession session) {
@@ -329,12 +342,16 @@ public final class RealtimeAsyncClient implements Closeable {
     private void handleClientStop(boolean sendStoppedEvent) {
         clientState.changeState(RealtimeClientState.STOPPED);
         // session
-        this.webSocketSession = null;
+        this.webSocketSession.set(null);
 
         tryCompleteOnStoppedByUserSink();
 
-        serverEvents.emitComplete(emitFailureHandler("Unable to emit Complete to serverEvents"));
-        serverEvents = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+        Sinks.Many<RealtimeServerEvent> localServerEvents = serverEvents.get();
+
+        if (localServerEvents != null) {
+            localServerEvents.emitComplete(emitFailureHandler("Unable to emit Complete to serverEvents"));
+        }
+        serverEvents.set(Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false));
 
         // Close and re-initialize any additional sinks we may add here in the future
     }

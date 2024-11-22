@@ -4,14 +4,11 @@
 package com.azure.ai.openai.realtime.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.io.IOException;
-import java.time.Duration;
 
 // Manually added model
 /**

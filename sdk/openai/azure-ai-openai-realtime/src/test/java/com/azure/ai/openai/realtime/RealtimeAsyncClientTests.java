@@ -165,7 +165,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
-    void ItemManipulation() {
+    void itemManipulation() {
         client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
 
         client.start().block();
@@ -228,7 +228,7 @@ public class RealtimeAsyncClientTests extends RealtimeClientTestBase {
     @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
-    void AudioWithTool() {
+    void audioWithTool() {
         client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildAsyncClient();
 
         client.start().block();

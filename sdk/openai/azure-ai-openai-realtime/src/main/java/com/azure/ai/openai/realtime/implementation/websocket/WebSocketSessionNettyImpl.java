@@ -40,7 +40,7 @@ import java.util.function.Supplier;
 
 final class WebSocketSessionNettyImpl implements WebSocketSession {
 
-    private final static int MAX_FRAME_SIZE = 65536;
+    private static final int MAX_FRAME_SIZE = 65536;
 
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageEncoder messageEncoder;

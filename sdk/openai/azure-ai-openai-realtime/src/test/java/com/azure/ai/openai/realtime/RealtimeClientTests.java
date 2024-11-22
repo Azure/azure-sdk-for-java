@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.implementation.AudioFile;
@@ -196,7 +199,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
-    void ItemManipulation() {
+    void itemManipulation() {
         client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionCreatedEventFired = new AtomicBoolean(false);
@@ -274,7 +277,7 @@ public class RealtimeClientTests extends RealtimeClientTestBase {
     @Disabled("Only LIVE tests are supported for websocket")
     @Test
     @Override
-    void AudioWithTool() {
+    void audioWithTool() {
         client = getRealtimeClientBuilder(null, OpenAIRealtimeServiceVersion.V2024_10_01_PREVIEW).buildClient();
 
         AtomicBoolean sessionUpdatedEventFired = new AtomicBoolean(false);

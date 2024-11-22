@@ -29,7 +29,6 @@ import com.azure.ai.openai.realtime.models.ResponseFunctionCallArgumentsDeltaEve
 import com.azure.ai.openai.realtime.models.ResponseFunctionCallArgumentsDoneEvent;
 import com.azure.ai.openai.realtime.models.ResponseOutputItemAddedEvent;
 import com.azure.ai.openai.realtime.models.ResponseOutputItemDoneEvent;
-import com.azure.ai.openai.realtime.models.ResponseTextDeltaEvent;
 import com.azure.ai.openai.realtime.models.ResponseTextDoneEvent;
 import com.azure.ai.openai.realtime.models.SessionCreatedEvent;
 import com.azure.ai.openai.realtime.models.SessionUpdatedEvent;
@@ -41,7 +40,7 @@ import java.io.Closeable;
 import java.util.function.Consumer;
 
 /**
- * Initializes a new instance of the synchronous OpenAIClient type.
+ * Initializes a new instance of the synchronous RealtimeClient type.
  */
 @ServiceClient(builder = RealtimeClientBuilder.class)
 public final class RealtimeClient implements Closeable {
