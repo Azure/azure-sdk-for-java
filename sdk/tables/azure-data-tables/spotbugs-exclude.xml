@@ -11,6 +11,10 @@
     <Class name="com.azure.data.tables.implementation.TableSasGenerator" />
   </Match>
   <Match>
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+    <Class name="com.azure.data.tables.implementation.TableUtils" />
+  </Match>
+  <Match>
     <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
     <Or>
       <Class name="com.azure.data.tables.TableAsyncClient" />
