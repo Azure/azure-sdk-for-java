@@ -13,6 +13,8 @@ import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanAccountAssociation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -21,7 +23,7 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
     @Test
     public void testCreateOrUpdateAssociation() throws Exception {
         String responseStr
-            = "{\"etag\":\"oihiqak\",\"properties\":{\"accountId\":\"wf\"},\"id\":\"rkwpzdqtvhcspod\",\"name\":\"qaxsipietgbebjf\",\"type\":\"lbmoichd\"}";
+            = "{\"etag\":\"aafrqulhmzyqbhd\",\"tags\":{\"wmzwdfkbnrzorpdl\":\"jrqpjiyrqjcrga\",\"qjf\":\"bqc\",\"gvpyigdaqqilzdc\":\"xxsaetgz\"},\"properties\":{\"accountId\":\"joedx\"},\"id\":\"gucaif\",\"name\":\"aurwwgilfjq\",\"type\":\"a\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +33,25 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CommitmentPlanAccountAssociation response = manager.commitmentPlans()
-            .defineAssociation("jk")
-            .withExistingCommitmentPlan("memhooclutnpq", "emc")
-            .withAccountId("ylmbkzudni")
+            .defineAssociation("wlwxlboncqbazqic")
+            .withExistingCommitmentPlan("ykmxcpwzvm", "oksqdt")
+            .withTags(mapOf("i", "xyqvg", "tvo", "od", "s", "kxdxuwsaifmcwn", "y", "zlehgcvkbcknjolg"))
+            .withAccountId("velsz")
             .create();
 
-        Assertions.assertEquals("wf", response.accountId());
+        Assertions.assertEquals("jrqpjiyrqjcrga", response.tags().get("wmzwdfkbnrzorpdl"));
+        Assertions.assertEquals("joedx", response.accountId());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

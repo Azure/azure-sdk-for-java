@@ -76,6 +76,11 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private List<UserOwnedStorage> userOwnedStorage;
 
     /*
+     * The user owned AML workspace properties.
+     */
+    private UserOwnedAmlWorkspace amlWorkspace;
+
+    /*
      * The private endpoint connection associated with the Cognitive Services account.
      */
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
@@ -159,6 +164,11 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * The abuse penalty.
      */
     private AbusePenalty abusePenalty;
+
+    /*
+     * Cognitive Services Rai Monitor Config.
+     */
+    private RaiMonitorConfig raiMonitorConfig;
 
     /**
      * Creates an instance of AccountProperties class.
@@ -319,6 +329,26 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      */
     public AccountProperties withUserOwnedStorage(List<UserOwnedStorage> userOwnedStorage) {
         this.userOwnedStorage = userOwnedStorage;
+        return this;
+    }
+
+    /**
+     * Get the amlWorkspace property: The user owned AML workspace properties.
+     * 
+     * @return the amlWorkspace value.
+     */
+    public UserOwnedAmlWorkspace amlWorkspace() {
+        return this.amlWorkspace;
+    }
+
+    /**
+     * Set the amlWorkspace property: The user owned AML workspace properties.
+     * 
+     * @param amlWorkspace the amlWorkspace value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withAmlWorkspace(UserOwnedAmlWorkspace amlWorkspace) {
+        this.amlWorkspace = amlWorkspace;
         return this;
     }
 
@@ -565,6 +595,26 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
+     * Get the raiMonitorConfig property: Cognitive Services Rai Monitor Config.
+     * 
+     * @return the raiMonitorConfig value.
+     */
+    public RaiMonitorConfig raiMonitorConfig() {
+        return this.raiMonitorConfig;
+    }
+
+    /**
+     * Set the raiMonitorConfig property: Cognitive Services Rai Monitor Config.
+     * 
+     * @param raiMonitorConfig the raiMonitorConfig value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withRaiMonitorConfig(RaiMonitorConfig raiMonitorConfig) {
+        this.raiMonitorConfig = raiMonitorConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -584,6 +634,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         }
         if (userOwnedStorage() != null) {
             userOwnedStorage().forEach(e -> e.validate());
+        }
+        if (amlWorkspace() != null) {
+            amlWorkspace().validate();
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
@@ -606,6 +659,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         if (abusePenalty() != null) {
             abusePenalty().validate();
         }
+        if (raiMonitorConfig() != null) {
+            raiMonitorConfig().validate();
+        }
     }
 
     /**
@@ -620,6 +676,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeArrayField("userOwnedStorage", this.userOwnedStorage,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("amlWorkspace", this.amlWorkspace);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeJsonField("apiProperties", this.apiProperties);
@@ -630,6 +687,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
         jsonWriter.writeBooleanField("restore", this.restore);
         jsonWriter.writeJsonField("locations", this.locations);
+        jsonWriter.writeJsonField("raiMonitorConfig", this.raiMonitorConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -673,6 +731,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     List<UserOwnedStorage> userOwnedStorage
                         = reader.readArray(reader1 -> UserOwnedStorage.fromJson(reader1));
                     deserializedAccountProperties.userOwnedStorage = userOwnedStorage;
+                } else if ("amlWorkspace".equals(fieldName)) {
+                    deserializedAccountProperties.amlWorkspace = UserOwnedAmlWorkspace.fromJson(reader);
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
@@ -715,6 +775,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     deserializedAccountProperties.commitmentPlanAssociations = commitmentPlanAssociations;
                 } else if ("abusePenalty".equals(fieldName)) {
                     deserializedAccountProperties.abusePenalty = AbusePenalty.fromJson(reader);
+                } else if ("raiMonitorConfig".equals(fieldName)) {
+                    deserializedAccountProperties.raiMonitorConfig = RaiMonitorConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -12,14 +12,29 @@ import java.util.Collection;
  */
 public final class ModelLifecycleStatus extends ExpandableStringEnum<ModelLifecycleStatus> {
     /**
-     * Static value GenerallyAvailable for ModelLifecycleStatus.
+     * Static value Stable for ModelLifecycleStatus.
      */
-    public static final ModelLifecycleStatus GENERALLY_AVAILABLE = fromString("GenerallyAvailable");
+    public static final ModelLifecycleStatus STABLE = fromString("Stable");
 
     /**
      * Static value Preview for ModelLifecycleStatus.
      */
     public static final ModelLifecycleStatus PREVIEW = fromString("Preview");
+
+    /**
+     * Static value GenerallyAvailable for ModelLifecycleStatus.
+     */
+    public static final ModelLifecycleStatus GENERALLY_AVAILABLE = fromString("GenerallyAvailable");
+
+    /**
+     * Static value Deprecating for ModelLifecycleStatus.
+     */
+    public static final ModelLifecycleStatus DEPRECATING = fromString("Deprecating");
+
+    /**
+     * Static value Deprecated for ModelLifecycleStatus.
+     */
+    public static final ModelLifecycleStatus DEPRECATED = fromString("Deprecated");
 
     /**
      * Creates a new instance of ModelLifecycleStatus value.

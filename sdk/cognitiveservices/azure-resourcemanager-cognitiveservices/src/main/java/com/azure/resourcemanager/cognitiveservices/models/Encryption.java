@@ -15,7 +15,7 @@ import java.io.IOException;
  * Properties to configure Encryption.
  */
 @Fluent
-public final class Encryption implements JsonSerializable<Encryption> {
+public class Encryption implements JsonSerializable<Encryption> {
     /*
      * Properties of KeyVault
      */

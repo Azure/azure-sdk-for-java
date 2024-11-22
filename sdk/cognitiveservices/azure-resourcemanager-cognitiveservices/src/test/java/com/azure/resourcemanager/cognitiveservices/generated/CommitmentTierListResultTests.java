@@ -12,15 +12,15 @@ public final class CommitmentTierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"lo\",\"value\":[{\"kind\":\"yfjfcnjbkcn\",\"skuName\":\"hbttkphyw\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"t\",\"tier\":\"nermcl\",\"maxCount\":1227353846,\"quota\":{\"quantity\":8408659910270038809,\"unit\":\"scrpabgyepsbjt\"},\"cost\":{\"commitmentMeterId\":\"ugxywpmueef\",\"overageMeterId\":\"wfqkquj\"}}]}")
+            "{\"nextLink\":\"ugicjooxdjebw\",\"value\":[{\"kind\":\"wfvovbv\",\"skuName\":\"uecivyhz\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"jgjrwjueiotwm\",\"tier\":\"ytdxwit\",\"maxCount\":1070997174,\"quota\":{\"quantity\":8610191053119914796,\"unit\":\"wgxhn\"},\"cost\":{\"commitmentMeterId\":\"x\",\"overageMeterId\":\"kpycgklwndnhjd\"}},{\"kind\":\"whvylw\",\"skuName\":\"tdhxujznbmpowuwp\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"veual\",\"tier\":\"j\",\"maxCount\":1318602789,\"quota\":{\"quantity\":4407430111323762488,\"unit\":\"cswsrtjri\"},\"cost\":{\"commitmentMeterId\":\"bpbewtghfgb\",\"overageMeterId\":\"gw\"}},{\"kind\":\"vlvqhjkbegi\",\"skuName\":\"nmxiebwwaloayqc\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"zjuzgwyz\",\"tier\":\"txon\",\"maxCount\":351214213,\"quota\":{\"quantity\":5974631066556953199,\"unit\":\"bp\"},\"cost\":{\"commitmentMeterId\":\"p\",\"overageMeterId\":\"knftguvriuh\"}}]}")
             .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("lo", model.nextLink());
+        Assertions.assertEquals("ugicjooxdjebw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("lo");
+        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("ugicjooxdjebw");
         model = BinaryData.fromObject(model).toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("lo", model.nextLink());
+        Assertions.assertEquals("ugicjooxdjebw", model.nextLink());
     }
 }
